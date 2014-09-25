@@ -7,7 +7,7 @@ export TMPDIR=`/bin/mktemp -d`
 trap "rm -rf $TMPDIR" EXIT
 
 pushd $TMPDIR
-PROJECTS_LIST=$OLDPWD/modules/openstack_project/files/review.projects.yaml
+PROJECTS_LIST=$OLDPWD/$1
 
 sed -e '/^- project: /!d' -e 's/^- project: //' $PROJECTS_LIST > projects_list
 

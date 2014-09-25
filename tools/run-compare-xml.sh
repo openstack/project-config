@@ -32,11 +32,11 @@ GITHEAD=`git rev-parse HEAD`
 
 # First generate output from HEAD~1
 git checkout HEAD~1
-cp modules/openstack_project/files/jenkins_job_builder/config/* .test/jenkins-job-builder/.test/old/config
+cp jenkins/jobs/* .test/jenkins-job-builder/.test/old/config
 
 # Then use that as a reference to compare against HEAD
 git checkout $GITHEAD
-cp modules/openstack_project/files/jenkins_job_builder/config/* .test/jenkins-job-builder/.test/new/config
+cp jenkins/jobs/* .test/jenkins-job-builder/.test/new/config
 
 cd .test/jenkins-job-builder
 

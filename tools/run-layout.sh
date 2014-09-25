@@ -24,7 +24,7 @@ mkdir -p .test/new/config
 mkdir -p .test/new/out
 cd ../..
 
-cp modules/openstack_project/files/jenkins_job_builder/config/* .test/jenkins-job-builder/.test/new/config
+cp jenkins/jobs/* .test/jenkins-job-builder/.test/new/config
 cd .test/jenkins-job-builder
 tox -e compare-xml-new
 
@@ -32,4 +32,4 @@ cd ..
 find jenkins-job-builder/.test/new/out/ -printf "%f\n" > job-list.txt
 
 cd zuul
-tox -e venv -- zuul-server -c etc/zuul.conf-sample -l ../../modules/openstack_project/files/zuul/layout.yaml -t ../job-list.txt
+tox -e venv -- zuul-server -c etc/zuul.conf-sample -l ../../zuul/layout.yaml -t ../job-list.txt
