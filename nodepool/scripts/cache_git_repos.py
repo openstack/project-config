@@ -24,8 +24,8 @@ import urllib2
 
 from common import run_local
 
-URL = ('https://git.openstack.org/cgit/openstack-infra/config/plain/'
-       'modules/openstack_project/files/review.projects.yaml')
+URL = ('https://git.openstack.org/cgit/openstack-infra/project-config/'
+       'plain/gerrit/projects.yaml')
 PROJECT_RE = re.compile('^-?\s+project:\s+(.*)$')
 
 # Not using an arg libraries in order to avoid module imports that
