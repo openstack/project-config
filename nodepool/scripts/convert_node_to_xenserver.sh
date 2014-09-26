@@ -312,7 +312,7 @@ function generate_xs_installer_grub_config() {
 exec tail -n +3 \$0
 menuentry 'XenServer installer' {
     multiboot $bootfiles/xen.gz dom0_max_vcpus=1-2 dom0_mem=max:752M com1=115200,8n1 console=com1,vga
-    module $bootfiles/vmlinuz xencons=hvc console=tty0 console=hvc0 make-ramdisk=/dev/sda1 answerfile=$answerfile install
+    module $bootfiles/vmlinuz xencons=hvc console=tty0 make-ramdisk=/dev/sda1 answerfile=$answerfile install
     module $bootfiles/install.img
 }
 EOF
@@ -403,7 +403,9 @@ function start_ubuntu_on_next_boot() {
 
     bootfiles="$1"
 
-    sed -ie 's,default xe-serial,default ubuntu,g' $bootfiles/extlinux.conf
+    sed -ie 's,default xe,default ubuntu,g' $bootfiles/extlinux.conf
+
+    log_extlinux $bootfiles/extlinux.conf
 }
 
 function start_xenserver_on_next_boot() {
@@ -411,7 +413,18 @@ function start_xenserver_on_next_boot() {
 
     bootfiles="$1"
 
-    sed -ie 's,default ubuntu,default xe-serial,g' $bootfiles/extlinux.conf
+    sed -ie 's,default ubuntu,default xe,g' $bootfiles/extlinux.conf
+
+    log_extlinux $bootfiles/extlinux.conf
+}
+
+function log_extlinux() {
+    local extlinux_conf
+
+    extlinux_conf="$1"
+
+    echo "ACTUAL STATE OF EXTLINUX IS"
+    cat $extlinux_conf
 }
 
 function mount_dom0_fs() {
@@ -474,6 +487,8 @@ function configure_networking() {
     if [ -z "$VM" ]; then
         VM=$(xe vm-import filename=/mnt/ubuntu/root/staging_vm.xva)
         xe vm-param-set name-label="$APPLIANCE_NAME" uuid=$VM
+        xe vm-param-set VCPUs-max=6 uuid=$VM
+        xe vm-param-set VCPUs-at-startup=6 uuid=$VM
         APP_IMPORTED_NOW="true"
     fi
     DNS_ADDRESSES=$(echo "$NAMESERVERS" | sed -e "s/,/ /g")

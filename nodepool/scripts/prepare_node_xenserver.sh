@@ -1,7 +1,6 @@
 #!/bin/bash -xe
 
 # Copyright (C) 2011-2013 OpenStack Foundation
-# Copyright (c) 2014 Citrix Systems, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,7 +16,29 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-./convert_node_to_xenserver.sh \
-    password \
-    http://downloads.vmd.citrix.com/OpenStack/xenapi-in-the-cloud-appliances/1.1.4.xva \
-    devstack
+
+HOSTNAME=$1
+
+function tsfilter {
+    $@ 2>&1 | awk '
+    {
+        cmd ="date +\"%Y-%m-%d %H:%M:%S.%3N | \""
+        cmd | getline now
+        close("date +\"%Y-%m-%d %H:%M:%S.%3N | \"")
+        sub(/^/, now)
+        print
+        fflush()
+    }'
+}
+
+set -o pipefail
+tsfilter ./prepare_node_devstack.sh "$HOSTNAME"
+
+# After the node has been prepared, the hypervisor needs to be halted to make
+# sure that the filesystem is in a consistent state.
+sudo -u domzero \
+    ssh \
+        -o StrictHostKeyChecking=no \
+        -o UserKnownHostsFile=/dev/null \
+        root@192.168.33.2 \
+            halt -p </dev/null
