@@ -63,5 +63,5 @@ done
 git add $PROJECT/locale/*
 
 filter_commits
-
+cleanup_po_files "$PROJECT"
 send_patch
