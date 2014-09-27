@@ -738,11 +738,6 @@ jobs:
     voting: false
   - name: check-tempest-dsvm-full-ceph
     voting: false
-# puppet-openstack targets
-  - name: gate-puppet-vswitch-puppet-lint
-    voting: false
-  - name: gate-puppet-vswitch-puppet-syntax
-    voting: false
   - name: gate-tomograph-python33
     voting: false
   - name: gate-rally-dsvm-cli
@@ -4691,14 +4686,8 @@ projects:
   - name: stackforge/puppet-vswitch
     template:
       - name: merge-check
-    check:
-      - gate-puppet-vswitch-puppet-lint
-      - gate-puppet-vswitch-puppet-syntax
-      - gate-puppet-vswitch-puppet-unit-2.7
-      - gate-puppet-vswitch-puppet-unit-3.1
-    gate:
-      - gate-puppet-vswitch-puppet-unit-2.7
-      - gate-puppet-vswitch-puppet-unit-3.1
+      - name: puppet-check-jobs
+      - name: puppet-module-unit-jobs
 
   - name: stackforge/pyghmi
     template:
