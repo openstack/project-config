@@ -90,10 +90,14 @@
     name: puppet-lint
     builders:
       - shell: |
-          if [ -f Modulefile ]; then
-            MODULE=$(awk '/^name/ {print $NF}' Modulefile |tr -d \"\')
+          if [ -f Modulefile -o -f metadata.json ]; then
+            if [ -f Modulefile ]; then
+              MODULE=$(awk '/^name/ {print $NF}' Modulefile |tr -d \"\')
+            elif [ -f metadata.json ]; then
+              MODULE=$(python -c 'import json;print json.load(open("metadata.json"))["name"]')
+            fi
             if [ -z "$MODULE" ]; then
-              echo "Module name not defined in Modulefile"
+              echo "Module name not defined in Modulefile or metadata.json"
             else
               mkdir -p "$MODULE"
               rsync -a --exclude="$MODULE" --exclude ".*" . "$MODULE"
