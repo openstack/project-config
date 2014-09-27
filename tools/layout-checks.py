@@ -66,8 +66,7 @@ def check_alphabetical():
 
 def check_all():
     errors = check_alphabetical()
-    # TODO(jaegerandi): Disabled until it passes
-    #errors = check_merge_template() or errors
+    errors = check_merge_template() or errors
 
     if errors:
         print("Found errors in layout.yaml!")
