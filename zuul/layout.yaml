@@ -323,8 +323,6 @@ project-templates:
     # on those repos
     # TODO(jogo): run this on libraries
     check:
-      - 'check-tempest-dsvm-full-havana'
-      - 'check-tempest-dsvm-neutron-havana'
       - 'check-tempest-dsvm-full-icehouse'
       - 'check-tempest-dsvm-neutron-icehouse'
 
@@ -343,12 +341,6 @@ project-templates:
       - 'gate-{name}-requirements'
     gate:
       - 'gate-{name}-requirements'
-
-  - name: periodic-havana
-    periodic-stable:
-      - 'periodic-{name}-docs-havana'
-      - 'periodic-{name}-python26-havana'
-      - 'periodic-{name}-python27-havana'
 
   - name: periodic-icehouse
     periodic-stable:
@@ -486,7 +478,7 @@ jobs:
     parameter-function: set_node_options_default_precise
   # tempest and d-g branchless tests need to only run on master
   # (needs to be early to not impact non-voting stanzas later)
-  - name: ^(?!periodic-).*(-icehouse|-havana)$
+  - name: ^(?!periodic-).*-icehouse$
     branch: ^master.*$
   - name: gate-tempest-dsvm-full
     queue-name: integrated
@@ -495,22 +487,20 @@ jobs:
   - name: gate-rally-dsvm-fakevirt-heat
     voting: false
   - name: ^(gate|check)-tempest-dsvm-neutron-full(-2)?$
-    branch: ^(?!stable/(havana|icehouse)).*$
+    branch: ^(?!stable/icehouse).*$
   - name: ^(gate|check)-tempest-dsvm-neutron-pg-full(-2)?$
-    branch: ^(?!stable/(havana|icehouse)).*$
+    branch: ^(?!stable/icehouse).*$
     voting: false
   - name: ^(gate|check)-tempest-dsvm-neutron(-2)?$
     branch: ^(stable/).*$
   - name: ^(gate|check)-tempest-dsvm-neutron-full-icehouse$
     voting: false
-  - name: ^(gate|check)-tempest-dsvm-neutron-heat-slow
-    branch: ^(?!stable/havana).*$
   - name: check-heat-dsvm-functional
-    branch: ^(?!stable/(havana|icehouse)).*$
+    branch: ^(?!stable/icehouse).*$
     voting: false
   - name: check-tempest-dsvm-ironic-pxe_ssh-nv
     voting: false
-    branch: ^(?!stable/(havana|icehouse)).*$
+    branch: ^(?!stable/icehouse).*$
   - name: check-tempest-dsvm-ironic-pxe_ssh-postgres-nv
     voting: false
   - name: check-tempest-dsvm-ironic-agent_ssh-nv
@@ -524,15 +514,15 @@ jobs:
   - name: ^(gate|check)-tempest-dsvm-cells-full$
     voting: false
   - name: ^(gate|check)-grenade-dsvm$
-    branch: ^(?!stable/havana).*$
+    branch: ^(?!stable/icehouse).*$
   - name: ^(gate|check)-grenade-dsvm-neutron$
-    branch: ^(?!stable/havana).*$
+    branch: ^(?!stable/icehouse).*$
     voting: false
   - name: ^(gate|check)-grenade-dsvm-neutron-icehouse$
-    branch: ^(?!stable/havana).*$
+    branch: ^(?!stable/icehouse).*$
     voting: false
   - name: ^(gate|check)-grenade-dsvm-partial-ncpu$
-    branch: ^(?!stable/havana).*$
+    branch: ^(?!stable/icehouse).*$
     # only here until stable is votable, then merge
     # back to a single job
   - name: ^(gate|check)-grenade-dsvm-forward$
@@ -540,22 +530,6 @@ jobs:
     voting: false
   - name: ^(gate|check)-grenade-dsvm-neutron-forward
     branch: ^(stable/).*$
-    voting: false
-  - name: ^(gate|check)-tempest-dsvm-large-ops
-    branch: ^(?!stable/havana).*$
-  - name: ^(gate|check)-tempest-dsvm-neutron-large-ops
-    branch: ^(?!stable/havana).*$
-  - name: check-tempest-dsvm-full-havana
-    voting: false
-  - name: check-tempest-dsvm-neutron-havana
-    voting: false
-  - name: check-tempest-dsvm-postgres-full-havana
-    voting: false
-  - name: check-devstack-dsvm-cells-havana
-    voting: false
-  - name: check-tempest-dsvm-cells-havana
-    voting: false
-  - name: check-tempest-dsvm-cells-full-havana
     voting: false
   - name: check-tempest-dsvm-cells-full
     voting: false
@@ -568,7 +542,7 @@ jobs:
   - name: check-tempest-dsvm-neutron-aiopcpu
     voting: false
   - name: gate-designate-devstack-dsvm
-    branch: ^(?!stable/(havana|icehouse)).*$
+    branch: ^(?!stable/icehouse).*$
 # For Gerrit ver 2.4.x (using maven)
   - name: ^(gate|check)-gerrit-unittests$
     branch: ^openstack/2\.4.*$
@@ -622,7 +596,6 @@ jobs:
     branch: ^(?!master).*$
   - name: ^gate-.*-requirements$
     failure-message: Incompatible requirement found; see https://wiki.openstack.org/wiki/Requirements
-    branch: ^(?!stable/havana).*$
     files:
       - '^tools/.*-requires$'
       - '^.*requirements.txt$'
@@ -639,10 +612,10 @@ jobs:
   - name: ^(gate|check)-tempest-master
     voting: false
   - name: gate-keystone-python33
-    branch: ^(?!stable/(havana|icehouse)).*$
+    branch: ^(?!stable/icehouse).*$
     voting: false
   - name: gate-rally-dsvm-keystone
-    branch: ^(?!stable/(havana|icehouse)).*$
+    branch: ^(?!stable/icehouse).*$
     voting: false
   - name: gate-rally-dsvm-glance
     voting: false
@@ -714,21 +687,15 @@ jobs:
     voting: false
   - name: gate-storyboard-python33
     voting: false
-  - name: gate-oslo-incubator-python33
-    branch: ^(?!stable/havana).*$
   - name: check-tempest-dsvm-docker
     voting: false
   - name: check-tempest-dsvm-f20-docker
     voting: false
-  - name: check-neutron-dsvm-functional
-    branch: ^(?!stable/havana).*$
-  - name: gate-neutron-dsvm-functional
-    branch: ^(?!stable/havana).*$
   - name: check-neutron-dsvm-api
-    branch: ^(?!stable/(havana|icehouse)).*$
+    branch: ^(?!stable/icehouse).*$
     voting: false
   - name: check-tempest-dsvm-neutron-dvr
-    branch: ^(?!stable/(havana|icehouse)).*$
+    branch: ^(?!stable/icehouse).*$
     voting: false
   - name: gate-trove-buildimage-mysql
     voting: false
@@ -754,7 +721,7 @@ jobs:
   - name: gate-heat-templates-dsvm
     voting: false
   - name: gate-swift-tox-func
-    branch: ^(?!stable/(havana|icehouse)).*$
+    branch: ^(?!stable/icehouse).*$
     voting: false
   # Swift log publishing details
   - name: ^experimental-swift-logs.*$
@@ -767,7 +734,7 @@ jobs:
   - name: ^(gate|check)-pecan-tox-ironic-stable
     voting: false
   - name: ^(gate|check)-zaqar-python33
-    branch: ^(?!stable/(havana|icehouse)).*$
+    branch: ^(?!stable/icehouse).*$
   - name: gate-horizon-jshint
     voting: false
   - name: gate-tempest-dsvm-ceilometer-mongodb
@@ -775,7 +742,7 @@ jobs:
   - name: gate-tempest-dsvm-ceilometer-mongodb-full
     voting: false
   - name: gate-ceilometer-python33
-    branch: ^(?!stable/(havana|icehouse)).*$
+    branch: ^(?!stable/icehouse).*$
   - name: gate-nova-pip-missing-reqs
     voting: false
   - name: gate-config-bashate
@@ -791,7 +758,7 @@ jobs:
   - name: ^(gate|check)-osc-dsvm-functional
     voting: false
   - name: gate-horizon-dsvm-integration
-    branch: ^(?!stable/(havana|icehouse)).*$
+    branch: ^(?!stable/icehouse).*$
     voting: false
 
 # The project list is grouped by type of project, and within each
@@ -826,7 +793,6 @@ projects:
       - name: python-jobs
       - name: python3-jobs
       - name: openstack-server-publish-jobs
-      - name: periodic-havana
       - name: periodic-icehouse
       - name: check-requirements
       - name: integrated-gate
@@ -861,7 +827,6 @@ projects:
       - name: merge-check
       - name: python-jobs
       - name: openstack-server-publish-jobs
-      - name: periodic-havana
       - name: periodic-icehouse
       - name: check-requirements
       - name: integrated-gate
@@ -967,7 +932,6 @@ projects:
       - name: merge-check
       - name: python-jobs
       - name: openstack-server-publish-jobs
-      - name: periodic-havana
       - name: periodic-icehouse
       - name: check-requirements
       - name: integrated-gate
@@ -1031,7 +995,6 @@ projects:
       - name: merge-check
       - name: python-jobs
       - name: openstack-server-publish-jobs
-      - name: periodic-havana
       - name: periodic-icehouse
       - name: check-requirements
       - name: integrated-gate
@@ -1066,7 +1029,6 @@ projects:
       - name: merge-check
       - name: python-jobs
       - name: openstack-server-publish-jobs
-      - name: periodic-havana
       - name: periodic-icehouse
       - name: check-requirements
       - name: integrated-gate
@@ -1128,7 +1090,6 @@ projects:
       - name: merge-check
       - name: python-jobs
       - name: openstack-server-publish-jobs
-      - name: periodic-havana
       - name: periodic-icehouse
       - name: check-requirements
       - name: integrated-gate
@@ -1154,8 +1115,6 @@ projects:
     release:
       - keystone-tarball
       - keystone-merge-release-tags
-    periodic:
-      - periodic-swift-dsvm-functional-havana
 
   - name: openstack/keystonemiddleware
     template:
@@ -1225,7 +1184,6 @@ projects:
       - name: merge-check
       - name: python-jobs
       - name: openstack-server-publish-jobs
-      - name: periodic-havana
       - name: periodic-icehouse
       - name: check-requirements
       - name: integrated-gate-neutron
@@ -1273,7 +1231,6 @@ projects:
       - name: merge-check
       - name: python-jobs
       - name: openstack-server-publish-jobs
-      - name: periodic-havana
       - name: periodic-icehouse
       - name: check-requirements
       - name: integrated-gate
@@ -2566,9 +2523,6 @@ projects:
     release:
       - tempest-tarball
     periodic-stable:
-      - periodic-tempest-dsvm-full-havana
-      - periodic-tempest-dsvm-neutron-havana
-      - periodic-tempest-dsvm-postgres-full-havana
       - periodic-tempest-dsvm-full-icehouse
       - periodic-tempest-dsvm-neutron-icehouse
       - periodic-tempest-dsvm-postgres-full-icehouse
@@ -2885,8 +2839,6 @@ projects:
       - check-tempest-dsvm-cells-full
       - check-tempest-dsvm-zaqar
       - gate-grenade-dsvm-forward
-      - check-tempest-master-dsvm-full-havana
-      - check-tempest-master-dsvm-neutron-havana
       - check-tempest-dsvm-centos7
 
   - name: openstack-dev/grenade
@@ -3057,10 +3009,6 @@ projects:
       - check-tempest-dsvm-neutron-icehouse
       - check-tempest-dsvm-postgres-full-icehouse
       - check-devstack-dsvm-cells-icehouse
-      - check-tempest-dsvm-full-havana
-      - check-tempest-dsvm-neutron-havana
-      - check-tempest-dsvm-postgres-full-havana
-      - check-devstack-dsvm-cells-havana
       - check-tempest-dsvm-ironic-pxe_ssh-nv
       - check-tempest-dsvm-ironic-pxe_ssh-postgres-nv
       - check-tempest-dsvm-f20
@@ -3071,8 +3019,6 @@ projects:
       - gate-swift-dsvm-functional
     experimental:
       - gate-grenade-dsvm-forward
-      - check-tempest-master-dsvm-full-havana
-      - check-tempest-master-dsvm-neutron-havana
       - check-tempest-dsvm-aiopcpu
       - check-tempest-dsvm-neutron-aiopcpu
       - check-tempest-dsvm-centos7
