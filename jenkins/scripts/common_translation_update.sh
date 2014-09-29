@@ -290,7 +290,7 @@ function filter_commits ()
     for f in `git diff --cached --name-only --diff-filter=A`
     do
         # Files should have at least one non-empty msgid string.
-        if grep -q 'msgid "[^"]' "$f" ; then
+        if ! grep -q 'msgid "[^"]' "$f" ; then
             git reset -q "$f"
             rm "$f"
         fi
