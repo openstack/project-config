@@ -4,7 +4,7 @@ set -e
 
 PREREQ=""
 
-prereqs () {
+function prereqs {
     echo "${PREREQ}"
 }
 
