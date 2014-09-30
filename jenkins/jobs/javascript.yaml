@@ -32,7 +32,7 @@
     node: '{node}'
 
 # Builds a draft application and uploads it to docs-draft. To use this build,
-# your Gruntfile must declare a target named "build"
+# your Gruntfile must declare a target named "build:draft"
 - job-template:
     name: 'gate-{name}-js-draft'
 
@@ -46,7 +46,7 @@
       - revoke-sudo
       - gerrit-git-prep
       - js-build:
-          command: 'build'
+          command: 'build:draft'
           envlist: 'grunt'
           project: '{name}'
       - assert-no-extra-files
@@ -66,11 +66,6 @@
               # much like we do with docs builds.
             - target: 'docs-draft/$LOG_PATH'
               source: 'dist/**'
-              keep-hierarchy: true
-              copy-after-failure: false
-              # Upload any additional files necessary for the docs-draft build
-            - target: 'docs-draft/$LOG_PATH'
-              source: 'test/draft/**'
               keep-hierarchy: true
               copy-after-failure: false
     node: '{node}'
