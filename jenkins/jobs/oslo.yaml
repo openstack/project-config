@@ -45,20 +45,23 @@
       - console-log
 
 
-- job-group:
-    name: oslotest-cross-test
-
-    injectedlib: oslotest
-    injectedrepo: openstack/oslotest
-
-    jobs:
-      - '{pipeline}-{injectedlib}-dsvm-{name}{branch-designator}':
-          pipeline: check
-          node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
-          branch-override: default
-      - '{pipeline}-{injectedlib}-dsvm-{name}{branch-designator}':
-          pipeline: gate
-          node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
-          branch-override: default
+# NOTE(dhellmann): This job group is not used, but I retained it as an
+# example of properly using the template defined above.
+#
+# - job-group:
+#     name: oslotest-cross-test
+#
+#     injectedlib: oslotest
+#     injectedrepo: openstack/oslotest
+#
+#     jobs:
+#       - '{pipeline}-{injectedlib}-dsvm-{name}{branch-designator}':
+#           pipeline: check
+#           node: 'devstack-precise || devstack-trusty'
+#           branch-designator: ''
+#           branch-override: default
+#       - '{pipeline}-{injectedlib}-dsvm-{name}{branch-designator}':
+#           pipeline: gate
+#           node: 'devstack-precise || devstack-trusty'
+#           branch-designator: ''
+#           branch-override: default
