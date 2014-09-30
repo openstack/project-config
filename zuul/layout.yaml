@@ -915,22 +915,6 @@ projects:
       - gate-cliff-tox-openstackclient-stable
       - gate-cliff-tox-openstackclient-tip
 
-  - name: stackforge/driverlog
-    template:
-      - name: merge-check
-    check:
-      - gate-driverlog-pep8
-      - gate-driverlog-python27
-    gate:
-      - gate-driverlog-pep8
-      - gate-driverlog-python27
-    post:
-      - driverlog-branch-tarball
-    pre-release:
-      - driverlog-tarball
-    release:
-      - driverlog-tarball
-
   - name: openstack/gantt
     template:
       - name: merge-check
@@ -1320,15 +1304,6 @@ projects:
       - gate-nova-specs-python27
     gate:
       - gate-nova-specs-python27
-
-  - name: stackforge/nova-docker
-    template:
-      - name: merge-check
-      - name: python-jobs
-      - name: check-requirements
-    check:
-      - check-tempest-dsvm-docker
-      - check-tempest-dsvm-f20-docker
 
   - name: openstack/pycadf
     template:
@@ -1890,85 +1865,6 @@ projects:
     release:
       - django_openstack_auth-tarball:
         - django_openstack_auth-pypi-both-upload
-
-  - name: stackforge/saml-generator
-    template:
-      - name: merge-check
-      - name: noop-jobs
-
-  - name: stackforge/gertty
-    template:
-      - name: merge-check
-      - name: noop-jobs
-      - name: publish-to-pypi
-
-  - name: stackforge/git-upstream
-    template:
-      - name: merge-check
-    check:
-      - gate-git-upstream-pep8
-      - gate-git-upstream-python27
-    gate:
-      - gate-git-upstream-pep8
-      - gate-git-upstream-python27
-
-  - name: stackforge/cloudbase-init
-    template:
-      - name: merge-check
-    check:
-      - gate-cloudbase-init-docs
-      - gate-cloudbase-init-pep8
-      - gate-cloudbase-init-python27
-      - gate-cloudbase-init-python33
-    gate:
-      - gate-cloudbase-init-docs
-      - gate-cloudbase-init-pep8
-      - gate-cloudbase-init-python27
-      - gate-cloudbase-init-python33
-    post:
-      - cloudbase-init-coverage
-
-  - name: stackforge/dox
-    template:
-      - name: merge-check
-    check:
-      - gate-dox-pep8
-      - gate-dox-python27
-    gate:
-      - gate-dox-pep8
-      - gate-dox-python27
-
-  - name: stackforge/gerrit-dash-creator
-    template:
-      - name: merge-check
-    check:
-      - gate-gerrit-dash-creator-pep8
-    gate:
-      - gate-gerrit-dash-creator-pep8
-
-  - name: stackforge/gce-api
-    template:
-      - name: merge-check
-      - name: check-requirements
-    check:
-      - gate-gce-api-pep8
-      - gate-gce-api-python26
-      - gate-gce-api-python27
-    gate:
-      - gate-gce-api-pep8
-      - gate-gce-api-python26
-      - gate-gce-api-python27
-
-  - name: stackforge/ec2-api
-    template:
-      - name: merge-check
-      - name: check-requirements
-    check:
-      - gate-ec2-api-pep8
-      - gate-ec2-api-python27
-    gate:
-      - gate-ec2-api-pep8
-      - gate-ec2-api-python27
 
   - name: openstack/governance
     template:
@@ -2834,6 +2730,16 @@ projects:
     post:
       - security-doc-tox-doc-publishdocs
 
+  - name: openstack/training-guides
+    template:
+      - name: merge-check
+      - name: openstack-doc-gate
+    post:
+      - training-guides-tox-doc-publishdocs
+      - training-guides-manuals-upstream-translation-update
+    periodic:
+      - training-guides-manuals-propose-translation-update
+
 # Section: OpenStack development projects
 
   - name: openstack-dev/bashate
@@ -3390,16 +3296,6 @@ projects:
       - gate-pypi-mirror-pep8
       - gate-requirements-integration-dsvm
 
-  - name: stackforge/python-jenkins
-    template:
-      - name: merge-check
-      - name: python-jobs
-      - name: python3-jobs
-      - name: publish-to-pypi
-      - name: docs-on-rtfd
-    check:
-      - python-jenkins-coverage
-
   - name: openstack-infra/releasestatus
     template:
       - name: merge-check
@@ -3625,19 +3521,6 @@ projects:
       - bindep-branch-tarball
       - bindep-coverage
 
-  - name: stackforge/bufunfa
-    template:
-      - name: merge-check
-      - name: docs-on-rtfd
-    check:
-      - gate-bufunfa-pep8
-      - gate-bufunfa-python26
-      - gate-bufunfa-python27
-    gate:
-      - gate-bufunfa-pep8
-      - gate-bufunfa-python26
-      - gate-bufunfa-python27
-
   - name: stackforge/blazar
     template:
       - name: merge-check
@@ -3670,6 +3553,19 @@ projects:
     release:
       - blazar-nova-tarball
 
+  - name: stackforge/bufunfa
+    template:
+      - name: merge-check
+      - name: docs-on-rtfd
+    check:
+      - gate-bufunfa-pep8
+      - gate-bufunfa-python26
+      - gate-bufunfa-python27
+    gate:
+      - gate-bufunfa-pep8
+      - gate-bufunfa-python26
+      - gate-bufunfa-python27
+
   - name: stackforge/cachemonkey
     template:
       - name: merge-check
@@ -3691,6 +3587,22 @@ projects:
       - gate-cl-openstack-client-run-tests
     gate:
       - gate-cl-openstack-client-run-tests
+
+  - name: stackforge/cloudbase-init
+    template:
+      - name: merge-check
+    check:
+      - gate-cloudbase-init-docs
+      - gate-cloudbase-init-pep8
+      - gate-cloudbase-init-python27
+      - gate-cloudbase-init-python33
+    gate:
+      - gate-cloudbase-init-docs
+      - gate-cloudbase-init-pep8
+      - gate-cloudbase-init-python27
+      - gate-cloudbase-init-python33
+    post:
+      - cloudbase-init-coverage
 
   - name: stackforge/cloudcafe
     template:
@@ -3781,11 +3693,6 @@ projects:
       - name: merge-check
       - name: stackforge-specs-jobs
 
-  - name: stackforge/cookbook-openstack-block-storage
-    template:
-      - name: merge-check
-      - name: chef-jobs
-
   - name: stackforge/cookbook-ceph
     template:
       - name: merge-check
@@ -3817,6 +3724,11 @@ projects:
       - name: chef-jobs
 
   - name: stackforge/cookbook-monasca-thresh
+    template:
+      - name: merge-check
+      - name: chef-jobs
+
+  - name: stackforge/cookbook-openstack-block-storage
     template:
       - name: merge-check
       - name: chef-jobs
@@ -3861,6 +3773,11 @@ projects:
       - name: merge-check
       - name: chef-jobs
 
+  - name: stackforge/cookbook-openstack-integration-test
+    template:
+      - name: merge-check
+      - name: chef-jobs
+
   - name: stackforge/cookbook-openstack-network
     template:
       - name: merge-check
@@ -3886,15 +3803,53 @@ projects:
       - name: merge-check
       - name: chef-jobs
 
-  - name: stackforge/cookbook-openstack-integration-test
-    template:
-      - name: merge-check
-      - name: chef-jobs
-
   - name: stackforge/cookbook-openstack-telemetry
     template:
       - name: merge-check
       - name: chef-jobs
+
+  - name: stackforge/doc8
+    template:
+      - name: merge-check
+      - name: python-jobs
+      - name: publish-to-pypi
+
+  - name: stackforge/dox
+    template:
+      - name: merge-check
+    check:
+      - gate-dox-pep8
+      - gate-dox-python27
+    gate:
+      - gate-dox-pep8
+      - gate-dox-python27
+
+  - name: stackforge/driverlog
+    template:
+      - name: merge-check
+    check:
+      - gate-driverlog-pep8
+      - gate-driverlog-python27
+    gate:
+      - gate-driverlog-pep8
+      - gate-driverlog-python27
+    post:
+      - driverlog-branch-tarball
+    pre-release:
+      - driverlog-tarball
+    release:
+      - driverlog-tarball
+
+  - name: stackforge/ec2-api
+    template:
+      - name: merge-check
+      - name: check-requirements
+    check:
+      - gate-ec2-api-pep8
+      - gate-ec2-api-python27
+    gate:
+      - gate-ec2-api-pep8
+      - gate-ec2-api-python27
 
   - name: stackforge/entropy
     template:
@@ -3984,12 +3939,44 @@ projects:
       - name: merge-check
       - name: noop-jobs
 
-  - name: stackforge/glance-formula
+  - name: stackforge/gce-api
+    template:
+      - name: merge-check
+      - name: check-requirements
+    check:
+      - gate-gce-api-pep8
+      - gate-gce-api-python26
+      - gate-gce-api-python27
+    gate:
+      - gate-gce-api-pep8
+      - gate-gce-api-python26
+      - gate-gce-api-python27
+
+  - name: stackforge/gerrit-dash-creator
+    template:
+      - name: merge-check
+    check:
+      - gate-gerrit-dash-creator-pep8
+    gate:
+      - gate-gerrit-dash-creator-pep8
+
+  - name: stackforge/gertty
     template:
       - name: merge-check
       - name: noop-jobs
+      - name: publish-to-pypi
 
-  - name: stackforge/golang-client
+  - name: stackforge/git-upstream
+    template:
+      - name: merge-check
+    check:
+      - gate-git-upstream-pep8
+      - gate-git-upstream-python27
+    gate:
+      - gate-git-upstream-pep8
+      - gate-git-upstream-python27
+
+  - name: stackforge/glance-formula
     template:
       - name: merge-check
       - name: noop-jobs
@@ -4012,6 +3999,27 @@ projects:
       - gate-gnocchi-tox-py27-postgresql
       - gate-gnocchi-tox-py27-mysql
       - gate-gnocchi-tox-py34-postgresql
+
+  - name: stackforge/golang-client
+    template:
+      - name: merge-check
+      - name: noop-jobs
+
+  - name: stackforge/graffiti
+    template:
+      - name: merge-check
+    check:
+      - gate-graffiti-docs
+      - gate-graffiti-pep8
+      - gate-graffiti-python26
+      - gate-graffiti-python27
+    gate:
+      - gate-graffiti-docs
+      - gate-graffiti-pep8
+      - gate-graffiti-python26
+      - gate-graffiti-python27
+    post:
+      - graffiti-coverage
 
   - name: stackforge/group-based-policy
     template:
@@ -4070,6 +4078,11 @@ projects:
       - name: merge-check
       - name: noop-jobs
 
+  - name: stackforge/kickstack
+    template:
+      - name: merge-check
+      - name: noop-jobs
+
   - name: stackforge/kwapi
     template:
       - name: merge-check
@@ -4077,11 +4090,6 @@ projects:
       - gate-kwapi-pep8
     gate:
       - gate-kwapi-pep8
-
-  - name: stackforge/kickstack
-    template:
-      - name: merge-check
-      - name: noop-jobs
 
   - name: stackforge/libra
     template:
@@ -4109,6 +4117,28 @@ projects:
       - name: publish-to-pypi
     check:
       - logaas-coverage
+
+  - name: stackforge/magnetodb
+    template:
+      - name: merge-check
+      - name: publish-to-pypi
+      - name: docs-on-rtfd
+    check:
+      - gate-magnetodb-pep8
+      - gate-magnetodb-python26
+      - gate-magnetodb-python27
+      - gate-magnetodb-docs
+      - gate-magnetodb-requirements
+      - gate-magnetodb-devstack-dsvm
+      - gate-magnetodb-cassandra-tox
+    gate:
+      - gate-magnetodb-pep8
+      - gate-magnetodb-python27
+      - gate-magnetodb-docs
+      - gate-magnetodb-devstack-dsvm
+      - gate-magnetodb-cassandra-tox
+    post:
+      - magnetodb-branch-tarball
 
   - name: stackforge/merlin
     template:
@@ -4163,68 +4193,6 @@ projects:
       - gate-mistral-extra-docs
     post:
       - mistral-extra-branch-tarball
-
-  - name: stackforge/python-congressclient
-    template:
-      - name: merge-check
-      - name: check-requirements
-    check:
-      - gate-python-congressclient-pep8
-      - gate-python-congressclient-python27
-    gate:
-      - gate-python-congressclient-pep8
-      - gate-python-congressclient-python27
-
-  - name: stackforge/python-group-based-policy-client
-    template:
-      - name: merge-check
-      - name: python-jobs
-
-  - name: stackforge/python-mistralclient
-    template:
-      - name: merge-check
-      - name: publish-to-pypi
-    check:
-      - gate-python-mistralclient-pep8
-      - gate-python-mistralclient-python26
-      - gate-python-mistralclient-python27
-      - gate-python-mistralclient-python33
-      - gate-python-mistralclient-docs
-      - gate-mistral-devstack-dsvm
-    gate:
-      - gate-python-mistralclient-pep8
-      - gate-python-mistralclient-python26
-      - gate-python-mistralclient-python27
-      - gate-python-mistralclient-docs
-    post:
-      - python-mistralclient-branch-tarball
-
-  - name: stackforge/magnetodb
-    template:
-      - name: merge-check
-      - name: publish-to-pypi
-      - name: docs-on-rtfd
-    check:
-      - gate-magnetodb-pep8
-      - gate-magnetodb-python26
-      - gate-magnetodb-python27
-      - gate-magnetodb-docs
-      - gate-magnetodb-requirements
-      - gate-magnetodb-devstack-dsvm
-      - gate-magnetodb-cassandra-tox
-    gate:
-      - gate-magnetodb-pep8
-      - gate-magnetodb-python27
-      - gate-magnetodb-docs
-      - gate-magnetodb-devstack-dsvm
-      - gate-magnetodb-cassandra-tox
-    post:
-      - magnetodb-branch-tarball
-
-  - name: stackforge/MRaaS
-    template:
-      - name: merge-check
-      - name: noop-jobs
 
   - name: stackforge/monasca-agent
     template:
@@ -4321,18 +4289,7 @@ projects:
       - name: merge-check
       - name: noop-jobs
 
-  - name: stackforge/murano-agent
-    template:
-      - name: merge-check
-      - name: python-jobs
-    check:
-      - gate-murano-agent-requirements
-    pre-release:
-      - murano-agent-tarball
-    release:
-      - murano-agent-tarball
-
-  - name: stackforge/murano-apps
+  - name: stackforge/MRaaS
     template:
       - name: merge-check
       - name: noop-jobs
@@ -4351,6 +4308,22 @@ projects:
       - murano-tarball
     release:
       - murano-tarball
+
+  - name: stackforge/murano-agent
+    template:
+      - name: merge-check
+      - name: python-jobs
+    check:
+      - gate-murano-agent-requirements
+    pre-release:
+      - murano-agent-tarball
+    release:
+      - murano-agent-tarball
+
+  - name: stackforge/murano-apps
+    template:
+      - name: merge-check
+      - name: noop-jobs
 
   - name: stackforge/murano-dashboard
     template:
@@ -4383,6 +4356,20 @@ projects:
       - name: merge-check
       - name: noop-jobs
 
+  - name: stackforge/namos
+    template:
+      - name: merge-check
+      - name: noop-jobs
+
+  - name: stackforge/nova-docker
+    template:
+      - name: merge-check
+      - name: python-jobs
+      - name: check-requirements
+    check:
+      - check-tempest-dsvm-docker
+      - check-tempest-dsvm-f20-docker
+
   - name: stackforge/nova-solver-scheduler
     template:
       - name: merge-check
@@ -4398,15 +4385,22 @@ projects:
       - name: merge-check
       - name: noop-jobs
 
+  - name: stackforge/octavia
+    template:
+      - name: merge-check
+    check:
+      - gate-octavia-pep8
+      - gate-octavia-python26
+      - gate-octavia-python27
+    gate:
+      - gate-octavia-pep8
+      - gate-octavia-python26
+      - gate-octavia-python27
+
   - name: stackforge/opencafe
     template:
       - name: merge-check
       - name: noop-jobs
-
-  - name: stackforge/openstack-chef-specs
-    template:
-      - name: merge-check
-      - name: stackforge-specs-jobs
 
   - name: stackforge/openstack-chef-repo
     template:
@@ -4415,6 +4409,11 @@ projects:
       - gate-openstack-chef-repo
     gate:
       - gate-openstack-chef-repo
+
+  - name: stackforge/openstack-chef-specs
+    template:
+      - name: merge-check
+      - name: stackforge-specs-jobs
 
   - name: stackforge/openstack-cli-powershell
     template:
@@ -4440,6 +4439,18 @@ projects:
     template:
       - name: merge-check
       - name: noop-jobs
+
+  - name: stackforge/os-client-config
+    template:
+      - name: check-requirements
+      - name: merge-check
+      - name: publish-to-pypi
+      - name: python-jobs
+      - name: python3-jobs
+    check:
+      - gate-os-client-config-pypy
+    gate:
+      - gate-os-client-config-pypy
 
   - name: stackforge/osprofiler
     template:
@@ -4618,17 +4629,6 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
 
-  - name: stackforge/puppet-openstack-specs
-    template:
-      - name: merge-check
-      - name: noop-jobs
-
-  - name: stackforge/puppet-openstacklib
-    template:
-      - name: merge-check
-      - name: puppet-check-jobs
-      - name: puppet-module-unit-jobs
-
   - name: stackforge/puppet_openstack_builder
     template:
       - name: merge-check
@@ -4645,26 +4645,22 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
 
-  - name: stackforge/puppet-sahara
+  - name: stackforge/puppet-openstack-specs
+    template:
+      - name: merge-check
+      - name: noop-jobs
+
+  - name: stackforge/puppet-openstacklib
     template:
       - name: merge-check
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
 
-  - name: stackforge/sahara-ci-config
+  - name: stackforge/puppet-sahara
     template:
       - name: merge-check
-    check:
-      - gate-sahara-ci-config-pep8
-    gate:
-      - gate-sahara-ci-config-pep8
-
-  - name: stackforge/sahara-guestagent
-    template:
-      - name: merge-check
-      - name: python-jobs
-      - name: check-requirements
-      - name: publish-to-pypi
+      - name: puppet-check-jobs
+      - name: puppet-module-unit-jobs
 
   - name: stackforge/puppet-swift
     template:
@@ -4733,6 +4729,32 @@ projects:
       - name: python-jobs
       - name: python3-jobs
 
+  - name: stackforge/python-congressclient
+    template:
+      - name: merge-check
+      - name: check-requirements
+    check:
+      - gate-python-congressclient-pep8
+      - gate-python-congressclient-python27
+    gate:
+      - gate-python-congressclient-pep8
+      - gate-python-congressclient-python27
+
+  - name: stackforge/python-group-based-policy-client
+    template:
+      - name: merge-check
+      - name: python-jobs
+
+  - name: stackforge/python-jenkins
+    template:
+      - name: merge-check
+      - name: python-jobs
+      - name: python3-jobs
+      - name: publish-to-pypi
+      - name: docs-on-rtfd
+    check:
+      - python-jenkins-coverage
+
   - name: stackforge/python-libraclient
     template:
       - name: merge-check
@@ -4758,6 +4780,25 @@ projects:
       - python-magnetodbclient-tarball
     release:
       - python-magnetodbclient-tarball
+
+  - name: stackforge/python-mistralclient
+    template:
+      - name: merge-check
+      - name: publish-to-pypi
+    check:
+      - gate-python-mistralclient-pep8
+      - gate-python-mistralclient-python26
+      - gate-python-mistralclient-python27
+      - gate-python-mistralclient-python33
+      - gate-python-mistralclient-docs
+      - gate-mistral-devstack-dsvm
+    gate:
+      - gate-python-mistralclient-pep8
+      - gate-python-mistralclient-python26
+      - gate-python-mistralclient-python27
+      - gate-python-mistralclient-docs
+    post:
+      - python-mistralclient-branch-tarball
 
   - name: stackforge/python-monascaclient
     template:
@@ -4790,6 +4831,17 @@ projects:
       - gate-murano-devstack-dsvm
     post:
       - python-muranoclient-branch-tarball
+
+  - name: stackforge/python-openstacksdk
+    template:
+      - name: merge-check
+      - name: python-jobs
+      - name: python3-jobs
+      - name: check-requirements
+    check:
+      - gate-python-openstacksdk-pypy
+    gate:
+      - gate-python-openstacksdk-pypy
 
   - name: stackforge/python-opentsdbclient
     template:
@@ -4830,6 +4882,11 @@ projects:
     gate:
       - gate-python-solumclient-pypy
 
+  - name: stackforge/python-surveilclient
+    template:
+      - name: merge-check
+      - name: noop-jobs
+
   - name: stackforge/python-tackerclient
     template:
       - name: merge-check
@@ -4838,38 +4895,19 @@ projects:
     gate:
       - gate-python-tackerclient-pep8
 
-  - name: stackforge/solum-dashboard
+  - name: stackforge/rack
     template:
       - name: merge-check
-      - name: python-jobs
-      - name: check-requirements
-      - name: publish-to-pypi
     check:
-      - gate-solum-dashboard-pypy
+      - gate-rack-pep8
+      - gate-rack-python26
+      - gate-rack-python27
     gate:
-      - gate-solum-dashboard-pypy
-
-  - name: stackforge/solum-specs
-    template:
-      - name: merge-check
-      - name: stackforge-specs-jobs
-
-  - name: stackforge/python-surveilclient
-    template:
-      - name: merge-check
-      - name: noop-jobs
-
-  - name: stackforge/solum-infra-guestagent
-    template:
-      - name: merge-check
-      - name: python-jobs
-      - name: python3-jobs
-      - name: check-requirements
-      - name: publish-to-pypi
-    check:
-      - gate-solum-infra-guestagent-pypy
-    gate:
-      - gate-solum-infra-guestagent-pypy
+      - gate-rack-pep8
+      - gate-rack-python26
+      - gate-rack-python27
+    post:
+      - rack-coverage
 
   - name: stackforge/radar
     template:
@@ -4955,6 +4993,26 @@ projects:
     post:
       - rubick-coverage
 
+  - name: stackforge/sahara-ci-config
+    template:
+      - name: merge-check
+    check:
+      - gate-sahara-ci-config-pep8
+    gate:
+      - gate-sahara-ci-config-pep8
+
+  - name: stackforge/sahara-guestagent
+    template:
+      - name: merge-check
+      - name: python-jobs
+      - name: check-requirements
+      - name: publish-to-pypi
+
+  - name: stackforge/saml-generator
+    template:
+      - name: merge-check
+      - name: noop-jobs
+
   - name: stackforge/satori
     template:
       - name: merge-check
@@ -4984,6 +5042,34 @@ projects:
       - solum-tarball
     release:
       - solum-tarball
+
+  - name: stackforge/solum-dashboard
+    template:
+      - name: merge-check
+      - name: python-jobs
+      - name: check-requirements
+      - name: publish-to-pypi
+    check:
+      - gate-solum-dashboard-pypy
+    gate:
+      - gate-solum-dashboard-pypy
+
+  - name: stackforge/solum-infra-guestagent
+    template:
+      - name: merge-check
+      - name: python-jobs
+      - name: python3-jobs
+      - name: check-requirements
+      - name: publish-to-pypi
+    check:
+      - gate-solum-infra-guestagent-pypy
+    gate:
+      - gate-solum-infra-guestagent-pypy
+
+  - name: stackforge/solum-specs
+    template:
+      - name: merge-check
+      - name: stackforge-specs-jobs
 
   - name: stackforge/sphinxcontrib-docbookrestapi
     template:
@@ -5046,189 +5132,6 @@ projects:
     release:
       - stackalytics-tarball:
         - stackalytics-pypi-both-upload
-
-  - name: stackforge/swift-ceph-backend
-    template:
-      - name: merge-check
-    check:
-      - gate-swift-ceph-backend-pep8
-      - gate-swift-ceph-backend-python27
-    gate:
-      - gate-swift-ceph-backend-pep8
-      - gate-swift-ceph-backend-python27
-
-  - name: stackforge/swift3
-    template:
-      - name: merge-check
-      - name: python-jobs
-    check:
-      - gate-swift3-pylint
-      - gate-swift3-tox-tempauth
-      - gate-swift3-tox-keystone
-    gate:
-      - gate-swift3-pylint
-      - gate-swift3-tox-tempauth
-      - gate-swift3-tox-keystone
-
-  - name: stackforge/swiftonfile
-    template:
-      - name: merge-check
-    check:
-      - gate-swiftonfile-pep8
-      - gate-swiftonfile-python26
-      - gate-swiftonfile-python27
-    gate:
-      - gate-swiftonfile-pep8
-      - gate-swiftonfile-python26
-      - gate-swiftonfile-python27
-
-  - name: stackforge/swiftpolicy
-    template:
-      - name: merge-check
-      - name: noop-jobs
-
-  - name: stackforge/swiftsync
-    template:
-      - name: merge-check
-    check:
-      - gate-swiftsync-pep8
-      - gate-swiftsync-python27
-    gate:
-      - gate-swiftsync-pep8
-      - gate-swiftsync-python27
-    post:
-      - swiftsync-branch-tarball
-    pre-release:
-      - swiftsync-tarball
-    release:
-      - swiftsync-tarball
-
-  - name: stackforge/tomograph
-    template:
-      - name: merge-check
-      - name: publish-to-pypi
-    check:
-      - gate-tomograph-pep8
-      - gate-tomograph-python26
-      - gate-tomograph-python27
-      - gate-tomograph-python33
-      - gate-tomograph-docs
-    gate:
-      - gate-tomograph-pep8
-      - gate-tomograph-python26
-      - gate-tomograph-python27
-    post:
-      - tomograph-branch-tarball
-
-  - name: stackforge/tooz
-    template:
-      - name: merge-check
-      - name: python-jobs
-      - name: python3-jobs
-      - name: publish-to-pypi
-      - name: docs-on-rtfd
-    post:
-      - tooz-branch-tarball
-
-  - name: stackforge/tricircle
-    template:
-      - name: merge-check
-      - name: noop-jobs
-
-  - name: stackforge/tripleo-ansible
-    template:
-      - name: merge-check
-      - name: noop-jobs
-
-  - name: stackforge/turbo-hipster
-    template:
-      - name: merge-check
-      - name: docs-on-rtfd
-    check:
-      - gate-turbo-hipster-docs
-      - gate-turbo-hipster-pep8
-      - gate-turbo-hipster-python27
-    gate:
-      - gate-turbo-hipster-docs
-      - gate-turbo-hipster-pep8
-      - gate-turbo-hipster-python27
-    post:
-      - turbo-hipster-coverage
-
-  - name: stackforge/warm
-    template:
-      - name: merge-check
-    check:
-      - gate-warm-pep8
-      - gate-warm-python27
-    gate:
-      - gate-warm-pep8
-      - gate-warm-python27
-
-  - name: stackforge/windows-diskimage-builder
-    template:
-      - name: merge-check
-      - name: noop-jobs
-
-  - name: stackforge/wsme
-    template:
-      - name: merge-check
-      - name: python3-jobs
-      - name: publish-to-pypi
-    check:
-      - gate-wsme-python26
-      - gate-wsme-python27
-      - gate-wsme-pep8
-    gate:
-      - gate-wsme-python26
-      - gate-wsme-python27
-      - gate-wsme-pep8
-    post:
-      - wsme-branch-tarball
-
-  - name: stackforge/os-client-config
-    template:
-      - name: check-requirements
-      - name: merge-check
-      - name: publish-to-pypi
-      - name: python-jobs
-      - name: python3-jobs
-    check:
-      - gate-os-client-config-pypy
-    gate:
-      - gate-os-client-config-pypy
-
-  - name: stackforge/python-openstacksdk
-    template:
-      - name: merge-check
-      - name: python-jobs
-      - name: python3-jobs
-      - name: check-requirements
-    check:
-      - gate-python-openstacksdk-pypy
-    gate:
-      - gate-python-openstacksdk-pypy
-
-  - name: stackforge/graffiti
-    template:
-      - name: merge-check
-    check:
-      - gate-graffiti-docs
-      - gate-graffiti-pep8
-      - gate-graffiti-python26
-      - gate-graffiti-python27
-    gate:
-      - gate-graffiti-docs
-      - gate-graffiti-pep8
-      - gate-graffiti-python26
-      - gate-graffiti-python27
-    post:
-      - graffiti-coverage
-
-  - name: stackforge/namos
-    template:
-      - name: merge-check
-      - name: noop-jobs
 
   - name: stackforge/stacktach
     template:
@@ -5313,16 +5216,61 @@ projects:
       - name: merge-check
       - name: noop-jobs
 
-  - name: stackforge/xenapi-os-testing
+  - name: stackforge/swift-ceph-backend
+    template:
+      - name: merge-check
+    check:
+      - gate-swift-ceph-backend-pep8
+      - gate-swift-ceph-backend-python27
+    gate:
+      - gate-swift-ceph-backend-pep8
+      - gate-swift-ceph-backend-python27
+
+  - name: stackforge/swift3
+    template:
+      - name: merge-check
+      - name: python-jobs
+    check:
+      - gate-swift3-pylint
+      - gate-swift3-tox-tempauth
+      - gate-swift3-tox-keystone
+    gate:
+      - gate-swift3-pylint
+      - gate-swift3-tox-tempauth
+      - gate-swift3-tox-keystone
+
+  - name: stackforge/swiftonfile
+    template:
+      - name: merge-check
+    check:
+      - gate-swiftonfile-pep8
+      - gate-swiftonfile-python26
+      - gate-swiftonfile-python27
+    gate:
+      - gate-swiftonfile-pep8
+      - gate-swiftonfile-python26
+      - gate-swiftonfile-python27
+
+  - name: stackforge/swiftpolicy
     template:
       - name: merge-check
       - name: noop-jobs
 
-  - name: stackforge/doc8
+  - name: stackforge/swiftsync
     template:
       - name: merge-check
-      - name: python-jobs
-      - name: publish-to-pypi
+    check:
+      - gate-swiftsync-pep8
+      - gate-swiftsync-python27
+    gate:
+      - gate-swiftsync-pep8
+      - gate-swiftsync-python27
+    post:
+      - swiftsync-branch-tarball
+    pre-release:
+      - swiftsync-tarball
+    release:
+      - swiftsync-tarball
 
   - name: stackforge/tacker
     template:
@@ -5341,27 +5289,98 @@ projects:
     gate:
       - gate-tacker-specs-python27
 
-  - name: openstack/training-guides
+  - name: stackforge/tomograph
     template:
       - name: merge-check
-      - name: openstack-doc-gate
+      - name: publish-to-pypi
+    check:
+      - gate-tomograph-pep8
+      - gate-tomograph-python26
+      - gate-tomograph-python27
+      - gate-tomograph-python33
+      - gate-tomograph-docs
+    gate:
+      - gate-tomograph-pep8
+      - gate-tomograph-python26
+      - gate-tomograph-python27
     post:
-      - training-guides-tox-doc-publishdocs
-      - training-guides-manuals-upstream-translation-update
-    periodic:
-      - training-guides-manuals-propose-translation-update
+      - tomograph-branch-tarball
 
-  - name: stackforge/octavia
+  - name: stackforge/tooz
+    template:
+      - name: merge-check
+      - name: python-jobs
+      - name: python3-jobs
+      - name: publish-to-pypi
+      - name: docs-on-rtfd
+    post:
+      - tooz-branch-tarball
+
+  - name: stackforge/tricircle
+    template:
+      - name: merge-check
+      - name: noop-jobs
+
+  - name: stackforge/tripleo-ansible
+    template:
+      - name: merge-check
+      - name: noop-jobs
+
+  - name: stackforge/turbo-hipster
+    template:
+      - name: merge-check
+      - name: docs-on-rtfd
+    check:
+      - gate-turbo-hipster-docs
+      - gate-turbo-hipster-pep8
+      - gate-turbo-hipster-python27
+    gate:
+      - gate-turbo-hipster-docs
+      - gate-turbo-hipster-pep8
+      - gate-turbo-hipster-python27
+    post:
+      - turbo-hipster-coverage
+
+  - name: stackforge/tuskar-ui-extras
+    template:
+      - name: merge-check
+      - name: noop-jobs
+
+  - name: stackforge/warm
     template:
       - name: merge-check
     check:
-      - gate-octavia-pep8
-      - gate-octavia-python26
-      - gate-octavia-python27
+      - gate-warm-pep8
+      - gate-warm-python27
     gate:
-      - gate-octavia-pep8
-      - gate-octavia-python26
-      - gate-octavia-python27
+      - gate-warm-pep8
+      - gate-warm-python27
+
+  - name: stackforge/windows-diskimage-builder
+    template:
+      - name: merge-check
+      - name: noop-jobs
+
+  - name: stackforge/wsme
+    template:
+      - name: merge-check
+      - name: python3-jobs
+      - name: publish-to-pypi
+    check:
+      - gate-wsme-python26
+      - gate-wsme-python27
+      - gate-wsme-pep8
+    gate:
+      - gate-wsme-python26
+      - gate-wsme-python27
+      - gate-wsme-pep8
+    post:
+      - wsme-branch-tarball
+
+  - name: stackforge/xenapi-os-testing
+    template:
+      - name: merge-check
+      - name: noop-jobs
 
   - name: stackforge/xstatic-angular
     template:
@@ -5464,25 +5483,6 @@ projects:
       - name: noop-jobs
 
   - name: stackforge/xstatic-spin
-    template:
-      - name: merge-check
-      - name: noop-jobs
-
-  - name: stackforge/rack
-    template:
-      - name: merge-check
-    check:
-      - gate-rack-pep8
-      - gate-rack-python26
-      - gate-rack-python27
-    gate:
-      - gate-rack-pep8
-      - gate-rack-python26
-      - gate-rack-python27
-    post:
-      - rack-coverage
-
-  - name: stackforge/tuskar-ui-extras
     template:
       - name: merge-check
       - name: noop-jobs
