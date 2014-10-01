@@ -249,7 +249,6 @@ project-templates:
       - 'gate-{name}-python27'
     post:
       - '{name}-branch-tarball'
-      - '{name}-coverage'
 
   - name: integrated-gate
     check:
@@ -805,6 +804,8 @@ projects:
     gate:
       - gate-devstack-dsvm-cells
       - gate-swift-dsvm-functional
+    post:
+      - ceilometer-coverage
     experimental:
       - gate-grenade-dsvm-forward
     pre-release:
@@ -901,6 +902,8 @@ projects:
       - gate-designate-devstack-dsvm
     gate:
       - gate-designate-devstack-dsvm
+    post:
+      - designate-coverage
 
   - name: openstack/designate-specs
     template:
@@ -988,6 +991,8 @@ projects:
       - check-devstack-dsvm-cells
     gate:
       - gate-devstack-dsvm-cells
+    post:
+      - heat-coverage
     check-tripleo:
       - check-tripleo-novabm-overcloud-precise-nonha
     experimental:
@@ -1026,6 +1031,8 @@ projects:
       - gate-horizon-python27-django14
       - gate-horizon-selenium
       - check-devstack-dsvm-cells
+    post:
+      - horizon-coverage
     experimental:
       - gate-horizon-dsvm-integration
       - gate-grenade-dsvm-forward
@@ -1053,6 +1060,8 @@ projects:
       - check-tempest-dsvm-ironic-agent_ssh-nv
       - check-tempest-dsvm-ironic-parallel-nv
       - check-grenade-dsvm-ironic-sideways-nv
+    post:
+      - ironic-coverage
     check-tripleo:
       - check-tripleo-ironic-undercloud-precise-nonha
     gate:
@@ -1090,6 +1099,8 @@ projects:
     gate:
       - gate-devstack-dsvm-cells
       - gate-swift-dsvm-functional
+    post:
+      - keystone-coverage
     experimental:
       - gate-grenade-dsvm-forward
       - gate-keystone-python33
@@ -1114,6 +1125,8 @@ projects:
       - name: integrated-gate
       - name: stable-compat-jobs
       - name: publish-to-pypi
+    post:
+      - keystonemiddleware-coverage
 
   - name: openstack/kite
     template:
@@ -1139,6 +1152,8 @@ projects:
       - gate-manila-tempest-dsvm-neutron-multibackend
     gate:
       - gate-manila-devstack-dsvm-neutron
+    post:
+      - manila-coverage
 
   - name: openstack/zaqar
     template:
@@ -1190,6 +1205,8 @@ projects:
       - gate-tempest-dsvm-neutron-pg-2
       - gate-tempest-dsvm-neutron-full-2
       - gate-tempest-dsvm-neutron-pg-full-2
+    post:
+      - neutron-coverage
     experimental:
       - check-neutron-dsvm-api
       - gate-grenade-dsvm-neutron-forward
@@ -1232,6 +1249,8 @@ projects:
     gate:
       - gate-devstack-dsvm-cells
       - gate-grenade-dsvm-partial-ncpu
+    post:
+      - nova-coverage
     experimental:
       - gate-grenade-dsvm-forward
       - check-tempest-dsvm-cells-full
@@ -1268,6 +1287,8 @@ projects:
       - name: check-requirements
       - name: integrated-gate
       - name: publish-to-pypi
+    post:
+      - pycadf-coverage
 
   - name: openstack/pylockfile
     template:
@@ -1290,6 +1311,8 @@ projects:
       - name: translation-jobs
     check:
       - gate-sahara-pylint
+    post:
+      - sahara-coverage
     release:
       - sahara-merge-release-tags
 
@@ -1330,6 +1353,8 @@ projects:
       - gate-swift-tox-func
       - gate-swift-dsvm-functional
       - gate-devstack-dsvm-cells
+    post:
+      - swift-coverage
     experimental:
       - gate-grenade-dsvm-forward
     experimental-tripleo:
@@ -1357,6 +1382,8 @@ projects:
     gate:
       - gate-taskflow-unittests-26-sa7-mysql
       - gate-taskflow-unittests-27-sa8-mysql
+    post:
+      - taskflow-coverage
 
   - name: openstack/trove
     template:
@@ -1370,6 +1397,7 @@ projects:
       - name: translation-jobs
     post:
       - trove-tox-doc-publishdocs
+      - trove-coverage
     pre-release:
       - trove-tarball
     release:
@@ -1383,6 +1411,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
+    post:
+      - tuskar-coverage
     check-tripleo:
       - check-tripleo-ironic-undercloud-precise-nonha
       - check-tripleo-novabm-undercloud-precise-nonha
@@ -1430,6 +1460,8 @@ projects:
     gate:
       - gate-python-ceilometerclient-pypy
       - gate-devstack-dsvm-cells
+    post:
+      - python-ceilometerclient-coverage
 
   - name: openstack/python-cinderclient
     template:
@@ -1447,6 +1479,8 @@ projects:
     gate:
       - gate-python-cinderclient-pypy
       - gate-devstack-dsvm-cells
+    post:
+      - python-cinderclient-coverage
     experimental:
       - gate-grenade-dsvm-forward
     experimental-tripleo:
@@ -1466,6 +1500,8 @@ projects:
       - gate-designate-devstack-dsvm
     gate:
       - gate-designate-devstack-dsvm
+    post:
+      - python-designateclient-coverage
 
   - name: openstack/python-ganttclient
     template:
@@ -1505,6 +1541,8 @@ projects:
     gate:
       - gate-python-glanceclient-pypy
       - gate-devstack-dsvm-cells
+    post:
+      - python-glanceclient-coverage
     experimental:
       - gate-grenade-dsvm-forward
     experimental-tripleo:
@@ -1561,6 +1599,8 @@ projects:
     gate:
       - gate-python-ironicclient-pypy
       - gate-tempest-dsvm-ironic-pxe_ssh
+    post:
+      - python-ironicclient-coverage
 
   - name: openstack/python-keystoneclient
     template:
@@ -1577,6 +1617,8 @@ projects:
       - check-devstack-dsvm-cells
     gate:
       - gate-devstack-dsvm-cells
+    post:
+      - python-keystoneclient-coverage
     experimental:
       - gate-grenade-dsvm-forward
     experimental-tripleo:
@@ -1609,6 +1651,8 @@ projects:
       - name: python-jobs
       - name: python3-jobs
       - name: publish-to-pypi
+    post:
+      - python-kiteclient-coverage
 
   - name: openstack/python-manilaclient
     template:
@@ -1619,6 +1663,8 @@ projects:
       - name: python3-jobs
     check:
       - gate-manila-tempest-dsvm-neutron
+    post:
+      - python-manilaclient-coverage
 
   - name: openstack/python-zaqarclient
     template:
@@ -1652,6 +1698,8 @@ projects:
       - gate-python-neutronclient-pypy
     gate:
       - gate-python-neutronclient-pypy
+    post:
+      - python-neutronclient-coverage
     experimental:
       - gate-grenade-dsvm-forward
     experimental-tripleo:
@@ -1677,6 +1725,8 @@ projects:
     gate:
       - gate-python-novaclient-pypy
       - gate-devstack-dsvm-cells
+    post:
+      - python-novaclient-coverage
     experimental:
       - gate-grenade-dsvm-forward
     experimental-tripleo:
@@ -1699,6 +1749,8 @@ projects:
       - check-osc-dsvm-functional
     gate:
       - gate-osc-dsvm-functional
+    post:
+      - python-openstackclient-coverage
 
   - name: openstack/python-saharaclient
     template:
@@ -1708,6 +1760,8 @@ projects:
       - name: check-requirements
       - name: integrated-gate-sahara
       - name: publish-to-pypi
+    post:
+      - python-saharaclient-coverage
     experimental:
        - gate-python-saharaclient-python33
        - gate-python-saharaclient-pypy
@@ -1729,6 +1783,8 @@ projects:
     gate:
       - gate-python-swiftclient-pypy
       - gate-swift-dsvm-functional
+    post:
+      - python-swiftclient-coverage
     experimental-tripleo:
       - check-tripleo-novabm-undercloud-precise-nonha
       - check-tripleo-ironic-undercloud-precise-nonha
@@ -1757,6 +1813,8 @@ projects:
       - name: publish-to-pypi
     check:
       - gate-python-tuskarclient-python33
+    post:
+      - python-tuskarclient-coverage
     check-tripleo:
       - check-tripleo-ironic-undercloud-precise-nonha
       - check-tripleo-novabm-undercloud-precise-nonha
@@ -1909,6 +1967,8 @@ projects:
       - name: publish-to-pypi
       - name: python-jobs
       - name: python3-jobs
+    post:
+      - os-cloud-config-coverage
     check-tripleo:
       - check-tripleo-novabm-undercloud-precise-nonha
       - check-tripleo-ironic-undercloud-precise-nonha
@@ -2010,6 +2070,8 @@ projects:
       - name: openstack-server-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
+    post:
+      - oslotest-coverage
 
   - name: openstack/oslo-incubator
     template:
@@ -2018,6 +2080,8 @@ projects:
       - name: python3-jobs
       - name: openstack-server-publish-jobs
       - name: check-requirements
+    post:
+      - oslo-incubator-coverage
 
   - name: openstack/oslo-specs
     template:
@@ -2034,6 +2098,8 @@ projects:
       - name: publish-to-pypi
       - name: python3-jobs
       - name: translation-jobs
+    post:
+      - oslo.concurrency-coverage
 
   - name: openstack/oslo.config
     template:
@@ -2091,6 +2157,8 @@ projects:
       - check-devstack-dsvm-cells
     gate:
       - gate-devstack-dsvm-cells
+    post:
+      - oslo.i18n-coverage
     experimental-tripleo:
       - check-tripleo-novabm-undercloud-precise-nonha
       - check-tripleo-ironic-undercloud-precise-nonha
@@ -2777,6 +2845,7 @@ projects:
       - gate-hacking-integration-nova
     post:
       - hacking-docs
+      - hacking-coverage
     pre-release:
       - hacking-docs
     release:
@@ -2825,6 +2894,8 @@ projects:
       - gate-requirements-integration-dsvm
       - gate-devstack-dsvm-cells
       - gate-swift-dsvm-functional
+    post:
+      - pbr-coverage
     experimental-tripleo:
       - check-tripleo-novabm-undercloud-precise-nonha
       - check-tripleo-ironic-undercloud-precise-nonha
@@ -3091,6 +3162,7 @@ projects:
       - jenkins-job-builder-coverage
     post:
       - jenkins-job-builder-docs
+      - jenkins-job-builder-coverage
 
   - name: openstack-infra/lodgeit
     template:
@@ -3109,6 +3181,7 @@ projects:
       - name: publish-to-pypi
     post:
       - nodepool-docs
+      - nodepool-coverage
 
   - name: openstack-infra/nose-html-output
     template:
@@ -3397,6 +3470,7 @@ projects:
       - dev-zuul-coverage
     post:
       - zuul-docs
+      - zuul-coverage
     pre-release:
       - zuul-docs
     release:
@@ -4009,8 +4083,8 @@ projects:
       - name: python-jobs
       - name: python3-jobs
     post:
-      - heat-translator-coverage
       - heat-translator-branch-tarball
+      - heat-translator-coverage
     pre-release:
       - heat-translator-tarball
     release:
@@ -4263,6 +4337,8 @@ projects:
       - gate-murano-devstack-dsvm
     gate:
       - gate-murano-devstack-dsvm
+    post:
+      - murano-coverage
     pre-release:
       - murano-tarball
     release:
@@ -4274,6 +4350,8 @@ projects:
       - name: python-jobs
     check:
       - gate-murano-agent-requirements
+    post:
+      - murano-agent-coverage
     pre-release:
       - murano-agent-tarball
     release:
@@ -4328,6 +4406,8 @@ projects:
     check:
       - check-tempest-dsvm-docker
       - check-tempest-dsvm-f20-docker
+    post:
+      - nova-docker-coverage
 
   - name: stackforge/nova-solver-scheduler
     template:
@@ -4420,6 +4500,8 @@ projects:
       - name: publish-to-pypi
     check:
       - osprofiler-coverage
+    post:
+      - osprofiler-coverage
     pre-release:
       - osprofiler-tarball
     release:
@@ -4493,6 +4575,8 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
       - name: docs-on-rtfd
+    post:
+      - poppy-coverage
 
   - name: stackforge/powervc-driver
     template:
@@ -4687,6 +4771,8 @@ projects:
       - name: merge-check
       - name: python-jobs
       - name: python3-jobs
+    post:
+      - python-cloudkittyclient-coverage
 
   - name: stackforge/python-congressclient
     template:
@@ -4801,6 +4887,8 @@ projects:
       - gate-python-openstacksdk-pypy
     gate:
       - gate-python-openstacksdk-pypy
+    post:
+      - python-openstacksdk-coverage
 
   - name: stackforge/python-opentsdbclient
     template:
@@ -4828,6 +4916,8 @@ projects:
       - name: check-requirements
     check:
       - python-rallyclient-coverage
+    post:
+      - python-rallyclient-coverage
 
   - name: stackforge/python-solumclient
     template:
@@ -4840,6 +4930,8 @@ projects:
       - gate-python-solumclient-pypy
     gate:
       - gate-python-solumclient-pypy
+    post:
+      - python-solumclient-coverage
 
   - name: stackforge/python-surveilclient
     template:
@@ -4891,6 +4983,8 @@ projects:
       - gate-rally-install-bare-precise
       - gate-rally-dsvm-rally
       - gate-rally-dsvm-neutron-rally
+    post:
+      - rally-coverage
     experimental:
       - gate-rally-dsvm-designate-rally
       - gate-rally-dsvm-zaqar-rally
@@ -4982,6 +5076,8 @@ projects:
       - gate-satori-pypy
     gate:
       - gate-satori-pypy
+    post:
+      - satori-coverage
 
   - name: stackforge/solum
     template:
@@ -4997,6 +5093,8 @@ projects:
     gate:
       - gate-solum-pypy
       - gate-solum-devstack-dsvm
+    post:
+      - solum-coverage
     pre-release:
       - solum-tarball
     release:
@@ -5012,6 +5110,8 @@ projects:
       - gate-solum-dashboard-pypy
     gate:
       - gate-solum-dashboard-pypy
+    post:
+      - solum-dashboard-coverage
 
   - name: stackforge/solum-infra-guestagent
     template:
@@ -5024,6 +5124,8 @@ projects:
       - gate-solum-infra-guestagent-pypy
     gate:
       - gate-solum-infra-guestagent-pypy
+    post:
+      - solum-infra-guestagent-coverage
 
   - name: stackforge/solum-specs
     template:
@@ -5197,6 +5299,8 @@ projects:
       - gate-swift3-pylint
       - gate-swift3-tox-tempauth
       - gate-swift3-tox-keystone
+    post:
+      - swift3-coverage
 
   - name: stackforge/swiftonfile
     template:
@@ -5274,6 +5378,7 @@ projects:
       - name: docs-on-rtfd
     post:
       - tooz-branch-tarball
+      - tooz-coverage
 
   - name: stackforge/tricircle
     template:
