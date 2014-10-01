@@ -460,7 +460,6 @@
 
     jobs:
       - python-jobs
-      - python-havana-bitrot-jobs
       - python-icehouse-bitrot-jobs
       - openstack-publish-jobs
       - translation-jobs
@@ -490,7 +489,6 @@
 
     jobs:
       - python-jobs
-      - python-havana-bitrot-jobs
       - python-icehouse-bitrot-jobs
       - openstack-publish-jobs
       - gate-{name}-pylint
@@ -727,7 +725,6 @@
 
     jobs:
       - python-jobs
-      - python-havana-bitrot-jobs
       - python-icehouse-bitrot-jobs
       - openstack-publish-jobs
       - translation-jobs
@@ -765,7 +762,6 @@
           node: 'devstack-precise || devstack-trusty'
           branch-designator: ''
           branch-override: default
-      - python-havana-bitrot-jobs
       - python-icehouse-bitrot-jobs
       - openstack-publish-jobs
       - translation-jobs
@@ -819,7 +815,6 @@
 
     jobs:
       - python-jobs
-      - python-havana-bitrot-jobs
       - python-icehouse-bitrot-jobs
       - openstack-publish-jobs
 
@@ -880,7 +875,6 @@
 
     jobs:
       - python-jobs
-      - python-havana-bitrot-jobs
       - python-icehouse-bitrot-jobs
       - openstack-publish-jobs
       - translation-jobs
@@ -943,7 +937,6 @@
 
     jobs:
       - python-jobs
-      - python-havana-bitrot-jobs
       - python-icehouse-bitrot-jobs
       - openstack-publish-jobs
       - gate-{name}-pylint
@@ -1351,7 +1344,6 @@
 
     jobs:
       - python-jobs
-      - python-havana-bitrot-jobs
       - python-icehouse-bitrot-jobs
       - openstack-publish-jobs
       - rally-jobs
@@ -1683,11 +1675,6 @@
           node: 'devstack-precise || devstack-trusty'
           branch-designator: ''
           branch-override: default
-      - '{pipeline}-swift-dsvm-functional{branch-designator}':
-          pipeline: periodic
-          node: 'devstack-precise || devstack-trusty'
-          branch-designator: '-havana'
-          branch-override: stable/havana
 # No one is interested in stable/ branches on swift, so don't run bitrot jobs
 
 
@@ -1728,19 +1715,9 @@
       - devstack-jobs:
           pipeline: check
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: '-havana'
-          branch-override: stable/havana
-      - devstack-jobs:
-          pipeline: check
-          node: 'devstack-precise || devstack-trusty'
           branch-designator: '-icehouse'
           branch-override: stable/icehouse
       # Periodic jobs for various branches
-      - devstack-jobs:
-          pipeline: periodic
-          node: 'devstack-precise || devstack-trusty'
-          branch-designator: '-havana'
-          branch-override: stable/havana
       - devstack-jobs:
           pipeline: periodic
           node: 'devstack-precise || devstack-trusty'
