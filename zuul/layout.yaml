@@ -298,6 +298,12 @@ project-templates:
       - 'gate-tempest-dsvm-neutron'
       - 'gate-tempest-dsvm-postgres-full'
 
+  - name: lib-forward-testing
+    check:
+      - 'gate-tempest-dsvm-src-{name}'
+    gate:
+      - 'gate-tempest-dsvm-src-{name}'
+
   - name: large-ops
     check:
       - 'gate-tempest-dsvm-large-ops'
@@ -759,6 +765,8 @@ jobs:
     voting: false
   - name: gate-horizon-dsvm-integration
     branch: ^(?!stable/icehouse).*$
+    voting: false
+  - name: ^(check|gate)-tempest-dsvm-src
     voting: false
 
 # The project list is grouped by type of project, and within each
@@ -2815,6 +2823,7 @@ projects:
       - name: integrated-gate
       - name: large-ops
       - name: publish-to-pypi
+      - name: lib-forward-testing
     check:
       - gate-pbr-pypy
       - check-requirements-integration-dsvm
