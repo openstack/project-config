@@ -480,6 +480,12 @@ jobs:
   # (needs to be early to not impact non-voting stanzas later)
   - name: ^(?!periodic-).*-icehouse$
     branch: ^master.*$
+  # -nv jobs should default to being off for stable, if they want to
+  # -enable for specific stable environments, they should have a
+  # -specific rule for it later. Also, -nv jobs are never voting.
+  - name: ^.*-nv$
+    branch: ^(?!stable)
+    voting: false
   - name: gate-tempest-dsvm-full
     queue-name: integrated
   - name: gate-rally-dsvm-neutron-neutron
@@ -497,19 +503,6 @@ jobs:
     voting: false
   - name: check-heat-dsvm-functional
     branch: ^(?!stable/icehouse).*$
-    voting: false
-  - name: check-grenade-dsvm-ironic-sideways-nv
-    voting: false
-  - name: check-tempest-dsvm-ironic-pxe_ssh-nv
-    voting: false
-    branch: ^(?!stable/icehouse).*$
-  - name: check-tempest-dsvm-ironic-pxe_ssh-postgres-nv
-    voting: false
-  - name: check-tempest-dsvm-ironic-agent_ssh-nv
-    voting: false
-  - name: check-tempest-dsvm-ironic-agent_ssh-src-nv
-    voting: false
-  - name: check-tempest-dsvm-ironic-parallel-nv
     voting: false
   - name: ^(gate|check)-tempest-dsvm-cells$
     voting: false
