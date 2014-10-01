@@ -5,8 +5,7 @@ set -ex
 PREREQ=""
 
 # Output pre-requisites
-prereqs()
-{
+function prereqs {
         echo "$PREREQ"
 }
 
