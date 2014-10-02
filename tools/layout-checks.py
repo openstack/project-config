@@ -46,6 +46,57 @@ def normalize(s):
     return s.lower().replace("_", "-")
 
 
+def check_sections():
+    """Check that the openstack/* projects are in alphabetical order."""
+
+    # Note that openstack/ has different sections and we need to sort
+    # entries within these sections:
+    # Section: OpenStack server projects
+    # Section: OpenStack client projects (python-*)
+    # Section: oslo projects
+    # Section: Other OpenStack projects
+    # Section: OpenStack API projects
+    # Section: OpenStack documentation projects
+    # Record the first project in each section and use that to
+    # identify them. This list needs to be adjusted if entries get
+    # added.
+    section_starters = ['openstack/barbican',
+                        'openstack/python-barbicanclient',
+                        'openstack/cliff',
+                        'openstack/dib-utils',
+                        'openstack/compute-api',
+                        'openstack/api-site',
+                        'openstack-dev/bashate']
+    errors = False
+    for i in range(0, len(section_starters) - 1):
+        print("Checking section from %s to %s" %
+              (section_starters[i], section_starters[i + 1]))
+        last = layout['projects'][0]['name']
+        in_section = False
+        for project in layout['projects']:
+            current = project['name']
+            if current == section_starters[i]:
+                in_section = True
+                last = current
+                continue
+            # Did we reach end of section?
+            if current == section_starters[i + 1]:
+                break
+            if not in_section:
+                last = current
+                continue
+            if last == 'z/tempest':
+                last = current
+                continue
+            if normalize(last) > normalize(current):
+                print("  Wrong alphabetical order: %(last)s, %(current)s" %
+                      {"last": last, "current": current})
+                errors = True
+            last = current
+
+    return errors
+
+
 def check_alphabetical():
     """Check that projects are sorted alphabetical."""
 
@@ -67,7 +118,8 @@ def check_alphabetical():
 
 
 def check_all():
-    errors = check_alphabetical()
+    errors = check_sections()
+    errors = check_alphabetical() or errors
     errors = check_merge_template() or errors
 
     if errors:
