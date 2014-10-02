@@ -2784,11 +2784,6 @@ projects:
       - name: merge-check
       - name: noop-jobs
 
-  - name: openstack-dev/devstack-vagrant
-    template:
-      - name: merge-check
-      - name: noop-jobs
-
   - name: openstack-dev/devstack
     template:
       - name: merge-check
@@ -2816,6 +2811,11 @@ projects:
       - check-tempest-dsvm-zaqar
       - gate-grenade-dsvm-forward
       - check-tempest-dsvm-centos7
+
+  - name: openstack-dev/devstack-vagrant
+    template:
+      - name: merge-check
+      - name: noop-jobs
 
   - name: openstack-dev/grenade
     template:
@@ -3091,16 +3091,6 @@ projects:
     gate:
       - gate-gerritlib-pep8
 
-  - name: openstack-infra/gitdm
-    template:
-      - name: merge-check
-    check:
-      - gate-gitdm
-    gate:
-      - gate-gitdm
-    periodic:
-      - periodic-gitdm
-
   - name: openstack-infra/git-review
     template:
       - name: merge-check
@@ -3118,6 +3108,16 @@ projects:
     post:
       - git-review-branch-tarball
 
+  - name: openstack-infra/gitdm
+    template:
+      - name: merge-check
+    check:
+      - gate-gitdm
+    gate:
+      - gate-gitdm
+    periodic:
+      - periodic-gitdm
+
   - name: openstack-infra/groups
     template:
       - name: merge-check
@@ -3130,6 +3130,12 @@ projects:
     release:
       - groups-release-master
 
+
+  - name: openstack-infra/groups-static-pages
+    template:
+      - name: merge-check
+      - name: noop-jobs
+
   - name: openstack-infra/infra-manual
     template:
       - name: merge-check
@@ -3141,11 +3147,6 @@ projects:
     template:
       - name: merge-check
       - name: openstack-specs-jobs
-
-  - name: openstack-infra/groups-static-pages
-    template:
-      - name: merge-check
-      - name: noop-jobs
 
   - name: openstack-infra/jeepyb
     template:
@@ -3278,6 +3279,11 @@ projects:
       - gate-infra-puppet-apply-precise
       - gate-infra-puppet-apply-centos6
 
+  - name: openstack-infra/puppet-vcsrepo
+    template:
+      - name: merge-check
+      - name: noop-jobs
+
   - name: openstack-infra/puppet-vinz
     template:
       - name: merge-check
@@ -3288,7 +3294,7 @@ projects:
       - gate-config-puppet-lint
       - gate-config-puppet-syntax
 
-  - name: openstack-infra/puppet-zuul
+  - name: openstack-infra/puppet-yum
     template:
       - name: merge-check
     check:
@@ -3298,12 +3304,7 @@ projects:
       - gate-config-puppet-lint
       - gate-config-puppet-syntax
 
-  - name: openstack-infra/puppet-vcsrepo
-    template:
-      - name: merge-check
-      - name: noop-jobs
-
-  - name: openstack-infra/puppet-yum
+  - name: openstack-infra/puppet-zuul
     template:
       - name: merge-check
     check:
@@ -3324,11 +3325,6 @@ projects:
       - gate-pypi-mirror-pep8
       - gate-requirements-integration-dsvm
 
-  - name: openstack-infra/releasestatus
-    template:
-      - name: merge-check
-      - name: noop-jobs
-
 # TODO: add docs
   - name: openstack-infra/release-tools
     template:
@@ -3343,6 +3339,11 @@ projects:
       - gate-release-tools-python26
       - gate-release-tools-python27
       - gate-release-tools-pypy
+
+  - name: openstack-infra/releasestatus
+    template:
+      - name: merge-check
+      - name: noop-jobs
 
   - name: openstack-infra/reviewday
     template:
@@ -3414,6 +3415,16 @@ projects:
       - gate-subunit2sql-pep8
       - gate-subunit2sql-python27
 
+  - name: openstack-infra/tripleo-ci
+    template:
+      - name: merge-check
+      - name: noop-jobs
+    check-tripleo:
+      - check-tripleo-novabm-undercloud-precise-nonha
+      - check-tripleo-ironic-undercloud-precise-nonha
+      - check-tripleo-novabm-overcloud-f20-nonha
+      - check-tripleo-novabm-overcloud-precise-nonha
+
   - name: openstack-infra/vinz
     template:
       - name: merge-check
@@ -3442,16 +3453,6 @@ projects:
       - vinz-webclient-js-release-branch
     release:
       - vinz-webclient-js-release-master
-
-  - name: openstack-infra/tripleo-ci
-    template:
-      - name: merge-check
-      - name: noop-jobs
-    check-tripleo:
-      - check-tripleo-novabm-undercloud-precise-nonha
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-novabm-overcloud-f20-nonha
-      - check-tripleo-novabm-overcloud-precise-nonha
 
   - name: openstack-infra/zmq-event-publisher
     template:

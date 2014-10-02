@@ -50,11 +50,13 @@ def check_alphabetical():
     """Check that projects are sorted alphabetical."""
 
     errors = False
-    # For now, only check sorting of stackforge projects.
+    # For now, only check sorting of some projects.
     last = layout['projects'][0]['name']
     for project in layout['projects']:
         current = project['name']
-        if not current.startswith("stackforge/"):
+        if not last.startswith(("openstack-dev/", "openstack-infra/",
+                                "stackforge/")):
+            last = current
             continue
         if normalize(last) > normalize(current):
             print("Wrong alphabetical order: %(last)s, %(current)s" %
