@@ -302,3 +302,40 @@ function filter_commits {
         done
     fi
 }
+
+# Remove obsolete files. We might have added them in the past but
+# would not add them today, so let's eventually remove them.
+function cleanup_po_files {
+    local project=$1
+
+    for i in `find $project/locale -name *.po `; do
+        # Output goes to stderr, so redirect to stdout to catch it.
+        trans=`msgfmt --statistics -o /dev/null $i 2>&1`
+        check="^0 translated messages"
+        if [[ $trans =~ $check ]] ; then
+            # Nothing is translated, remove the file.
+            git rm $i
+        else
+            if [[ $trans =~ " translated message" ]] ; then
+                trans_no=`echo $trans|sed -e 's/ translated message.*$//'`
+            else
+                trans_no=0
+            fi
+            if [[ $trans =~ " untranslated message" ]] ; then
+                untrans_no=`echo $trans|sed -e 's/^.* \([0-9]*\) untranslated message.*/\1/'`
+            else
+                untrans_no=0
+            fi
+            let total=$trans_no+$untrans_no
+            let ratio=100*$trans_no/$total
+            # Since we only download files that are at least
+            # translated to 75 per cent, let's delete those that have
+            # signficantly less translations.
+            # For now we delete files that suddenly are less than 20
+            # per cent translated.
+            if [[ "$ratio" -lt "20" ]] ; then
+                git rm $i
+            fi
+        fi
+    done
+}
