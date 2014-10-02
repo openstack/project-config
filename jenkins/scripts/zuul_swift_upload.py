@@ -73,7 +73,7 @@ def get_file_mime(file_path):
         return magic.from_file(file_path, mime=True)
     else:
         # no magic.from_file, we might be using the libmagic bindings
-        m = magic.open(magic.MIME)
+        m = magic.open(magic.MAGIC_MIME)
         m.load()
         return m.file(file_path).split(';')[0]
 
