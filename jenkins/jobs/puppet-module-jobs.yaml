@@ -16,6 +16,28 @@
     publishers:
       - console-log
 
+
+- job-template:
+    name: 'gate-{name}-puppet-beaker-rspec'
+    node: '{node}'
+
+    builders:
+      - uninstall-puppet
+      - shell: |
+          apt-get install -y libxml2-dev libxslt-dev
+      - revoke-sudo
+      - gerrit-git-prep
+      - shell: |
+          mkdir .bundled_gems
+          export GEM_HOME=`pwd`/.bundled_gems
+          bundle install
+          export BEAKER_set=nodepool
+          bundle exec rake spec spec/acceptance
+
+    publishers:
+      - console-log
+
+
 - job-template:
     name: 'gate-{name}-puppet-lint'
     node: '{node}'
