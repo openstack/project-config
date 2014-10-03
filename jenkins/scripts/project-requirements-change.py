@@ -71,7 +71,7 @@ class RequirementsList(object):
 
         If include_dev is true allow for development requirements, which
         may be prereleased versions of libraries that would otherwise be
-        listed. This is most often used for olso prereleases.
+        listed. This is most often used for oslo prereleases.
 
         If strict is True then style checks should be performed while reading
         the file.
