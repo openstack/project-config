@@ -776,7 +776,9 @@ jobs:
 # group, projects are sorted (mostly) alphabetically.
 projects:
 
+########################################################################
 # Section: OpenStack server projects
+########################################################################
 
   - name: openstack/barbican
     template:
@@ -870,39 +872,6 @@ projects:
     gate:
       - gate-cinder-specs-python27
 
-  - name: openstack/cliff
-    template:
-      - name: merge-check
-      - name: python-jobs
-      - name: python3-jobs
-      - name: pypy-jobs
-      - name: check-requirements
-      - name: integrated-gate
-      - name: publish-to-pypi
-      - name: docs-on-rtfd
-      - name: lib-forward-testing
-    check:
-      - gate-cliff-tox-neutronclient-stable
-      - gate-cliff-tox-neutronclient-tip
-      - gate-cliff-tox-openstackclient-stable
-      - gate-cliff-tox-openstackclient-tip
-    gate:
-      - gate-cliff-tox-neutronclient-stable
-      - gate-cliff-tox-neutronclient-tip
-      - gate-cliff-tox-openstackclient-stable
-      - gate-cliff-tox-openstackclient-tip
-
-  - name: openstack/gantt
-    template:
-      - name: merge-check
-      - name: python-jobs
-      - name: openstack-server-publish-jobs
-      - name: check-requirements
-    check:
-      - gate-gantt-pylint
-    gate:
-      - noop
-
   - name: openstack/designate
     template:
       - name: merge-check
@@ -926,6 +895,17 @@ projects:
       - gate-designate-specs-python27
     gate:
       - gate-designate-specs-python27
+
+  - name: openstack/gantt
+    template:
+      - name: merge-check
+      - name: python-jobs
+      - name: openstack-server-publish-jobs
+      - name: check-requirements
+    check:
+      - gate-gantt-pylint
+    gate:
+      - noop
 
   - name: openstack/glance
     template:
@@ -1132,6 +1112,15 @@ projects:
       - keystone-tarball
       - keystone-merge-release-tags
 
+  - name: openstack/keystone-specs
+    template:
+      - name: merge-check
+      - name: openstack-specs-jobs
+    check:
+      - gate-keystone-specs-python27
+    gate:
+      - gate-keystone-specs-python27
+
   - name: openstack/keystonemiddleware
     template:
       - name: merge-check
@@ -1171,33 +1160,6 @@ projects:
       - gate-manila-devstack-dsvm-neutron
     post:
       - manila-coverage
-
-  - name: openstack/zaqar
-    template:
-      - name: merge-check
-      - name: python-jobs
-      - name: check-requirements
-      - name: translation-jobs
-      - name: openstack-server-publish-jobs
-      - name: pypy-jobs
-    check:
-      - check-tempest-dsvm-zaqar
-      - gate-zaqar-python33
-    gate:
-      - gate-tempest-dsvm-zaqar
-    pre-release:
-      - zaqar-tarball
-    release:
-      - zaqar-tarball
-
-  - name: openstack/zaqar-specs
-    template:
-      - name: merge-check
-      - name: openstack-specs-jobs
-    check:
-      - gate-zaqar-specs-python27
-    gate:
-      - gate-zaqar-specs-python27
 
   - name: openstack/neutron
     template:
@@ -1308,16 +1270,6 @@ projects:
     post:
       - pycadf-coverage
 
-  - name: openstack/pylockfile
-    template:
-      - name: merge-check
-      - name: python-jobs
-      - name: python3-jobs
-      - name: openstack-server-publish-jobs
-      - name: check-requirements
-      - name: integrated-gate
-      - name: publish-to-pypi
-
   - name: openstack/sahara
     template:
       - name: merge-check
@@ -1343,18 +1295,6 @@ projects:
       - gate-sahara-specs-python27
     gate:
       - gate-sahara-specs-python27
-
-  - name: openstack/stevedore
-    template:
-      - name: merge-check
-      - name: python-jobs
-      - name: python3-jobs
-      - name: pypy-jobs
-      - name: check-requirements
-      - name: integrated-gate
-      - name: publish-to-pypi
-      - name: docs-on-rtfd
-      - name: lib-forward-testing
 
   - name: openstack/swift
     template:
@@ -1387,6 +1327,11 @@ projects:
     release:
       - swift-tarball
       - swift-merge-release-tags
+
+  - name: openstack/swift-specs
+    template:
+      - name: merge-check
+      - name: openstack-specs-jobs
 
   - name: openstack/taskflow
     template:
@@ -1429,6 +1374,15 @@ projects:
       - gate-trove-functional-dsvm-percona
       - gate-trove-functional-dsvm-mongodb
 
+  - name: openstack/trove-specs
+    template:
+      - name: merge-check
+      - name: openstack-specs-jobs
+    check:
+      - gate-trove-specs-python27
+    gate:
+      - gate-trove-specs-python27
+
   - name: openstack/tuskar
     template:
       - name: merge-check
@@ -1446,7 +1400,36 @@ projects:
       - tuskar-tarball:
         - tuskar-pypi-both-upload
 
+  - name: openstack/zaqar
+    template:
+      - name: merge-check
+      - name: python-jobs
+      - name: check-requirements
+      - name: translation-jobs
+      - name: openstack-server-publish-jobs
+      - name: pypy-jobs
+    check:
+      - check-tempest-dsvm-zaqar
+      - gate-zaqar-python33
+    gate:
+      - gate-tempest-dsvm-zaqar
+    pre-release:
+      - zaqar-tarball
+    release:
+      - zaqar-tarball
+
+  - name: openstack/zaqar-specs
+    template:
+      - name: merge-check
+      - name: openstack-specs-jobs
+    check:
+      - gate-zaqar-specs-python27
+    gate:
+      - gate-zaqar-specs-python27
+
+########################################################################
 # Section: OpenStack client projects
+########################################################################
 
   - name: openstack/python-barbicanclient
     template:
@@ -1688,24 +1671,6 @@ projects:
     post:
       - python-manilaclient-coverage
 
-  - name: openstack/python-zaqarclient
-    template:
-      - name: merge-check
-      - name: python3-jobs
-      - name: check-requirements
-      - name: publish-to-pypi
-      - name: pypy-jobs
-    check:
-      - gate-python-zaqarclient-pep8
-      - gate-python-zaqarclient-python26
-      - gate-python-zaqarclient-python27
-    gate:
-      - gate-python-zaqarclient-pep8
-      - gate-python-zaqarclient-python26
-      - gate-python-zaqarclient-python27
-    post:
-      - python-zaqarclient-branch-tarball
-
   - name: openstack/python-neutronclient
     template:
       - name: merge-check
@@ -1844,257 +1809,49 @@ projects:
       - check-tripleo-novabm-overcloud-precise-nonha
       - check-tripleo-novabm-overcloud-f20-nonha
 
-# Section: Other OpenStack projects
-
-#TODO: add docs
-  - name: openstack/diskimage-builder
+  - name: openstack/python-zaqarclient
     template:
       - name: merge-check
-      - name: check-requirements
-      - name: publish-to-pypi
       - name: python3-jobs
-    check:
-      - gate-diskimage-builder-pep8
-      - gate-diskimage-builder-python26
-      - gate-diskimage-builder-python27
-      - check-tempest-dsvm-ironic-pxe_ssh
-    check-tripleo:
-      - check-tripleo-novabm-undercloud-precise-nonha
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-novabm-overcloud-f20-nonha
-      - check-tripleo-novabm-overcloud-precise-nonha
-    gate:
-      - gate-diskimage-builder-pep8
-      - gate-diskimage-builder-python26
-      - gate-diskimage-builder-python27
-      - gate-tempest-dsvm-ironic-pxe_ssh
-    post:
-      - diskimage-builder-coverage
-      - diskimage-builder-branch-tarball
-
-  - name: openstack/dib-utils
-    template:
-      - name: merge-check
       - name: check-requirements
       - name: publish-to-pypi
-      - name: noop-jobs
-    check-tripleo:
-      - check-tripleo-novabm-undercloud-precise-nonha
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-novabm-overcloud-f20-nonha
-      - check-tripleo-novabm-overcloud-precise-nonha
+      - name: pypy-jobs
+    check:
+      - gate-python-zaqarclient-pep8
+      - gate-python-zaqarclient-python26
+      - gate-python-zaqarclient-python27
+    gate:
+      - gate-python-zaqarclient-pep8
+      - gate-python-zaqarclient-python26
+      - gate-python-zaqarclient-python27
     post:
-      - dib-utils-branch-tarball
+      - python-zaqarclient-branch-tarball
 
-  - name: openstack/django_openstack_auth
-    template:
-      - name: merge-check
-      - name: python-jobs
-      - name: python3-jobs
-      - name: openstack-client-publish-jobs
-      - name: check-requirements
-      - name: integrated-gate
-      - name: stable-compat-jobs
-      - name: translation-jobs
-    pre-release:
-      - django_openstack_auth-tarball
-    release:
-      - django_openstack_auth-tarball:
-        - django_openstack_auth-pypi-both-upload
+########################################################################
+# Section: oslo libraries
+########################################################################
 
-  - name: openstack/governance
-    template:
-      - name: merge-check
-      - name: noop-jobs
-
-#TODO: add docs
-  - name: openstack/heat-cfntools
-    template:
-      - name: merge-check
-      - name: check-requirements
-      - name: publish-to-pypi
-    check:
-      - gate-heat-cfntools-pep8
-      - gate-heat-cfntools-python26
-      - gate-heat-cfntools-python27
-    gate:
-      - gate-heat-cfntools-pep8
-      - gate-heat-cfntools-python26
-      - gate-heat-cfntools-python27
-    post:
-      - heat-cfntools-branch-tarball
-      - heat-cfntools-coverage
-    release:
-      - heat-cfntools-docs
-
-  - name: openstack/heat-templates
-    template:
-      - name: merge-check
-    check:
-      - gate-heat-templates-dsvm
-    gate:
-      - noop
-
-  - name: openstack/openstack
-    template:
-      - name: merge-check
-      - name: noop-jobs
-
-  - name: openstack/openstack-doc-tools
-    template:
-      - name: merge-check
-      - name: publish-to-pypi
-      - name: check-requirements
-    check:
-      - gate-openstack-doc-tools-pep8
-    gate:
-      - gate-openstack-doc-tools-pep8
-
-  - name: openstack/openstack-planet
-    template:
-      - name: merge-check
-    check:
-      - gate-openstack-planet-unittest
-    gate:
-      - gate-openstack-planet-unittest
-
-
-#TODO: add docs
-  - name: openstack/os-apply-config
-    template:
-      - name: merge-check
-      - name: check-requirements
-      - name: publish-to-pypi
-      - name: python3-jobs
-    check:
-      - gate-os-apply-config-pep8
-      - gate-os-apply-config-python26
-      - gate-os-apply-config-python27
-    check-tripleo:
-      - check-tripleo-novabm-undercloud-precise-nonha
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-novabm-overcloud-f20-nonha
-      - check-tripleo-novabm-overcloud-precise-nonha
-    gate:
-      - gate-os-apply-config-pep8
-      - gate-os-apply-config-python26
-      - gate-os-apply-config-python27
-    post:
-      - os-apply-config-coverage
-      - os-apply-config-branch-tarball
-
-  - name: openstack/os-cloud-config
-    template:
-      - name: merge-check
-      - name: check-requirements
-      - name: publish-to-pypi
-      - name: python-jobs
-      - name: python3-jobs
-    post:
-      - os-cloud-config-coverage
-    check-tripleo:
-      - check-tripleo-novabm-undercloud-precise-nonha
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-novabm-overcloud-f20-nonha
-      - check-tripleo-novabm-overcloud-precise-nonha
-
-#TODO: add docs
-  - name: openstack/os-collect-config
-    template:
-      - name: merge-check
-      - name: check-requirements
-      - name: publish-to-pypi
-      - name: python3-jobs
-    check:
-      - gate-os-collect-config-pep8
-      - gate-os-collect-config-python26
-      - gate-os-collect-config-python27
-    check-tripleo:
-      - check-tripleo-novabm-undercloud-precise-nonha
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-novabm-overcloud-f20-nonha
-      - check-tripleo-novabm-overcloud-precise-nonha
-    gate:
-      - gate-os-collect-config-pep8
-      - gate-os-collect-config-python26
-      - gate-os-collect-config-python27
-    post:
-      - os-collect-config-coverage
-      - os-collect-config-branch-tarball
-
-#TODO: add docs
-  - name: openstack/os-net-config
-    template:
-      - name: merge-check
-      - name: check-requirements
-      - name: publish-to-pypi
-    check:
-      - gate-os-net-config-pep8
-      - gate-os-net-config-python26
-      - gate-os-net-config-python27
-    check-tripleo:
-      - check-tripleo-novabm-undercloud-precise-nonha
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-novabm-overcloud-f20-nonha
-      - check-tripleo-novabm-overcloud-precise-nonha
-    gate:
-      - gate-os-net-config-pep8
-      - gate-os-net-config-python26
-      - gate-os-net-config-python27
-    post:
-      - os-net-config-coverage
-      - os-net-config-branch-tarball
-
-#TODO: add docs
-  - name: openstack/os-refresh-config
-    template:
-      - name: merge-check
-      - name: check-requirements
-      - name: publish-to-pypi
-      - name: python3-jobs
-    check:
-      - gate-os-refresh-config-pep8
-      - gate-os-refresh-config-python26
-      - gate-os-refresh-config-python27
-    check-tripleo:
-      - check-tripleo-novabm-undercloud-precise-nonha
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-novabm-overcloud-f20-nonha
-      - check-tripleo-novabm-overcloud-precise-nonha
-    gate:
-      - gate-os-refresh-config-pep8
-      - gate-os-refresh-config-python26
-      - gate-os-refresh-config-python27
-    post:
-      - os-refresh-config-coverage
-      - os-refresh-config-branch-tarball
-
-  - name: openstack/oslosphinx
-    template:
-      - name: merge-check
-      - name: openstack-server-publish-jobs
-      - name: check-requirements
-      - name: publish-to-pypi
-    check:
-      - gate-oslosphinx-pep8
-      - gate-oslosphinx-docs
-    gate:
-      - gate-oslosphinx-pep8
-      - gate-oslosphinx-docs
-    post:
-      - oslosphinx-branch-tarball
-
-  - name: openstack/oslotest
+  - name: openstack/cliff
     template:
       - name: merge-check
       - name: python-jobs
       - name: python3-jobs
       - name: pypy-jobs
-      - name: openstack-server-publish-jobs
       - name: check-requirements
+      - name: integrated-gate
       - name: publish-to-pypi
-    post:
-      - oslotest-coverage
+      - name: docs-on-rtfd
+      - name: lib-forward-testing
+    check:
+      - gate-cliff-tox-neutronclient-stable
+      - gate-cliff-tox-neutronclient-tip
+      - gate-cliff-tox-openstackclient-stable
+      - gate-cliff-tox-openstackclient-tip
+    gate:
+      - gate-cliff-tox-neutronclient-stable
+      - gate-cliff-tox-neutronclient-tip
+      - gate-cliff-tox-openstackclient-stable
+      - gate-cliff-tox-openstackclient-tip
 
   - name: openstack/oslo-incubator
     template:
@@ -2327,6 +2084,290 @@ projects:
       - gate-oslo.vmware-requirements
       - gate-oslo.vmware-python33
 
+  - name: openstack/oslosphinx
+    template:
+      - name: merge-check
+      - name: openstack-server-publish-jobs
+      - name: check-requirements
+      - name: publish-to-pypi
+    check:
+      - gate-oslosphinx-pep8
+      - gate-oslosphinx-docs
+    gate:
+      - gate-oslosphinx-pep8
+      - gate-oslosphinx-docs
+    post:
+      - oslosphinx-branch-tarball
+
+  - name: openstack/oslotest
+    template:
+      - name: merge-check
+      - name: python-jobs
+      - name: python3-jobs
+      - name: pypy-jobs
+      - name: openstack-server-publish-jobs
+      - name: check-requirements
+      - name: publish-to-pypi
+    post:
+      - oslotest-coverage
+
+  - name: openstack/pylockfile
+    template:
+      - name: merge-check
+      - name: python-jobs
+      - name: python3-jobs
+      - name: openstack-server-publish-jobs
+      - name: check-requirements
+      - name: integrated-gate
+      - name: publish-to-pypi
+
+  - name: openstack/stevedore
+    template:
+      - name: merge-check
+      - name: python-jobs
+      - name: python3-jobs
+      - name: pypy-jobs
+      - name: check-requirements
+      - name: integrated-gate
+      - name: publish-to-pypi
+      - name: docs-on-rtfd
+      - name: lib-forward-testing
+
+########################################################################
+# Section: Other OpenStack projects
+########################################################################
+
+  - name: openstack/dib-utils
+    template:
+      - name: merge-check
+      - name: check-requirements
+      - name: publish-to-pypi
+      - name: noop-jobs
+    check-tripleo:
+      - check-tripleo-novabm-undercloud-precise-nonha
+      - check-tripleo-ironic-undercloud-precise-nonha
+      - check-tripleo-novabm-overcloud-f20-nonha
+      - check-tripleo-novabm-overcloud-precise-nonha
+    post:
+      - dib-utils-branch-tarball
+
+#TODO: add docs
+  - name: openstack/diskimage-builder
+    template:
+      - name: merge-check
+      - name: check-requirements
+      - name: publish-to-pypi
+      - name: python3-jobs
+    check:
+      - gate-diskimage-builder-pep8
+      - gate-diskimage-builder-python26
+      - gate-diskimage-builder-python27
+      - check-tempest-dsvm-ironic-pxe_ssh
+    check-tripleo:
+      - check-tripleo-novabm-undercloud-precise-nonha
+      - check-tripleo-ironic-undercloud-precise-nonha
+      - check-tripleo-novabm-overcloud-f20-nonha
+      - check-tripleo-novabm-overcloud-precise-nonha
+    gate:
+      - gate-diskimage-builder-pep8
+      - gate-diskimage-builder-python26
+      - gate-diskimage-builder-python27
+      - gate-tempest-dsvm-ironic-pxe_ssh
+    post:
+      - diskimage-builder-coverage
+      - diskimage-builder-branch-tarball
+
+  - name: openstack/django_openstack_auth
+    template:
+      - name: merge-check
+      - name: python-jobs
+      - name: python3-jobs
+      - name: openstack-client-publish-jobs
+      - name: check-requirements
+      - name: integrated-gate
+      - name: stable-compat-jobs
+      - name: translation-jobs
+    pre-release:
+      - django_openstack_auth-tarball
+    release:
+      - django_openstack_auth-tarball:
+        - django_openstack_auth-pypi-both-upload
+
+  - name: openstack/governance
+    template:
+      - name: merge-check
+      - name: noop-jobs
+
+#TODO: add docs
+  - name: openstack/heat-cfntools
+    template:
+      - name: merge-check
+      - name: check-requirements
+      - name: publish-to-pypi
+    check:
+      - gate-heat-cfntools-pep8
+      - gate-heat-cfntools-python26
+      - gate-heat-cfntools-python27
+    gate:
+      - gate-heat-cfntools-pep8
+      - gate-heat-cfntools-python26
+      - gate-heat-cfntools-python27
+    post:
+      - heat-cfntools-branch-tarball
+      - heat-cfntools-coverage
+    release:
+      - heat-cfntools-docs
+
+  - name: openstack/heat-templates
+    template:
+      - name: merge-check
+    check:
+      - gate-heat-templates-dsvm
+    gate:
+      - noop
+
+#TODO: add docs
+  - name: openstack/ironic-python-agent
+    template:
+      - name: merge-check
+    check:
+      - gate-ironic-python-agent-pep8
+      - gate-ironic-python-agent-python26
+      - gate-ironic-python-agent-python27
+      - gate-ironic-python-agent-buildimage-coreos
+      - check-tempest-dsvm-ironic-agent_ssh-src-nv
+    gate:
+      - gate-ironic-python-agent-pep8
+      - gate-ironic-python-agent-python26
+      - gate-ironic-python-agent-python27
+      - gate-ironic-python-agent-buildimage-coreos
+    post:
+      - ironic-python-agent-buildimage-coreos
+
+  - name: openstack/openstack
+    template:
+      - name: merge-check
+      - name: noop-jobs
+
+  - name: openstack/openstack-planet
+    template:
+      - name: merge-check
+    check:
+      - gate-openstack-planet-unittest
+    gate:
+      - gate-openstack-planet-unittest
+
+
+#TODO: add docs
+  - name: openstack/os-apply-config
+    template:
+      - name: merge-check
+      - name: check-requirements
+      - name: publish-to-pypi
+      - name: python3-jobs
+    check:
+      - gate-os-apply-config-pep8
+      - gate-os-apply-config-python26
+      - gate-os-apply-config-python27
+    check-tripleo:
+      - check-tripleo-novabm-undercloud-precise-nonha
+      - check-tripleo-ironic-undercloud-precise-nonha
+      - check-tripleo-novabm-overcloud-f20-nonha
+      - check-tripleo-novabm-overcloud-precise-nonha
+    gate:
+      - gate-os-apply-config-pep8
+      - gate-os-apply-config-python26
+      - gate-os-apply-config-python27
+    post:
+      - os-apply-config-coverage
+      - os-apply-config-branch-tarball
+
+  - name: openstack/os-cloud-config
+    template:
+      - name: merge-check
+      - name: check-requirements
+      - name: publish-to-pypi
+      - name: python-jobs
+      - name: python3-jobs
+    post:
+      - os-cloud-config-coverage
+    check-tripleo:
+      - check-tripleo-novabm-undercloud-precise-nonha
+      - check-tripleo-ironic-undercloud-precise-nonha
+      - check-tripleo-novabm-overcloud-f20-nonha
+      - check-tripleo-novabm-overcloud-precise-nonha
+
+#TODO: add docs
+  - name: openstack/os-collect-config
+    template:
+      - name: merge-check
+      - name: check-requirements
+      - name: publish-to-pypi
+      - name: python3-jobs
+    check:
+      - gate-os-collect-config-pep8
+      - gate-os-collect-config-python26
+      - gate-os-collect-config-python27
+    check-tripleo:
+      - check-tripleo-novabm-undercloud-precise-nonha
+      - check-tripleo-ironic-undercloud-precise-nonha
+      - check-tripleo-novabm-overcloud-f20-nonha
+      - check-tripleo-novabm-overcloud-precise-nonha
+    gate:
+      - gate-os-collect-config-pep8
+      - gate-os-collect-config-python26
+      - gate-os-collect-config-python27
+    post:
+      - os-collect-config-coverage
+      - os-collect-config-branch-tarball
+
+#TODO: add docs
+  - name: openstack/os-net-config
+    template:
+      - name: merge-check
+      - name: check-requirements
+      - name: publish-to-pypi
+    check:
+      - gate-os-net-config-pep8
+      - gate-os-net-config-python26
+      - gate-os-net-config-python27
+    check-tripleo:
+      - check-tripleo-novabm-undercloud-precise-nonha
+      - check-tripleo-ironic-undercloud-precise-nonha
+      - check-tripleo-novabm-overcloud-f20-nonha
+      - check-tripleo-novabm-overcloud-precise-nonha
+    gate:
+      - gate-os-net-config-pep8
+      - gate-os-net-config-python26
+      - gate-os-net-config-python27
+    post:
+      - os-net-config-coverage
+      - os-net-config-branch-tarball
+
+#TODO: add docs
+  - name: openstack/os-refresh-config
+    template:
+      - name: merge-check
+      - name: check-requirements
+      - name: publish-to-pypi
+      - name: python3-jobs
+    check:
+      - gate-os-refresh-config-pep8
+      - gate-os-refresh-config-python26
+      - gate-os-refresh-config-python27
+    check-tripleo:
+      - check-tripleo-novabm-undercloud-precise-nonha
+      - check-tripleo-ironic-undercloud-precise-nonha
+      - check-tripleo-novabm-overcloud-f20-nonha
+      - check-tripleo-novabm-overcloud-precise-nonha
+    gate:
+      - gate-os-refresh-config-pep8
+      - gate-os-refresh-config-python26
+      - gate-os-refresh-config-python27
+    post:
+      - os-refresh-config-coverage
+      - os-refresh-config-branch-tarball
+
   - name: openstack/requirements
     template:
       - name: merge-check
@@ -2416,24 +2457,6 @@ projects:
       - gate-swift-bench-python27
     post:
       - swift-bench-branch-tarball
-
-#TODO: add docs
-  - name: openstack/ironic-python-agent
-    template:
-      - name: merge-check
-    check:
-      - gate-ironic-python-agent-pep8
-      - gate-ironic-python-agent-python26
-      - gate-ironic-python-agent-python27
-      - gate-ironic-python-agent-buildimage-coreos
-      - check-tempest-dsvm-ironic-agent_ssh-src-nv
-    gate:
-      - gate-ironic-python-agent-pep8
-      - gate-ironic-python-agent-python26
-      - gate-ironic-python-agent-python27
-      - gate-ironic-python-agent-buildimage-coreos
-    post:
-      - ironic-python-agent-buildimage-coreos
 
   # This is not strictly necessary; there is currently a transitive
   # relationship between g-t-dsvm,
@@ -2650,15 +2673,6 @@ projects:
       - gate-trove-functional-dsvm-percona
       - gate-trove-functional-dsvm-mongodb
 
-  - name: openstack/trove-specs
-    template:
-      - name: merge-check
-      - name: openstack-specs-jobs
-    check:
-      - gate-trove-specs-python27
-    gate:
-      - gate-trove-specs-python27
-
 # TODO: add docs
   - name: openstack/tuskar-ui
     template:
@@ -2684,7 +2698,9 @@ projects:
     post:
       - tuskar-ui-branch-tarball
 
+########################################################################
 # Section: OpenStack API projects
+########################################################################
 
   - name: openstack/compute-api
     template:
@@ -2699,15 +2715,6 @@ projects:
       - name: openstack-doc-gate
     post:
       - identity-api-tox-doc-publishdocs
-
-  - name: openstack/keystone-specs
-    template:
-      - name: merge-check
-      - name: openstack-specs-jobs
-    check:
-      - gate-keystone-specs-python27
-    gate:
-      - gate-keystone-specs-python27
 
   - name: openstack/image-api
     template:
@@ -2730,11 +2737,6 @@ projects:
     post:
       - object-api-tox-doc-publishdocs
 
-  - name: openstack/swift-specs
-    template:
-      - name: merge-check
-      - name: openstack-specs-jobs
-
   - name: openstack/volume-api
     template:
       - name: merge-check
@@ -2742,7 +2744,9 @@ projects:
     post:
       - volume-api-tox-doc-publishdocs
 
+########################################################################
 # Section: OpenStack documentation projects
+########################################################################
 
   - name: openstack/api-site
     template:
@@ -2770,6 +2774,16 @@ projects:
       - name: openstack-doc-translation
     post:
       - operations-guide-tox-doc-publishdocs
+
+  - name: openstack/openstack-doc-tools
+    template:
+      - name: merge-check
+      - name: publish-to-pypi
+      - name: check-requirements
+    check:
+      - gate-openstack-doc-tools-pep8
+    gate:
+      - gate-openstack-doc-tools-pep8
 
   - name: openstack/openstack-manuals
     template:
@@ -2806,7 +2820,9 @@ projects:
     periodic:
       - training-guides-manuals-propose-translation-update
 
+########################################################################
 # Section: OpenStack development projects
+########################################################################
 
   - name: openstack-dev/bashate
     template:
@@ -2962,7 +2978,9 @@ projects:
       - name: merge-check
       - name: noop-jobs
 
+########################################################################
 # Section: OpenStack infrastructure projects
+########################################################################
 
   - name: openstack-infra/activity-board
     template:
@@ -3524,7 +3542,9 @@ projects:
       - name: merge-check
       - name: noop-jobs
 
+########################################################################
 # Section: Stackforge projects
+########################################################################
 
   - name: stackforge/anvil
     template:
