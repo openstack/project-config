@@ -764,6 +764,8 @@ jobs:
   # TODO(cschwede): Enable voting when there is enough data
   - name: check-swiftclient-dsvm-functional
     voting: false
+  - name: gate-kolla-bashate
+    voting: false
 
 # The project list is grouped by type of project, and within each
 # group, projects are sorted (mostly) alphabetically.
@@ -4175,7 +4177,10 @@ projects:
   - name: stackforge/kolla
     template:
       - name: merge-check
-      - name: noop-jobs
+    check:
+      - gate-kolla-bashate
+    gate:
+      - noop
 
   - name: stackforge/kwapi
     template:
