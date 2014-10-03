@@ -491,7 +491,7 @@ jobs:
       - name: logs
   # The infra puppet configs predominantly run on precise nodes.
   # Test puppet for infra by default on precise nodes until that changes.
-  - name: ^gate-config-puppet.*$
+  - name: ^gate-system-config-puppet.*$
     parameter-function: set_node_options_default_precise
   # Berkshelf 3.x requires GeCode 3.x on precise.
   - name: ^gate-.*-chef-(lint|style|unit)$
@@ -789,7 +789,7 @@ jobs:
     branch: ^(?!stable/icehouse).*$
   - name: gate-nova-pip-missing-reqs
     voting: false
-  - name: gate-config-bashate
+  - name: gate-system-config-bashate
     voting: false
   # TODO(rpodolyaka): make voting when the jobs pass on all SA versions
   - name: gate-oslo.db-tox-sqla_08
@@ -2854,27 +2854,6 @@ projects:
     post:
       - bugdaystats-branch-tarball
 
-  - name: openstack-infra/config
-    template:
-      - name: merge-check
-    check:
-      - gate-config-pep8
-      - gate-config-bashate
-      - gate-config-puppet-syntax
-      - gate-infra-puppet-apply-precise
-      - gate-infra-puppet-apply-centos6
-      - gate-ci-docs
-    gate:
-      - gate-config-pep8
-      - gate-config-puppet-syntax
-      - gate-infra-puppet-apply-precise
-      - gate-infra-puppet-apply-centos6
-      - gate-ci-docs
-    post:
-      - ci-docs
-    experimental:
-      - experimental-swift-logs-config-pep8-centos6
-
   - name: openstack-infra/devstack-gate
     template:
       - name: merge-check
@@ -3186,31 +3165,31 @@ projects:
     template:
       - name: merge-check
     check:
-      - gate-config-puppet-lint
-      - gate-config-puppet-syntax
+      - gate-system-config-puppet-lint
+      - gate-system-config-puppet-syntax
     gate:
-      - gate-config-puppet-lint
-      - gate-config-puppet-syntax
+      - gate-system-config-puppet-lint
+      - gate-system-config-puppet-syntax
 
   - name: openstack-infra/puppet-yum
     template:
       - name: merge-check
     check:
-      - gate-config-puppet-lint
-      - gate-config-puppet-syntax
+      - gate-system-config-puppet-lint
+      - gate-system-config-puppet-syntax
     gate:
-      - gate-config-puppet-lint
-      - gate-config-puppet-syntax
+      - gate-system-config-puppet-lint
+      - gate-system-config-puppet-syntax
 
   - name: openstack-infra/puppet-zuul
     template:
       - name: merge-check
     check:
-      - gate-config-puppet-lint
-      - gate-config-puppet-syntax
+      - gate-system-config-puppet-lint
+      - gate-system-config-puppet-syntax
     gate:
-      - gate-config-puppet-lint
-      - gate-config-puppet-syntax
+      - gate-system-config-puppet-lint
+      - gate-system-config-puppet-syntax
 
   - name: openstack-infra/pypi-mirror
     template:
@@ -3319,6 +3298,27 @@ projects:
     gate:
       - gate-subunit2sql-pep8
       - gate-subunit2sql-python27
+
+  - name: openstack-infra/system-config
+    template:
+      - name: merge-check
+    check:
+      - gate-system-config-pep8
+      - gate-system-config-bashate
+      - gate-system-config-puppet-syntax
+      - gate-infra-puppet-apply-precise
+      - gate-infra-puppet-apply-centos6
+      - gate-ci-docs
+    gate:
+      - gate-system-config-pep8
+      - gate-system-config-puppet-syntax
+      - gate-infra-puppet-apply-precise
+      - gate-infra-puppet-apply-centos6
+      - gate-ci-docs
+    post:
+      - ci-docs
+    experimental:
+      - experimental-swift-logs-system-config-pep8-centos6
 
   - name: openstack-infra/tripleo-ci
     template:
