@@ -20,7 +20,7 @@ export ELEMENTS_PATH=${ELEMENTS_PATH:-nodepool/elements}
 export DISTRO=${DISTRO:-ubuntu}
 export IMAGE_NAME=${IMAGE_NAME:-devstack-gate}
 export NODEPOOL_SCRIPTDIR=${NODEPOOL_SCRIPTDIR:-nodepool/scripts}
-export CONFIG_SOURCE=${CONFIG_SOURCE:-https://git.openstack.org/openstack-infra/config}
+export CONFIG_SOURCE=${CONFIG_SOURCE:-https://git.openstack.org/openstack-infra/system-config}
 export CONFIG_REF=${CONFIG_REF:-master}
 
 disk-image-create -x --no-tmpfs -o $IMAGE_NAME $DISTRO \
