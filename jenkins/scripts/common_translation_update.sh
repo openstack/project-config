@@ -314,7 +314,7 @@ function cleanup_po_files {
         check="^0 translated messages"
         if [[ $trans =~ $check ]] ; then
             # Nothing is translated, remove the file.
-            git rm $i
+            git rm -f $i
         else
             if [[ $trans =~ " translated message" ]] ; then
                 trans_no=`echo $trans|sed -e 's/ translated message.*$//'`
@@ -334,7 +334,7 @@ function cleanup_po_files {
             # For now we delete files that suddenly are less than 20
             # per cent translated.
             if [[ "$ratio" -lt "20" ]] ; then
-                git rm $i
+                git rm -f $i
             fi
         fi
     done
