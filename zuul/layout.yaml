@@ -452,13 +452,11 @@ project-templates:
 
   - name: puppet-module-unit-jobs
     check:
-      - gate-{name}-puppet-unit-2.7
       - gate-{name}-puppet-unit-3.1
       - gate-{name}-puppet-unit-3.2
       - gate-{name}-puppet-unit-3.3
       - gate-{name}-puppet-unit-3.4
     gate:
-      - gate-{name}-puppet-unit-2.7
       - gate-{name}-puppet-unit-3.1
       - gate-{name}-puppet-unit-3.2
       - gate-{name}-puppet-unit-3.3
@@ -472,9 +470,6 @@ jobs:
   # The infra puppet configs predominantly run on precise nodes.
   # Test puppet for infra by default on precise nodes until that changes.
   - name: ^gate-config-puppet.*$
-    parameter-function: set_node_options_default_precise
-  # We're planning on Puppet 2.7 support to Spring 2015.
-  - name: ^.*puppet-unit-2.7$
     parameter-function: set_node_options_default_precise
   # Berkshelf 3.x requires GeCode 3.x on precise.
   - name: ^gate-.*-chef-(lint|style|unit)$
@@ -4648,10 +4643,8 @@ projects:
       - name: merge-check
       - name: puppet-check-jobs
     check:
-      - gate-puppet-ceph-puppet-unit-2.7
       - gate-puppet-ceph-puppet-unit-3.1
     gate:
-      - gate-puppet-ceph-puppet-unit-2.7
       - gate-puppet-ceph-puppet-unit-3.1
 
   - name: stackforge/puppet-cinder
