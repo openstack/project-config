@@ -41,6 +41,19 @@
     publishers:
       - console-log
 
+- job:
+    name: gate-project-config-jenkins-project
+    node: 'bare-precise || bare-trusty'
+
+    builders:
+      - revoke-sudo
+      - gerrit-git-prep
+      - tox:
+          envlist: 'jenkins-project'
+      - zuul_swift_upload_console_log
+
+    publishers:
+      - console-log
 
 # This is a non-standard docs job because it uses SCP instead of FTP
 - job:
