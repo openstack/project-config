@@ -466,6 +466,18 @@ project-templates:
       - gate-{name}-puppet-unit-3.3
       - gate-{name}-puppet-unit-3.4
 
+  - name: check-tripleo-jobs
+    check-tripleo:
+      - check-tripleo-ironic-undercloud-precise-nonha
+      - check-tripleo-ironic-overcloud-f20-nonha
+      - check-tripleo-ironic-overcloud-precise-nonha
+
+  - name: experimental-tripleo-jobs
+    experimental-tripleo:
+      - check-tripleo-ironic-undercloud-precise-nonha
+      - check-tripleo-ironic-overcloud-precise-nonha
+      - check-tripleo-ironic-overcloud-f20-nonha
+
 jobs:
   - name: ^.*$
     parameter-function: set_node_options_default_trusty
@@ -927,6 +939,7 @@ projects:
       - name: integrated-gate
       - name: translation-jobs
       - name: large-ops
+      - name: experimental-tripleo-jobs
     check:
       - check-devstack-dsvm-cells
       - gate-rally-dsvm-glance
@@ -934,10 +947,6 @@ projects:
       - gate-devstack-dsvm-cells
     experimental:
       - gate-grenade-dsvm-forward
-    experimental-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-precise-nonha
-      - check-tripleo-ironic-overcloud-f20-nonha
     pre-release:
       - glance-tarball
     release:
@@ -961,6 +970,7 @@ projects:
       - name: check-requirements
       - name: translation-jobs
       - name: publish-to-pypi
+      - name: experimental-tripleo-jobs
     check:
       - check-grenade-dsvm
       - check-devstack-dsvm-cells
@@ -973,10 +983,6 @@ projects:
       - gate-tempest-dsvm-postgres-full
     experimental:
       - gate-grenade-dsvm-forward
-    experimental-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-precise-nonha
-      - check-tripleo-ironic-overcloud-f20-nonha
     pre-release:
       - glance_store-tarball
     release:
@@ -991,6 +997,7 @@ projects:
       - name: check-requirements
       - name: integrated-gate
       - name: translation-jobs
+      - name: experimental-tripleo-jobs
     check:
       - check-heat-dsvm-functional
       - check-devstack-dsvm-cells
@@ -1002,10 +1009,6 @@ projects:
       - check-tripleo-ironic-overcloud-precise-nonha
     experimental:
       - gate-rally-dsvm-fakevirt-heat
-    experimental-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-precise-ha
-      - check-tripleo-ironic-overcloud-f20-nonha
     pre-release:
       - heat-tarball
     release:
@@ -1026,6 +1029,7 @@ projects:
       - name: check-requirements
       - name: integrated-gate
       - name: translation-jobs
+      - name: experimental-tripleo-jobs
     check:
       - gate-horizon-python27-django14
       - gate-horizon-selenium
@@ -1040,10 +1044,6 @@ projects:
     experimental:
       - gate-horizon-dsvm-integration
       - gate-grenade-dsvm-forward
-    experimental-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-precise-nonha
-      - check-tripleo-ironic-overcloud-f20-nonha
     pre-release:
       - horizon-tarball
     release:
@@ -1095,6 +1095,7 @@ projects:
       - name: integrated-gate
       - name: large-ops
       - name: translation-jobs
+      - name: experimental-tripleo-jobs
     check:
       - check-devstack-dsvm-cells
       - check-swift-dsvm-functional
@@ -1107,10 +1108,6 @@ projects:
     experimental:
       - gate-grenade-dsvm-forward
       - gate-keystone-python33
-    experimental-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-precise-nonha
-      - check-tripleo-ironic-overcloud-f20-nonha
     pre-release:
       - keystone-tarball
     release:
@@ -1175,6 +1172,7 @@ projects:
       - name: check-requirements
       - name: integrated-gate-neutron
       - name: translation-jobs
+      - name: experimental-tripleo-jobs
     check:
       - check-neutron-dsvm-functional
       - gate-rally-dsvm-neutron-neutron
@@ -1195,10 +1193,6 @@ projects:
       - check-neutron-dsvm-api
       - gate-grenade-dsvm-neutron-forward
       - check-grenade-dsvm-neutron-sideways
-    experimental-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-precise-nonha
-      - check-tripleo-ironic-overcloud-f20-nonha
     pre-release:
       - neutron-tarball
     release:
@@ -1224,6 +1218,7 @@ projects:
       - name: integrated-gate
       - name: large-ops
       - name: translation-jobs
+      - name: experimental-tripleo-jobs
     check:
       - check-devstack-dsvm-cells
       - gate-nova-pylint
@@ -1242,10 +1237,6 @@ projects:
       - check-tempest-dsvm-full-newlibvirt
     silent:
       - check-tempest-dsvm-docker
-    experimental-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-precise-nonha
-      - check-tripleo-ironic-overcloud-f20-nonha
     pre-release:
       - nova-tarball
     release:
@@ -1307,6 +1298,7 @@ projects:
       - name: integrated-gate
       - name: large-ops
       - name: translation-jobs
+      - name: experimental-tripleo-jobs
     check:
       - gate-swift-tox-func
       - check-swift-dsvm-functional
@@ -1319,10 +1311,6 @@ projects:
       - swift-coverage
     experimental:
       - gate-grenade-dsvm-forward
-    experimental-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-precise-nonha
-      - check-tripleo-ironic-overcloud-f20-nonha
     pre-release:
       - swift-tarball
     release:
@@ -1385,12 +1373,9 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
+      - name: check-tripleo-jobs
     post:
       - tuskar-coverage
-    check-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-f20-nonha
-      - check-tripleo-ironic-overcloud-precise-nonha
     pre-release:
       - tuskar-tarball
     release:
@@ -1474,6 +1459,7 @@ projects:
       - name: stable-compat-jobs
       - name: publish-to-pypi
       - name: pypy-jobs
+      - name: experimental-tripleo-jobs
     check:
       - check-devstack-dsvm-cells
     gate:
@@ -1482,10 +1468,6 @@ projects:
       - python-cinderclient-coverage
     experimental:
       - gate-grenade-dsvm-forward
-    experimental-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-precise-nonha
-      - check-tripleo-ironic-overcloud-f20-nonha
 
   - name: openstack/python-designateclient
     template:
@@ -1510,16 +1492,13 @@ projects:
       - name: integrated-gate
       - name: large-ops
       - name: publish-to-pypi
+      - name: experimental-tripleo-jobs
     check:
       - check-devstack-dsvm-cells
     gate:
       - gate-devstack-dsvm-cells
     experimental:
       - gate-grenade-dsvm-forward
-    experimental-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-precise-nonha
-      - check-tripleo-ironic-overcloud-f20-nonha
 
   - name: openstack/python-glanceclient
     template:
@@ -1533,6 +1512,7 @@ projects:
       - name: stable-compat-jobs
       - name: publish-to-pypi
       - name: pypy-jobs
+      - name: experimental-tripleo-jobs
     check:
       - check-devstack-dsvm-cells
     gate:
@@ -1541,10 +1521,6 @@ projects:
       - python-glanceclient-coverage
     experimental:
       - gate-grenade-dsvm-forward
-    experimental-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-precise-nonha
-      - check-tripleo-ironic-overcloud-f20-nonha
 
 #TODO: add docs
   - name: openstack/python-heatclient
@@ -1556,6 +1532,7 @@ projects:
       - name: stable-compat-jobs
       - name: publish-to-pypi
       - name: pypy-jobs
+      - name: experimental-tripleo-jobs
     check:
       - gate-python-heatclient-pep8
       - gate-python-heatclient-python26
@@ -1569,10 +1546,6 @@ projects:
     post:
       - python-heatclient-branch-tarball
       - python-heatclient-coverage
-    experimental-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-precise-nonha
-      - check-tripleo-ironic-overcloud-f20-nonha
     release:
       - python-heatclient-docs
 
@@ -1605,6 +1578,7 @@ projects:
       - name: large-ops
       - name: stable-compat-jobs
       - name: publish-to-pypi
+      - name: experimental-tripleo-jobs
     check:
       - check-devstack-dsvm-cells
     gate:
@@ -1613,10 +1587,6 @@ projects:
       - python-keystoneclient-coverage
     experimental:
       - gate-grenade-dsvm-forward
-    experimental-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-precise-nonha
-      - check-tripleo-ironic-overcloud-f20-nonha
 
   - name: openstack/python-keystoneclient-federation
     template:
@@ -1667,16 +1637,13 @@ projects:
       - name: stable-compat-jobs
       - name: publish-to-pypi
       - name: pypy-jobs
+      - name: experimental-tripleo-jobs
     check:
       - gate-python-neutronclient-python33
     post:
       - python-neutronclient-coverage
     experimental:
       - gate-grenade-dsvm-forward
-    experimental-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-precise-nonha
-      - check-tripleo-ironic-overcloud-f20-nonha
 
   - name: openstack/python-novaclient
     template:
@@ -1690,6 +1657,7 @@ projects:
       - name: stable-compat-jobs
       - name: publish-to-pypi
       - name: pypy-jobs
+      - name: experimental-tripleo-jobs
     check:
       - check-devstack-dsvm-cells
     gate:
@@ -1698,10 +1666,6 @@ projects:
       - python-novaclient-coverage
     experimental:
       - gate-grenade-dsvm-forward
-    experimental-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-precise-nonha
-      - check-tripleo-ironic-overcloud-f20-nonha
 
   - name: openstack/python-openstackclient
     template:
@@ -1746,6 +1710,7 @@ projects:
       - name: stable-compat-jobs
       - name: publish-to-pypi
       - name: pypy-jobs
+      - name: experimental-tripleo-jobs
     check:
       - check-swift-dsvm-functional
       - check-swiftclient-dsvm-functional
@@ -1753,10 +1718,6 @@ projects:
       - gate-swift-dsvm-functional
     post:
       - python-swiftclient-coverage
-    experimental-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-precise-nonha
-      - check-tripleo-ironic-overcloud-f20-nonha
 
   - name: openstack/python-troveclient
     template:
@@ -1775,14 +1736,11 @@ projects:
       - name: merge-check
       - name: python-jobs
       - name: publish-to-pypi
+      - name: check-tripleo-jobs
     check:
       - gate-python-tuskarclient-python33
     post:
       - python-tuskarclient-coverage
-    check-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-precise-nonha
-      - check-tripleo-ironic-overcloud-f20-nonha
 
   - name: openstack/python-zaqarclient
     template:
@@ -1865,14 +1823,11 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
       - name: lib-forward-testing
+      - name: experimental-tripleo-jobs
     check:
       - check-devstack-dsvm-cells
     gate:
       - gate-devstack-dsvm-cells
-    experimental-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-precise-nonha
-      - check-tripleo-ironic-overcloud-f20-nonha
 
   - name: openstack/oslo.db
     template:
@@ -1883,6 +1838,7 @@ projects:
       - name: publish-to-pypi
       - name: translation-jobs
       - name: lib-forward-testing
+      - name: experimental-tripleo-jobs
     check:
       - gate-tempest-dsvm-largeops-src-oslo.db
       - check-devstack-dsvm-cells
@@ -1891,10 +1847,6 @@ projects:
       - gate-oslo.db-python33
     gate:
       - gate-devstack-dsvm-cells
-    experimental-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-precise-nonha
-      - check-tripleo-ironic-overcloud-f20-nonha
 
   - name: openstack/oslo.i18n
     template:
@@ -1906,16 +1858,13 @@ projects:
       - name: publish-to-pypi
       - name: translation-jobs
       - name: lib-forward-testing
+      - name: experimental-tripleo-jobs
     check:
       - check-devstack-dsvm-cells
     gate:
       - gate-devstack-dsvm-cells
     post:
       - oslo.i18n-coverage
-    experimental-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-precise-nonha
-      - check-tripleo-ironic-overcloud-f20-nonha
 
   - name: openstack/oslo.log
     template:
@@ -1939,15 +1888,12 @@ projects:
       - name: publish-to-pypi
       - name: translation-jobs
       - name: lib-forward-testing
+      - name: experimental-tripleo-jobs
     check:
       - gate-tempest-dsvm-largeops-src-oslo.messaging
       - check-devstack-dsvm-cells
     gate:
       - gate-devstack-dsvm-cells
-    experimental-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-precise-nonha
-      - check-tripleo-ironic-overcloud-f20-nonha
 
   - name: openstack/oslo.middleware
     template:
@@ -1969,6 +1915,7 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
       - name: lib-forward-testing
+      - name: experimental-tripleo-jobs
     check:
       - gate-oslo.rootwrap-pep8
       - gate-oslo.rootwrap-python26
@@ -1982,10 +1929,6 @@ projects:
       - gate-devstack-dsvm-cells
     post:
       - oslo.rootwrap-branch-tarball
-    experimental-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-precise-nonha
-      - check-tripleo-ironic-overcloud-f20-nonha
 
   - name: openstack/oslo.serialization
     template:
@@ -2018,14 +1961,11 @@ projects:
       - name: publish-to-pypi
       - name: lib-forward-testing
       - name: pypy-jobs
+      - name: experimental-tripleo-jobs
     check:
       - check-devstack-dsvm-cells
     gate:
       - gate-devstack-dsvm-cells
-    experimental-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-precise-nonha
-      - check-tripleo-ironic-overcloud-f20-nonha
 
   - name: openstack/oslo.vmware
     template:
@@ -2098,10 +2038,7 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
       - name: noop-jobs
-    check-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-f20-nonha
-      - check-tripleo-ironic-overcloud-precise-nonha
+      - name: check-tripleo-jobs
     post:
       - dib-utils-branch-tarball
 
@@ -2112,16 +2049,14 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
       - name: python3-jobs
+      - name: check-tripleo-jobs
     check:
       - gate-diskimage-builder-pep8
       - gate-diskimage-builder-python26
       - gate-diskimage-builder-python27
       - check-tempest-dsvm-ironic-pxe_ssh
     check-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-f20-nonha
       - check-tripleo-ironic-overcloud-precise-ha
-      - check-tripleo-ironic-overcloud-precise-nonha
     gate:
       - gate-diskimage-builder-pep8
       - gate-diskimage-builder-python26
@@ -2217,14 +2152,11 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
       - name: python3-jobs
+      - name: check-tripleo-jobs
     check:
       - gate-os-apply-config-pep8
       - gate-os-apply-config-python26
       - gate-os-apply-config-python27
-    check-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-f20-nonha
-      - check-tripleo-ironic-overcloud-precise-nonha
     gate:
       - gate-os-apply-config-pep8
       - gate-os-apply-config-python26
@@ -2240,13 +2172,10 @@ projects:
       - name: publish-to-pypi
       - name: python-jobs
       - name: python3-jobs
+      - name: check-tripleo-jobs
     post:
       - os-cloud-config-docs
       - os-cloud-config-coverage
-    check-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-f20-nonha
-      - check-tripleo-ironic-overcloud-precise-nonha
 
 #TODO: add docs
   - name: openstack/os-collect-config
@@ -2255,14 +2184,11 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
       - name: python3-jobs
+      - name: check-tripleo-jobs
     check:
       - gate-os-collect-config-pep8
       - gate-os-collect-config-python26
       - gate-os-collect-config-python27
-    check-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-f20-nonha
-      - check-tripleo-ironic-overcloud-precise-nonha
     gate:
       - gate-os-collect-config-pep8
       - gate-os-collect-config-python26
@@ -2277,14 +2203,11 @@ projects:
       - name: merge-check
       - name: check-requirements
       - name: publish-to-pypi
+      - name: check-tripleo-jobs
     check:
       - gate-os-net-config-pep8
       - gate-os-net-config-python26
       - gate-os-net-config-python27
-    check-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-f20-nonha
-      - check-tripleo-ironic-overcloud-precise-nonha
     gate:
       - gate-os-net-config-pep8
       - gate-os-net-config-python26
@@ -2300,14 +2223,11 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
       - name: python3-jobs
+      - name: check-tripleo-jobs
     check:
       - gate-os-refresh-config-pep8
       - gate-os-refresh-config-python26
       - gate-os-refresh-config-python27
-    check-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-f20-nonha
-      - check-tripleo-ironic-overcloud-precise-nonha
     gate:
       - gate-os-refresh-config-pep8
       - gate-os-refresh-config-python26
@@ -2321,6 +2241,7 @@ projects:
       - name: integrated-gate
       - name: large-ops
       - name: pypy-jobs
+      - name: experimental-tripleo-jobs
     check:
       - gate-requirements-pep8
       - gate-requirements-python27
@@ -2335,10 +2256,6 @@ projects:
       - gate-swift-dsvm-functional
     post:
       - propose-requirements-updates
-    experimental-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-precise-nonha
-      - check-tripleo-ironic-overcloud-f20-nonha
 
 # TODO: add docs
   - name: openstack/sahara-dashboard
@@ -2434,6 +2351,7 @@ projects:
       - name: check-requirements
       - name: integrated-gate
       - name: large-ops
+      - name: experimental-tripleo-jobs
     check:
       - gate-tempest-pep8
       - gate-tempest-docs
@@ -2466,10 +2384,6 @@ projects:
       - check-tempest-dsvm-neutron-full-non-isolated
       - check-tempest-dsvm-f20
       - check-tempest-dsvm-ironic-parallel-nv
-    experimental-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-precise-nonha
-      - check-tripleo-ironic-overcloud-f20-nonha
     post:
       - tempest-docs
       - tempest-coverage
@@ -2535,11 +2449,9 @@ projects:
       - name: merge-check
       - name: publish-to-pypi
       - name: noop-jobs
+      - name: check-tripleo-jobs
     check-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-f20-nonha
       - check-tripleo-ironic-overcloud-precise-ha
-      - check-tripleo-ironic-overcloud-precise-nonha
     post:
       - tripleo-heat-templates-branch-tarball
     pre-release:
@@ -2552,24 +2464,20 @@ projects:
       - name: merge-check
       - name: publish-to-pypi
       - name: noop-jobs
+      - name: check-tripleo-jobs
     check-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-f20-nonha
       - check-tripleo-ironic-overcloud-precise-ha
-      - check-tripleo-ironic-overcloud-precise-nonha
     post:
       - tripleo-image-elements-branch-tarball
 
   - name: openstack/tripleo-incubator
     template:
       - name: merge-check
+      - name: check-tripleo-jobs
     check:
       - gate-tripleo-incubator-docs
     check-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-f20-nonha
       - check-tripleo-ironic-overcloud-precise-ha
-      - check-tripleo-ironic-overcloud-precise-nonha
     gate:
       - gate-tripleo-incubator-docs
     experimental-tripleo:
@@ -2585,11 +2493,9 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
+      - name: check-tripleo-jobs
     check-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-f20-nonha
       - check-tripleo-ironic-overcloud-precise-ha
-      - check-tripleo-ironic-overcloud-precise-nonha
     post:
       - tripleo-puppet-elements-branch-tarball
 
@@ -2619,6 +2525,7 @@ projects:
     template:
       - name: merge-check
       - name: publish-to-pypi
+      - name: experimental-tripleo-jobs
     check:
       - gate-tuskar-ui-pep8
       - gate-tuskar-ui-python26
@@ -2631,10 +2538,6 @@ projects:
       - gate-tuskar-ui-python27
       - gate-tuskar-ui-selenium
       - gate-tuskar-ui-jshint
-    experimental-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-precise-nonha
-      - check-tripleo-ironic-overcloud-f20-nonha
     post:
       - tuskar-ui-branch-tarball
 
@@ -2877,16 +2780,13 @@ projects:
       - name: publish-to-pypi
       - name: lib-forward-testing
       - name: pypy-jobs
+      - name: experimental-tripleo-jobs
     check:
       - check-requirements-integration-dsvm
     gate:
       - gate-requirements-integration-dsvm
     post:
       - pbr-coverage
-    experimental-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-precise-nonha
-      - check-tripleo-ironic-overcloud-f20-nonha
     post:
       - pbr-docs
     pre-release:
@@ -2959,6 +2859,7 @@ projects:
       - name: merge-check
       - name: integrated-gate
       - name: large-ops
+      - name: experimental-tripleo-jobs
     check:
       - gate-devstack-gate-unittests
       - check-devstack-dsvm-cells
@@ -2990,10 +2891,6 @@ projects:
       - experimental-tempest-dsvm-neutron-full-dibtest
       - experimental-tempest-dsvm-full-icehouse-dibtest
       - experimental-tempest-dsvm-neutron-icehouse-dibtest
-    experimental-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-precise-nonha
-      - check-tripleo-ironic-overcloud-f20-nonha
 
   - name: openstack-infra/elastic-recheck
     template:
@@ -3406,10 +3303,7 @@ projects:
     template:
       - name: merge-check
       - name: noop-jobs
-    check-tripleo:
-      - check-tripleo-ironic-undercloud-precise-nonha
-      - check-tripleo-ironic-overcloud-f20-nonha
-      - check-tripleo-ironic-overcloud-precise-nonha
+      - name: check-tripleo-jobs
 
   - name: openstack-infra/vinz
     template:
