@@ -16,27 +16,35 @@ PROJECT=$1
 
 source /usr/local/jenkins/slave_scripts/common_translation_update.sh
 
+# Setup git repository for git review.
 setup_git
 
+# Check whether a review already exists, setup review commit message.
 setup_review
+# Setup basic connection for transifex.
 setup_translation
+# Project specific transifex setup.
 setup_project "$PROJECT"
 
+# Setup some global vars which will be used in the rest of the script.
 setup_loglevel_vars
+# Project specific transifex setup for log translations.
 setup_loglevel_project "$PROJECT"
 
 # Pull upstream translations of files that are at least 75 %
-# translated
+# translated.
 tx pull -a -f --minimum-perc=75
 
+# Extract all messages from project, including log messages.
 extract_messages_log "$PROJECT"
 
+# Update existing translation files with extracted messages.
 PO_FILES=`find ${PROJECT}/locale -name "${PROJECT}.po"`
 if [ -n "$PO_FILES" ]; then
     # Use updated .pot file to update translations
     python setup.py update_catalog --no-fuzzy-matching  --ignore-obsolete=true
 fi
-# We cannot run update_catlog for the log files, since there is no
+# We cannot run update_catalog for the log files, since there is no
 # option to specify the keyword and thus an update_catalog run would
 # add the messages with the default keywords. Therefore use msgmerge
 # directly.
@@ -56,10 +64,14 @@ for level in $LEVELS ; do
     fi
 done
 
-#
-# Add all changed files to git
+# Add all changed files to git.
 git add $PROJECT/locale/*
 
+# Filter out commits we do not want.
 filter_commits
+
+# Remove obsolete files.
 cleanup_po_files "$PROJECT"
+
+# Propose patch to gerrit if there are changes.
 send_patch
