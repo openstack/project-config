@@ -42,10 +42,15 @@ def devstack_params(item, job, params):
     # jenkins uses 'devstack-precise || devstack-trusty'.
     # This is necessary to get the gearman plugin to register
     # gearman jobs with both node labels.
-    if ((hasattr(change, 'branch') and
-        change.branch == 'stable/icehouse') or
-        ('icehouse' in job.name or
-        'precise' in job.name)):
+    # Remove this when we are done doing prelimindary dib testing.
+    if 'icehouse-dibtest' in job.name:
+        params['ZUUL_NODE'] = 'devstack-precise-dib'
+    elif 'dibtest' in job.name:
+        params['ZUUL_NODE'] = 'devstack-trusty-dib'
+    elif ((hasattr(change, 'branch') and
+            change.branch == 'stable/icehouse') or
+            ('icehouse' in job.name or
+             'precise' in job.name)):
         params['ZUUL_NODE'] = 'devstack-precise'
     elif 'centos7' in job.name:
         params['ZUUL_NODE'] = 'devstack-centos7'
@@ -53,9 +58,6 @@ def devstack_params(item, job, params):
         params['ZUUL_NODE'] = 'devstack-trusty-2-node'
     elif 'newlibvirt' in job.name:
         params['ZUUL_NODE'] = 'devstack-f20-virt-preview'
-    # Remove this when we are done doing prelimindary dib testing.
-    elif 'dibtest' in job.name:
-        params['ZUUL_NODE'] = 'devstack-trusty-dib'
     else:
         params['ZUUL_NODE'] = 'devstack-trusty'
 
