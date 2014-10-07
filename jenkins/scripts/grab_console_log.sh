@@ -3,9 +3,8 @@
 echo "Grabbing consoleLog"
 
 # Get the plain text version (does not contain links or timestamps)
-# (Disabled for now)
-#console_log_path='consoleText'
-#wget -O /tmp/console.txt --no-check-certificate $BUILD_URL$console_log_path
+console_log_path='consoleText'
+wget -O /tmp/console.txt --no-check-certificate $BUILD_URL$console_log_path
 
 # Grab the HTML version of the log (includes timestamps)
 console_log_path='logText/progressiveHtml'
