@@ -18,11 +18,10 @@ set -e
 
 export ELEMENTS_PATH=${ELEMENTS_PATH:-nodepool/elements}
 export DISTRO=${DISTRO:-ubuntu}
-export DIB_RELEASE=${DIB_RELEASE:-trusty}
-export DIB_IMAGE_NAME=${DIB_IMAGE_NAME:-${DISTRO}_${DIB_RELEASE}}
-export DIB_IMAGE_FILENAME=${DIB_IMAGE_FILENAME:-${DIB_IMAGE_NAME}.qcow}
+export IMAGE_NAME=${IMAGE_NAME:-devstack-gate}
 export NODEPOOL_SCRIPTDIR=${NODEPOOL_SCRIPTDIR:-nodepool/scripts}
 export CONFIG_SOURCE=${CONFIG_SOURCE:-https://git.openstack.org/openstack-infra/config}
 export CONFIG_REF=${CONFIG_REF:-master}
 
-disk-image-create -x --no-tmpfs -o devstack-gate-$DIB_RELEASE $DISTRO vm openstack-repos puppet nodepool-base node-devstack
+disk-image-create -x --no-tmpfs -o $IMAGE_NAME $DISTRO \
+    vm openstack-repos puppet nodepool-base node-devstack
