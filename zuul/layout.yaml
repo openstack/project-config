@@ -3460,9 +3460,18 @@ projects:
     template:
       - name: merge-check
       - name: publish-to-pypi
-      - name: python-jobs
+    check:
+      - gate-storyboard-pep8
+      - gate-storyboard-docs
+      - gate-storyboard-python27
+    gate:
+      - gate-storyboard-docs
+      - gate-storyboard-pep8
+      - gate-storyboard-python27
     post:
       - storyboard-docs
+      - storyboard-branch-tarball
+      - storyboard-coverage
     pre-release:
       - storyboard-docs
     release:
