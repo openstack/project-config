@@ -418,7 +418,7 @@ function start_xenserver_on_next_boot {
     log_extlinux $bootfiles/extlinux.conf
 }
 
-function log_extlinux() {
+function log_extlinux {
     local extlinux_conf
 
     extlinux_conf="$1"
