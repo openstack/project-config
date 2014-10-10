@@ -23,10 +23,26 @@ if [ -f /usr/bin/yum ]; then
     sudo yum -y install python-devel make automake gcc gcc-c++ \
         kernel-devel redhat-lsb-core
 elif [ -f /usr/bin/apt-get ]; then
-    sudo DEBIAN_FRONTEND=noninteractive apt-get \
-        --option "Dpkg::Options::=--force-confold" \
-        --assume-yes install build-essential python-dev \
-        python-software-properties linux-headers-virtual linux-headers-`uname -r`
+    if [ "$(lsb_release -c -s)" = "precise" ]; then
+        # temporary - remove the breaking -70 kernel and
+        # reinstall -69 to prevent openvswitch breakage
+        sudo DEBIAN_FRONTEND=noninteractive apt-get \
+            --option "Dpkg::Options::=--force-confold" \
+            --assume-yes remove linux-headers-3.2.0-70 \
+            linux-headers-3.2.0-70-virtual \
+            linux-image-3.2.0-70-virtual
+        sudo DEBIAN_FRONTEND=noninteractive apt-get \
+            --option "Dpkg::Options::=--force-confold" \
+            --assume-yes install --reinstall linux-headers-3.2.0-69 \
+            linux-headers-3.2.0-69-virtual \
+            linux-image-3.2.0-69-virtual \
+            python-software-properties build-essential python-dev
+    else
+        sudo DEBIAN_FRONTEND=noninteractive apt-get \
+            --option "Dpkg::Options::=--force-confold" \
+            --assume-yes install build-essential python-dev \
+            python-software-properties linux-headers-virtual linux-headers-`uname -r`
+    fi
 else
     echo "Unsupported distro."
     exit 1
