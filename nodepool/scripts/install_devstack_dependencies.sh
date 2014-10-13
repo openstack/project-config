@@ -30,7 +30,9 @@ elif [ -f /usr/bin/apt-get ]; then
             --option "Dpkg::Options::=--force-confold" \
             --assume-yes remove linux-headers-3.2.0-70 \
             linux-headers-3.2.0-70-virtual \
-            linux-image-3.2.0-70-virtual
+            linux-image-3.2.0-70-virtual \
+            linux-headers-3.2.0-70-generic \
+            linux-image-3.2.0-70-generic
         sudo DEBIAN_FRONTEND=noninteractive apt-get \
             --option "Dpkg::Options::=--force-confold" \
             --assume-yes install --reinstall linux-headers-3.2.0-69 \
