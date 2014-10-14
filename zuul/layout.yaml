@@ -4,7 +4,8 @@ includes:
 pipelines:
   - name: check
     description: Newly uploaded patchsets enter this pipeline to receive an initial +/-1 Verified vote from Jenkins.
-    failure-message: Build failed.  For information on how to proceed, see https://wiki.openstack.org/wiki/GerritJenkinsGit#Test_Failures
+    success-message: Build succeeded (check pipeline).
+    failure-message: Build failed (check pipeline).  For information on how to proceed, see https://wiki.openstack.org/wiki/GerritJenkinsGit#Test_Failures
     manager: IndependentPipelineManager
     source: gerrit
     precedence: normal
@@ -32,7 +33,8 @@ pipelines:
 
   - name: gate
     description: Changes that have been approved by core developers are enqueued in order in this pipeline, and if they pass tests in Jenkins, will be merged.
-    failure-message: Build failed.  For information on how to proceed, see https://wiki.openstack.org/wiki/GerritJenkinsGit#Test_Failures
+    success-message: Build succeeded (gate pipeline).
+    failure-message: Build failed (gate pipeline).  For information on how to proceed, see https://wiki.openstack.org/wiki/GerritJenkinsGit#Test_Failures
     manager: DependentPipelineManager
     source: gerrit
     precedence: high
@@ -118,6 +120,8 @@ pipelines:
 
   - name: experimental
     description: On-demand pipeline for requesting a run against a set of jobs that are not yet gating. Leave review comment of "check experimental" to run jobs in this pipeline.
+    success-message: Build succeeded (experimental pipeline).
+    failure-message: Build failed (experimental pipeline).
     manager: IndependentPipelineManager
     source: gerrit
     precedence: low
@@ -175,8 +179,9 @@ pipelines:
       there isn't a system infra problem. only a TripleO specific problem.
       Once the TripleO test cloud is multi region and has some months of
       proven stability this will be folded back into the normal check pipeline.
+    success-message: Build succeeded (check-tripleo pipeline).
     failure-message: >
-      Build failed.  For information on how to proceed, see
+      Build failed (check-tripleo pipeline).  For information on how to proceed, see
       https://wiki.openstack.org/wiki/GerritJenkinsGit#Test_Failures
     manager: IndependentPipelineManager
     source: gerrit
@@ -200,6 +205,8 @@ pipelines:
       On-demand pipeline for requesting a run against a tripleo experimental
       jobs - slower and running without redundancy - so not yet gating. Leave
       review comment of "check experimental" to run jobs in this pipeline.
+    success-message: Build succeeded (experimental-tripleo).
+    failure-message: Build failed (experimental-tripleo).
     manager: IndependentPipelineManager
     source: gerrit
     precedence: low
@@ -216,6 +223,7 @@ pipelines:
     description: >
       Each time a change merges, this pipeline verifies that all open changes
       on the same project are still mergeable.
+    failure-message: Build failed (merge-check pipeline).
     manager: IndependentPipelineManager
     source: gerrit
     precedence: low
