@@ -17,12 +17,13 @@
           site: 'docs.openstack.org'
           source: 'doc/build/html/**'
           target: 'developer/devstack'
-          remove-prefix: 'docs/html'
+          remove-prefix: 'doc/build/html'
           excludes: ''
       - console-log
 
 - job:
     name: gate-devstack-publish-docs
+    node: 'bare-precise || bare-trusty'
 
     builders:
       - revoke-sudo
@@ -35,4 +36,3 @@
       - console-log
       - upload-sphinx-draft
 
-    node: '{node}'
