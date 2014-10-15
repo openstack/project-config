@@ -29,8 +29,17 @@ setup_translation
 
 setup_manuals "$PROJECT"
 
-# Pull upstream translations of files
+# Download new files.
+# Also downloads updates for existing files that are
+# translated to a certain amount as configured in setup_manuals.
+# The function setup_manuals will setup most files --minimum-perc=75
+# for most files.
 tx pull -a -f
+
+# Pull upstream translations of all downloaded files but do not
+# download new files.
+# Use lower percentage here to update the existing files.
+tx pull -f --minimum-perc=50
 
 # Add imported upstream translations to git
 for FILE in ${DocFolder}/*; do
