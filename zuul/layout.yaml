@@ -248,12 +248,10 @@ project-templates:
     check:
       - 'gate-{name}-pep8'
       - 'gate-{name}-docs'
-      - 'gate-{name}-python26'
       - 'gate-{name}-python27'
     gate:
       - 'gate-{name}-docs'
       - 'gate-{name}-pep8'
-      - 'gate-{name}-python26'
       - 'gate-{name}-python27'
     post:
       - '{name}-branch-tarball'
@@ -827,8 +825,10 @@ projects:
       - name: translation-jobs
       - name: openstack-server-publish-jobs
     check:
+      - gate-barbican-python26
       - gate-barbican-devstack-dsvm
     gate:
+      - gate-barbican-python26
       - gate-barbican-devstack-dsvm
     pre-release:
       - barbican-tarball
@@ -851,11 +851,13 @@ projects:
       - name: integrated-gate
       - name: translation-jobs
     check:
+      - gate-ceilometer-python26
       - check-devstack-dsvm-cells
       - check-swift-dsvm-functional
       - gate-tempest-dsvm-ceilometer-mongodb
       - gate-tempest-dsvm-ceilometer-mongodb-full
     gate:
+      - gate-ceilometer-python26
       - gate-devstack-dsvm-cells
       - gate-swift-dsvm-functional
     experimental:
@@ -885,10 +887,12 @@ projects:
       - name: integrated-gate
       - name: translation-jobs
     check:
+      - gate-cinder-python26
       - gate-cinder-pylint
       - check-devstack-dsvm-cells
       - gate-rally-dsvm-cinder
     gate:
+      - gate-cinder-python26
       - gate-devstack-dsvm-cells
     experimental:
       - gate-grenade-dsvm-forward
@@ -919,8 +923,10 @@ projects:
       - name: publish-to-pypi
       - name: translation-jobs
     check:
+      - gate-designate-python26
       - gate-designate-devstack-dsvm
     gate:
+      - gate-designate-python26
       - gate-designate-devstack-dsvm
     post:
       - designate-coverage
@@ -941,8 +947,10 @@ projects:
       - name: openstack-server-publish-jobs
       - name: check-requirements
     check:
+      - gate-gantt-python26
       - gate-gantt-pylint
     gate:
+      - gate-gantt-python26
       - noop
 
   - name: openstack/glance
@@ -957,9 +965,11 @@ projects:
       - name: large-ops
       - name: experimental-tripleo-jobs
     check:
+      - gate-glance-python26
       - check-devstack-dsvm-cells
       - gate-rally-dsvm-glance
     gate:
+      - gate-glance-python26
       - gate-devstack-dsvm-cells
     experimental:
       - gate-grenade-dsvm-forward
@@ -988,11 +998,13 @@ projects:
       - name: publish-to-pypi
       - name: experimental-tripleo-jobs
     check:
+      - gate-glance_store-python26
       - check-grenade-dsvm
       - check-devstack-dsvm-cells
       - check-tempest-dsvm-full
       - check-tempest-dsvm-postgres-full
     gate:
+      - gate-glance_store-python26
       - gate-grenade-dsvm
       - gate-devstack-dsvm-cells
       - gate-tempest-dsvm-full
@@ -1015,9 +1027,11 @@ projects:
       - name: translation-jobs
       - name: experimental-tripleo-jobs
     check:
+      - gate-heat-python26
       - check-heat-dsvm-functional
       - check-devstack-dsvm-cells
     gate:
+      - gate-heat-python26
       - gate-devstack-dsvm-cells
     post:
       - heat-coverage
@@ -1047,11 +1061,13 @@ projects:
       - name: translation-jobs
       - name: experimental-tripleo-jobs
     check:
+      - gate-horizon-python26
       - gate-horizon-python27-django14
       - gate-horizon-selenium
       - gate-horizon-jshint
       - check-devstack-dsvm-cells
     gate:
+      - gate-horizon-python26
       - gate-horizon-python27-django14
       - gate-horizon-selenium
       - check-devstack-dsvm-cells
@@ -1074,12 +1090,14 @@ projects:
       - name: check-requirements
       - name: translation-jobs
     check:
+      - gate-ironic-python26
       - check-tempest-dsvm-ironic-pxe_ssh
       - check-tempest-dsvm-ironic-pxe_ssh-postgres
       - check-tempest-dsvm-ironic-agent_ssh-nv
       - check-tempest-dsvm-ironic-parallel-nv
       - check-grenade-dsvm-ironic-sideways-nv
     post:
+      - gate-ironic-python26
       - ironic-coverage
     check-tripleo:
       - check-tripleo-ironic-undercloud-precise-nonha
@@ -1113,10 +1131,12 @@ projects:
       - name: translation-jobs
       - name: experimental-tripleo-jobs
     check:
+      - gate-keystone-python26
       - check-devstack-dsvm-cells
       - check-swift-dsvm-functional
       - gate-rally-dsvm-keystone
     gate:
+      - gate-keystone-python26
       - gate-devstack-dsvm-cells
       - gate-swift-dsvm-functional
     post:
@@ -1149,6 +1169,10 @@ projects:
       - name: integrated-gate
       - name: stable-compat-jobs
       - name: publish-to-pypi
+    check:
+      - gate-keystonemiddleware-python26
+    gate:
+      - gate-keystonemiddleware-python26
     post:
       - keystonemiddleware-coverage
 
@@ -1158,7 +1182,10 @@ projects:
       - name: python-jobs
       - name: check-requirements
     check:
+      - gate-kite-python26
       - gate-kite-python33
+    gate:
+      - gate-kite-python26
     pre-release:
       - kite-tarball
     release:
@@ -1170,11 +1197,13 @@ projects:
       - name: openstack-server-publish-jobs
       - name: python-jobs
     check:
+      - gate-manila-python26
       - gate-manila-devstack-dsvm-neutron
       - gate-manila-pylint
       - gate-manila-tempest-dsvm-neutron
       - gate-manila-tempest-dsvm-neutron-multibackend
     gate:
+      - gate-manila-python26
       - gate-manila-devstack-dsvm-neutron
     post:
       - manila-coverage
@@ -1190,6 +1219,7 @@ projects:
       - name: translation-jobs
       - name: experimental-tripleo-jobs
     check:
+      - gate-neutron-python26
       - check-neutron-dsvm-functional
       - gate-rally-dsvm-neutron-neutron
       - check-tempest-dsvm-neutron-2
@@ -1199,6 +1229,7 @@ projects:
       - check-tempest-dsvm-neutron-dvr
       - gate-neutron-pylint
     gate:
+      - gate-neutron-python26
       - gate-neutron-dsvm-functional
       - gate-tempest-dsvm-neutron-2
       - gate-tempest-dsvm-neutron-pg-2
@@ -1237,11 +1268,13 @@ projects:
       - name: translation-jobs
       - name: experimental-tripleo-jobs
     check:
+      - gate-nova-python26
       - check-devstack-dsvm-cells
       - gate-nova-pylint
       - check-grenade-dsvm-partial-ncpu
       - check-tempest-dsvm-ironic-pxe_ssh-nv
     gate:
+      - gate-nova-python26
       - gate-devstack-dsvm-cells
       - gate-grenade-dsvm-partial-ncpu
     post:
@@ -1277,6 +1310,10 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
       - name: lib-forward-testing
+    check:
+      - gate-pycadf-python26
+    gate:
+      - gate-pycadf-python26
     post:
       - pycadf-coverage
 
@@ -1291,8 +1328,10 @@ projects:
       - name: docs-on-rtfd
       - name: translation-jobs
     check:
+      - gate-sahara-python26
       - gate-sahara-pylint
     post:
+      - gate-sahara-python26
       - sahara-coverage
     release:
       - sahara-merge-release-tags
@@ -1317,10 +1356,12 @@ projects:
       - name: translation-jobs
       - name: experimental-tripleo-jobs
     check:
+      - gate-swift-python26
       - gate-swift-tox-func
       - check-swift-dsvm-functional
       - check-devstack-dsvm-cells
     gate:
+      - gate-swift-python26
       - gate-swift-tox-func
       - gate-swift-dsvm-functional
       - gate-devstack-dsvm-cells
@@ -1348,9 +1389,11 @@ projects:
       - name: publish-to-pypi
       - name: lib-forward-testing
     check:
+      - gate-taskflow-python26
       - gate-taskflow-unittests-26-sa7-mysql
       - gate-taskflow-unittests-27-sa8-mysql
     gate:
+      - gate-taskflow-python26
       - gate-taskflow-unittests-26-sa7-mysql
       - gate-taskflow-unittests-27-sa8-mysql
 
@@ -1364,6 +1407,10 @@ projects:
       - name: integrated-gate
       - name: openstack-doc-gate
       - name: translation-jobs
+    check:
+      - gate-trove-python26
+    gate:
+      - gate-trove-python26
     post:
       - trove-tox-doc-publishdocs
       - trove-coverage
@@ -1391,6 +1438,10 @@ projects:
       - name: merge-check
       - name: python-jobs
       - name: check-tripleo-jobs
+    check:
+      - gate-tuskar-python26
+    gate:
+      - gate-tuskar-python26
     post:
       - tuskar-coverage
     pre-release:
@@ -1408,9 +1459,11 @@ projects:
       - name: openstack-server-publish-jobs
       - name: pypy-jobs
     check:
+      - gate-zaqar-python26
       - check-tempest-dsvm-zaqar
       - gate-zaqar-python33
     gate:
+      - gate-zaqar-python26
       - gate-tempest-dsvm-zaqar
     pre-release:
       - zaqar-tarball
@@ -1478,8 +1531,10 @@ projects:
       - name: pypy-jobs
       - name: experimental-tripleo-jobs
     check:
+      - gate-python-cinderclient-python26
       - check-devstack-dsvm-cells
     gate:
+      - gate-python-cinderclient-python26
       - gate-devstack-dsvm-cells
     post:
       - python-cinderclient-coverage
@@ -1494,8 +1549,10 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
     check:
+      - gate-python-designateclient-python26
       - gate-designate-devstack-dsvm
     gate:
+      - gate-python-designateclient-python26
       - gate-designate-devstack-dsvm
     post:
       - python-designateclient-coverage
@@ -1511,8 +1568,10 @@ projects:
       - name: publish-to-pypi
       - name: experimental-tripleo-jobs
     check:
+      - gate-python-ganttclient-python26
       - check-devstack-dsvm-cells
     gate:
+      - gate-python-ganttclient-python26
       - gate-devstack-dsvm-cells
     experimental:
       - gate-grenade-dsvm-forward
@@ -1531,8 +1590,10 @@ projects:
       - name: pypy-jobs
       - name: experimental-tripleo-jobs
     check:
+      - gate-python-glanceclient-python26
       - check-devstack-dsvm-cells
     gate:
+      - gate-python-glanceclient-python26
       - gate-devstack-dsvm-cells
     post:
       - python-glanceclient-coverage
@@ -1576,7 +1637,10 @@ projects:
       - name: publish-to-pypi
       - name: pypy-jobs
     check:
+      - gate-python-ironicclient-python26
       - check-tempest-dsvm-ironic-pxe_ssh
+    gate:
+      - gate-python-ironicclient-python26
     check-tripleo:
       - check-tripleo-ironic-undercloud-precise-nonha
     gate:
@@ -1597,8 +1661,10 @@ projects:
       - name: publish-to-pypi
       - name: experimental-tripleo-jobs
     check:
+      - gate-python-keystoneclient-python26
       - check-devstack-dsvm-cells
     gate:
+      - gate-python-keystoneclient-python26
       - gate-devstack-dsvm-cells
     post:
       - python-keystoneclient-coverage
@@ -1612,6 +1678,10 @@ projects:
       - name: python3-jobs
       - name: check-requirements
       - name: publish-to-pypi
+    check:
+      - gate-python-keystoneclient-federation-python26
+    gate:
+      - gate-python-keystoneclient-federation-python26
 
   - name: openstack/python-keystoneclient-kerberos
     template:
@@ -1619,6 +1689,10 @@ projects:
       - name: python-jobs
       - name: check-requirements
       - name: publish-to-pypi
+    check:
+      - gate-python-keystoneclient-kerberos-python26
+    gate:
+      - gate-python-keystoneclient-kerberos-python26
     experimental:
       - gate-python-keystoneclient-kerberos-python34
 
@@ -1629,6 +1703,10 @@ projects:
       - name: python-jobs
       - name: python3-jobs
       - name: publish-to-pypi
+    check:
+      - gate-python-kiteclient-python26
+    gate:
+      - gate-python-kiteclient-python26
     post:
       - python-kiteclient-coverage
 
@@ -1641,6 +1719,9 @@ projects:
       - name: python3-jobs
     check:
       - gate-manila-tempest-dsvm-neutron
+      - gate-python-manilaclient-python26
+    gate:
+      - gate-python-manilaclient-python26
     post:
       - python-manilaclient-coverage
 
@@ -1656,7 +1737,10 @@ projects:
       - name: pypy-jobs
       - name: experimental-tripleo-jobs
     check:
+      - gate-python-neutronclient-python26
       - gate-python-neutronclient-python33
+    gate:
+      - gate-python-neutronclient-python26
     post:
       - python-neutronclient-coverage
     experimental:
@@ -1676,8 +1760,10 @@ projects:
       - name: pypy-jobs
       - name: experimental-tripleo-jobs
     check:
+      - gate-python-novaclient-python26
       - check-devstack-dsvm-cells
     gate:
+      - gate-python-novaclient-python26
       - gate-devstack-dsvm-cells
     post:
       - python-novaclient-coverage
@@ -1696,8 +1782,10 @@ projects:
       - name: publish-to-pypi
       - name: translation-jobs
     check:
+      - gate-python-openstackclient-python26
       - check-osc-dsvm-functional
     gate:
+      - gate-python-openstackclient-python26
       - gate-osc-dsvm-functional
     post:
       - python-openstackclient-coverage
@@ -1710,6 +1798,10 @@ projects:
       - name: check-requirements
       - name: integrated-gate-sahara
       - name: publish-to-pypi
+    check:
+      - gate-python-saharaclient-python26
+    gate:
+      - gate-python-saharaclient-python26
     post:
       - python-saharaclient-coverage
     experimental:
@@ -1730,9 +1822,11 @@ projects:
       - name: pypy-jobs
       - name: experimental-tripleo-jobs
     check:
+      - gate-python-swiftclient-python26
       - check-swift-dsvm-functional
       - check-swiftclient-dsvm-functional
     gate:
+      - gate-python-swiftclient-python26
       - gate-swift-dsvm-functional
     post:
       - python-swiftclient-coverage
@@ -1748,6 +1842,10 @@ projects:
       - name: stable-compat-jobs
       - name: publish-to-pypi
       - name: pypy-jobs
+    check:
+      - gate-python-troveclient-python26
+    gate:
+      - gate-python-troveclient-python26
 
   - name: openstack/python-tuskarclient
     template:
@@ -1756,7 +1854,10 @@ projects:
       - name: publish-to-pypi
       - name: check-tripleo-jobs
     check:
+      - gate-python-tuskarclient-python26
       - gate-python-tuskarclient-python33
+    gate:
+      - gate-python-tuskarclient-python26
     post:
       - python-tuskarclient-coverage
 
@@ -1795,11 +1896,13 @@ projects:
       - name: lib-forward-testing
       - name: openstack-server-publish-jobs
     check:
+      - gate-cliff-python26
       - gate-cliff-tox-neutronclient-stable
       - gate-cliff-tox-neutronclient-tip
       - gate-cliff-tox-openstackclient-stable
       - gate-cliff-tox-openstackclient-tip
     gate:
+      - gate-cliff-python26
       - gate-cliff-tox-neutronclient-stable
       - gate-cliff-tox-neutronclient-tip
       - gate-cliff-tox-openstackclient-stable
@@ -1812,6 +1915,10 @@ projects:
       - name: python3-jobs
       - name: openstack-server-publish-jobs
       - name: check-requirements
+    check:
+      - gate-oslo-incubator-python26
+    gate:
+      - gate-oslo-incubator-python26
     post:
       - oslo-incubator-coverage
 
@@ -1830,6 +1937,10 @@ projects:
       - name: python3-jobs
       - name: translation-jobs
       - name: lib-forward-testing
+    check:
+      - gate-oslo.concurrency-python26
+    gate:
+      - gate-oslo.concurrency-python26
     post:
       - oslo.concurrency-coverage
 
@@ -1844,8 +1955,10 @@ projects:
       - name: lib-forward-testing
       - name: experimental-tripleo-jobs
     check:
+      - gate-oslo.config-python26
       - check-devstack-dsvm-cells
     gate:
+      - gate-oslo.config-python26
       - gate-devstack-dsvm-cells
 
   - name: openstack/oslo.db
@@ -1859,12 +1972,14 @@ projects:
       - name: lib-forward-testing
       - name: experimental-tripleo-jobs
     check:
+      - gate-oslo.db-python26
       - gate-tempest-dsvm-largeops-src-oslo.db
       - check-devstack-dsvm-cells
       - gate-oslo.db-tox-sqla_08
       - gate-oslo.db-tox-sqla_09
       - gate-oslo.db-python33
     gate:
+      - gate-oslo.db-python26
       - gate-devstack-dsvm-cells
 
   - name: openstack/oslo.i18n
@@ -1879,8 +1994,10 @@ projects:
       - name: lib-forward-testing
       - name: experimental-tripleo-jobs
     check:
+      - gate-oslo.i18n-python26
       - check-devstack-dsvm-cells
     gate:
+      - gate-oslo.i18n-python26
       - gate-devstack-dsvm-cells
     post:
       - oslo.i18n-coverage
@@ -1895,7 +2012,10 @@ projects:
       - name: translation-jobs
       - name: lib-forward-testing
     check:
+      - gate-oslo.log-python26
       - gate-oslo.log-python33
+    gate:
+      - gate-oslo.log-python26
 
   - name: openstack/oslo.messaging
     template:
@@ -1909,9 +2029,11 @@ projects:
       - name: lib-forward-testing
       - name: experimental-tripleo-jobs
     check:
+      - gate-oslo.messaging-python26
       - gate-tempest-dsvm-largeops-src-oslo.messaging
       - check-devstack-dsvm-cells
     gate:
+      - gate-oslo.messaging-python26
       - gate-devstack-dsvm-cells
 
   - name: openstack/oslo.middleware
@@ -1925,6 +2047,10 @@ projects:
       - name: publish-to-pypi
       - name: translation-jobs
       - name: lib-forward-testing
+    check:
+      - gate-oslo.middleware-python26
+    gate:
+      - gate-oslo.middleware-python26
 
   - name: openstack/oslo.rootwrap
     template:
@@ -1958,6 +2084,10 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
       - name: lib-forward-testing
+    check:
+      - gate-oslo.serialization-python26
+    gate:
+      - gate-oslo.serialization-python26
 
   - name: openstack/oslo.utils
     template:
@@ -1969,6 +2099,10 @@ projects:
       - name: publish-to-pypi
       - name: translation-jobs
       - name: lib-forward-testing
+    check:
+      - gate-oslo.utils-python26
+    gate:
+      - gate-oslo.utils-python26
 
   - name: openstack/oslo.version
     template:
@@ -1982,8 +2116,10 @@ projects:
       - name: pypy-jobs
       - name: experimental-tripleo-jobs
     check:
+      - gate-oslo.version-python26
       - check-devstack-dsvm-cells
     gate:
+      - gate-oslo.version-python26
       - gate-devstack-dsvm-cells
 
   - name: openstack/oslo.vmware
@@ -1996,7 +2132,10 @@ projects:
       - name: translation-jobs
       - name: lib-forward-testing
     check:
+      - gate-oslo.vmware-python26
       - gate-oslo.vmware-python33
+    gate:
+      - gate-oslo.vmware-python26
 
   - name: openstack/oslosphinx
     template:
@@ -2022,6 +2161,10 @@ projects:
       - name: openstack-server-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
+    check:
+      - gate-oslotest-python26
+    gate:
+      - gate-oslotest-python26
     post:
       - oslotest-coverage
 
@@ -2034,6 +2177,10 @@ projects:
       - name: check-requirements
       - name: integrated-gate
       - name: publish-to-pypi
+    check:
+      - gate-pylockfile-python26
+    gate:
+      - gate-pylockfile-python26
 
   - name: openstack/stevedore
     template:
@@ -2046,6 +2193,10 @@ projects:
       - name: docs-on-rtfd
       - name: lib-forward-testing
       - name: openstack-server-publish-jobs
+    check:
+      - gate-stevedore-python26
+    gate:
+      - gate-stevedore-python26
 
 ########################################################################
 # Section: Other OpenStack projects
@@ -2094,6 +2245,10 @@ projects:
       - name: integrated-gate
       - name: stable-compat-jobs
       - name: translation-jobs
+    check:
+      - gate-django_openstack_auth-python26
+    gate:
+      - gate-django_openstack_auth-python26
     pre-release:
       - django_openstack_auth-tarball
     release:
@@ -2198,6 +2353,10 @@ projects:
       - name: python-jobs
       - name: python3-jobs
       - name: check-tripleo-jobs
+    check:
+      - gate-os-cloud-config-python26
+    gate:
+      - gate-os-cloud-config-python26
     post:
       - os-cloud-config-docs
       - os-cloud-config-coverage
@@ -2521,6 +2680,10 @@ projects:
       - name: check-tripleo-jobs
     check-tripleo:
       - check-tripleo-ironic-overcloud-precise-ha
+    check:
+      - gate-tripleo-puppet-elements-python26
+    gate:
+      - gate-tripleo-puppet-elements-python26
     post:
       - tripleo-puppet-elements-branch-tarball
 
@@ -2695,6 +2858,10 @@ projects:
       - name: merge-check
       - name: publish-to-pypi
       - name: python-jobs
+    check:
+      - gate-bashate-python26
+    gate:
+      - gate-bashate-python26
 
   - name: openstack-dev/cookiecutter
     template:
@@ -2762,8 +2929,11 @@ projects:
       - name: publish-to-pypi
       - name: pypy-jobs
     check:
+      - gate-hacking-python26
       - gate-hacking-python34
       - gate-hacking-integration-nova
+    gate:
+      - gate-hacking-python26
     post:
       - hacking-docs
       - hacking-coverage
@@ -2807,8 +2977,10 @@ projects:
       - name: pypy-jobs
       - name: experimental-tripleo-jobs
     check:
+      - gate-pbr-python26
       - check-requirements-integration-dsvm
     gate:
+      - gate-pbr-python26
       - gate-requirements-integration-dsvm
     post:
       - pbr-coverage
@@ -2916,6 +3088,10 @@ projects:
       - name: python-jobs
       - name: publish-to-pypi
       - name: docs-on-rtfd
+    check:
+      - gate-gear-python26
+    gate:
+      - gate-gear-python26
 
   - name: openstack-infra/gearman-plugin
     template:
@@ -3045,8 +3221,11 @@ projects:
       - name: python3-jobs
       - name: publish-to-pypi
     check:
+      - gate-jenkins-job-builder-python26
       - jenkins-job-builder-compare-xml
       - jenkins-job-builder-coverage
+    gate:
+      - gate-jenkins-job-builder-python26
     post:
       - jenkins-job-builder-docs
       - jenkins-job-builder-coverage
@@ -3066,6 +3245,10 @@ projects:
       - name: merge-check
       - name: python-jobs
       - name: publish-to-pypi
+    check:
+      - gate-nodepool-python26
+    gate:
+      - gate-nodepool-python26
     post:
       - nodepool-docs
       - nodepool-coverage
@@ -3254,6 +3437,10 @@ projects:
       - name: publish-to-pypi
       - name: python-jobs
       - name: python3-jobs
+    check:
+      - gate-reviewstats-python26
+    gate:
+      - gate-reviewstats-python26
 
   - name: openstack-infra/statusbot
     template:
@@ -3351,6 +3538,10 @@ projects:
       - name: merge-check
       - name: publish-to-pypi
       - name: python-jobs
+    check:
+      - gate-vinz-python26
+    gate:
+      - gate-vinz-python26
     post:
       - vinz-docs
     pre-release:
@@ -3394,7 +3585,10 @@ projects:
       - name: publish-to-pypi
       - name: python-jobs
     check:
+      - gate-zuul-python26
       - dev-zuul-coverage
+    gate:
+      - gate-zuul-python26
     post:
       - zuul-docs
       - zuul-coverage
@@ -3480,8 +3674,11 @@ projects:
       - name: python-jobs
       - name: check-requirements
     check:
+      - gate-blazar-python26
       - gate-blazar-devstack-dsvm
       - gate-blazar-pylint
+    gate:
+      - gate-blazar-python26
     pre-release:
       - blazar-tarball
     release:
@@ -3599,6 +3796,10 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
+    check:
+      - gate-cloudkitty-dashboard-python26
+    gate:
+      - gate-cloudkitty-dashboard-python26
     experimental:
       - gate-cloudkitty-dashboard-python33
 
@@ -3771,6 +3972,10 @@ projects:
       - name: merge-check
       - name: python-jobs
       - name: publish-to-pypi
+    check:
+      - gate-doc8-python26
+    gate:
+      - gate-doc8-python26
 
   - name: stackforge/dox
     template:
@@ -3830,6 +4035,10 @@ projects:
     - name: merge-check
     - name: python-jobs
     - name: python3-jobs
+    check:
+      - gate-flame-python26
+    gate:
+      - gate-flame-python26
 
   - name: stackforge/freezer
     template:
@@ -3992,11 +4201,19 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
+    check:
+      - gate-group-based-policy-python26
+    gate:
+      - gate-group-based-policy-python26
 
   - name: stackforge/group-based-policy-automation
     template:
       - name: merge-check
       - name: python-jobs
+    check:
+      - gate-group-based-policy-automation-python26
+    gate:
+      - gate-group-based-policy-automation-python26
 
   - name: stackforge/group-based-policy-specs
     template:
@@ -4007,6 +4224,10 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
+    check:
+      - gate-group-based-policy-ui-python26
+    gate:
+      - gate-group-based-policy-ui-python26
 
   - name: stackforge/healthnmon
     template:
@@ -4025,6 +4246,10 @@ projects:
       - name: python-jobs
       - name: python3-jobs
       - name: publish-to-pypi
+    check:
+      - gate-heat-translator-python26
+    gate:
+      - gate-heat-translator-python26
     post:
       - heat-translator-coverage
     pre-release:
@@ -4097,7 +4322,10 @@ projects:
       - name: docs-on-rtfd
       - name: publish-to-pypi
     check:
+      - gate-logaas-python26
       - logaas-coverage
+    gate:
+      - gate-logaas-python26
 
   - name: stackforge/magnetodb
     template:
@@ -4143,8 +4371,11 @@ projects:
       - name: publish-to-pypi
       - name: python-jobs
     check:
+      - gate-mistral-python26
       - gate-mistral-python33
       - gate-mistral-devstack-dsvm
+    gate:
+      - gate-mistral-python26
 
   - name: stackforge/mistral-dashboard
     template:
@@ -4152,6 +4383,10 @@ projects:
       - name: python-jobs
       - name: python3-jobs
       - name: publish-to-pypi
+    check:
+      - gate-mistral-dashboard-python26
+    gate:
+      - gate-mistral-dashboard-python26
 
   - name: stackforge/mistral-extra
     template:
@@ -4159,7 +4394,10 @@ projects:
       - name: publish-to-pypi
       - name: python-jobs
     check:
+      - gate-mistral-extra-python26
       - gate-mistral-extra-python33
+    gate:
+      - gate-mistral-extra-python26
 
   - name: stackforge/monasca-agent
     template:
@@ -4275,9 +4513,11 @@ projects:
       - name: publish-to-pypi
       - name: docs-on-rtfd
     check:
+      - gate-murano-python26
       - gate-murano-requirements
       - gate-murano-devstack-dsvm
     gate:
+      - gate-murano-python26
       - gate-murano-devstack-dsvm
     post:
       - murano-coverage
@@ -4292,7 +4532,10 @@ projects:
       - name: python-jobs
       - name: publish-to-pypi
     check:
+      - gate-murano-agent-python26
       - gate-murano-agent-requirements
+    gate:
+      - gate-murano-agent-python26
     post:
       - murano-agent-coverage
     pre-release:
@@ -4353,8 +4596,11 @@ projects:
       - name: python-jobs
       - name: check-requirements
     check:
+      - gate-nova-docker-python26
       - check-tempest-dsvm-docker
       - check-tempest-dsvm-f20-docker
+    gate:
+      - gate-nova-docker-python26
     post:
       - nova-docker-coverage
 
@@ -4446,6 +4692,10 @@ projects:
       - name: python-jobs
       - name: python3-jobs
       - name: pypy-jobs
+    check:
+      - gate-os-client-config-python26
+    gate:
+      - gate-os-client-config-python26
 
   - name: stackforge/osprofiler
     template:
@@ -4455,7 +4705,10 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
     check:
+      - gate-osprofiler-python26
       - osprofiler-coverage
+    gate:
+      - gate-osprofiler-python26
     post:
       - osprofiler-coverage
     pre-release:
@@ -4533,6 +4786,10 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
       - name: docs-on-rtfd
+    check:
+      - gate-poppy-python26
+    gate:
+      - gate-poppy-python26
     post:
       - poppy-coverage
 
@@ -4721,6 +4978,10 @@ projects:
       - name: merge-check
       - name: python-jobs
       - name: python3-jobs
+    check:
+      - gate-python-cloudkittyclient-python26
+    gate:
+      - gate-python-cloudkittyclient-python26
     post:
       - python-cloudkittyclient-coverage
 
@@ -4741,6 +5002,10 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
+    check:
+      - gate-python-group-based-policy-client-python26
+    gate:
+      - gate-python-group-based-policy-client-python26
 
   - name: stackforge/python-jenkins
     template:
@@ -4750,7 +5015,10 @@ projects:
       - name: publish-to-pypi
       - name: docs-on-rtfd
     check:
+      - gate-python-jenkins-python26
       - python-jenkins-coverage
+    gate:
+      - gate-python-jenkins-python26
 
   - name: stackforge/python-libraclient
     template:
@@ -4773,6 +5041,10 @@ projects:
       - name: check-requirements
       - name: docs-on-rtfd
       - name: python-jobs
+    check:
+      - gate-python-magnetodbclient-python26
+    gate:
+      - gate-python-magnetodbclient-python26
     pre-release:
       - python-magnetodbclient-tarball
     release:
@@ -4784,8 +5056,11 @@ projects:
       - name: publish-to-pypi
       - name: python-jobs
     check:
+      - gate-python-mistralclient-python26
       - gate-python-mistralclient-python33
       - gate-mistral-devstack-dsvm
+    gate:
+      - gate-python-mistralclient-python26
 
   - name: stackforge/python-monascaclient
     template:
@@ -4826,6 +5101,10 @@ projects:
       - name: python3-jobs
       - name: check-requirements
       - name: pypy-jobs
+    check:
+      - gate-python-openstacksdk-python26
+    gate:
+      - gate-python-openstacksdk-python26
     post:
       - python-openstacksdk-coverage
 
@@ -4854,7 +5133,10 @@ projects:
       - name: python3-jobs
       - name: check-requirements
     check:
+      - gate-python-rallyclient-python26
       - python-rallyclient-coverage
+    gate:
+      - gate-python-rallyclient-python26
     post:
       - python-rallyclient-coverage
 
@@ -4866,6 +5148,10 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
       - name: pypy-jobs
+    check:
+      - gate-python-solumclient-python26
+    gate:
+      - gate-python-solumclient-python26
     post:
       - python-solumclient-coverage
 
@@ -4909,6 +5195,7 @@ projects:
       - name: docs-on-rtfd
       - name: publish-to-pypi
     check:
+      - gate-rally-python26
       - rally-coverage
       - gate-rally-install-bare-centos6
       - gate-rally-install-bare-precise
@@ -4917,6 +5204,7 @@ projects:
       - gate-rally-dsvm-cli
       - gate-rally-tox-self
     gate:
+      - gate-rally-python26
       - gate-rally-install-bare-centos6
       - gate-rally-install-bare-precise
       - gate-rally-dsvm-rally
@@ -4960,11 +5248,13 @@ projects:
       - name: publish-to-pypi
       - name: docs-on-rtfd
     check:
-        - gate-requests-mock-tox-keystoneclient-tip
-        - gate-requests-mock-tox-novaclient-tip
+      - gate-requests-mock-python26
+      - gate-requests-mock-tox-keystoneclient-tip
+      - gate-requests-mock-tox-novaclient-tip
     gate:
-        - gate-requests-mock-tox-keystoneclient-tip
-        - gate-requests-mock-tox-novaclient-tip
+      - gate-requests-mock-python26
+      - gate-requests-mock-tox-keystoneclient-tip
+      - gate-requests-mock-tox-novaclient-tip
 
   - name: stackforge/rubick
     template:
@@ -4993,6 +5283,10 @@ projects:
       - name: python-jobs
       - name: check-requirements
       - name: publish-to-pypi
+    check:
+      - gate-sahara-guestagent-python26
+    gate:
+      - gate-sahara-guestagent-python26
 
   - name: stackforge/saml-generator
     template:
@@ -5006,6 +5300,10 @@ projects:
       - name: python3-jobs
       - name: docs-on-rtfd
       - name: pypy-jobs
+    check:
+      - gate-satori-python26
+    gate:
+      - gate-satori-python26
     post:
       - satori-coverage
 
@@ -5017,10 +5315,12 @@ projects:
       - name: docs-on-rtfd
       - name: pypy-jobs
     check:
+      - gate-solum-python26
       - gate-solum-python33
       - gate-solum-devstack-dsvm
       - gate-solum-devstack-dsvm-f20
     gate:
+      - gate-solum-python26
       - gate-solum-devstack-dsvm
     post:
       - solum-coverage
@@ -5036,6 +5336,10 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
       - name: pypy-jobs
+    check:
+      - gate-solum-dashboard-python26
+    gate:
+      - gate-solum-dashboard-python26
     post:
       - solum-dashboard-coverage
 
@@ -5047,6 +5351,10 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
       - name: pypy-jobs
+    check:
+      - gate-solum-infra-guestagent-python26
+    gate:
+      - gate-solum-infra-guestagent-python26
     post:
       - solum-infra-guestagent-coverage
 
@@ -5100,6 +5408,10 @@ projects:
       - name: python3-jobs
       - name: docs-on-rtfd
       - name: python-jobs
+    check:
+      - gate-stackalytics-python26
+    gate:
+      - gate-stackalytics-python26
     pre-release:
       - stackalytics-tarball
     release:
@@ -5204,10 +5516,12 @@ projects:
       - name: merge-check
       - name: python-jobs
     check:
+      - gate-swift3-python26
       - gate-swift3-pylint
       - gate-swift3-tox-tempauth
       - gate-swift3-tox-keystone
     gate:
+      - gate-swift3-python26
       - gate-swift3-pylint
       - gate-swift3-tox-tempauth
       - gate-swift3-tox-keystone
@@ -5288,6 +5602,10 @@ projects:
       - name: python3-jobs
       - name: publish-to-pypi
       - name: docs-on-rtfd
+    check:
+      - gate-tooz-python26
+    gate:
+      - gate-tooz-python26
     post:
       - tooz-branch-tarball
       - tooz-coverage
