@@ -2,7 +2,7 @@ OpenStack Infra Config Files
 ============================
 
 This repo contains a set of config files that are consumed by the
-openstack-infra/config puppet modules in order to deploy and
+openstack-infra/system-config puppet modules in order to deploy and
 configure the OpenStack Infrastructure. You should edit these
 files to make configuration changes to the OpenStack Infrastructure.
 
