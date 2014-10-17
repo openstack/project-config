@@ -39,20 +39,20 @@ sudo mv /tmp/image-hostname.txt /etc/image-hostname.txt
 if [ -f /usr/bin/yum ]; then
     sudo yum -y install wget
 fi
-wget https://git.openstack.org/cgit/openstack-infra/config/plain/install_puppet.sh
+wget https://git.openstack.org/cgit/openstack-infra/system-config/plain/install_puppet.sh
 sudo bash -xe install_puppet.sh
 
-sudo git clone --depth=1 $GIT_BASE/openstack-infra/config.git \
-    /root/config
-sudo /bin/bash /root/config/install_modules.sh
+sudo git clone --depth=1 $GIT_BASE/openstack-infra/system-config.git \
+    /root/system-config
+sudo /bin/bash /root/system-config/install_modules.sh
 
 set +e
 if [ -z "$NODEPOOL_SSH_KEY" ] ; then
-    sudo puppet apply --detailed-exitcodes --modulepath=/root/config/modules:/etc/puppet/modules \
+    sudo puppet apply --detailed-exitcodes --modulepath=/root/system-config/modules:/etc/puppet/modules \
         -e "class {'openstack_project::single_use_slave': sudo => $SUDO, thin => $THIN, python3 => $PYTHON3, include_pypy => $PYPY, all_mysql_privs => $ALL_MYSQL_PRIVS, }"
     PUPPET_RET_CODE=$?
 else
-    sudo puppet apply --detailed-exitcodes --modulepath=/root/config/modules:/etc/puppet/modules \
+    sudo puppet apply --detailed-exitcodes --modulepath=/root/system-config/modules:/etc/puppet/modules \
         -e "class {'openstack_project::single_use_slave': install_users => false, sudo => $SUDO, thin => $THIN, python3 => $PYTHON3, include_pypy => $PYPY, all_mysql_privs => $ALL_MYSQL_PRIVS, ssh_key => '$NODEPOOL_SSH_KEY', }"
     PUPPET_RET_CODE=$?
 fi
