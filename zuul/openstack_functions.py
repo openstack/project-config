@@ -98,6 +98,7 @@ def set_node_options(item, job, params, default):
     python33_re = r'^.*-(py(thon)?33|33).*$'
     tripleo_re = r'^.*-tripleo.*$'
     devstack_re = r'^.*-dsvm.*$'
+    puppetunit_re = r'^gate-puppet-.*-puppet-unit.*$'
     # jobs run on the proposal worker
     if re.match(proposal_re, job.name) or re.match(pypi_re, job.name):
         reusable_node(item, job, params)
@@ -120,6 +121,9 @@ def set_node_options(item, job, params, default):
     # Jobs needing tripleo slaves
     elif re.match(tripleo_re, job.name):
         # Pass because job specified label is always correct.
+        pass
+    # Puppet-OpenStack jobs
+    elif re.match(puppetunit_re, job.name):
         pass
     # Jobs needing devstack slaves
     elif re.match(devstack_re, job.name):
