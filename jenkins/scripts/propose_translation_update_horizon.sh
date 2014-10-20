@@ -20,9 +20,14 @@ setup_review
 setup_translation
 setup_horizon
 
-# Pull upstream translations of files that are at least 75 %
-# translated
+# Download new files that are at least 75 % translated.
+# Also downloads updates for existing files that are at least 75 %
+# translated.
 tx pull -a -f --minimum-perc=75
+
+# Pull upstream translations of all downloaded files but do not
+# download new files.
+tx pull -f
 
 # Invoke run_tests.sh to update the po files
 # Or else, "../manage.py makemessages" can be used.
