@@ -527,7 +527,10 @@ jobs:
     branch: ^(stable/).*$
   - name: ^(gate|check)-tempest-dsvm-neutron-full-icehouse$
     voting: false
-  - name: check-heat-dsvm-functional
+  - name: check-heat-dsvm-functional-mysql
+    branch: ^(?!stable/icehouse).*$
+    voting: false
+  - name: check-heat-dsvm-functional-postgres
     branch: ^(?!stable/icehouse).*$
     voting: false
   - name: ^(gate|check)-tempest-dsvm-cells$
@@ -1028,7 +1031,7 @@ projects:
       - name: experimental-tripleo-jobs
     check:
       - gate-heat-python26
-      - check-heat-dsvm-functional
+      - check-heat-dsvm-functional-mysql
       - check-devstack-dsvm-cells
     gate:
       - gate-heat-python26
@@ -1039,6 +1042,7 @@ projects:
       - check-tripleo-ironic-overcloud-precise-nonha
     experimental:
       - gate-rally-dsvm-fakevirt-heat
+      - check-heat-dsvm-functional-postgres
     pre-release:
       - heat-tarball
     release:

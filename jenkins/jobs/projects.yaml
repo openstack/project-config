@@ -146,7 +146,14 @@
 
     jobs:
       - python-jobs
-      - '{pipeline}-heat-dsvm-functional{branch-designator}':
+      - '{pipeline}-heat-dsvm-functional-{datastore}{branch-designator}':
+          datastore: mysql
+          pipeline: check
+          node: 'devstack-precise || devstack-trusty'
+          branch-designator: ''
+          branch-override: default
+      - '{pipeline}-heat-dsvm-functional-{datastore}{branch-designator}':
+          datastore: postgres
           pipeline: check
           node: 'devstack-precise || devstack-trusty'
           branch-designator: ''
