@@ -136,7 +136,12 @@ function setup_git {
 # COMMIT_MSG.
 function setup_review {
     FULL_PROJECT=$(grep project .gitreview  | cut -f2 -d= |sed -e 's/\.git$//')
-    COMMIT_MSG="Imported Translations from Transifex"
+    read -d '' COMMIT_MSG <<EOF
+Imported Translations from Transifex
+
+For more information about this automatic import see:
+https://wiki.openstack.org/wiki/Translations/Infrastructure
+EOF
 
     git review -s
 
@@ -153,6 +158,9 @@ function setup_review {
         set +e
         read -d '' COMMIT_MSG <<EOF
 Imported Translations from Transifex
+
+For more information about this automatic import see:
+https://wiki.openstack.org/wiki/Translations/Infrastructure
 
 Change-Id: $change_id
 EOF
