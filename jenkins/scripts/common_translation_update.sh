@@ -136,13 +136,14 @@ function setup_git {
 # COMMIT_MSG.
 function setup_review {
     FULL_PROJECT=$(grep project .gitreview  | cut -f2 -d= |sed -e 's/\.git$//')
+    set +e
     read -d '' COMMIT_MSG <<EOF
 Imported Translations from Transifex
 
 For more information about this automatic import see:
 https://wiki.openstack.org/wiki/Translations/Infrastructure
 EOF
-
+    set -e
     git review -s
 
     # See if there is an open change in the transifex/translations
