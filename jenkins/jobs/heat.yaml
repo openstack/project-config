@@ -31,7 +31,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-heat-dsvm-functional{branch-designator}'
+    name: '{pipeline}-heat-dsvm-functional-{datastore}{branch-designator}'
     node: '{node}'
 
     wrappers:
@@ -51,6 +51,9 @@
           export DEVSTACK_GATE_TEMPEST=0
           export DEVSTACK_GATE_EXERCISES=0
           export DEVSTACK_GATE_INSTALL_TESTONLY=1
+          if [ "{datastore}" == "postgres" ] ; then
+              export DEVSTACK_GATE_POSTGRES=1
+          fi
 
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
