@@ -44,6 +44,53 @@
       - devstack-logs
       - console-log
 
+- job-template:
+    name: '{pipeline}-oslo.messaging-dsvm-functional-{driver}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 95
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=90
+          export DEVSTACK_GATE_TEMPEST=0
+          export DEVSTACK_GATE_EXERCISES=0
+          export DEVSTACK_GATE_INSTALL_TESTONLY=1
+          case '{driver}'
+            qpid)
+              export QPID_USERNAME=guest
+              export QPID_PASSWORD=password
+              export ENABLED_SERVICES=qpid
+              ;;
+            amqp1)
+              export QPID_USERNAME=guest
+              export QPID_PASSWORD=password
+              export ENABLED_SERVICES=qpid
+              export RPC_MESSAGING_PROTOCOL=AMQP1
+              ;;
+          esac
+
+          function post_test_hook {{
+              cd /opt/stack/new/oslo.messaging
+              sudo -H -u stack tox -e py27-func-{driver}
+          }}
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - test-results
+      - devstack-logs
+      - console-log
 
 # NOTE(dhellmann): This job group is not used, but I retained it as an
 # example of properly using the template defined above.
