@@ -361,6 +361,12 @@ project-templates:
       - 'periodic-{name}-python26-icehouse'
       - 'periodic-{name}-python27-icehouse'
 
+  - name: periodic-juno
+    periodic-stable:
+      - 'periodic-{name}-docs-juno'
+      - 'periodic-{name}-python26-juno'
+      - 'periodic-{name}-python27-juno'
+
   - name: openstack-doc-gate
     check:
       - gate-{name}-tox-checklinks
@@ -847,6 +853,7 @@ projects:
       - name: python3-jobs
       - name: openstack-server-publish-jobs
       - name: periodic-icehouse
+      - name: periodic-juno
       - name: check-requirements
       - name: integrated-gate
       - name: translation-jobs
@@ -883,6 +890,7 @@ projects:
       - name: python-jobs
       - name: openstack-server-publish-jobs
       - name: periodic-icehouse
+      - name: periodic-juno
       - name: check-requirements
       - name: integrated-gate
       - name: translation-jobs
@@ -959,6 +967,7 @@ projects:
       - name: python-jobs
       - name: openstack-server-publish-jobs
       - name: periodic-icehouse
+      - name: periodic-juno
       - name: check-requirements
       - name: integrated-gate
       - name: translation-jobs
@@ -1022,6 +1031,7 @@ projects:
       - name: python-jobs
       - name: openstack-server-publish-jobs
       - name: periodic-icehouse
+      - name: periodic-juno
       - name: check-requirements
       - name: integrated-gate
       - name: translation-jobs
@@ -1056,6 +1066,7 @@ projects:
       - name: python-jobs
       - name: openstack-server-publish-jobs
       - name: periodic-icehouse
+      - name: periodic-juno
       - name: check-requirements
       - name: integrated-gate
       - name: translation-jobs
@@ -1125,6 +1136,7 @@ projects:
       - name: python-jobs
       - name: openstack-server-publish-jobs
       - name: periodic-icehouse
+      - name: periodic-juno
       - name: check-requirements
       - name: integrated-gate
       - name: large-ops
@@ -1214,6 +1226,7 @@ projects:
       - name: python-jobs
       - name: openstack-server-publish-jobs
       - name: periodic-icehouse
+      - name: periodic-juno
       - name: check-requirements
       - name: integrated-gate-neutron
       - name: translation-jobs
@@ -1262,6 +1275,7 @@ projects:
       - name: python-jobs
       - name: openstack-server-publish-jobs
       - name: periodic-icehouse
+      - name: periodic-juno
       - name: check-requirements
       - name: integrated-gate
       - name: large-ops
@@ -1321,6 +1335,7 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
+      - name: periodic-juno
       - name: openstack-server-publish-jobs
       - name: check-requirements
       - name: integrated-gate-sahara
@@ -1403,6 +1418,7 @@ projects:
       - name: python-jobs
       - name: openstack-server-publish-jobs
       - name: periodic-icehouse
+      - name: periodic-juno
       - name: check-requirements
       - name: integrated-gate
       - name: openstack-doc-gate
@@ -2585,9 +2601,14 @@ projects:
     release:
       - tempest-tarball
     periodic-stable:
+      # add periodic tempest jobs even when they run as compat jobs
+      # on each tempest master check for stable-maint visiblity
       - periodic-tempest-dsvm-full-icehouse
       - periodic-tempest-dsvm-neutron-icehouse
       - periodic-tempest-dsvm-postgres-full-icehouse
+      - periodic-tempest-dsvm-full-juno
+      - periodic-tempest-dsvm-neutron-juno
+      - periodic-tempest-dsvm-postgres-full-juno
     periodic-qa:
       - periodic-tempest-dsvm-full-non-isolated-master
       - periodic-tempest-dsvm-neutron-full-non-isolated-master
