@@ -35,6 +35,17 @@ fi
 echo $HOSTNAME > /tmp/image-hostname.txt
 sudo mv /tmp/image-hostname.txt /etc/image-hostname.txt
 
+# HP Cloud centos6 images currently require an update to the
+# certificates file before they can connect to common services such as
+# fedora mirror for EPEL over https
+if [ -f /etc/redhat-release ]; then
+    if grep -q 'CentOS release 6' /etc/redhat-release; then
+        # chicken-and-egg ... hp cloud image has EPEL installed, but
+        # we can't connect to it...
+        sudo yum --disablerepo=epel update -y ca-certificates
+    fi
+fi
+
 # Fedora image doesn't come with wget
 if [ -f /usr/bin/yum ]; then
     sudo yum -y install wget
