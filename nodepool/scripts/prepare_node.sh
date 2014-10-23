@@ -141,8 +141,10 @@ sudo rm -f /etc/cron.{monthly,weekly,daily,hourly,d}/*
 # Install Zuul into a virtualenv
 # This is in /usr instead of /usr/local due to this bug on precise:
 # https://bugs.launchpad.net/ubuntu/+source/python2.7/+bug/839588
+# Be explicit about the Python version since py3k-precise nodes default
+# to using 3.3 with virtualenv.
 git clone /opt/git/openstack-infra/zuul /tmp/zuul
-sudo virtualenv /usr/zuul-env
+sudo virtualenv -p python2 /usr/zuul-env
 sudo /usr/zuul-env/bin/pip install /tmp/zuul
 sudo rm -fr /tmp/zuul
 
