@@ -163,11 +163,11 @@ function get_state {
 }
 
 function create_resizing_initramfs_config {
-    cp "$THIS_DIR/xenserver_helper_initramfs_hook.sh" \
+    cp "$THIS_DIR/xenserver_helper_initramfs_hook" \
         /usr/share/initramfs-tools/hooks/resize
     chmod +x /usr/share/initramfs-tools/hooks/resize
 
-    cp "$THIS_DIR/xenserver_helper_initramfs_premount.sh" \
+    cp "$THIS_DIR/xenserver_helper_initramfs_premount" \
         /usr/share/initramfs-tools/scripts/local-premount/resize
     chmod +x /usr/share/initramfs-tools/scripts/local-premount/resize
 }
