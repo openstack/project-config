@@ -478,6 +478,14 @@ project-templates:
       - gate-{name}-puppet-unit-3.3
       - gate-{name}-puppet-unit-3.4
 
+  - name: infra-puppet-apply-jobs
+    check:
+      - gate-infra-puppet-apply-precise
+      - gate-infra-puppet-apply-centos6
+    gate:
+      - gate-infra-puppet-apply-precise
+      - gate-infra-puppet-apply-centos6
+
   - name: check-tripleo-jobs
     check-tripleo:
       - check-tripleo-ironic-undercloud-precise-nonha
@@ -3388,6 +3396,7 @@ projects:
   - name: openstack-infra/project-config
     template:
       - name: merge-check
+      - name: infra-puppet-apply-jobs
     check:
       - project-config-compare-xml
       - gate-project-config-layout
@@ -3396,8 +3405,6 @@ projects:
       - gate-project-config-irc-access
       - gate-project-config-jenkins-project
       - gate-project-config-projects-yaml
-      - gate-infra-puppet-apply-precise
-      - gate-infra-puppet-apply-centos6
     gate:
       - gate-project-config-layout
       - gate-project-config-pep8
@@ -3405,8 +3412,6 @@ projects:
       - gate-project-config-irc-access
       - gate-project-config-jenkins-project
       - gate-project-config-projects-yaml
-      - gate-infra-puppet-apply-precise
-      - gate-infra-puppet-apply-centos6
 
   - name: openstack-infra/publications
     template:
@@ -3433,35 +3438,21 @@ projects:
     template:
       - name: merge-check
       - name: puppet-check-jobs
-    check:
-      - gate-infra-puppet-apply-precise
-      - gate-infra-puppet-apply-centos6
-    gate:
-      - gate-infra-puppet-apply-precise
-      - gate-infra-puppet-apply-centos6
+      - name: infra-puppet-apply-jobs
 
   - name: openstack-infra/puppet-pip
     template:
       - name: merge-check
       - name: puppet-check-jobs
-    check:
-      - gate-infra-puppet-apply-precise
-      - gate-infra-puppet-apply-centos6
-    gate:
-      - gate-infra-puppet-apply-precise
-      - gate-infra-puppet-apply-centos6
+      - name: infra-puppet-apply-jobs
 
   - name: openstack-infra/puppet-storyboard
     template:
       - name: merge-check
       - name: puppet-check-jobs
+      - name: infra-puppet-apply-jobs
     check:
-      - gate-infra-puppet-apply-precise
-      - gate-infra-puppet-apply-centos6
       - gate-puppet-storyboard-puppet-beaker-rspec
-    gate:
-      - gate-infra-puppet-apply-precise
-      - gate-infra-puppet-apply-centos6
 
   - name: openstack-infra/puppet-vcsrepo
     template:
@@ -3617,18 +3608,15 @@ projects:
   - name: openstack-infra/system-config
     template:
       - name: merge-check
+      - name: infra-puppet-apply-jobs
     check:
       - gate-system-config-pep8
       - gate-system-config-bashate
       - gate-system-config-puppet-syntax
-      - gate-infra-puppet-apply-precise
-      - gate-infra-puppet-apply-centos6
       - gate-ci-docs
     gate:
       - gate-system-config-pep8
       - gate-system-config-puppet-syntax
-      - gate-infra-puppet-apply-precise
-      - gate-infra-puppet-apply-centos6
       - gate-ci-docs
     post:
       - ci-docs
