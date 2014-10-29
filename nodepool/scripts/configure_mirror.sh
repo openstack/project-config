@@ -18,12 +18,14 @@
 
 source /etc/nodepool/provider
 
+NODEPOOL_PYPI_MIRROR=${NODEPOOL_PYPI_MIRROR:-http://pypi.$NODEPOOL_REGION.openstack.org/simple}
+
 cat >/home/jenkins/.pip/pip.conf <<EOF
 [global]
-index-url = http://pypi.$NODEPOOL_REGION.openstack.org/simple
+index-url = $NODEPOOL_PYPI_MIRROR
 EOF
 
 cat >/home/jenkins/.pydistutils.cfg <<EOF
 [easy_install]
-index_url = http://pypi.$NODEPOOL_REGION.openstack.org/simple
+index_url = $NODEPOOL_PYPI_MIRROR
 EOF
