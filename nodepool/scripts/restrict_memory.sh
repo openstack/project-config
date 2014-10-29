@@ -24,7 +24,7 @@ if [ -f /etc/default/grub ] ; then
         sudo update-grub
     else
         # If update-grub isn't available, use grub2-mkconfig directly
-        sudo grub2-mkconfig -o /boot/grub2/grub.cfg
+        sudo /usr/sbin/grub2-mkconfig -o /boot/grub2/grub.cfg
     fi
 elif [ -f /boot/grub/grub.conf ] ; then
     sudo sed -i -e 's/^timeout=[0-9]\+/timeout=0/' -e 's/\(^\s\+kernel.*\)/\1 mem=8G/' /boot/grub/grub.conf
