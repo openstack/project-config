@@ -25,6 +25,14 @@
       - uninstall-puppet
       - shell: |
           sudo apt-get install -y libxml2-dev libxslt-dev
+      - shell: |
+          echo "" | sudo tee -a /etc/ssh/sshd_config
+          echo "Match host localhost" | sudo tee -a /etc/ssh/sshd_config
+          echo "    PermitRootLogin without-password" | sudo tee -a /etc/ssh/sshd_config
+          mkdir -p .ssh
+          ssh-keygen -f ~/.ssh/id_rsa -b 2048 -C "beaker key" -P ""
+          sudo mkdir -p /root/.ssh
+          cat ~/.ssh/id_rsa.pub | sudo tee -a /root/.ssh/authorized_keys
       - revoke-sudo
       - gerrit-git-prep
       - shell: |
