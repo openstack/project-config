@@ -27,3 +27,8 @@ cat >/home/jenkins/.pydistutils.cfg <<EOF
 [easy_install]
 index_url = http://pypi.$NODEPOOL_REGION.openstack.org/simple
 EOF
+
+# Double check that when the node is made ready it is able
+# to resolve names against DNS.
+host git.openstack.org
+host pypi.${NODEPOOL_REGION}.openstack.org
