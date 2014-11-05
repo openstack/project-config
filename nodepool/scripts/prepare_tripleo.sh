@@ -90,6 +90,7 @@ git clone https://review.openstack.org/p/openstack/os-collect-config
 git clone https://review.openstack.org/p/openstack/os-net-config
 git clone https://review.openstack.org/p/openstack/os-refresh-config
 git clone https://review.openstack.org/p/openstack/oslo.config
+git clone https://review.openstack.org/p/openstack/oslo.context
 git clone https://review.openstack.org/p/openstack/oslo.messaging
 git clone https://review.openstack.org/p/openstack/python-ceilometerclient
 git clone https://review.openstack.org/p/openstack/python-cinderclient
