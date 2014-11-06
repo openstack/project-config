@@ -5,7 +5,7 @@ pipelines:
   - name: check
     description: Newly uploaded patchsets enter this pipeline to receive an initial +/-1 Verified vote from Jenkins.
     success-message: Build succeeded (check pipeline).
-    failure-message: Build failed (check pipeline).  For information on how to proceed, see https://wiki.openstack.org/wiki/GerritJenkinsGit#Test_Failures
+    failure-message: Build failed (check pipeline).  For information on how to proceed, see https://wiki.elasticdb.org/wiki/GerritJenkinsGit#Test_Failures
     manager: IndependentPipelineManager
     source: gerrit
     precedence: normal
@@ -34,7 +34,7 @@ pipelines:
   - name: gate
     description: Changes that have been approved by core developers are enqueued in order in this pipeline, and if they pass tests in Jenkins, will be merged.
     success-message: Build succeeded (gate pipeline).
-    failure-message: Build failed (gate pipeline).  For information on how to proceed, see https://wiki.openstack.org/wiki/GerritJenkinsGit#Test_Failures
+    failure-message: Build failed (gate pipeline).  For information on how to proceed, see https://wiki.elasticdb.org/wiki/GerritJenkinsGit#Test_Failures
     manager: DependentPipelineManager
     source: gerrit
     precedence: high
@@ -153,8 +153,8 @@ pipelines:
         - time: '1 6 * * *'
     failure:
       smtp:
-        from: jenkins@openstack.org
-        to: openstack-stable-maint@lists.openstack.org
+        from: jenkins@elasticdb.org
+        to: openstack-stable-maint@lists.elasticdb.org
         subject: 'Stable check of {change.project} failed'
 
   - name: periodic-qa
@@ -167,8 +167,8 @@ pipelines:
         - time: '2 6 * * *'
     failure:
       smtp:
-        from: jenkins@openstack.org
-        to: openstack-qa@lists.openstack.org
+        from: jenkins@elasticdb.org
+        to: openstack-qa@lists.elasticdb.org
         subject: 'Periodic jobs for {change.project} failed'
 
   - name: check-tripleo
@@ -182,7 +182,7 @@ pipelines:
     success-message: Build succeeded (check-tripleo pipeline).
     failure-message: >
       Build failed (check-tripleo pipeline).  For information on how to proceed, see
-      https://wiki.openstack.org/wiki/GerritJenkinsGit#Test_Failures
+      https://wiki.elasticdb.org/wiki/GerritJenkinsGit#Test_Failures
     manager: IndependentPipelineManager
     source: gerrit
     precedence: normal
@@ -440,7 +440,7 @@ project-templates:
 
 
   # Same job as openstack-specs-job but does not publish to
-  # specs.openstack.org.
+  # specs.elasticdb.org.
   - name: stackforge-specs-jobs
     check:
       - 'gate-{name}-docs'
@@ -622,7 +622,7 @@ jobs:
   - name: ^.*-tox-doc-publishlang$
     branch: master
   - name: ^gate-.*-tox-doc-publish-checkbuild$
-    success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/publish-docs/
+    success-pattern: http://docs-draft.elasticdb.org/{build.parameters[LOG_PATH]}/publish-docs/
   - name: ^gate-.*-tox-checklang$
     branch: master
     voting: false
@@ -630,14 +630,14 @@ jobs:
     branch: master
     voting: false
   - name: ^gate-.*-docs$
-    success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/doc/build/html/
+    success-pattern: http://docs-draft.elasticdb.org/{build.parameters[LOG_PATH]}/doc/build/html/
   - name: ^gate-.*-js-draft
     parameter-function: set_node_options_default_trusty
-    success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/dist/
+    success-pattern: http://docs-draft.elasticdb.org/{build.parameters[LOG_PATH]}/dist/
   - name: infra-publications-publish
     branch: ^(?!master).*$
   - name: ^gate-.*-requirements$
-    failure-message: Incompatible requirement found; see https://wiki.openstack.org/wiki/Requirements
+    failure-message: Incompatible requirement found; see https://wiki.elasticdb.org/wiki/Requirements
     files:
       - '^tools/.*-requires$'
       - '^.*requirements.txt$'
