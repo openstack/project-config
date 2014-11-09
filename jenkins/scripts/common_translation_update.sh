@@ -90,7 +90,11 @@ function setup_manuals {
         fi
         DOCNAME=${FILE#${DocFolder}/}
         # Ignore directories that will not get translated
-        if [ "$DOCNAME" == "www" -o "$DOCNAME" == "tools" -o "$DOCNAME" == "generated" -o "$DOCNAME" == "publish-docs" ]; then
+        if [[ "$DOCNAME" =~ ^(www|tools|generated|publish-docs)$ ]]; then
+            continue
+        fi
+        # Ignore directories starting with playground
+        if [[ "$DOCNAME" =~ "^playground" ]]; then
             continue
         fi
         # Skip glossary in all repos besides openstack-manuals.
