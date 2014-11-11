@@ -12,6 +12,6 @@ the workflow documented at:
 
 Pull requests submitted through GitHub will be ignored.
 
-Bugs should be filed on Launchpad, not GitHub:
+Bugs should be filed on StoryBoard, not GitHub:
 
-   https://bugs.launchpad.net/openstack-ci
+   https://storyboard.openstack.org/#!/project/731
