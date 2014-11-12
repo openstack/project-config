@@ -325,16 +325,16 @@ project-templates:
     # on those repos
     # TODO(jogo): run this on libraries
     check:
-      - 'check-tempest-dsvm-full-icehouse'
-      - 'check-tempest-dsvm-neutron-icehouse'
-      - 'check-tempest-dsvm-full-juno'
-      - 'check-tempest-dsvm-neutron-juno'
+      - 'gate-tempest-dsvm-src-{name}-icehouse'
+      - 'gate-tempest-dsvm-neutron-src-{name}-icehouse'
+      - 'gate-tempest-dsvm-src-{name}-juno'
+      - 'gate-tempest-dsvm-neutron-src-{name}-juno'
 
   - name: sahara-stable-compat-jobs
     # sahara stable compat beginning from juno
     check:
-      - 'check-tempest-dsvm-full-juno'
-      - 'check-tempest-dsvm-neutron-juno'
+      - 'gate-tempest-dsvm-src-{name}-juno'
+      - 'gate-tempest-dsvm-neutron-src-{name}-juno'
 
   - name: openstack-server-publish-jobs
     post:
@@ -1251,8 +1251,8 @@ projects:
       - name: python3-jobs
       - name: openstack-client-publish-jobs
       - name: check-requirements
-      - name: integrated-gate
       - name: stable-compat-jobs
+      - name: lib-forward-testing
       - name: publish-to-pypi
     check:
       - gate-keystonemiddleware-python26
@@ -1587,6 +1587,7 @@ projects:
       - name: publish-to-pypi
       - name: pypy-jobs
       - name: check-requirements
+      - name: lib-forward-testing
     check:
       - gate-python-barbicanclient-pep8
       - gate-python-barbicanclient-python26
@@ -1605,10 +1606,10 @@ projects:
       - name: python3-jobs
       - name: openstack-client-publish-jobs
       - name: check-requirements
-      - name: integrated-gate
       - name: stable-compat-jobs
       - name: publish-to-pypi
       - name: pypy-jobs
+      - name: lib-forward-testing
     check:
       - check-devstack-dsvm-cells
     gate:
@@ -1623,7 +1624,7 @@ projects:
       - name: python3-jobs
       - name: openstack-client-publish-jobs
       - name: check-requirements
-      - name: integrated-gate
+      - name: lib-forward-testing
       - name: stable-compat-jobs
       - name: publish-to-pypi
       - name: pypy-jobs
@@ -1646,6 +1647,7 @@ projects:
       - name: openstack-client-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
+      - name: lib-forward-testing
     check:
       - gate-python-designateclient-python26
       - gate-designate-devstack-dsvm
@@ -1681,11 +1683,10 @@ projects:
       - name: python3-jobs
       - name: openstack-client-publish-jobs
       - name: check-requirements
-      - name: integrated-gate
-      - name: large-ops
       - name: stable-compat-jobs
       - name: publish-to-pypi
       - name: pypy-jobs
+      - name: lib-forward-testing
       - name: experimental-tripleo-jobs
     check:
       - gate-python-glanceclient-python26
@@ -1709,6 +1710,7 @@ projects:
       - name: publish-to-pypi
       - name: pypy-jobs
       - name: experimental-tripleo-jobs
+      - name: lib-forward-testing
     check:
       - gate-python-heatclient-pep8
       - gate-python-heatclient-python26
@@ -1734,6 +1736,7 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
       - name: pypy-jobs
+      - name: lib-forward-testing
     check:
       - gate-python-ironicclient-python26
       - check-tempest-dsvm-ironic-pxe_ssh
@@ -1753,11 +1756,10 @@ projects:
       - name: python3-jobs
       - name: openstack-client-publish-jobs
       - name: check-requirements
-      - name: integrated-gate
-      - name: large-ops
       - name: stable-compat-jobs
       - name: publish-to-pypi
       - name: experimental-tripleo-jobs
+      - name: lib-forward-testing
     check:
       - gate-python-keystoneclient-python26
       - check-devstack-dsvm-cells
@@ -1830,11 +1832,11 @@ projects:
       - name: python-jobs
       - name: openstack-client-publish-jobs
       - name: check-requirements
-      - name: integrated-gate-neutron
       - name: stable-compat-jobs
       - name: publish-to-pypi
       - name: pypy-jobs
       - name: experimental-tripleo-jobs
+      - name: lib-forward-testing
     check:
       - gate-python-neutronclient-python26
       - gate-python-neutronclient-python33
@@ -1852,12 +1854,11 @@ projects:
       - name: python3-jobs
       - name: openstack-client-publish-jobs
       - name: check-requirements
-      - name: integrated-gate
-      - name: large-ops
       - name: stable-compat-jobs
       - name: publish-to-pypi
       - name: pypy-jobs
       - name: experimental-tripleo-jobs
+      - name: lib-forward-testing
     check:
       - gate-python-novaclient-python26
       - check-devstack-dsvm-cells
@@ -1876,10 +1877,10 @@ projects:
       - name: python3-jobs
       - name: openstack-client-publish-jobs
       - name: check-requirements
-      - name: integrated-gate
       - name: stable-compat-jobs
       - name: publish-to-pypi
       - name: translation-jobs
+      - name: lib-forward-testing
     check:
       - gate-python-openstackclient-python26
       - check-osc-dsvm-functional
@@ -1895,9 +1896,9 @@ projects:
       - name: python-jobs
       - name: openstack-server-publish-jobs
       - name: check-requirements
-      - name: integrated-gate
       - name: publish-to-pypi
       - name: sahara-stable-compat-jobs
+      - name: lib-forward-testing
     check:
       - gate-python-saharaclient-python26
     gate:
@@ -1915,12 +1916,11 @@ projects:
       - name: python3-jobs
       - name: openstack-client-publish-jobs
       - name: check-requirements
-      - name: integrated-gate
-      - name: large-ops
       - name: stable-compat-jobs
       - name: publish-to-pypi
       - name: pypy-jobs
       - name: experimental-tripleo-jobs
+      - name: lib-forward-testing
     check:
       - gate-python-swiftclient-python26
       - check-swift-dsvm-functional
@@ -1938,10 +1938,10 @@ projects:
       - name: openstack-client-publish-jobs
       - name: python-jobs
       - name: python3-jobs
-      - name: integrated-gate
       - name: stable-compat-jobs
       - name: publish-to-pypi
       - name: pypy-jobs
+      - name: lib-forward-testing
     check:
       - gate-python-troveclient-python26
     gate:
@@ -2344,8 +2344,8 @@ projects:
       - name: python3-jobs
       - name: openstack-client-publish-jobs
       - name: check-requirements
-      - name: integrated-gate
       - name: stable-compat-jobs
+      - name: lib-forward-testing
       - name: translation-jobs
     check:
       - gate-django_openstack_auth-python26
@@ -2711,31 +2711,20 @@ projects:
     template:
       - name: merge-check
       - name: check-requirements
-      - name: integrated-gate
       - name: large-ops
       - name: publish-to-pypi
+      - name: lib-forward-testing
     check:
       - gate-tempest-lib-pep8
       - gate-tempest-lib-docs
       - gate-tempest-lib-python27
       - gate-tempest-lib-python34
       - gate-tempest-lib-pypy
-      - check-grenade-dsvm-partial-ncpu
-      - check-tempest-dsvm-ironic-pxe_ssh-nv
-      - check-tempest-dsvm-ironic-pxe_ssh-postgres-nv
-      # icehouse compat jobs for tempest master
-      - check-tempest-dsvm-full-icehouse
-      - check-tempest-dsvm-neutron-icehouse
-      - check-tempest-dsvm-postgres-full-icehouse
-      - check-tempest-dsvm-neutron-full-icehouse
-      - gate-tempest-dsvm-large-ops-icehouse
-      - gate-tempest-dsvm-neutron-large-ops-icehouse
     gate:
       - gate-tempest-lib-pep8
       - gate-tempest-lib-docs
       - gate-tempest-lib-python27
       - gate-tempest-lib-python34
-      - gate-grenade-dsvm-partial-ncpu
     experimental:
       - gate-grenade-dsvm-forward
       - check-tempest-dsvm-keystonev3-full
