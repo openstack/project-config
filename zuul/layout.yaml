@@ -1503,8 +1503,10 @@ projects:
       - name: translation-jobs
     check:
       - gate-trove-python26
+      - gate-trove-functional-dsvm-mysql
     gate:
       - gate-trove-python26
+      - gate-trove-functional-dsvm-mysql
     post:
       - trove-tox-doc-publishdocs
       - trove-coverage
@@ -1514,7 +1516,6 @@ projects:
       - trove-tarball
       - trove-merge-release-tags
     experimental:
-      - gate-trove-functional-dsvm-mysql
       - gate-trove-functional-dsvm-percona
       - gate-trove-functional-dsvm-mongodb
 
@@ -1944,8 +1945,10 @@ projects:
       - name: lib-forward-testing
     check:
       - gate-python-troveclient-python26
+      - gate-trove-functional-dsvm-mysql
     gate:
       - gate-python-troveclient-python26
+      - gate-trove-functional-dsvm-mysql
 
   - name: openstack/python-tuskarclient
     template:
@@ -2808,12 +2811,14 @@ projects:
   - name: openstack/trove-integration
     template:
       - name: merge-check
-      - name: noop-jobs
+    check:
+      - gate-trove-functional-dsvm-mysql
+    gate:
+      - gate-trove-functional-dsvm-mysql
     experimental:
       - gate-trove-buildimage-mysql
       - gate-trove-buildimage-percona
       - gate-trove-buildimage-mongodb
-      - gate-trove-functional-dsvm-mysql
       - gate-trove-functional-dsvm-percona
       - gate-trove-functional-dsvm-mongodb
 
