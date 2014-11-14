@@ -46,6 +46,7 @@
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
+          export ENABLED_SERVICES=dib
           export DEVSTACK_GATE_TIMEOUT=120
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_TEMPEST=0
@@ -59,6 +60,7 @@
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
+
 
           function pre_test_hook {{
               cd /opt/stack/new/heat/heat_integrationtests
