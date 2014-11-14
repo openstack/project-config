@@ -1,7 +1,7 @@
-# Jobs for the governance repository
+# Jobs for static site publication
 
-- job:
-    name: governance-publish
+- job-template:
+    name: static-{name}-publish
     node: 'bare-precise || bare-trusty'
 
     # We want to publish to the docroot but the scp publisher cannot remove
@@ -11,7 +11,7 @@
       - revoke-sudo
       - gerrit-git-prep
       - docs:
-          project: governance
+          project: '{name}'
       - shell: |
           mv doc/build/html/* .html
           rm -rf *
@@ -21,7 +21,7 @@
       - scp:
           site: static.openstack.org
           files:
-            - target: governance/
+            - target: '{docroot}/'
               source: '**'
               keep-hierarchy: true
               copy-after-failure: false
