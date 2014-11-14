@@ -28,8 +28,10 @@ def run_command(cmd):
     print(cmd)
     cmd_list = shlex.split(str(cmd))
     p = subprocess.Popen(cmd_list, stdout=subprocess.PIPE,
-                         stderr=subprocess.STDOUT)
-    (out, nothing) = p.communicate()
+                         stderr=subprocess.PIPE)
+    (out, err) = p.communicate()
+    if p.returncode != 0:
+        raise SystemError(err)
     return out.strip()
 
 
@@ -114,9 +116,8 @@ def main():
     reqroot = tempfile.mkdtemp()
     reqdir = os.path.join(reqroot, "requirements")
     run_command("git clone https://review.openstack.org/p/openstack/"
-                "requirements --depth 1 %s" % reqdir)
+                "requirements --branch %s --depth 1 %s" % (branch, reqdir))
     os.chdir(reqdir)
-    run_command("git checkout remotes/origin/%s" % branch)
     print "requirements git sha: %s" % run_command(
         "git rev-parse HEAD").strip()
     os_reqs = RequirementsList('openstack/requirements')
