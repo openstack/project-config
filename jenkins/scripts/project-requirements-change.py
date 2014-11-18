@@ -55,7 +55,15 @@ class RequirementsList(object):
             if (not line or
                     line.startswith('http://tarballs.openstack.org/')):
                 continue
-            req = pkg_resources.Requirement.parse(line)
+            if strict:
+                req = pkg_resources.Requirement.parse(line)
+            else:
+                try:
+                    req = pkg_resources.Requirement.parse(line)
+                except ValueError:
+                    print("Ignoring unparseable requirement in non-strict "
+                          "mode: %s" % line)
+                    continue
             if (not ignore_dups and strict and req.project_name.lower()
                 in self.reqs):
                 print("Duplicate requirement in %s: %s" %
