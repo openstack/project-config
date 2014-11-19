@@ -1,6 +1,22 @@
+# Devstack unit tests are run via a set of shell scripts with the
+# run_tests.sh entry point
+- job:
+    name: gate-devstack-unit-tests
+    node: 'bare-precise || bare-trusty'
+
+    builders:
+      - revoke-sudo
+      - gerrit-git-prep
+      - shell: |
+          #!/bin/bash -xe
+          ./run_tests.sh
+      - zuul_swift_upload_console_log
+
+    publishers:
+      - console-log
+
 # Devstack does not support "python setup.py publish_sphinx", thus
 # we cannot use the normal docs jobs.
-
 - job:
     name: devstack-publish-docs
     node: 'bare-precise || bare-trusty'
@@ -35,4 +51,3 @@
     publishers:
       - console-log
       - upload-sphinx-draft
-
