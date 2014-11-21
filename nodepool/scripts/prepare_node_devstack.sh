@@ -20,8 +20,19 @@ HOSTNAME=$1
 
 export SUDO='true'
 export THIN='true'
+TEMPEST_DIR=${TEMPEST_DIR:-/opt/git/tempest}
 
 ./prepare_node.sh "$HOSTNAME"
 sudo -u jenkins -i /opt/nodepool-scripts/prepare_devstack.sh "$HOSTNAME"
+
+# Setup venv and install deps for prepare_tempest_testrepository.py
+sudo virtualenv -p python2 /opt/git/subunit2sql-env
+sudo -H /opt/git/subunit2sql-env/bin/pip install -U testrepository subunit2sql
+
+# Pre-seed tempest testrepository with data from subunit2sql
+sudo -i /opt/git/subunit2sql-env/bin/python2 /opt/nodepool-scripts/prepare_tempest_testrepository.py $TEMPEST_DIR
+
+# Dekete the venv after the script is called
+sudo rm -rf /opt/git/subunit2sql-env
 
 ./restrict_memory.sh
