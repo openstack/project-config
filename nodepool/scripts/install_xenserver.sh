@@ -17,7 +17,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+XENSERVER_XVA_URL=${NODEPOOL_XENSERVER_XVA_URL:-http://downloads.vmd.citrix.com/OpenStack/xenapi-in-the-cloud-appliances/prod_ci}
+XENSERVER_ISO_URL=${NODEPOOL_XENSERVER_ISO_URL:-http://downloadns.citrix.com.edgesuite.net/akdlm/8159/XenServer-6.2.0-install-cd.iso}
+
 ./convert_node_to_xenserver.sh \
     password \
-    http://downloads.vmd.citrix.com/OpenStack/xenapi-in-the-cloud-appliances/1.1.4.xva \
-    devstack
+    "$XENSERVER_XVA_URL" \
+    devstack \
+    "$XENSERVER_ISO_URL"

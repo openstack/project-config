@@ -72,9 +72,9 @@ LOG_FILE="${THIS_FILE}.log"
 ADDITIONAL_PARAMETERS="$@"
 
 XENSERVER_PASSWORD="$1"
-XENSERVER_ISO_URL="http://downloadns.citrix.com.edgesuite.net/akdlm/8159/XenServer-6.2.0-install-cd.iso"
 STAGING_APPLIANCE_URL="$2"
 APPLIANCE_NAME="$3"
+XENSERVER_ISO_URL="$4"
 FILE_TO_TOUCH_ON_COMPLETION="/var/run/xenserver.ready"
 
 # It is assumed, that the appliance has a user, DOMZERO_USER, and by
