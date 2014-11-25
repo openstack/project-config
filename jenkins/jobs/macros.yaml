@@ -200,6 +200,7 @@
           sudo update-alternatives --install /usr/bin/gem gem /usr/bin/gem1.9.1 10
           sudo update-alternatives --set gem /usr/bin/gem1.9.1
           sudo gem install bundler --no-rdoc --no-ri --verbose
+          sudo gem install rake    --no-rdoc --no-ri --verbose
 
 - builder:
     name: chef-bundler-prep
@@ -216,6 +217,13 @@
           else
             bundle install --path=.bundle --jobs 1 --retry 3 --verbose
           fi
+
+- builder:
+    name: chef-rake-test
+    builders:
+      - shell: |
+          #!/bin/bash -x
+          bundle exec rake test
 
 - builder:
     name: chef-berkshelf-prep
