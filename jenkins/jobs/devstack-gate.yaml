@@ -191,8 +191,12 @@
           export DEVSTACK_GATE_TIMEOUT=120
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_NEUTRON=1
-          export DEVSTACK_GATE_TEMPEST_FULL=1
           export BRANCH_OVERRIDE={branch-override}
+          # neutron icehouse does not pass tempest full reliably
+          if [ "$BRANCH_OVERRIDE" != "stable/icehouse"] ; then
+              export DEVSTACK_GATE_TEMPEST_FULL=1
+          fi
+
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
