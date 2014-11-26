@@ -448,27 +448,6 @@
     jobs:
       - specs-jobs
 
-
-- project:
-    name: taskflow
-    node: 'bare-precise || bare-trusty'
-    tarball-site: tarballs.openstack.org
-    doc-publisher-site: docs.openstack.org
-
-    jobs:
-      - python-jobs
-      - openstack-publish-jobs
-      - pypi-jobs
-      - gate-{name}-unittests-{envlist}:
-          # NOTE(harlowja): the 'py' prefix will be added on automatically.
-          envlist: "26-sa7-mysql"
-          node: bare-centos6
-      - gate-{name}-unittests-{envlist}:
-          envlist: "27-sa8-mysql"
-      - 'lib-forward-testing-{name}'
-      - 'stable-compat-jobs-{name}'
-
-
 - project:
     name: trove
     tarball-site: tarballs.openstack.org
@@ -1168,6 +1147,25 @@
       - pypi-jobs
       - 'lib-forward-testing-{name}'
       - openstack-publish-jobs
+      - 'stable-compat-jobs-{name}'
+
+- project:
+    name: taskflow
+    node: 'bare-precise || bare-trusty'
+    tarball-site: tarballs.openstack.org
+    doc-publisher-site: docs.openstack.org
+
+    jobs:
+      - python-jobs
+      - openstack-publish-jobs
+      - pypi-jobs
+      - gate-{name}-unittests-{envlist}:
+          # NOTE(harlowja): the 'py' prefix will be added on automatically.
+          envlist: "26-sa7-mysql"
+          node: bare-centos6
+      - gate-{name}-unittests-{envlist}:
+          envlist: "27-sa8-mysql"
+      - 'lib-forward-testing-{name}'
       - 'stable-compat-jobs-{name}'
 
 ########################################################################
