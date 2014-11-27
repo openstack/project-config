@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 # Copyright 2014 OpenStack Foundation
 # Copyright 2014 SUSE Linux Products GmbH
