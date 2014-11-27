@@ -584,8 +584,10 @@ jobs:
     voting: false
   - name: check-tempest-dsvm-neutron-aiopcpu
     voting: false
-  - name: gate-designate-devstack-dsvm
+  - name: ^gate-designate-dsvm-.*$
     branch: ^(?!stable/icehouse).*$
+  - name: gate-designate-dsvm-bind9
+    branch: ^(?!stable/(?:icehouse|juno)).*$
 # For Gerrit ver 2.4.x (using maven)
   - name: ^(gate|check)-gerrit-unittests$
     branch: ^openstack/2\.4.*$
@@ -1003,10 +1005,12 @@ projects:
       - name: publish-to-pypi
       - name: translation-jobs
     check:
-      - gate-designate-devstack-dsvm
+      - gate-designate-dsvm-powerdns
+      - gate-designate-dsvm-bind9
       - gate-rally-dsvm-designate-designate
     gate:
-      - gate-designate-devstack-dsvm
+      - gate-designate-dsvm-powerdns
+      - gate-designate-dsvm-bind9
     post:
       - designate-coverage
 
@@ -1592,9 +1596,9 @@ projects:
       - name: publish-to-pypi
       - name: lib-forward-testing
     check:
-      - gate-designate-devstack-dsvm
+      - gate-designate-dsvm-powerdns
     gate:
-      - gate-designate-devstack-dsvm
+      - gate-designate-dsvm-powerdns
     post:
       - python-designateclient-coverage
 
