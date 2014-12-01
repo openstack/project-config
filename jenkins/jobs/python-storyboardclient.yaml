@@ -1,0 +1,18 @@
+# This is a non-standard docs job because it uses SCP instead of FTP
+- job:
+    name: python-storyboardclient-infra-docs
+    node: 'bare-precise || bare-trusty'
+
+    builders:
+      - revoke-sudo
+      - gerrit-git-prep
+      - docs
+
+    publishers:
+      - scp:
+          site: '173.203.107.207' # ci.openstack.org
+          files:
+            - target: 'ci/python-storyboardclient'
+              source: 'doc/build/html/**/*'
+              keep-hierarchy: true
+      - console-log
