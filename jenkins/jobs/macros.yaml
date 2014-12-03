@@ -138,6 +138,27 @@
           done
 
 - builder:
+    name: ansible-prep
+    builders:
+      - shell: |
+          #!/bin/bash -xe
+          sudo pip install ansible==1.6.10
+
+- builder:
+    name: ansible-lint-prep
+    builders:
+      - shell: |
+          #!/bin/bash -xe
+          sudo pip install ansible-lint
+
+- builder:
+    name: ansible-lint
+    builders:
+      - shell: |
+          #!/bin/bash -xe
+          ansible-lint rpc_deployment/playbooks/**/*.yml
+
+- builder:
     name: ruby-191-prep
     builders:
       - shell: |

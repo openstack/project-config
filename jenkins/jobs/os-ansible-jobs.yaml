@@ -1,0 +1,18 @@
+- job-template:
+    name: 'gate-{name}-ansible-lint'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 5
+      - timestamps
+
+    builders:
+      - gerrit-git-prep
+      - ansible-prep
+      - ansible-lint-prep
+      - revoke-sudo
+      - ansible-lint
+
+    publishers:
+      - console-log
