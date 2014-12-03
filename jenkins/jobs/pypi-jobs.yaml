@@ -6,8 +6,12 @@
       - revoke-sudo
       - gerrit-git-prep
       - shell: |
-          /usr/local/jenkins/slave_scripts/pypi-tarball-upload.sh {name} {tarball-site}
+          # Note we upload the wheel first because pip prefers wheels
+          # and there is a mirroring issue where sometimes the first
+          # artifact uploaded is the only one you get. Since pip prefers
+          # wheels it is best to make the wheel the one we get.
           /usr/local/jenkins/slave_scripts/pypi-wheel-upload.sh {name} {tarball-site}
+          /usr/local/jenkins/slave_scripts/pypi-tarball-upload.sh {name} {tarball-site}
 
     publishers:
       - console-log
