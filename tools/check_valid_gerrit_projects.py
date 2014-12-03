@@ -48,6 +48,12 @@ for p in projects:
         continue
     if args.verbose:
         print 'Checking %s' % (name)
+    description = p.get('description')
+    if (not description and
+        name.startswith(('openstack-dev/', 'stackforge/'))):
+        found_errors += 1
+        print("Error: Project %s has no description" % name)
+        continue
     # Check upstream URL
     # Allow git:// and https:// URLs for importing upstream repositories,
     # but not git@
