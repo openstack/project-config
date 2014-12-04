@@ -39,11 +39,14 @@
       - revoke-sudo
       - gerrit-git-prep
       - pep8:
-      - zuul_swift_upload_logs_with_console:
-          upload_source: '.tox/pep8/log'
+      - shell: purposefully_fail_me
 
     publishers:
       - console-log
+      - postbuildscript:
+          builders:
+            - zuul_swift_upload_logs_with_console:
+              upload_source: '.tox/pep8/log'
 
 - job-template:
     name: 'gate-{name}-pylint'
