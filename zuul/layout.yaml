@@ -848,6 +848,8 @@ jobs:
   # TODO(jaegerandi): Make voting once it passes
   - name: gate-git-review-docs
     voting: false
+  - name: ^(gate|check)-tempest-dsvm-nova-v21-full$
+    branch: ^(?!stable/(icehouse|juno)).*$
   # Python 2.6 deprecation
   - name: gate-barbican-python26
     branch: ^stable/(icehouse|juno)$
@@ -1401,6 +1403,7 @@ projects:
       - check-tempest-dsvm-cells
       - check-tempest-dsvm-neutron-pg
       - gate-nova-pip-missing-reqs
+      - check-tempest-dsvm-nova-v21-full
     pre-release:
       - nova-tarball
     release:
@@ -2653,6 +2656,7 @@ projects:
       - check-tempest-dsvm-f20
       - check-tempest-dsvm-ironic-parallel-nv
       - check-tempest-dsvm-neutron-dvr
+      - check-tempest-dsvm-nova-v21-full
     post:
       - tempest-docs
       - tempest-coverage
@@ -2698,6 +2702,7 @@ projects:
       - gate-grenade-dsvm-forward
       - check-tempest-dsvm-keystonev3-full
       - check-tempest-dsvm-neutron-keystonev3-full
+      - check-tempest-dsvm-nova-v21-full
     post:
       - tempest-lib-docs
       - tempest-lib-branch-tarball
