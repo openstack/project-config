@@ -13,10 +13,12 @@
       - docs:
           project: '{name}'
       - shell: |
-          mkdir -p .html
-          mv doc/build/html/* .html/
-          rm -rf *
-          mv .html/* ./
+          #!/bin/bash -xe
+          rm -rf ,html
+          mv doc/build/html ,html
+          rm -rf .[^.]* [^,]*
+          mv ,html/.[^.]* ,html/* ./
+          rm -r ,html
 
     publishers:
       - scp:
