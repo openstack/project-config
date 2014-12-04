@@ -47,8 +47,11 @@
           builders:
             - zuul_swift_upload_logs_with_console:
               upload_source: '.tox/pep8/log'
-          onfailure: True
-          onsuccess: True
+          # These flags really mean only if on * when
+          # checked. When both set to false the post script
+          # should run on every job regardless of status.
+          onfailure: False
+          onsuccess: False
 
 - job-template:
     name: 'gate-{name}-pylint'
