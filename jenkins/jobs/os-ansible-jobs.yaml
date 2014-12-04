@@ -16,3 +16,21 @@
 
     publishers:
       - console-log
+
+- job-template:
+    name: 'check-{name}-aio-build'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 60
+      - timestamps
+
+    builders:
+      - gerrit-git-prep
+      - ansible-prep
+      - revoke-sudo
+      - ansible-aio-build
+
+    publishers:
+      - console-log
