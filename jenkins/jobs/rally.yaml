@@ -10,6 +10,21 @@
     publishers:
       - console-log
 
+- publisher:
+    name: rally-verify
+    publishers:
+      - scp:
+          site: 'static.openstack.org'
+          files:
+            - target: 'logs/$LOG_PATH'
+              source: 'rally-verify/**'
+              keep-hierarchy: true
+              copy-after-failure: true
+            - target: 'logs/$LOG_PATH'
+              source: 'rally-verify/extra/index.html'
+              keep-heirarchy: false
+              copy-after-failure: true
+
 
 - publisher:
     name: rally-plot
@@ -317,6 +332,43 @@
             - target: 'logs/$LOG_PATH'
               source: 'results.html.gz'
 
+
+- job:
+    name: 'gate-rally-dsvm-verify'
+    node: 'devstack-precise || devstack-trusty'
+
+    wrappers:
+      - build-timeout:
+          timeout: 120
+
+    builders:
+      - link-logs
+      - devstack-checkout
+      - shell: |
+          #/bin/bash -xe
+          export PROJECTS="stackforge/rally $PROJECTS"
+          export DEVSTACK_GATE_EXERCISES=0
+          export DEVSTACK_GATE_TIMEOUT=120
+          export ENABLED_SERVICES=rally
+
+          function pre_test_hook {
+              # Install rally-devstack integration
+              cp -r $BASE/new/rally/contrib/devstack/* $BASE/new/devstack/
+          }
+          export -f pre_test_hook
+
+          function post_test_hook {
+              $BASE/new/rally/tests/ci/rally-verify.sh
+          }
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+      - rally-verify
 
 
 - job-group:
