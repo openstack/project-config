@@ -145,6 +145,30 @@
           sudo pip install ansible==1.6.10
 
 - builder:
+    name: ansible-syntax-prep
+    builders:
+      - shell: |
+          #!/bin/bash -xe
+          echo -e '[all]\nlocalhost ansible_connection=local' > local_only_inventory
+
+- builder:
+    name: ansible-syntax
+    builders:
+      - shell: |
+          #!/bin/bash -xe
+          ansible-playbook \
+            -i local_only_inventory \
+            --syntax-check $( \
+                grep \
+                  -r \
+                  -L vars_prompt \
+                  --include='*.yml' \
+                  --exclude='*/vars/*' \
+                  --exclude='os-service-config-update.yml' \
+                  rpc_deployment/playbooks \
+            )
+
+- builder:
     name: ansible-lint-prep
     builders:
       - shell: |
