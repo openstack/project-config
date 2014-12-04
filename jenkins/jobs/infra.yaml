@@ -56,8 +56,8 @@
       - console-log
 
 # This is a non-standard docs job because it uses SCP instead of FTP
-- job:
-    name: ci-docs
+- job-template:
+    name: '{name}-ci-docs'
     node: 'bare-precise || bare-trusty'
 
     builders:
@@ -69,9 +69,10 @@
 
     publishers:
       - scp:
+          # publish to ci.openstack.org
           site: '173.203.107.207'
           files:
-            - target: 'ci'
+            - target: '{target}'
               source: 'doc/build/html/**/*'
               keep-hierarchy: true
       - console-log
