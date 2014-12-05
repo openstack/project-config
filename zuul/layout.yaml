@@ -330,8 +330,9 @@ project-templates:
       - 'gate-tempest-dsvm-neutron-src-{name}-icehouse'
       - 'gate-tempest-dsvm-neutron-src-{name}-juno'
 
-  - name: sahara-stable-compat-jobs
-    # sahara stable compat beginning from juno
+  - name: stable-compat-jobs-one-release
+    # a version of stable-compat-jobs that only looks back one release
+    # for new projects that shouldn't be tested back two releases
     check:
       - 'gate-tempest-dsvm-neutron-src-{name}-juno'
 
@@ -1838,7 +1839,7 @@ projects:
       - name: openstack-client-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
-      - name: sahara-stable-compat-jobs
+      - name: stable-compat-jobs-one-release
       - name: lib-forward-testing
     post:
       - python-saharaclient-coverage
@@ -1994,7 +1995,6 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
       - name: lib-forward-testing
-      - name: stable-compat-jobs
 
   - name: openstack/oslo.db
     template:
@@ -2026,7 +2026,7 @@ projects:
       - name: translation-jobs
       - name: lib-forward-testing
       - name: experimental-tripleo-jobs
-      - name: stable-compat-jobs
+      - name: stable-compat-jobs-one-release
     post:
       - oslo.i18n-coverage
 
@@ -2107,7 +2107,7 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
       - name: lib-forward-testing
-      - name: stable-compat-jobs
+      - name: stable-compat-jobs-one-release
 
   - name: openstack/oslo.utils
     template:
@@ -2120,7 +2120,7 @@ projects:
       - name: publish-to-pypi
       - name: translation-jobs
       - name: lib-forward-testing
-      - name: stable-compat-jobs
+      - name: stable-compat-jobs-one-release
 
   - name: openstack/oslo.version
     template:
@@ -2134,7 +2134,6 @@ projects:
       - name: lib-forward-testing
       - name: pypy-jobs
       - name: experimental-tripleo-jobs
-      - name: stable-compat-jobs
 
   - name: openstack/oslo.vmware
     template:
