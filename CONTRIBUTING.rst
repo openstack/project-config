@@ -3,9 +3,10 @@ you must follow the steps in this page:
 
    http://docs.openstack.org/infra/manual/developers.html
 
-Once those steps have been completed, changes to OpenStack
-should be submitted for review via the Gerrit tool, following
-the workflow documented at:
+If you already have a good understanding of how the system works and your
+OpenStack accounts are set up, you can skip to the development workflow section
+of this documentation to learn how changes to OpenStack should be submitted for
+review via the Gerrit tool:
 
    http://docs.openstack.org/infra/manual/developers.html#development-workflow
 
