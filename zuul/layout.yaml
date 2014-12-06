@@ -1132,6 +1132,20 @@ projects:
       - name: merge-check
       - name: openstack-specs-jobs
 
+  - name: openstack/heat-translator
+    template:
+      - name: docs-on-rtfd
+      - name: merge-check
+      - name: python-jobs
+      - name: python3-jobs
+      - name: publish-to-pypi
+    post:
+      - heat-translator-coverage
+    pre-release:
+      - heat-translator-tarball
+    release:
+      - heat-translator-tarball
+
   - name: openstack/horizon
     template:
       - name: merge-check
@@ -4295,20 +4309,6 @@ projects:
     gate:
       - gate-healthnmon-pep8
       - gate-healthnmon-python27
-
-  - name: stackforge/heat-translator
-    template:
-      - name: docs-on-rtfd
-      - name: merge-check
-      - name: python-jobs
-      - name: python3-jobs
-      - name: publish-to-pypi
-    post:
-      - heat-translator-coverage
-    pre-release:
-      - heat-translator-tarball
-    release:
-      - heat-translator-tarball
 
   - name: stackforge/horizon-salt-formula
     template:
