@@ -1172,7 +1172,6 @@
       - pypi-jobs
       - 'lib-forward-testing-{name}'
 
-
 - project:
     name: stevedore
     node: 'bare-precise || bare-trusty'
@@ -1201,6 +1200,36 @@
           node: bare-centos6
       - gate-{name}-tox-{envlist}:
           envlist: "py27-sa8-mysql"
+      - 'lib-forward-testing-{name}'
+      - 'stable-compat-jobs-{name}'
+
+- project:
+    name: tooz
+    node: 'bare-precise || bare-trusty'
+    tarball-site: tarballs.openstack.org
+    doc-publisher-site: docs.openstack.org
+
+    jobs:
+      - python-jobs
+      - openstack-publish-jobs
+      - pypi-jobs
+      - gate-{name}-tox-{envlist}:
+          envlist: "py26-sa7-mysql"
+          node: bare-centos6
+      - gate-{name}-tox-{envlist}:
+          envlist: "py27-sa8-mysql"
+      - gate-{name}-tox-{envlist}:
+          envlist:
+            - py27-zookeeper
+            - py34-zookeeper
+            - py27-redis
+            - py34-redis
+            - py27-memcached
+            - py34-memcached
+            - py27-postgresql
+            - py34-postgresql
+            - py27-mysql
+            - py34-mysql
       - 'lib-forward-testing-{name}'
       - 'stable-compat-jobs-{name}'
 
@@ -3913,28 +3942,6 @@
     jobs:
       - python-jobs
       - pypi-jobs
-
-- project:
-    name: tooz
-    node: 'bare-precise || bare-trusty'
-    tarball-site: tarballs.openstack.org
-
-    jobs:
-      - python-jobs
-      - hook-{name}-rtfd
-      - pypi-jobs
-      - gate-{name}-tox-{envlist}:
-          envlist:
-            - py27-zookeeper
-            - py34-zookeeper
-            - py27-redis
-            - py34-redis
-            - py27-memcached
-            - py34-memcached
-            - py27-postgresql
-            - py34-postgresql
-            - py27-mysql
-            - py34-mysql
 
 - project:
     name: tricircle
