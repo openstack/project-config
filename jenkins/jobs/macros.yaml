@@ -592,3 +592,56 @@
               source: 'build-*.log.gz'
               keep-hierarchy: false
               copy-after-failure: true
+
+- publisher:
+    name: zuul_swift_upload
+    publishers:
+      - postbuildscript:
+          builders:
+            - zuul_swift_upload:
+                zuul_log_instruction_set: '{zuul_log_instruction_set}'
+                upload_source: '{upload_source}'
+          # These flags really mean only if on * when
+          # checked. When both set to false the post script
+          # should run on every job regardless of status.
+          onfailure: False
+          onsuccess: False
+
+- publisher:
+    name: zuul_swift_upload_logs
+    publishers:
+      - postbuildscript:
+          builders:
+            - zuul_swift_upload_logs:
+                upload_source: '{upload_source}'
+          # These flags really mean only if on * when
+          # checked. When both set to false the post script
+          # should run on every job regardless of status.
+          onfailure: False
+          onsuccess: False
+
+- publisher:
+    name: zuul_swift_upload_console_log
+    publishers:
+      - postbuildscript:
+          builders:
+            - zuul_swift_upload_console_log
+          # These flags really mean only if on * when
+          # checked. When both set to false the post script
+          # should run on every job regardless of status.
+          onfailure: False
+          onsuccess: False
+
+
+- publisher:
+    name: zuul_swift_upload_logs_with_console
+    publishers:
+      - postbuildscript:
+          builders:
+            - zuul_swift_upload_logs_with_console:
+                upload_source: '{upload_source}'
+          # These flags really mean only if on * when
+          # checked. When both set to false the post script
+          # should run on every job regardless of status.
+          onfailure: False
+          onsuccess: False

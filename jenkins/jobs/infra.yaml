@@ -6,11 +6,10 @@
       - revoke-sudo
       - gerrit-git-prep
       - shell: ./tools/run-compare-xml.sh
-      - zuul_swift_upload_console_log
 
     publishers:
       - console-log
-
+      - zuul_swift_upload_console_log
 
 - job:
     name: gate-project-config-irc-access
@@ -21,11 +20,10 @@
       - gerrit-git-prep
       - tox:
           envlist: 'irc'
-      - zuul_swift_upload_console_log
 
     publishers:
       - console-log
-
+      - zuul_swift_upload_console_log
 
 - job:
     name: gate-project-config-layout
@@ -36,10 +34,10 @@
       - gerrit-git-prep
       - tox:
           envlist: 'zuul'
-      - zuul_swift_upload_console_log
 
     publishers:
       - console-log
+      - zuul_swift_upload_console_log
 
 - job:
     name: gate-project-config-jenkins-project
@@ -50,10 +48,10 @@
       - gerrit-git-prep
       - tox:
           envlist: 'jenkins-project'
-      - zuul_swift_upload_console_log
 
     publishers:
       - console-log
+      - zuul_swift_upload_console_log
 
 # This is a non-standard docs job because it uses SCP instead of FTP
 - job-template:
@@ -64,9 +62,6 @@
       - revoke-sudo
       - gerrit-git-prep
       - docs
-      - zuul_swift_upload_console_log
-      # TODO(jhesketh): Add job for uploading built docs
-
     publishers:
       - scp:
           # publish to ci.openstack.org
@@ -76,7 +71,8 @@
               source: 'doc/build/html/**/*'
               keep-hierarchy: true
       - console-log
-
+      - zuul_swift_upload_console_log
+      # TODO(jhesketh): Add job for uploading built docs
 
 - job:
     name: gate-ci-docs
@@ -86,12 +82,12 @@
       - revoke-sudo
       - gerrit-git-prep
       - docs
-      - zuul_swift_upload_console_log
-      # TODO(jhesketh): Add job for uploading sphinx docs
 
     publishers:
       - console-log
       - upload-sphinx-draft
+      - zuul_swift_upload_console_log
+      # TODO(jhesketh): Add job for uploading built docs
 
 
 - job:
@@ -103,10 +99,10 @@
       - gerrit-git-prep
       - tox:
           envlist: projects
-      - zuul_swift_upload_console_log
 
     publishers:
       - console-log
+      - zuul_swift_upload_console_log
 
 - job-template:
     name: 'gate-infra-puppet-apply-{ostype}'
@@ -118,7 +114,7 @@
           /usr/zuul-env/bin/zuul-cloner --cache-dir /opt/git git://git.openstack.org openstack-infra/system-config
           cd openstack-infra/system-config
           ./tools/apply-test.sh
-      - zuul_swift_upload_console_log
 
     publishers:
       - console-log
+      - zuul_swift_upload_console_log

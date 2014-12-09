@@ -10,10 +10,10 @@
       - shell: |
           #!/bin/bash -xe
           ./run_tests.sh
-      - zuul_swift_upload_console_log
 
     publishers:
       - console-log
+      - zuul_swift_upload_console_log
 
 # Devstack does not support "python setup.py publish_sphinx", thus
 # we cannot use the normal docs jobs.
@@ -26,7 +26,6 @@
       - gerrit-git-prep
       - tox:
           envlist: 'docs'
-      - zuul_swift_upload_console_log
 
     publishers:
       - ftp:
@@ -36,6 +35,7 @@
           remove-prefix: 'doc/build/html'
           excludes: ''
       - console-log
+      - zuul_swift_upload_console_log
 
 - job:
     name: gate-devstack-publish-docs
@@ -46,8 +46,9 @@
       - gerrit-git-prep
       - tox:
           envlist: 'docs'
-      - zuul_swift_upload_console_log
 
     publishers:
       - console-log
       - upload-sphinx-draft
+      - zuul_swift_upload_console_log
+      # TODO(jhesketh): Add job for uploading built docs
