@@ -926,6 +926,7 @@ projects:
       - barbican-tarball
     release:
       - barbican-tarball
+      - barbican-merge-release-tags
 
   - name: openstack/barbican-specs
     template:
@@ -1013,7 +1014,6 @@ projects:
       - name: python-jobs
       - name: openstack-server-publish-jobs
       - name: check-requirements
-      - name: publish-to-pypi
       - name: translation-jobs
     check:
       - gate-designate-dsvm-powerdns
@@ -1024,6 +1024,11 @@ projects:
       - gate-designate-dsvm-bind9
     post:
       - designate-coverage
+    pre-release:
+      - designate-tarball
+    release:
+      - designate-tarball
+      - designate-merge-release-tags
 
   - name: openstack/designate-specs
     template:
@@ -1434,14 +1439,16 @@ projects:
       - name: openstack-server-publish-jobs
       - name: check-requirements
       - name: integrated-gate
-      - name: publish-to-pypi
       - name: docs-on-rtfd
       - name: translation-jobs
     check:
       - gate-sahara-pylint
     post:
       - sahara-coverage
+    pre-release:
+      - sahara-tarball
     release:
+      - sahara-tarball
       - sahara-merge-release-tags
 
   - name: openstack/sahara-specs
@@ -1560,6 +1567,7 @@ projects:
       - zaqar-tarball
     release:
       - zaqar-tarball
+      - zaqar-merge-release-tags
 
   - name: openstack/zaqar-specs
     template:
