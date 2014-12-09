@@ -1469,7 +1469,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-tempest-dsvm-{topology}{branch-designator}'
+    name: '{pipeline}-tempest-dsvm-aiopcpu{branch-designator}'
     node: '{node}'
 
     wrappers:
@@ -1490,7 +1490,7 @@
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
-          export DEVSTACK_GATE_TOPOLOGY={topology}
+          export DEVSTACK_GATE_TOPOLOGY="aiopcpu"
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
@@ -1501,7 +1501,7 @@
 
 
 - job-template:
-    name: '{pipeline}-tempest-dsvm-neutron-{topology}{branch-designator}'
+    name: '{pipeline}-tempest-dsvm-neutron-aiopcpu{branch-designator}'
     node: '{node}'
 
     wrappers:
@@ -1523,7 +1523,7 @@
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
-          export DEVSTACK_GATE_TOPOLOGY={topology}
+          export DEVSTACK_GATE_TOPOLOGY="aiopcpu"
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
