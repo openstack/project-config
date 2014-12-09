@@ -11,6 +11,20 @@
       - zuul-swift-upload-console-log
 
 - job:
+    name: project-config-gerrit
+    node: 'bare-precise || bare-trusty'
+
+    builders:
+      - revoke-sudo
+      - gerrit-git-prep
+      - tox:
+          envlist: 'gerrit'
+
+    publishers:
+      - console-log
+      - zuul-swift-upload-console-log
+
+- job:
     name: gate-project-config-irc-access
     node: 'bare-precise || bare-trusty'
 
