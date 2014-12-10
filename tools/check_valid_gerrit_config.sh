@@ -16,9 +16,10 @@ function check_team_acl {
     for config in $configs_list; do
         echo "Checking $config file..."
 
-        if ! grep -q '\>-core\|\>-admins' $config;
+        $OLDPWD/tools/normalize_acl.py $config all > $TMPDIR/normalized
+        if ! diff -u $config $TMPDIR/normalized;
         then
-            echo "$config does not have a core/admins team defined!" >>config_failures
+            echo "Project $config is not normalized!" >>config_failures
         fi
     done
 }
@@ -30,6 +31,8 @@ done
 
 if [ -f config_failures ]; then
     echo -e; cat config_failures
+    num_errors=$(wc -l config_failures)
+    echo -e "There are $num_errors projects not normalized."
     exit 1
 fi
 
