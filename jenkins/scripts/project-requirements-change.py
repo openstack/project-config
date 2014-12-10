@@ -15,6 +15,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+import argparse
 import os
 import pkg_resources
 import shlex
@@ -100,8 +101,22 @@ class RequirementsList(object):
                                    ignore_dups=True, strict=strict)
 
 
+def grab_args():
+    """Grab and return arguments"""
+    parser = argparse.ArgumentParser(
+        description="Check if project requirements have changed"
+    )
+    parser.add_argument('--local', action='store_true',
+                        help='check local changes (not yet in git)')
+    parser.add_argument('branch', nargs='?', default='master',
+                        help='target branch for diffs')
+
+    return parser.parse_args()
+
+
 def main():
-    branch = sys.argv[1]
+    args = grab_args()
+    branch = args.branch
 
     # build a list of requirements in the proposed change,
     # and check them for style violations while doing so
@@ -109,15 +124,16 @@ def main():
     head_reqs = RequirementsList('HEAD')
     head_reqs.read_all_requirements(strict=True)
 
-    # build a list of requirements already in the target branch,
-    # so that we can create a diff and identify what's being changed
-    run_command("git remote update")
-    run_command("git checkout remotes/origin/%s" % branch)
     branch_reqs = RequirementsList(branch)
-    branch_reqs.read_all_requirements()
+    if not args.local:
+        # build a list of requirements already in the target branch,
+        # so that we can create a diff and identify what's being changed
+        run_command("git remote update")
+        run_command("git checkout remotes/origin/%s" % branch)
+        branch_reqs.read_all_requirements()
 
-    # switch back to the proposed change now
-    run_command("git checkout %s" % head)
+        # switch back to the proposed change now
+        run_command("git checkout %s" % head)
 
     # build a list of requirements from the global list in the
     # openstack/requirements project so we can match them to the changes
