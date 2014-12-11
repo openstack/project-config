@@ -32,3 +32,45 @@
       - gate-{name}-docs
       - gate-{name}-python27
       - '{name}-publish-specs'
+
+
+- builder:
+    name: generate-specs-site
+
+    builders:
+      - revoke-sudo
+      - gerrit-git-prep
+      - tox:
+          envlist: specs
+
+- job:
+    name: check-generate-specs-site
+    description: Render the specs sites templates without publishing them.
+    node: 'bare-precise || bare-trusty'
+
+    builders:
+      - generate-specs-site
+
+- job:
+    name: publish-specs-site
+    description: Render the specs sites templates and publish them.
+    node: 'bare-precise || bare-trusty'
+
+    builders:
+      - generate-specs-site
+
+    publishers:
+      - scp:
+          site: 'static.openstack.org'
+          files:
+            - target: 'specs/'
+              source: '$ZUUL_PROJECT/specs/output/**'
+              keep-hierarchy: true
+              copy-after-failure: false
+      - console-log
+
+- job-group:
+    name: generate-specs-site-jobs
+    jobs:
+      - check-generate-specs-site
+      - publish-specs-site
