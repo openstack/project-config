@@ -111,7 +111,9 @@ def local_prep(distribution):
 
         if os.path.exists('/usr/bin/apt-get'):
             debs = []
-            debdir = os.path.join(DEVSTACK, 'files', 'apts')
+            debdir = os.path.join(DEVSTACK, 'files', 'debs')
+            if not os.path.exists(debdir):
+                debdir = os.path.join(DEVSTACK, 'files', 'apts')
             for fn in os.listdir(debdir):
                 fn = os.path.join(debdir, fn)
                 tokenize(fn, debs, distribution, comment='#')
