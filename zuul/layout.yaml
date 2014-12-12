@@ -410,6 +410,14 @@ project-templates:
       - '{name}-tarball':
         - '{name}-pypi-both-upload'
 
+  # Release OpenStack Server packages.
+  - name: openstack-server-release-jobs
+    pre-release:
+      - '{name}-tarball'
+    release:
+      - '{name}-tarball'
+      - '{name}-merge-release-tags'
+
   - name: docs-on-rtfd
     post:
       - 'hook-{name}-rtfd'
@@ -916,17 +924,13 @@ projects:
       - name: python-jobs
       - name: translation-jobs
       - name: openstack-server-publish-jobs
+      - name: openstack-server-release-jobs
       - name: check-requirements
     check:
       - gate-barbican-devstack-dsvm
       - barbican-coverage
     gate:
       - gate-barbican-devstack-dsvm
-    pre-release:
-      - barbican-tarball
-    release:
-      - barbican-tarball
-      - barbican-merge-release-tags
 
   - name: openstack/barbican-specs
     template:
@@ -940,6 +944,7 @@ projects:
       - name: python-jobs
       - name: python3-jobs
       - name: openstack-server-publish-jobs
+      - name: openstack-server-release-jobs
       - name: periodic-icehouse
       - name: periodic-juno
       - name: check-requirements
@@ -956,11 +961,6 @@ projects:
     experimental:
       - gate-rally-dsvm-fakevirt-ceilometer
       - gate-grenade-dsvm-forward
-    pre-release:
-      - ceilometer-tarball
-    release:
-      - ceilometer-tarball
-      - ceilometer-merge-release-tags
 
   - name: openstack/ceilometer-specs
     template:
@@ -977,6 +977,7 @@ projects:
       - name: python26-jobs
       - name: python-jobs
       - name: openstack-server-publish-jobs
+      - name: openstack-server-release-jobs
       - name: periodic-icehouse
       - name: periodic-juno
       - name: check-requirements
@@ -993,11 +994,6 @@ projects:
     experimental-tripleo:
       - check-tripleo-ironic-overcloud-precise-nonha
       - check-tripleo-ironic-overcloud-f20-nonha
-    pre-release:
-      - cinder-tarball
-    release:
-      - cinder-tarball
-      - cinder-merge-release-tags
 
   - name: openstack/cinder-specs
     template:
@@ -1014,6 +1010,7 @@ projects:
       - name: python26-jobs
       - name: python-jobs
       - name: openstack-server-publish-jobs
+      - name: openstack-server-release-jobs
       - name: check-requirements
       - name: translation-jobs
     check:
@@ -1025,11 +1022,6 @@ projects:
       - gate-designate-dsvm-bind9
     post:
       - designate-coverage
-    pre-release:
-      - designate-tarball
-    release:
-      - designate-tarball
-      - designate-merge-release-tags
 
   - name: openstack/designate-specs
     template:
@@ -1057,6 +1049,7 @@ projects:
       - name: python26-jobs
       - name: python-jobs
       - name: openstack-server-publish-jobs
+      - name: openstack-server-release-jobs
       - name: periodic-icehouse
       - name: periodic-juno
       - name: check-requirements
@@ -1071,11 +1064,6 @@ projects:
       - gate-devstack-dsvm-cells
     experimental:
       - gate-grenade-dsvm-forward
-    pre-release:
-      - glance-tarball
-    release:
-      - glance-tarball
-      - glance-merge-release-tags
 
   - name: openstack/glance-specs
     template:
@@ -1108,6 +1096,7 @@ projects:
       - name: python26-jobs
       - name: python-jobs
       - name: openstack-server-publish-jobs
+      - name: openstack-server-release-jobs
       - name: periodic-icehouse
       - name: periodic-juno
       - name: check-requirements
@@ -1125,11 +1114,6 @@ projects:
     experimental:
       - gate-rally-dsvm-fakevirt-heat
       - check-heat-dsvm-functional-postgres
-    pre-release:
-      - heat-tarball
-    release:
-      - heat-tarball
-      - heat-merge-release-tags
 
   - name: openstack/heat-specs
     template:
@@ -1156,6 +1140,7 @@ projects:
       - name: python26-jobs
       - name: python-jobs
       - name: openstack-server-publish-jobs
+      - name: openstack-server-release-jobs
       - name: periodic-icehouse
       - name: periodic-juno
       - name: check-requirements
@@ -1174,11 +1159,6 @@ projects:
       - horizon-coverage
     experimental:
       - gate-grenade-dsvm-forward
-    pre-release:
-      - horizon-tarball
-    release:
-      - horizon-tarball
-      - horizon-merge-release-tags
 
   - name: openstack/ironic
     template:
@@ -1186,6 +1166,7 @@ projects:
       - name: python26-jobs
       - name: python-jobs
       - name: openstack-server-publish-jobs
+      - name: openstack-server-release-jobs
       - name: periodic-juno
       - name: check-requirements
       - name: translation-jobs
@@ -1203,11 +1184,6 @@ projects:
       - gate-tempest-dsvm-ironic-pxe_ssh
       - gate-tempest-dsvm-ironic-pxe_ssh-postgres
       - gate-grenade-dsvm-ironic-sideways
-    pre-release:
-      - ironic-tarball
-    release:
-      - ironic-tarball
-      - ironic-merge-release-tags
     experimental:
       - check-grenade-dsvm-ironic
 
@@ -1226,6 +1202,7 @@ projects:
       - name: python26-jobs
       - name: python-jobs
       - name: openstack-server-publish-jobs
+      - name: openstack-server-release-jobs
       - name: periodic-icehouse
       - name: periodic-juno
       - name: check-requirements
@@ -1243,11 +1220,6 @@ projects:
     experimental:
       - gate-grenade-dsvm-forward
       - gate-keystone-python33
-    pre-release:
-      - keystone-tarball
-    release:
-      - keystone-tarball
-      - keystone-merge-release-tags
 
   - name: openstack/keystone-specs
     template:
@@ -1278,17 +1250,15 @@ projects:
       - name: python26-jobs
       - name: python-jobs
       - name: check-requirements
+      - name: openstack-server-release-jobs
     check:
       - gate-kite-python33
-    pre-release:
-      - kite-tarball
-    release:
-      - kite-tarball
 
   - name: openstack/manila
     template:
       - name: merge-check
       - name: openstack-server-publish-jobs
+      - name: openstack-server-release-jobs
       - name: python26-jobs
       - name: python-jobs
       - name: check-requirements
@@ -1302,11 +1272,6 @@ projects:
       - gate-manila-devstack-dsvm-neutron
     post:
       - manila-coverage
-    pre-release:
-      - manila-tarball
-    release:
-      - manila-tarball
-      - manila-merge-release-tags
 
   - name: openstack/neutron
     template:
@@ -1314,6 +1279,7 @@ projects:
       - name: python26-jobs
       - name: python-jobs
       - name: openstack-server-publish-jobs
+      - name: openstack-server-release-jobs
       - name: periodic-icehouse
       - name: periodic-juno
       - name: check-requirements
@@ -1342,11 +1308,6 @@ projects:
       - check-neutron-dsvm-api
       - gate-grenade-dsvm-neutron-forward
       - check-grenade-dsvm-neutron-sideways
-    pre-release:
-      - neutron-tarball
-    release:
-      - neutron-tarball
-      - neutron-merge-release-tags
 
   - name: openstack/neutron-fwaas
     template:
@@ -1384,6 +1345,7 @@ projects:
       - name: python26-jobs
       - name: python-jobs
       - name: openstack-server-publish-jobs
+      - name: openstack-server-release-jobs
       - name: periodic-icehouse
       - name: periodic-juno
       - name: check-requirements
@@ -1411,11 +1373,6 @@ projects:
       - check-tempest-dsvm-neutron-pg
       - gate-nova-pip-missing-reqs
       - check-tempest-dsvm-nova-v21-full
-    pre-release:
-      - nova-tarball
-    release:
-      - nova-tarball
-      - nova-merge-release-tags
 
   - name: openstack/nova-specs
     template:
@@ -1447,6 +1404,7 @@ projects:
       - name: python-jobs
       - name: periodic-juno
       - name: openstack-server-publish-jobs
+      - name: openstack-server-release-jobs
       - name: check-requirements
       - name: integrated-gate
       - name: docs-on-rtfd
@@ -1455,11 +1413,6 @@ projects:
       - gate-sahara-pylint
     post:
       - sahara-coverage
-    pre-release:
-      - sahara-tarball
-    release:
-      - sahara-tarball
-      - sahara-merge-release-tags
 
   - name: openstack/sahara-specs
     template:
@@ -1476,6 +1429,7 @@ projects:
       - name: python26-jobs
       - name: python-jobs
       - name: openstack-server-publish-jobs
+      - name: openstack-server-release-jobs
       - name: check-requirements
       - name: translation-jobs
       - name: experimental-tripleo-jobs
@@ -1493,11 +1447,6 @@ projects:
       - swift-coverage
     experimental:
       - gate-grenade-dsvm-forward
-    pre-release:
-      - swift-tarball
-    release:
-      - swift-tarball
-      - swift-merge-release-tags
 
   - name: openstack/swift-specs
     template:
@@ -1510,6 +1459,7 @@ projects:
       - name: python26-jobs
       - name: python-jobs
       - name: openstack-server-publish-jobs
+      - name: openstack-server-release-jobs
       - name: periodic-icehouse
       - name: periodic-juno
       - name: check-requirements
@@ -1523,11 +1473,6 @@ projects:
     post:
       - trove-tox-doc-publishdocs
       - trove-coverage
-    pre-release:
-      - trove-tarball
-    release:
-      - trove-tarball
-      - trove-merge-release-tags
     experimental:
       - gate-trove-functional-dsvm-percona
       - gate-trove-functional-dsvm-mongodb
@@ -1563,6 +1508,7 @@ projects:
       - name: check-requirements
       - name: translation-jobs
       - name: openstack-server-publish-jobs
+      - name: openstack-server-release-jobs
       - name: pypy-jobs
     check:
       - check-tempest-dsvm-mongodb-zaqar
@@ -1573,11 +1519,6 @@ projects:
       - gate-tempest-dsvm-mongodb-zaqar
       - gate-tempest-dsvm-redis-zaqar
       - gate-zaqar-python33
-    pre-release:
-      - zaqar-tarball
-    release:
-      - zaqar-tarball
-      - zaqar-merge-release-tags
 
   - name: openstack/zaqar-specs
     template:
