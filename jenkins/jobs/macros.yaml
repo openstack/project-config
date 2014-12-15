@@ -404,32 +404,32 @@
 
 
 - builder:
-    name: zuul_swift_upload
+    name: zuul-swift-upload
     builders:
       - shell: "/usr/local/jenkins/slave_scripts/zuul_swift_upload.py --name {zuul_log_instruction_set} {upload_source}"
 
 
 - builder:
-    name: zuul_swift_upload_logs
+    name: zuul-swift-upload-logs
     builders:
-      - zuul_swift_upload:
+      - zuul-swift-upload:
          zuul_log_instruction_set: logs
          upload_source: '{upload_source}'
 
 
 - builder:
-    name: zuul_swift_upload_console_log
+    name: zuul-swift-upload-console-log
     builders:
       - shell: "/usr/local/jenkins/slave_scripts/grab_console_log.sh"
-      - zuul_swift_upload_logs:
+      - zuul-swift-upload-logs:
          upload_source: '/tmp/console.html'
 
 
 - builder:
-    name: zuul_swift_upload_logs_with_console
+    name: zuul-swift-upload-logs-with-console
     builders:
       - shell: "/usr/local/jenkins/slave_scripts/grab_console_log.sh"
-      - zuul_swift_upload_logs:
+      - zuul-swift-upload-logs:
          upload_source: '{upload_source} /tmp/console.html'
 
 
@@ -594,11 +594,11 @@
               copy-after-failure: true
 
 - publisher:
-    name: zuul_swift_upload
+    name: zuul-swift-upload
     publishers:
       - postbuildscript:
           builders:
-            - zuul_swift_upload:
+            - zuul-swift-upload:
                 zuul_log_instruction_set: '{zuul_log_instruction_set}'
                 upload_source: '{upload_source}'
           # These flags really mean only if on * when
@@ -608,11 +608,11 @@
           onsuccess: False
 
 - publisher:
-    name: zuul_swift_upload_logs
+    name: zuul-swift-upload-logs
     publishers:
       - postbuildscript:
           builders:
-            - zuul_swift_upload_logs:
+            - zuul-swift-upload-logs:
                 upload_source: '{upload_source}'
           # These flags really mean only if on * when
           # checked. When both set to false the post script
@@ -621,11 +621,11 @@
           onsuccess: False
 
 - publisher:
-    name: zuul_swift_upload_console_log
+    name: zuul-swift-upload-console-log
     publishers:
       - postbuildscript:
           builders:
-            - zuul_swift_upload_console_log
+            - zuul-swift-upload-console-log
           # These flags really mean only if on * when
           # checked. When both set to false the post script
           # should run on every job regardless of status.
@@ -634,11 +634,11 @@
 
 
 - publisher:
-    name: zuul_swift_upload_logs_with_console
+    name: zuul-swift-upload-logs-with-console
     publishers:
       - postbuildscript:
           builders:
-            - zuul_swift_upload_logs_with_console:
+            - zuul-swift-upload-logs-with-console:
                 upload_source: '{upload_source}'
           # These flags really mean only if on * when
           # checked. When both set to false the post script
