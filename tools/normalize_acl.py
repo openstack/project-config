@@ -3,6 +3,7 @@
 # Usage: normalize_acl.py acl.config [transformation [transformation [...]]]
 #
 # Transformations:
+# all Apply all transformations.
 # 0 - dry run (default, print to stdout rather than modifying file in place)
 # 1 - strip/condense whitespace and sort (implied by any other transformation)
 # 2 - get rid of unneeded create on refs/tags
@@ -10,6 +11,8 @@
 # 4 - strip default *.owner = group Administrators permissions
 # 5 - sort the exclusiveGroupPermissions group lists
 # 6 - replace openstack-ci-admins and openstack-ci-core with infra-core
+# 7 - add at least one core team, if no team is defined with special suffixes
+#     like core, admins, milestone or Users
 
 import re
 import sys
@@ -18,6 +21,8 @@ aclfile = sys.argv[1]
 
 try:
     transformations = sys.argv[2:]
+    if transformations and transformations[0] == 'all':
+        transformations = [str(x) for x in range(0, 8)]
 except KeyError:
     transformations = []
 
@@ -102,6 +107,18 @@ if '6' in transformations:
         for option in acl[section]:
             for group in ('openstack-ci-admins', 'openstack-ci-core'):
                 option = option.replace('group %s' % group, 'group infra-core')
+            newsection.append(option)
+        acl[section] = newsection
+
+if '7' in transformations:
+    special_teams = ("core", "milestone", "Users", "admins")
+    for section in acl.keys():
+        newsection = []
+        for option in acl[section]:
+            if ("refs/heads" in section and "group" in option
+                    and "-2..+2" in option
+                    and not any(x in option for x in special_teams)):
+                option = "%s%s" % (option, "-core")
             newsection.append(option)
         acl[section] = newsection
 
