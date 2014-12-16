@@ -8,7 +8,7 @@
       - shell: ./tools/run-compare-xml.sh
 
     publishers:
-      - zuul_swift_upload_console_log
+      - zuul-swift-upload-console-log
 
 - job:
     name: gate-project-config-irc-access
@@ -21,7 +21,7 @@
           envlist: 'irc'
 
     publishers:
-      - zuul_swift_upload_console_log
+      - zuul-swift-upload-console-log
 
 - job:
     name: gate-project-config-layout
@@ -34,7 +34,7 @@
           envlist: 'zuul'
 
     publishers:
-      - zuul_swift_upload_console_log
+      - zuul-swift-upload-console-log
 
 - job:
     name: gate-project-config-jenkins-project
@@ -47,7 +47,7 @@
           envlist: 'jenkins-project'
 
     publishers:
-      - zuul_swift_upload_console_log
+      - zuul-swift-upload-console-log
 
 # This is a non-standard docs job because it uses SCP instead of FTP
 - job-template:
@@ -66,7 +66,7 @@
             - target: '{target}'
               source: 'doc/build/html/**/*'
               keep-hierarchy: true
-      - zuul_swift_upload_console_log
+      - zuul-swift-upload-console-log
       # TODO(jhesketh): Add job for uploading built docs
 
 - job:
@@ -80,7 +80,7 @@
 
     publishers:
       - upload-sphinx-draft
-      - zuul_swift_upload_console_log
+      - zuul-swift-upload-console-log
       # TODO(jhesketh): Add job for uploading built docs
 
 
@@ -95,7 +95,7 @@
           envlist: projects
 
     publishers:
-      - zuul_swift_upload_console_log
+      - zuul-swift-upload-console-log
 
 - job-template:
     name: 'gate-infra-puppet-apply-{ostype}'
@@ -109,4 +109,4 @@
           ./tools/apply-test.sh
 
     publishers:
-      - zuul_swift_upload_console_log
+      - zuul-swift-upload-console-log
