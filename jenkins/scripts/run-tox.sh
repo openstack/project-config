@@ -2,7 +2,7 @@
 
 # If a bundle file is present, call tox with the jenkins version of
 # the test environment so it is used.  Otherwise, use the normal
-# (non-bundle) test environment.  Also, run pip freeze on the
+# (non-bundle) test environment.  Also, run pbr freeze on the
 # resulting environment at the end so that we have a record of exactly
 # what packages we ended up testing.
 #
@@ -34,10 +34,11 @@ sudo /usr/local/jenkins/slave_scripts/jenkins-sudo-grep.sh pre
 
 tox -v -e$venv
 result=$?
+[ -e .tox/$venv/bin/pbr ] && freezecmd=pbr || freezecmd=pip
 
-echo "Begin pip freeze output from test virtualenv:"
+echo "Begin $freezecmd freeze output from test virtualenv:"
 echo "======================================================================"
-.tox/$venv/bin/pip freeze
+tox -e$venv -- $freezecmd freeze
 echo "======================================================================"
 
 if [ -d ".testrepository" ] ; then
