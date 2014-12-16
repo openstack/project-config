@@ -111,14 +111,26 @@ if '6' in transformations:
         acl[section] = newsection
 
 if '7' in transformations:
-    special_teams = ("core", "milestone", "Users", "admins")
+    special_projects = (
+        'ossa',
+    )
+    special_teams = (
+        'admins',
+        'committee',
+        'core',
+        'maint',
+        'Managers',
+        'milestone',
+        'Users',
+    )
     for section in acl.keys():
         newsection = []
         for option in acl[section]:
-            if ("refs/heads" in section and "group" in option
-                    and "-2..+2" in option
-                    and not any(x in option for x in special_teams)):
-                option = "%s%s" % (option, "-core")
+            if ('refs/heads' in section and 'group' in option
+                    and '-2..+2' in option
+                    and not any(x in option for x in special_teams)
+                    and not any(x in aclfile for x in special_projects)):
+                option = '%s%s' % (option, '-core')
             newsection.append(option)
         acl[section] = newsection
 
