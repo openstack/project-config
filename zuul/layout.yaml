@@ -628,6 +628,10 @@ jobs:
     success-message: XML output is unchanged.
   - name: project-config-compare-xml
     voting: false
+  # TODO(armax): This job is not evaluating all ACL files yet. Make
+  # it voting once we evaluate all files and the test passes cleanly.
+  - name: project-config-gerrit
+    voting: false
     failure-message: Jenkins XML output has changed.
     success-message: Jenkins XML output is unchanged.
   - name: gate-git-review-python34
@@ -3309,6 +3313,7 @@ projects:
       - name: infra-puppet-apply-jobs
     check:
       - project-config-compare-xml
+      - project-config-gerrit
       - gate-project-config-layout
       - gate-project-config-pep8
       - gate-project-config-bashate
