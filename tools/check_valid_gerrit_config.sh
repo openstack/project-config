@@ -25,7 +25,7 @@ function check_team_acl {
 }
 
 # Add more namespaces here, if necessary
-for namespace in stackforge openstack openstack-dev; do
+for namespace in openstack openstack-dev openstack-infra stackforge; do
     check_team_acl "${CONFIGS_LIST_BASE}${namespace}"
 done
 
