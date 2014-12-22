@@ -14,12 +14,16 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-tox -v -epep8
+venv=pep8
+
+tox -v -e$venv
 rc=$?
 
-echo "Begin pip freeze output from test virtualenv:"
+[ -e .tox/$venv/bin/pbr ] && freezecmd=pbr || freezecmd=pip
+
+echo "Begin $freezecmd freeze output from test virtualenv:"
 echo "======================================================================"
-.tox/pep8/bin/pip freeze
+tox -e$venv -- $freezecmd freeze
 echo "======================================================================"
 
 exit $rc

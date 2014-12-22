@@ -1,6 +1,6 @@
 #!/bin/bash -xe
 
-# Run coverage via tox. Also, run pip freeze on the
+# Run coverage via tox. Also, run pbr freeze on the
 # resulting environment at the end so that we have a record of exactly
 # what packages we ended up testing.
 
@@ -15,10 +15,11 @@ python setup.py --version
 
 tox -e$venv
 result=$?
+[ -e .tox/$venv/bin/pbr ] && freezecmd=pbr || freezecmd=pip
 
-echo "Begin pip freeze output from test virtualenv:"
+echo "Begin $freezecmd freeze output from test virtualenv:"
 echo "======================================================================"
-.tox/$venv/bin/pip freeze
+tox -e$venv -- $freezecmd freeze
 echo "======================================================================"
 
 exit $result
