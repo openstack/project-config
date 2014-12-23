@@ -23,7 +23,7 @@ rc=$?
 
 echo "Begin $freezecmd freeze output from test virtualenv:"
 echo "======================================================================"
-tox -e$venv -- $freezecmd freeze
+.tox/${venv}/bin/${freezecmd} freeze
 echo "======================================================================"
 
 exit $rc
