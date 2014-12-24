@@ -8,17 +8,18 @@
 #
 
 venv=venv
+
+mkdir -p doc/build
+export HUDSON_PUBLISH_DOCS=1
+tox -e$venv -- python setup.py build_sphinx
+result=$?
+
 [ -e .tox/$venv/bin/pbr ] && freezecmd=pbr || freezecmd=pip
 
 echo "Begin pbr freeze output from test virtualenv:"
 echo "======================================================================"
 .tox/${venv}/bin/${freezecmd} freeze
 echo "======================================================================"
-
-mkdir -p doc/build
-export HUDSON_PUBLISH_DOCS=1
-tox -e$venv -- python setup.py build_sphinx
-result=$?
 
 if [ -z "$ZUUL_REFNAME" ] || [ "$ZUUL_REFNAME" == "master" ] ; then
     : # Leave the docs where they are.
