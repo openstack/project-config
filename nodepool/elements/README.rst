@@ -18,7 +18,7 @@ Install diskimage-builder:
 
 ::
 
-  sudo pip install diskimage-builder
+  sudo -H pip install diskimage-builder
 
 
 Build an image

@@ -154,7 +154,7 @@ sudo rm -f /etc/cron.{monthly,weekly,daily,hourly,d}/*
 # to using 3.3 with virtualenv.
 git clone /opt/git/openstack-infra/zuul /tmp/zuul
 sudo virtualenv -p python2 /usr/zuul-env
-sudo /usr/zuul-env/bin/pip install /tmp/zuul
+sudo -H /usr/zuul-env/bin/pip install /tmp/zuul
 sudo rm -fr /tmp/zuul
 
 sync
