@@ -160,6 +160,44 @@
           ./safe-devstack-vm-gate-wrap.sh
 
 
+- builder:
+    name: devstack-mistral-rally-gate
+    builders:
+      - link-logs
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PROJECTS="stackforge/rally $PROJECTS"
+          export PROJECTS="stackforge/mistral $PROJECTS"
+          export PROJECTS="stackforge/python-mistralclient $PROJECTS"
+
+          export DEVSTACK_GATE_NEUTRON={neutron}
+          export DEVSTACK_GATE_TEMPEST_LARGE_OPS={large_ops}
+          export DEVSTACK_GATE_EXERCISES=0
+          export DEVSTACK_GATE_TIMEOUT=120
+          export RALLY_SCENARIO={scenario}
+
+          export ENABLED_SERVICES=mistral,rally
+
+          function pre_test_hook {{
+              # Install rally-devstack integration
+              cp -r $BASE/new/rally/contrib/devstack/* $BASE/new/devstack/
+
+              # Install mistral-devstack integration
+              cd /opt/stack/new/mistral/functionaltests
+              ./pre_test_hook.sh
+          }}
+          export -f pre_test_hook
+
+          function post_test_hook {{
+              $BASE/new/rally/tests/ci/rally-gate.sh
+          }}
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+
 - job-template:
     name: 'gate-rally-dsvm-murano-{name}'
     node: 'devstack-precise || devstack-trusty'
@@ -172,6 +210,27 @@
     builders:
         - devstack-murano-rally-gate:
             scenario: '{name}-murano'
+            neutron: '0'
+            large_ops: '0'
+
+    publishers:
+      - devstack-logs
+      - console-log
+      - rally-plot
+
+
+- job-template:
+    name: 'gate-rally-dsvm-mistral-{name}'
+    node: 'devstack-precise || devstack-trusty'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+        - devstack-mistral-rally-gate:
+            scenario: '{name}-mistral'
             neutron: '0'
             large_ops: '0'
 
@@ -378,6 +437,7 @@
       - 'gate-rally-dsvm-{name}'
       - 'gate-rally-dsvm-designate-{name}'
       - 'gate-rally-dsvm-murano-{name}'
+      - 'gate-rally-dsvm-mistral-{name}'
       - 'gate-rally-dsvm-neutron-{name}'
       - 'gate-rally-dsvm-fakevirt-{name}'
       - 'gate-rally-dsvm-zaqar-{name}'
