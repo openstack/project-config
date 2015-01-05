@@ -113,6 +113,7 @@ if '6' in transformations:
 if '7' in transformations:
     special_projects = (
         'ossa',
+        'reviewday',
     )
     special_teams = (
         'admins',
@@ -121,6 +122,7 @@ if '7' in transformations:
         'maint',
         'Managers',
         'milestone',
+        'packagers',
         'Users',
     )
     for section in acl.keys():
