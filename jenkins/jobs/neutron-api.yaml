@@ -25,21 +25,16 @@
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
 
+          function gate_hook {{
+              bash -xe $BASE/new/neutron/neutron/tests/contrib/gate_hook.sh api
+          }}
+          export -f gate_hook
+
           function post_test_hook {{
-              cd $BASE/new/neutron
-              # Ensure that the executing user can invoke tox on the
-              # neutron source tree.
-              sudo chown -R tempest:stack $BASE/new/neutron
-              echo "Configuring venv for neutron api test suite"
-              # Manually install tempest pending a decision on how
-              # best to include tempest as an explicit test dependency
-              # of neutron.
-              sudo -H -u tempest tox -e api --notest
-              sudo -H -u tempest .tox/api/bin/pip install $BASE/new/tempest
-              echo "Running neutron api test suite"
-              sudo -H -u tempest tox -e api
+              bash -xe $BASE/new/neutron/neutron/tests/contrib/post_test_hook.sh api
           }}
           export -f post_test_hook
+
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
 
