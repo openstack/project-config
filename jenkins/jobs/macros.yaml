@@ -15,10 +15,10 @@
     name: revoke-sudo
     builders:
       - shell: |
-          #!/bin/bash
-          if [ -f /etc/sudoers.d/jenkins-sudo ] ; then
-              sudo rm /etc/sudoers.d/jenkins-sudo
-          fi
+          #!/bin/bash -x
+          sudo rm -f /etc/sudoers.d/jenkins-sudo
+          # Prove that general sudo access is actually revoked
+          ! sudo -n true
 
 - builder:
     name: coverage
