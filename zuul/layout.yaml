@@ -781,7 +781,7 @@ jobs:
   - name: check-tempest-dsvm-f20-docker
     voting: false
   - name: check-neutron-dsvm-api
-    branch: ^(?!stable/icehouse).*$
+    branch: ^(?!stable/(icehouse|juno)).*$
     voting: false
   - name: check-tempest-dsvm-neutron-dvr
     branch: ^(?!stable/icehouse).*$
@@ -1281,6 +1281,7 @@ projects:
       - name: translation-jobs
       - name: experimental-tripleo-jobs
     check:
+      - check-neutron-dsvm-api
       - check-neutron-dsvm-functional
       - gate-rally-dsvm-neutron-neutron
       - check-tempest-dsvm-neutron-2
@@ -1299,7 +1300,6 @@ projects:
     post:
       - neutron-coverage
     experimental:
-      - check-neutron-dsvm-api
       - gate-grenade-dsvm-neutron-forward
       - check-grenade-dsvm-neutron-sideways
 
