@@ -163,5 +163,13 @@ sudo virtualenv -p python2 /usr/zuul-env
 sudo -H /usr/zuul-env/bin/pip install /tmp/zuul
 sudo rm -fr /tmp/zuul
 
+# Create a virtualenv for zuul-swift-logs
+# This is in /usr instead of /usr/local due to this bug on precise:
+# https://bugs.launchpad.net/ubuntu/+source/python2.7/+bug/839588
+# Be explicit about the Python version since py3k-precise nodes default
+# to using 3.3 with virtualenv.
+sudo -H virtualenv -p python2 /usr/zuul-swift-logs-env
+sudo -H /usr/zuul-swift-logs-env/bin/pip install python-magic
+
 sync
 sleep 5
