@@ -18,14 +18,13 @@
 # Find out if jenkins has attempted to run any sudo commands by checking
 # the auth.log or secure log files before and after a test run.
 
+PATTERN="sudo.*jenkins.*:.*\(incorrect password attempts\|command not allowed\)"
 case $( facter osfamily ) in
     Debian)
-        PATTERN="sudo.*jenkins.*:.*incorrect password attempts"
         OLDLOGFILE=/var/log/auth.log.1
         LOGFILE=/var/log/auth.log
         ;;
     RedHat)
-        PATTERN="sudo.*jenkins.*:.*command not allowed"
         OLDLOGFILE=$( ls /var/log/secure-* | sort | tail -n1 )
         LOGFILE=/var/log/secure
         ;;
