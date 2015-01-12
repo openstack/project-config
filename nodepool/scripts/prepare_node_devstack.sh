@@ -20,7 +20,7 @@ HOSTNAME=$1
 
 export SUDO='true'
 export THIN='true'
-TEMPEST_DIR=${TEMPEST_DIR:-/opt/git/tempest}
+TEMPEST_DIR=${TEMPEST_DIR:-/opt/git/openstack/tempest}
 
 ./prepare_node.sh "$HOSTNAME"
 sudo -u jenkins -i /opt/nodepool-scripts/prepare_devstack.sh "$HOSTNAME"
