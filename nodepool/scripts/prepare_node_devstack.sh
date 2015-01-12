@@ -27,10 +27,10 @@ sudo -u jenkins -i /opt/nodepool-scripts/prepare_devstack.sh "$HOSTNAME"
 
 # Setup venv and install deps for prepare_tempest_testrepository.py
 sudo virtualenv -p python2 /opt/git/subunit2sql-env
-sudo -H /opt/git/subunit2sql-env/bin/pip install -U testrepository subunit2sql
+sudo -H /opt/git/subunit2sql-env/bin/pip install -U testrepository subunit2sql PyMySQL
 
 # Pre-seed tempest testrepository with data from subunit2sql
-sudo -i /opt/git/subunit2sql-env/bin/python2 /opt/nodepool-scripts/prepare_tempest_testrepository.py $TEMPEST_DIR
+sudo -i env PATH=/opt/git/subunit2sql-env/bin:$PATH /opt/git/subunit2sql-env/bin/python2 /opt/nodepool-scripts/prepare_tempest_testrepository.py $TEMPEST_DIR
 
 # Dekete the venv after the script is called
 sudo rm -rf /opt/git/subunit2sql-env

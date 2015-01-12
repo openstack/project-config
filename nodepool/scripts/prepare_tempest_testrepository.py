@@ -24,7 +24,7 @@ from subunit2sql import write_subunit
 from common import run_local
 
 
-DB_URI = 'mysql://query:query@logstash.openstack.org/subunit2sql'
+DB_URI = 'mysql+pymysql://query:query@logstash.openstack.org/subunit2sql'
 
 if len(sys.argv) == 2:
     TEMPEST_PATH = sys.argv[1]

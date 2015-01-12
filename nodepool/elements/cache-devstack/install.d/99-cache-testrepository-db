@@ -22,9 +22,9 @@ TEMPEST_DIR=$TMP_MOUNT_PATH/opt/git/openstack/tempest
 
 # Setup venv and Install python deps from pip
 sudo virtualenv /opt/git/subunit2sql-env
-sudo -H /opt/git/subunit2sql-env/bin/pip install -U subunit2sql testrepository
+sudo -H /opt/git/subunit2sql-env/bin/pip install -U subunit2sql testrepository PyMySQL
 
-sudo /opt/git/subunit2sql-env/bin/python2 /opt/nodepool-scripts/prepare_tempest_testrepository.py $TEMPEST_DIR
+sudo env PATH=/opt/git/subunit2sql-env/bin:$PATH /opt/git/subunit2sql-env/bin/python2 /opt/nodepool-scripts/prepare_tempest_testrepository.py $TEMPEST_DIR
 
 # Delete the venv after the script
 sudo rm -rf /opt/git/subunit2sql-env
