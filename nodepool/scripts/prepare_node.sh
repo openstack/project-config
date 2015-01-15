@@ -169,7 +169,7 @@ sudo rm -fr /tmp/zuul
 # Be explicit about the Python version since py3k-precise nodes default
 # to using 3.3 with virtualenv.
 sudo -H virtualenv -p python2 /usr/zuul-swift-logs-env
-sudo -H /usr/zuul-swift-logs-env/bin/pip install python-magic
+sudo -H /usr/zuul-swift-logs-env/bin/pip install python-magic argparse requests
 
 sync
 sleep 5
