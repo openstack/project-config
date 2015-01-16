@@ -435,13 +435,6 @@ project-templates:
       - 'gate-{name}-chef-lint'
       - 'gate-{name}-chef-unit'
 
-  - name: os-ansible-jobs
-    check:
-      - 'gate-{name}-ansible-lint'
-      - 'check-{name}-dsvm-aio-build'
-    gate:
-      - 'gate-{name}-ansible-lint'
-
   # Note that we only publish integrated and incubated
   # projects/programs on specs.o.o - the publish-specs job should not
   # be used for stackforge projects, use stackforge-specs-jobs instead.
@@ -5052,7 +5045,11 @@ projects:
   - name: stackforge/os-ansible-deployment
     template:
       - name: merge-check
-      - name: os-ansible-jobs
+    check:
+      - gate-os-ansible-deployment-ansible-lint
+      - check-os-ansible-deployment-dsvm-aio-build
+    gate:
+      - gate-os-ansible-deployment-ansible-lint
 
   - name: stackforge/os-client-config
     template:
