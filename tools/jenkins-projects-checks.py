@@ -34,7 +34,7 @@ def check_sections():
             last = ""
             section = line[10:].strip()
             print("Checking section '%s'" % section)
-        if ' name: ' in line:
+        if line.startswith('    name: '):
             i = line.find(' name: ')
             current = line[i + 7:].strip()
             if normalize(last) > normalize(current):
