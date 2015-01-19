@@ -435,6 +435,10 @@ project-templates:
       - 'gate-{name}-chef-lint'
       - 'gate-{name}-chef-unit'
 
+  - name: chef-rake-jobs
+    experimental:
+      - 'gate-{name}-chef-rake'
+
   # Note that we only publish integrated and incubated
   # projects/programs on specs.o.o - the publish-specs job should not
   # be used for stackforge projects, use stackforge-specs-jobs instead.
@@ -517,6 +521,9 @@ jobs:
   # The infra puppet configs predominantly run on precise nodes.
   # Test puppet for infra by default on precise nodes until that changes.
   - name: ^gate-system-config-puppet.*$
+    parameter-function: set_node_options_default_precise
+  # Put chef-rake gate on precise until ChefDK works on trusty
+  - name: ^gate-.*-chef-rake$
     parameter-function: set_node_options_default_precise
   # Berkshelf 3.x requires GeCode 3.x on precise.
   - name: ^gate-.*-chef-(lint|style|unit|repo)$
@@ -4229,81 +4236,97 @@ projects:
     template:
       - name: merge-check
       - name: chef-jobs
+      - name: chef-rake-jobs
 
   - name: stackforge/cookbook-openstack-client
     template:
       - name: merge-check
       - name: chef-jobs
+      - name: chef-rake-jobs
 
   - name: stackforge/cookbook-openstack-common
     template:
       - name: merge-check
       - name: chef-jobs
+      - name: chef-rake-jobs
 
   - name: stackforge/cookbook-openstack-compute
     template:
       - name: merge-check
       - name: chef-jobs
+      - name: chef-rake-jobs
 
   - name: stackforge/cookbook-openstack-dashboard
     template:
       - name: merge-check
       - name: chef-jobs
+      - name: chef-rake-jobs
 
   - name: stackforge/cookbook-openstack-data-processing
     template:
       - name: merge-check
       - name: chef-jobs
+      - name: chef-rake-jobs
 
   - name: stackforge/cookbook-openstack-database
     template:
       - name: merge-check
       - name: chef-jobs
+      - name: chef-rake-jobs
 
   - name: stackforge/cookbook-openstack-identity
     template:
       - name: merge-check
       - name: chef-jobs
+      - name: chef-rake-jobs
 
   - name: stackforge/cookbook-openstack-image
     template:
       - name: merge-check
       - name: chef-jobs
+      - name: chef-rake-jobs
 
   - name: stackforge/cookbook-openstack-integration-test
     template:
       - name: merge-check
       - name: chef-jobs
+      - name: chef-rake-jobs
 
   - name: stackforge/cookbook-openstack-network
     template:
       - name: merge-check
       - name: chef-jobs
+      - name: chef-rake-jobs
 
   - name: stackforge/cookbook-openstack-object-storage
     template:
       - name: merge-check
       - name: chef-jobs
+      - name: chef-rake-jobs
 
   - name: stackforge/cookbook-openstack-ops-database
     template:
       - name: merge-check
       - name: chef-jobs
+      - name: chef-rake-jobs
 
   - name: stackforge/cookbook-openstack-ops-messaging
     template:
       - name: merge-check
       - name: chef-jobs
+      - name: chef-rake-jobs
 
   - name: stackforge/cookbook-openstack-orchestration
     template:
       - name: merge-check
       - name: chef-jobs
+      - name: chef-rake-jobs
 
   - name: stackforge/cookbook-openstack-telemetry
     template:
       - name: merge-check
       - name: chef-jobs
+      - name: chef-rake-jobs
 
   - name: stackforge/cookbook-pacemaker
     template:

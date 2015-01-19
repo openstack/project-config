@@ -18,6 +18,25 @@
     publishers:
       - console-log
 
+# this job template requires a Rakefile in the cookbook with a task 'test' that will be run during this job
+- job-template:
+    name: 'gate-{name}-chef-rake'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 60
+      - timestamps
+
+    builders:
+      - gerrit-git-prep
+      - ruby-191-prep
+      - revoke-sudo
+      - chef-rake-test
+
+    publishers:
+      - console-log
+
 - job-template:
     name: 'gate-{name}-chef-lint'
     node: '{node}'
