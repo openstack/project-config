@@ -58,13 +58,15 @@
 
     builders:
       - generate-specs-site
+      - static-publish-prep:
+          source: 'specs/output'
 
     publishers:
       - scp:
           site: 'static.openstack.org'
           files:
             - target: 'specs/'
-              source: 'specs/output/**'
+              source: '**'
               keep-hierarchy: true
               copy-after-failure: false
       - console-log
