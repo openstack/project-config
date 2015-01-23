@@ -32,6 +32,8 @@ sudo -H /opt/git/subunit2sql-env/bin/pip install -U testrepository subunit2sql P
 # Pre-seed tempest testrepository with data from subunit2sql
 sudo -i env PATH=/opt/git/subunit2sql-env/bin:$PATH /opt/git/subunit2sql-env/bin/python2 /opt/nodepool-scripts/prepare_tempest_testrepository.py $TEMPEST_DIR
 
+sudo chown -R jenkins:jenkins $TEMPEST_DIR/.testrepository
+
 # Dekete the venv after the script is called
 sudo rm -rf /opt/git/subunit2sql-env
 
