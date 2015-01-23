@@ -417,7 +417,11 @@
           rm -rf ,content
           mv {source} ,content
           rm -rf .[^.]* [^,]*
-          mv ,content/.[^.]* ,content/* ./
+          # Disable errexit here because there might not be any dotfiles.
+          set +e
+          mv ,content/.[^.]* ./
+          set -e
+          mv ,content/* ./
           rm -r ,content
 
 - builder:
