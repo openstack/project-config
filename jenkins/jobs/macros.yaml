@@ -406,6 +406,21 @@
           ip neighbor show
 
 - builder:
+    name: static-publish-prep
+
+    # We want to publish to the docroot but the scp publisher cannot remove
+    # paths, so use a shell builder to move the content in the right place and
+    # publish from there.
+    builders:
+      - shell: |
+          #!/bin/bash -xe
+          rm -rf ,content
+          mv $source ,content
+          rm -rf .[^.]* [^,]*
+          mv ,content/.[^.]* ,content/* ./
+          rm -r ,content
+
+- builder:
     name: install-buck
     builders:
       - shell: |

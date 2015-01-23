@@ -4,21 +4,13 @@
     name: static-{name}-publish
     node: 'bare-precise || bare-trusty'
 
-    # We want to publish to the docroot but the scp publisher cannot remove
-    # paths, so use a shell builder to move the content in the right place and
-    # publish from there.
     builders:
       - revoke-sudo
       - gerrit-git-prep
       - docs:
           project: '{name}'
-      - shell: |
-          #!/bin/bash -xe
-          rm -rf ,html
-          mv doc/build/html ,html
-          rm -rf .[^.]* [^,]*
-          mv ,html/.[^.]* ,html/* ./
-          rm -r ,html
+      - static-publish-prep:
+          source: 'doc/build/html'
 
     publishers:
       - scp:
