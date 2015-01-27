@@ -5,6 +5,9 @@ END_UUID=$(cat /proc/sys/kernel/random/uuid)
 
 echo "Grabbing consoleLog ($END_UUID)"
 
+# Since we are appending to fetched logs, remove any possibly old runs
+rm -f /tmp/console.txt /tmp/console.html
+
 # Get the plain text version (does not contain links or timestamps)
 console_log_path='consoleText'
 while ! grep -q "$END_UUID" /tmp/console.txt; do
