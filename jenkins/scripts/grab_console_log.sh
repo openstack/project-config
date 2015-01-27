@@ -17,7 +17,7 @@ while ! grep -q "$END_UUID" /tmp/console.txt; do
     TRIES=$((TRIES+1))
     if [ $TRIES -gt $RETRY_LIMIT ]; then
         break
-    done
+    fi
     sleep 3
     wget -c -O /tmp/console.txt --no-check-certificate $BUILD_URL$console_log_path
 done
@@ -29,7 +29,7 @@ while ! grep -q "$END_UUID" /tmp/console.html; do
     TRIES=$((TRIES+1))
     if [ $TRIES -gt $RETRY_LIMIT ]; then
         break
-    done
+    fi
     sleep 3
     wget -c -O /tmp/console.html --no-check-certificate $BUILD_URL$console_log_path
 done
