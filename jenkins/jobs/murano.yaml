@@ -38,3 +38,51 @@
     publishers:
       - devstack-logs
       - console-log
+
+# Murano and Congress integration functional tests
+- job:
+    name: gate-murano-congress-devstack-dsvm
+    node: 'devstack-precise || devstack-trusty'
+
+    wrappers:
+      - build-timeout:
+          timeout: 65
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=60
+          export ENABLED_SERVICES=murano,murano-api,murano-engine,tempest,congress,mistral
+          export PROJECTS="stackforge/murano $PROJECTS"
+          export PROJECTS="stackforge/murano-dashboard $PROJECTS"
+          export PROJECTS="stackforge/python-muranoclient $PROJECTS"
+          export PROJECTS="stackforge/congress $PROJECTS"
+          export PROJECTS="stackforge/mistral $PROJECTS"
+
+          export MURANO_ENABLE_MODEL_POLICY_ENFORCEMENT=True
+
+          function pre_test_hook {
+              cd /opt/stack/new/murano/functionaltests
+              ./pre_test_hook_congress.sh
+              ./pre_test_hook_mistral.sh
+              ./pre_test_hook.sh
+          }
+          export -f pre_test_hook
+
+          function post_test_hook {
+              cd /opt/stack/new/murano/functionaltests
+              ./post_test_hook.sh congress_mistral
+          }
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
