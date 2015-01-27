@@ -23,6 +23,7 @@ import argparse
 import magic
 import os
 import requests
+import stat
 import sys
 import tempfile
 import time
@@ -40,34 +41,62 @@ import time
 #                             in swift, is typically the rel path to the file
 #                             list supplied,
 #            'url': The URL to the log on the log server (absolute, supplied
-#                   by logserver_prefix and swift_destination_prefix)
+#                   by logserver_prefix and swift_destination_prefix),
+#            'metadata': {
+#                'mime': The filetype/mime,
+#                'last_modified': Modification timestamp,
+#                'size': The filesize in bytes,
+#            }
 #        }
 
 
-def generate_log_index(folder_links):
+def generate_log_index(folder_links, header_message=''):
     """Create an index of logfiles and links to them"""
 
     output = '<html><head><title>Index of results</title></head><body>\n'
-    output += '<ul>\n'
-    for file_details in folder_links:
-        output += '<li>'
-        output += '<a href="%s">%s</a>' % (file_details['url'],
-                                           file_details['filename'])
-        output += '</li>\n'
+    output += '<h1>%s</h1>\n' % header_message
+    output += '<table><tr><th>Name</th><th>Last Modified</th><th>Size</th>'
+    output += '<th>Mime</th></tr>\n'
 
-    output += '</ul>\n'
-    output += '</body></html>'
+    for file_details in folder_links:
+        output += '<tr>'
+        output += '<td><a href="%s">%s</a></td>' % (file_details['url'],
+                                                    file_details['filename'])
+        output += '<td>%s</td>' % time.asctime(
+            file_details['metadata']['last_modified'])
+        if file_details['metadata']['mime'] == 'folder':
+            size = str(file_details['metadata']['size'])
+        else:
+            size = sizeof_fmt(file_details['metadata']['size'])
+        output += '<td>%s</td>' % size
+        output += '<td><em>%s</em></td>' % file_details['metadata']['mime']
+
+        output += '</tr>\n'
+
+    output += '</table>'
+    output += '</body></html>\n'
     return output
 
 
-def make_index_file(folder_links, index_filename='index.html'):
+def make_index_file(folder_links, header_message='',
+                    index_filename='index.html'):
     """Writes an index into a file for pushing"""
 
-    index_content = generate_log_index(folder_links)
+    index_content = generate_log_index(folder_links, header_message)
     tempdir = tempfile.mkdtemp()
     fd = open(os.path.join(tempdir, index_filename), 'w')
     fd.write(index_content)
     return os.path.join(tempdir, index_filename)
+
+
+def sizeof_fmt(num, suffix='B'):
+    # From http://stackoverflow.com/questions/1094841/
+    # reusable-library-to-get-human-readable-version-of-file-size
+    for unit in ['', 'Ki', 'Mi', 'Gi', 'Ti', 'Pi', 'Ei', 'Zi']:
+        if abs(num) < 1024.0:
+            return "%3.1f%s%s" % (num, unit, suffix)
+        num /= 1024.0
+    return "%.1f%s%s" % (num, 'Yi', suffix)
 
 
 def get_file_mime(file_path):
@@ -83,6 +112,24 @@ def get_file_mime(file_path):
         m = magic.open(magic.MAGIC_MIME)
         m.load()
         return m.file(file_path).split(';')[0]
+
+
+def get_file_metadata(file_path):
+    metadata = {}
+    st = os.stat(file_path)
+    metadata['mime'] = get_file_mime(file_path)
+    metadata['last_modified'] = time.gmtime(st[stat.ST_MTIME])
+    metadata['size'] = st[stat.ST_SIZE]
+    return metadata
+
+
+def get_folder_metadata(file_path, number_files=0):
+    metadata = {}
+    st = os.stat(file_path)
+    metadata['mime'] = 'folder'
+    metadata['last_modified'] = time.gmtime(st[stat.ST_MTIME])
+    metadata['size'] = number_files
+    return metadata
 
 
 def swift_form_post_submit(file_list, url, hmac_body, signature):
@@ -123,7 +170,8 @@ def swift_form_post_submit(file_list, url, hmac_body, signature):
 
 
 def build_file_list(file_path, logserver_prefix, swift_destination_prefix,
-                    create_dir_indexes=True, create_parent_links=True):
+                    create_dir_indexes=True, create_parent_links=True,
+                    root_file_count=0):
     """Generate a list of files to upload to zuul. Recurses through directories
        and generates index.html files if requested."""
 
@@ -144,6 +192,7 @@ def build_file_list(file_path, logserver_prefix, swift_destination_prefix,
             'path': full_path,
             'relative_name': relative_name,
             'url': url,
+            'metadata': get_file_metadata(full_path),
         }
 
         file_list.append(file_details)
@@ -167,7 +216,13 @@ def build_file_list(file_path, logserver_prefix, swift_destination_prefix,
                 full_path = os.path.normpath(os.path.join(path, filename))
                 relative_name = os.path.relpath(full_path, parent_dir)
                 if relative_name == '.':
+                    # We are in a supplied folder currently
                     relative_name = ''
+                    number_files = root_file_count
+                else:
+                    # We are in a subfolder
+                    number_files = len(os.listdir(full_path))
+
                 url = os.path.join(destination_prefix, relative_name)
 
                 file_details = {
@@ -175,6 +230,7 @@ def build_file_list(file_path, logserver_prefix, swift_destination_prefix,
                     'path': full_path,
                     'relative_name': relative_name,
                     'url': url,
+                    'metadata': get_folder_metadata(full_path, number_files),
                 }
 
                 folder_links.append(file_details)
@@ -190,6 +246,7 @@ def build_file_list(file_path, logserver_prefix, swift_destination_prefix,
                     'path': full_path,
                     'relative_name': relative_name,
                     'url': url,
+                    'metadata': get_file_metadata(full_path),
                 }
 
                 file_list.append(file_details)
@@ -200,18 +257,24 @@ def build_file_list(file_path, logserver_prefix, swift_destination_prefix,
                 full_path = os.path.join(path, filename)
                 relative_name = os.path.relpath(full_path, parent_dir)
                 url = os.path.join(destination_prefix, relative_name)
+                number_files = len(os.listdir(full_path))
 
                 file_details = {
                     'filename': filename,
                     'path': full_path,
                     'relative_name': relative_name,
                     'url': url,
+                    'metadata': get_folder_metadata(full_path, number_files),
                 }
 
                 folder_links.append(file_details)
 
             if create_dir_indexes:
-                full_path = make_index_file(folder_links)
+                full_path = make_index_file(
+                    folder_links,
+                    "Index of %s" % os.path.join(swift_destination_prefix,
+                                                 relative_path)
+                )
                 filename = os.path.basename(full_path)
                 relative_name = os.path.join(relative_path, filename)
                 url = os.path.join(destination_prefix, relative_name)
@@ -273,8 +336,11 @@ if __name__ == '__main__':
         file_path = os.path.normpath(file_path)
         if os.path.isfile(file_path):
             filename = os.path.basename(file_path)
+            metadata = get_file_metadata(file_path)
         else:
             filename = os.path.basename(file_path) + '/'
+            number_files = len(os.listdir(file_path))
+            metadata = get_folder_metadata(file_path, number_files)
 
         url = os.path.join(destination_prefix, filename)
         file_details = {
@@ -282,18 +348,23 @@ if __name__ == '__main__':
             'path': file_path,
             'relative_name': filename,
             'url': url,
+            'metadata': metadata,
         }
         folder_links.append(file_details)
 
         file_list += build_file_list(
             file_path, logserver_prefix, swift_destination_prefix,
             (not (args.no_indexes or args.no_dir_indexes)),
-            (not args.no_parent_links)
+            (not args.no_parent_links),
+            len(args.files)
         )
 
     index_file = ''
     if not (args.no_indexes or args.no_root_index):
-        full_path = make_index_file(folder_links)
+        full_path = make_index_file(
+            folder_links,
+            "Index of %s" % swift_destination_prefix
+        )
         filename = os.path.basename(full_path)
         relative_name = filename
         url = os.path.join(destination_prefix, relative_name)
