@@ -2,7 +2,7 @@
 
 RETRY_LIMIT=20
 
-# Keep fetching until this uuid to appear in the logs before uploading
+# Keep fetching until this uuid appears in the logs before uploading
 END_UUID=$(cat /proc/sys/kernel/random/uuid)
 
 echo "Grabbing consoleLog ($END_UUID)"
@@ -19,7 +19,7 @@ while ! grep -q "$END_UUID" /tmp/console.txt; do
         break
     fi
     sleep 3
-    wget -c -O /tmp/console.txt --no-check-certificate $BUILD_URL$console_log_path
+    wget --no-cache -c -O /tmp/console.txt --no-check-certificate $BUILD_URL$console_log_path
 done
 
 # Grab the HTML version of the log (includes timestamps)
@@ -31,7 +31,7 @@ while ! grep -q "$END_UUID" /tmp/console.html; do
         break
     fi
     sleep 3
-    wget -c -O /tmp/console.html --no-check-certificate $BUILD_URL$console_log_path
+    wget --no-cache -c -O /tmp/console.html --no-check-certificate $BUILD_URL$console_log_path
 done
 
 # We need to add <pre> tags around the output for log-osanalyze to not escape
