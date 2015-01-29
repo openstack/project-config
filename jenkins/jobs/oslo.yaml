@@ -63,20 +63,20 @@
           export DEVSTACK_GATE_TIMEOUT=90
           export DEVSTACK_GATE_TEMPEST=0
           export DEVSTACK_GATE_EXERCISES=0
-          export DEVSTACK_GATE_INSTALL_TESTONLY=1
+          DEVSTACK_LOCAL_CONFIG="${{DEVSTACK_LOCAL_CONFIG}}QPID_USERNAME=stackqpid\n"
+          DEVSTACK_LOCAL_CONFIG="${{DEVSTACK_LOCAL_CONFIG}}QPID_PASSWORD=secretqpid\n"
+          DEVSTACK_LOCAL_CONFIG="${{DEVSTACK_LOCAL_CONFIG}}RABBIT_USERID=stackrabbit\n"
+          DEVSTACK_LOCAL_CONFIG="${{DEVSTACK_LOCAL_CONFIG}}RABBIT_PASSWORD=secretrabbit\n"
           case '{driver}' in
             qpid)
-              export QPID_USERNAME=guest
-              export QPID_PASSWORD=password
-              export ENABLED_SERVICES=qpid
+              export DEVSTACK_GATE_QPID=1
               ;;
             amqp1)
-              export QPID_USERNAME=guest
-              export QPID_PASSWORD=password
-              export ENABLED_SERVICES=qpid
-              export RPC_MESSAGING_PROTOCOL=AMQP1
+              export DEVSTACK_GATE_QPID=1
+              DEVSTACK_LOCAL_CONFIG="${{DEVSTACK_LOCAL_CONFIG}}RPC_MESSAGING_PROTOCOL=AMQP1\n"
               ;;
           esac
+          export DEVSTACK_LOCAL_CONFIG
 
           function post_test_hook {{
               cd /opt/stack/new/oslo.messaging
