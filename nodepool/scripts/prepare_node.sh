@@ -40,13 +40,10 @@ if [ -f /etc/redhat-release ]; then
     if grep -q 'CentOS release 6' /etc/redhat-release; then
         # chicken-and-egg ... hp cloud image has EPEL installed, but
         # we can't connect to it...
-        # However, if we're not on an hp cloud image, we may not have
-        # epel and --disablerepo will fail
-        if yum repolist | grep epel &> /dev/null ; then
-            sudo yum --disablerepo=epel update -y ca-certificates
-        else
-            sudo yum update -y ca-certificates
-        fi
+        # Note 'epel*' will match 0 or more repositories named epel,
+        # so it will work regardless of whether epel is actually
+        # installed.
+        sudo yum --disablerepo=epel* update -y ca-certificates
     fi
 fi
 
