@@ -906,6 +906,14 @@ jobs:
     voting: false
   - name: ^(gate|check)-tempest-dsvm-nova-v21-full$
     branch: ^(?!stable/(icehouse|juno)).*$
+  - name: ^(gate|check)-tempest-dsvm-nova-v21-neutron-full$
+    branch: ^(?!stable/(icehouse|juno)).*$
+    voting: false
+    files:
+      - '^nova/network/neutronv2/.*$'
+      - '^nova/api/openstack/compute/plugins/v3/.*$'
+      - '^nova/api/openstack/compute/schemas/v3/.*$'
+      - '^tempest/api/network/.*$'
   # TODO(yamamoto): Revisit when Neutron driver API become more stable.
   - name: gate-networking-ofagent-python27
     voting: false
@@ -1437,6 +1445,7 @@ projects:
       - check-grenade-dsvm-ironic-sideways
       - check-tempest-dsvm-ironic-pxe_ssh
       - check-tempest-dsvm-nova-v21-full
+      - check-tempest-dsvm-nova-v21-neutron-full
       - check-tempest-dsvm-cells
       - check-tempest-dsvm-full-ceph
     gate:
@@ -2685,6 +2694,7 @@ projects:
       - check-tempest-dsvm-neutron-icehouse
       - check-tempest-dsvm-postgres-full-icehouse
       - check-tempest-dsvm-nova-v21-full
+      - check-tempest-dsvm-nova-v21-neutron-full
     gate:
       - gate-tempest-pep8
       - gate-tempest-docs
