@@ -19,7 +19,7 @@ while ! grep -q "$END_UUID" /tmp/console.txt; do
         break
     fi
     sleep 3
-    wget --no-cache -c -O /tmp/console.txt --no-check-certificate $BUILD_URL$console_log_path
+    curl -X POST --data "start=$(stat -c %s /tmp/console.txt || echo 0)" --insecure $BUILD_URL$console_log_path >> /tmp/console.txt
 done
 
 # Grab the HTML version of the log (includes timestamps)
@@ -31,7 +31,7 @@ while ! grep -q "$END_UUID" /tmp/console.html; do
         break
     fi
     sleep 3
-    wget --no-cache -c -O /tmp/console.html --no-check-certificate $BUILD_URL$console_log_path
+    curl -X POST --data "start=$(stat -c %s /tmp/console.html || echo 0)" --insecure $BUILD_URL$console_log_path >> /tmp/console.html
 done
 
 # We need to add <pre> tags around the output for log-osanalyze to not escape
