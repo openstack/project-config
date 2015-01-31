@@ -8,19 +8,7 @@ END_UUID=$(cat /proc/sys/kernel/random/uuid)
 echo "Grabbing consoleLog ($END_UUID)"
 
 # Since we are appending to fetched logs, remove any possibly old runs
-rm -f /tmp/console.txt /tmp/console.html
-
-# Get the plain text version (does not contain links or timestamps)
-TRIES=0
-console_log_path='consoleText'
-while ! grep -q "$END_UUID" /tmp/console.txt; do
-    TRIES=$((TRIES+1))
-    if [ $TRIES -gt $RETRY_LIMIT ]; then
-        break
-    fi
-    sleep 3
-    curl -X POST --data "start=$(stat -c %s /tmp/console.txt || echo 0)" --insecure $BUILD_URL$console_log_path >> /tmp/console.txt
-done
+rm -f /tmp/console.html
 
 # Grab the HTML version of the log (includes timestamps)
 TRIES=0
