@@ -908,6 +908,22 @@ jobs:
   - name: gate-murano-dashboard-python26
     branch: ^stable/(icehouse|juno)$
   # End of Python 2.6 depreciation
+  # Training guides begin
+  # Build XML files only on Icehouse
+  - name: gate-training-guides-tox-checklinks
+    branch: ^stable/icehouse$
+  - name: gate-training-guides-tox-checkniceness
+    branch: ^stable/icehouse$
+  - name: gate-training-guides-tox-checksyntax
+    branch: ^stable/icehouse$
+  - name: gate-training-guides-tox-checkdeletions
+    branch: ^stable/icehouse$
+  - name: training-guides-tox-doc-publishdocs
+    branch: ^stable/icehouse$
+  # slides job will not run on icehouse, only newer releases and master
+  - name: gate-training-guides-tox-slides
+    branch: ^(?!stable/icehouse).*$
+  # Training guides end
 
 # The project list is grouped by type of project, and within each
 # group, projects are sorted (mostly) alphabetically.
@@ -2869,7 +2885,10 @@ projects:
     template:
       - name: merge-check
       - name: openstack-doc-gate
-      - name: openstack-doc-translation
+    check:
+      - gate-training-guides-tox-slides
+    gate:
+      - gate-training-guides-tox-slides
     post:
       - training-guides-tox-doc-publishdocs
 
