@@ -1,0 +1,35 @@
+- job-template:
+    name: '{pipeline}-novaclient-dsvm-functional{branch-designator}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 65
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=60
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+
+          function post_test_hook {{
+              # Configure and run functional tests
+              $BASE/new/python-novaclient/novaclient/tests/functional/hooks/post_test_hook.sh
+          }}
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - test-results
+      - devstack-logs
+      - console-log
