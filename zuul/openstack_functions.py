@@ -94,7 +94,6 @@ def set_node_options(item, job, params, default):
     centos6_re = r'^.*-centos6.*$'
     f20_re = r'^.*-f20.*$'
     f21_re = r'^.*-f21.*$'
-    python33_re = r'^.*-(py(thon)?33|33).*$'
     tripleo_re = r'^.*-tripleo.*$'
     devstack_re = r'^.*-dsvm.*$'
     puppetunit_re = r'^gate-puppet-.*-puppet-(lint|syntax|unit).*$'
@@ -115,10 +114,6 @@ def set_node_options(item, job, params, default):
         pass
     # Jobs needing fedora 21
     elif re.match(f21_re, job.name):
-        # Pass because job specified label is always correct.
-        pass
-    # Jobs needing py33/pypy slaves
-    elif re.match(python33_re, job.name):
         # Pass because job specified label is always correct.
         pass
     # Jobs needing tripleo slaves

@@ -106,26 +106,6 @@
     node: '{node}'
 
 - job-template:
-    name: 'gate-{name}-python33'
-
-    wrappers:
-      - build-timeout:
-          timeout: 40
-      - timestamps
-
-    builders:
-      - revoke-sudo
-      - gerrit-git-prep
-      - python33
-      - assert-no-extra-files
-
-    publishers:
-      - test-results
-      - console-log
-
-    node: py3k-precise
-
-- job-template:
     name: 'gate-{name}-python34'
 
     wrappers:
@@ -284,7 +264,6 @@
       - 'gate-{name}-pep8'
       - 'gate-{name}-python26'
       - 'gate-{name}-python27'
-      - 'gate-{name}-python33'
       - 'gate-{name}-python34'
       - 'gate-{name}-pypy'
       - 'gate-{name}-docs'

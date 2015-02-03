@@ -20,8 +20,6 @@ HOSTNAME=$1
 
 export SUDO='true'
 export THIN='false'
-export PYTHON='false'
-export PYPY='false'
 export ALL_MYSQL_PRIVS='true'
 
 ./prepare_node.sh "$HOSTNAME"

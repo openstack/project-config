@@ -20,8 +20,6 @@ HOSTNAME=$1
 
 SUDO=${SUDO:-true}
 THIN=${THIN:-true}
-PYTHON3=${PYTHON3:-false}
-PYPY=${PYPY:-false}
 ALL_MYSQL_PRIVS=${ALL_MYSQL_PRIVS:-false}
 GIT_BASE=${GIT_BASE:-git://git.openstack.org}
 
@@ -61,11 +59,11 @@ sudo /bin/bash /root/system-config/install_modules.sh
 set +e
 if [ -z "$NODEPOOL_SSH_KEY" ] ; then
     sudo puppet apply --detailed-exitcodes --modulepath=/root/system-config/modules:/etc/puppet/modules \
-        -e "class {'openstack_project::single_use_slave': sudo => $SUDO, thin => $THIN, python3 => $PYTHON3, include_pypy => $PYPY, all_mysql_privs => $ALL_MYSQL_PRIVS, }"
+        -e "class {'openstack_project::single_use_slave': sudo => $SUDO, thin => $THIN, all_mysql_privs => $ALL_MYSQL_PRIVS, }"
     PUPPET_RET_CODE=$?
 else
     sudo puppet apply --detailed-exitcodes --modulepath=/root/system-config/modules:/etc/puppet/modules \
-        -e "class {'openstack_project::single_use_slave': install_users => false, sudo => $SUDO, thin => $THIN, python3 => $PYTHON3, include_pypy => $PYPY, all_mysql_privs => $ALL_MYSQL_PRIVS, ssh_key => '$NODEPOOL_SSH_KEY', }"
+        -e "class {'openstack_project::single_use_slave': install_users => false, sudo => $SUDO, thin => $THIN, all_mysql_privs => $ALL_MYSQL_PRIVS, ssh_key => '$NODEPOOL_SSH_KEY', }"
     PUPPET_RET_CODE=$?
 fi
 # Puppet doesn't properly return exit codes. Check here the values that
@@ -153,19 +151,15 @@ sudo rm -f /etc/cron.{monthly,weekly,daily,hourly,d}/*
 # Install Zuul into a virtualenv
 # This is in /usr instead of /usr/local due to this bug on precise:
 # https://bugs.launchpad.net/ubuntu/+source/python2.7/+bug/839588
-# Be explicit about the Python version since py3k-precise nodes default
-# to using 3.3 with virtualenv.
 git clone /opt/git/openstack-infra/zuul /tmp/zuul
-sudo virtualenv -p python2 /usr/zuul-env
+sudo virtualenv /usr/zuul-env
 sudo -H /usr/zuul-env/bin/pip install /tmp/zuul
 sudo rm -fr /tmp/zuul
 
 # Create a virtualenv for zuul-swift-logs
 # This is in /usr instead of /usr/local due to this bug on precise:
 # https://bugs.launchpad.net/ubuntu/+source/python2.7/+bug/839588
-# Be explicit about the Python version since py3k-precise nodes default
-# to using 3.3 with virtualenv.
-sudo -H virtualenv -p python2 /usr/zuul-swift-logs-env
+sudo -H virtualenv /usr/zuul-swift-logs-env
 sudo -H /usr/zuul-swift-logs-env/bin/pip install python-magic argparse requests
 
 sync

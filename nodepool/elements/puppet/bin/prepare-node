@@ -19,8 +19,6 @@ set -e
 
 SUDO=${SUDO:-true}
 THIN=${THIN:-true}
-PYTHON3=${PYTHON3:-false}
-PYPY=${PYPY:-false}
 ALL_MYSQL_PRIVS=${ALL_MYSQL_PRIVS:-false}
 
 export FACTER_in_chroot=true
@@ -34,8 +32,6 @@ Service {
 class {'openstack_project::single_use_slave':
   sudo => $SUDO,
   thin => $THIN,
-  python3 => $PYTHON3,
-  include_pypy => $PYPY,
   all_mysql_privs => $ALL_MYSQL_PRIVS,
   install_resolv_conf => false
 }
