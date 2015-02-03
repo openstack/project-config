@@ -235,24 +235,7 @@ def build_file_list(file_path, logserver_prefix, swift_destination_prefix,
 
                 folder_links.append(file_details)
 
-            for f in files:
-                filename = os.path.basename(f)
-                full_path = os.path.join(path, filename)
-                relative_name = os.path.relpath(full_path, parent_dir)
-                url = os.path.join(destination_prefix, relative_name)
-
-                file_details = {
-                    'filename': filename,
-                    'path': full_path,
-                    'relative_name': relative_name,
-                    'url': url,
-                    'metadata': get_file_metadata(full_path),
-                }
-
-                file_list.append(file_details)
-                folder_links.append(file_details)
-
-            for f in folders:
+            for f in sorted(folders):
                 filename = os.path.basename(f) + '/'
                 full_path = os.path.join(path, filename)
                 relative_name = os.path.relpath(full_path, parent_dir)
@@ -267,6 +250,23 @@ def build_file_list(file_path, logserver_prefix, swift_destination_prefix,
                     'metadata': get_folder_metadata(full_path, number_files),
                 }
 
+                folder_links.append(file_details)
+
+            for f in sorted(files):
+                filename = os.path.basename(f)
+                full_path = os.path.join(path, filename)
+                relative_name = os.path.relpath(full_path, parent_dir)
+                url = os.path.join(destination_prefix, relative_name)
+
+                file_details = {
+                    'filename': filename,
+                    'path': full_path,
+                    'relative_name': relative_name,
+                    'url': url,
+                    'metadata': get_file_metadata(full_path),
+                }
+
+                file_list.append(file_details)
                 folder_links.append(file_details)
 
             if create_dir_indexes:
