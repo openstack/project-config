@@ -83,6 +83,49 @@
 
 
 - job:
+    name: gate-manila-tempest-dsvm-neutron-no-share-servers
+    node: 'devstack-precise || devstack-trusty'
+
+    wrappers:
+      - build-timeout:
+          timeout: 65
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=60
+          export DEVSTACK_GATE_NEUTRON=1
+          export ENABLED_SERVICES=manila,m-api,m-shr,m-sch,tempest
+
+          # Keep localrc to be able to set some vars in pre_test_hook
+          export KEEP_LOCALRC=1
+
+          function pre_test_hook {
+              # Configure devstack to run manila installation without handling of share servers
+              source $BASE/new/manila/contrib/ci/pre_test_hook.sh False
+          }
+          export -f pre_test_hook
+
+          function post_test_hook {
+              # Configure and run tempest on singlebackend manila installation
+              source $BASE/new/manila/contrib/ci/post_test_hook.sh singlebackend
+          }
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+
+- job:
     name: check-manilaclient-dsvm-neutron-functional
     node: 'devstack-precise || devstack-trusty'
 
