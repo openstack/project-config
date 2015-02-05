@@ -13,6 +13,11 @@
           bundle install
           bundle exec rake spec SPEC_OPTS='--format documentation'
 
+    wrappers:
+      - build-timeout:
+          timeout: 60
+      - timestamps
+
     publishers:
       - console-log
 
@@ -45,6 +50,11 @@
           bundle install
           export BEAKER_set=nodepool
           bundle exec rspec spec/acceptance
+
+    wrappers:
+      - build-timeout:
+          timeout: 60
+      - timestamps
 
     publishers:
       - console-log
