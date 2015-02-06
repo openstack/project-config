@@ -226,11 +226,20 @@
           fi
 
 - builder:
+    name: install-chefdk
+    builders:
+      - shell: |
+          #!/bin/bash -x
+          chefdk=chefdk_0.4.0-1_amd64.deb
+          wget https://opscode-omnibus-packages.s3.amazonaws.com/ubuntu/12.04/x86_64/$chefdk
+          sudo dpkg -i $chefdk
+
+- builder:
     name: chef-rake-test
     builders:
       - shell: |
           #!/bin/bash -x
-          rake test
+          chef exec rake
 
 - builder:
     name: chef-berkshelf-prep
