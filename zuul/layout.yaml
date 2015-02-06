@@ -613,6 +613,9 @@ jobs:
     branch: ^(?!stable/(?:icehouse|juno)).*$
   - name: check-neutron-vpnaas-dsvm-functional
     voting: false
+  - name: ^(gate|check)-tempest-dsvm-networking-odl
+    branch: ^(?!stable)
+    voting: false
 # For Gerrit ver 2.4.x (using maven)
   - name: ^(gate|check)-gerrit-unittests$
     branch: ^openstack/2\.4.*$
@@ -5130,6 +5133,10 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
+    check:
+      - check-tempest-dsvm-networking-odl
+    gate:
+      - gate-tempest-dsvm-networking-odl
 
   - name: stackforge/networking-ofagent
     template:
