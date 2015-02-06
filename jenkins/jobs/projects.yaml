@@ -3300,7 +3300,21 @@
       - gate-{name}-tox-{envlist}:
           envlist: py34-postgresql
       - gate-{name}-bashate
-      - gate-gnocchi-dsvm-functional
+      - '{pipeline}-gnocchi-dsvm-functional-{storagedriver}-{sqldriver}':
+          node: 'devstack-precise || devstack-trusty'
+          pipeline: gate
+          storagedriver: file
+          sqldriver: mysql
+      - '{pipeline}-gnocchi-dsvm-functional-{storagedriver}-{sqldriver}':
+          node: 'devstack-precise || devstack-trusty'
+          pipeline: gate
+          storagedriver: swift
+          sqldriver: postgresql
+      - '{pipeline}-gnocchi-dsvm-functional-{storagedriver}-{sqldriver}':
+          node: 'devstack-precise || devstack-trusty'
+          pipeline: gate
+          storagedriver: ceph
+          sqldriver: mysql
 
 - project:
     name: graffiti

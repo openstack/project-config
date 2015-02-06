@@ -1,6 +1,6 @@
-- job:
-    name: 'gate-gnocchi-dsvm-functional'
-    node: 'devstack-precise || devstack-trusty'
+- job-template:
+    name: '{pipeline}-gnocchi-dsvm-functional-{storagedriver}-{sqldriver}'
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -16,16 +16,16 @@
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TIMEOUT=90
 
-          function gate_hook {
+          function gate_hook {{
               cd /opt/stack/new/gnocchi/devstack/gate
-              ./gate_hook.sh
-          }
+              ./gate_hook.sh {storagedriver} {sqldriver}
+          }}
           export -f gate_hook
 
-          function post_test_hook {
+          function post_test_hook {{
               cd /opt/stack/new/gnocchi/devstack/gate
-              ./post_test_hook.sh
-          }
+              ./post_test_hook.sh {storagedriver} {sqldriver}
+          }}
           export -f post_test_hook
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
