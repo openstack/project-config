@@ -1776,7 +1776,14 @@
           export DEVSTACK_GATE_TIMEOUT=120
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_TEMPEST_FULL=1
-          export DEVSTACK_GATE_GLUSTERFS=1
+          export DEVSTACK_LOCAL_CONFIG=$(cat <<EOF
+          enable_service glusterfs
+          ENABLED_BACKENDS=glusterfs:glusterfs
+          TEMPEST_STORAGE_PROTOCOL=gluster
+          GLUSTERFS_LOOPBACK_DISK_SIZE=8G
+          enable_plugin glusterfs /opt/git/stackforge/devstack-plugin-glusterfs
+          EOF
+          )
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
