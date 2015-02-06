@@ -1,0 +1,37 @@
+- job:
+    name: 'gate-gnocchi-dsvm-functional'
+    node: 'devstack-precise || devstack-trusty'
+
+    wrappers:
+      - build-timeout:
+          timeout: 95
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=90
+
+          function gate_hook {
+              cd /opt/stack/new/gnocchi/devstack/gate
+              ./gate_hook.sh
+          }
+          export -f gate_hook
+
+          function post_test_hook {
+              cd /opt/stack/new/gnocchi/devstack/gate
+              ./post_test_hook.sh
+          }
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - test-results
+      - devstack-logs
+      - console-log
