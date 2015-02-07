@@ -171,6 +171,7 @@ jobs:
     voting: false
 
 projects:
+  # This project is setup to run the internal zuul 'noop' job.
   - name: gtest-org/gtest
     check:
       - noop
@@ -184,13 +185,35 @@ projects:
       - noop
     release:
       - noop
+    experimental:
+      - noop
     silent:
       - noop
-    experimental:
+    periodic:
       - noop
     merge-check:
       - noop
 
+  # This project is setup to run the 'gate-noop' job on jenkins,
+  # make sure the job has been created on jenkins-dev.o.o
   - name: gtest-org/gtest2
+    check:
+      - gate-noop
+    gate:
+      - gate-noop
+    post:
+      - gate-noop
+    tag:
+      - gate-noop
+    pre-release:
+      - gate-noop
+    release:
+      - gate-noop
+    experimental:
+      - gate-noop
+    silent:
+      - gate-noop
     periodic:
-      - noop
+      - gate-noop
+    merge-check:
+      - gate-noop
