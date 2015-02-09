@@ -16,12 +16,12 @@
 
 import os
 import sys
-import tempfile
 
+from oslo.db.sqlalchemy import utils as db_utils
+from subunit2sql.db import api
+from subunit2sql.db import models
 from subunit2sql import shell
 from subunit2sql import write_subunit
-
-from common import run_local
 
 
 DB_URI = 'mysql+pymysql://query:query@logstash.openstack.org/subunit2sql'
@@ -35,31 +35,24 @@ else:
     TEMPEST_PATH = '/opt/stack/new/tempest'
 
 
-def init_testr():
-    if not os.path.isdir(os.path.join(TEMPEST_PATH, '.testrepository')):
-        (status, out) = run_local(['testr', 'init'], status=True,
-                                  cwd=TEMPEST_PATH)
-        if status != 0:
-            print("testr init failed with:\n%s' % out")
-            exit(status)
-
-
-def generate_subunit_stream(fd):
-    write_subunit.avg_sql2subunit(output=fd)
-
-
-def populate_testrepository(path):
-    run_local(['testr', 'load', path], cwd=TEMPEST_PATH)
+def get_run_ids(session):
+    # TODO(mtreinish): Move this function into the subunit2sql db api
+    results = db_utils.model_query(models.Run, session).order_by(
+        models.Run.run_at.desc()).filter_by(fails=0).limit(10).all()
+    return map(lambda x: x.id, results)
 
 
 def main():
-    init_testr()
     shell.parse_args([])
     shell.CONF.set_override('connection', DB_URI, group='database')
-    with tempfile.NamedTemporaryFile() as fd:
-        generate_subunit_stream(fd)
-        populate_testrepository(fd.name)
-
+    session = api.get_session()
+    run_ids = get_run_ids(session)
+    session.close()
+    preseed_path = os.path.join(TEMPEST_PATH, 'preseed-streams')
+    os.mkdir(preseed_path)
+    for run in run_ids:
+        with open(os.path.join(preseed_path, run + '.subunit'), 'w') as fd:
+            write_subunit.sql2subunit(run, fd)
 
 if __name__ == '__main__':
     main()
