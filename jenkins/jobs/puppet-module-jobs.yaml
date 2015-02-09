@@ -100,6 +100,25 @@
     publishers:
       - console-log
 
+- job-template:
+    name: 'gate-{name}-puppet-syntax-future'
+    node: '{node}'
+
+    builders:
+      - uninstall-puppet
+      - revoke-sudo
+      - gerrit-git-prep
+      - shell: |
+          export PUPPET_GEM_VERSION='~> 3.7.0'
+          mkdir .bundled_gems
+          export GEM_HOME=`pwd`/.bundled_gems
+          bundle install
+          export FUTURE_PARSER=yes
+          bundle exec rake syntax
+
+    publishers:
+      - console-log
+
 - job-group:
     name: 'puppet-check-jobs'
     jobs:
