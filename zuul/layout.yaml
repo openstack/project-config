@@ -2306,27 +2306,22 @@ projects:
     post:
       - dib-utils-branch-tarball
 
-#TODO: add docs
   - name: openstack/diskimage-builder
     template:
       - name: merge-check
       - name: check-requirements
+      - name: openstack-server-publish-jobs
       - name: publish-to-pypi
+      - name: python-jobs
       - name: python26-jobs
       - name: python3-jobs
       - name: check-tripleo-jobs
     check:
-      - gate-diskimage-builder-pep8
-      - gate-diskimage-builder-python27
       - check-tempest-dsvm-ironic-pxe_ssh
     check-tripleo:
       - check-tripleo-ironic-overcloud-precise-ha
     gate:
-      - gate-diskimage-builder-pep8
-      - gate-diskimage-builder-python27
       - gate-tempest-dsvm-ironic-pxe_ssh
-    post:
-      - diskimage-builder-branch-tarball
 
   - name: openstack/django_openstack_auth
     template:
