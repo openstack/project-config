@@ -141,7 +141,7 @@ pipelines:
     precedence: low
     trigger:
       timer:
-        - time: '0 6 * * *'
+        - time: '0 * * * *'
 
   - name: merge-check
     description: >
@@ -189,8 +189,6 @@ projects:
       - noop
     silent:
       - noop
-    periodic:
-      - noop
     merge-check:
       - noop
 
@@ -213,7 +211,10 @@ projects:
       - gate-noop
     silent:
       - gate-noop
-    periodic:
-      - gate-noop
     merge-check:
       - gate-noop
+
+  # This project is setup to run jobs in the periodic pipeline
+  - name: gtest-org/test2
+    periodic:
+      - noop
