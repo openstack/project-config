@@ -108,9 +108,11 @@ git clone https://review.openstack.org/p/openstack/tempest
 git clone https://review.openstack.org/p/openstack/tripleo-heat-templates
 git clone https://review.openstack.org/p/openstack/tripleo-image-elements
 git clone https://review.openstack.org/p/openstack/tripleo-incubator
+git clone https://review.openstack.org/p/openstack/tripleo-puppet-elements
 # and stackforge libraries we might want to test with
 git clone https://review.openstack.org/p/stackforge/pecan
 git clone https://review.openstack.org/p/stackforge/wsme
+git clone https://review.openstack.org/p/stackforge/puppet-tripleo
 
 sync
 sleep 5
