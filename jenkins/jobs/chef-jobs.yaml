@@ -18,7 +18,8 @@
     publishers:
       - console-log
 
-# this job template requires a Rakefile in the cookbook with a task 'test' that will be run during this job
+# this job template requires a bootstrap.sh script (which installs chefdk and other dependencies)
+# and a Rakefile with the tests that should be executed in the cookbook
 - job-template:
     name: 'gate-{name}-chef-rake'
     node: '{node}'
@@ -30,7 +31,7 @@
 
     builders:
       - gerrit-git-prep
-      - install-chefdk
+      - chef-bootstrap
       - revoke-sudo
       - chef-rake-test
 
