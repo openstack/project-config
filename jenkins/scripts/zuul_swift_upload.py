@@ -28,6 +28,8 @@ import sys
 import tempfile
 import time
 
+DEBUG = True
+
 
 # file_detail format: A dictionary containing details of the file such as
 #                     full url links or relative path names etc.
@@ -166,7 +168,12 @@ def swift_form_post_submit(file_list, url, hmac_body, signature):
             files['file%d' % (i + 1)] = (filename_prefix + f['relative_name'],
                                          open(f['path'], 'rb'),
                                          get_file_mime(f['path']))
+        if DEBUG:
+            print "About to POST the following files..."
+            print sub_file_list
         requests.post(url, data=payload, files=files)
+        if DEBUG:
+            print "Finished upload.."
 
 
 def build_file_list(file_path, logserver_prefix, swift_destination_prefix,
@@ -377,6 +384,10 @@ if __name__ == '__main__':
         }
 
         file_list.append(file_details)
+
+    if DEBUG:
+        print "List of files prepared to upload:"
+        print file_list
 
     swift_form_post_submit(file_list, swift_url, swift_hmac_body,
                            swift_signature)
