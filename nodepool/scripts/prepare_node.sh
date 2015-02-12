@@ -66,11 +66,21 @@ sudo /bin/bash /root/system-config/install_modules.sh
 set +e
 if [ -z "$NODEPOOL_SSH_KEY" ] ; then
     sudo puppet apply --detailed-exitcodes --modulepath=/root/system-config/modules:/etc/puppet/modules \
-        -e "class {'openstack_project::single_use_slave': sudo => $SUDO, thin => $THIN, all_mysql_privs => $ALL_MYSQL_PRIVS, }"
+        -e "class {'openstack_project::single_use_slave':
+                    sudo => $SUDO,
+                    thin => $THIN,
+                    all_mysql_privs => $ALL_MYSQL_PRIVS,
+            }"
     PUPPET_RET_CODE=$?
 else
     sudo puppet apply --detailed-exitcodes --modulepath=/root/system-config/modules:/etc/puppet/modules \
-        -e "class {'openstack_project::single_use_slave': install_users => false, sudo => $SUDO, thin => $THIN, all_mysql_privs => $ALL_MYSQL_PRIVS, ssh_key => '$NODEPOOL_SSH_KEY', }"
+        -e "class {'openstack_project::single_use_slave':
+                    install_users => false,
+                    sudo => $SUDO,
+                    thin => $THIN,
+                    all_mysql_privs => $ALL_MYSQL_PRIVS,
+                    ssh_key => '$NODEPOOL_SSH_KEY',
+            }"
     PUPPET_RET_CODE=$?
 fi
 # Puppet doesn't properly return exit codes. Check here the values that
