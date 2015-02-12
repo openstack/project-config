@@ -2047,14 +2047,20 @@
     name: javamelody-gerrit-plugin
     node: 'bare-precise || bare-trusty'
     tarball-site: tarballs.openstack.org
-    gerrit-project: https://git.openstack.org/openstack-infra/gerrit
-    gerrit-branch: openstack/2.8.4
-    plugin-project: https://gerrit.googlesource.com/plugins/javamelody
-    plugin-name: javamelody
-    plugin-branch: stable-2.8
 
     jobs:
-      - gerrit-plugin-jobs
+      - 'gerrit-plugin-jobs-{plugin-branch}':
+          gerrit-project: 'https://git.openstack.org/openstack-infra/gerrit'
+          gerrit-branch: 'openstack/2.8.4'
+          plugin-project: 'https://gerrit.googlesource.com/plugins/javamelody'
+          plugin-name: 'javamelody'
+          plugin-branch: 'stable-2.8'
+      - 'gerrit-plugin-jobs-{plugin-branch}':
+          gerrit-project: 'https://git.openstack.org/openstack-infra/gerrit'
+          gerrit-branch: 'openstack/2.9.4'
+          plugin-project: 'https://gerrit.googlesource.com/plugins/javamelody'
+          plugin-name: 'javamelody'
+          plugin-branch: 'stable-2.9'
 
 - project:
     name: jeepyb
