@@ -550,6 +550,28 @@ jobs:
   - name: ^.*-nv$
     branch: ^(?!stable)
     voting: false
+  # dsvm-neutron jobs should be conditionally skipped so they don't
+  # run in response to changes that do not influence their execution.
+  - name: ^.*(tempest|grenade|rally)-dsvm-neutron.*$
+    skip-if:
+      - project: ^openstack/neutron$
+        branch: ^master$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+          - ^neutron/tests/.*$
+          - ^tools/.*$
+          - ^tox.ini$
+  # Skip non-doc jobs for doc-only neutron changes.  Since
+  # doc/source/conf.py is checked by neutron-(pep8|pylint), those jobs
+  # should not be skipped.
+  - name: ^.*neutron-(dsvm-api|dsvm-functional|python27)$
+    skip-if:
+      - project: ^openstack/neutron$
+        branch: ^master$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
   - name: gate-tempest-dsvm-full
     queue-name: integrated
   - name: gate-rally-dsvm-neutron-neutron
