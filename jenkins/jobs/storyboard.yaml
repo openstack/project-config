@@ -16,3 +16,46 @@
               source: 'doc/build/html/**/*'
               keep-hierarchy: true
       - console-log
+
+- job:
+    name: check-storyboard-js-integration
+    wrappers:
+      - build-timeout:
+          timeout: 40
+      - timestamps
+
+    builders:
+      - npm-install
+      - xvfb-install
+      - chrome-install
+      - gerrit-git-prep
+      - shell: |
+          #!/bin/bash -xe
+          /usr/zuul-env/bin/zuul-cloner --cache-dir /opt/git git://git.openstack.org openstack-infra/storyboard openstack-infra/storyboard-webclient
+
+          export CREATE_USER=1
+          export DB_ADMIN_USER=root
+
+          ./storyboard/tools/install_test_backend.sh
+
+      - js-build:
+          command: 'test:integration'
+          envlist: 'grunt_no_api'
+          project: 'storyboard-webclient'
+      - assert-no-extra-files
+
+      - shell: |
+          #!/bin/bash -xe
+          ./storyboard/tools/destroy_test_backend.sh
+
+    publishers:
+      - console-log
+      - coverage-log
+      - scp:
+          site: 'static.openstack.org'
+          files:
+            - target: 'logs/$LOG_PATH'
+              source: 'reports/**'
+              keep-hierarchy: true
+              copy-after-failure: true
+    node: '{node}'
