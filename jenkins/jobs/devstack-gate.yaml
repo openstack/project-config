@@ -1655,7 +1655,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-tempest-dsvm-aiopcpu{branch-designator}'
+    name: '{pipeline}-tempest-dsvm-aiopcpu-full{branch-designator}'
     node: '{node}'
 
     wrappers:
@@ -1673,6 +1673,7 @@
           export DEVSTACK_GATE_TIMEOUT=120
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_CONFIGDRIVE=0
+          export DEVSTACK_GATE_TEMPEST_FULL=1
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -1688,7 +1689,7 @@
 
 
 - job-template:
-    name: '{pipeline}-tempest-dsvm-neutron-aiopcpu{branch-designator}'
+    name: '{pipeline}-tempest-dsvm-neutron-aiopcpu-full{branch-designator}'
     node: '{node}'
 
     wrappers:
@@ -1707,6 +1708,7 @@
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_CONFIGDRIVE=0
+          export DEVSTACK_GATE_TEMPEST_FULL=1
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
