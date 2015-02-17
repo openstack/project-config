@@ -413,6 +413,84 @@
           ip neighbor show
 
 - builder:
+    name: base-packages-trusty
+    builders:
+      - shell: |
+          #!/bin/bash -xe
+          sudo apt-get update
+          sudo PATH=/usr/sbin:/sbin:$PATH DEBIAN_FRONTEND=noninteractive \
+              apt-get --option "Dpkg::Options::=--force-confold" --assume-yes \
+              install \
+                  build-essential \
+                  python-dev \
+                  mysql-client \
+                  mysql-server \
+                  libmysqlclient-dev \
+                  postgresql-client \
+                  postgresql \
+                  libpq-dev \
+                  libffi-dev \
+                  libxslt-dev \
+
+- builder:
+    name: mysql-prep
+    builders:
+      - shell: |
+          #!/bin/bash -xe
+          DB_ROOT_PW=insecure_slave
+          DB_USER=openstack_citest
+          DB_PW=openstack_citest
+          sudo -H mysqladmin -u root password $DB_ROOT_PW
+          sudo -H mysql -u root -p$DB_ROOT_PW -h 127.0.0.1 -e "
+              GRANT ALL PRIVILEGES ON *.*
+                  TO '$DB_USER'@'%' identified by '$DB_PW';"
+
+- builder:
+    name: pgsql-prep
+    builders:
+      - shell: |
+          #!/bin/bash -xe
+          DB_ROOT_PW=insecure_slave
+          DB_USER=openstack_citest
+          DB_PW=openstack_citest
+          root_roles=$(sudo -H -u postgres psql -t -c "
+              SELECT 'HERE' from pg_roles where rolname='$DB_USER'")
+          if [[ ${root_roles} == *HERE ]];then
+              sudo -H -u postgres psql -c "
+                  ALTER ROLE $DB_USER WITH SUPERUSER LOGIN PASSWORD '$DB_PW'"
+          else
+              sudo -H -u postgres psql -c "
+                  CREATE ROLE $DB_USER WITH SUPERUSER LOGIN PASSWORD '$DB_PW'"
+          fi
+          cat << EOF > $HOME/.pgpass
+          *:*:*:$DB_USER:$DB_PW
+          EOF
+          chmod 0600 $HOME/.pgpass
+
+- builder:
+    name: mysql-db
+    builders:
+      - shell: |
+          #!/bin/bash -xe
+          DB_USER=openstack_citest
+          DB_PW=openstack_citest
+          mysql -u $DB_USER -p$DB_PW -h 127.0.0.1 -e "
+              SET default_storage_engine=MYISAM;
+              DROP DATABASE IF EXISTS {db_name};
+              CREATE DATABASE {db_name} CHARACTER SET utf8;"
+
+- builder:
+    name: pgsql-db
+    builders:
+      - shell: |
+          #!/bin/bash -xe
+          DB_USER=openstack_citest
+          DB_PW=openstack_citest
+          psql -h 127.0.0.1 -U $DB_USER -d template1 -c "
+              DROP DATABASE IF EXISTS {db_name}"
+          createdb -h 127.0.0.1 -U $DB_USER -l C -T template0 -E utf8 {db_name}
+
+- builder:
     name: static-publish-prep
 
     # We want to publish to the docroot but the scp publisher cannot remove
