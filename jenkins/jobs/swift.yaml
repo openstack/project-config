@@ -27,9 +27,9 @@
           function post_test_hook {{
               cd /opt/stack/new/swift
               # Launch V2 auth tests and v1 tests after.
-              timeout -s 9 ${{FUNCTEST_TIMEOUT}}m tox -e func && \
+              sudo -H -u stack timeout -s 9 ${{FUNCTEST_TIMEOUT}}m tox -e func && \
                   SWIFT_TEST_CONFIG_FILE=/opt/stack/new/swift/test/sample.conf \
-                      timeout -s 9 ${{FUNCTEST_TIMEOUT}}m tox -e func
+                      sudo -H -u stack timeout -s 9 ${{FUNCTEST_TIMEOUT}}m tox -e func
           }}
           export -f post_test_hook
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
@@ -68,11 +68,10 @@
 
           function post_test_hook {{
               cd /opt/stack/new/python-swiftclient
-              sudo pip install -r test-requirements.txt
               # Launch V2 auth tests and v1 tests after.
-              timeout -s 9 ${{FUNCTEST_TIMEOUT}}m tox -e func && \
+              sudo -H -u stack timeout -s 9 ${{FUNCTEST_TIMEOUT}}m tox -e func && \
                   SWIFT_TEST_CONFIG_FILE=/opt/stack/new/swift/test/sample.conf \
-                      timeout -s 9 ${{FUNCTEST_TIMEOUT}}m tox -e func
+                      sudo -H -u stack timeout -s 9 ${{FUNCTEST_TIMEOUT}}m tox -e func
           }}
           export -f post_test_hook
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
