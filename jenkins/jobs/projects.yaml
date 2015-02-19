@@ -1956,6 +1956,24 @@
       - jenkins-plugin-jobs
 
 - project:
+    name: gerrit
+    node: 'bare-precise || bare-trusty'
+    tarball-site: tarballs.openstack.org
+    gerrit-project: 'https://git.openstack.org/openstack-infra/gerrit'
+
+    jobs:
+      - '{plugin-name}-gerrit-plugin-{plugin-branch}':
+          gerrit-branch: 'openstack/2.8.4'
+          plugin-name: 'javamelody'
+          plugin-project: 'https://gerrit.googlesource.com/plugins/{plugin-name}'
+          plugin-branch: 'stable-2.8'
+      - '{plugin-name}-gerrit-plugin-{plugin-branch}':
+          gerrit-branch: 'openstack/2.9.4'
+          plugin-name: 'javamelody'
+          plugin-project: 'https://gerrit.googlesource.com/plugins/{plugin-name}'
+          plugin-branch: 'stable-2.9'
+
+- project:
     name: gerritbot
     node: 'bare-precise || bare-trusty'
     tarball-site: tarballs.openstack.org
@@ -2042,25 +2060,6 @@
     jobs:
       - gate-{name}-tox-{envlist}:
           envlist: ical
-
-- project:
-    name: javamelody-gerrit-plugin
-    node: 'bare-precise || bare-trusty'
-    tarball-site: tarballs.openstack.org
-
-    jobs:
-      - 'gerrit-plugin-jobs-{plugin-branch}':
-          gerrit-project: 'https://git.openstack.org/openstack-infra/gerrit'
-          gerrit-branch: 'openstack/2.8.4'
-          plugin-project: 'https://gerrit.googlesource.com/plugins/javamelody'
-          plugin-name: 'javamelody'
-          plugin-branch: 'stable-2.8'
-      - 'gerrit-plugin-jobs-{plugin-branch}':
-          gerrit-project: 'https://git.openstack.org/openstack-infra/gerrit'
-          gerrit-branch: 'openstack/2.9.4'
-          plugin-project: 'https://gerrit.googlesource.com/plugins/javamelody'
-          plugin-name: 'javamelody'
-          plugin-branch: 'stable-2.9'
 
 - project:
     name: jeepyb
