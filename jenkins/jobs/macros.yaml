@@ -144,57 +144,23 @@
             erb -x -T '-' $f | ruby -c
           done
 
+# note that this job uses an in-repo script for execution
+# in order to cater for differing requirements per branch
 - builder:
-    name: ansible-prep
+    name: ansible-check-lint
     builders:
       - shell: |
           #!/bin/bash -xe
-          sudo -H pip install ansible==1.6.10
+          sudo scripts/gate-check-lint.sh
 
+# note that this job uses an in-repo script for execution
+# in order to cater for differing requirements per branch
 - builder:
-    name: ansible-syntax-prep
+    name: ansible-check-commit
     builders:
       - shell: |
           #!/bin/bash -xe
-          echo -e '[all]\nlocalhost ansible_connection=local' > local_only_inventory
-
-- builder:
-    name: ansible-syntax
-    builders:
-      - shell: |
-          #!/bin/bash -xe
-          ansible-playbook \
-            -i local_only_inventory \
-            --syntax-check $( \
-                grep \
-                  -r \
-                  -L vars_prompt \
-                  --include='*.yml' \
-                  --exclude='*/vars/*' \
-                  --exclude='os-service-config-update.yml' \
-                  rpc_deployment/playbooks \
-            )
-
-- builder:
-    name: ansible-lint-prep
-    builders:
-      - shell: |
-          #!/bin/bash -xe
-          sudo -H pip install ansible-lint
-
-- builder:
-    name: ansible-lint
-    builders:
-      - shell: |
-          #!/bin/bash -xe
-          ansible-lint rpc_deployment/playbooks/**/*.yml
-
-- builder:
-    name: ansible-aio-build
-    builders:
-      - shell: |
-          #!/bin/bash -xe
-          sudo scripts/os-ansible-aio-check.sh
+          sudo scripts/gate-check-commit.sh
 
 - builder:
     name: ruby-191-prep

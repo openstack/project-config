@@ -685,11 +685,6 @@ jobs:
     branch: ^master$
   - name: check-tripleo-ironic-overcloud-precise-ha
     voting: false
-  - name: check-os-ansible-deployment-dsvm-aio-build-voting
-    branch: master
-  - name: check-os-ansible-deployment-dsvm-aio-build-nonvoting
-    branch: ^(?!master).+$
-    voting: false
 # Continous publishing from master of the following documentation targets:
   - name: ^.*manuals-upstream-translation-update$
     branch: master
@@ -5385,15 +5380,16 @@ projects:
       - name: merge-check
       - name: noop-jobs
 
+  # note that these jobs use an in-repo script for execution
+  # in order to cater for differing requirements per branch
   - name: stackforge/os-ansible-deployment
     template:
       - name: merge-check
     check:
-      - gate-os-ansible-deployment-ansible-lint
-      - check-os-ansible-deployment-dsvm-aio-build-voting
-      - check-os-ansible-deployment-dsvm-aio-build-nonvoting
+      - os-ansible-deployment-check-lint
+      - os-ansible-deployment-dsvm-check-commit
     gate:
-      - gate-os-ansible-deployment-ansible-lint
+      - os-ansible-deployment-dsvm-check-commit
 
   - name: stackforge/os-client-config
     template:
