@@ -1,0 +1,19 @@
+- job-template:
+    name: 'gate-{name}-ansible-lint'
+    node: '{node}'
+
+    builders:
+      - ansible-prep
+      - ansible-lint-prep
+      - revoke-sudo
+      - gerrit-git-prep
+      - ansible-syntax
+      - ansible-lint
+
+    publishers:
+      - console-log
+
+- job-group:
+    name: 'ansible-lint-jobs'
+    jobs:
+      - 'gate-{name}-ansible-lint'
