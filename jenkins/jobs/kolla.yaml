@@ -1,0 +1,13 @@
+- job-template:
+    name: '{pipeline}-kolla-functional-f21'
+    node: '{node}'
+
+    builders:
+      - link-logs
+      - net-info
+      - gerrit-git-prep
+      - shell: |
+          'tools/pre-commit-hook'
+
+    publishers:
+      - console-log
