@@ -69,8 +69,8 @@ def generate_log_index(folder_links, header_message=''):
         if file_details['metadata']['mime'] == 'folder':
             size = str(file_details['metadata']['size'])
         else:
-            size = sizeof_fmt(file_details['metadata']['size'])
-        output += '<td>%s</td>' % size
+            size = sizeof_fmt(file_details['metadata']['size'], suffix='')
+        output += '<td style="text-align: right">%s</td>' % size
         output += '<td><em>%s</em></td>' % file_details['metadata']['mime']
 
         output += '</tr>\n'
@@ -94,11 +94,11 @@ def make_index_file(folder_links, header_message='',
 def sizeof_fmt(num, suffix='B'):
     # From http://stackoverflow.com/questions/1094841/
     # reusable-library-to-get-human-readable-version-of-file-size
-    for unit in ['', 'Ki', 'Mi', 'Gi', 'Ti', 'Pi', 'Ei', 'Zi']:
+    for unit in ['', 'K', 'M', 'G', 'T', 'P', 'E', 'Z']:
         if abs(num) < 1024.0:
             return "%3.1f%s%s" % (num, unit, suffix)
         num /= 1024.0
-    return "%.1f%s%s" % (num, 'Yi', suffix)
+    return "%.1f%s%s" % (num, 'Y', suffix)
 
 
 def get_file_mime(file_path):
