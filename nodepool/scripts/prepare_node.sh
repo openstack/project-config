@@ -56,7 +56,7 @@ if [ "$THIN" = "false" ] ; then
     # Workaround necessary until this pull request:
     # https://github.com/puppetlabs/puppetlabs_spec_helper/pull/90
     # is merged.
-    gem install --version '~>2.99.0' rspec
+    sudo gem install --version '~>2.99.0' rspec
 fi
 
 sudo git clone --depth=1 $GIT_BASE/openstack-infra/system-config.git \
