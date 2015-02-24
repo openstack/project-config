@@ -703,6 +703,9 @@
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
 
+          # The IPA ramdisk need at least 1GB of RAM to run
+          export DEVSTACK_LOCAL_CONFIG="IRONIC_VM_SPECS_RAM=1024"$'\n'"IRONIC_VM_COUNT=1"
+
           # Construct a regex to use when limiting scope of tempest
           # to avoid features unsupported by Ironic.
           # skip all compute API tests that touch secgroups, volumes, servers and
