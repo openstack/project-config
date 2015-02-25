@@ -32,6 +32,7 @@ DEBUG = True
 
 # Map mime types to apache icons
 APACHE_MIME_ICON_MAP = {
+    '_default': '/icons/unknown.png',
     'application/gzip': '/icons/compressed.png',
     'folder': '/icons/folder.png',
     'text/html': '/icons/text.png',
@@ -61,9 +62,11 @@ APACHE_MIME_ICON_MAP = {
 
 
 def get_mime_icon(mime, filename=''):
-    if filename == '../':
+    if filename == '../' and filename in APACHE_MIME_ICON_MAP:
         return APACHE_MIME_ICON_MAP[filename]
-    return APACHE_MIME_ICON_MAP[mime]
+    if mime in APACHE_MIME_ICON_MAP:
+        return APACHE_MIME_ICON_MAP[mime]
+    return APACHE_MIME_ICON_MAP['_default']
 
 
 def generate_log_index(folder_links, header_message=''):
