@@ -30,6 +30,14 @@ import time
 
 DEBUG = True
 
+# Map mime types to apache icons
+APACHE_MIME_ICON_MAP = {
+    'application/gzip': '/icons/compressed.png',
+    'folder': '/icons/folder.png',
+    'text/html': '/icons/text.png',
+    'text/plain': '/icons/text.png',
+    '../': '/icons/back.png',
+}
 
 # file_detail format: A dictionary containing details of the file such as
 #                     full url links or relative path names etc.
@@ -52,16 +60,27 @@ DEBUG = True
 #        }
 
 
+def get_mime_icon(mime, filename=''):
+    if filename == '../':
+        return APACHE_MIME_ICON_MAP[filename]
+    return APACHE_MIME_ICON_MAP[mime]
+
+
 def generate_log_index(folder_links, header_message=''):
     """Create an index of logfiles and links to them"""
 
     output = '<html><head><title>Index of results</title></head><body>\n'
     output += '<h1>%s</h1>\n' % header_message
-    output += '<table><tr><th>Name</th><th>Last Modified</th><th>Size</th>'
-    output += '<th>Mime</th></tr>\n'
+    output += '<table><tr><th></th><th>Name</th><th>Last Modified</th>'
+    output += '<th>Size</th>'
 
     for file_details in folder_links:
         output += '<tr>'
+        output += '<img alt="[ ]" title="%(m)s" src="%(i)s"></img>' % ({
+            'm': file_details['metadata']['mime'],
+            'i': get_mime_icon(file_details['metadata']['mime'],
+                               file_details['filename']),
+        })
         output += '<td><a href="%s">%s</a></td>' % (file_details['url'],
                                                     file_details['filename'])
         output += '<td>%s</td>' % time.asctime(
@@ -71,7 +90,6 @@ def generate_log_index(folder_links, header_message=''):
         else:
             size = sizeof_fmt(file_details['metadata']['size'], suffix='')
         output += '<td style="text-align: right">%s</td>' % size
-        output += '<td><em>%s</em></td>' % file_details['metadata']['mime']
 
         output += '</tr>\n'
 
