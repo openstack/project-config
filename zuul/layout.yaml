@@ -464,6 +464,12 @@ project-templates:
     gate:
       - noop
 
+  - name: ansible-lint-jobs
+    check:
+      - gate-{name}-ansible-lint
+    gate:
+      - gate-{name}-ansible-lint
+
   - name: puppet-beaker-jobs
     check:
       - gate-{name}-puppet-beaker-rspec
@@ -3149,6 +3155,11 @@ projects:
     template:
       - name: merge-check
       - name: noop-jobs
+
+  - name: openstack-infra/ansible-puppet
+    template:
+      - name: merge-check
+      - name: ansible-lint-jobs
 
   - name: openstack-infra/askbot-theme
     template:

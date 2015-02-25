@@ -163,6 +163,35 @@
           sudo scripts/gate-check-commit.sh
 
 - builder:
+    name: ansible-prep
+    builders:
+      - shell: |
+          #!/bin/bash -xe
+          sudo -H pip install -U ansible
+
+- builder:
+    name: ansible-syntax
+    builders:
+      - shell: |
+          #!/bin/bash -xe
+          cd tests
+          ansible-playbook --syntax-check -i inventory test.yml -e rolename=$(basename $(dirname $(pwd)))
+
+- builder:
+    name: ansible-lint-prep
+    builders:
+      - shell: |
+          #!/bin/bash -xe
+          sudo -H pip install ansible-lint
+
+- builder:
+    name: ansible-lint
+    builders:
+      - shell: |
+          #!/bin/bash -xe
+          ansible-lint **/*.yml
+
+- builder:
     name: ruby-191-prep
     builders:
       - shell: |
