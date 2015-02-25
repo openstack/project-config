@@ -844,6 +844,14 @@ jobs:
     voting: false
   - name: gate-trove-functional-dsvm-percona
     voting: false
+  # Run trove checkbuild and checklinks only for changes to files in directory
+  # apidocs/ .
+  - name: gate-trove-tox-doc-publish-checkbuild
+    files:
+      - '^apidocs/.*$'
+  - name: gate-trove-tox-checklinks
+    files:
+      - '^apidocs/.*$'
   - name: check-tempest-dsvm-full-ceph
     voting: false
   - name: check-tempest-dsvm-full-sheepdog
@@ -1576,11 +1584,13 @@ projects:
       - name: periodic-juno
       - name: check-requirements
       - name: integrated-gate
-      - name: openstack-doc-gate
       - name: translation-jobs
     check:
+      - gate-trove-tox-checklinks
+      - gate-trove-tox-doc-publish-checkbuild
       - gate-trove-functional-dsvm-mysql
     gate:
+      - gate-trove-tox-doc-publish-checkbuild
       - gate-trove-functional-dsvm-mysql
     post:
       - trove-tox-doc-publishdocs
