@@ -21,6 +21,13 @@ SUDO=${SUDO:-true}
 THIN=${THIN:-true}
 ALL_MYSQL_PRIVS=${ALL_MYSQL_PRIVS:-false}
 
+if [ -n "$NODEPOOL_SSH_KEY" ] ; then
+    puppet_install_users="install_users => false,
+ssh_key => '$NODEPOOL_SSH_KEY',"
+else
+    puppet_install_users=""
+fi
+
 export FACTER_in_chroot=true
 cat >/tmp/local.pp <<EOF
 Service {
@@ -33,9 +40,11 @@ class {'openstack_project::single_use_slave':
   sudo => $SUDO,
   thin => $THIN,
   all_mysql_privs => $ALL_MYSQL_PRIVS,
-  install_resolv_conf => false
+  install_resolv_conf => false,
+  $puppet_install_users
 }
 EOF
+
 # Puppet doesn't return nonzero if some things fail by default.
 # Use detailed exit codes to get that info and determine whether
 # the return code indicates failure.
