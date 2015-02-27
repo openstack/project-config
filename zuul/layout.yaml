@@ -549,11 +549,8 @@ jobs:
   # (needs to be early to not impact non-voting stanzas later)
   - name: ^(?!periodic-).*-icehouse$
     branch: ^master.*$
-  # -nv jobs should default to being off for stable, if they want to
-  # -enable for specific stable environments, they should have a
-  # -specific rule for it later. Also, -nv jobs are never voting.
+  # -nv jobs are never voting.
   - name: ^.*-nv$
-    branch: ^(?!stable)
     voting: false
   # dsvm-neutron jobs should be conditionally skipped so they don't
   # run in response to changes that do not influence their execution.
@@ -635,6 +632,8 @@ jobs:
     branch: ^(?!stable/icehouse).*$
   - name: ^(gate|check)-tempest-dsvm-ironic-pxe_ssh.*$
     branch: ^(?!stable/icehouse).*$
+  - name: ^check-tempest-dsvm-ironic-parallel-nv$
+    branch: ^(?!stable)
   - name: ^(gate|check)-grenade-dsvm-ironic-sideways.*$
     branch: ^(proposed/juno|stable/juno)$
     # only here until stable is votable, then merge
