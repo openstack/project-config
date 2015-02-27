@@ -106,8 +106,8 @@ def local_prep(distribution):
             continue
         branch_data = {'name': branch}
         print 'Branch: ', branch
-        run_local(['git', 'checkout', branch], cwd=DEVSTACK)
-        run_local(['git', 'pull', '--ff-only', 'origin'], cwd=DEVSTACK)
+        run_local(['sudo', 'git', 'checkout', branch], cwd=DEVSTACK)
+        run_local(['sudo', 'git', 'pull', '--ff-only', 'origin'], cwd=DEVSTACK)
 
         if os.path.exists('/usr/bin/apt-get'):
             debs = []
