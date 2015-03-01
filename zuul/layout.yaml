@@ -554,7 +554,7 @@ jobs:
     voting: false
   # dsvm-neutron jobs should be conditionally skipped so they don't
   # run in response to changes that do not influence their execution.
-  - name: ^.*(tempest|grenade|rally)-dsvm-neutron.*$
+  - name: ^.*(devstack|tempest|grenade|rally)-dsvm.*$
     skip-if:
       - project: ^openstack/neutron$
         branch: ^master$
@@ -562,6 +562,14 @@ jobs:
           - ^.*\.rst$
           - ^doc/.*$
           - ^neutron/tests/.*$
+          - ^tools/.*$
+          - ^tox.ini$
+      - project: ^openstack/nova$
+        branch: ^master$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+          - ^nova/tests/.*$
           - ^tools/.*$
           - ^tox.ini$
   # Skip non-doc jobs for doc-only neutron changes.  Since
@@ -574,18 +582,6 @@ jobs:
         all-files-match-any:
           - ^.*\.rst$
           - ^doc/.*$
-  # dsvm-nova jobs should be conditionally skipped so they don't
-  # run in response to changes that do not influence their execution.
-  - name: ^.*(devstack|tempest|grenade)-dsvm.*$
-    skip-if:
-      - project: ^openstack/nova$
-        branch: ^master$
-        all-files-match-any:
-          - ^.*\.rst$
-          - ^doc/.*$
-          - ^nova/tests/.*$
-          - ^tools/.*$
-          - ^tox.ini$
   # Skip non-doc jobs for doc-only nova changes.  Since
   # doc/source/conf.py is checked by nova-(pep8|pylint), those jobs
   # should not be skipped.
