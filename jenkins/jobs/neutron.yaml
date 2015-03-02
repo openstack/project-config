@@ -22,6 +22,10 @@
           export DEVSTACK_GATE_INSTALL_TESTONLY=1
           export BRANCH_OVERRIDE={branch-override}
           export DEVSTACK_GATE_TESTR_ARTIFACT_TARGET=neutron
+          # Gate hooks previous to kilo will break if PROJECTS is overridden
+          if [[ ! "$BRANCH_OVERRIDE" =~ ^stable/(icehouse|juno)$ ]]; then
+              export DEVSTACK_GATE_PROJECTS_OVERRIDE="openstack-dev/devstack openstack/neutron"
+          fi
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
