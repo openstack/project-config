@@ -70,8 +70,8 @@
               cd /opt/stack/new/python-swiftclient
               # Launch V2 auth tests and v1 tests after.
               sudo -H -u stack timeout -s 9 ${{FUNCTEST_TIMEOUT}}m tox -e func && \
-                  SWIFT_TEST_CONFIG_FILE=/opt/stack/new/swift/test/sample.conf \
-                      sudo -H -u stack timeout -s 9 ${{FUNCTEST_TIMEOUT}}m tox -e func
+                  sudo -H -u stack SWIFT_TEST_CONFIG_FILE=/opt/stack/new/swift/test/sample.conf \
+                      timeout -s 9 ${{FUNCTEST_TIMEOUT}}m tox -e func
           }}
           export -f post_test_hook
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
