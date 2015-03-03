@@ -678,6 +678,19 @@ jobs:
   - name: ^(gate|check)-tempest-dsvm-networking-odl
     branch: ^(?!stable)
     voting: false
+  - name: ^(gate|check)-neutron-vpnaas-dsvm-functional$
+#   Note: This job will run common test cases (first line), and
+#   OpenSwan specific tests (second line).
+    files:
+      - '^neutron_vpnaas/tests/functional/[^/]+\.py$'
+      - '^neutron_vpnaas/tests/functional/openswan/.+\.py$'
+  - name: check-neutron-vpnaas-dsvm-functional-sswan
+    voting: false
+#   Note: this job will run common test cases (first line), and
+#   StrongSwan specific tests (second line).
+    files:
+      - '^neutron_vpnaas/tests/functional/[^/]+\.py$'
+      - '^neutron_vpnaas/tests/functional/strongswan/.+\.py$'
 # For Gerrit ver 2.4.x (using maven)
   - name: ^(gate|check)-gerrit-unittests$
     branch: ^openstack/2\.4.*$
@@ -1483,6 +1496,8 @@ projects:
     gate:
       - gate-neutron-vpnaas-pylint
       - gate-neutron-vpnaas-dsvm-functional
+    experimental:
+      - check-neutron-vpnaas-dsvm-functional-sswan
 
   - name: openstack/nova
     template:
