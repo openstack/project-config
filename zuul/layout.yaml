@@ -3348,6 +3348,20 @@ projects:
       - name: merge-check
       - name: noop-jobs
 
+  - name: openstack-infra/bindep
+    template:
+      - name: merge-check
+      - name: publish-to-pypi
+    check:
+      - gate-bindep-pep8
+      - gate-bindep-python27
+    gate:
+      - gate-bindep-pep8
+      - gate-bindep-python27
+    post:
+      - bindep-branch-tarball
+      - bindep-coverage
+
   - name: openstack-infra/bugdaystats
     template:
       - name: merge-check
@@ -4339,20 +4353,6 @@ projects:
     post:
       - billingstack-coverage
       - billingstack-branch-tarball
-
-  - name: stackforge/bindep
-    template:
-      - name: merge-check
-      - name: publish-to-pypi
-    check:
-      - gate-bindep-pep8
-      - gate-bindep-python27
-    gate:
-      - gate-bindep-pep8
-      - gate-bindep-python27
-    post:
-      - bindep-branch-tarball
-      - bindep-coverage
 
   - name: stackforge/blazar
     template:
