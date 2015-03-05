@@ -92,7 +92,7 @@ def main():
 
     with open('gerrit/projects.yaml', 'w') as out:
         out.write(yaml.dump(data, default_flow_style=False,
-                            Dumper=IndentedDumper, width=800))
+                            Dumper=IndentedDumper, width=80))
 
 if __name__ == '__main__':
     main()
