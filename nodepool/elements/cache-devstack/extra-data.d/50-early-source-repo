@@ -28,6 +28,8 @@
 
 set -eu
 
+GIT_BASE=${GIT_BASE:-git://git.openstack.org}
+
 # If the old cache exists, move it to the new name
 function make_new_cache(){
     local OLD_CACHE_BASE=$1
@@ -198,7 +200,7 @@ GIT_MANIFEST=$CACHE_BASE/${GIT_MANIFEST_CACHE_NAME}
 rm -f $GIT_MANIFEST
 
 # Get source repositories for the target
-echo "devstack git /opt/git/openstack-dev/devstack git://git.openstack.org/openstack-dev/devstack.git" > $TMP_HOOKS_PATH/early-source-repository-config
+echo "devstack git /opt/git/openstack-dev/devstack $GIT_BASE/openstack-dev/devstack.git" > $TMP_HOOKS_PATH/early-source-repository-config
 for _SOURCEREPO in $(find $TMP_HOOKS_PATH -maxdepth 1 -name "early-source-repository-*" -not -name '*~'); do
     get_repos_for_element $_SOURCEREPO
 done
