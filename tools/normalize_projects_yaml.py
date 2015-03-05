@@ -90,6 +90,11 @@ def main():
 
     data = yaml.load(open('gerrit/projects.yaml'))
 
+    for project in data:
+        if ('upstream' in project and
+            'track-upstream' not in project.get('options', [])):
+            del project['upstream']
+
     with open('gerrit/projects.yaml', 'w') as out:
         out.write(yaml.dump(data, default_flow_style=False,
                             Dumper=IndentedDumper, width=80))
