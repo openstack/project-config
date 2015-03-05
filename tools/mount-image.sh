@@ -21,5 +21,10 @@ IMAGE=$1
 rm -rf /tmp/newimage
 mkdir -p /tmp/newimage
 
-qemu-nbd -c /dev/nbd1 $1
-mount /dev/nbd1 /tmp/newimage
+#qemu-nbd needs the absolute path of the image
+qemu-nbd -c /dev/nbd1 `readlink -e $IMAGE`
+
+#mount the first partition
+mount /dev/nbd1p1 /tmp/newimage
+
+echo "Image $IMAGE mounted to /tmp/newimage"
