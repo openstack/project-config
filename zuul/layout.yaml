@@ -1288,6 +1288,25 @@ projects:
     release:
       - glance_store-tarball
 
+  - name: openstack/gnocchi
+    template:
+      - name: merge-check
+      - name: python-jobs
+      - name: python3-jobs
+      - name: check-requirements
+      - name: openstack-server-publish-jobs
+      - name: openstack-server-release-jobs
+    check:
+      - gate-gnocchi-bashate
+      - gate-gnocchi-dsvm-functional-file-mysql
+      - gate-gnocchi-dsvm-functional-swift-postgresql
+      - gate-gnocchi-dsvm-functional-ceph-mysql
+    gate:
+      - gate-gnocchi-bashate
+      - gate-gnocchi-dsvm-functional-file-mysql
+      - gate-gnocchi-dsvm-functional-swift-postgresql
+      - gate-gnocchi-dsvm-functional-ceph-mysql
+
   - name: openstack/heat
     template:
       - name: merge-check
@@ -5062,23 +5081,6 @@ projects:
     template:
       - name: merge-check
       - name: noop-jobs
-
-  - name: stackforge/gnocchi
-    template:
-      - name: merge-check
-      - name: python-jobs
-      - name: python3-jobs
-      - name: docs-on-rtfd
-    check:
-      - gate-gnocchi-bashate
-      - gate-gnocchi-dsvm-functional-file-mysql
-      - gate-gnocchi-dsvm-functional-swift-postgresql
-      - gate-gnocchi-dsvm-functional-ceph-mysql
-    gate:
-      - gate-gnocchi-bashate
-      - gate-gnocchi-dsvm-functional-file-mysql
-      - gate-gnocchi-dsvm-functional-swift-postgresql
-      - gate-gnocchi-dsvm-functional-ceph-mysql
 
   - name: stackforge/golang-client
     template:
