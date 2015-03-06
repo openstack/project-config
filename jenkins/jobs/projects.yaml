@@ -1886,6 +1886,9 @@
 
     jobs:
       - gate-{name}-bashate
+      - 'gate-tempest-dsvm-full-{plugin}':
+          plugin: glusterfs
+          plugin-repo: stackforge/devstack-plugin-glusterfs
 
 - project:
     name: devstack-plugin-sheepdog
@@ -1893,11 +1896,9 @@
 
     jobs:
       - gate-{name}-bashate
-      - '{pipeline}-tempest-dsvm-full-sheepdog{branch-designator}':
-          pipeline: check
-          node: 'devstack-trusty'
-          branch-designator: ''
-          branch-override: default
+      - 'gate-tempest-dsvm-full-{plugin}':
+          plugin: sheepdog
+          plugin-repo: stackforge/devstack-plugin-sheepdog
 
 - project:
     name: hacking
