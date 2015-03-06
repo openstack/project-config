@@ -47,6 +47,9 @@ for FILE in ${DocFolder}/*; do
     if [ -d ${DocFolder}/${DOCNAME}/locale ] ; then
         git add ${DocFolder}/${DOCNAME}/locale/*
     fi
+    if [ -d ${DocFolder}/${DOCNAME}/source/locale ] ; then
+        git add ${DocFolder}/${DOCNAME}/source/locale/*
+    fi
 done
 
 filter_commits
