@@ -17,7 +17,7 @@ function check_team_acl {
         echo "Checking $config file..."
 
         $OLDPWD/tools/normalize_acl.py $config all > $TMPDIR/normalized
-        if ! diff -u $config $TMPDIR/normalized;
+        if ! diff -u $config $TMPDIR/normalized >>config_failures;
         then
             echo "Project $config is not normalized!" >>config_failures
         fi
@@ -29,9 +29,9 @@ for namespace in openstack openstack-dev openstack-infra stackforge; do
     check_team_acl "${CONFIGS_LIST_BASE}${namespace}"
 done
 
-if [ -f config_failures ]; then
+num_errors=$(cat config_failures | grep "is not normalized" | wc -l)
+if [ $num_errors -ne 0 ]; then
     echo -e; cat config_failures
-    num_errors=$(wc -l config_failures)
     echo -e "There are $num_errors projects not normalized."
     exit 1
 fi
