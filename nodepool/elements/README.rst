@@ -28,7 +28,7 @@ Building an image is simple, we have a script!
 
 ::
 
-  DISTRO="ubuntu" bash tools/build-image.sh
+  DISTRO="ubuntu" DIB_RELEASE="trusty" bash tools/build-image.sh
 
 See the script for environment variables to set distribution, etc.
 You should be left with a .qcow2 image file of your selected
@@ -37,6 +37,8 @@ distribution.
 It is a good idea to set ``TMP_DIR`` to somewhere with plenty of space
 to avoid the disappointment of a full-disk mid-way through the script
 run.
+
+While testing, consider exporting DIB_OFFLINE=true, to skip updating the cache.
 
 Mounting the image
 ------------------
