@@ -21,6 +21,7 @@ credentials provided by zuul
 
 import argparse
 import logging
+import glob2
 import magic
 import os
 import Queue
@@ -264,7 +265,7 @@ def build_file_list(file_path, logserver_prefix, swift_destination_prefix,
 
                 folder_links.append(file_details)
 
-            for f in sorted(folders):
+            for f in sorted(folders, key=lambda x: x.lower()):
                 filename = os.path.basename(f) + '/'
                 full_path = os.path.join(path, filename)
                 relative_name = os.path.relpath(full_path, parent_dir)
@@ -281,7 +282,7 @@ def build_file_list(file_path, logserver_prefix, swift_destination_prefix,
 
                 folder_links.append(file_details)
 
-            for f in sorted(files):
+            for f in sorted(files, key=lambda x: x.lower()):
                 filename = os.path.basename(f)
                 full_path = os.path.join(path, filename)
                 relative_name = os.path.relpath(full_path, parent_dir)
@@ -365,6 +366,14 @@ def swift_form_post(queue, num_threads):
         t.join()
 
 
+def expand_files(paths):
+    """Expand the provided paths into a list of files/folders"""
+    results = set()
+    for p in paths:
+        results.update(glob2.glob(p))
+    return sorted(results, key=lambda x: x.lower())
+
+
 def grab_args():
     """Grab and return arguments"""
     parser = argparse.ArgumentParser(
@@ -380,7 +389,9 @@ def grab_args():
                         help='do not include links back to a parent dir')
     parser.add_argument('-n', '--name', default="logs",
                         help='The instruction-set to use')
-    parser.add_argument('files', nargs='+', help='the file(s) to upload')
+    parser.add_argument('files', nargs='+',
+                        help='the file(s) to upload with recursive glob '
+                        'matching when supplied as a string')
 
     return parser.parse_args()
 
@@ -406,7 +417,7 @@ if __name__ == '__main__':
     destination_prefix = os.path.join(logserver_prefix,
                                       swift_destination_prefix)
 
-    for file_path in args.files:
+    for file_path in expand_files(args.files):
         file_path = os.path.normpath(file_path)
         if os.path.isfile(file_path):
             filename = os.path.basename(file_path)
