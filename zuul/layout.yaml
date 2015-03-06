@@ -379,6 +379,8 @@ project-templates:
   - name: openstack-doc-translation
     check:
       - 'gate-{name}-tox-checklang'
+    gate:
+      - 'gate-{name}-tox-checklang'
     post:
       - '{name}-manuals-upstream-translation-update'
       - '{name}-tox-doc-publishlang'
@@ -740,7 +742,6 @@ jobs:
     success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/publish-docs/
   - name: ^gate-.*-tox-checklang$
     branch: master
-    voting: false
     # Only run job if at least one po or pot file was changed
     files:
       - '^.*\.po$'
