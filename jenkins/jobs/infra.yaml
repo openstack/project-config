@@ -123,3 +123,17 @@
 
     publishers:
       - zuul-swift-upload-console-log
+
+- job:
+    name: propose-project-config-update
+    node: proposal
+
+    builders:
+      - revoke-sudo
+      - link-logs
+      - net-info
+      - gerrit-git-prep
+      - shell: ./tools/propose_projects_yaml_update.sh
+
+    publishers:
+      - console-log
