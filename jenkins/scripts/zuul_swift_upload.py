@@ -84,11 +84,12 @@ def generate_log_index(folder_links, header_message=''):
 
     for file_details in folder_links:
         output += '<tr>'
-        output += '<img alt="[ ]" title="%(m)s" src="%(i)s"></img>' % ({
+        output += (
+            '<td><img alt="[ ]" title="%(m)s" src="%(i)s"></img></td>' % ({
             'm': file_details['metadata']['mime'],
             'i': get_mime_icon(file_details['metadata']['mime'],
                                file_details['filename']),
-        })
+            }))
         output += '<td><a href="%s">%s</a></td>' % (file_details['url'],
                                                     file_details['filename'])
         output += '<td>%s</td>' % time.asctime(
