@@ -1856,9 +1856,11 @@
       - console-log
 
 
+# A template for any project with a devstack-plugin to run the full
+# tempest suite with their project/plugin enabled.
 - job-template:
-    name: '{pipeline}-tempest-dsvm-full-glusterfs{branch-designator}'
-    node: '{node}'
+    name: 'gate-tempest-dsvm-full-{plugin}'
+    node: 'devstack-precise || devstack-trusty'
 
     wrappers:
       - build-timeout:
@@ -1875,45 +1877,8 @@
           export DEVSTACK_GATE_TIMEOUT=120
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_TEMPEST_FULL=1
-          export PROJECTS="stackforge/devstack-plugin-glusterfs $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin devstack-plugin-glusterfs git://git.openstack.org/stackforge/devstack-plugin-glusterfs"
-          export BRANCH_OVERRIDE={branch-override}
-          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
-              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
-          fi
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
-
-    publishers:
-      - devstack-logs
-      - console-log
-
-
-- job-template:
-    name: '{pipeline}-tempest-dsvm-full-sheepdog{branch-designator}'
-    node: '{node}'
-
-    wrappers:
-      - build-timeout:
-          timeout: 125
-      - timestamps
-
-    builders:
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - shell: |
-          #!/bin/bash -xe
-          export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_TIMEOUT=120
-          export DEVSTACK_GATE_TEMPEST=1
-          export DEVSTACK_GATE_TEMPEST_FULL=1
-          export BRANCH_OVERRIDE={branch-override}
-          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
-              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
-          fi
-          export PROJECTS="stackforge/devstack-plugin-sheepdog $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin devstack-plugin-sheepdog git://git.openstack.org/stackforge/devstack-plugin-sheepdog"
+          export PROJECTS="{plugin-repo} $PROJECTS"
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin devstack-plugin-{plugin} git://git.openstack.org/{plugin-repo}"
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
