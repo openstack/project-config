@@ -82,6 +82,11 @@ function init_manuals {
 # operations-guide) for transifex
 function setup_manuals {
     local project=$1
+
+    # Fill in associative array SPECIAL_BOOKS
+    declare -A SPECIAL_BOOKS
+    source doc-tools-check-languages.conf
+
     # Generate pot one by one
     for FILE in ${DocFolder}/*; do
         # Skip non-directories
@@ -91,10 +96,6 @@ function setup_manuals {
         DOCNAME=${FILE#${DocFolder}/}
         # Ignore directories that will not get translated
         if [[ "$DOCNAME" =~ ^(www|tools|generated|publish-docs)$ ]]; then
-            continue
-        fi
-        # Ignore directories starting with playground
-        if [[ "$DOCNAME" =~ "^playground" ]]; then
             continue
         fi
         # Skip glossary in all repos besides openstack-manuals.
@@ -113,17 +114,38 @@ function setup_manuals {
                 PERC=8
             fi
         fi
-        # Update the .pot file
-        ./tools/generatepot ${DOCNAME}
-        if [ -f ${DocFolder}/${DOCNAME}/locale/${DOCNAME}.pot ]; then
-            # Add all changed files to git
-            git add ${DocFolder}/${DOCNAME}/locale/*
+        IS_RST=0
+        if [ ${SPECIAL_BOOKS["${DOCNAME}"]+_} ] ; then
+            if [ ${SPECIAL_BOOKS["${DOCNAME}"]} == "RST" ] ; then
+                IS_RST=1
+            fi
+            if [ ${SPECIAL_BOOKS["${DOCNAME}"]} == "skip" ] ; then
+                continue
+            fi
+        fi
+        if [ ${IS_RST} -eq 1 ] ; then
+            tox -e generatepot-rst -- ${DOCNAME}
+            git add ${DocFolder}/${DOCNAME}/source/locale/${DOCNAME}.pot
             # Set auto-local
             tx set --auto-local -r openstack-manuals-i18n.${DOCNAME} \
-                "${DocFolder}/${DOCNAME}/locale/<lang>.po" --source-lang en \
+                "${DocFolder}/${DOCNAME}/source/locale/<lang>/LC_MESSAGES/${DOCNAME}.po" \
+                --source-lang en \
                 --source-file ${DocFolder}/${DOCNAME}/locale/${DOCNAME}.pot \
                 --minimum-perc=$PERC \
                 -t PO --execute
+        else
+            # Update the .pot file
+            ./tools/generatepot ${DOCNAME}
+            if [ -f ${DocFolder}/${DOCNAME}/locale/${DOCNAME}.pot ]; then
+                # Add all changed files to git
+                git add ${DocFolder}/${DOCNAME}/locale/${DOCNAME}.pot
+                # Set auto-local
+                tx set --auto-local -r openstack-manuals-i18n.${DOCNAME} \
+                    "${DocFolder}/${DOCNAME}/locale/<lang>.po" --source-lang en \
+                    --source-file ${DocFolder}/${DOCNAME}/locale/${DOCNAME}.pot \
+                    --minimum-perc=$PERC \
+                    -t PO --execute
+            fi
         fi
     done
 
