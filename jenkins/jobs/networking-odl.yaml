@@ -16,8 +16,12 @@
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TIMEOUT=120
           export DEVSTACK_GATE_NEUTRON=1
-          # For now, lets just run the smoke tests
           export DEVSTACK_GATE_TEMPEST=1
+          # For now, run a small number of tests until we get the issues
+          # on the ODL sorted out
+          export DEVSTACK_GATE_TEMPEST_REGEX="tempest.api.network.test_networks \
+                                              tempest.api.network.test_networks_negative \
+                                              tempest.api.network.test_ports"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
