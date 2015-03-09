@@ -104,6 +104,15 @@
           sudo apt-get install -y chromium-browser
 
 - builder:
+    name: diskimage-builder-install
+    builders:
+      - shell: |
+          sudo apt-get update
+          sudo apt-get install -y qemu kpartx
+          sudo pip install dib-utils
+          sudo pip install diskimage-builder
+
+- builder:
     name: uninstall-puppet
     builders:
       - shell: "sudo apt-get remove -y --purge facter puppet puppet-common"
