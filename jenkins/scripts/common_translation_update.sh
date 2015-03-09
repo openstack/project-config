@@ -116,12 +116,14 @@ function setup_manuals {
         fi
         IS_RST=0
         if [ ${SPECIAL_BOOKS["${DOCNAME}"]+_} ] ; then
-            if [ ${SPECIAL_BOOKS["${DOCNAME}"]} == "RST" ] ; then
-                IS_RST=1
-            fi
-            if [ ${SPECIAL_BOOKS["${DOCNAME}"]} == "skip" ] ; then
-                continue
-            fi
+            case "${SPECIAL_BOOKS["${DOCNAME}"]}" in
+                RST)
+                    IS_RST=1
+                    ;;
+                skip)
+                    continue
+                    ;;
+            esac
         fi
         if [ ${IS_RST} -eq 1 ] ; then
             tox -e generatepot-rst -- ${DOCNAME}
@@ -130,7 +132,7 @@ function setup_manuals {
             tx set --auto-local -r openstack-manuals-i18n.${DOCNAME} \
                 "${DocFolder}/${DOCNAME}/source/locale/<lang>/LC_MESSAGES/${DOCNAME}.po" \
                 --source-lang en \
-                --source-file ${DocFolder}/${DOCNAME}/locale/${DOCNAME}.pot \
+                --source-file ${DocFolder}/${DOCNAME}/source/locale/${DOCNAME}.pot \
                 --minimum-perc=$PERC \
                 -t PO --execute
         else
