@@ -161,7 +161,8 @@ def get_folder_metadata(file_path, number_files=0):
     return metadata
 
 
-def swift_form_post_queue(file_list, url, hmac_body, signature):
+def swift_form_post_queue(file_list, url, hmac_body, signature,
+                          delete_after=None, additional_headers=None):
     """Queue up files for processing via requests to FormPost middleware"""
 
     # We are uploading the file_list as an HTTP POST multipart encoded.
@@ -181,6 +182,12 @@ def swift_form_post_queue(file_list, url, hmac_body, signature):
     except ValueError:
         raise Exception("HMAC Body contains unexpected (non-integer) data.")
 
+    headers = {}
+    if delete_after:
+        headers['X-Delete-After'] = delete_after
+    if additional_headers:
+        headers.update(additional_headers)
+
     queue = Queue.Queue()
     # Zuul's log path is sometimes generated without a tailing slash. As
     # such the object prefix does not contain a slash and the files would
@@ -195,7 +202,7 @@ def swift_form_post_queue(file_list, url, hmac_body, signature):
         fileinfo = {'file01': (filename_prefix + f['relative_name'],
                                f['path'],
                                get_file_mime(f['path']))}
-        filejob = (url, payload, fileinfo)
+        filejob = (url, payload, fileinfo, headers)
         queue.put(filejob)
     return queue
 
@@ -328,7 +335,7 @@ class PostThread(threading.Thread):
         super(PostThread, self).__init__()
         self.queue = queue
 
-    def _post_file(self, url, payload, fileinfo):
+    def _post_file(self, url, payload, fileinfo, headers):
         if payload['expires'] < time.time():
             raise Exception("Ran out of time uploading files!")
         files = {}
@@ -336,7 +343,7 @@ class PostThread(threading.Thread):
             files[key] = (fileinfo[key][0],
                           open(fileinfo[key][1], 'rb'),
                           fileinfo[key][2])
-        requests.post(url, data=payload, files=files)
+        requests.post(url, headers=headers, data=payload, files=files)
 
     def run(self):
         while True:
@@ -390,6 +397,10 @@ def grab_args():
                         help='do not include links back to a parent dir')
     parser.add_argument('-n', '--name', default="logs",
                         help='The instruction-set to use')
+    parser.add_argument('--delete-after', default='15552000',
+                        help='Number of seconds to delete object after '
+                             'upload. Default is 6 months (15552000 seconds) '
+                             'and if set to 0 X-Delete-After will not be set.')
     parser.add_argument('files', nargs='+',
                         help='the file(s) to upload with recursive glob '
                         'matching when supplied as a string')
@@ -469,7 +480,7 @@ if __name__ == '__main__':
         print file_list
 
     queue = swift_form_post_queue(file_list, swift_url, swift_hmac_body,
-                                  swift_signature)
+                                  swift_signature, args.delete_after)
     max_file_count = int(swift_hmac_body.split('\n')[3])
     # Attempt to upload at least one item
     items_to_upload = max(queue.qsize(), 1)
