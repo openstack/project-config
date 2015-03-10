@@ -51,8 +51,17 @@ a loopback device using qemu-nbd.
   sudo apt-get install qemu-utils
   sudo modprobe nbd max_part=16
   sudo mkdir -p /tmp/newimage
-  sudo qemu-nbd -c /dev/nbd1 devstack-gate-precise.qcow2
-  sudo mount /dev/nbd1 /tmp/newimage
+  sudo qemu-nbd -c /dev/nbd1 /path/to/devstack-gate-precise.qcow2
+  sudo mount /dev/nbd1p1 /tmp/newimage
+
+or use the scripts
+
+::
+
+  sudo apt-get install qemu-utils
+  sudo modprobe nbd max_part=16
+  sudo tools/mount-image.sh devstack-gate-precise.qcow2
+  sudo tools/umount-image.sh
 
 Other things
 ------------
