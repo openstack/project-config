@@ -17,11 +17,12 @@
 
 set -e
 
+NODEPOOL_STATIC_NAMESERVER=${NODEPOOL_STATIC_NAMESERVER:-8.8.8.8}
 # The puppet modules should install unbound.
 dd of=/tmp/forwarding.conf <<EOF
 forward-zone:
   name: "."
-  forward-addr: 8.8.8.8
+  forward-addr: $NODEPOOL_STATIC_NAMESERVER
 EOF
 
 mv /tmp/forwarding.conf /etc/unbound/
