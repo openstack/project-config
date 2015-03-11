@@ -1943,9 +1943,16 @@
 
     jobs:
       - gate-{name}-bashate
-      - 'gate-tempest-dsvm-full-{plugin}':
+      - '{pipeline}-tempest-dsvm-full-{plugin}{branch-designator}':
+          pipeline: check
           plugin: glusterfs
           plugin-repo: stackforge/devstack-plugin-glusterfs
+          branch-designator: '-nv'
+      - '{pipeline}-tempest-dsvm-full-{plugin}{branch-designator}':
+          pipeline: check
+          plugin: glusterfs
+          plugin-repo: stackforge/devstack-plugin-glusterfs
+          branch-designator: ''
 
 - project:
     name: devstack-plugin-sheepdog
@@ -1953,9 +1960,11 @@
 
     jobs:
       - gate-{name}-bashate
-      - 'gate-tempest-dsvm-full-{plugin}':
+      - '{pipeline}-tempest-dsvm-full-{plugin}{branch-designator}':
+          pipeline: gate
           plugin: sheepdog
           plugin-repo: stackforge/devstack-plugin-sheepdog
+          branch-designator: ''
 
 - project:
     name: hacking
