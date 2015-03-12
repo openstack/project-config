@@ -20,7 +20,8 @@ set -e
 while read line ; do
 
     if [ -f /usr/bin/apt-get ] ; then
-        apt-get -y -d install $line
+        # --ignore-missing conflicts with set -e, so force it to be ok
+        apt-get -y --ignore-missing -d install $line || true
     else
         yum install -y --downloadonly $line
     fi
