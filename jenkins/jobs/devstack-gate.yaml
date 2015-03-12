@@ -1921,6 +1921,37 @@
       - devstack-logs
       - console-log
 
+- job-template:
+    name: '{pipeline}-tempest-dsvm-trove{branch-designator}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=120
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_TEMPEST_REGEX="database"
+          export DEVSTACK_GATE_TROVE=1
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
 
 - job:
     name: gate-devstack-gate-unittests
@@ -1993,4 +2024,5 @@
       - '{pipeline}-tempest-dsvm-nova-v21-neutron-full{branch-designator}'
       - '{pipeline}-tempest-dsvm-full-glusterfs{branch-designator}'
       - '{pipeline}-tempest-dsvm-full-trove{branch-designator}'
+      - '{pipeline}-tempest-dsvm-trove{branch-designator}'
       - '{pipeline}-grenade-dsvm-trove{branch-designator}'
