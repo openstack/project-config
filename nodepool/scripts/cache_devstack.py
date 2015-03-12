@@ -100,7 +100,9 @@ def _build_wheelhouse(basedir):
         env = os.environ
         # Makes output dir for wheelhouse CACHEDIR/wheelhouse
         env['WHEELHOUSE'] = os.path.join(CACHEDIR, 'wheelhouse')
-        run_local(['bash', 'tools/build_wheels.sh'], cwd=DEVSTACK, env=env)
+        output = run_local(['bash', 'tools/build_wheels.sh'], cwd=DEVSTACK,
+                           env=env)
+        print output
 
 
 def local_prep(distribution):
