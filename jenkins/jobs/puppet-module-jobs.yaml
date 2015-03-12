@@ -67,6 +67,12 @@
       - revoke-sudo
       - gerrit-git-prep
       - shell: |
+          #!/bin/bash
+          cat > Rakefile << EOF
+          require 'puppet_blacksmith/rake_tasks'
+          EOF
+          TAG=${{ZUUL_REF:10}}
+          sed -i -e 's/  "version":.*/  "version": "'$TAG'",/' metadata.json
           mkdir .bundled_gems
           export GEM_HOME=`pwd`/.bundled_gems
           gem install --no-ri --no-rdoc  puppetlabs_spec_helper puppet-blacksmith
