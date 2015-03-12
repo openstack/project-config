@@ -983,8 +983,6 @@ jobs:
       - '^nova/api/openstack/compute/plugins/v3/.*$'
       - '^nova/api/openstack/compute/schemas/v3/.*$'
       - '^tempest/api/network/.*$'
-  - name: ^(gate|check)-neutronclient-dsvm-functional$
-    voting: false
   # TODO(yamamoto): Revisit when Neutron driver API become more stable.
   - name: gate-networking-ofagent-python27
     voting: false
@@ -1967,11 +1965,14 @@ projects:
       - name: pypy-jobs
       - name: experimental-tripleo-jobs
       - name: lib-forward-testing
+    check:
+      - check-neutronclient-dsvm-functional
+    gate:
+      - gate-neutronclient-dsvm-functional
     post:
       - python-neutronclient-coverage
     experimental:
       - gate-grenade-dsvm-forward
-      - check-neutronclient-dsvm-functional
 
   - name: openstack/python-novaclient
     template:
