@@ -182,7 +182,7 @@ def swift_form_post_queue(file_list, url, hmac_body, signature,
 
     headers = {}
     if delete_after:
-        headers['X-Delete-After'] = delete_after
+        payload['x_delete_after'] = delete_after
     if additional_headers:
         headers.update(additional_headers)
 
