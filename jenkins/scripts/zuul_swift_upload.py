@@ -33,8 +33,6 @@ import tempfile
 import threading
 import time
 
-DEBUG = True
-
 # Map mime types to apache icons
 APACHE_MIME_ICON_MAP = {
     '_default': '/icons/unknown.png',
@@ -475,9 +473,8 @@ if __name__ == '__main__':
 
         file_list.append(file_details)
 
-    if DEBUG:
-        print "List of files prepared to upload:"
-        print file_list
+    logging.debug("List of files prepared to upload:")
+    logging.debug(file_list)
 
     queue = swift_form_post_queue(file_list, swift_url, swift_hmac_body,
                                   swift_signature, args.delete_after)
