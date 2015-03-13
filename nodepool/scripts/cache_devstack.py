@@ -94,17 +94,6 @@ def _find_images(basedir):
     return images
 
 
-def _build_wheelhouse(basedir):
-    build_wheels_path = os.path.join(basedir, 'tools/build_wheels.sh')
-    if os.path.isfile(build_wheels_path):
-        env = os.environ
-        # Makes output dir for wheelhouse CACHEDIR/wheelhouse
-        env['WHEELHOUSE'] = os.path.join(CACHEDIR, 'wheelhouse')
-        output = run_local(['bash', 'tools/build_wheels.sh'], cwd=DEVSTACK,
-                           env=env)
-        print output
-
-
 def local_prep(distribution):
     branches = []
     for branch in git_branches():
@@ -144,7 +133,6 @@ def local_prep(distribution):
 
         branch_data['images'] = images
         branches.append(branch_data)
-        _build_wheelhouse(DEVSTACK)
     return branches
 
 
