@@ -1065,6 +1065,13 @@ jobs:
   - name: gate-training-guides-tox-slides
     branch: ^(?!stable/icehouse).*$
   # Training guides end
+  # os-ansible-deployment skip for rst/doc files
+  - name: ^os-ansible-deployment-(dsvm-check-commit|check-lint)$
+    skip-if:
+      - project: ^stackforge/os-ansible-deployment$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*
 
 # The project list is grouped by type of project, and within each
 # group, projects are sorted (mostly) alphabetically.
