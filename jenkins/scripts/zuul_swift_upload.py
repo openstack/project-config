@@ -398,7 +398,8 @@ def grab_args():
     parser.add_argument('--delete-after', default='15552000',
                         help='Number of seconds to delete object after '
                              'upload. Default is 6 months (15552000 seconds) '
-                             'and if set to 0 X-Delete-After will not be set.')
+                             'and if set to 0 X-Delete-After will not be set.',
+                        type=int)
     parser.add_argument('files', nargs='+',
                         help='the file(s) to upload with recursive glob '
                         'matching when supplied as a string')
