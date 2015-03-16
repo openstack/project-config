@@ -52,13 +52,6 @@ fi
 wget https://git.openstack.org/cgit/openstack-infra/system-config/plain/install_puppet.sh
 sudo bash -xe install_puppet.sh
 
-if [ "$THIN" = "false" ] ; then
-    # Workaround necessary until this pull request:
-    # https://github.com/puppetlabs/puppetlabs_spec_helper/pull/90
-    # is merged.
-    sudo gem install --version '~>2.99.0' rspec
-fi
-
 sudo git clone --depth=1 $GIT_BASE/openstack-infra/system-config.git \
     /root/system-config
 sudo /bin/bash /root/system-config/install_modules.sh
