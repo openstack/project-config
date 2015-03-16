@@ -699,11 +699,6 @@ jobs:
     voting: false
   - name: ^(gate|check)-group-based-policy-dsvm-functional$
     voting: false
-# For Gerrit ver 2.4.x (using maven)
-  - name: ^(gate|check)-gerrit-unittests$
-    branch: ^openstack/2\.4.*$
-  - name: gerrit-package
-    branch: ^openstack/2\.4.*$
 # For Gerrit ver 2.8.x and later (using buck)
   - name: ^.*gerrit.*buck$
     branch: ^openstack/(?!2\.4).*$
@@ -3373,13 +3368,10 @@ projects:
     template:
       - name: merge-check
     check:
-      - check-gerrit-unittests
       - check-gerrit-buck
     gate:
-      - gate-gerrit-unittests
       - gate-gerrit-buck
     post:
-      - gerrit-package
       - gerrit-package-buck
     periodic:
       - javamelody-gerrit-plugin-stable-2.8
