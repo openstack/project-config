@@ -108,7 +108,12 @@ def generate_log_index(folder_links, header_message=''):
 def make_index_file(folder_links, header_message='',
                     index_filename='index.html'):
     """Writes an index into a file for pushing"""
-
+    for file_details in folder_links:
+        # Do not generate an index file if one exists already.
+        # This may be the case when uploading other machine generated
+        # content like python coverage info.
+        if index_filename == file_details['filename']:
+            return
     index_content = generate_log_index(folder_links, header_message)
     tempdir = tempfile.mkdtemp()
     fd = open(os.path.join(tempdir, index_filename), 'w')
@@ -311,18 +316,19 @@ def build_file_list(file_path, logserver_prefix, swift_destination_prefix,
                     "Index of %s" % os.path.join(swift_destination_prefix,
                                                  relative_path)
                 )
-                filename = os.path.basename(full_path)
-                relative_name = os.path.join(relative_path, filename)
-                url = os.path.join(destination_prefix, relative_name)
+                if full_path:
+                    filename = os.path.basename(full_path)
+                    relative_name = os.path.join(relative_path, filename)
+                    url = os.path.join(destination_prefix, relative_name)
 
-                file_details = {
-                    'filename': filename,
-                    'path': full_path,
-                    'relative_name': relative_name,
-                    'url': url,
-                }
+                    file_details = {
+                        'filename': filename,
+                        'path': full_path,
+                        'relative_name': relative_name,
+                        'url': url,
+                    }
 
-                file_list.append(file_details)
+                    file_list.append(file_details)
 
     return file_list
 
@@ -461,18 +467,19 @@ if __name__ == '__main__':
             folder_links,
             "Index of %s" % swift_destination_prefix
         )
-        filename = os.path.basename(full_path)
-        relative_name = filename
-        url = os.path.join(destination_prefix, relative_name)
+        if full_path:
+            filename = os.path.basename(full_path)
+            relative_name = filename
+            url = os.path.join(destination_prefix, relative_name)
 
-        file_details = {
-            'filename': filename,
-            'path': full_path,
-            'relative_name': relative_name,
-            'url': url,
-        }
+            file_details = {
+                'filename': filename,
+                'path': full_path,
+                'relative_name': relative_name,
+                'url': url,
+            }
 
-        file_list.append(file_details)
+            file_list.append(file_details)
 
     logging.debug("List of files prepared to upload:")
     logging.debug(file_list)
