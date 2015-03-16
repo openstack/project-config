@@ -763,7 +763,6 @@
           onfailure: False
           onsuccess: False
 
-
 - publisher:
     name: zuul-swift-upload-logs-with-console
     publishers:
@@ -782,3 +781,9 @@
     publishers:
       - zuul-swift-upload-logs:
           upload_source: 'logs'
+
+- publisher:
+    name: zuul-swift-test-results-with-console
+    publishers:
+      - zuul-swift-upload-logs-with-console:
+          upload_source: '"**/*nose_results.html" "**/*testr_results.html.gz" ".testrepository/tmp*" "**/*subunit_log.txt.gz" ".tox/*/log/*"'
