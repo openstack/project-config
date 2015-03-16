@@ -918,8 +918,6 @@ jobs:
       - '^apidocs/.*$'
   - name: check-tempest-dsvm-full-ceph
     voting: false
-  - name: gate-tempest-dsvm-full-sheepdog
-    voting: false
   - name: gate-tomograph-python34
     voting: false
   - name: gate-cliff-requirements
@@ -1159,7 +1157,10 @@ projects:
       - check-devstack-dsvm-cells
       - gate-rally-dsvm-cinder
       - check-tempest-dsvm-full-ceph
+      # These jobs test open source plugins and must remain with the -nv branch
+      # designator unless cinder gives permission.
       - check-tempest-dsvm-full-glusterfs-nv
+      - check-tempest-dsvm-full-sheepdog-nv
     gate:
       - gate-devstack-dsvm-cells
     experimental:
@@ -4672,7 +4673,7 @@ projects:
       - name: merge-check
     check:
       - gate-devstack-plugin-sheepdog-bashate
-      - gate-tempest-dsvm-full-sheepdog
+      - check-tempest-dsvm-full-sheepdog-nv
     gate:
       - gate-devstack-plugin-sheepdog-bashate
 
