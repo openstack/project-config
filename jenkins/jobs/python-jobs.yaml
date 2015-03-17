@@ -438,7 +438,7 @@
 
 
 - job-template:
-    name: 'gate-{name}-pip-missing-reqs'
+    name: 'gate-{name}-pip-check-reqs'
 
     wrappers:
       - build-timeout:
@@ -451,7 +451,7 @@
       - revoke-sudo
       - gerrit-git-prep
       - tox:
-          envlist: 'pip-missing-reqs'
+          envlist: 'pip-check-reqs'
       - assert-no-extra-files
 
     publishers:
@@ -476,7 +476,7 @@
       - '{name}-tarball'
       - '{name}-branch-tarball'
       # pylint isn't standard
-      # pip-missing-reqs isn't standard
+      # pip-check-reqs isn't standard
       # gate-{name}-tox-{envlist} also isn't standard, but is reserved for
       # projects that want to run specific jobs via tox
 
