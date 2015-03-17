@@ -62,6 +62,19 @@
     publishers:
       - zuul-swift-upload-console-log
 
+- job:
+    name: gate-system-config-nodepool
+    node: 'bare-precise || bare-trusty'
+
+    builders:
+      - revoke-sudo
+      - gerrit-git-prep
+      - tox:
+          envlist: 'nodepool'
+
+    publishers:
+      - zuul-swift-upload-console-log
+
 # This is a non-standard docs job because it uses SCP instead of FTP
 - job-template:
     name: '{name}-ci-docs'
