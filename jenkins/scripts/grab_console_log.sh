@@ -19,7 +19,16 @@ while ! grep -q "$END_UUID" /tmp/console.html; do
         break
     fi
     sleep 3
-    curl -X POST --data "start=$(stat -c %s /tmp/console.html || echo 0)" --insecure $BUILD_URL$console_log_path >> /tmp/console.html
+    # -X POST because Jenkins doesn't do partial gets properly when
+    #         job is running.
+    # --data start=X instructs Jenkins to mimic a partial get using
+    #                POST. We determine how much data we need based on
+    #                how much we already have.
+    # --fail will cause curl to not output data if the request
+    #        fails. This allows us to retry when we have Jenkins proxy
+    #        errors without polluting the output document.
+    # --insecure because our Jenkins masters use self signed SSL certs.
+    curl -X POST --data "start=$(stat -c %s /tmp/console.html || echo 0)" --fail --insecure $BUILD_URL$console_log_path >> /tmp/console.html
 done
 
 # We need to add <pre> tags around the output for log-osanalyze to not escape
