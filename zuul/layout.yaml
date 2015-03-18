@@ -697,6 +697,9 @@ jobs:
     voting: false
   - name: ^check-neutron-fwaas-dsvm-functional$
     voting: false
+  - name: ^(check|gate)-neutron-lbaas-dsvm-api$
+    branch: ^(?!stable/(?:icehouse|juno)).*$
+    voting: false
   - name: ^(gate|check)-group-based-policy-dsvm-functional$
     voting: false
 # For Gerrit ver 2.8.x and later (using buck)
@@ -1489,6 +1492,7 @@ projects:
       - check-neutron-dsvm-functional
       - gate-rally-dsvm-neutron-neutron
       - check-tempest-dsvm-neutron-dvr
+      - check-neutron-lbaas-dsvm-api
     gate:
       - gate-neutron-dsvm-functional
     post:
@@ -1515,7 +1519,7 @@ projects:
       - name: merge-check
       - name: python-jobs
       - name: openstack-server-release-jobs
-    experimental:
+    check:
       - check-neutron-lbaas-dsvm-api
 
   - name: openstack/neutron-specs
