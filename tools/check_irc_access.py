@@ -40,10 +40,10 @@ class CheckAccess(irc.client.SimpleIRCClient):
         self.flags = flags
         self.current_channel = None
         self.current_list = []
-        self.failed = True
+        self.failed = None
 
     def on_disconnect(self, connection, event):
-        if self.failed:
+        if self.failed is not False:
             sys.exit(1)
         else:
             sys.exit(0)
@@ -73,7 +73,6 @@ class CheckAccess(irc.client.SimpleIRCClient):
             self.log.debug("Ignoring message from unauthenticated "
                            "user %s" % nick)
             return
-        self.failed = False
         self.advance(msg)
 
     def advance(self, msg=None):
@@ -86,6 +85,13 @@ class CheckAccess(irc.client.SimpleIRCClient):
             self.connection.privmsg('chanserv', 'access list %s' %
                                     self.current_channel)
             time.sleep(1)
+            return
+        if msg.endswith('is not registered.'):
+            self.failed = True
+            print ("%s is not registered with ChanServ." %
+                   self.current_channel)
+            self.current_channel = None
+            self.advance()
             return
         if msg.startswith('End of'):
             found = False
@@ -102,6 +108,11 @@ class CheckAccess(irc.client.SimpleIRCClient):
                 for nick, flags, msg in self.current_list:
                     print msg
                 print
+            # If this is the first channel checked, set the failure
+            # flag to false because we know that the system is
+            # operating well enough to check at least one channel.
+            if self.failed is None:
+                self.failed = False
             self.current_channel = None
             self.advance()
             return
