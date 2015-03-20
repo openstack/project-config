@@ -110,10 +110,6 @@ sed -i -e 's/^\(DNS[0-9]*=[.0-9]\+\)/#\1/g' /etc/sysconfig/network-scripts/ifcfg
 set -e
 
 echo 'nameserver 127.0.0.1' > /etc/resolv.conf
-if type dpkg-reconfigure >/dev/null 2>&1 && ! test -f /etc/ssh/ssh_host_rsa_key
-then
-    dpkg-reconfigure openssh-server
-fi
 
 exit 0
 EOF
