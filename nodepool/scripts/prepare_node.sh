@@ -173,7 +173,5 @@ sudo -H virtualenv /usr/zuul-swift-logs-env
 sudo -H /usr/zuul-swift-logs-env/bin/pip install python-magic argparse \
     requests glob2
 
-sudo rm -f /etc/ssh/ssh_host_*
-
 sync
 sleep 5
