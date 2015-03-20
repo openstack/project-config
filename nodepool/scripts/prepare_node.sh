@@ -110,12 +110,14 @@ sed -i -e 's/^\(DNS[0-9]*=[.0-9]\+\)/#\1/g' /etc/sysconfig/network-scripts/ifcfg
 set -e
 
 echo 'nameserver 127.0.0.1' > /etc/resolv.conf
-if type dpkg-reconfigure >/dev/null 2>&1 && ! test -f /etc/ssh/ssh_host_rsa_key
-then
-    dpkg-reconfigure openssh-server
-fi
 
 exit 0
+EOF
+
+# Make all cloud-init data sources match rackspace- only attempt to look
+# at ConfigDrive, not at metadata service
+sudo dd of=/etc/cloud/cloud.cfg.d/95_real_datasources.cfg <<EOF
+datasource_list: [ ConfigDrive, None ]
 EOF
 
 sudo bash -c "echo 'include: /etc/unbound/forwarding.conf' >> /etc/unbound/unbound.conf"
@@ -176,8 +178,6 @@ sudo rm -fr /tmp/zuul
 sudo -H virtualenv /usr/zuul-swift-logs-env
 sudo -H /usr/zuul-swift-logs-env/bin/pip install python-magic argparse \
     requests glob2
-
-sudo rm -f /etc/ssh/ssh_host_*
 
 sync
 sleep 5
