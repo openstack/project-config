@@ -704,6 +704,11 @@
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
 
+          export IRONICCLIENT_FROM_SOURCE={client-from-source}
+          if [ "$IRONICCLIENT_FROM_SOURCE" == "1" ]; then
+              export DEVSTACK_PROJECT_FROM_GIT="python-ironicclient"
+          fi
+
           # The IPA ramdisk need at least 1GB of RAM to run
           export DEVSTACK_LOCAL_CONFIG="IRONIC_VM_SPECS_RAM=1024"$'\n'"IRONIC_VM_COUNT=1"
 
@@ -783,6 +788,7 @@
           build-ramdisk: 1
           deploy_driver: pxe_ssh
           deploy-with-ipa: 0
+          client-from-source: 0
           branch-override: '{branch-override}'
     publishers:
       - devstack-logs
@@ -806,6 +812,7 @@
           build-ramdisk: 1
           deploy_driver: pxe_ssh
           deploy-with-ipa: 0
+          client-from-source: 0
           branch-override: '{branch-override}'
 
     publishers:
@@ -867,6 +874,7 @@
           build-ramdisk: 0
           deploy_driver: pxe_ssh
           deploy-with-ipa: 1
+          client-from-source: 0
           branch-override: '{branch-override}'
 
     publishers:
@@ -891,6 +899,7 @@
           build-ramdisk: 0
           deploy_driver: agent_ssh
           deploy-with-ipa: 0
+          client-from-source: 0
           branch-override: '{branch-override}'
     publishers:
       - devstack-logs
@@ -914,6 +923,31 @@
           build-ramdisk: 1
           deploy_driver: agent_ssh
           deploy-with-ipa: 1
+          client-from-source: 0
+          branch-override: '{branch-override}'
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-tempest-dsvm-python-ironicclient-src{branch-designator}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - devstack-virtual-ironic:
+          postgres: 0
+          build-ramdisk: 1
+          deploy_driver: pxe_ssh
+          deploy-with-ipa: 0
+          client-from-source: 1
           branch-override: '{branch-override}'
     publishers:
       - devstack-logs
