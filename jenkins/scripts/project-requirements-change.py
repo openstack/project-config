@@ -139,7 +139,7 @@ def main():
     # openstack/requirements project so we can match them to the changes
     reqroot = tempfile.mkdtemp()
     reqdir = os.path.join(reqroot, "requirements")
-    run_command("git clone https://review.openstack.org/p/openstack/"
+    run_command("git clone https://git.openstack.org/openstack/"
                 "requirements --branch %s --depth 1 %s" % (branch, reqdir))
     os.chdir(reqdir)
     print "requirements git sha: %s" % run_command(
