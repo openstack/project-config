@@ -138,14 +138,18 @@ def main():
     # build a list of requirements from the global list in the
     # openstack/requirements project so we can match them to the changes
     reqroot = tempfile.mkdtemp()
-    reqdir = os.path.join(reqroot, "requirements")
-    run_command("git clone https://git.openstack.org/openstack/"
-                "requirements --branch %s --depth 1 %s" % (branch, reqdir))
+    reqdir = os.path.join(reqroot, "openstack/requirements")
+    run_command("/usr/zuul-env/bin/zuul-cloner --cache-dir /opt/git "
+                "git://git.openstack.org openstack/requirements")
     os.chdir(reqdir)
     print "requirements git sha: %s" % run_command(
         "git rev-parse HEAD").strip()
     os_reqs = RequirementsList('openstack/requirements')
-    os_reqs.read_all_requirements(include_dev=(branch == 'master'),
+    if branch == 'master' or branch.startswith('feature/'):
+        include_dev = True
+    else:
+        include_dev = False
+    os_reqs.read_all_requirements(include_dev=include_dev,
                                   global_req=True)
 
     # iterate through the changing entries and see if they match the global
