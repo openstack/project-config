@@ -569,7 +569,7 @@ jobs:
 
   # dsvm-neutron jobs should be conditionally skipped so they don't
   # run in response to changes that do not influence their execution.
-  - name: ^.*(devstack|tempest|grenade|rally)-dsvm.*$
+  - name: ^.*(devstack|tempest|grenade|rally|neutron-lbaas)-dsvm.*$
     skip-if:
       - project: ^openstack/neutron$
         branch: ^master$
@@ -577,6 +577,14 @@ jobs:
           - ^.*\.rst$
           - ^doc/.*$
           - ^neutron/tests/.*$
+          - ^tools/.*$
+          - ^tox.ini$
+      - project: ^openstack/neutron-lbaas$
+        branch: ^master$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+          - ^neutron-lbaas/tests/unit/.*$
           - ^tools/.*$
           - ^tox.ini$
       - project: ^openstack/nova$
