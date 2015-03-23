@@ -72,7 +72,8 @@ def get_mime_icon(mime, filename=''):
     return APACHE_MIME_ICON_MAP['_default']
 
 
-def generate_log_index(folder_links, header_message=''):
+def generate_log_index(folder_links, header_message='',
+                       append_footer='index_footer.html'):
     """Create an index of logfiles and links to them"""
 
     output = '<html><head><title>Index of results</title></head><body>\n'
@@ -80,6 +81,7 @@ def generate_log_index(folder_links, header_message=''):
     output += '<table><tr><th></th><th>Name</th><th>Last Modified</th>'
     output += '<th>Size</th>'
 
+    file_details_to_append = None
     for file_details in folder_links:
         output += '<tr>'
         output += (
@@ -97,16 +99,28 @@ def generate_log_index(folder_links, header_message=''):
         else:
             size = sizeof_fmt(file_details['metadata']['size'], suffix='')
         output += '<td style="text-align: right">%s</td>' % size
-
         output += '</tr>\n'
 
+        if append_footer and append_footer in file_details['filename']:
+            file_details_to_append = file_details
+
     output += '</table>'
+
+    if file_details_to_append:
+        output += '<br /><hr />'
+        try:
+            with open(file_details_to_append['path'], 'r') as f:
+                output += f.read()
+        except IOError:
+            logging.exception("Error opening file for appending")
+
     output += '</body></html>\n'
     return output
 
 
 def make_index_file(folder_links, header_message='',
-                    index_filename='index.html'):
+                    index_filename='index.html',
+                    append_footer='index_footer.html'):
     """Writes an index into a file for pushing"""
     for file_details in folder_links:
         # Do not generate an index file if one exists already.
@@ -114,7 +128,8 @@ def make_index_file(folder_links, header_message='',
         # content like python coverage info.
         if index_filename == file_details['filename']:
             return
-    index_content = generate_log_index(folder_links, header_message)
+    index_content = generate_log_index(folder_links, header_message,
+                                       append_footer)
     tempdir = tempfile.mkdtemp()
     fd = open(os.path.join(tempdir, index_filename), 'w')
     fd.write(index_content)
@@ -212,7 +227,7 @@ def swift_form_post_queue(file_list, url, hmac_body, signature,
 
 def build_file_list(file_path, logserver_prefix, swift_destination_prefix,
                     create_dir_indexes=True, create_parent_links=True,
-                    root_file_count=0):
+                    root_file_count=0, append_footer='index_footer.html'):
     """Generate a list of files to upload to zuul. Recurses through directories
        and generates index.html files if requested."""
 
@@ -314,7 +329,8 @@ def build_file_list(file_path, logserver_prefix, swift_destination_prefix,
                 full_path = make_index_file(
                     folder_links,
                     "Index of %s" % os.path.join(swift_destination_prefix,
-                                                 relative_path)
+                                                 relative_path),
+                    append_footer=append_footer
                 )
                 if full_path:
                     filename = os.path.basename(full_path)
@@ -399,12 +415,16 @@ def grab_args():
                         help='do not generate a indexes inside dirs')
     parser.add_argument('--no-parent-links', action='store_true',
                         help='do not include links back to a parent dir')
+    parser.add_argument('--append-footer', default='index_footer.html',
+                        help='when generating an index, if the given file is '
+                             'present in a folder, append it to the index '
+                             '(set to "none" to disable)')
     parser.add_argument('-n', '--name', default="logs",
                         help='The instruction-set to use')
     parser.add_argument('--delete-after', default='15552000',
                         help='Number of seconds to delete object after '
                              'upload. Default is 6 months (15552000 seconds) '
-                             'and if set to 0 X-Delete-After will not be set.',
+                             'and if set to 0 X-Delete-After will not be set',
                         type=int)
     parser.add_argument('files', nargs='+',
                         help='the file(s) to upload with recursive glob '
@@ -434,6 +454,10 @@ if __name__ == '__main__':
     destination_prefix = os.path.join(logserver_prefix,
                                       swift_destination_prefix)
 
+    append_footer = args.append_footer
+    if append_footer.lower() == 'none':
+        append_footer = None
+
     for file_path in expand_files(args.files):
         file_path = os.path.normpath(file_path)
         if os.path.isfile(file_path):
@@ -458,14 +482,16 @@ if __name__ == '__main__':
             file_path, logserver_prefix, swift_destination_prefix,
             (not (args.no_indexes or args.no_dir_indexes)),
             (not args.no_parent_links),
-            len(args.files)
+            len(args.files),
+            append_footer=append_footer
         )
 
     index_file = ''
     if not (args.no_indexes or args.no_root_index):
         full_path = make_index_file(
             folder_links,
-            "Index of %s" % swift_destination_prefix
+            "Index of %s" % swift_destination_prefix,
+            append_footer=append_footer
         )
         if full_path:
             filename = os.path.basename(full_path)
