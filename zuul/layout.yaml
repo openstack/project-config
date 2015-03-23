@@ -959,8 +959,6 @@ jobs:
     branch: ^(?!stable/(icehouse|juno)).*$
   - name: gate-ceilometer-python34
     branch: ^master$
-  - name: ^(gate|check)-ceilometerclient-dsvm-functional$
-    voting: false
   - name: gate-nova-pip-missing-reqs
     voting: false
   - name: gate-nova-tox-functional
@@ -1796,10 +1794,12 @@ projects:
       - name: publish-to-pypi
       - name: pypy-jobs
       - name: lib-forward-testing
+    check:
+      - check-ceilometerclient-dsvm-functional
+    gate:
+      - gate-ceilometerclient-dsvm-functional
     post:
       - python-ceilometerclient-coverage
-    experimental:
-      - check-ceilometerclient-dsvm-functional
 
   - name: openstack/python-cinderclient
     template:
