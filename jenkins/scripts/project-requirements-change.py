@@ -33,7 +33,7 @@ def run_command(cmd):
     (out, err) = p.communicate()
     if p.returncode != 0:
         raise SystemError(err)
-    return out.strip()
+    return (out.strip(), err.strip())
 
 
 class RequirementsList(object):
@@ -120,7 +120,7 @@ def main():
 
     # build a list of requirements in the proposed change,
     # and check them for style violations while doing so
-    head = run_command("git rev-parse HEAD").strip()
+    head, unused = run_command("git rev-parse HEAD").strip()
     head_reqs = RequirementsList('HEAD')
     head_reqs.read_all_requirements(strict=True)
 
@@ -139,11 +139,16 @@ def main():
     # openstack/requirements project so we can match them to the changes
     reqroot = tempfile.mkdtemp()
     reqdir = os.path.join(reqroot, "openstack/requirements")
-    run_command("/usr/zuul-env/bin/zuul-cloner --cache-dir /opt/git "
-                "git://git.openstack.org openstack/requirements")
+    out, err = run_command("/usr/zuul-env/bin/zuul-cloner "
+                           "--cache-dir /opt/git "
+                           "--workspace %s "
+                           "git://git.openstack.org "
+                           "openstack/requirements" % reqroot)
+    print out
+    print err
     os.chdir(reqdir)
     print "requirements git sha: %s" % run_command(
-        "git rev-parse HEAD").strip()
+        "git rev-parse HEAD")[0].strip()
     os_reqs = RequirementsList('openstack/requirements')
     if branch == 'master' or branch.startswith('feature/'):
         include_dev = True
