@@ -120,7 +120,7 @@ def main():
 
     # build a list of requirements in the proposed change,
     # and check them for style violations while doing so
-    head, unused = run_command("git rev-parse HEAD").strip()
+    head = run_command("git rev-parse HEAD")[0].strip()
     head_reqs = RequirementsList('HEAD')
     head_reqs.read_all_requirements(strict=True)
 
