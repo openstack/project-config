@@ -569,7 +569,6 @@
       - pypi-jobs
       - 'lib-forward-testing-{name}'
 
-
 - project:
     name: sahara
     node: 'bare-precise || bare-trusty'
@@ -2047,52 +2046,6 @@
           node: devstack-f21
 
 - project:
-    name: devstack-plugin-glusterfs
-    node: 'bare-precise || bare-trusty'
-
-    jobs:
-      - gate-{name}-bashate
-      - '{pipeline}-tempest-dsvm-full-{plugin}{branch-designator}':
-          pipeline: check
-          plugin: glusterfs
-          plugin-repo: stackforge/devstack-plugin-glusterfs
-          branch-designator: '-nv'
-      - '{pipeline}-tempest-dsvm-full-{plugin}{branch-designator}':
-          pipeline: check
-          plugin: glusterfs
-          plugin-repo: stackforge/devstack-plugin-glusterfs
-          branch-designator: ''
-
-- project:
-    name: devstack-plugin-sheepdog
-    node: 'bare-precise || bare-trusty'
-
-    jobs:
-      - gate-{name}-bashate
-      - '{pipeline}-tempest-dsvm-full-{plugin}{branch-designator}':
-          pipeline: check
-          plugin: sheepdog
-          plugin-repo: stackforge/devstack-plugin-sheepdog
-          branch-designator: ''
-      - '{pipeline}-tempest-dsvm-full-{plugin}{branch-designator}':
-          pipeline: check
-          plugin: sheepdog
-          plugin-repo: stackforge/devstack-plugin-sheepdog
-          branch-designator: '-nv'
-
-- project:
-    name: drbd-devstack
-    node: 'bare-trusty'
-
-    jobs:
-      - gate-{name}-bashate
-      - '{pipeline}-tempest-dsvm-full-{plugin}{branch-designator}':
-          pipeline: check
-          plugin: drbd-devstack
-          plugin-repo: stackforge/drbd-devstack
-          branch-designator: ''
-
-- project:
     name: hacking
     node: 'bare-precise || bare-trusty'
     doc-publisher-site: docs.openstack.org
@@ -3264,11 +3217,6 @@
       - python-jobs
 
 - project:
-    name: cinder-salt-formula
-    node: 'bare-precise || bare-trusty'
-    tarball-site: tarballs.openstack.org
-
-- project:
     name: cl-openstack-client
     node: 'bare-precise || bare-trusty'
 
@@ -3566,9 +3514,38 @@
       - python-jobs
 
 - project:
-    name: designate-msdnsagent
+    name: devstack-plugin-glusterfs
     node: 'bare-precise || bare-trusty'
-    tarball-site: tarballs.openstack.org
+
+    jobs:
+      - gate-{name}-bashate
+      - '{pipeline}-tempest-dsvm-full-{plugin}{branch-designator}':
+          pipeline: check
+          plugin: glusterfs
+          plugin-repo: stackforge/devstack-plugin-glusterfs
+          branch-designator: '-nv'
+      - '{pipeline}-tempest-dsvm-full-{plugin}{branch-designator}':
+          pipeline: check
+          plugin: glusterfs
+          plugin-repo: stackforge/devstack-plugin-glusterfs
+          branch-designator: ''
+
+- project:
+    name: devstack-plugin-sheepdog
+    node: 'bare-precise || bare-trusty'
+
+    jobs:
+      - gate-{name}-bashate
+      - '{pipeline}-tempest-dsvm-full-{plugin}{branch-designator}':
+          pipeline: check
+          plugin: sheepdog
+          plugin-repo: stackforge/devstack-plugin-sheepdog
+          branch-designator: ''
+      - '{pipeline}-tempest-dsvm-full-{plugin}{branch-designator}':
+          pipeline: check
+          plugin: sheepdog
+          plugin-repo: stackforge/devstack-plugin-sheepdog
+          branch-designator: '-nv'
 
 - project:
     name: distil
@@ -3608,6 +3585,18 @@
       - pypi-jobs
 
 - project:
+    name: drbd-devstack
+    node: 'bare-trusty'
+
+    jobs:
+      - gate-{name}-bashate
+      - '{pipeline}-tempest-dsvm-full-{plugin}{branch-designator}':
+          pipeline: check
+          plugin: drbd-devstack
+          plugin-repo: stackforge/drbd-devstack
+          branch-designator: ''
+
+- project:
     name: driverlog
     node: 'bare-precise || bare-trusty'
     tarball-site: tarballs.openstack.org
@@ -3638,14 +3627,6 @@
           node: 'devstack-precise || devstack-trusty'
           branch-designator: ''
           branch-override: default
-
-- project:
-    name: ec2-driver
-    node: 'bare-precise || bare-trusty'
-    tarball-site: tarballs.openstack.org
-
-    jobs:
-      - python-jobs
 
 - project:
     name: entropy
@@ -3736,11 +3717,6 @@
       - pypi-jobs
 
 - project:
-    name: glance-salt-formula
-    node: 'bare-precise || bare-trusty'
-    tarball-site: tarballs.openstack.org
-
-- project:
     name: graffiti
     node: 'bare-precise || bare-trusty'
     tarball-site: tarballs.openstack.org
@@ -3816,11 +3792,6 @@
           envlist: lint
 
 - project:
-    name: horizon-salt-formula
-    node: 'bare-precise || bare-trusty'
-    tarball-site: tarballs.openstack.org
-
-- project:
     name: i18n-test
     node: 'bare-precise || bare-trusty'
     tarball-site: tarballs.openstack.org
@@ -3846,11 +3817,6 @@
       - gate-{name}-python34
       - gate-{name}-tox-{envlist}:
           envlist: func
-
-- project:
-    name: keystone-salt-formula
-    node: 'bare-precise || bare-trusty'
-    tarball-site: tarballs.openstack.org
 
 - project:
     name: kolla
@@ -3940,14 +3906,6 @@
           branch-designator: 'master'
       - '{name}-js-release-{branch-designator}':
           branch-designator: 'branch'
-
-- project:
-    name: milk
-    node: 'bare-precise || bare-trusty'
-    tarball-site: tarballs.openstack.org
-
-    jobs:
-      - python-jobs
 
 - project:
     name: mistral
@@ -4313,11 +4271,6 @@
       - python-jobs
 
 - project:
-    name: neutron-salt-formula
-    node: 'bare-precise || bare-trusty'
-    tarball-site: tarballs.openstack.org
-
-- project:
     name: nova-docker
     node: 'bare-precise || bare-trusty'
     tarball-site: tarballs.openstack.org
@@ -4332,11 +4285,6 @@
 
     jobs:
       - python-jobs
-
-- project:
-    name: nova-salt-formula
-    node: 'bare-precise || bare-trusty'
-    tarball-site: tarballs.openstack.org
 
 - project:
     name: nova-zvm-virt-driver
@@ -4374,11 +4322,6 @@
 
     jobs:
       - gate-{name}-docs
-
-- project:
-    name: openstack-salt-formula
-    node: 'bare-precise || bare-trusty'
-    tarball-site: tarballs.openstack.org
 
 - project:
     name: os-ansible-deployment
@@ -5203,56 +5146,6 @@
       - python-jobs
 
 - project:
-    name: stacktach-klugman
-    node: 'bare-precise || bare-trusty'
-    tarball-site: tarballs.openstack.org
-
-- project:
-    name: stacktach-notification-utils
-    node: 'bare-precise || bare-trusty'
-    tarball-site: tarballs.openstack.org
-
-- project:
-    name: stacktach-notigen
-    node: 'bare-precise || bare-trusty'
-    tarball-site: tarballs.openstack.org
-
-- project:
-    name: stacktach-quince
-    node: 'bare-precise || bare-trusty'
-    tarball-site: tarballs.openstack.org
-
-- project:
-    name: stacktach-quincy
-    node: 'bare-precise || bare-trusty'
-    tarball-site: tarballs.openstack.org
-
-- project:
-    name: stacktach-sandbox
-    node: 'bare-precise || bare-trusty'
-    tarball-site: tarballs.openstack.org
-
-- project:
-    name: stacktach-shoebox
-    node: 'bare-precise || bare-trusty'
-    tarball-site: tarballs.openstack.org
-
-- project:
-    name: stacktach-simport
-    node: 'bare-precise || bare-trusty'
-    tarball-site: tarballs.openstack.org
-
-- project:
-    name: stacktach-stackdistiller
-    node: 'bare-precise || bare-trusty'
-    tarball-site: tarballs.openstack.org
-
-- project:
-    name: stacktach-timex
-    node: 'bare-precise || bare-trusty'
-    tarball-site: tarballs.openstack.org
-
-- project:
     name: stacktach-winchester
     node: 'bare-precise || bare-trusty'
     tarball-site: tarballs.openstack.org
@@ -5356,14 +5249,6 @@
     jobs:
       - python-jobs
       - pypi-jobs
-
-- project:
-    name: tricircle
-    node: 'bare-precise || bare-trusty'
-    tarball-site: tarballs.openstack.org
-
-    jobs:
-      - python-jobs
 
 - project:
     name: turbo-hipster
