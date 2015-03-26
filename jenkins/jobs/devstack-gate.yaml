@@ -1727,6 +1727,41 @@
       - devstack-logs
       - console-log
 
+
+- job-template:
+    name: '{pipeline}-tempest-dsvm-stress-keystonev3{branch-designator}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=120
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_NEUTRON=1
+          export DEVSTACK_GATE_TEMPEST_STRESS=1
+          export DEVSTACK_GATE_TEMPEST_STRESS_ARGS="-d 3600 -S -s -t tempest/stress/etc/stress-tox-job.json"
+          export DEVSTACK_GATE_KEYSTONE_V3=1
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+
 - job-template:
     name: '{pipeline}-tempest-dsvm-f{fedora-release}'
     node: '{node}'
@@ -2008,6 +2043,7 @@
       - '{pipeline}-tempest-dsvm-all{branch-designator}'
       - '{pipeline}-tempest-dsvm-coverage{branch-designator}'
       - '{pipeline}-tempest-dsvm-stress{branch-designator}'
+      - '{pipeline}-tempest-dsvm-stress-keystonev3{branch-designator}'
       - '{pipeline}-tempest-dsvm-full-non-isolated{branch-designator}'
       - '{pipeline}-tempest-dsvm-neutron-full-non-isolated{branch-designator}'
       - '{pipeline}-tempest-dsvm-keystonev3-full{branch-designator}'
