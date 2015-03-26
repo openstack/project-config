@@ -1649,6 +1649,63 @@ projects:
     experimental:
       - gate-manila-tempest-dsvm-neutron-scenario
 
+  - name: openstack/murano
+    template:
+      - name: merge-check
+      - name: python-jobs
+      - name: publish-to-pypi
+      - name: docs-on-rtfd
+    check:
+      - gate-murano-requirements
+      - gate-murano-devstack-dsvm
+      - gate-murano-congress-devstack-dsvm
+    gate:
+      - gate-murano-devstack-dsvm
+    post:
+      - murano-coverage
+
+  - name: openstack/murano-agent
+    template:
+      - name: merge-check
+      - name: python-jobs
+      - name: publish-to-pypi
+    check:
+      - gate-murano-agent-requirements
+    post:
+      - murano-agent-coverage
+
+  - name: openstack/murano-apps
+    template:
+      - name: merge-check
+      - name: noop-jobs
+
+  - name: openstack/murano-dashboard
+    template:
+      - name: merge-check
+      - name: publish-to-pypi
+    check:
+      - gate-murano-dashboard-pep8
+      - gate-murano-dashboard-python27
+      - gate-murano-dashboard-requirements
+      - gate-murano-devstack-dsvm
+    gate:
+      - gate-murano-dashboard-pep8
+      - gate-murano-dashboard-python27
+      - gate-murano-devstack-dsvm
+    post:
+      - murano-dashboard-branch-tarball
+
+  - name: openstack/murano-deployment
+    template:
+      - name: merge-check
+      - name: noop-jobs
+
+  - name: openstack/murano-specs
+    template:
+      - name: merge-check
+      - name: stackforge-specs-jobs
+      - name: docs-on-rtfd
+
   - name: openstack/neutron
     template:
       - name: merge-check
@@ -2165,6 +2222,20 @@ projects:
       - check-manilaclient-dsvm-neutron-functional
     post:
       - python-manilaclient-coverage
+
+  - name: openstack/python-muranoclient
+    template:
+      - name: merge-check
+      - name: python26-jobs
+      - name: python-jobs
+      - name: publish-to-pypi
+    check:
+      - gate-python-muranoclient-requirements
+      - gate-murano-devstack-dsvm
+    gate:
+      - gate-murano-devstack-dsvm
+    post:
+      - python-muranoclient-branch-tarball
 
   - name: openstack/python-neutronclient
     template:
@@ -5703,80 +5774,6 @@ projects:
       - name: merge-check
       - name: noop-jobs
 
-  - name: stackforge/murano
-    template:
-      - name: merge-check
-      - name: python-jobs
-      - name: publish-to-pypi
-      - name: docs-on-rtfd
-    check:
-      - gate-murano-requirements
-      - gate-murano-devstack-dsvm
-      - gate-murano-congress-devstack-dsvm
-    gate:
-      - gate-murano-devstack-dsvm
-    post:
-      - murano-coverage
-    pre-release:
-      - murano-tarball
-    release:
-      - murano-tarball
-
-  - name: stackforge/murano-agent
-    template:
-      - name: merge-check
-      - name: python-jobs
-      - name: publish-to-pypi
-    check:
-      - gate-murano-agent-requirements
-    post:
-      - murano-agent-coverage
-    pre-release:
-      - murano-agent-tarball
-    release:
-      - murano-agent-tarball
-
-  - name: stackforge/murano-apps
-    template:
-      - name: merge-check
-      - name: noop-jobs
-
-  - name: stackforge/murano-dashboard
-    template:
-      - name: merge-check
-      - name: publish-to-pypi
-    check:
-      - gate-murano-dashboard-pep8
-      - gate-murano-dashboard-python27
-      - gate-murano-dashboard-requirements
-      - gate-murano-devstack-dsvm
-    gate:
-      - gate-murano-dashboard-pep8
-      - gate-murano-dashboard-python27
-      - gate-murano-devstack-dsvm
-    post:
-      - murano-dashboard-branch-tarball
-    pre-release:
-      - murano-dashboard-tarball
-    release:
-      - murano-dashboard-tarball
-
-  - name: stackforge/murano-deployment
-    template:
-      - name: merge-check
-      - name: noop-jobs
-
-  - name: stackforge/murano-docs
-    template:
-      - name: merge-check
-      - name: noop-jobs
-
-  - name: stackforge/murano-specs
-    template:
-      - name: merge-check
-      - name: stackforge-specs-jobs
-      - name: docs-on-rtfd
-
   - name: stackforge/namos
     template:
       - name: merge-check
@@ -6540,20 +6537,6 @@ projects:
       - gate-python-monascaclient-python27
     post:
       - python-monascaclient-coverage
-
-  - name: stackforge/python-muranoclient
-    template:
-      - name: merge-check
-      - name: python26-jobs
-      - name: python-jobs
-      - name: publish-to-pypi
-    check:
-      - gate-python-muranoclient-requirements
-      - gate-murano-devstack-dsvm
-    gate:
-      - gate-murano-devstack-dsvm
-    post:
-      - python-muranoclient-branch-tarball
 
   - name: stackforge/python-openstacksdk
     template:
