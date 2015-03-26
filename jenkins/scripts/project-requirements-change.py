@@ -120,7 +120,7 @@ def main():
 
     # build a list of requirements in the proposed change,
     # and check them for style violations while doing so
-    head = run_command("git rev-parse HEAD")[0].strip()
+    head = run_command("git rev-parse HEAD")[0]
     head_reqs = RequirementsList('HEAD')
     head_reqs.read_all_requirements(strict=True)
 
@@ -148,7 +148,7 @@ def main():
     print err
     os.chdir(reqdir)
     print "requirements git sha: %s" % run_command(
-        "git rev-parse HEAD")[0].strip()
+        "git rev-parse HEAD")[0]
     os_reqs = RequirementsList('openstack/requirements')
     if branch == 'master' or branch.startswith('feature/'):
         include_dev = True
