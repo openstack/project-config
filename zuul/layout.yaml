@@ -1493,6 +1493,15 @@ projects:
     check:
       - gate-kite-python34
 
+  - name: openstack/magnum
+    template:
+      - name: merge-check
+      - name: python-jobs
+    pre-release:
+      - magnum-tarball
+    release:
+      - magnum-tarball
+
   - name: openstack/manila
     template:
       - name: merge-check
@@ -1997,6 +2006,16 @@ projects:
       - name: publish-to-pypi
     post:
       - python-kiteclient-coverage
+
+  - name: openstack/python-magnumclient
+    template:
+      - name: merge-check
+      - name: python-jobs
+      - name: check-requirements
+    pre-release:
+      - python-magnumclient-tarball
+    release:
+      - python-magnumclient-tarball
 
   - name: openstack/python-manilaclient
     template:
@@ -5241,17 +5260,6 @@ projects:
       - name: stackforge-specs-jobs
       - name: docs-on-rtfd
 
-  - name: stackforge/magnum
-    template:
-      - name: merge-check
-      - name: python-jobs
-    experimental:
-      - check-functional-dsvm-magnum
-    pre-release:
-      - magnum-tarball
-    release:
-      - magnum-tarball
-
   - name: stackforge/merlin
     template:
       - name: merge-check
@@ -6203,16 +6211,6 @@ projects:
       - python-magnetodbclient-tarball
     release:
       - python-magnetodbclient-tarball
-
-  - name: stackforge/python-magnumclient
-    template:
-      - name: merge-check
-      - name: python-jobs
-      - name: check-requirements
-    pre-release:
-      - python-magnumclient-tarball
-    release:
-      - python-magnumclient-tarball
 
   - name: stackforge/python-mistralclient
     template:
