@@ -280,13 +280,12 @@ project-templates:
   - name: integrated-gate-neutron
     check:
       - 'check-tempest-dsvm-neutron'
-      - 'check-tempest-dsvm-neutron-pg'
       - 'check-tempest-dsvm-neutron-full'
       - 'check-tempest-dsvm-neutron-pg-full'
       - 'check-grenade-dsvm-neutron'
     gate:
       - 'gate-tempest-dsvm-neutron'
-      - 'gate-tempest-dsvm-neutron-pg'
+      - 'gate-tempest-dsvm-neutron-pg-full'
       - 'gate-tempest-dsvm-neutron-full'
 
   - name: lib-forward-testing
@@ -637,7 +636,6 @@ jobs:
     branch: ^(?!stable/icehouse).*$
   - name: ^(gate|check)-tempest-dsvm-neutron-pg-full$
     branch: ^(?!stable/icehouse).*$
-    voting: false
   - name: ^(gate|check)-tempest-dsvm-neutron$
     branch: ^(stable/).*$
   - name: check-heat-dsvm-functional-mysql
@@ -1605,7 +1603,6 @@ projects:
       - nova-coverage
     experimental:
       - gate-grenade-dsvm-forward
-      - check-tempest-dsvm-neutron-pg
       - gate-nova-pip-missing-reqs
       - check-tempest-dsvm-aiopcpu-full
       - check-tempest-dsvm-neutron-aiopcpu-full
