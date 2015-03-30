@@ -913,6 +913,31 @@
       - console-log
 
 - job-template:
+    name: '{pipeline}-tempest-dsvm-ironic-pxe_ipa-src{branch-designator}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - devstack-virtual-ironic:
+          postgres: 0
+          build-ramdisk: 1
+          deploy_driver: pxe_ssh
+          deploy-with-ipa: 1
+          client-from-source: 0
+          branch-override: '{branch-override}'
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
     name: '{pipeline}-tempest-dsvm-ironic-agent_ssh{branch-designator}'
     node: '{node}'
 
@@ -2070,6 +2095,7 @@
       - '{pipeline}-tempest-dsvm-ironic-agent_ssh{branch-designator}'
       - '{pipeline}-tempest-dsvm-ironic-agent_ssh-src{branch-designator}'
       - '{pipeline}-tempest-dsvm-ironic-pxe_ipa{branch-designator}'
+      - '{pipeline}-tempest-dsvm-ironic-pxe_ipa-src{branch-designator}'
       - '{pipeline}-tempest-dsvm-ironic-parallel{branch-designator}'
       - '{pipeline}-tempest-dsvm-all{branch-designator}'
       - '{pipeline}-tempest-dsvm-coverage{branch-designator}'
