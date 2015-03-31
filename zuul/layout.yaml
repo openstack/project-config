@@ -1300,6 +1300,24 @@ projects:
     gate:
       - gate-cinder-specs-python27
 
+  - name: openstack/congress
+    template:
+      - name: merge-check
+      - name: check-requirements
+    check:
+      - gate-congress-pep8
+      - gate-congress-python27
+      - gate-congress-python34
+    gate:
+      - gate-congress-pep8
+      - gate-congress-python27
+
+  - name: openstack/congress-specs
+    template:
+      - name: merge-check
+      - name: stackforge-specs-jobs
+
+
   - name: openstack/designate
     template:
       - name: merge-check
@@ -1963,6 +1981,19 @@ projects:
       - python-cinderclient-coverage
     experimental:
       - gate-grenade-dsvm-forward
+
+  - name: openstack/python-congressclient
+    template:
+      - name: merge-check
+      - name: check-requirements
+      - name: publish-to-pypi
+    check:
+      - gate-python-congressclient-pep8
+      - gate-python-congressclient-python27
+      - gate-python-congressclient-python34
+    gate:
+      - gate-python-congressclient-pep8
+      - gate-python-congressclient-python27
 
   - name: openstack/python-designateclient
     template:
@@ -4832,22 +4863,6 @@ projects:
       - name: merge-check
       - name: python-jobs
 
-  - name: stackforge/congress
-    template:
-      - name: merge-check
-      - name: check-requirements
-    check:
-      - gate-congress-pep8
-      - gate-congress-python27
-      - gate-congress-python34
-    gate:
-      - gate-congress-pep8
-      - gate-congress-python27
-
-  - name: stackforge/congress-specs
-    template:
-      - name: merge-check
-      - name: stackforge-specs-jobs
 
   - name: stackforge/congressmiddleware
     template:
@@ -6438,19 +6453,6 @@ projects:
       - name: python3-jobs
     post:
       - python-cloudkittyclient-coverage
-
-  - name: stackforge/python-congressclient
-    template:
-      - name: merge-check
-      - name: check-requirements
-      - name: publish-to-pypi
-    check:
-      - gate-python-congressclient-pep8
-      - gate-python-congressclient-python27
-      - gate-python-congressclient-python34
-    gate:
-      - gate-python-congressclient-pep8
-      - gate-python-congressclient-python27
 
   - name: stackforge/python-cueclient
     template:
