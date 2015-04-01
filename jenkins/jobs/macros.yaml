@@ -83,6 +83,21 @@
           sudo apt-get install -y nodejs nodejs-legacy npm
 
 - builder:
+    name: npm-run
+    builders:
+      - shell: |
+          export DISPLAY=:99
+          npm install
+          npm run {command}
+
+- builder:
+    name: xvfb-start
+    builders:
+      - shell: |
+          DIMENSIONS='1280x1024x24'
+          /usr/bin/Xvfb :99 -screen 0 ${DIMENSIONS} -ac +extension GLX +render -noreset 2>&1 > /dev/null &
+
+- builder:
     name: xvfb-install
     builders:
       - shell: |

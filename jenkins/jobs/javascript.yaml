@@ -1,3 +1,40 @@
+# Executes a command registered inside of package.json. For more information on
+# how this works, see https://docs.npmjs.com/cli/run-script. This build assumes
+# that whatever is being run under the hood, it will pipe its output to the
+# ./reports directory in the projects' root directory. This output is
+# subsequently copied to static.openstack.org (the clickthrough target from
+# gerrit).
+- job-template:
+    name: 'gate-{name}-npm-run-{command}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 40
+      - timestamps
+
+    builders:
+      - npm-install
+      - xvfb-install
+      - chrome-install
+      - firefox-install
+      - revoke-sudo
+      - xvfb-start
+      - gerrit-git-prep
+      - npm-run:
+          command: '{command}'
+      - assert-no-extra-files
+    publishers:
+      - console-log
+      - coverage-log
+      - scp:
+          site: 'static.openstack.org'
+          files:
+            - target: 'logs/$LOG_PATH'
+              source: 'reports/**'
+              keep-hierarchy: true
+              copy-after-failure: true
+    node: '{node}'
+
 # Runs Grunt Tests. To use this build, your Gruntfile must declare
 # a target named test:{name}, such as test:unit, test:integration, or
 # test:functional

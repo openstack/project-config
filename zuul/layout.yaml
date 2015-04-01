@@ -779,6 +779,8 @@ jobs:
   - name: ^gate-.*-js-draft
     parameter-function: set_node_options_default_trusty
     success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/dist/
+  - name: ^gate-.*-npm-run-.*$
+    voting: false
   - name: infra-publications-publish
     branch: ^(?!master).*$
   - name: ^gate-.*-requirements$
@@ -4231,6 +4233,7 @@ projects:
     template:
       - name: merge-check
     check:
+      - gate-storyboard-webclient-npm-run-lint
       - gate-storyboard-webclient-js-test-unit
       - gate-storyboard-webclient-js-test-integration
       - gate-storyboard-webclient-js-test-functional
