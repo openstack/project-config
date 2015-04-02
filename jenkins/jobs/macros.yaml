@@ -779,8 +779,15 @@
 - publisher:
     name: zuul-swift-devstack-logs
     publishers:
+      - postbuildscript:
+          builders:
+            - shell: |
+                #!/bin/bash -x
+                cp devstack-gate/help/tempest-logs.html logs/index_footer.html
+                mkdir zuul_swift_devstack_logs_extra
+                cp devstack-gate/help/tempest-overview.html zuul_swift_devstack_logs_extra/index_footer.html
       - zuul-swift-upload-logs:
-          upload_source: 'logs'
+          upload_source: 'logs zuul_swift_devstack_logs_extra/index_footer.html'
 
 - publisher:
     name: zuul-swift-test-results-with-console
