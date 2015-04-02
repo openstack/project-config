@@ -47,3 +47,55 @@
     publishers:
       - devstack-logs
       - console-log
+
+
+- job-template:
+    name: 'gate-designate-dsvm-{designate-driver}-postgres'
+
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 65
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=60
+          export DEVSTACK_GATE_INSTALL_TESTONLY=1
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_TEMPEST_NOTESTS=1
+          export DEVSTACK_GATE_DESIGNATE_DRIVER="{designate-driver}"
+          export DEVSTACK_GATE_POSTGRES=1
+          export PROJECTS="openstack/designate $PROJECTS"
+          export PROJECTS="openstack/python-designateclient $PROJECTS"
+
+          function gate_hook {{
+              cd /opt/stack/new/designate/contrib/devstack
+              ./gate_hook.sh
+          }}
+          export -f gate_hook
+
+          function pre_test_hook {{
+              cd /opt/stack/new/designate/contrib/devstack
+              ./pre_test_hook.sh
+          }}
+          export -f pre_test_hook
+
+          function post_test_hook {{
+              cd /opt/stack/new/designate/contrib/devstack
+              ./post_test_hook.sh
+          }}
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
