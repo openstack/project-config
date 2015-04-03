@@ -59,7 +59,7 @@
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TIMEOUT=120
-          export DEVSTACK_GATE_TEMPEST=0
+          export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_NEUTRON=1
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
@@ -99,7 +99,7 @@
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TIMEOUT=120
-          export DEVSTACK_GATE_TEMPEST=0
+          export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_NEUTRON=0
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
@@ -142,11 +142,14 @@
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_TIMEOUT=120
 
+          # Switch on tempest because m1.nano is created only for tempest...
+          export DEVSTACK_GATE_TEMPEST=1
+
           export RALLY_SCENARIO=ec2-api-fakevirt
 
           export PROJECTS="stackforge/rally $PROJECTS"
           export CEILOMETER_NOTIFICATION_TOPICS=notifications,profiler
-          export ENABLED_SERVICES=rally
+          export ENABLED_SERVICES+=,rally
 
           function pre_test_hook {
               # Install rally-devstack integration
@@ -155,6 +158,10 @@
           export -f pre_test_hook
 
           function post_test_hook {
+              # run needed preparation steps for third-party project
+              if [ -f $BASE/new/ec2-api/rally-scenarios/post_test_hook.sh ] ; then
+                  $BASE/new/ec2-api/rally-scenarios/post_test_hook.sh
+              fi
               $BASE/new/rally/tests/ci/rally-gate.sh
           }
           export -f post_test_hook
