@@ -70,12 +70,11 @@ for line in aclfd:
 aclfd.close()
 
 if '2' in transformations:
-    try:
-        acl['access "refs/tags/*"'] = [
-            x for x in acl['access "refs/tags/*"']
-            if not x.startswith('create = ')]
-    except KeyError:
-        pass
+    for key in acl:
+        if key.startswith('access "refs/tags/'):
+            acl[key] = [
+                x for x in acl[key]
+                if not x.startswith('create = ')]
 
 if '3' in transformations:
     try:
