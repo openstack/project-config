@@ -66,7 +66,7 @@ for line in aclfd:
         acl[section].append(line)
     # WTF
     else:
-        raise Exception('Unrecognized line!')
+        raise Exception('Unrecognized line: "%s"' % line)
 aclfd.close()
 
 if '2' in transformations:
