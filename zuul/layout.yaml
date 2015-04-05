@@ -2673,18 +2673,18 @@ projects:
     post:
       - heat-templates-buildimages
 
-#TODO: add docs
   - name: openstack/ironic-python-agent
     template:
       - name: merge-check
+      - name: python-jobs
+      # Using the server jobs since it will regen on every commit, not only
+      # on release.
+      - name: openstack-server-publish-jobs
+      - name: check-requirements
     check:
-      - gate-ironic-python-agent-pep8
-      - gate-ironic-python-agent-python27
       - gate-tempest-dsvm-ironic-agent_ssh-src
       - check-tempest-dsvm-ironic-pxe_ipa-src-nv
     gate:
-      - gate-ironic-python-agent-pep8
-      - gate-ironic-python-agent-python27
       - gate-tempest-dsvm-ironic-agent_ssh-src
     post:
       - ironic-python-agent-buildimage-coreos
