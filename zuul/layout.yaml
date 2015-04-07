@@ -5315,7 +5315,14 @@ projects:
   - name: stackforge/merlin
     template:
       - name: merge-check
-      - name: noop-jobs
+    check:
+      - gate-merlin-js-test-unit
+    gate:
+      - gate-merlin-js-test-unit
+    post:
+      - merlin-js-release-branch
+    release:
+      - merlin-js-release-master
 
   - name: stackforge/milk
     template:
