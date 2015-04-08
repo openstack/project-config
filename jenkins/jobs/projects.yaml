@@ -2062,6 +2062,18 @@
           branch-designator: '-nv'
 
 - project:
+    name: drbd-devstack
+    node: 'bare-trusty'
+
+    jobs:
+      - gate-{name}-bashate
+      - '{pipeline}-tempest-dsvm-full-{plugin}{branch-designator}':
+          pipeline: check
+          plugin: drbd-devstack
+          plugin-repo: stackforge/drbd-devstack
+          branch-designator: ''
+
+- project:
     name: hacking
     node: 'bare-precise || bare-trusty'
     doc-publisher-site: docs.openstack.org
