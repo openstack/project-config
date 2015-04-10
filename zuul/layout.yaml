@@ -938,7 +938,6 @@ jobs:
     files:
       - '^apidocs/.*$'
   - name: check-tempest-dsvm-full-ceph
-    voting: false
     branch: ^(?!stable/(icehouse|juno)).*$
   - name: gate-tomograph-python34
     voting: false
@@ -1193,6 +1192,7 @@ projects:
       - check-tempest-dsvm-full-sheepdog-nv
     gate:
       - gate-devstack-dsvm-cells
+      - gate-tempest-dsvm-full-ceph
     experimental:
       - gate-grenade-dsvm-forward
     experimental-tripleo:
@@ -1263,9 +1263,11 @@ projects:
       - name: experimental-tripleo-jobs
     check:
       - check-devstack-dsvm-cells
+      - check-tempest-dsvm-full-ceph
       - gate-rally-dsvm-glance
     gate:
       - gate-devstack-dsvm-cells
+      - gate-tempest-dsvm-full-ceph
     experimental:
       - gate-grenade-dsvm-forward
 
@@ -1645,6 +1647,7 @@ projects:
       - gate-grenade-dsvm-partial-ncpu
       - gate-grenade-dsvm-ironic-sideways
       - gate-tempest-dsvm-nova-v21-full
+      - gate-tempest-dsvm-full-ceph
     post:
       - nova-coverage
     experimental:
