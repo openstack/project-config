@@ -1640,6 +1640,26 @@
       - specs-jobs
 
 - project:
+    name: rally
+    node: 'bare-precise || bare-trusty'
+    tarball-site: tarballs.openstack.org
+
+    jobs:
+      - python-jobs
+      - pypi-jobs
+      - rally-jobs
+      - hook-{name}-rtfd
+      - gate-rally-install-{node}:
+          node: bare-precise
+      - gate-rally-install-{node}:
+          node: bare-centos6
+      - gate-rally-dsvm-verify
+      - gate-{name}-tox-{envlist}:
+          envlist: self
+      - gate-rally-dsvm-neutron-{name}:
+          name: unstable
+
+- project:
     name: requirements
     node: 'bare-precise || bare-trusty'
     tarball-site: tarballs.openstack.org
@@ -4973,26 +4993,6 @@
 
     jobs:
       - python-jobs
-
-- project:
-    name: rally
-    node: 'bare-precise || bare-trusty'
-    tarball-site: tarballs.openstack.org
-
-    jobs:
-      - python-jobs
-      - pypi-jobs
-      - rally-jobs
-      - hook-{name}-rtfd
-      - gate-rally-install-{node}:
-          node: bare-precise
-      - gate-rally-install-{node}:
-          node: bare-centos6
-      - gate-rally-dsvm-verify
-      - gate-{name}-tox-{envlist}:
-          envlist: self
-      - gate-rally-dsvm-neutron-{name}:
-          name: unstable
 
 - project:
     name: refstack

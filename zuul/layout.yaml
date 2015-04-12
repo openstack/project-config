@@ -2917,6 +2917,40 @@ projects:
     post:
       - static-ossa-publish
 
+  - name: openstack/rally
+    template:
+      - name: merge-check
+      - name: python-jobs
+      - name: python26-jobs
+      - name: python3-jobs
+      - name: check-requirements
+      - name: docs-on-rtfd
+      - name: publish-to-pypi
+    check:
+      - rally-coverage
+      - gate-rally-install-bare-centos6
+      - gate-rally-install-bare-precise
+      - gate-rally-dsvm-rally
+      - gate-rally-dsvm-neutron-rally
+      - gate-rally-dsvm-neutron-unstable
+      - gate-rally-dsvm-cli
+      - gate-rally-dsvm-verify
+      - gate-rally-tox-self
+    gate:
+      - gate-rally-install-bare-centos6
+      - gate-rally-install-bare-precise
+      - gate-rally-dsvm-rally
+      - gate-rally-dsvm-neutron-rally
+      - gate-rally-dsvm-cli
+      - gate-rally-dsvm-verify
+    post:
+      - rally-coverage
+    experimental:
+      - gate-rally-dsvm-murano-rally
+      - gate-rally-dsvm-mistral-rally
+      - gate-rally-dsvm-designate-rally
+      - gate-rally-dsvm-zaqar-rally
+
   - name: openstack/requirements
     template:
       - name: merge-check
@@ -6621,40 +6655,6 @@ projects:
     template:
       - name: merge-check
       - name: noop-jobs
-
-  - name: stackforge/rally
-    template:
-      - name: merge-check
-      - name: python-jobs
-      - name: python26-jobs
-      - name: python3-jobs
-      - name: check-requirements
-      - name: docs-on-rtfd
-      - name: publish-to-pypi
-    check:
-      - rally-coverage
-      - gate-rally-install-bare-centos6
-      - gate-rally-install-bare-precise
-      - gate-rally-dsvm-rally
-      - gate-rally-dsvm-neutron-rally
-      - gate-rally-dsvm-neutron-unstable
-      - gate-rally-dsvm-cli
-      - gate-rally-dsvm-verify
-      - gate-rally-tox-self
-    gate:
-      - gate-rally-install-bare-centos6
-      - gate-rally-install-bare-precise
-      - gate-rally-dsvm-rally
-      - gate-rally-dsvm-neutron-rally
-      - gate-rally-dsvm-cli
-      - gate-rally-dsvm-verify
-    post:
-      - rally-coverage
-    experimental:
-      - gate-rally-dsvm-murano-rally
-      - gate-rally-dsvm-mistral-rally
-      - gate-rally-dsvm-designate-rally
-      - gate-rally-dsvm-zaqar-rally
 
   - name: stackforge/refstack
     template:
