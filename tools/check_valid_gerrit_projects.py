@@ -50,7 +50,7 @@ for p in projects:
         print("Error: Entry is not a project %s" % p)
         continue
     if args.verbose:
-        print 'Checking %s' % (name)
+        print('Checking %s' % name)
     description = p.get('description')
     if not description and repo_group in DESCRIPTION_REQUIRED:
         found_errors += 1
