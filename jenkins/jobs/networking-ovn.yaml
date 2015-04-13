@@ -1,0 +1,46 @@
+- job-template:
+    name: '{pipeline}-tempest-dsvm-networking-ovn{branch-designator}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=120
+          export DEVSTACK_GATE_NEUTRON=1
+          # For now, simply enable bringing stack.sh up with OVN, we can't
+          # test anything until OVN is more functional, but this job will
+          # ensure OVN at least comes up with devstack
+          export DEVSTACK_GATE_TEMPEST=0
+          # Enable only a very minimal set of services for OVN
+          export OVERRIDE_ENABLED_SERVICES=ovn,q-svc,q-dhcp,q-l3,keystone
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          # Because we are testing a non standard project, add
+          # our project repository. This makes zuul do the right
+          # reference magic for testing changes.
+          export PROJECTS="stackforge/networking-ovn $PROJECTS"
+          # Note the actual url here is somewhat irrelevant because it
+          # caches in nodepool, however make it a valid url for
+          # documentation purposes.
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin networking-ovn git://git.openstack.org/stackforge/networking-ovn"
+
+          # Keep localrc to be able to set some vars in pre_test_hook
+          export KEEP_LOCALRC=1
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
