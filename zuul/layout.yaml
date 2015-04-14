@@ -524,6 +524,7 @@ project-templates:
   - name: check-tripleo-puppet-jobs
     check-tripleo:
       - check-tripleo-ironic-overcloud-f20puppet-nonha
+      - check-tripleo-ironic-overcloud-f20puppet-ha
 
   - name: experimental-tripleo-jobs
     experimental-tripleo:
@@ -755,7 +756,7 @@ jobs:
       - 'tox.ini'
   - name: ^check-tripleo-.*$
     branch: ^master$
-  - name: check-tripleo-ironic-overcloud-precise-ha
+  - name: check-tripleo-ironic-overcloud-f20puppet-ha
     voting: false
 # Continous publishing from master of the following documentation targets:
   - name: ^.*manuals-upstream-translation-update$
@@ -2625,8 +2626,6 @@ projects:
       - name: check-tripleo-jobs
     check:
       - check-tempest-dsvm-ironic-pxe_ssh
-    check-tripleo:
-      - check-tripleo-ironic-overcloud-precise-ha
     gate:
       - gate-tempest-dsvm-ironic-pxe_ssh
 
@@ -3081,7 +3080,7 @@ projects:
       - name: noop-jobs
       - name: check-tripleo-jobs
     check-tripleo:
-      - check-tripleo-ironic-overcloud-precise-ha
+      - check-tripleo-ironic-overcloud-f20puppet-ha
     post:
       - tripleo-heat-templates-branch-tarball
     pre-release:
@@ -3095,8 +3094,6 @@ projects:
       - name: publish-to-pypi
       - name: noop-jobs
       - name: check-tripleo-jobs
-    check-tripleo:
-      - check-tripleo-ironic-overcloud-precise-ha
     post:
       - tripleo-image-elements-branch-tarball
 
@@ -3107,7 +3104,7 @@ projects:
     check:
       - gate-tripleo-incubator-docs
     check-tripleo:
-      - check-tripleo-ironic-overcloud-precise-ha
+      - check-tripleo-ironic-overcloud-f20puppet-ha
     gate:
       - gate-tripleo-incubator-docs
     experimental-tripleo:
