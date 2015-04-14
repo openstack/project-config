@@ -1,0 +1,11 @@
+- job-template:
+    name: 'gate-dib-dsvm-functests-{node}'
+    node: '{node}'
+
+    builders:
+      - gerrit-git-prep
+      - shell: |
+          #!/bin/bash -eux
+          export PATH=$PATH:/opt/stack/new/diskimage-builder/bin
+          export PATH=$PATH:/opt/stack/new/dib-utils/bin
+          /opt/stack/new/diskimage-builder/tests/run_functests.sh
