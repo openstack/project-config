@@ -54,7 +54,7 @@ def devstack_params(item, job, params):
         params['ZUUL_NODE'] = 'devstack-precise'
     elif 'centos7' in job.name:
         params['ZUUL_NODE'] = 'devstack-centos7'
-    elif 'aiopcpu' in job.name:
+    elif 'multinode' in job.name:
         params['ZUUL_NODE'] = 'devstack-trusty-2-node'
     else:
         params['ZUUL_NODE'] = 'devstack-trusty'
