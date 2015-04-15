@@ -804,7 +804,7 @@ jobs:
     voting: false
   - name: gate-sahara-tox-py27-scenario-unit
     voting: false
-  - name: check-sahara-buildimages-vanilla
+  - name: ^gate-sahara-buildimages.*$
     branch: ^master$
     voting: false
   - name: gate-kite-python34
@@ -3129,7 +3129,12 @@ projects:
       - name: publish-to-pypi
     check:
       - gate-sahara-image-elements-pep8
-      - check-sahara-buildimages-vanilla
+      - gate-sahara-buildimages-vanilla
+      - gate-sahara-buildimages-hdp
+      - gate-sahara-buildimages-cloudera
+      - gate-sahara-buildimages-spark
+      - gate-sahara-buildimages-storm
+      - gate-sahara-buildimages-mapr
     gate:
       - gate-sahara-image-elements-pep8
     post:
