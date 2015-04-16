@@ -2265,6 +2265,7 @@
 
     jobs:
       - infra-publish-jobs
+      - 'gate-{name}-docs'
 
 - project:
     name: infra-specs
@@ -2296,23 +2297,25 @@
     name: jenkins-job-builder
     node: 'bare-precise || bare-trusty'
     tarball-site: tarballs.openstack.org
+    doc-publisher-site: docs.openstack.org
+    doc-publisher-folder: jenkins-job-builder
 
     jobs:
       - python-jobs
       - pypi-jobs
-      - '{name}-ci-docs':
-          target: 'ci/jenkins-job-builder'
+      - infra-publish-jobs
 
 - project:
     name: nodepool
     node: 'bare-precise || bare-trusty'
     tarball-site: tarballs.openstack.org
+    doc-publisher-site: docs.openstack.org
+    doc-publisher-folder: nodepool
 
     jobs:
       - python-jobs
       - pypi-jobs
-      - '{name}-ci-docs':
-          target: 'ci/nodepool'
+      - infra-publish-jobs
 
 - project:
     name: nose-html-output
@@ -2328,6 +2331,8 @@
     name: openstackid
     node: 'bare-precise || bare-trusty'
     tarball-site: tarballs.openstack.org
+    doc-publisher-site: docs.openstack.org
+    doc-publisher-folder: openstackid
 
     jobs:
       - gate-openstackid-unittests
@@ -2335,9 +2340,8 @@
           branch-designator: 'master'
       - 'openstackid-release-{branch-designator}':
           branch-designator: 'branch'
-      - gate-{name}-docs
-      - '{name}-ci-docs':
-          target: 'ci/openstackid'
+      - infra-publish-jobs
+      - 'gate-{name}-docs'
 
 
 - project:
@@ -2924,7 +2928,7 @@
     jobs:
       - python-jobs
       - pypi-jobs
-      - '{name}-infra-docs'
+      - infra-publish-jobs
       - '{pipeline}-shade-dsvm-functional{branch-designator}':
           pipeline: check
           node: 'devstack-precise || devstack-trusty'
@@ -2997,6 +3001,8 @@
 - project:
     name: system-config
     node: 'bare-precise || bare-trusty'
+    doc-publisher-site: docs.openstack.org
+    doc-publisher-folder: system-config
 
     jobs:
       - puppet-check-jobs
@@ -3008,19 +3014,20 @@
             - precise
             - trusty
             - centos6
-      - '{name}-ci-docs':
-          target: 'ci'
+      - infra-publish-jobs
+      - 'gate-{name}-docs'
 
 - project:
     name: vinz
     node: 'bare-precise || bare-trusty'
     tarball-site: tarballs.openstack.org
+    doc-publisher-site: docs.openstack.org
+    doc-publisher-folder: vinz
 
     jobs:
       - python-jobs
       - pypi-jobs
-      - '{name}-ci-docs':
-          target: 'ci/vinz'
+      - infra-publish-jobs
 
 - project:
     name: vinz-webclient
@@ -3062,12 +3069,13 @@
     name: zuul
     node: 'bare-precise || bare-trusty'
     tarball-site: tarballs.openstack.org
+    doc-publisher-site: docs.openstack.org
+    doc-publisher-folder: zuul
 
     jobs:
       - python-jobs
       - pypi-jobs
-      - '{name}-ci-docs':
-          target: 'ci/zuul'
+      - infra-publish-jobs
 
 ########################################################################
 # Section: Stackforge projects

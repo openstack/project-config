@@ -3893,11 +3893,11 @@ projects:
       - name: python-jobs
       - name: python3-jobs
       - name: publish-to-pypi
+      - name: infra-publish-jobs
     check:
       - jenkins-job-builder-compare-xml
       - jenkins-job-builder-coverage
     post:
-      - jenkins-job-builder-ci-docs
       - jenkins-job-builder-coverage
 
   - name: openstack-infra/lodgeit
@@ -3915,10 +3915,10 @@ projects:
       - name: merge-check
       - name: python-jobs
       - name: publish-to-pypi
+      - name: infra-publish-jobs
     check:
       - nodepool-coverage
     post:
-      - nodepool-ci-docs
       - nodepool-coverage
 
   - name: openstack-infra/nose-html-output
@@ -3937,6 +3937,7 @@ projects:
   - name: openstack-infra/openstackid
     template:
       - name: merge-check
+      - name: infra-publish-jobs
     check:
       - gate-openstackid-unittests
       - gate-openstackid-docs
@@ -3944,10 +3945,8 @@ projects:
       - gate-openstackid-unittests
     post:
       - openstackid-release-branch
-      - openstackid-ci-docs
     release:
       - openstackid-release-master
-      - openstackid-ci-docs
 
   - name: openstack-infra/openstackid-resources
     template:
@@ -4549,20 +4548,17 @@ projects:
     template:
       - name: merge-check
       - name: infra-puppet-apply-jobs
+      - name: infra-publish-jobs
     check:
       - gate-system-config-pep8
       - gate-system-config-bashate
       - gate-system-config-puppet-syntax
       - gate-system-config-nodepool
-      - gate-ci-docs
     gate:
       - gate-system-config-pep8
       - gate-system-config-bashate
       - gate-system-config-puppet-syntax
       - gate-system-config-nodepool
-      - gate-ci-docs
-    post:
-      - system-config-ci-docs
     experimental:
       - experimental-swift-logs-system-config-pep8-centos6
 
@@ -4577,12 +4573,7 @@ projects:
       - name: merge-check
       - name: publish-to-pypi
       - name: python-jobs
-    post:
-      - vinz-ci-docs
-    pre-release:
-      - vinz-ci-docs
-    release:
-      - vinz-ci-docs
+      - name: infra-publish-jobs
 
   - name: openstack-infra/vinz-webclient
     template:
@@ -4630,15 +4621,11 @@ projects:
       - name: publish-to-pypi
       - name: python26-jobs
       - name: python-jobs
+      - name: infra-publish-jobs
     check:
       - dev-zuul-coverage
     post:
-      - zuul-ci-docs
       - zuul-coverage
-    pre-release:
-      - zuul-ci-docs
-    release:
-      - zuul-ci-docs
     periodic:
       - periodic-test
 
