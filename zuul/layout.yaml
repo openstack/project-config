@@ -323,20 +323,6 @@ project-templates:
     gate:
       - 'gate-{name}-pypy'
 
-  - name: stable-compat-jobs
-    # trunk clients and libs are used in stable jobs, so run stable jobs
-    # on those repos
-    # TODO(jogo): run this on libraries
-    check:
-      - 'gate-tempest-dsvm-neutron-src-{name}-icehouse'
-      - 'gate-tempest-dsvm-neutron-src-{name}-juno'
-
-  - name: stable-compat-jobs-one-release
-    # a version of stable-compat-jobs that only looks back one release
-    # for new projects that shouldn't be tested back two releases
-    check:
-      - 'gate-tempest-dsvm-neutron-src-{name}-juno'
-
   - name: openstack-server-publish-jobs
     post:
       - '{name}-docs'
@@ -1503,7 +1489,6 @@ projects:
       - name: python3-jobs
       - name: openstack-client-publish-jobs
       - name: check-requirements
-      - name: stable-compat-jobs
       - name: lib-forward-testing
       - name: publish-to-pypi
     post:
@@ -1852,7 +1837,6 @@ projects:
       - name: openstack-client-publish-jobs
       - name: check-requirements
       - name: lib-forward-testing
-      - name: stable-compat-jobs-one-release
     check:
       - gate-python-barbicanclient-devstack-dsvm
     gate:
@@ -1865,7 +1849,6 @@ projects:
       - name: python3-jobs
       - name: openstack-client-publish-jobs
       - name: check-requirements
-      - name: stable-compat-jobs
       - name: publish-to-pypi
       - name: pypy-jobs
       - name: lib-forward-testing
@@ -1885,7 +1868,6 @@ projects:
       - name: openstack-client-publish-jobs
       - name: check-requirements
       - name: lib-forward-testing
-      - name: stable-compat-jobs
       - name: publish-to-pypi
       - name: pypy-jobs
       - name: experimental-tripleo-jobs
@@ -1949,7 +1931,6 @@ projects:
       - name: python26-jobs
       - name: python3-jobs
       - name: check-requirements
-      - name: stable-compat-jobs
       - name: publish-to-pypi
       - name: pypy-jobs
       - name: experimental-tripleo-jobs
@@ -2074,7 +2055,6 @@ projects:
       - name: python3-jobs
       - name: openstack-client-publish-jobs
       - name: check-requirements
-      - name: stable-compat-jobs
       - name: publish-to-pypi
       - name: pypy-jobs
       - name: experimental-tripleo-jobs
@@ -2096,7 +2076,6 @@ projects:
       - name: python3-jobs
       - name: openstack-client-publish-jobs
       - name: check-requirements
-      - name: stable-compat-jobs
       - name: publish-to-pypi
       - name: pypy-jobs
       - name: experimental-tripleo-jobs
@@ -2137,7 +2116,6 @@ projects:
       - name: openstack-client-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
-      - name: stable-compat-jobs-one-release
       - name: lib-forward-testing
     check:
       - gate-python-saharaclient-python34
@@ -2157,7 +2135,6 @@ projects:
       - name: python3-jobs
       - name: openstack-client-publish-jobs
       - name: check-requirements
-      - name: stable-compat-jobs
       - name: publish-to-pypi
       - name: pypy-jobs
       - name: experimental-tripleo-jobs
@@ -2642,7 +2619,6 @@ projects:
       - name: python3-jobs
       - name: openstack-client-publish-jobs
       - name: check-requirements
-      - name: stable-compat-jobs
       - name: lib-forward-testing
       - name: translation-jobs
     pre-release:
