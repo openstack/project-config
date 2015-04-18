@@ -484,12 +484,14 @@ project-templates:
       # 3.5 was swiftly replaced with 3.6
       - gate-{name}-puppet-unit-3.6
       - gate-{name}-puppet-unit-3.7
+      - gate-{name}-puppet-unit-4.0
     gate:
       - gate-{name}-puppet-unit-3.3
       - gate-{name}-puppet-unit-3.4
       # 3.5 was swiftly replaced with 3.6
       - gate-{name}-puppet-unit-3.6
       - gate-{name}-puppet-unit-3.7
+      # TODO(emilienm): add 4.0 when it will vote
 
   - name: infra-puppet-apply-jobs
     check:
@@ -1078,6 +1080,9 @@ jobs:
     voting: false
   - name: ^(gate-)?devstack-publish-docs
     branch: ^master
+  # TODO(emilienm): Enable voting when all tests pass for all modules
+  - name: ^gate-puppet-.*-puppet-unit-4.0$
+    voting: false
   - name: ^gate-puppet-.*-puppet-beaker-rspec$
     voting: false
   - name: ^gate-puppet-.*-puppet-syntax-future$
