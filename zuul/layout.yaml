@@ -1981,6 +1981,31 @@ projects:
       - gate-rally-dsvm-manila-multibackend
       - gate-rally-dsvm-manila-multibackend-no-ss
 
+  - name: openstack/mistral
+    template:
+      - name: merge-check
+      - name: publish-to-pypi
+      - name: python-jobs
+    check:
+      - gate-mistral-python34
+      - gate-rally-dsvm-mistral-task
+      - gate-mistral-devstack-dsvm
+
+  - name: openstack/mistral-dashboard
+    template:
+      - name: merge-check
+      - name: python-jobs
+      - name: python3-jobs
+      - name: publish-to-pypi
+
+  - name: openstack/mistral-extra
+    template:
+      - name: merge-check
+      - name: publish-to-pypi
+      - name: python-jobs
+    check:
+      - gate-mistral-extra-python34
+
   - name: openstack/murano
     template:
       - name: merge-check
@@ -2643,6 +2668,15 @@ projects:
       - check-manilaclient-dsvm-neutron-functional
     post:
       - python-manilaclient-coverage
+
+  - name: openstack/python-mistralclient
+    template:
+      - name: merge-check
+      - name: publish-to-pypi
+      - name: python-jobs
+    check:
+      - gate-python-mistralclient-python34
+      - gate-mistral-devstack-dsvm
 
   - name: openstack/python-muranoclient
     template:
@@ -6495,31 +6529,6 @@ projects:
       - name: merge-check
       - name: noop-jobs
 
-  - name: stackforge/mistral
-    template:
-      - name: merge-check
-      - name: publish-to-pypi
-      - name: python-jobs
-    check:
-      - gate-mistral-python34
-      - gate-rally-dsvm-mistral-task
-      - gate-mistral-devstack-dsvm
-
-  - name: stackforge/mistral-dashboard
-    template:
-      - name: merge-check
-      - name: python-jobs
-      - name: python3-jobs
-      - name: publish-to-pypi
-
-  - name: stackforge/mistral-extra
-    template:
-      - name: merge-check
-      - name: publish-to-pypi
-      - name: python-jobs
-    check:
-      - gate-mistral-extra-python34
-
   - name: stackforge/monasca-agent
     template:
       - name: merge-check
@@ -7171,15 +7180,6 @@ projects:
       - name: merge-check
       - name: python-jobs
       - name: publish-to-pypi
-
-  - name: stackforge/python-mistralclient
-    template:
-      - name: merge-check
-      - name: publish-to-pypi
-      - name: python-jobs
-    check:
-      - gate-python-mistralclient-python34
-      - gate-mistral-devstack-dsvm
 
   - name: stackforge/python-monascaclient
     template:
