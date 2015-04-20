@@ -465,7 +465,8 @@ project-templates:
 
   - name: puppet-beaker-jobs
     check:
-      - gate-{name}-puppet-beaker-rspec
+      - gate-{name}-puppet-beaker-rspec-dsvm-trusty
+      - gate-{name}-puppet-beaker-rspec-dsvm-centos7
 
   - name: puppet-syntax-future
     check:
@@ -1030,7 +1031,7 @@ jobs:
   - name: ^gate-puppet-.*-puppet-unit-4.0$
     voting: false
   # Beaker tests have been introduced after Juno release
-  - name: ^gate-puppet-.*-puppet-beaker-rspec$
+  - name: ^gate-puppet-.*-puppet-beaker-rspec-dsvm-.*$
     branch: ^(?!stable/(havana|icehouse|juno)).*$
     voting: false
   - name: ^gate-puppet-.*-puppet-syntax-future$
@@ -4296,8 +4297,6 @@ projects:
       - name: merge-check
       - name: puppet-check-jobs
       - name: infra-puppet-apply-jobs
-    check:
-      - gate-puppet-storyboard-puppet-beaker-rspec
     release:
       - puppet-storyboard-forge-upload
 
@@ -6305,7 +6304,6 @@ projects:
       - name: merge-check
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
-      - name: puppet-beaker-jobs
       - name: puppet-syntax-future
 
   - name: stackforge/puppet-murano
@@ -6313,7 +6311,6 @@ projects:
       - name: merge-check
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
-      - name: puppet-beaker-jobs
       - name: puppet-syntax-future
 
   - name: stackforge/puppet-n1k-vsm
@@ -6321,7 +6318,6 @@ projects:
       - name: merge-check
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
-      - name: puppet-beaker-jobs
       - name: puppet-syntax-future
 
   - name: stackforge/puppet-neutron
@@ -6377,7 +6373,6 @@ projects:
       - name: merge-check
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
-      - name: puppet-beaker-jobs
       - name: puppet-syntax-future
 
   - name: stackforge/puppet-openstack-specs
