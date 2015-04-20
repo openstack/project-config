@@ -22,6 +22,66 @@
       - console-log
 
 
+- builder:
+    name: sahara-extra-build
+    builders:
+      - link-logs
+      - shell: |
+          #!/bin/bash -xe
+          tools/build-all-artifacts.sh
+
+
+- publisher:
+    name: sahara-extra-publish
+    publishers:
+      - scp:
+          site: 'tarballs.openstack.org'
+          files:
+            - source: 'dist/**'
+              target: 'tarballs/sahara/'
+              keep-hierarchy: true
+              copy-after-failure: false
+
+
+- job:
+    name: 'check-sahara-extra-artifacts'
+    node: 'bare-precise || bare-trusty'
+
+    wrappers:
+      - build-timeout:
+          timeout: 65
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - gerrit-git-prep
+      - sahara-extra-build
+
+    publishers:
+      - console-log
+
+
+- job:
+    name: 'gate-sahara-extra-artifacts'
+    node: 'bare-precise || bare-trusty'
+
+    wrappers:
+      - build-timeout:
+          timeout: 65
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - gerrit-git-prep
+      - sahara-extra-build
+
+    publishers:
+      - console-log
+      - sahara-extra-publish
+
+
 - job-template:
     name: '{pipeline}-saharaclient-dsvm-functional{branch-designator}'
     node: '{node}'
