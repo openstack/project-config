@@ -6574,7 +6574,15 @@ projects:
   - name: stackforge/python-rackclient
     template:
       - name: merge-check
-      - name: noop-jobs
+    check:
+      - python-rackclient-coverage
+      - gate-python-rackclient-pep8
+      - gate-python-rackclient-python27
+    gate:
+      - gate-python-rackclient-pep8
+      - gate-python-rackclient-python27
+    post:
+      - python-rackclient-coverage
 
   - name: stackforge/python-rallyclient
     template:
