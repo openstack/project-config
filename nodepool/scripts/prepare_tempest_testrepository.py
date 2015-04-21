@@ -17,9 +17,7 @@
 import os
 import sys
 
-from oslo.db.sqlalchemy import utils as db_utils
 from subunit2sql.db import api
-from subunit2sql.db import models
 from subunit2sql import shell
 from subunit2sql import write_subunit
 
@@ -35,18 +33,12 @@ else:
     TEMPEST_PATH = '/opt/stack/new/tempest'
 
 
-def get_run_ids(session):
-    # TODO(mtreinish): Move this function into the subunit2sql db api
-    results = db_utils.model_query(models.Run, session).order_by(
-        models.Run.run_at.desc()).filter_by(fails=0).limit(10).all()
-    return map(lambda x: x.id, results)
-
-
 def main():
     shell.parse_args([])
     shell.CONF.set_override('connection', DB_URI, group='database')
     session = api.get_session()
-    run_ids = get_run_ids(session)
+    run_ids = api.get_recent_successful_runs(num_runs=10,
+                                             session=session)
     session.close()
     preseed_path = os.path.join(TEMPEST_PATH, 'preseed-streams')
     os.mkdir(preseed_path)
