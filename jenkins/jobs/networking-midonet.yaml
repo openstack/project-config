@@ -33,6 +33,21 @@
           # Keep localrc to be able to set some vars in pre_test_hook
           export KEEP_LOCALRC=1
 
+          # We are only interested on Neutron, so very few services are needed
+          # to deploy devstack and run the tests
+          s=""
+          s+="mysql,rabbit"
+          s+=",key"
+          s+=",n-api,n-cond,n-cpu,n-crt,n-obj,n-sch"
+          s+=",g-api,g-reg"
+          s+=",q-dhcp,q-meta,q-svc,quantum"
+          s+=",tempest"
+          export OVERRIDE_ENABLED_SERVICES="$s"
+
+          # Run api network tests, for it is the only api that MidoNet
+          # implements; and the scenario ones for higher level tests
+          export DEVSTACK_GATE_TEMPEST_REGEX="^tempest\.(api.network|scenario)"
+
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
 
