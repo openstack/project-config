@@ -41,6 +41,9 @@ tx pull -a -f
 # Use lower percentage here to update the existing files.
 tx pull -f --minimum-perc=50
 
+# Compress downloaded po files
+compress_po_files "doc"
+
 # Add imported upstream translations to git
 for FILE in ${DocFolder}/*; do
     DOCNAME=${FILE#${DocFolder}/}
