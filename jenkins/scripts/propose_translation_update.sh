@@ -69,14 +69,20 @@ for level in $LEVELS ; do
     fi
 done
 
-# Add all changed files to git.
-git add $PROJECT/locale/*
 
 # Filter out commits we do not want.
 filter_commits
 
 # Remove obsolete files.
 cleanup_po_files "$PROJECT"
+
+# Compress downloaded po files, this needs to be done after
+# cleanup_po_files since that function needs to have information the
+# number of untranslated strings.
+compress_po_files "$PROJECT"
+
+# Now add all changed files to git.
+git add $PROJECT/locale/*
 
 # Propose patch to gerrit if there are changes.
 send_patch
