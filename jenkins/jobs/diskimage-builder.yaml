@@ -6,6 +6,10 @@
       - gerrit-git-prep
       - shell: |
           #!/bin/bash -eux
-          export PATH=$PATH:/opt/stack/new/diskimage-builder/bin
-          export PATH=$PATH:/opt/stack/new/dib-utils/bin
-          /opt/stack/new/diskimage-builder/tests/run_functests.sh
+          git clone https://git.openstack.org/openstack/dib-utils ../dib-utils
+          export PATH=$PATH:$(pwd)/bin
+          export PATH=$PATH:$(pwd)/../dib-utils/bin
+          ./tests/run_functests.sh
+
+    publishers:
+      - console-log
