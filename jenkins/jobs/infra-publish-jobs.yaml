@@ -16,6 +16,39 @@
             remove-prefix: 'doc/build/html'
             excludes: ''
 
+- job:
+    name: publish-infra-docs-index
+    description: Render and publish the infra docs index.
+    node: bare-trusty
+
+    builders:
+      - revoke-sudo
+      - gerrit-git-prep
+      - tox:
+          envlist: infra-docs
+
+    publishers:
+      - ftp:
+          site: docs.openstack.org
+          source: 'docs-site/index.html'
+          target: '/infra/'
+          remove-prefix: 'docs-site/'
+      - console-log
+
+- job:
+    name: check-infra-docs-index
+    description: Render the infra docs index without publishing it.
+    node: bare-trusty
+
+    builders:
+      - revoke-sudo
+      - gerrit-git-prep
+      - tox:
+          envlist: infra-docs
+
+    publishers:
+      - console-log
+
 - job-group:
     name: infra-publish-jobs
     jobs:

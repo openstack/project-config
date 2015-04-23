@@ -736,6 +736,10 @@ jobs:
     files:
       - 'accessbot/channels.yaml'
       - 'gerritbot/channels.yaml'
+  - name: ^(check-infra-docs-index|publish-infra-docs-index)$
+    files:
+      - 'docs-site/.*'
+      - 'tox.ini'
   - name: ^(check-generate-specs-site|publish-specs-site)$
     files:
       - 'specs/.*'
@@ -3889,6 +3893,7 @@ projects:
       - gate-project-config-irc-access
       - gate-project-config-jenkins-project
       - gate-project-config-projects-yaml
+      - check-infra-docs-index
       - check-generate-specs-site
     gate:
       - gate-project-config-layout
@@ -3896,8 +3901,10 @@ projects:
       - gate-project-config-irc-access
       - gate-project-config-jenkins-project
       - gate-project-config-projects-yaml
+      - check-infra-docs-index
       - check-generate-specs-site
     post:
+      - publish-infra-docs-index
       - publish-specs-site
     periodic:
       - propose-project-config-update
