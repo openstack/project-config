@@ -18,6 +18,10 @@
           export PROJECTS="openstack/gnocchi $PROJECTS"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin gnocchi git://git.openstack.org/openstack/gnocchi"
 
+          if [ "$ZUUL_BRANCH" = "stable/1.0" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=stable/kilo
+          fi
+
           function gate_hook {{
               cd /opt/stack/new/gnocchi/devstack/gate
               ./gate_hook.sh {storagedriver} {sqldriver}
