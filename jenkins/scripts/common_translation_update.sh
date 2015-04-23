@@ -347,11 +347,11 @@ function cleanup_po_files {
 
     for i in `find $project/locale -name *.po `; do
         # Output goes to stderr, so redirect to stdout to catch it.
-        trans=`msgfmt --statistics -o /dev/null $i 2>&1`
+        trans=`msgfmt --statistics -o /dev/null "$i" 2>&1`
         check="^0 translated messages"
         if [[ $trans =~ $check ]] ; then
             # Nothing is translated, remove the file.
-            git rm -f $i
+            git rm -f "$i"
         else
             if [[ $trans =~ " translated message" ]] ; then
                 trans_no=`echo $trans|sed -e 's/ translated message.*$//'`
@@ -371,8 +371,21 @@ function cleanup_po_files {
             # For now we delete files that suddenly are less than 20
             # per cent translated.
             if [[ "$ratio" -lt "20" ]] ; then
-                git rm -f $i
+                git rm -f "$i"
             fi
         fi
+    done
+}
+
+# Reduce size of po files. This reduces the amount of content imported
+# and makes for fewer imports.
+# This does not touch the pot files. This way we can reconstruct the po files
+# using "msgmerge POTFILE POFILE -o COMPLETEPOFILE".
+function compress_po_files {
+    local directory=$1
+
+    for i in `find $directory -name *.po `; do
+        msgattrib --translated --no-location "$i" --output="${i}.tmp"
+        mv "${i}.tmp" "$i"
     done
 }
