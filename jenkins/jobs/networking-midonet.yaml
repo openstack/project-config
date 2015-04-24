@@ -16,7 +16,7 @@
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TIMEOUT=120
           export DEVSTACK_GATE_NEUTRON=1
-          export DEVSTACK_GATE_TEMPEST_FULL=1
+          export DEVSTACK_GATE_TEMPEST=1
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -46,7 +46,8 @@
 
           # Run api network tests, for it is the only api that MidoNet
           # implements; and the scenario ones for higher level tests
-          export DEVSTACK_GATE_TEMPEST_REGEX="^tempest\.(api.network|scenario)"
+          export DEVSTACK_GATE_TEMPEST_REGEX="tempest.api.network \
+                                              tempest.scenario"
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
