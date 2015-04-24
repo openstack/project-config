@@ -389,3 +389,23 @@ function compress_po_files {
         mv "${i}.tmp" "$i"
     done
 }
+
+# Reduce size of po files. This reduces the amount of content imported
+# and makes for fewer imports.
+# This does not touch the pot files. This way we can reconstruct the po files
+# using "msgmerge POTFILE POFILE -o COMPLETEPOFILE".
+# Give directory name to not touch files for example under .tox.
+# Pass glossary flag to not touch the glossary.
+function compress_manual_po_files {
+    local directory=$1
+    local glossary=$2
+    for i in `find $directory -name *.po `; do
+        if [ "$glossary" -eq "0" ] ; then
+            if [[ $i =~ "/glossary/" ]] ; then
+                continue
+            fi
+        fi
+        msgattrib --translated --no-location "$i" --output="${i}.tmp"
+        mv "${i}.tmp" "$i"
+    done
+}
