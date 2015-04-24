@@ -33,7 +33,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-pbr-installation-dsvm'
+    name: '{pipeline}-pbr-installation-dsvm{variant}'
     node: '{node}'
 
     wrappers:
@@ -53,6 +53,9 @@
           export DEVSTACK_GATE_EXERCISES=0
           export DEVSTACK_GATE_REQS_INTEGRATION=1
           export PIP_PROCESS_DEPENDENCY_LINKS=1
+          if "{variant}" = "-upstream"; then
+              export PBR_PIP_VERSION=git+https://github.com/pypa/pip.git@develop#egg=pipexport
+          fi
           function gate_hook {{
               set -x
               bash $BASE/new/devstack-gate/devstack-vm-gate.sh && \
