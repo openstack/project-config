@@ -1705,12 +1705,22 @@
       - '{pipeline}-requirements-integration-dsvm':
           pipeline: check
           node: 'devstack-precise || devstack-trusty'
-      - '{pipeline}-pbr-installation-dsvm':
+      - '{pipeline}-pbr-installation-dsvm{variant}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-      - '{pipeline}-pbr-installation-dsvm':
+          variant: ''
+      - '{pipeline}-pbr-installation-dsvm{variant}':
           pipeline: check
           node: 'devstack-precise || devstack-trusty'
+          variant: ''
+      - '{pipeline}-pbr-installation-dsvm{variant}':
+          pipeline: check
+          node: 'devstack-precise || devstack-trusty'
+          variant: '-upstream'
+      - '{pipeline}-pbr-installation-dsvm{variant}':
+          pipeline: periodic
+          node: 'devstack-precise || devstack-trusty'
+          variant: '-upstream'
 
 - project:
     name: sahara-dashboard
