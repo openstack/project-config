@@ -116,6 +116,7 @@ if '7' in transformations:
     )
     special_teams = (
         'admins',
+        'Bootstrappers',
         'committee',
         'core',
         'maint',
