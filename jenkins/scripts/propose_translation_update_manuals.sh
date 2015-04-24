@@ -42,7 +42,25 @@ tx pull -a -f
 tx pull -f --minimum-perc=50
 
 # Compress downloaded po files
-compress_po_files "doc"
+# Only touch glossary in openstack-manuals but not in any other
+# repository.
+case "$project" in
+    openstack-manuals)
+        compress_manual_po_files "doc" 1
+        ;;
+    api-site)
+        compress_manual_po_files "api-ref-guides" 0
+        compress_manual_po_files "api-quick-start" 0
+        compress_manual_po_files "api-ref" 0
+        compress_manual_po_files "openstack-firstapp" 0
+        ;;
+    ha-guide|operations-guide)
+        compress_manual_po_files "doc" 0
+        ;;
+    security-doc)
+        compress_manual_po_files "security-guide" 0
+        ;;
+esac
 
 # Add imported upstream translations to git
 for FILE in ${DocFolder}/*; do
