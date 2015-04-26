@@ -33,3 +33,17 @@
       - test-results
       - devstack-logs
       - console-log
+
+- job:
+    name: keystone-propose-config-updates
+    node: proposal
+
+    builders:
+      - revoke-sudo
+      - link-logs
+      - net-info
+      - gerrit-git-prep
+      - shell: /usr/local/jenkins/slave_scripts/propose_updated_config_file.sh openstack/keystone master
+
+    publishers:
+      - console-log
