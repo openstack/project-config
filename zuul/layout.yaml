@@ -426,7 +426,9 @@ project-templates:
       - 'gate-{name}-chef-unit'
 
   - name: chef-rake-jobs
-    experimental:
+    check:
+      - 'gate-{name}-chef-rake'
+    gate:
       - 'gate-{name}-chef-rake'
 
   # Note that we only publish integrated and incubated
@@ -535,6 +537,9 @@ jobs:
   # Berkshelf 3.x requires GeCode 3.x on precise.
   - name: ^gate-.*-chef-(lint|style|unit|repo)$
     parameter-function: set_node_options_default_precise
+    branch: ^stable/(icehouse|juno)$
+  - name: ^gate-.*-chef-rake$
+    branch: ^(?!stable/(icehouse|juno)).*$
   # openstackid doesn't work with php5-mcrypt on trusty
   - name: ^.*openstackid-(unittests|release).*$
     parameter-function: set_node_options_default_precise
@@ -4895,6 +4900,7 @@ projects:
     template:
       - name: merge-check
       - name: chef-jobs
+      - name: chef-rake-jobs
 
   - name: stackforge/cookbook-openstack-block-storage
     template:
