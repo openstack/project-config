@@ -1,7 +1,17 @@
 - builder:
     name: gerrit-git-prep
     builders:
-      - shell: "/usr/local/jenkins/slave_scripts/gerrit-git-prep.sh https://review.openstack.org git://git.openstack.org"
+      - shell: |
+          #!/bin/bash
+          count=0
+          until /usr/local/jenkins/slave_scripts/gerrit-git-prep.sh https://review.openstack.org git://git.openstack.org ; do
+              count=$(($count + 1))
+              if [ $count -eq 3 ]; then
+                  echo "Maximum of 3 git retries reached"
+                  exit 1
+              fi
+              sleep 5
+          done
 
 - builder:
     name: branch-git-prep
