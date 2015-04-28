@@ -5,6 +5,7 @@
           #!/bin/bash
           count=0
           until /usr/local/jenkins/slave_scripts/gerrit-git-prep.sh https://review.openstack.org git://git.openstack.org ; do
+              echo "git failed, retrying"
               count=$(($count + 1))
               if [ $count -eq 3 ]; then
                   echo "Maximum of 3 git retries reached"
