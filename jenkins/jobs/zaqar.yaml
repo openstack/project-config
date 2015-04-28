@@ -20,7 +20,8 @@
           export DEVSTACK_GATE_TIMEOUT=90
           export DEVSTACK_GATE_EXERCISES=0
           export DEVSTACK_GATE_INSTALL_TESTONLY=1
-          export ENABLED_SERVICES=mysql,key,tempest,zaqar-server
+          export ENABLED_SERVICES=mysql,key,tempest
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin zaqar git://git.openstack.org/openstack/zaqar"
           export BRANCH_OVERRIDE={branch-override}
 
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
@@ -64,7 +65,9 @@
           export DEVSTACK_GATE_ZAQAR=1
           export DEVSTACK_GATE_ZAQAR_BACKEND={backend}
           export BRANCH_OVERRIDE={branch-override}
-          export ENABLED_SERVICES=mysql,key,zaqar-server
+          export ENABLED_SERVICES=mysql,key
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin zaqar git://git.openstack.org/openstack/zaqar"
+
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
