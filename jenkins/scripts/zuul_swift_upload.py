@@ -363,7 +363,18 @@ class PostThread(threading.Thread):
             files[key] = (fileinfo[key][0],
                           open(fileinfo[key][1], 'rb'),
                           fileinfo[key][2])
-        requests.post(url, headers=headers, data=payload, files=files)
+
+        for attempt in xrange(3):
+            try:
+                requests.post(url, headers=headers, data=payload, files=files)
+                break
+            except requests.exceptions.RequestException:
+                if attempt <= 3:
+                    logging.exception(
+                        "File posting error on attempt %d" % attempt)
+                    continue
+                else:
+                    raise
 
     def run(self):
         while True:
@@ -372,7 +383,7 @@ class PostThread(threading.Thread):
                 self._post_file(*job)
             except requests.exceptions.RequestException:
                 # Do our best to attempt to upload all the files
-                logging.exception("File posting error")
+                logging.exception("Error posting file after multiple attempts")
                 continue
             except IOError:
                 # Do our best to attempt to upload all the files
