@@ -19,14 +19,7 @@ function git_timed {
     fi
 
     until timeout -s SIGINT ${timeout} git "$@"; do
-        # 124 is timeout(1)'s special return code when it reached the
-        # timeout; otherwise assume fatal failure
-        if [[ $? -ne 124 ]]; then
-            exitcode=$?
-            echo $LINENO "git call failed: [git $@]"
-            exit $exitcode
-        fi
-
+        echo "Command exited with '$?' [git $@] ... retrying"
         count=$(($count + 1))
         echo "timeout ${count} for git call: [git $@]"
         if [ $count -eq 3 ]; then
