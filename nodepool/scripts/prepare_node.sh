@@ -31,6 +31,10 @@ fi
 echo $HOSTNAME > /tmp/image-hostname.txt
 sudo mv /tmp/image-hostname.txt /etc/image-hostname.txt
 
+# CentOS 6 image doesn't come with lsb_release
+if [ -f /usr/bin/yum ]; then
+    sudo yum -y install redhat-lsb-core
+fi
 LSBDISTID=$(lsb_release -is)
 LSBDISTCODENAME=$(lsb_release -cs)
 if [ "$LSBDISTID" == "Ubuntu" ] ; then
