@@ -24,6 +24,14 @@ import sys
 # devstack lib/[apt|rpm] files to pre-install them.  So we have to
 # swizzle things around
 RELEASE=None
+try:
+    if open('/etc/redhat-release').read().startswith('CentOS release 6'):
+        # not actually used in devstack, but for consistency and because this
+        # script will error if run on a platform where RELEASE isn't detected
+        # as something
+        RELEASE='rhel6'
+except IOError:
+    pass
 if 'DIB_RELEASE' in os.environ:
     RELEASE=os.environ['DIB_RELEASE']
 if 'DISTRO_NAME' in os.environ:
