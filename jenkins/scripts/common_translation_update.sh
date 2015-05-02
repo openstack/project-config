@@ -320,12 +320,18 @@ function filter_commits {
         changed=$(git diff --cached "$f" \
             | egrep -v "(POT-Creation-Date|Project-Id-Version|PO-Revision-Date)" \
             | egrep -c "^([-+][^-+#])")
+        added=$(git diff --cached "$f" \
+            | egrep -v "(POT-Creation-Date|Project-Id-Version|PO-Revision-Date)" \
+            | egrep -c "^([+][^+#])")
         set -e
         if [ $changed -eq 0 ]; then
             git reset -q "$f"
             git checkout -- "$f"
-        # Check for all files endig with ".po"
-        elif [[ $f =~ .po$ ]] ; then
+        # Check for all files endig with ".po".
+        # We will take this import if at least one change adds new content,
+        # thus adding a new translation.
+        # If only lines are removed, we do not need this.
+        elif [[ $added -gt 0 && $f =~ .po$ ]] ; then
             PO_CHANGE=1
         fi
     done
