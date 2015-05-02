@@ -17,7 +17,6 @@
 # limitations under the License.
 
 import os
-import subprocess
 import sys
 
 # this is a bit weird; we want to get the filter to use on the
@@ -113,15 +112,16 @@ def _legacy_find_images(basedir):
 
 def _find_images(basedir):
     images = []
-    try:
-        image_tool = os.path.join(basedir, 'tools', 'image_list.sh')
-        if os.path.exists(image_tool):
-            images = subprocess.check_output(image_tool).split('\n')
-    except subprocess.CalledProcessError as ce:
-        print "image_list.sh failed"
-        print "Exit: %s, Output: %s" % (ce.returncode, ce.output)
-        # reset images so we'll fall back
-        images = []
+    image_tool = os.path.join(basedir, 'tools', 'image_list.sh')
+    if os.path.exists(image_tool):
+        returncode, out = run_local(image_tool, status=True)
+        if returncode:
+            print "%s failed" % image_tool
+            print "Exit: %s, Output: %s" % (returncode, out)
+            # reset images so we'll fall back
+            images = []
+        else:
+            images = out.split('\n')
     return images
 
 
