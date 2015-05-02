@@ -69,6 +69,10 @@ for level in $LEVELS ; do
     fi
 done
 
+# Now add all changed files to git.
+# Note we add them here to not have to differentiate in the functions
+# between new files and files already under git control.
+git add $PROJECT/locale/*
 
 # Filter out commits we do not want.
 filter_commits
@@ -81,7 +85,7 @@ cleanup_po_files "$PROJECT"
 # number of untranslated strings.
 compress_po_files "$PROJECT"
 
-# Now add all changed files to git.
+# Some files were changed, add changed files again to git
 git add $PROJECT/locale/*
 
 # Propose patch to gerrit if there are changes.
