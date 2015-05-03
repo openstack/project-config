@@ -47,7 +47,8 @@ extract_messages_log "$PROJECT"
 PO_FILES=`find ${PROJECT}/locale -name "${PROJECT}.po"`
 if [ -n "$PO_FILES" ]; then
     # Use updated .pot file to update translations
-    python setup.py update_catalog --no-fuzzy-matching  --ignore-obsolete=true
+    python setup.py  $QUIET update_catalog \
+        --no-fuzzy-matching --ignore-obsolete=true
 fi
 # We cannot run update_catalog for the log files, since there is no
 # option to specify the keyword and thus an update_catalog run would
