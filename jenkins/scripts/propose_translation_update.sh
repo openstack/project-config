@@ -74,9 +74,6 @@ done
 # between new files and files already under git control.
 git add $PROJECT/locale/*
 
-# Filter out commits we do not want.
-filter_commits
-
 # Remove obsolete files.
 cleanup_po_files "$PROJECT"
 
@@ -85,8 +82,12 @@ cleanup_po_files "$PROJECT"
 # number of untranslated strings.
 compress_po_files "$PROJECT"
 
-# Some files were changed, add changed files again to git
+# Some files were changed, add changed files again to git, so that we
+# can run git diff properly.
 git add $PROJECT/locale/*
+
+# Filter out commits we do not want.
+filter_commits
 
 # Propose patch to gerrit if there are changes.
 send_patch
