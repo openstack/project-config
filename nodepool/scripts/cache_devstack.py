@@ -119,7 +119,7 @@ def local_prep(distribution):
                 tokenize(fn, debs, distribution, comment='#')
             branch_data['debs'] = debs
 
-        if os.path.exists('/usr/bin/rpm'):
+        if os.path.exists('/usr/bin/yum'):
             rpms = []
             rpmdir = os.path.join(DEVSTACK, 'files', 'rpms')
             for fn in os.listdir(rpmdir):
