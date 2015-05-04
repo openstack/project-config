@@ -20,20 +20,25 @@ import os
 import subprocess
 import sys
 
+TMP_MOUNT_PATH = os.environ['TMP_MOUNT_PATH']
+TMP_HOOKS_PATH = os.environ['TMP_HOOKS_PATH']
+
 # this is a bit weird; we want to get the filter to use on the
 # devstack lib/[apt|rpm] files to pre-install them.  So we have to
 # swizzle things around
 RELEASE=None
+if 'DIB_RELEASE' in os.environ:
+    RELEASE=os.environ['DIB_RELEASE']
 try:
-    if open('/etc/redhat-release').read().startswith('CentOS release 6'):
+    if open(os.path.join(
+            TMP_MOUNT_PATH,
+            'etc/redhat-release')).read().startswith('CentOS release 6'):
         # not actually used in devstack, but for consistency and because this
         # script will error if run on a platform where RELEASE isn't detected
         # as something
         RELEASE='rhel6'
 except IOError:
     pass
-if 'DIB_RELEASE' in os.environ:
-    RELEASE=os.environ['DIB_RELEASE']
 if 'DISTRO_NAME' in os.environ:
     if os.environ['DISTRO_NAME'] == 'centos7':
         # centos7 matches as rhel7 in devstack
@@ -41,9 +46,6 @@ if 'DISTRO_NAME' in os.environ:
 if not RELEASE:
     print "Can not determine RELEASE"
     sys.exit(1)
-
-TMP_MOUNT_PATH = os.environ['TMP_MOUNT_PATH']
-TMP_HOOKS_PATH = os.environ['TMP_HOOKS_PATH']
 
 DEVSTACK = os.path.join(TMP_MOUNT_PATH, 'opt/git/openstack-dev/devstack')
 CACHEDIR = os.path.join(TMP_MOUNT_PATH, 'tmp')
