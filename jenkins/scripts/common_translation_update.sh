@@ -14,6 +14,9 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+# Used for setup.py babel commands
+QUIET="--quiet"
+
 # Initial transifex setup
 function setup_translation {
     # Track in HAS_CONFIG whether we run "tx init" since calling it
@@ -228,6 +231,8 @@ function send_patch {
     if [ $HAS_CONFIG -eq 1 ]; then
         git reset -q .tx/config
         git checkout -- .tx/config
+    else
+        rm -rf .tx
     fi
 
     # Don't send a review if nothing has changed.
@@ -281,9 +286,9 @@ function extract_messages_log {
     project=$1
 
     # Update the .pot files
-    python setup.py extract_messages
+    python setup.py $QUIET extract_messages
     for level in $LEVELS ; do
-        python setup.py extract_messages --no-default-keywords \
+        python setup.py $QUIET extract_messages --no-default-keywords \
             --keyword ${LKEYWORD[$level]} \
             --output-file ${project}/locale/${project}-log-${level}.pot
     done
