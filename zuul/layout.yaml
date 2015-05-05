@@ -1203,8 +1203,8 @@ jobs:
   - name: ^gate-neutron-dsvm-api$
     branch: ^(?!stable/juno).*$
 
-  - name: gate-tempest-dsvm-neutron-dvr
-    voting: false
+  - name: ^gate-tempest-dsvm-neutron-dvr
+    branch: ^(?!stable/icehouse).*$
 
   - name: gate-neutron-dsvm-fullstack
     branch: ^(?!stable/(juno|kilo)).*$
@@ -2381,6 +2381,7 @@ projects:
       - gate-neutron-dsvm-functional
       - gate-neutron-lbaasv1-dsvm-api
       - gate-neutron-lbaasv2-dsvm-api
+      - gate-tempest-dsvm-neutron-dvr
       - gate-tempest-dsvm-neutron-large-ops
     post:
       - neutron-coverage
@@ -4435,6 +4436,8 @@ projects:
       - gate-grenade-dsvm-partial-ncpu
       - gate-grenade-dsvm-neutron
       - gate-tempest-dsvm-ironic-pxe_ssh
+      # jobs for other configs
+      - gate-tempest-dsvm-neutron-dvr
       # kilo compat jobs for tempest master
       - gate-tempest-dsvm-full-kilo
       - gate-tempest-dsvm-postgres-full-kilo
@@ -4477,7 +4480,6 @@ projects:
       - gate-tempest-dsvm-neutron-full-non-isolated
       - gate-tempest-dsvm-neutron-full-non-admin
       - gate-tempest-dsvm-ironic-parallel-nv
-      - gate-tempest-dsvm-neutron-dvr
       - gate-tempest-dsvm-large-ops-kilo
       - gate-tempest-dsvm-neutron-large-ops-kilo
       - gate-tempest-dsvm-neutron-identity-v3-only-full
