@@ -6,10 +6,10 @@
       - gerrit-git-prep
       - shell: |
           #!/bin/bash -eux
-          sudo apt-get install -y qemu-utils kpartx || sudo yum -y install qemu-img kpartx
           git clone https://git.openstack.org/openstack/dib-utils ../dib-utils
           export PATH=$PATH:$(pwd)/bin
           export PATH=$PATH:$(pwd)/../dib-utils/bin
+          ./tests/install_test_deps.sh
           ./tests/run_functests.sh
 
     publishers:
