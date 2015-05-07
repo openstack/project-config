@@ -414,3 +414,21 @@ function compress_manual_po_files {
         mv "${i}.tmp" "$i"
     done
 }
+
+# Reduce size of po files. This reduces the amount of content imported
+# and makes for fewer imports.
+# Some projects have no pot files (see function compress_po_files) but
+# use the English po file as source. For these projects we should not
+# touch the English po file. This way we can reconstruct the po files
+# using "msgmerge EnglishPOTFILE POFILE -o COMPLETEPOFILE".
+function compress_non_en_po_files {
+    local directory=$1
+
+    for i in `find $directory -name *.po `; do
+        if [[ $i =~ "/locale/en/LC_MESSAGES/" ]] ; then
+            continue
+        fi
+        msgattrib --translated --no-location "$i" --output="${i}.tmp"
+        mv "${i}.tmp" "$i"
+    done
+}

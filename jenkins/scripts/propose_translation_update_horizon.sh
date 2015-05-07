@@ -33,6 +33,10 @@ tx pull -f
 # Or else, "../manage.py makemessages" can be used.
 ./run_tests.sh --makemessages -V
 
+# Compress downloaded po files
+compress_non_en_po_files "horizon"
+compress_non_en_po_files "openstack_dashboard"
+
 # Add all changed files to git
 git add horizon/locale/* openstack_dashboard/locale/*
 
