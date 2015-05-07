@@ -95,6 +95,13 @@ def _find_images(basedir):
 
 
 def local_prep(distribution):
+    if os.path.exists('/usr/bin/yum'):
+        # --downloadonly is provided by the yum-plugin-downloadonly
+        # package which is a virtual package in newer releases but
+        # an optional package in older ones such as CentOS/RHEL 6.x,
+        # so install it just to be sure it will work
+        run_local(['sudo', 'yum', 'install', '-y', 'yum-plugin-downloadonly'])
+
     branches = []
     for branch in git_branches():
         # Ignore branches of the form 'somestring -> someotherstring'
