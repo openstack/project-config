@@ -3,7 +3,6 @@
     node: '{node}'
 
     builders:
-      - gerrit-git-prep
       - shell: |
           #!/bin/bash -eux
           cd ~
@@ -12,11 +11,11 @@
             openstack/diskimage-builder \
             openstack/dib-utils
 
-          export PATH=$PATH:$(pwd)/dib-utils/bin
-          export PATH=$PATH:$(pwd)/diskimage-builder/bin
+          export PATH=$PATH:$(pwd)/openstack/dib-utils/bin
+          export PATH=$PATH:$(pwd)/openstack/diskimage-builder/bin
 
-          ./diskimage-builder/tests/install_test_deps.sh
-          ./diskimage-builder/tests/run_functests.sh
+          ./openstack/diskimage-builder/tests/install_test_deps.sh
+          ./openstack/diskimage-builder/tests/run_functests.sh
 
     publishers:
       - console-log
