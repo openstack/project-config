@@ -1020,10 +1020,8 @@ jobs:
   # TODO(ihrachys): Enable again once the test is passing against icehouse
   - name: ^(gate|check)-swift-dsvm-functional
     branch: ^(?!stable/icehouse).*$
-  # TODO(kragniz): Enable voting when tests pass
   - name: ^(gate|check)-glanceclient-dsvm-functional
     branch: ^(?!stable/kilo).*$
-    voting: false
   - name: gate-kolla-bashate
     voting: false
   - name: ^(gate-)?devstack-publish-docs
@@ -2065,11 +2063,14 @@ projects:
       - name: pypy-jobs
       - name: lib-forward-testing
       - name: experimental-tripleo-jobs
+    check:
+      - check-glanceclient-dsvm-functional
+    gate:
+      - gate-glanceclient-dsvm-functional
     post:
       - python-glanceclient-coverage
     experimental:
       - gate-grenade-dsvm-forward
-      - check-glanceclient-dsvm-functional
 
 #TODO: add docs
   - name: openstack/python-heatclient
