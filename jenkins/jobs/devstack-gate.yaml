@@ -1942,6 +1942,41 @@
 
 
 - job-template:
+    name: '{pipeline}-tempest-dsvm-full-glusterfs{branch-designator}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=120
+          export DEVSTACK_GATE_TEMPEST=1
+          export PROJECTS="stackforge/devstack-plugin-glusterfs $PROJECTS"
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin devstack-plugin-glusterfs git://git.openstack.org/stackforge/devstack-plugin-glusterfs"
+
+          # Skip test_volume_boot_pattern test cases for GlusterFS until bug 1444806 is fixed.
+          # Below regex also exclude the slow tag.
+          # '557cd2c2-4eb8-4dce-98be-f86765ff311' is the idempotent id of 'test_volume_boot_pattern' test case.
+          r="^(?!(.*\[.*slow.*\])|(.*\[.*557cd2c2-4eb8-4dce-98be-f86765ff311.*\])).*$"
+          export DEVSTACK_GATE_TEMPEST_REGEX="$r"
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+
+- job-template:
     name: '{pipeline}-tempest-dsvm-trove{branch-designator}'
     node: '{node}'
 
@@ -2044,6 +2079,5 @@
       - '{pipeline}-tempest-dsvm-full-ceph{branch-designator}'
       - '{pipeline}-tempest-dsvm-nova-v21-full{branch-designator}'
       - '{pipeline}-tempest-dsvm-nova-v21-neutron-full{branch-designator}'
-      - '{pipeline}-tempest-dsvm-full-glusterfs{branch-designator}'
       - '{pipeline}-tempest-dsvm-trove{branch-designator}'
       - '{pipeline}-grenade-dsvm-trove{branch-designator}'
