@@ -617,424 +617,603 @@ jobs:
         all-files-match-any:
           - ^.*\.rst$
           - ^doc/.*$
+
   - name: gate-tempest-dsvm-full
     queue-name: integrated
+
   - name: gate-rally-dsvm-neutron-neutron
     voting: false
+
   - name: gate-rally-dsvm-neutron-unstable
     voting: false
+
   - name: gate-rally-dsvm-fakevirt-heat
     voting: false
+
   - name: gate-rally-tox-self
     voting: false
+
   - name: gate-rally-dsvm-designate-designate
     voting: false
+
   - name: gate-rally-dsvm-zaqar-zaqar
     voting: false
+
   - name: ^(gate|check)-zaqarclient-dsvm-functional
     voting: false
+
   - name: ^(gate|check)-tempest-dsvm-neutron-full$
     branch: ^(?!stable/icehouse).*$
+
   - name: ^(gate|check)-tempest-dsvm-neutron-pg-full$
     branch: ^(?!stable/icehouse).*$
+
   - name: ^(gate|check)-tempest-dsvm-neutron$
     branch: ^(stable/icehouse).*$
+
   - name: check-heat-dsvm-functional-mysql
     branch: ^(?!stable/(icehouse|juno)).*$
+
   - name: check-heat-dsvm-functional-postgres
     branch: ^(?!stable/icehouse).*$
     voting: false
+
   - name: ^(gate|check)-.*-python34$
     branch: ^(?!stable/icehouse).*$
+
     # Images for Icehouse do not contain python34
   - name: ^(gate|check)-.*-pypy$
     branch: ^(?!stable/icehouse).*$
+
     # Images for Icehouse do not contain pypy
   - name: ^(gate|check)-tempest-dsvm-cells$
     voting: false
+
   - name: ^(gate|check)-grenade-dsvm$
     branch: ^(?!stable/icehouse).*$
+
   - name: ^(gate|check)-grenade-dsvm-neutron$
     branch: ^(?!stable/(icehouse|juno)).*$
+
   - name: ^(gate|check)-grenade-dsvm-partial-ncpu$
     branch: ^(?!stable/icehouse).*$
+
   - name: ^(gate|check)-tempest-dsvm-ironic-pxe_ssh.*$
     branch: ^(?!stable/icehouse).*$
+
   - name: ^check-tempest-dsvm-ironic-parallel-nv$
     branch: ^(?!stable)
+
   - name: ^(gate|check)-grenade-dsvm-ironic-sideways.*$
     branch: ^(proposed/juno|stable/juno)$
+
     # only here until stable is votable, then merge
     # back to a single job
   - name: ^(gate|check)-grenade-dsvm-forward$
     branch: ^(stable/).*$
     voting: false
+
   - name: ^(gate|check)-grenade-dsvm-neutron-forward
     branch: ^(stable/).*$
     voting: false
+
   - name: check-tempest-dsvm-cells
     voting: false
+
   - name: check-devstack-dsvm-updown
     branch: ^(?!stable)
+
   - name: check-tempest-dsvm-f21
     branch: ^(?!stable)
     voting: false
+
   - name: check-tempest-dsvm-ec2api
     branch: ^(?!stable)
     voting: false
+
   - name: check-functional-neutron-dsvm-ec2api
     branch: ^(?!stable)
+
   - name: check-functional-nova-network-dsvm-ec2api
     branch: ^(?!stable)
+
   - name: gate-rally-dsvm-ec2-api-fakevirt
     voting: false
+
   - name: check-functional-dsvm-magnum
     branch: ^(?!stable)
     voting: false
+
   - name: check-tempest-dsvm-centos7
     branch: ^(?!stable/icehouse).*$
     voting: false
+
   - name: check-tempest-dsvm-multinode-full
     branch: ^(?!stable/(icehouse|juno)).*$
     voting: false
+
   - name: check-tempest-dsvm-neutron-multinode-full
     branch: ^(?!stable/(icehouse|juno)).*$
     voting: false
+
   - name: ^gate-designate-dsvm-.*$
     branch: ^(?!stable/icehouse).*$
+
   - name: gate-designate-dsvm-bind9
     branch: ^(?!stable/(?:icehouse|juno)).*$
+
   - name: ^(gate|check)-tempest-dsvm-networking-midonet
     branch: ^(?!stable/(icehouse|juno)).*$
     voting: false
+
   - name: ^(gate|check)-tempest-dsvm-networking-odl
     branch: ^(?!stable)
     voting: false
+
   - name: ^(check)-tempest-dsvm-networking-ovn
     branch: ^(?!stable)
     voting: false
+
   - name: ^(check)-tempest-dsvm-dragonflow
     branch: ^(?!stable/kilo).*$
     voting: false
+
   - name: ^check-neutron-fwaas-dsvm-functional$
     voting: false
+
   - name: ^(check|gate)-neutron-lbaas-dsvm-api$
     branch: ^(?!stable/(?:icehouse|juno)).*$
+
   - name: ^(gate|check)-group-based-policy-dsvm-functional$
     voting: false
+
 # For Gerrit ver 2.8.x and later (using buck)
   - name: ^.*gerrit.*buck$
     branch: ^openstack/(?!2\.4).*$
+
   - name: gate-oslo.messaging-dsvm-functional-rabbit
     branch: ^(?!stable/(icehouse|juno)).*$
+
   - name: gate-oslo.messaging-dsvm-functional-qpid
     branch: ^(?!stable/(icehouse|juno)).*$
+
   - name: gate-oslo.messaging-dsvm-functional-amqp1-f21
     branch: ^(?!stable/(icehouse|juno)).*$
+
   - name: gate-rally-dsvm-cinder
     voting: false
+
   - name: dev-zuul-coverage
     voting: false
+
   - name: jenkins-job-builder-compare-xml
     voting: false
     failure-message: XML output has changed.
     success-message: XML output is unchanged.
+
   - name: project-config-compare-xml
     voting: false
     failure-message: Jenkins XML output has changed.
     success-message: Jenkins XML output is unchanged.
+
   - name: gate-git-review-python34
     voting: false
+
   - name: gate-project-config-irc-access
     files:
       - 'accessbot/channels.yaml'
       - 'gerritbot/channels.yaml'
+
   - name: check-infra-docs-index
     files:
       - 'docs-site/.*'
       - 'tox.ini'
+
   - name: check-generate-specs-site
     files:
       - 'specs/.*'
       - 'tox.ini'
+
   - name: gate-project-config-projects-yaml
     files:
       - 'check_valid_gerrit_projects.py'
       - 'gerrit/projects.yaml'
       - 'tools/check_projects_yaml_alphabetized.sh'
       - 'tox.ini'
+
   - name: ^check-tripleo-.*$
     branch: ^master$
+
   - name: check-tripleo-ironic-overcloud-f20puppet-ha
     voting: false
+
 # Continous publishing from master of the following documentation targets:
   - name: ^.*manuals-upstream-translation-update$
     branch: master
+
   - name: ^.*-tox-doc-publishlang$
     branch: master
+
   - name: ^gate-.*-tox-doc-publish-checkbuild$
     success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/publish-docs/
+
   - name: ^gate-.*-tox-checklang$
     branch: master
     # Only run job if at least one po or pot file was changed
     files:
       - '^.*\.po$'
       - '^.*\.pot$'
+
   - name: ^gate-.*-tox-checklinks$
     branch: master
     voting: false
     files:
       - '^.*\.xml$'
+
   - name: ^gate-.*-tox-checksyntax$
     files:
       - '^.*\.po$'
       - '^.*\.pot$'
       - '^.*\.xml$'
+
   - name: ^gate-.*-docs$
     success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/doc/build/html/
+
   - name: ^gate-.*-js-draft
     parameter-function: set_node_options_default_trusty
     success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/dist/
+
   - name: ^gate-.*-npm-run-.*$
     voting: false
+
   - name: infra-publications-publish
     branch: ^(?!master).*$
+
   - name: ^gate-.*-requirements$
     failure-message: Incompatible requirement found; see https://wiki.openstack.org/wiki/Requirements
     files:
       - '^tools/.*-requires$'
       - '^.*requirements.txt$'
       - '^.*requirements-py[2,3].txt$'
+
   - name: barbican-coverage
     voting: false
+
   - name: designate-coverage
     voting: false
+
   - name: gate-barbican-dogtag-devstack-dsvm-f21
     voting: false
+
   - name: gate-barbican-tox-bandit
     voting: false
+
   - name: gate-congress-python34
     voting: false
+
   - name: gate-cloudkitty-dashboard-python34
     voting: false
+
   - name: gate-hacking-python34
     voting: false
+
   - name: gate-hacking-integration-nova
     voting: false
+
   - name: gate-elastic-recheck-tox-queries
     voting: false
+
   - name: gate-ironic-python34
     voting: false
+
   - name: gate-sahara-pylint
     voting: false
+
   - name: gate-sahara-tox-py27-scenario-unit
     voting: false
+
   - name: ^gate-sahara-buildimages.*$
     branch: ^master$
     voting: false
+
   - name: ^(gate|check)-sahara-extra-artifacts$
     branch: ^(?!stable/(icehouse|juno|kilo)).*$
     voting: false
+
   - name: ^(gate|check)-sahara-tox-py27-scenario-unit$
     branch: ^(?!stable/(icehouse|juno)).*$
+
   - name: gate-kite-python34
     voting: false
+
   - name: ^(gate|check)-tempest-master
     voting: false
+
   - name: gate-keystone-tox-bandit
     branch: master
     voting: false
+
   - name: gate-rally-dsvm-keystone
     branch: ^(?!stable/icehouse).*$
     voting: false
+
   - name: gate-rally-dsvm-glance
     voting: false
+
   - name: gate-python-magnumclient-tox-bandit
     voting: false
+
   - name: gate-requirements-pypy
     branch: ^(?!stable/icehouse).*$
+
   - name: gate-python-troveclient-pypy
     voting: false
+
   - name: gate-magnetodb-requirements
     voting: false
+
   - name: gate-magnetodb-cassandra-tox
     voting: false
+
   - name: gate-rally-dsvm-mistral-task
     voting: false
+
   - name: gate-magnum-tox-bandit
     branch: ^(?!stable/(icehouse|juno)).*$
     voting: false
+
   - name: gate-mistral-python34
     voting: false
+
   - name: gate-mistral-devstack-dsvm
     voting: false
+
   - name: gate-mistral-dashboard-python34
     voting: false
+
   - name: gate-mistral-extra-python34
     voting: false
+
   - name: python-jenkins-coverage
     voting: false
+
   - name: gate-python-mistralclient-python34
     voting: false
+
   - name: gate-python-muranoclient-python34
     voting: false
+
   - name: gate-murano-requirements
     voting: false
+
   - name: gate-murano-congress-devstack-dsvm
     voting: false
+
+
   - name: gate-murano-agent-requirements
     voting: false
+
   - name: gate-murano-pylint
     voting: false
+
   - name: gate-python-muranoclient-requirements
     voting: false
+
   - name: gate-murano-dashboard-requirements
     voting: false
+
   - name: gate-yaql-python34
     voting: false
+
   - name: gate-oslo.messaging-python34
     branch: ^(?!stable/(?:icehouse|juno|kilo)).*$
+
   - name: gate-oslo.vmware-python34
     voting: false
+
   - name: gate-solum-infra-guestagent-python34
     voting: false
+
   - name: gate-solum-infra-guestagent-pypy
     voting: false
+
   - name: gate-solum-pypy
     voting: false
+
   - name: gate-solum-requirements
     voting: false
+
   - name: gate-solum-python34
     voting: false
+
   - name: gate-solum-devstack-dsvm-centos7
     voting: false
+
   - name: gate-reviewstats-python34
     voting: false
+
   - name: gate-refstack-python34
     voting: false
+
   - name: gate-dox-python34
     voting: false
+
   - name: ^(gate|check)-sqlalchemy-migrate-devstack-dsvm$
     voting: false
+
   - name: gate-sqlalchemy-migrate-pep8
     voting: false
+
   - name: gate-sqlalchemy-migrate-python34
     voting: false
+
   - name: gate-manila-pylint
     voting: false
+
   - name: gate-manila-tempest-dsvm-neutron-postgres
     voting: false
+
   - name: gate-manila-tempest-dsvm-neutron-no-share-servers
     voting: false
+
   - name: gate-manila-tempest-dsvm-neutron-scenario
     voting: false
+
   - name: gate-blazar-devstack-dsvm
     voting: false
+
   - name: gate-blazar-pylint
     voting: false
+
   - name: check-storyboard-js-integration
     voting: false
+
   - name: check-tempest-dsvm-docker
     voting: false
+
   - name: check-tempest-dsvm-docker-centos7
     voting: false
+
   - name: ^(gate|check)-neutron-dsvm-api$
     branch: ^(?!stable/(icehouse|juno)).*$
+
   - name: check-tempest-dsvm-neutron-dvr
     branch: ^(?!stable/icehouse).*$
     voting: false
+
   - name: gate-trove-buildimage-mysql
     voting: false
+
   - name: gate-trove-buildimage-mongodb
     voting: false
+
   - name: gate-trove-buildimage-percona
     voting: false
+
   - name: gate-trove-functional-dsvm-mongodb
     voting: false
+
   - name: gate-trove-functional-dsvm-mysql
     branch: ^(?!stable/icehouse).*$
+
   - name: gate-trove-functional-dsvm-percona
     voting: false
+
   - name: gate-anchor-tox-bandit
     branch: master
     voting: false
+
   # Run trove checkbuild and checklinks only for changes to files in directory
   # apidocs/ .
   - name: gate-trove-tox-doc-publish-checkbuild
     files:
       - '^apidocs/.*$'
+
   - name: gate-trove-tox-checklinks
     files:
       - '^apidocs/.*$'
+
   - name: check-tempest-dsvm-full-ceph
     branch: ^(?!stable/(icehouse|juno)).*$
+
   - name: gate-tempest-dsvm-full-ceph
     branch: ^(?!stable/(icehouse|juno)).*$
+
   - name: gate-tomograph-python34
     voting: false
+
   - name: gate-cliff-requirements
     voting: false
+
   - name: gate-heat-cfntools-python34
     voting: false
+
   - name: gate-heat-templates-dsvm
+
   - name: gate-heat-templates-pep8
+
   - name: gate-heat-templates-python26
+
   - name: gate-heat-templates-python27
+
   - name: gate-swift-tox-func
     branch: ^(?!stable/icehouse).*$
     voting: false
+
   # Swift log publishing details
   - name: ^experimental-swift-logs.*$
     swift:
       - name: logs
+
   - name: ^(gate|check)-pecan-tox-ceilometer-stable
     voting: false
+
   - name: ^(gate|check)-pecan-tox-designate-stable
     voting: false
+
   - name: ^(gate|check)-pecan-tox-ironic-stable
     voting: false
+
   - name: gate-horizon-jshint
     branch: ^(?!stable/icehouse).*$
+
   - name: gate-tempest-dsvm-ceilometer-mongodb-full
     branch: ^(?!stable/icehouse).*$
     voting: false
+
   - name: gate-tempest-dsvm-ceilometer-es
     branch: ^(?!stable/(icehouse|juno)).*$
+
   - name: gate-tempest-dsvm-ceilometer-es-full
     branch: ^(?!stable/(icehouse|juno)).*$
+
   - name: gate-ceilometer-python34
     branch: ^master$
+
   - name: gate-nova-pip-missing-reqs
     voting: false
+
   - name: gate-nova-tox-functional
     branch: ^(?!stable/(icehouse|juno)).*$
+
   - name: gate-oslo.db-tox-sqla_08
     branch: ^stable/juno$
+
   - name: gate-horizon-dsvm-integration
     branch: ^(?!stable/(icehouse|juno)).*$
     voting: false
+
   - name: check-swiftclient-dsvm-functional
     branch: ^(?!stable/kilo).*$
+
   # TODO(ihrachys): Enable again once the test is passing against icehouse
   - name: ^(gate|check)-swift-dsvm-functional
     branch: ^(?!stable/icehouse).*$
+
   - name: ^(gate|check)-glanceclient-dsvm-functional
     branch: ^(?!stable/kilo).*$
+
   - name: gate-kolla-bashate
     voting: false
+
   - name: ^(gate-)?devstack-publish-docs
     branch: ^master
+
   # TODO(emilienm): Enable voting when all tests pass for all modules
   - name: ^gate-puppet-.*-puppet-unit-4.0$
     voting: false
+
   # Beaker tests have been introduced after Juno release
   - name: ^gate-puppet-.*-puppet-beaker-rspec-dsvm-.*$
     branch: ^(?!stable/(havana|icehouse|juno)).*$
     voting: false
+
   - name: ^gate-puppet-.*-puppet-syntax-future$
     branch: ^(?!stable/(havana|icehouse)).*$
+
   - name: ^(gate|check)-tempest-dsvm-nova-v21-full$
     branch: ^(?!stable/(icehouse|juno)).*$
+
   - name: ^(gate|check)-tempest-dsvm-nova-v21-neutron-full$
     branch: ^(?!stable/(icehouse|juno)).*$
     voting: false
@@ -1043,79 +1222,112 @@ jobs:
       - '^nova/api/openstack/compute/plugins/v3/.*$'
       - '^nova/api/openstack/compute/schemas/v3/.*$'
       - '^tempest/api/network/.*$'
+
   # TODO(yamamoto): Revisit when Neutron driver API become more stable.
   - name: gate-networking-ofagent-python27
     voting: false
+
   # NOTE(jroll): This job was not working at Juno release.
   - name: ^(gate|check)-tempest-dsvm-ironic-agent_ssh$
     branch: ^(?!stable/(icehouse|juno)).*$
+
   # Python 2.6 deprecation
   - name: gate-barbican-python26
     branch: ^stable/(icehouse|juno)$
+
   - name: gate-ceilometer-python26
     branch: ^stable/(icehouse|juno)$
+
   - name: gate-cinder-python26
     branch: ^stable/(icehouse|juno)$
+
   - name: gate-designate-python26
     branch: ^stable/(icehouse|juno)$
+
   - name: gate-django_openstack_auth-python26
     branch: ^stable/(icehouse|juno)$
+
   - name: gate-glance-python26
     branch: ^stable/(icehouse|juno)$
+
   - name: gate-heat-python26
     branch: ^stable/(icehouse|juno)$
+
   - name: gate-horizon-python26
     branch: ^stable/(icehouse|juno)$
+
   - name: gate-ironic-python26
     branch: ^stable/(icehouse|juno)$
+
   - name: gate-keystone-python26
     branch: ^stable/(icehouse|juno)$
+
   - name: gate-manila-python26
   # manila has only a Juno branch
     branch: ^stable/juno$
+
   - name: gate-neutron-python26
     branch: ^stable/(icehouse|juno)$
+
   - name: gate-nova-python26
     branch: ^stable/(icehouse|juno)$
+
   - name: gate-sahara-python26
     branch: ^stable/(icehouse|juno)$
+
   # sahara-dashboard has only an Icehouse branch
   - name: gate-sahara-dashboard-python26
     branch: ^stable/icehouse$
+
   - name: gate-swift-python26
     branch: ^stable/(icehouse|juno)$
+
   - name: gate-trove-python26
     branch: ^stable/(icehouse|juno)$
+
   - name: gate-tuskar-python26
     branch: ^stable/(icehouse|juno)$
+
   - name: gate-tuskar-ui-python26
     branch: ^stable/(icehouse|juno)$
+
   - name: gate-zaqar-python26
     branch: ^stable/(icehouse|juno)$
+
   - name: gate-murano-python26
     branch: ^stable/(icehouse|juno)$
+
   - name: gate-murano-agent-python26
     branch: ^stable/(icehouse|juno)$
+
   - name: gate-murano-dashboard-python26
     branch: ^stable/(icehouse|juno)$
   # End of Python 2.6 depreciation
+
   # Training guides begin
   # Build XML files only on Icehouse
   - name: gate-training-guides-tox-checklinks
     branch: ^stable/icehouse$
+
   - name: gate-training-guides-tox-checkniceness
     branch: ^stable/icehouse$
+
   - name: gate-training-guides-tox-checksyntax
     branch: ^stable/icehouse$
+
   - name: gate-training-guides-tox-checkdeletions
     branch: ^stable/icehouse$
+
   - name: training-guides-tox-doc-publishdocs
     branch: ^stable/icehouse$
+
   - name: gate-training-guides-tox-doc-publish-checkbuild
     branch: ^stable/icehouse$
+
   # slides job will not run on icehouse, only newer releases and master
   - name: gate-training-guides-tox-slides
     branch: ^(?!stable/icehouse).*$
+
   # Training guides end
   # os-ansible-deployment skip for rst/doc files
   - name: ^os-ansible-deployment-(dsvm-check-commit|check-lint)$
@@ -1124,15 +1336,19 @@ jobs:
         all-files-match-any:
           - ^.*\.rst$
           - ^doc/.*
+
   # Keystoneclient added functional testing in Kilo
   - name: ^(gate|check)-keystoneclient-dsvm-functional$
     branch: ^(?!stable/(?:icehouse|juno)).*$
+
   # Ceilometerclient added functional testing in master only
   - name: ^(gate|check)-ceilometerclient-dsvm-functional$
     branch: ^(?!stable/(?:icehouse|juno|kilo)).*$
+
   # Saharaclient python 3.4 tests don't run on kilo or earlier
   - name: ^(gate|check)-python-saharaclient-python34$
     branch: ^(?!stable/(?:icehouse|juno|kilo)).*$
+
   # Saharaclient functional test don't run on kilo or earlier
   - name: ^(gate|check)-saharaclient-dsvm-functional$
     branch: ^(?!stable/(?:icehouse|juno|kilo)).*$
