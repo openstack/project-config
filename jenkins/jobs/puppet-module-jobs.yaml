@@ -47,9 +47,14 @@
           ssh-keygen -f ~/.ssh/id_rsa -b 2048 -C "beaker key" -P ""
           sudo mkdir -p /root/.ssh
           cat ~/.ssh/id_rsa.pub | sudo tee -a /root/.ssh/authorized_keys
-          sudo service ssh restart
+          if [ -f /usr/bin/yum ]; then
+              sudo systemctl restart sshd
+          elif [ -f /usr/bin/apt-get ]; then
+              sudo service ssh restart
+          fi
       - revoke-sudo
       - shell: |
+          sudo gem install bundler --no-rdoc --no-ri --verbose
           mkdir .bundled_gems
           export GEM_HOME=`pwd`/.bundled_gems
           bundle install
