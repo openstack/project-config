@@ -23,13 +23,18 @@
 
 
 - job-template:
-    name: 'gate-{name}-puppet-beaker-rspec'
-    node: '{node}'
+    name: 'gate-{name}-puppet-beaker-rspec-dsvm-{ostype}'
+    node: 'devstack-{ostype}'
 
     builders:
       - uninstall-puppet
       - shell: |
-          sudo apt-get install -y libxml2-dev libxslt-dev
+          if [ -f /usr/bin/yum ]; then
+              sudo yum -y install libxml2-devel libxslt-devel ruby-devel
+              sudo yum -y groupinstall "Development Tools"
+          elif [ -f /usr/bin/apt-get ]; then
+              sudo apt-get install -y libxml2-dev libxslt-dev
+          fi
       - gerrit-git-prep
       - shell: |
           echo "" | sudo tee -a /etc/ssh/sshd_config
@@ -141,3 +146,11 @@
       - 4.0
     jobs:
       - 'gate-{name}-puppet-unit-{puppet_version}'
+
+- job-group:
+    name: 'puppet-beaker-jobs'
+    ostype:
+      - trusty
+      - centos7
+    jobs:
+      - 'gate-{name}-puppet-beaker-rspec-dsvm-{ostype}'

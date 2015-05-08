@@ -141,7 +141,12 @@
 - builder:
     name: uninstall-puppet
     builders:
-      - shell: "sudo apt-get remove -y --purge facter puppet puppet-common"
+      - shell: |
+          if [ -f /usr/bin/yum ]; then
+              sudo yum -y remove facter puppet
+          elif [ -f /usr/bin/apt-get ]; then
+              sudo apt-get remove -y --purge facter puppet puppet-common
+          fi
 
 - builder:
     name: puppet-lint
