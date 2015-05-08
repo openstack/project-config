@@ -7,6 +7,11 @@
       - shell: |
           #!/bin/bash -eux
           cd ~
+
+          # Work around a bug where we get a disconnected HEAD ref if we dont clone with git first
+          git clone file:///opt/git/openstack/diskimage-builder openstack/diskimage-builder
+          git clone file:///opt/git/openstack/dib-utils openstack/dib-utils
+
           /usr/zuul-env/bin/zuul-cloner --cache-dir /opt/git \
             git://git.openstack.org \
             openstack/diskimage-builder \
