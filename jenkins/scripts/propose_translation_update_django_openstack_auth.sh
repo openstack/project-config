@@ -20,6 +20,9 @@ setup_git
 
 setup_review
 
+# Setup basic connection for transifex.
+setup_translation
+
 setup_django_openstack_auth
 
 # Download new files that are at least 75 % translated.
