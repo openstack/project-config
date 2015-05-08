@@ -1138,6 +1138,13 @@ jobs:
   # Saharaclient functional test don't run on kilo or earlier
   - name: ^(gate|check)-saharaclient-dsvm-functional$
     branch: ^(?!stable/(?:icehouse|juno|kilo)).*$
+  # Make pypy support in oslo non-voting until the job is fixed.
+  - name: ^(gate|check)-oslo.*-pypy$
+    voting: false
+  - name: ^(gate|check)-cliff-pypy$
+    voting: false
+  - name: ^(gate|check)-stevedore-pypy$
+    voting: false
 
 # The project list is grouped by type of project, and within each
 # group, projects are sorted (mostly) alphabetically.
