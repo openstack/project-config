@@ -18,7 +18,22 @@
 
 # Copy the nodepools scripts into the image
 
+# This is 99 because it needs to depend on source-repositories having been
+# run, because the default fallthrough location for the nodepool scripts
+# is the git repo that's been cloned into the image.
+
+# During a nodepool run, it's expected that NODEPOOL_SCRIPTDIR is set, in
+# which case ordering doesn't matter - but for a developer hacking locally
+# who is not hacking on those scripts, it's an imposition to make them
+# set an env var.
+
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
 set -eu
+set -o pipefail
+
+NODEPOOL_SCRIPTDIR=${NODEPOOL_SCRIPTDIR:-$TMP_MOUNT_PATH/opt/git/openstack-infra/project-config/nodepool/scripts}
 
 sudo cp -a $NODEPOOL_SCRIPTDIR $TMP_MOUNT_PATH/opt/nodepool-scripts
 sudo chmod -R a+rx $TMP_MOUNT_PATH/opt/nodepool-scripts
