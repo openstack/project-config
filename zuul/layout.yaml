@@ -661,14 +661,18 @@ jobs:
     branch: ^(?!stable/icehouse).*$
     voting: false
 
+    # Images for Icehouse do not contain python34
   - name: ^(gate|check)-.*-python34$
     branch: ^(?!stable/icehouse).*$
 
-    # Images for Icehouse do not contain python34
+    # Images for Icehouse do not contain pypy
+    #
+    # BUG #1290562 pypy does work with new setuptools, so is breaking
+    # all jobs. Disable until there is resolution.
   - name: ^(gate|check)-.*-pypy$
     branch: ^(?!stable/icehouse).*$
+    voting: false
 
-    # Images for Icehouse do not contain pypy
   - name: ^(gate|check)-tempest-dsvm-cells$
     voting: false
 
@@ -948,9 +952,6 @@ jobs:
 
   - name: gate-python-magnumclient-tox-bandit
     voting: false
-
-  - name: gate-requirements-pypy
-    branch: ^(?!stable/icehouse).*$
 
   - name: gate-python-troveclient-pypy
     voting: false
@@ -1361,13 +1362,6 @@ jobs:
   # Saharaclient functional test don't run on kilo or earlier
   - name: ^(gate|check)-saharaclient-dsvm-functional$
     branch: ^(?!stable/(?:icehouse|juno|kilo)).*$
-  # Make pypy support in oslo non-voting until the job is fixed.
-  - name: ^(gate|check)-oslo.*-pypy$
-    voting: false
-  - name: ^(gate|check)-cliff-pypy$
-    voting: false
-  - name: ^(gate|check)-stevedore-pypy$
-    voting: false
 
 # The project list is grouped by type of project, and within each
 # group, projects are sorted (mostly) alphabetically.
