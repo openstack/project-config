@@ -1756,12 +1756,18 @@
     name: requirements-jobs
 
     jobs:
-      - '{pipeline}-requirements-integration-dsvm':
+      - '{pipeline}-requirements-integration-dsvm{variant}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-      - '{pipeline}-requirements-integration-dsvm':
+          variant: ''
+      - '{pipeline}-requirements-integration-dsvm{variant}':
           pipeline: check
           node: 'devstack-precise || devstack-trusty'
+          variant: ''
+      - '{pipeline}-requirements-integration-dsvm{variant}':
+          pipeline: check
+          node: 'devstack-precise || devstack-trusty'
+          variant: '-resolver'
       - '{pipeline}-pbr-installation-dsvm{variant}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
