@@ -1,0 +1,13 @@
+- job:
+    name: 'gate-bifrost'
+    node: 'bare-trusty'
+
+    builders:
+      - link-logs
+      - net-info
+      - gerrit-git-prep
+      - shell: |
+          scripts/test-bifrost.sh
+
+    publishers:
+      - console-log
