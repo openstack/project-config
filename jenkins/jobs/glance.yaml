@@ -34,3 +34,46 @@
       - test-results
       - devstack-logs
       - console-log
+
+- job-template:
+    name: '{pipeline}-glance_store-dsvm-functional-{driver}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 65
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=60
+          export BRANCH_OVERRIDE={branch-override}
+          export DEVSTACK_PROJECT_FROM_GIT=glance_store
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+
+          function gate_hook {{
+              cd $BASE/new/glance_store/glance_store/tests/functional/gate
+              ./gate_hook.sh {driver}
+          }}
+          export -f gate_hook
+
+          function post_test_hook {{
+              cd $BASE/new/glance_store/glance_store/tests/functional/gate
+              ./post_test_hook.sh {driver}
+          }}
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - test-results
+      - devstack-logs
+      - console-log
