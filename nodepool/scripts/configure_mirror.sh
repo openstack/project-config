@@ -19,6 +19,7 @@
 source /etc/nodepool/provider
 
 NODEPOOL_PYPI_MIRROR=${NODEPOOL_PYPI_MIRROR:-http://pypi.$NODEPOOL_REGION.openstack.org/simple}
+NODEPOOL_GEM_MIRROR=${NODEPOOL_GEM_MIRROR:-http://gem.$NODEPOOL_REGION.openstack.org}
 
 sudo sed -i -e "s,^index-url = .*,index-url = $NODEPOOL_PYPI_MIRROR," /etc/pip.conf
 
@@ -27,10 +28,21 @@ cat >/home/jenkins/.pydistutils.cfg <<EOF
 index_url = $NODEPOOL_PYPI_MIRROR
 EOF
 
+cat >/home/jenkins/.gemrc <<EOF
+---
+:backtrace: false
+:bulk_threshold: 1000
+:sources:
+- $NODEPOOL_GEM_MIRROR
+:update_sources: true
+:verbose: true
+EOF
+
 # Double check that when the node is made ready it is able
 # to resolve names against DNS.
 host git.openstack.org
 host pypi.${NODEPOOL_REGION}.openstack.org
+host gem.${NODEPOOL_REGION}.openstack.org
 
 LSBDISTID=$(lsb_release -is)
 LSBDISTCODENAME=$(lsb_release -cs)
