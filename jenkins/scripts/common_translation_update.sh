@@ -319,7 +319,8 @@ function filter_commits {
     # comment lines, or diff file information.
     # Also, don't send files if only .pot files would be changed.
     PO_CHANGE=0
-    for f in `git diff --cached --name-only`; do
+    # Don't iterate over deleted files
+    for f in `git diff --cached --name-only --diff-filter=AM`; do
         # It's ok if the grep fails
         set +e
         changed=$(git diff --cached "$f" \
