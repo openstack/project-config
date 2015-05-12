@@ -165,10 +165,13 @@ exit 0
 EOF
 
 # Make all cloud-init data sources match rackspace- only attempt to look
-# at ConfigDrive, not at metadata service
+# at ConfigDrive, not at metadata service. This is not needed if there
+# is no cloud-init
+if [ -d /etc/cloud/cloud.cfg.d ] ; then
 sudo dd of=/etc/cloud/cloud.cfg.d/95_real_datasources.cfg <<EOF
 datasource_list: [ ConfigDrive, None ]
 EOF
+fi
 
 sudo bash -c "echo 'include: /etc/unbound/forwarding.conf' >> /etc/unbound/unbound.conf"
 if [ -e /etc/init.d/unbound ] ; then
