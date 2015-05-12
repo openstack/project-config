@@ -13,7 +13,10 @@
 # implied.
 
 # Make all cloud-init data sources match rackspace- only attempt to look
-# at ConfigDrive, not at metadata service
-dd of=/etc/cloud/cloud.cfg.d/95_real_datasources.cfg <<EOF
+# at ConfigDrive, not at metadata service. This is not needed if there
+# is no cloud-init
+if [ -d /etc/cloud/cloud.cfg.d ] ; then
+    dd of=/etc/cloud/cloud.cfg.d/95_real_datasources.cfg <<EOF
 datasource_list: [ ConfigDrive, None ]
 EOF
+fi
