@@ -1,0 +1,46 @@
+- job-template:
+    name: 'gate-cue-integration-dsvm-{broker}'
+    node: 'devstack-precise || devstack-trusty'
+
+    wrappers:
+      - build-timeout:
+          timeout: 105
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=100
+          export DEVSTACK_GATE_INSTALL_TESTONLY=1
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_TEMPEST_NOTESTS=1
+          export PROJECTS="stackforge/cue stackforge/python-cueclient $PROJECTS"
+
+          function gate_hook {{
+              cd /opt/stack/new/cue/tests
+              ./gate_hook.sh {broker}
+          }}
+          export -f gate_hook
+
+          function pre_test_hook {{
+              cd /opt/stack/new/cue/tests
+              ./pre_test_hook.sh {broker}
+          }}
+          export -f pre_test_hook
+
+          function post_test_hook {{
+              cd /opt/stack/new/cue/tests
+              ./post_test_hook.sh {broker}
+          }}
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
