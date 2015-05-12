@@ -95,13 +95,6 @@ def _find_images(basedir):
 
 
 def local_prep(distribution):
-    if os.path.exists('/usr/bin/yum'):
-        # --downloadonly is provided by the yum-plugin-downloadonly
-        # package which is a virtual package in newer releases but
-        # an optional package in older ones such as CentOS/RHEL 6.x,
-        # so install it just to be sure it will work
-        run_local(['sudo', 'yum', 'install', '-y', 'yum-plugin-downloadonly'])
-
     branches = []
     for branch in git_branches():
         # Ignore branches of the form 'somestring -> someotherstring'
@@ -168,6 +161,14 @@ def cache_debs(debs, uca_pocket=None):
 def main():
     distribution = sys.argv[1]
 
+    if (os.path.exists('/etc/redhat-release') and
+            open('/etc/redhat-release').read().startswith("CentOS release 6")):
+        # --downloadonly is provided by the yum-plugin-downloadonly package
+        # on CentOS 6.x
+        centos6 = True
+        run_local(['sudo', 'yum', 'install', '-y', 'yum-plugin-downloadonly'])
+    else:
+        centos6 = False
     branches = local_prep(distribution)
     image_filenames = []
     for branch_data in branches:
@@ -176,8 +177,17 @@ def main():
             for uca in sorted(UCA_POCKETS):
                 cache_debs(branch_data['debs'], uca)
         elif branch_data.get('rpms'):
-            run_local(['sudo', 'yum', 'install', '-y', '--downloadonly'] +
-                      branch_data['rpms'])
+            if centos6:
+                # some packages may depend on python-setuptools, which is not
+                # installed and cannot be reinstalled on CentOS 6.x once yum
+                # has erased them, so use --skip-broken to avoid aborting; also
+                # on this platform --downloadonly causes yum to return nonzero
+                # even when it succeeds, so ignore its exit code
+                run_local(['sudo', 'yum', 'install', '-y', '--downloadonly',
+                          '--skip-broken'] + branch_data['rpms'])
+            else:
+                run_local(['sudo', 'yum', 'install', '-y', '--downloadonly'] +
+                          branch_data['rpms'])
         else:
             sys.exit('No supported package data found.')
 
