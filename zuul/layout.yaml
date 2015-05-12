@@ -1206,6 +1206,12 @@ jobs:
   - name: ^(gate|check)-glanceclient-dsvm-functional
     branch: ^(?!stable/kilo).*$
 
+  # TODO(kragniz): Enable voting for each driver when the jobs are
+  # functioning for that driver
+  - name: ^(gate|check)-glance_store-dsvm-functional.*$
+    branch: ^(?!stable/kilo).*$
+    voting: false
+
   - name: gate-kolla-bashate
     voting: false
 
@@ -1598,6 +1604,8 @@ projects:
       - name: publish-to-pypi
       - name: lib-forward-testing
       - name: experimental-tripleo-jobs
+    experimental:
+      - gate-glance_store-dsvm-functional-filesystem
 
   - name: openstack/gnocchi
     template:
