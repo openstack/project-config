@@ -4718,26 +4718,24 @@ projects:
 
   - name: openstack-infra/storyboard
     template:
+      - name: infra-publish-jobs
       - name: merge-check
       - name: publish-to-pypi
       - name: python3-jobs
     check:
       - gate-storyboard-pep8
-      - gate-storyboard-docs
       - gate-storyboard-python27
       - check-storyboard-js-integration
     gate:
-      - gate-storyboard-docs
       - gate-storyboard-pep8
       - gate-storyboard-python27
     post:
-      - storyboard-docs
       - storyboard-branch-tarball
       - storyboard-coverage
     pre-release:
-      - storyboard-docs
+      - storyboard-infra-docs
     release:
-      - storyboard-docs
+      - storyboard-infra-docs
 
   - name: openstack-infra/storyboard-webclient
     template:
