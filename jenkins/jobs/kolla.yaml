@@ -7,7 +7,9 @@
       - net-info
       - gerrit-git-prep
       - shell: |
-          'tools/pre-commit-hook'
+          #!/bin/bash -xe
+          tests/setup_docker.sh
+          tox -e images
 
     publishers:
       - console-log
