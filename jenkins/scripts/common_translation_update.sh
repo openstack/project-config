@@ -316,7 +316,7 @@ function filter_commits {
 
     # Don't send files where the only things which have changed are
     # the creation date, the version number, the revision date,
-    # comment lines, or diff file information.
+    # name of last translator, comment lines, or diff file information.
     # Also, don't send files if only .pot files would be changed.
     PO_CHANGE=0
     # Don't iterate over deleted files
@@ -324,10 +324,10 @@ function filter_commits {
         # It's ok if the grep fails
         set +e
         changed=$(git diff --cached "$f" \
-            | egrep -v "(POT-Creation-Date|Project-Id-Version|PO-Revision-Date)" \
+            | egrep -v "(POT-Creation-Date|Project-Id-Version|PO-Revision-Date|Last-Translator)" \
             | egrep -c "^([-+][^-+#])")
         added=$(git diff --cached "$f" \
-            | egrep -v "(POT-Creation-Date|Project-Id-Version|PO-Revision-Date)" \
+            | egrep -v "(POT-Creation-Date|Project-Id-Version|PO-Revision-Date|Last-Translator)" \
             | egrep -c "^([+][^+#])")
         set -e
         if [ $changed -eq 0 ]; then
