@@ -36,4 +36,9 @@ git add openstack_auth/locale/*
 if ! git diff-index --quiet HEAD --; then
     # Push .pot changes to transifex
     tx --debug --traceback push -s
+
+    # And zanata, if we have an XML file.
+    if [ -f zanata.xml ]; then
+        zanata-cli -B -e push
+    fi
 fi
