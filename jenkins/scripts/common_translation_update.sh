@@ -189,10 +189,7 @@ EOF
         # Disable -e temporarily to get around the read.
         set +e
         read -d '' COMMIT_MSG <<EOF
-Imported Translations from Transifex
-
-For more information about this automatic import see:
-https://wiki.openstack.org/wiki/Translations/Infrastructure
+$COMMIT_MSG
 
 Change-Id: $change_id
 EOF
