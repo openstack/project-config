@@ -14,6 +14,8 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+source /usr/local/jenkins/slave_scripts/common.sh
+
 # Used for setup.py babel commands
 QUIET="--quiet"
 
@@ -154,13 +156,6 @@ function setup_manuals {
         fi
     done
 
-}
-
-# Setup git so that git review works
-function setup_git {
-    git config user.name "OpenStack Proposal Bot"
-    git config user.email "openstack-infra@lists.openstack.org"
-    git config gitreview.username "proposal-bot"
 }
 
 # Setup project so that git review works, sets global variable
