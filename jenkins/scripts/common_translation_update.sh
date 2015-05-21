@@ -182,7 +182,7 @@ EOF
     # in the commit msg.
     change_info=`ssh -p 29418 proposal-bot@review.openstack.org gerrit query --current-patch-set status:open project:$FULL_PROJECT topic:transifex/translations owner:proposal-bot`
     previous=`echo "$change_info" | grep "^  number:" | awk '{print $2}'`
-    if [ "x${previous}" != "x" ] ; then
+    if [ -n "$previous" ]; then
         change_id=`echo "$change_info" | grep "^change" | awk '{print $2}'`
         # Read returns a non zero value when it reaches EOF. Because we use a
         # heredoc here it will always reach EOF and return a nonzero value.
@@ -205,7 +205,7 @@ EOF
     # update it will always get sniped out of the gate by another.
     # It also helps, when you approve close to the time this job is
     # run.
-    if [ "x${previous}" != "x" ] ; then
+    if [ -n "$previous" ]; then
         # Use the JSON format since it is very compact and easy to grep
         change_info=`ssh -p 29418 proposal-bot@review.openstack.org gerrit query --current-patch-set --format=JSON $change_id`
         # Check for:
