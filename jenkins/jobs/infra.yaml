@@ -114,3 +114,27 @@
 
     publishers:
       - console-log
+
+- job:
+    name: publish-irc-meeting-ical
+    node: 'bare-precise || bare-trusty'
+
+    builders:
+      - revoke-sudo
+      - gerrit-git-prep
+      - tox:
+          envlist: 'ical'
+
+    publishers:
+      - zuul-swift-upload-console-log
+      - scp:
+          site: 'eavesdrop.openstack.org'
+          files:
+            - target: 'irc-meetings.ical'
+              source: 'output.ical'
+              keep-hierarchy: true
+              copy-after-failure: false
+            - target: 'index.html'
+              source: 'output.html'
+              keep-hierarchy: true
+              copy-after-failure: false
