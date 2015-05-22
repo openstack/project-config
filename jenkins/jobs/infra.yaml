@@ -138,3 +138,17 @@
               source: 'output.html'
               keep-hierarchy: true
               copy-after-failure: false
+
+- job:
+    name: gate-irc-meetings-tox-ical
+    node: 'bare-precise || bare-trusty'
+
+    builders:
+      - revoke-sudo
+      - gerrit-git-prep
+      - tox:
+          envlist: 'ical'
+
+    publishers:
+      - zuul-swift-upload-logs-with-console:
+          upload_source: 'output.ical output.html'
