@@ -602,6 +602,22 @@
           #!/bin/sh
           [ -f /etc/nodepool/uuid ] && echo "Node UUID: $(cat /etc/nodepool/uuid)"
 
+- builder:
+    name: bundle-install
+    builders:
+      - shell: |
+          mkdir .bundled_gems
+          export GEM_HOME=`pwd`/.bundled_gems
+          bundle install
+
+- builder:
+    name: exec-rake
+    builders:
+      - shell: |
+          mkdir -p .bundled_gems
+          export GEM_HOME=`pwd`/.bundled_gems
+          bundle exec rake
+
 
 # ======================================================================
 
