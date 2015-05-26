@@ -116,7 +116,7 @@
       - console-log
 
 - job:
-    name: publish-irc-meeting-ical
+    name: irc-meetings-publish
     node: 'bare-precise || bare-trusty'
 
     builders:
@@ -130,13 +130,8 @@
       - scp:
           site: 'eavesdrop.openstack.org'
           files:
-            - target: 'irc-meetings.ical'
-              source: 'output.ical'
-              keep-hierarchy: true
-              copy-after-failure: false
-            - target: 'index.html'
-              source: 'output.html'
-              keep-hierarchy: true
+            - target: '/'
+              source: 'output/*'
               copy-after-failure: false
 
 - job:
