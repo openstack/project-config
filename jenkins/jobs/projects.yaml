@@ -4049,9 +4049,12 @@
     name: magnum
     node: 'bare-precise || bare-trusty'
     tarball-site: tarballs.openstack.org
+    doc-publisher-site: docs.openstack.org
 
     jobs:
       - python-jobs
+      - openstack-publish-jobs
+      - translation-jobs
       - '{pipeline}-functional-dsvm-magnum{branch-designator}':
           pipeline: check
           node: 'devstack-precise || devstack-trusty'
@@ -5084,9 +5087,13 @@
     name: python-magnumclient
     node: 'bare-precise || bare-trusty'
     tarball-site: tarballs.openstack.org
+    doc-publisher-site: docs.openstack.org
 
     jobs:
       - python-jobs
+      - openstack-publish-jobs
+      - pypi-jobs
+      - translation-jobs
       - 'gate-{name}-tox-{envlist}':
           envlist: bandit
 
