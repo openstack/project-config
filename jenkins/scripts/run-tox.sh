@@ -20,39 +20,30 @@ if [[ -z "$venv" ]]; then
     exit 1
 fi
 
-export NOSE_WITH_XUNIT=1
-export NOSE_WITH_HTML_OUTPUT=1
-export NOSE_HTML_OUT_FILE='nose_results.html'
-export TMPDIR=`/bin/mktemp -d`
-trap "rm -rf $TMPDIR" EXIT
+function freeze_venv {
+    [ -e $bin_path/pbr ] && freezecmd=pbr || freezecmd=pip
 
-cat /etc/image-hostname.txt
+    echo "Begin $freezecmd freeze output from test virtualenv:"
+    echo "======================================================================"
+    ${bin_path}/${freezecmd} freeze
+    echo "======================================================================"
+}
 
-/usr/local/jenkins/slave_scripts/jenkins-oom-grep.sh pre
+function process_testr_artifacts {
+    if [ ! -d ".testrepository" ] ; then
+        return
+    fi
 
-sudo /usr/local/jenkins/slave_scripts/jenkins-sudo-grep.sh pre
-
-tox -v -e$venv
-result=$?
-[ -e .tox/$venv/bin/pbr ] && freezecmd=pbr || freezecmd=pip
-
-echo "Begin $freezecmd freeze output from test virtualenv:"
-echo "======================================================================"
-.tox/${venv}/bin/${freezecmd} freeze
-echo "======================================================================"
-
-if [ -d ".testrepository" ] ; then
     if [ -f ".testrepository/0.2" ] ; then
         cp .testrepository/0.2 ./subunit_log.txt
     elif [ -f ".testrepository/0" ] ; then
-        .tox/$venv/bin/subunit-1to2 < .testrepository/0 > ./subunit_log.txt
+        $bin_path/subunit-1to2 < .testrepository/0 > ./subunit_log.txt
     fi
-    .tox/$venv/bin/python /usr/local/jenkins/slave_scripts/subunit2html.py ./subunit_log.txt testr_results.html
+    $PYTHON $script_path/subunit2html.py ./subunit_log.txt testr_results.html
     SUBUNIT_SIZE=$(du -k ./subunit_log.txt | awk '{print $1}')
     gzip -9 ./subunit_log.txt
     gzip -9 ./testr_results.html
 
-    export PYTHON=.tox/$venv/bin/python
     if [[ "$SUBUNIT_SIZE" -gt 50000 ]]; then
         echo
         echo "sub_unit.log was > 50 MB of uncompressed data!!!"
@@ -63,7 +54,7 @@ if [ -d ".testrepository" ] ; then
         exit 1
     fi
 
-    rancount=$(.tox/$venv/bin/testr last | sed -ne 's/Ran \([0-9]\+\).*tests in.*/\1/p')
+    rancount=$($bin_path/testr last | sed -ne 's/Ran \([0-9]\+\).*tests in.*/\1/p')
     if [ -z "$rancount" ] || [ "$rancount" -eq "0" ] ; then
         echo
         echo "Zero tests were run. At least one test should have been run."
@@ -71,46 +62,77 @@ if [ -d ".testrepository" ] ; then
         echo
         exit 1
     fi
-fi
+}
 
-sudo /usr/local/jenkins/slave_scripts/jenkins-sudo-grep.sh post
-sudoresult=$?
+function check_sudo_usage {
+    sudo $script_path/jenkins-sudo-grep.sh post
+    sudoresult=$?
 
-if [ $sudoresult -ne "0" ]; then
-    echo
-    echo "This test has failed because it attempted to execute commands"
-    echo "with sudo.  See above for the exact commands used."
-    echo
-    exit 1
-fi
-
-/usr/local/jenkins/slave_scripts/jenkins-oom-grep.sh post
-oomresult=$?
-
-if [ $oomresult -ne "0" ]; then
-    echo
-    echo "This test has failed because it attempted to exceed configured"
-    echo "memory limits and was killed prior to completion.  See above"
-    echo "for related kernel messages."
-    echo
-    exit 1
-fi
-
-htmlreport=$(find . -name $NOSE_HTML_OUT_FILE)
-if [ -f "$htmlreport" ]; then
-    passcount=$(grep -c 'tr class=.passClass' $htmlreport)
-    if [ $passcount -eq "0" ]; then
+    if [ $sudoresult -ne "0" ]; then
         echo
-        echo "Zero tests passed, which probably means there was an error"
-        echo "parsing one of the python files, or that some other failure"
-        echo "during test setup prevented a sane run."
+        echo "This test has failed because it attempted to execute commands"
+        echo "with sudo.  See above for the exact commands used."
         echo
         exit 1
     fi
-else
-    echo
-    echo "WARNING: Unable to find $NOSE_HTML_OUT_FILE to confirm results!"
-    echo
-fi
+}
+
+function check_oom {
+    $script_path/jenkins-oom-grep.sh post
+    oomresult=$?
+
+    if [ $oomresult -ne "0" ]; then
+        echo
+        echo "This test has failed because it attempted to exceed configured"
+        echo "memory limits and was killed prior to completion.  See above"
+        echo "for related kernel messages."
+        echo
+        exit 1
+    fi
+}
+
+function check_nose_html {
+    htmlreport=$(find . -name $NOSE_HTML_OUT_FILE)
+    if [ -f "$htmlreport" ]; then
+        passcount=$(grep -c 'tr class=.passClass' $htmlreport)
+        if [ $passcount -eq "0" ]; then
+            echo
+            echo "Zero tests passed, which probably means there was an error"
+            echo "parsing one of the python files, or that some other failure"
+            echo "during test setup prevented a sane run."
+            echo
+            exit 1
+        fi
+    else
+        echo
+        echo "WARNING: Unable to find $NOSE_HTML_OUT_FILE to confirm results!"
+        echo
+    fi
+}
+
+local script_path=/usr/local/jenkins/slave_scripts
+local bin_path=.tox/$venv/bin
+
+export PYTHON=$bin_path/python
+export NOSE_WITH_XUNIT=1
+export NOSE_WITH_HTML_OUTPUT=1
+export NOSE_HTML_OUT_FILE='nose_results.html'
+export TMPDIR=`/bin/mktemp -d`
+trap "rm -rf $TMPDIR" EXIT
+
+cat /etc/image-hostname.txt
+
+$script_path/jenkins-oom-grep.sh pre
+
+sudo $script_path/jenkins-sudo-grep.sh pre
+
+tox -v -e$venv
+result=$?
+
+freeze_venv
+process_testr_artifacts
+check_sudo_usage
+check_oom
+check_nose_html
 
 exit $result
