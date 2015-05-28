@@ -952,6 +952,10 @@ jobs:
     branch: master
     voting: false
 
+  - name: gate-keystonemiddleware-tox-bandit
+    branch: ^(?!stable/(icehouse|juno|kilo)).*$
+    voting: false
+
   - name: gate-rally-dsvm-keystone
     branch: ^(?!stable/icehouse).*$
     voting: false
@@ -1820,6 +1824,8 @@ projects:
       - name: check-requirements
       - name: lib-forward-testing
       - name: publish-to-pypi
+    check:
+      - gate-keystonemiddleware-tox-bandit
     post:
       - keystonemiddleware-coverage
 
