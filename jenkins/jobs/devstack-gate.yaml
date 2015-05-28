@@ -1329,6 +1329,45 @@
       - console-log
 
 
+# TODO(samueldmq): This template defines a Devstack job for Identity v3 API
+# only. It disables the Identity API v2, which will cause DevStack to fail,
+# since it still needs to support setting up the base resources using the
+# Identity v3 API. Once this is fixed, the jobs above, named
+# ``*keystonev3-full*``, (which do not disable v2) should be replaced by this
+# one and the flag DEVSTACK_GATE_KEYSTONE_V3 will be no longer used.
+- job-template:
+    name: '{pipeline}-tempest-dsvm-neutron-identity-v3-only-full{branch-designator}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=120
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_TEMPEST_FULL=1
+          export DEVSTACK_GATE_NEUTRON=1
+          export DEVSTACK_LOCAL_CONFIG="ENABLE_IDENTITY_V2=False"
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+
 - job-template:
     name: '{pipeline}-grenade-dsvm{branch-designator}'
     node: '{node}'
@@ -2076,6 +2115,7 @@
       - '{pipeline}-tempest-dsvm-neutron-full-non-admin{branch-designator}'
       - '{pipeline}-tempest-dsvm-keystonev3-full{branch-designator}'
       - '{pipeline}-tempest-dsvm-neutron-keystonev3-full{branch-designator}'
+      - '{pipeline}-tempest-dsvm-neutron-identity-v3-only-full{branch-designator}'
       - '{pipeline}-tempest-dsvm-full-ceph{branch-designator}'
       - '{pipeline}-tempest-dsvm-nova-v21-full{branch-designator}'
       - '{pipeline}-tempest-dsvm-nova-v21-neutron-full{branch-designator}'
