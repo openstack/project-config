@@ -110,8 +110,8 @@ function check_nose_html {
     fi
 }
 
-local script_path=/usr/local/jenkins/slave_scripts
-local bin_path=.tox/$venv/bin
+script_path=/usr/local/jenkins/slave_scripts
+bin_path=.tox/$venv/bin
 
 export PYTHON=$bin_path/python
 export NOSE_WITH_XUNIT=1
