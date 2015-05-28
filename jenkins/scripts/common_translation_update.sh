@@ -397,7 +397,8 @@ function compress_po_files {
     local directory=$1
 
     for i in `find $directory -name *.po `; do
-        msgattrib --translated --no-location "$i" --output="${i}.tmp"
+        msgattrib --translated --no-location --sort-output "$i" \
+            --output="${i}.tmp"
         mv "${i}.tmp" "$i"
     done
 }
@@ -417,7 +418,8 @@ function compress_manual_po_files {
                 continue
             fi
         fi
-        msgattrib --translated --no-location "$i" --output="${i}.tmp"
+        msgattrib --translated --no-location --sort-output "$i" \
+            --output="${i}.tmp"
         mv "${i}.tmp" "$i"
     done
 }
@@ -435,7 +437,8 @@ function compress_non_en_po_files {
         if [[ $i =~ "/locale/en/LC_MESSAGES/" ]] ; then
             continue
         fi
-        msgattrib --translated --no-location "$i" --output="${i}.tmp"
+        msgattrib --translated --no-location --sort-output "$i" \
+            --output="${i}.tmp"
         mv "${i}.tmp" "$i"
     done
 }
