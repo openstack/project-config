@@ -1313,6 +1313,10 @@ jobs:
   - name: gate-nova-python26
     branch: ^stable/(icehouse|juno)$
 
+  - name: gate-nova-python34
+    branch: ^(?!stable/(?:icehouse|juno|kilo)).*$
+    voting: false
+
   - name: gate-sahara-python26
     branch: ^stable/(icehouse|juno)$
 
@@ -2035,6 +2039,7 @@ projects:
       - name: experimental-tripleo-jobs
     check:
       - check-devstack-dsvm-cells
+      - gate-nova-python34
       - gate-nova-tox-functional
       - check-grenade-dsvm-partial-ncpu
       - check-grenade-dsvm-ironic-sideways
