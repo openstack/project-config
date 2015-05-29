@@ -1,0 +1,74 @@
+- builder:
+    name: akanda-dsvm
+    builders:
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=120
+          export DEVSTACK_GATE_TEMPEST={run-tempest}
+          export DEVSTACK_GATE_NEUTRON=1
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin https://git.openstack.org/stackforge/akanda-rug"$'\n'"enable_service ak-rug"
+
+          export BUILD_APPLIANCE={build-akanda-appliance}
+          if [ "$BUILD_APPLIANCE" == "1" ] ; then
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"BUILD_AKANDA_APPLIANCE_IMAGE=True"
+          fi
+
+          if [ "$DEVSTACK_GATE_TEMPEST" == "0" ]; then
+              function post_test_hook {{
+                    source $BASE/new/devstack/openrc admin admin
+                    cd /opt/stack/new/akanda-rug
+                    sudo -E -u stack ./tools/run_functional.sh
+              }}
+              export -f post_test_hook
+          fi
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+- job-template:
+    name: '{pipeline}-functional-dsvm-akanda{branch-designator}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - akanda-dsvm:
+          build-akanda-appliance: 0
+          run-tempest: 0
+          branch-override: '{branch-override}'
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-functional-dsvm-akanda-appliance-src{branch-designator}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - akanda-dsvm:
+          build-akanda-appliance: 1
+          run-tempest: 0
+          branch-override: '{branch-override}'
+    publishers:
+      - devstack-logs
+      - console-log
