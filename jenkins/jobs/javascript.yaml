@@ -35,41 +35,6 @@
               copy-after-failure: true
     node: '{node}'
 
-# Runs Grunt Tests. To use this build, your Gruntfile must declare
-# a target named test:{name}, such as test:unit, test:integration, or
-# test:functional
-- job-template:
-    name: 'gate-{name}-js-test-{test-type}'
-
-    wrappers:
-      - build-timeout:
-          timeout: 40
-      - timestamps
-
-    builders:
-      - npm-install
-      - xvfb-install
-      - chrome-install
-      - revoke-sudo
-      - gerrit-git-prep
-      - js-build:
-          command: 'test:{test-type}'
-          envlist: 'grunt'
-          project: '{name}'
-      - assert-no-extra-files
-
-    publishers:
-      - console-log
-      - coverage-log
-      - scp:
-          site: 'static.openstack.org'
-          files:
-            - target: 'logs/$LOG_PATH'
-              source: 'reports/**'
-              keep-hierarchy: true
-              copy-after-failure: true
-    node: '{node}'
-
 # Builds a draft application and uploads it to docs-draft. To use this build,
 # your Gruntfile must declare a target named "build:draft"
 - job-template:
