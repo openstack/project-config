@@ -43,11 +43,8 @@ for PROJECT in $(cat projects.txt); do
 
     # Don't short circuit when one project fails to clone, just report the
     # error and move onto the next project.
-    set +e
-    git clone ssh://$USERNAME@review.openstack.org:29418/$PROJECT.git
-    RET=$?
-    set -e
-    if [ "$RET" -ne "0" ] ; then
+    GIT_REPO="ssh://$USERNAME@review.openstack.org:29418/$PROJECT.git"
+    if ! git clone $GIT_REPO; then
         # ALL_SUCCESS is being set to 1, which means that a failure condition
         # has been detected. The job will end in failure once it finishes
         # cycling through the remaining projects.
