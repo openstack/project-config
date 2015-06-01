@@ -12,6 +12,8 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+source /usr/local/jenkins/slave_scripts/common.sh
+
 OWN_PROJECT=$1
 if [ -z "$OWN_PROJECT" ] ; then
     echo "usage: $0 project"
@@ -32,9 +34,7 @@ if [ -z "$ZUUL_REF" ] ; then
     exit 1
 fi
 
-git config user.name "OpenStack Proposal Bot"
-git config user.email "openstack-infra@lists.openstack.org"
-git config gitreview.username "proposal-bot"
+setup_git
 
 for PROJECT in $(cat projects.txt); do
 
@@ -98,9 +98,7 @@ EOF
         git checkout -B ${BRANCH} -t origin/${BRANCH}
         # Need to set the git config in each repo as we shouldn't
         # set it globally for the Jenkins user on the slaves.
-        git config user.name "OpenStack Proposal Bot"
-        git config user.email "openstack-infra@lists.openstack.org"
-        git config gitreview.username "proposal-bot"
+        setup_git
         # Do error checking manually to continue with the next project
         # in case of failures like a broken .gitreview file.
         set +e

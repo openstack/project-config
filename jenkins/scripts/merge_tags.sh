@@ -12,6 +12,8 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+source /usr/local/jenkins/slave_scripts/common.sh
+
 TAG=$1
 
 # Only merge release tag if it's on a stable branch
@@ -26,9 +28,7 @@ if ! echo $TAG|grep '^[0-9]\+\.[0-9]\+\(\.0\|\)$'; then
     exit 0
 fi
 
-git config user.name "OpenStack Proposal Bot"
-git config user.email "openstack-infra@lists.openstack.org"
-git config gitreview.username "proposal-bot"
+setup_git
 
 git review -s
 git remote update
