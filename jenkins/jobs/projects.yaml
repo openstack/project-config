@@ -509,16 +509,30 @@
     jobs:
       - python-jobs
       - openstack-publish-jobs
-      - '{pipeline}-neutron-lbaas-dsvm-api{branch-designator}':
+      - '{pipeline}-neutron-{lbaasversion}-dsvm-api{branch-designator}':
           pipeline: check
           node: 'devstack-precise || devstack-trusty'
           branch-designator: ''
           branch-override: default
-      - '{pipeline}-neutron-lbaas-dsvm-api{branch-designator}':
+          lbaasversion: lbaasv2
+      - '{pipeline}-neutron-{lbaasversion}-dsvm-api{branch-designator}':
+          pipeline: check
+          node: 'devstack-precise || devstack-trusty'
+          branch-designator: ''
+          branch-override: default
+          lbaasversion: lbaasv1
+      - '{pipeline}-neutron-{lbaasversion}-dsvm-api{branch-designator}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           branch-designator: ''
           branch-override: default
+          lbaasversion: lbaasv2
+      - '{pipeline}-neutron-{lbaasversion}-dsvm-api{branch-designator}':
+          pipeline: gate
+          node: 'devstack-precise || devstack-trusty'
+          branch-designator: ''
+          branch-override: default
+          lbaasversion: lbaasv1
 
 - project:
     name: neutron-specs
