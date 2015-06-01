@@ -73,7 +73,7 @@ for PROJECT in $(cat projects.txt); do
         # commit msg.
         change_info=$(ssh -p 29418 $USERNAME@review.openstack.org gerrit query --current-patch-set status:open project:$PROJECT topic:$TOPIC owner:$USERNAME branch:$BRANCH)
         previous=$(echo "$change_info" | grep "^  number:" | awk '{print $2}')
-        if [ "x${previous}" != "x" ] ; then
+        if [ -n "$previous" ]; then
             change_id=$(echo "$change_info" | grep "^change" | awk '{print $2}')
             # read return a non zero value when it reaches EOF. Because we use a
             # heredoc here it will always reach EOF and return a nonzero value.
