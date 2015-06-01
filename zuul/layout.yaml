@@ -1403,6 +1403,10 @@ jobs:
   - name: ^(gate|check)-saharaclient-dsvm-functional$
     branch: ^(?!stable/(?:icehouse|juno|kilo)).*$
 
+  # Only run the unit cross tests for cliff against master.
+  - name: ^gate-cliff-tox-(openstackclient|neutronclient)-tip$
+    branch: ^master$
+
 # The project list is grouped by type of project, and within each
 # group, projects are sorted (mostly) alphabetically.
 projects:
@@ -2658,14 +2662,10 @@ projects:
       - name: lib-forward-testing
       - name: openstack-server-publish-jobs
     check:
-      - gate-cliff-tox-neutronclient-stable
       - gate-cliff-tox-neutronclient-tip
-      - gate-cliff-tox-openstackclient-stable
       - gate-cliff-tox-openstackclient-tip
     gate:
-      - gate-cliff-tox-neutronclient-stable
       - gate-cliff-tox-neutronclient-tip
-      - gate-cliff-tox-openstackclient-stable
       - gate-cliff-tox-openstackclient-tip
 
   - name: openstack/debtcollector
