@@ -132,6 +132,21 @@
       - specs-jobs
 
 - project:
+    name: dragonflow
+    node: 'bare-precise || bare-trusty'
+    tarball-site: tarballs.openstack.org
+    doc-publisher-site: docs.openstack.org
+
+    jobs:
+      - python-jobs
+      - pypi-jobs
+      - '{pipeline}-tempest-dsvm-dragonflow{branch-designator}':
+          pipeline: check
+          node: 'devstack-precise || devstack-trusty'
+          branch-designator: ''
+          branch-override: default
+
+- project:
     name: gantt
     node: 'bare-precise || bare-trusty'
     tarball-site: tarballs.openstack.org
@@ -3969,21 +3984,6 @@
     jobs:
       - python-jobs
       - pypi-jobs
-
-- project:
-    name: dragonflow
-    node: 'bare-precise || bare-trusty'
-    tarball-site: tarballs.openstack.org
-    doc-publisher-site: docs.openstack.org
-
-    jobs:
-      - python-jobs
-      - pypi-jobs
-      - '{pipeline}-tempest-dsvm-dragonflow{branch-designator}':
-          pipeline: check
-          node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
-          branch-override: default
 
 - project:
     name: drbd-devstack
