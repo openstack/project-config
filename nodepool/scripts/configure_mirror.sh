@@ -25,6 +25,7 @@ sudo sed -i -e "s,^index-url = .*,index-url = $NODEPOOL_PYPI_MIRROR," /etc/pip.c
 cat >/home/jenkins/.pydistutils.cfg <<EOF
 [easy_install]
 index_url = $NODEPOOL_PYPI_MIRROR
+allow_hosts = *.openstack.org
 EOF
 
 # Double check that when the node is made ready it is able
