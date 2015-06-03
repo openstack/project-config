@@ -375,6 +375,17 @@
           node: 'tripleo-precise'
 
 - project:
+    name: ironic-inspector
+    node: 'bare-precise || bare-trusty'
+    tarball-site: tarballs.openstack.org
+
+    jobs:
+      - python-jobs
+      - pypi-jobs
+      - gate-{name}-tox-{envlist}:
+          envlist: func
+
+- project:
     name: ironic-lib
     node: 'bare-precise || bare-trusty'
     tarball-site: tarballs.openstack.org
@@ -4215,18 +4226,6 @@
 
     jobs:
       - python-jobs
-
-- project:
-    name: ironic-discoverd
-    node: 'bare-precise || bare-trusty'
-    tarball-site: tarballs.openstack.org
-
-    jobs:
-      - gate-{name}-pep8
-      - gate-{name}-python27
-      - gate-{name}-python34
-      - gate-{name}-tox-{envlist}:
-          envlist: func
 
 - project:
     name: kolla
