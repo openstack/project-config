@@ -131,6 +131,83 @@
 
 
 - builder:
+    name: devstack-manila-rally-gate-multibackend
+    builders:
+      - link-logs
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PROJECTS="openstack/rally $PROJECTS"
+
+          export DEVSTACK_GATE_NEUTRON=1
+          export DEVSTACK_GATE_TIMEOUT=60
+          export RALLY_SCENARIO={scenario}
+
+          export ENABLED_SERVICES+=rally,
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin manila git://git.openstack.org/openstack/manila"
+
+          # Keep localrc to be able to set some vars in pre_test_hook
+          export KEEP_LOCALRC=1
+
+          function pre_test_hook {{
+              # Install rally-devstack integration
+              cp -r $BASE/new/rally/contrib/devstack/* $BASE/new/devstack/
+              # Install manila-devstack integration
+              # 'dhss' means 'drivers handle share servers'
+              source $BASE/new/manila/contrib/ci/pre_test_hook.sh {dhss}
+          }}
+          export -f pre_test_hook
+
+          function post_test_hook {{
+              $BASE/new/rally/tests/ci/rally-gate.sh
+          }}
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+
+- job:
+    name: 'gate-rally-dsvm-manila-multibackend'
+    node: 'devstack-precise || devstack-trusty'
+
+    wrappers:
+      - build-timeout:
+          timeout: 65
+      - timestamps
+
+    builders:
+      - devstack-manila-rally-gate-multibackend:
+          scenario: 'create-delete-share-with-autocreated-share-networks'
+          dhss: '1'
+
+    publishers:
+      - devstack-logs
+      - console-log
+      - rally-plot
+
+
+- job:
+    name: 'gate-rally-dsvm-manila-multibackend-no-ss'
+    node: 'devstack-precise || devstack-trusty'
+
+    wrappers:
+      - build-timeout:
+          timeout: 65
+      - timestamps
+
+    builders:
+      - devstack-manila-rally-gate-multibackend:
+          scenario: 'create-delete-share-without-share-networks'
+          dhss: '0'
+
+    publishers:
+      - devstack-logs
+      - console-log
+      - rally-plot
+
+
+- builder:
     name: devstack-murano-rally-gate
     builders:
       - link-logs
