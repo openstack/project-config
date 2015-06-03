@@ -1214,6 +1214,10 @@ jobs:
   - name: gate-horizon-jshint
     branch: ^(?!stable/icehouse).*$
 
+  - name: ^(gate|check)-horizon-npm-run-.*$
+    branch: ^(?!stable/(icehouse|juno)).*$
+    voting: false
+
   - name: gate-tempest-dsvm-ceilometer-mongodb-full
     branch: ^(?!stable/icehouse).*$
     voting: false
@@ -1744,6 +1748,7 @@ projects:
       - name: translation-jobs
       - name: experimental-tripleo-jobs
     check:
+      - gate-horizon-npm-run-test
       - gate-horizon-python27-django14
       - gate-horizon-selenium
       - gate-horizon-jshint
@@ -1751,6 +1756,7 @@ projects:
       - check-tempest-dsvm-full
       - check-grenade-dsvm
     gate:
+      - gate-horizon-npm-run-test
       - gate-horizon-python27-django14
       - gate-horizon-selenium
       - gate-horizon-dsvm-integration
