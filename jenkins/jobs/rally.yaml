@@ -52,6 +52,7 @@
           export PROJECTS="openstack/ceilometer $PROJECTS"
           export CEILOMETER_NOTIFICATION_TOPICS=notifications,profiler
           export DEVSTACK_GATE_NEUTRON={neutron}
+          export DEVSTACK_GATE_IRONIC={ironic}
           export DEVSTACK_GATE_ZAQAR={zaqar}
           export DEVSTACK_GATE_TEMPEST_LARGE_OPS={large_ops}
           export DEVSTACK_GATE_EXERCISES=0
@@ -69,6 +70,9 @@
           ENABLED_SERVICES+=ceilometer-alarm-evaluator,ceilometer-alarm-notifier,
           if [ $DEVSTACK_GATE_NEUTRON -ne 1 ]; then
               ENABLED_SERVICES+=n-net,n-api-meta,
+          fi
+          if [ $DEVSTACK_GATE_IRONIC -ne 0 ]; then
+              ENABLED_SERVICES+=ironic,ir-api,ir-cond,
           fi
           export ENABLED_SERVICES
 
@@ -355,6 +359,29 @@
 
 
 - job-template:
+    name: 'gate-rally-dsvm-ironic-{name}'
+    node: 'devstack-precise || devstack-trusty'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+        - devstack-rally-gate:
+            scenario: '{name}-ironic'
+            neutron: '1'
+            ironic: '1'
+            zaqar: '0'
+            large_ops: '0'
+
+    publishers:
+      - devstack-logs
+      - console-log
+      - rally-plot
+
+
+- job-template:
     name: 'gate-rally-dsvm-murano-{name}'
     node: 'devstack-precise || devstack-trusty'
 
@@ -429,6 +456,7 @@
     builders:
       - devstack-rally-gate:
           scenario: '{name}'
+          ironic: '0'
           neutron: '0'
           zaqar: '0'
           large_ops: '0'
@@ -451,6 +479,7 @@
     builders:
       - devstack-rally-gate:
           scenario: '{name}-neutron'
+          ironic: '0'
           neutron: '1'
           zaqar: '0'
           large_ops: '0'
@@ -473,6 +502,7 @@
     builders:
       - devstack-rally-gate:
           scenario: '{name}-fakevirt'
+          ironic: '0'
           neutron: '0'
           zaqar: '0'
           large_ops: '10'
@@ -495,6 +525,7 @@
     builders:
       - devstack-rally-gate:
           scenario: '{name}-zaqar'
+          ironic: '0'
           neutron: '0'
           zaqar: '1'
           large_ops: '0'
@@ -516,6 +547,7 @@
     builders:
       - devstack-rally-gate:
           scenario: '{service}'
+          ironic: '0'
           neutron: '0'
           zaqar: '0'
           large_ops: '0'
@@ -636,6 +668,7 @@
     jobs:
       - 'gate-rally-dsvm-{name}'
       - 'gate-rally-dsvm-designate-{name}'
+      - 'gate-rally-dsvm-ironic-{name}'
       - 'gate-rally-dsvm-murano-{name}'
       - 'gate-rally-dsvm-mistral-{name}'
       - 'gate-rally-dsvm-neutron-{name}'
