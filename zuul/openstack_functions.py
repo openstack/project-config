@@ -95,7 +95,8 @@ def set_node_options(item, job, params, default):
     f21_re = r'^.*-f21.*$'
     tripleo_re = r'^.*-tripleo.*$'
     devstack_re = r'^.*-dsvm.*$'
-    puppetunit_re = r'^gate-puppet-.*-puppet-(lint|syntax|unit).*$'
+    puppetunit_re = (
+        r'^gate-(puppet-.*|system-config)-puppet-(lint|syntax|unit).*$')
     # jobs run on the proposal worker
     if re.match(proposal_re, job.name) or re.match(pypi_re, job.name):
         reusable_node(item, job, params)
