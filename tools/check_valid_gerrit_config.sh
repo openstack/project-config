@@ -2,7 +2,7 @@
 
 # It checks that *.config files respect certain gerrit ACL rules
 
-export TMPDIR=`/bin/mktemp -d`
+export TMPDIR=$(/bin/mktemp -d)
 trap "rm -rf $TMPDIR" EXIT
 
 pushd $TMPDIR

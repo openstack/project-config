@@ -23,11 +23,11 @@
 set -e
 
 # If lsb_release is missing, just do nothing.
-DISTRO=`lsb_release -si` || true
+DISTRO=$(lsb_release -si) || true
 
 case $DISTRO in
     'Ubuntu'|'Debian')
-    PRESEED=`mktemp`
+    PRESEED=$(mktemp)
     cat > $PRESEED <<EOF
 d-i iptables-persistent/autosave_done boolean true
 d-i iptables-persistent/autosave_v4 boolean false
