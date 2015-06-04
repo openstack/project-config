@@ -206,10 +206,10 @@ EOF
         # 3) no -2 by reviewers
         # 4) no Workflow -1 (WIP)
         #
-        if  `echo $change_info|grep -q '{"type":"Workflow","description":"Workflow","value":"1"'` \
-            && ! `echo $change_info|grep -q '{"type":"Verified","description":"Verified","value":"-[12]","grantedOn":[0-9]*,"by":{"name":"Jenkins","username":"jenkins"}}'`  \
-            && ! `echo $change_info|grep -q '{"type":"Code-Review","description":"Code-Review","value":"-2"'` \
-            && ! `echo $change_info|grep -q '{"type":"Workflow","description":"Workflow","value":"-1"'`  ; then
+        if echo $change_info|grep -q '{"type":"Workflow","description":"Workflow","value":"1"' \
+            && ! echo $change_info|grep -q '{"type":"Verified","description":"Verified","value":"-[12]","grantedOn":[0-9]*,"by":{"name":"Jenkins","username":"jenkins"}}'  \
+            && ! echo $change_info|grep -q '{"type":"Code-Review","description":"Code-Review","value":"-2"' \
+            && ! echo $change_info|grep -q '{"type":"Workflow","description":"Workflow","value":"-1"' ; then
             echo "Job already approved, exiting"
             exit 0
         fi

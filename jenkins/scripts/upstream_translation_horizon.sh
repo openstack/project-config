@@ -18,7 +18,7 @@
 
 PROJECT="horizon"
 
-if [ ! `echo $ZUUL_REFNAME | grep master` ]; then
+if ! echo $ZUUL_REFNAME | grep master; then
     exit 0
 fi
 
