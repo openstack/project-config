@@ -22,10 +22,10 @@ META_DATA_FILE=$3
 PLUGIN_FILE=$4
 
 # Strip project name and extension leaving only the version.
-VERSION=`echo ${PLUGIN_FILE} | sed -n "s/${PROJECT}-\(.*\).hpi/\1/p"`
+VERSION=$(echo ${PLUGIN_FILE} | sed -n "s/${PROJECT}-\(.*\).hpi/\1/p")
 
 # generate pom file with version info
-POM_IN_ZIP=`unzip -Z -1 ${PLUGIN_FILE}|grep pom.xml`
+POM_IN_ZIP=$(unzip -Z -1 ${PLUGIN_FILE}|grep pom.xml)
 unzip -o -j ${PLUGIN_FILE} ${POM_IN_ZIP}
 sed "s/\${{project-version}}/${VERSION}/g" <pom.xml >${META_DATA_FILE}
 

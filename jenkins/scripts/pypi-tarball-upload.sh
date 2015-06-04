@@ -19,12 +19,12 @@
 
 PROJECT=$1
 TARBALL_SITE=$2
-TAG=`echo $ZUUL_REF | sed 's/^refs.tags.//'`
+TAG=$(echo $ZUUL_REF | sed 's/^refs.tags.//')
 
 # Look in the setup.cfg to determine if a package name is specified, but
 # fall back on the project name if necessary
-DISTNAME=`/usr/local/jenkins/slave_scripts/pypi-extract-name.py --tarball \
-    || echo $PROJECT`
+DISTNAME=$(/usr/local/jenkins/slave_scripts/pypi-extract-name.py --tarball \
+    || echo $PROJECT)
 FILENAME="$DISTNAME-$TAG.tar.gz"
 
 rm -rf *tar.gz

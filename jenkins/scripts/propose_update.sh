@@ -59,7 +59,7 @@ for PROJECT in $(cat projects.txt); do
     if git branch -a | grep -q "^  remotes/origin/$ZUUL_REF$" ; then
         BRANCH=$ZUUL_REF
     elif echo $ZUUL_REF | grep -q "^stable/" ; then
-        FALLBACK=`echo $ZUUL_REF | sed s,^stable/,proposed/,`
+        FALLBACK=$(echo $ZUUL_REF | sed s,^stable/,proposed/,)
         if git branch -a | grep -q "^  remotes/origin/$FALLBACK$" ; then
             BRANCH=$FALLBACK
         fi

@@ -36,7 +36,7 @@ tx pull -f
 
 # Update the .pot file
 python setup.py extract_messages
-PO_FILES=`find openstack_auth/locale -name '*.po'`
+PO_FILES=$(find openstack_auth/locale -name '*.po')
 if [ -n "$PO_FILES" ]; then
     # Use updated .pot file to update translations
     python setup.py update_catalog --no-fuzzy-matching  --ignore-obsolete=true
