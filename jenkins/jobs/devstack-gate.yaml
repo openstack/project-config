@@ -2170,6 +2170,45 @@
       - console-log
 
 
+- job-template:
+    name: '{pipeline}-tempest-dsvm-full-devstack-plugin-ceph{branch-designator}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=120
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_TEMPEST_FULL=1
+          export DEVSTACK_GATE_CEPH=1
+
+          export PROJECTS="{plugin-repo} $PROJECTS"
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin devstack-plugin-{plugin} git://git.openstack.org/{plugin-repo}"
+
+          # Skip failing backup import/export test (bug 1476416)
+          r="^(?!(.*\[.*slow.*\])|(.*\[.*a99c54a1-dd80-4724-8a13-13bf58d4068d.*\])).*$"
+          export DEVSTACK_GATE_TEMPEST_REGEX="$r"
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+
 # tempest-dsvm-full-ceph-src-{name} - run a devstack ceph tempest job,
 # but use the zuul git ref for name instead of the released library
 # version.

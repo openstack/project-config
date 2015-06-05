@@ -994,6 +994,19 @@
           job-suffix: ''
 
 - project:
+    name: devstack-plugin-ceph
+    node: 'bare-precise || bare-trusty'
+
+    jobs:
+      - gate-{name}-bashate
+      - '{pipeline}-tempest-dsvm-full-devstack-plugin-ceph{branch-designator}':
+          pipeline: gate
+          plugin: ceph
+          plugin-repo: openstack/devstack-plugin-ceph
+          branch-designator: ''
+          branch-override: default
+
+- project:
     name: devstack-plugin-glusterfs
     node: 'bare-precise || bare-trusty'
 
