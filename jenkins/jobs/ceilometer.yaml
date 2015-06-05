@@ -60,6 +60,41 @@
       - devstack-logs
       - console-log
 
+- job-template:
+    name: '{pipeline}-ceilometer-dsvm-functional-{backend}{branch-designator}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=120
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+
+          function post_test_hook {{
+              # Configure and run functional tests
+              $BASE/new/ceilometer/ceilometer/tests/functional/hooks/post_test_hook.sh "{backend}"
+          }}
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - test-results
+      - devstack-logs
+      - console-log
 
 - job-template:
     name: '{pipeline}-ceilometerclient-dsvm-functional{branch-designator}'
