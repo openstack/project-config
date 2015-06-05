@@ -3278,12 +3278,21 @@
       - pypi-jobs
 
 - project:
+    name: akanda
+    node: 'bare-precise || bare-trusty'
+    tarball-site: tarballs.openstack.org
+
+    jobs:
+      - hook-{name}-rtfd
+
+- project:
     name: akanda-appliance
     node: 'bare-precise || bare-trusty'
     tarball-site: tarballs.openstack.org
 
     jobs:
       - python-jobs
+      - hook-{name}-rtfd
 
 - project:
     name: akanda-appliance-builder
@@ -3292,6 +3301,7 @@
 
     jobs:
       - python-jobs
+      - hook-{name}-rtfd
 
 - project:
     name: akanda-horizon
@@ -3300,6 +3310,7 @@
 
     jobs:
       - python-jobs
+      - hook-{name}-rtfd
 
 - project:
     name: akanda-neutron
@@ -3308,6 +3319,7 @@
 
     jobs:
       - python-jobs
+      - hook-{name}-rtfd
 
 - project:
     name: akanda-rug
@@ -3316,6 +3328,7 @@
 
     jobs:
       - python-jobs
+      - hook-{name}-rtfd
       - '{pipeline}-functional-dsvm-akanda{branch-designator}':
           pipeline: 'check'
           node: 'devstack-precise || devstack-trusty'
