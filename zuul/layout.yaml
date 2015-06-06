@@ -1236,8 +1236,12 @@ jobs:
     branch: ^(?!stable/(havana|icehouse|juno)).*$
     voting: false
 
-  - name: ^gate-puppet-.*-puppet-syntax-future$
+  - name: ^gate-puppet-((?!swift).)*-puppet-syntax-future$
     branch: ^(?!stable/(havana|icehouse)).*$
+
+  # puppet-swift can never be future parser compatible without breaking the API
+  - name: ^gate-puppet-swift-puppet-syntax-future$
+    branch: ^(?!stable/(havana|icehouse|juno)).*$
 
   - name: ^(gate|check)-tempest-dsvm-nova-v21-full$
     branch: ^(?!stable/(icehouse|juno)).*$
