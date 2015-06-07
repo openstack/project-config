@@ -435,6 +435,26 @@
       - console-log
       - rally-plot
 
+- job-template:
+    name: 'gate-rally-dsvm-rally-{service}'
+    node: 'devstack-precise || devstack-trusty'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - devstack-rally-gate:
+          scenario: '{service}'
+          neutron: '0'
+          zaqar: '0'
+          large_ops: '0'
+
+    publishers:
+      - devstack-logs
+      - console-log
+      - rally-plot
 
 - job:
     name: 'gate-rally-dsvm-cli'
