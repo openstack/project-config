@@ -1,0 +1,19 @@
+[access "refs/heads/*"]
+abandon = group intel-nfv-ci-tests-core
+create = intel-nfv-ci-tests-release
+label-Code-Review = -2..+2 group intel-nfv-ci-tests-core
+label-Workflow = -1..+1 group intel-nfv-ci-tests-core
+
+[access "refs/heads/stable/*"]
+exclusiveGroupPermissions = label-Workflow
+label-Workflow = -1..+1 group intel-nfv-ci-tests-release
+
+[access "refs/tags/*"]
+pushSignedTag = group intel-nfv-ci-tests-release
+
+[receive]
+requireChangeId = true
+requireContributorAgreement = true
+
+[submit]
+mergeContent = true
