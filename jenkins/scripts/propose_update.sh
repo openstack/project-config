@@ -22,9 +22,12 @@ fi
 if [ "$OWN_PROJECT" == "requirements" ] ; then
     INITIAL_COMMIT_MSG="Updated from global requirements"
     TOPIC="openstack/requirements"
-else
+elif [ "$OWN_PROJECT" == "openstack-manuals" ] ; then
     INITIAL_COMMIT_MSG="Updated from openstack-manuals"
     TOPIC="openstack/openstack-manuals"
+else
+    echo "Unknown project $1" >2
+    exit 1
 fi
 USERNAME="proposal-bot"
 ALL_SUCCESS=0
