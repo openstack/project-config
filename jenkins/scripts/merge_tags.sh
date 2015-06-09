@@ -46,8 +46,9 @@ fi
 
 COMMIT_MSG="Merge tag '$TAG'
 
-This is a null-merge of the $TAG release tag back into the
-master branch. It contains no actual changes to the master branch,
+This is a null-merge of the $TAG release tag back into the master
+branch so that the $TAG tag will appear in the git commit history of
+the master branch. It contains no actual changes to the master branch,
 regardless of how our code review system's UI represents it. Please
 ask in #openstack-infra if you have any questions, and otherwise try
 to merge this as quickly as possible to avoid later conflicts on the
