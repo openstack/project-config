@@ -2043,6 +2043,17 @@
       - chef-test-jobs
 
 - project:
+    name: defcore
+    node: 'bare-precise || bare-trusty'
+    doc-publisher-site: docs.openstack.org
+
+    jobs:
+      - openstack-publish-jobs
+      - gate-{name}-docs
+      - gate-{name}-tox-{envlist}:
+          envlist: doc8
+
+- project:
     name: dib-utils
     node: 'bare-precise || bare-trusty'
     tarball-site: tarballs.openstack.org
