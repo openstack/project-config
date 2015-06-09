@@ -44,7 +44,16 @@ if [ "$(echo $(echo -e "$MASTER_MINOR\n$TAG_MINOR"|sort -V))" \
     exit 0
 fi
 
-git merge --no-edit -s ours $TAG
+COMMIT_MSG="Merge tag '$TAG'
+
+This is a null-merge of the $TAG release tag back into the
+master branch. It contains no actual changes to the master branch,
+regardless of how our code review system's UI represents it. Please
+ask in #openstack-infra if you have any questions, and otherwise try
+to merge this as quickly as possible to avoid later conflicts on the
+master branch."
+
+git merge -m "$COMMIT_MSG" -s ours $TAG
 # Get a Change-Id
 GIT_EDITOR=true git commit --amend
 git review -R -y -t merge/release-tag
