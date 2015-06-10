@@ -23,7 +23,7 @@ echo "======================================================================"
 
 if [ -z "$ZUUL_REFNAME" ] || [ "$ZUUL_REFNAME" == "master" ] ; then
     : # Leave the docs where they are.
-elif `echo $ZUUL_REFNAME | grep refs/tags/ >/dev/null` ; then
+elif echo $ZUUL_REFNAME | grep refs/tags/ >/dev/null ; then
     # Put tagged releases in proper location. All tagged builds get copied to
     # BUILD_DIR/tagname. If this is the latest tagged release the copy of files
     # at BUILD_DIR remains. When Jenkins copies this file the root developer
@@ -52,7 +52,7 @@ elif `echo $ZUUL_REFNAME | grep refs/tags/ >/dev/null` ; then
             mv doc/build/$TAG doc/build/html/$TAG
         fi
     fi
-elif `echo $ZUUL_REFNAME | grep stable/ >/dev/null` ; then
+elif echo $ZUUL_REFNAME | grep stable/ >/dev/null ; then
     # Put stable release changes in dir named after stable release under the
     # build dir. When Jenkins copies these files they will be accessible under
     # the developer docs root using the stable release's name.
