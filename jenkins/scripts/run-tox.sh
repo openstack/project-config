@@ -117,7 +117,7 @@ export PYTHON=$bin_path/python
 export NOSE_WITH_XUNIT=1
 export NOSE_WITH_HTML_OUTPUT=1
 export NOSE_HTML_OUT_FILE='nose_results.html'
-export TMPDIR=`/bin/mktemp -d`
+export TMPDIR=$(/bin/mktemp -d)
 trap "rm -rf $TMPDIR" EXIT
 
 cat /etc/image-hostname.txt

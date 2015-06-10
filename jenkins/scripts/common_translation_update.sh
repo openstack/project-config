@@ -175,10 +175,10 @@ EOF
     # See if there is an open change in the transifex/translations
     # topic. If so, get the change id for the existing change for use
     # in the commit msg.
-    change_info=`ssh -p 29418 proposal-bot@review.openstack.org gerrit query --current-patch-set status:open project:$FULL_PROJECT topic:transifex/translations owner:proposal-bot`
-    previous=`echo "$change_info" | grep "^  number:" | awk '{print $2}'`
+    change_info=$(ssh -p 29418 proposal-bot@review.openstack.org gerrit query --current-patch-set status:open project:$FULL_PROJECT topic:transifex/translations owner:proposal-bot)
+    previous=$(echo "$change_info" | grep "^  number:" | awk '{print $2}')
     if [ -n "$previous" ]; then
-        change_id=`echo "$change_info" | grep "^change" | awk '{print $2}'`
+        change_id=$(echo "$change_info" | grep "^change" | awk '{print $2}')
         # Read returns a non zero value when it reaches EOF. Because we use a
         # heredoc here it will always reach EOF and return a nonzero value.
         # Disable -e temporarily to get around the read.
@@ -199,7 +199,7 @@ EOF
     # run.
     if [ -n "$previous" ]; then
         # Use the JSON format since it is very compact and easy to grep
-        change_info=`ssh -p 29418 proposal-bot@review.openstack.org gerrit query --current-patch-set --format=JSON $change_id`
+        change_info=$(ssh -p 29418 proposal-bot@review.openstack.org gerrit query --current-patch-set --format=JSON $change_id)
         # Check for:
         # 1) Workflow approval (+1)
         # 2) no -1/-2 by Jenkins
@@ -228,7 +228,7 @@ function send_patch {
     fi
 
     # Don't send a review if nothing has changed.
-    if [ `git diff --cached |wc -l` -gt 0 ]; then
+    if [ $(git diff --cached | wc -l) -gt 0 ]; then
         # Commit and review
         git commit -F- <<EOF
 $COMMIT_MSG
@@ -298,7 +298,7 @@ function setup_django_openstack_auth {
 # Filter out files that we do not want to commit
 function filter_commits {
     # Don't add new empty files.
-    for f in `git diff --cached --name-only --diff-filter=A`; do
+    for f in $(git diff --cached --name-only --diff-filter=A); do
         # Files should have at least one non-empty msgid string.
         if ! grep -q 'msgid "[^"]' "$f" ; then
             git reset -q "$f"
@@ -312,7 +312,7 @@ function filter_commits {
     # Also, don't send files if only .pot files would be changed.
     PO_CHANGE=0
     # Don't iterate over deleted files
-    for f in `git diff --cached --name-only --diff-filter=AM`; do
+    for f in $(git diff --cached --name-only --diff-filter=AM); do
         # It's ok if the grep fails
         set +e
         changed=$(git diff --cached "$f" \
@@ -337,7 +337,7 @@ function filter_commits {
     # and those changes can be ignored as they give no benefit on
     # their own.
     if [ $PO_CHANGE -eq 0 ] ; then
-        for f in `git diff --cached --name-only` ; do
+        for f in $(git diff --cached --name-only) ; do
             git reset -q "$f"
             git checkout -- "$f"
         done
@@ -349,21 +349,21 @@ function filter_commits {
 function cleanup_po_files {
     local project=$1
 
-    for i in `find $project/locale -name *.po `; do
+    for i in $(find $project/locale -name *.po) ; do
         # Output goes to stderr, so redirect to stdout to catch it.
-        trans=`msgfmt --statistics -o /dev/null "$i" 2>&1`
+        trans=$(msgfmt --statistics -o /dev/null "$i" 2>&1)
         check="^0 translated messages"
         if [[ $trans =~ $check ]] ; then
             # Nothing is translated, remove the file.
             git rm -f "$i"
         else
             if [[ $trans =~ " translated message" ]] ; then
-                trans_no=`echo $trans|sed -e 's/ translated message.*$//'`
+                trans_no=$(echo $trans|sed -e 's/ translated message.*$//')
             else
                 trans_no=0
             fi
             if [[ $trans =~ " untranslated message" ]] ; then
-                untrans_no=`echo $trans|sed -e 's/^.* \([0-9]*\) untranslated message.*/\1/'`
+                untrans_no=$(echo $trans|sed -e 's/^.* \([0-9]*\) untranslated message.*/\1/')
             else
                 untrans_no=0
             fi
@@ -388,7 +388,7 @@ function cleanup_po_files {
 function compress_po_files {
     local directory=$1
 
-    for i in `find $directory -name *.po `; do
+    for i in $(find $directory -name *.po) ; do
         msgattrib --translated --no-location --sort-output "$i" \
             --output="${i}.tmp"
         mv "${i}.tmp" "$i"
@@ -404,7 +404,7 @@ function compress_po_files {
 function compress_manual_po_files {
     local directory=$1
     local glossary=$2
-    for i in `find $directory -name *.po `; do
+    for i in $(find $directory -name *.po) ; do
         if [ "$glossary" -eq "0" ] ; then
             if [[ $i =~ "/glossary/" ]] ; then
                 continue
@@ -425,7 +425,7 @@ function compress_manual_po_files {
 function compress_non_en_po_files {
     local directory=$1
 
-    for i in `find $directory -name *.po `; do
+    for i in $(find $directory -name *.po); do
         if [[ $i =~ "/locale/en/LC_MESSAGES/" ]] ; then
             continue
         fi

@@ -34,8 +34,8 @@ git review -s
 git remote update
 git checkout master
 git reset --hard origin/master
-MASTER_MINOR=`git describe|cut -d. -f-2`
-TAG_MINOR=`echo $TAG|cut -d. -f-2`
+MASTER_MINOR=$(git describe|cut -d. -f-2)
+TAG_MINOR=$(echo $TAG | cut -d. -f-2)
 
 # If the tag is for an earlier version than master's, skip
 if [ "$(echo $(echo -e "$MASTER_MINOR\n$TAG_MINOR"|sort -V))" \

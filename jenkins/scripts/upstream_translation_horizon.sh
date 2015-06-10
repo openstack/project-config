@@ -37,7 +37,7 @@ setup_horizon
 git add ${PROJECT}/locale/en/LC_MESSAGES/*
 git add openstack_dashboard/locale/en/LC_MESSAGES/*
 
-if [ `git diff --cached | egrep -v "(POT-Creation-Date|^[\+\-]#|^\+{3}|^\-{3})" | egrep -c "^[\-\+]"` -gt 0 ]; then
+if [ $(git diff --cached | egrep -v "(POT-Creation-Date|^[\+\-]#|^\+{3}|^\-{3})" | egrep -c "^[\-\+]") -gt 0 ]; then
     # Push source file changes to transifex
     tx --debug --traceback push -s
 fi

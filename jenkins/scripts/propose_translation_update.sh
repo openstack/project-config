@@ -44,7 +44,7 @@ tx pull -f
 extract_messages_log "$PROJECT"
 
 # Update existing translation files with extracted messages.
-PO_FILES=`find ${PROJECT}/locale -name "${PROJECT}.po"`
+PO_FILES=$(find ${PROJECT}/locale -name "${PROJECT}.po")
 if [ -n "$PO_FILES" ]; then
     # Use updated .pot file to update translations
     python setup.py  $QUIET update_catalog \
@@ -55,7 +55,7 @@ fi
 # add the messages with the default keywords. Therefore use msgmerge
 # directly.
 for level in $LEVELS ; do
-    PO_FILES=`find ${PROJECT}/locale -name "${PROJECT}-log-${level}.po"`
+    PO_FILES=$(find ${PROJECT}/locale -name "${PROJECT}-log-${level}.po")
     if [ -n "$PO_FILES" ]; then
         for f in $PO_FILES ; do
             echo "Updating $f"
