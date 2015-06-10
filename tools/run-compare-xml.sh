@@ -28,7 +28,7 @@ mkdir -p .test/new/config
 mkdir -p .test/new/out
 cd ../..
 
-GITHEAD=`git rev-parse HEAD`
+GITHEAD=$(git rev-parse HEAD)
 
 # First generate output from HEAD~1
 git checkout HEAD~1

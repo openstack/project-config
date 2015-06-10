@@ -43,7 +43,7 @@ elif [ -f /usr/bin/apt-get ]; then
         sudo DEBIAN_FRONTEND=noninteractive apt-get \
             --option "Dpkg::Options::=--force-confold" \
             --assume-yes install build-essential python-dev \
-            python-software-properties linux-headers-virtual linux-headers-`uname -r`
+            python-software-properties linux-headers-virtual linux-headers-$(uname -r)
     fi
 else
     echo "Unsupported distro."
