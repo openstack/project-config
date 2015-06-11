@@ -501,7 +501,7 @@ project-templates:
       # 3.5 was swiftly replaced with 3.6
       - gate-{name}-puppet-unit-3.6
       - gate-{name}-puppet-unit-3.7
-      # TODO(emilienm): add 4.0 when it will vote
+      - gate-{name}-puppet-unit-4.0
 
   - name: infra-puppet-apply-jobs
     check:
@@ -1297,9 +1297,14 @@ jobs:
   - name: ^(gate-)?devstack-publish-docs
     branch: ^master
 
-  # TODO(emilienm): Enable voting when all tests pass for all modules
+  # Puppet 4 is really supported after Juno release
   - name: ^gate-puppet-.*-puppet-unit-4.0$
+    branch: ^(?!stable/(grizzly|havana|icehouse|juno)).*$
     voting: false
+    skip-if:
+      # this module is not part of Puppet OpenStack work
+      # and is not Puppet4 compliant
+      - project: ^stackforge/puppet-openstack-cloud$
 
   # Beaker tests have been introduced after Juno release
   - name: ^gate-puppet-.*-puppet-beaker-rspec-dsvm-.*$
