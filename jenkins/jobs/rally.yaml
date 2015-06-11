@@ -381,6 +381,40 @@
       - rally-plot
 
 
+- builder:
+    name: devstack-cue-rally-gate
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PROJECTS="openstack/rally $PROJECTS"
+          export ENABLED_SERVICES=rally
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=100
+          export DEVSTACK_GATE_INSTALL_TESTONLY=1
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_TEMPEST_NOTESTS=1
+          export PROJECTS="stackforge/cue stackforge/python-cueclient $PROJECTS"
+
+          function pre_test_hook {{
+              cd /opt/stack/new/cue/tests
+              ./pre_test_hook.sh {broker}
+              # Install rally-devstack integration
+              cp -r $BASE/new/rally/contrib/devstack/* $BASE/new/devstack/
+          }}
+          export -f pre_test_hook
+
+          function gate_hook {{
+              $BASE/new/rally/tests/ci/rally-gate.py
+          }}
+          export -f gate_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+
 - job-template:
     name: 'gate-rally-dsvm-murano-{name}'
     node: 'devstack-precise || devstack-trusty'
@@ -557,6 +591,24 @@
       - console-log
       - rally-plot
 
+- job-template:
+    name: 'gate-{name}-integrate-dsvm-rally'
+    node: 'devstack-precise || devstack-trusty'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - devstack-{name}-rally-gate
+
+    publishers:
+      - devstack-logs
+      - console-log
+      - rally-plot
+
+
 - job:
     name: 'gate-rally-dsvm-cli'
     node: 'devstack-precise || devstack-trusty'
@@ -661,7 +713,6 @@
       - devstack-logs
       - console-log
       - rally-verify
-
 
 - job-group:
     name: rally-jobs
