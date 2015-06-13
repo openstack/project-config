@@ -529,6 +529,14 @@ project-templates:
       - check-tripleo-ironic-overcloud-precise-nonha
       - check-tripleo-ironic-overcloud-f21-nonha
 
+  - name: javascript-jobs
+    check:
+      - gate-{name}-npm-run-lint
+      - gate-{name}-npm-run-test
+    gate:
+      - gate-{name}-npm-run-lint
+      - gate-{name}-npm-run-test
+
 jobs:
   - name: ^.*$
     parameter-function: set_node_options_default_trusty
@@ -7313,15 +7321,12 @@ projects:
   - name: stackforge/refstack
     template:
       - name: merge-check
+      - name: javascript-jobs
     check:
-      - gate-refstack-npm-run-lint
-      - gate-refstack-npm-run-test-single-run
       - gate-refstack-pep8
       - gate-refstack-python27
       - gate-refstack-python34
     gate:
-      - gate-refstack-npm-run-lint
-      - gate-refstack-npm-run-test-single-run
       - gate-refstack-pep8
       - gate-refstack-python27
 
