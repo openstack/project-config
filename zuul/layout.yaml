@@ -469,6 +469,9 @@ project-templates:
     check:
       - gate-{name}-puppet-beaker-rspec-dsvm-trusty
       - gate-{name}-puppet-beaker-rspec-dsvm-centos7
+    gate:
+      - gate-{name}-puppet-beaker-rspec-dsvm-trusty
+      - gate-{name}-puppet-beaker-rspec-dsvm-centos7
 
   - name: puppet-syntax-future
     check:
@@ -1299,8 +1302,7 @@ jobs:
 
   # Beaker tests have been introduced after Juno release
   - name: ^gate-puppet-.*-puppet-beaker-rspec-dsvm-.*$
-    branch: ^(?!stable/(havana|icehouse|juno)).*$
-    voting: false
+    branch: ^(?!stable/(grizzly|havana|icehouse|juno)).*$
 
   - name: ^gate-puppet-((?!swift).)*-puppet-syntax-future$
     branch: ^(?!stable/(havana|icehouse)).*$
