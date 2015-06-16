@@ -338,7 +338,7 @@ function filter_commits {
     # their own.
     if [ $PO_CHANGE -eq 0 ] ; then
         for f in $(git diff --cached --name-only) ; do
-            git reset -q "$f"
+            git reset -q -- "$f"
             git checkout -- "$f"
         done
     fi
