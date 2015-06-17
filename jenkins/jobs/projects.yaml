@@ -2043,6 +2043,20 @@
       - openstack-publish-jobs
 
 - project:
+    name: manila-image-elements
+    tarball-site: tarballs.openstack.org
+    node: 'bare-precise || bare-trusty'
+    doc-publisher-site: docs.openstack.org
+
+    jobs:
+      - gate-{name}-pep8
+      - gate-{name}-docs
+      - 'gate-manila-buildimage-{os-element}':
+          os-element: manila-ubuntu-core
+      - gate-{name}-tox-{envlist}:
+          envlist: buildimage
+
+- project:
     name: manila-ui
     tarball-site: tarballs.openstack.org
     node: 'bare-precise || bare-trusty'

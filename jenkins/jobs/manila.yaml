@@ -267,3 +267,27 @@
     publishers:
       - devstack-logs
       - console-log
+
+- job-template:
+    name: 'gate-manila-buildimage-{os-element}'
+    node: 'bare-precise || bare-trusty'
+
+    builders:
+      - link-logs
+      - net-info
+      - gerrit-git-prep
+      - shell: |
+          #!/bin/bash -xe
+          export MANILA_IMG_OS={os-element}
+          tox -e buildimage
+          mv manila-service-image.qcow2 $WORKSPACE/{os-element}.qcow2
+
+    publishers:
+      - scp:
+          site: 'tarballs.openstack.org'
+          files:
+            - source: '{os-element}.qcow2'
+              target: 'tarballs/manila-image-elements/images'
+              keep-hierarchy: false
+              copy-after-failure: false
+      - console-log
