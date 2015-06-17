@@ -399,17 +399,17 @@
           export DEVSTACK_GATE_TEMPEST_NOTESTS=1
           export PROJECTS="stackforge/cue stackforge/python-cueclient $PROJECTS"
 
-          function pre_test_hook {{
+          function pre_test_hook {
               cd /opt/stack/new/cue/tests
-              ./pre_test_hook.sh {broker}
+              ./pre_test_hook.sh rabbitmq
               # Install rally-devstack integration
               cp -r $BASE/new/rally/contrib/devstack/* $BASE/new/devstack/
-          }}
+          }
           export -f pre_test_hook
 
-          function gate_hook {{
+          function gate_hook {
               $BASE/new/rally/tests/ci/rally-gate.py
-          }}
+          }
           export -f gate_hook
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
