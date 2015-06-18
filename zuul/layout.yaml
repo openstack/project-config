@@ -1364,6 +1364,10 @@ jobs:
   - name: gate-glance-python26
     branch: ^stable/(icehouse|juno)$
 
+  - name: gate-glance-python34
+    branch: ^(?!stable/(?:icehouse|juno|kilo)).*$
+    voting: false
+
   - name: gate-glance_store-python26
     branch: ^stable/kilo$
 
@@ -1713,6 +1717,7 @@ projects:
     check:
       - check-devstack-dsvm-cells
       - check-tempest-dsvm-full-ceph
+      - gate-glance-python34
       - gate-rally-dsvm-glance
     gate:
       - gate-devstack-dsvm-cells
