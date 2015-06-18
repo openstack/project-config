@@ -164,6 +164,15 @@ echo 'nameserver 127.0.0.1' > /etc/resolv.conf
 exit 0
 EOF
 
+# hpcloud has started mounting ephemeral /dev/vdb at /mnt.
+# devstack-gate wants to partition the ephemeral disk, add some swap
+# and mount it at /opt.  get rid of the mount.
+#
+# note this comes down from the cloud-init metadata; which we setup to
+# ignore below.
+sudo sed -i '/^\/dev\/vdb/d' /etc/fstab
+
+
 # Make all cloud-init data sources match rackspace- only attempt to look
 # at ConfigDrive, not at metadata service. This is not needed if there
 # is no cloud-init
