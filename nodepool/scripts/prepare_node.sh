@@ -182,6 +182,9 @@ datasource_list: [ ConfigDrive, None ]
 EOF
 fi
 
+# reset cloud-init
+sudo rm -rf /var/lib/cloud/instances
+
 sudo bash -c "echo 'include: /etc/unbound/forwarding.conf' >> /etc/unbound/unbound.conf"
 if [ -e /etc/init.d/unbound ] ; then
     sudo /etc/init.d/unbound restart
