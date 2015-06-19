@@ -60,16 +60,15 @@ for p in projects:
     # Allow git:// and https:// URLs for importing upstream repositories,
     # but not git@
     upstream = p.get('upstream')
-    if not upstream:
-        continue
-    for prefix in VALID_SCHEMES:
-        if upstream.startswith(prefix):
-            break
-    else:
-        found_errors += 1
-        print('Error: Upstream URLs should use a scheme in %s, '
-              'found %s in %s' %
-              (VALID_SCHEMES, p['upstream'], name))
+    if upstream:
+        for prefix in VALID_SCHEMES:
+            if upstream.startswith(prefix):
+                break
+        else:
+            found_errors += 1
+            print('Error: Upstream URLs should use a scheme in %s, '
+                  'found %s in %s' %
+                  (VALID_SCHEMES, p['upstream'], name))
     # Check for any wrong entries
     for entry in p:
         for label in VALID_LABELS:
