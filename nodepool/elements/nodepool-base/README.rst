@@ -1,1 +1,16 @@
-Tasks to deal with image metadata and other nodepool cloud specific tweaks.
+=============
+nodepool-base
+=============
+
+Tasks to deal with image metadata and other Nodepool cloud specific tweaks.
+
+Environment variables:
+
+`NODEPOOL_SCRIPTDIR` path to copy Nodepool scripts from. It is set
+automatically by Nodepool.  For local hacking override it to where your scripts
+are. Default:
+`$TMP_MOUNT_PATH/opt/git/openstack-infra/project-config/nodepool/scripts`.
+
+The image should have the unbound DNS resolver package installed, the
+nodepool-base element then configures it to forward DNS queries to
+`NODEPOOL_STATIC_NAMESERVER`, default: `8.8.8.8`.
