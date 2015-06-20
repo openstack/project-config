@@ -352,6 +352,11 @@ function filter_commits {
     # and those changes can be ignored as they give no benefit on
     # their own.
     if [ $PO_CHANGE -eq 0 ] ; then
+        # New files need to be handled differently
+        for f in $(git diff --cached --name-only --diff-filter=A) ; do
+            git reset -q -- "$f"
+            rm "$f"
+        done
         for f in $(git diff --cached --name-only) ; do
             git reset -q -- "$f"
             git checkout -- "$f"
