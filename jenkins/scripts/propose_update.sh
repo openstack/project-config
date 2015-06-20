@@ -23,7 +23,7 @@ if [ "$OWN_PROJECT" == "requirements" ] ; then
     INITIAL_COMMIT_MSG="Updated from global requirements"
     TOPIC="openstack/requirements"
     PROJECTS=$(cat projects.txt)
-    VENV=$(mktemp)
+    VENV=$(mktemp -d)
     trap "rm -rf $VENV" EXIT
     virtualenv $VENV
     $VENV/bin/pip install -e .
@@ -41,7 +41,7 @@ elif [ "$OWN_PROJECT" == "requirements-constraints" ] ; then
     INITIAL_COMMIT_MSG="Updated from generate-constraints"
     TOPIC="openstack/requirements/constraints"
     PROJECTS=openstack/requirements
-    VENV=$(mktemp)
+    VENV=$(mktemp -d)
     trap "rm -rf $VENV" EXIT
     virtualenv $VENV
     $VENV/bin/pip install -e .
