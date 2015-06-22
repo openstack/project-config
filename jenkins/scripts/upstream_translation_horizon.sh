@@ -34,8 +34,8 @@ setup_horizon
 ./run_tests.sh --makemessages -V
 
 # Add all changed files to git
-git add ${PROJECT}/locale/en/LC_MESSAGES/*
-git add openstack_dashboard/locale/en/LC_MESSAGES/*
+git add ${PROJECT}/locale/*pot
+git add openstack_dashboard/locale/*pot
 
 if [ $(git diff --cached | egrep -v "(POT-Creation-Date|^[\+\-]#|^\+{3}|^\-{3})" | egrep -c "^[\-\+]") -gt 0 ]; then
     # Push source file changes to transifex
