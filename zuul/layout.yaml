@@ -807,12 +807,8 @@ jobs:
   - name: ^check-neutron-fwaas-dsvm-functional$
     voting: false
 
-  - name: ^(check|gate)-neutron-lbaasv1-dsvm-api$
-    voting: false
-
   - name: ^(check|gate)-neutron-lbaasv2-dsvm-api$
     branch: ^(?!stable/(?:icehouse|juno)).*$
-    voting: false
 
   - name: ^(gate|check)-group-based-policy-dsvm-functional$
     voting: false
@@ -2215,6 +2211,8 @@ projects:
     gate:
       - gate-neutron-dsvm-api
       - gate-neutron-dsvm-functional
+      - gate-neutron-lbaasv1-dsvm-api
+      - gate-neutron-lbaasv2-dsvm-api
       - gate-tempest-dsvm-neutron-large-ops
     post:
       - neutron-coverage
@@ -2246,6 +2244,9 @@ projects:
     check:
       - check-neutron-lbaasv1-dsvm-api
       - check-neutron-lbaasv2-dsvm-api
+    gate:
+      - gate-neutron-lbaasv1-dsvm-api
+      - gate-neutron-lbaasv2-dsvm-api
 
   - name: openstack/neutron-specs
     template:
