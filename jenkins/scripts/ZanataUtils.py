@@ -68,21 +68,17 @@ class ProjectConfig:
     for the project given the supplied values.
 
     Attributes:
-    zc (IniConfig): zanata.ini values
-    url (str): URL of Zanata server
-    username (str): Zanata username
-    key (str): Zanata API key
+    zconfig (IniConfig): zanata.ini values
     xmlfile (str): path to zanata.xml to read or write
-    rules (list): list of mapping rules
-
+    rules (list): list of two-ples with pattern and rules
     """
-    def __init__(self, zconfig, xmlfile, **kwargs):
+    def __init__(self, zconfig, xmlfile, rules, **kwargs):
         self.zc = zconfig
         self.url = zconfig.url
         self.username = zconfig.username
         self.key = zconfig.key
         self.xmlfile = xmlfile
-        self.rules = []
+        self.rules = self._parse_rules(rules)
         if os.path.isfile(os.path.abspath(xmlfile)):
             self._load_config()
         else:
@@ -98,6 +94,13 @@ class ProjectConfig:
 
         """
         return '{%s}' % etree.QName(root).namespace
+
+    def _parse_rules(self, rules):
+        """Parse a two-ple of pattern, rule.
+
+        Returns a list of dictionaries with 'pattern' and 'rule' keys.
+        """
+        return [{'pattern': rule[0], 'rule': rule[1]} for rule in rules]
 
     def _load_config(self):
         """Load configuration from an existing zanata.xml
@@ -118,8 +121,9 @@ class ProjectConfig:
         self.version = root.find('%sproject-version' % tag_prefix).text
         self.srcdir = root.find('%ssrc-dir' % tag_prefix).text
         self.txdir = root.find('%strans-dir' % tag_prefix).text
-        # TODO - smarter parsing of rules here
-        self.rules = root.findall('%srules' % tag_prefix)
+        rules = root.find('%srules' % tag_prefix)
+        self.rules = self._parse_rules([(tag.get('pattern', tag.text))
+                                       for tag in rules.getchildren()])
 
     def _create_config(self):
         """Create zanata.xml
@@ -185,17 +189,16 @@ class ProjectConfig:
         xml (etree): zanata.xml file contents
 
         """
-        # TODO - need to figure out horizon dashboard as part of it is in
-        # different srcdir/transdir
         root = xml.getroot()
         s = etree.SubElement(root, 'src-dir')
         s.text = self.srcdir
         t = etree.SubElement(root, 'trans-dir')
         t.text = self.txdir
         rules = etree.SubElement(root, 'rules')
-        p1 = etree.SubElement(rules, 'rule')
-        p1.attrib['pattern'] = '*.pot'
-        p1.text = '{locale}/LC_MESSAGES/{filename}.po'
+        for rule in self.rules:
+            new_rule = etree.SubElement(rules, 'rule')
+            new_rule.attrib['pattern'] = rule['pattern']
+            new_rule.text = rule['rule']
         tag_prefix = self._get_tag_prefix(root)
         locale_sub = root.find('%slocales' % tag_prefix)
         locale_elements = locale_sub.findall('%slocale' % tag_prefix)

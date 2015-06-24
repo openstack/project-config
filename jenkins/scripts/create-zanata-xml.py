@@ -25,6 +25,12 @@ def get_args():
     parser.add_argument('-v', '--version')
     parser.add_argument('-s', '--srcdir')
     parser.add_argument('-d', '--txdir')
+    parser.add_argument('-r', '--rule', nargs=2, metavar=('PATTERN', 'RULE'),
+                        action='append',
+                        help='Append a rule, used by the Zanata client to '
+                        'match .pot files to translations. Can be specified '
+                        'multiple times, and if no rules are specified a '
+                        'default will be used.')
     parser.add_argument('-f', '--file', required=True)
     return parser.parse_args()
 
@@ -32,7 +38,8 @@ def get_args():
 def main():
     args = get_args()
     zc = IniConfig(os.path.expanduser('~/.config/zanata.ini'))
-    ProjectConfig(zc, args.file, project=args.project,
+    rules = args.rule or [('*.pot', '{locale}/LC_MESSAGES/{filename}.po')]
+    ProjectConfig(zc, args.file, rules, project=args.project,
                   version=args.version,
                   srcdir=args.srcdir, txdir=args.txdir)
 

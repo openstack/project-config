@@ -48,7 +48,9 @@ function setup_project {
 
     # While we spin up, we want to not error out if we can't generate the
     # zanata.xml file.
-    if ! /usr/local/jenkins/slave_scripts/create-zanata-xml.py -p $project -v master --srcdir ${project}/locale --txdir ${project}/locale -f zanata.xml; then
+    if ! /usr/local/jenkins/slave_scripts/create-zanata-xml.py -p $project \
+        -v master --srcdir ${project}/locale --txdir ${project}/locale \
+        -f zanata.xml; then
         echo "Failed to generate zanata.xml"
     fi
 }
@@ -84,6 +86,18 @@ function setup_horizon {
         --source-lang en \
         --source-file openstack_dashboard/locale/djangojs.pot \
         -t PO --execute
+
+    # While we spin up, we want to not error out if we can't generate the
+    # zanata.xml file.
+    if ! /usr/local/jenkins/slave_scripts/create-zanata-xml.py -p $project \
+        -v master --srcdir . --txdir . -r 'horizon/*.pot' \
+        'horizon/locale/{locale}/LC_MESSAGES}/{filename}.po' \
+        -r 'openstack_dashboard/*.pot' \
+        'openstack_dashboard/locale/{locale}/LC_MESSAGES/{filename}.po' \
+        -f zanata.xml; then
+        echo "Failed to generate zanata.xml"
+    fi
+
 }
 
 # Set global variable DocFolder for manuals projects
@@ -311,7 +325,9 @@ function setup_django_openstack_auth {
 
     # While we spin up, we want to not error out if we can't generate the
     # zanata.xml file.
-    if ! /usr/local/jenkins/slave_scripts/create-zanata-xml.py -p $project -v master --srcdir openstack_auth/locale --txdir openstack_auth/locale -f zanata.xml; then
+    if ! /usr/local/jenkins/slave_scripts/create-zanata-xml.py -p horizon \
+        -v master --srcdir openstack_auth/locale \
+        --txdir openstack_auth/locale -f zanata.xml; then
         echo "Failed to generate zanata.xml"
     fi
 

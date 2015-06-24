@@ -14,7 +14,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-# The script is to push the updated English po to Transifex.
+# The script is to push the updated English po to Transifex and Zanata.
 
 PROJECT="horizon"
 
@@ -40,4 +40,9 @@ git add openstack_dashboard/locale/*pot
 if [ $(git diff --cached | egrep -v "(POT-Creation-Date|^[\+\-]#|^\+{3}|^\-{3})" | egrep -c "^[\-\+]") -gt 0 ]; then
     # Push source file changes to transifex
     tx --debug --traceback push -s
+
+    # And zanata, if we have a zanata.xml
+    if [ -f zanata.xml ]; then
+        zanata-cli -B -e push
+    fi
 fi
