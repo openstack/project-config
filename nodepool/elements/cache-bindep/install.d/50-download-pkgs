@@ -1,0 +1,63 @@
+#!/bin/bash -xe
+# Copyright (C) 2011-2015 OpenStack Foundation
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+# implied.
+#
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Build up a list of packages to install by concatenating bindep lists
+FALLBACKREPO=/opt/git/openstack-infra/project-config
+FALLBACKFILE=jenkins/data/bindep-fallback.txt
+PACKAGES=`git --git-dir=$FALLBACKREPO/.git show master:$FALLBACKFILE`
+REQSFILE=other-requirements.txt
+for REPO in /opt/git/*/* ; do
+    BRANCHES=`git --git-dir=$REPO/.git branch --list -r 'origin/[^H]*'`
+    for BRANCH in $BRANCHES ; do
+        REQS=`git --git-dir=$REPO/.git show $BRANCH:$REQSFILE 2>/dev/null`
+        if [ -n "$REQS" ] ; then
+            PACKAGES=`echo -e "$PACKAGES\n$REQS" | sort -u`
+        fi
+    done
+done
+# TODO(fungi) once https://review.openstack.org/195201 appears in a bindep
+# release, replace the next four lines with:
+# PACKAGELIST=`echo "$PACKAGES" | bindep -b -f -`
+PACKAGESFILE=`tempfile`
+echo "$PACKAGES" > $PACKAGESFILE
+PACKAGELIST=`bindep -b -f $PACKAGESFILE`
+rm $PACKAGESFILE
+
+if grep "^CentOS release 6" /etc/redhat-release ; then
+    # --downloadonly is provided by the yum-plugin-downloadonly package on
+    # CentOS 6.x
+    CENTOS6=1
+    yum install -y yum-plugin-downloadonly
+else
+    CENTOS6=0
+fi
+
+if [ -f /usr/bin/apt-get ] ; then
+    # --ignore-missing conflicts with set -e, so force it to be ok
+    apt-get -y --ignore-missing -d install $PACKAGELIST || true
+else
+    if [ $CENTOS6 -eq 1 ] ; then
+        # some packages may depend on python-setuptools, which is not
+        # installed and cannot be reinstalled on CentOS 6.x once yum
+        # has erased them, so use --skip-broken to avoid aborting; also
+        # on this platform --downloadonly causes yum to return nonzero
+        # even when it succeeds, so ignore its exit code
+        yum install -y --downloadonly --skip-broken $PACKAGELIST || true
+    else
+        yum install -y --downloadonly $PACKAGELIST
+    fi
+fi
