@@ -511,7 +511,6 @@ project-templates:
     gate:
       - gate-infra-puppet-apply-precise
       - gate-infra-puppet-apply-trusty
-      - gate-infra-puppet-apply-centos6
 
   - name: check-tripleo-jobs
     check-tripleo:
@@ -567,6 +566,8 @@ jobs:
     branch: ^master.*$
   # -nv jobs are never voting.
   - name: ^.*-nv$
+    voting: false
+  - name: gate-infra-puppet-apply-centos6
     voting: false
   # because of global requirements overrides, there is no reason to
   # run tempest/grenade tests after a requirements sync, as they've
