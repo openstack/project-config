@@ -833,3 +833,10 @@
     publishers:
       - zuul-swift-upload-logs-with-console:
           upload_source: '"**/*nose_results.html" "**/*testr_results.html.gz" ".testrepository/tmp*" "**/*testrepository.subunit.gz" ".tox/*/log/*"'
+
+- publisher:
+    name: proposal-slave-cleanup
+    publishers:
+      - postbuildscript:
+          builders:
+            - shell: "/usr/local/jenkins/slave_scripts/slave-cleanup.sh"
