@@ -54,7 +54,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-heat-dsvm-functional-{datastore}{branch-designator}'
+    name: '{pipeline}-heat-dsvm-functional-{engine}-{datastore}{branch-designator}'
     node: '{node}'
 
     wrappers:
@@ -77,15 +77,19 @@
           export DEVSTACK_GATE_EXERCISES=0
           export DEVSTACK_GATE_INSTALL_TESTONLY=1
           export KEEP_LOCALRC=1
+
           if [ "{datastore}" == "postgres" ] ; then
               export DEVSTACK_GATE_POSTGRES=1
+          fi
+
+          if [ "{engine}" == "convg" ] ; then
+              export ENABLE_CONVERGENCE=true
           fi
 
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
-
 
           function pre_test_hook {{
               cd /opt/stack/new/heat/heat_integrationtests

@@ -686,11 +686,15 @@ jobs:
   - name: check-tempest-dsvm-neutron-nv
     branch: ^feature/pecan
 
-  - name: check-heat-dsvm-functional-mysql
+  - name: check-heat-dsvm-functional-orig-mysql
     branch: ^(?!stable/(icehouse|juno)).*$
 
-  - name: check-heat-dsvm-functional-postgres
+  - name: check-heat-dsvm-functional-orig-postgres
     branch: ^(?!stable/icehouse).*$
+    voting: false
+
+  - name: check-heat-dsvm-functional-convg-mysql
+    branch: ^(?!stable/(icehouse|juno|kilo)).*$
     voting: false
 
     # Images for Icehouse do not contain python34
@@ -1791,12 +1795,12 @@ projects:
       - name: translation-jobs
       - name: experimental-tripleo-jobs
     check:
-      - check-heat-dsvm-functional-mysql
+      - check-heat-dsvm-functional-orig-mysql
       - check-tempest-dsvm-heat
       - gate-heat-python34
       - check-grenade-dsvm-heat
     gate:
-      - check-heat-dsvm-functional-mysql
+      - check-heat-dsvm-functional-orig-mysql
       - gate-tempest-dsvm-heat
     post:
       - heat-coverage
@@ -1804,7 +1808,8 @@ projects:
       - check-tripleo-ironic-overcloud-precise-nonha
     experimental:
       - gate-rally-dsvm-fakevirt-heat
-      - check-heat-dsvm-functional-postgres
+      - check-heat-dsvm-functional-orig-postgres
+      - check-heat-dsvm-functional-convg-mysql
 
   - name: openstack/heat-specs
     template:
