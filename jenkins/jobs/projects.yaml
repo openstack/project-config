@@ -400,9 +400,14 @@
     jobs:
       - python-jobs
       - pypi-jobs
+      - translation-jobs
       - gate-{name}-tox-{envlist}:
           envlist: func
-      - translation-jobs
+      - '{pipeline}-ironic-inspector-dsvm{branch-designator}':
+          pipeline: check
+          node: 'devstack-precise || devstack-trusty'
+          branch-designator: '-nv'
+          branch-override: default
 
 - project:
     name: ironic-lib
