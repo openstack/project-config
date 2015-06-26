@@ -16,6 +16,7 @@
 # under the License.
 
 import argparse
+import contextlib
 import os
 import pkg_resources
 import shlex
@@ -115,6 +116,15 @@ def grab_args():
     return parser.parse_args()
 
 
+@contextlib.contextmanager
+def tempdir():
+    try:
+        reqroot = tempfile.mkdtemp()
+        yield reqroot
+    finally:
+        shutil.rmtree(reqroot)
+
+
 def main():
     args = grab_args()
     branch = args.branch
@@ -138,52 +148,52 @@ def main():
 
     # build a list of requirements from the global list in the
     # openstack/requirements project so we can match them to the changes
-    reqroot = tempfile.mkdtemp()
-    reqdir = os.path.join(reqroot, "openstack/requirements")
-    if args.zc is not None:
-        zc = args.zc
-    else:
-        zc = '/usr/zuul-env/bin/zuul-cloner'
-    out, err = run_command("%(zc)s "
-                           "--cache-dir /opt/git "
-                           "--workspace %(root)s "
-                           "git://git.openstack.org "
-                           "openstack/requirements"
-                           % dict(zc=zc, root=reqroot))
-    print out
-    print err
-    os.chdir(reqdir)
-    print "requirements git sha: %s" % run_command(
-        "git rev-parse HEAD")[0]
-    os_reqs = RequirementsList('openstack/requirements')
-    if branch == 'master' or branch.startswith('feature/'):
-        include_dev = True
-    else:
-        include_dev = False
-    os_reqs.read_all_requirements(include_dev=include_dev,
-                                  global_req=True)
+    with tempdir() as reqroot:
+        reqdir = os.path.join(reqroot, "openstack/requirements")
+        if args.zc is not None:
+            zc = args.zc
+        else:
+            zc = '/usr/zuul-env/bin/zuul-cloner'
+        out, err = run_command("%(zc)s "
+                               "--cache-dir /opt/git "
+                               "--workspace %(root)s "
+                               "git://git.openstack.org "
+                               "openstack/requirements"
+                               % dict(zc=zc, root=reqroot))
+        print out
+        print err
+        os.chdir(reqdir)
+        print "requirements git sha: %s" % run_command(
+            "git rev-parse HEAD")[0]
+        os_reqs = RequirementsList('openstack/requirements')
+        if branch == 'master' or branch.startswith('feature/'):
+            include_dev = True
+        else:
+            include_dev = False
+        os_reqs.read_all_requirements(include_dev=include_dev,
+                                      global_req=True)
 
-    # iterate through the changing entries and see if they match the global
-    # equivalents we want enforced
-    failed = False
-    for req in head_reqs.reqs.values():
-        name = req.project_name.lower()
-        if name in branch_reqs.reqs and req == branch_reqs.reqs[name]:
-            continue
-        if name not in os_reqs.reqs:
-            print("Requirement %s not in openstack/requirements" % str(req))
-            failed = True
-            continue
-        # pkg_resources.Requirement implements __eq__() but not __ne__().
-        # There is no implied relationship between __eq__() and __ne__()
-        # so we must negate the result of == here instead of using !=.
-        if not (req == os_reqs.reqs[name]):
-            print("Requirement %s does not match openstack/requirements "
-                  "value %s" % (str(req), str(os_reqs.reqs[name])))
-            failed = True
+        # iterate through the changing entries and see if they match the global
+        # equivalents we want enforced
+        failed = False
+        for req in head_reqs.reqs.values():
+            name = req.project_name.lower()
+            if name in branch_reqs.reqs and req == branch_reqs.reqs[name]:
+                continue
+            if name not in os_reqs.reqs:
+                print(
+                    "Requirement %s not in openstack/requirements" % str(req))
+                failed = True
+                continue
+            # pkg_resources.Requirement implements __eq__() but not __ne__().
+            # There is no implied relationship between __eq__() and __ne__()
+            # so we must negate the result of == here instead of using !=.
+            if not (req == os_reqs.reqs[name]):
+                print("Requirement %s does not match openstack/requirements "
+                      "value %s" % (str(req), str(os_reqs.reqs[name])))
+                failed = True
 
-    # clean up and report the results
-    shutil.rmtree(reqroot)
+    # report the results
     if failed or os_reqs.failed or head_reqs.failed or branch_reqs.failed:
         sys.exit(1)
     print("Updated requirements match openstack/requirements.")
