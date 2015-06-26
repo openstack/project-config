@@ -37,22 +37,8 @@
               sudo apt-get install -y libxml2-dev libxslt-dev zlib1g-dev
           fi
       - gerrit-git-prep
+      - allow_local_ssh_root
       - shell: |
-          echo "" | sudo tee -a /etc/ssh/sshd_config
-          echo "Match address 127.0.0.1" | sudo tee -a /etc/ssh/sshd_config
-          echo "    PermitRootLogin without-password" | sudo tee -a /etc/ssh/sshd_config
-          echo "" | sudo tee -a /etc/ssh/sshd_config
-          echo "Match address ::1" | sudo tee -a /etc/ssh/sshd_config
-          echo "    PermitRootLogin without-password" | sudo tee -a /etc/ssh/sshd_config
-          mkdir -p .ssh
-          ssh-keygen -f ~/.ssh/id_rsa -b 2048 -C "beaker key" -P ""
-          sudo mkdir -p /root/.ssh
-          cat ~/.ssh/id_rsa.pub | sudo tee -a /root/.ssh/authorized_keys
-          if [ -f /usr/bin/yum ]; then
-              sudo systemctl restart sshd
-          elif [ -f /usr/bin/apt-get ]; then
-              sudo service ssh restart
-          fi
           sudo gem install bundler --no-rdoc --no-ri --verbose
       - revoke-sudo
       - shell: |
@@ -87,22 +73,8 @@
           fi
       # checkout the current patchset
       - gerrit-git-prep
+      - allow_local_ssh_root
       - shell: |
-          echo "" | sudo tee -a /etc/ssh/sshd_config
-          echo "Match address 127.0.0.1" | sudo tee -a /etc/ssh/sshd_config
-          echo "    PermitRootLogin without-password" | sudo tee -a /etc/ssh/sshd_config
-          echo "" | sudo tee -a /etc/ssh/sshd_config
-          echo "Match address ::1" | sudo tee -a /etc/ssh/sshd_config
-          echo "    PermitRootLogin without-password" | sudo tee -a /etc/ssh/sshd_config
-          mkdir -p .ssh
-          ssh-keygen -f ~/.ssh/id_rsa -b 2048 -C "beaker key" -P ""
-          sudo mkdir -p /root/.ssh
-          cat ~/.ssh/id_rsa.pub | sudo tee -a /root/.ssh/authorized_keys
-          if [ -f /usr/bin/yum ]; then
-              sudo systemctl restart sshd
-          elif [ -f /usr/bin/apt-get ]; then
-              sudo service ssh restart
-          fi
           sudo gem install bundler --no-rdoc --no-ri --verbose
       - revoke-sudo
       - shell: |
