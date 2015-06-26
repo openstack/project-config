@@ -110,6 +110,7 @@ def grab_args():
                         help='check local changes (not yet in git)')
     parser.add_argument('branch', nargs='?', default='master',
                         help='target branch for diffs')
+    parser.add_argument('--zc', help='what zuul cloner to call')
 
     return parser.parse_args()
 
@@ -139,11 +140,16 @@ def main():
     # openstack/requirements project so we can match them to the changes
     reqroot = tempfile.mkdtemp()
     reqdir = os.path.join(reqroot, "openstack/requirements")
-    out, err = run_command("/usr/zuul-env/bin/zuul-cloner "
+    if args.zc is not None:
+        zc = args.zc
+    else:
+        zc = '/usr/zuul-env/bin/zuul-cloner'
+    out, err = run_command("%(zc)s "
                            "--cache-dir /opt/git "
-                           "--workspace %s "
+                           "--workspace %(root)s "
                            "git://git.openstack.org "
-                           "openstack/requirements" % reqroot)
+                           "openstack/requirements"
+                           % dict(zc=zc, root=reqroot))
     print out
     print err
     os.chdir(reqdir)
