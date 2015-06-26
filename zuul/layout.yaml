@@ -639,6 +639,13 @@ jobs:
           - ^.*\.rst$
           - ^doc/.*$
 
+  # Do not run the documentation publishing jobs ({name}-docs) from
+  # "bug/" branches. The (?!gate-) prefix is used in the regex because
+  # we *do* want the gate docs jobs to run, just not the jobs in the
+  # post queue.
+  - name: ^(?!gate-).*-docs$
+    branch: ^(?!bug/).*$
+
   - name: ^gate-puppet-openstackci-puppet-beaker-rspec-dsvm-.*$
     voting: false
 
