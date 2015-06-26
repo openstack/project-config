@@ -394,18 +394,24 @@
           export ENABLED_SERVICES=rally
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TIMEOUT=100
-          export DEVSTACK_GATE_INSTALL_TESTONLY=1
-          export DEVSTACK_GATE_TEMPEST=1
-          export DEVSTACK_GATE_TEMPEST_NOTESTS=1
+          export DEVSTACK_GATE_TEMPEST=0
+          export DEVSTACK_GATE_EXERCISES=0
           export PROJECTS="stackforge/cue stackforge/python-cueclient $PROJECTS"
 
           function pre_test_hook {
+              # Install cue-devstack integration
               cd /opt/stack/new/cue/tests
               ./pre_test_hook.sh rabbitmq
               # Install rally-devstack integration
               cp -r $BASE/new/rally/contrib/devstack/* $BASE/new/devstack/
           }
           export -f pre_test_hook
+
+          function gate_hook {
+              cd /opt/stack/new/cue/tests
+              ./gate_hook.sh rabbitmq
+          }
+          export -f gate_hook
 
           function post_test_hook {
               $BASE/new/rally/tests/ci/rally-gate.py
