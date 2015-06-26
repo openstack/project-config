@@ -16,14 +16,18 @@
 # under the License.
 
 import argparse
+import collections
 import contextlib
 import os
-import pkg_resources
 import shlex
 import shutil
 import subprocess
 import sys
 import tempfile
+
+
+requirement = None
+project = None
 
 
 def run_command(cmd):
@@ -38,60 +42,43 @@ def run_command(cmd):
 
 
 class RequirementsList(object):
-    def __init__(self, name):
+    def __init__(self, name, project):
         self.name = name
         self.reqs = {}
         self.failed = False
+        self.project = project
 
-    def read_requirements(self, fn, ignore_dups=False, strict=False):
-        """ Read a requirements file and optionally enforce style."""
-        if not os.path.exists(fn):
-            return
-        for line in open(fn):
-            if strict and '\n' not in line:
-                raise Exception("Requirements file %s does not "
-                                "end with a newline." % fn)
-            if '#' in line:
-                line = line[:line.find('#')]
-            line = line.strip()
-            if (not line or
-                    line.startswith('http://tarballs.openstack.org/')):
-                continue
-            if strict:
-                req = pkg_resources.Requirement.parse(line)
-            else:
-                try:
-                    req = pkg_resources.Requirement.parse(line)
-                except ValueError:
-                    print("Ignoring unparseable requirement in non-strict "
-                          "mode: %s" % line)
-                    continue
-            if (not ignore_dups and strict and req.project_name.lower()
-                in self.reqs):
-                print("Duplicate requirement in %s: %s" %
-                      (self.name, str(req)))
-                self.failed = True
-            self.reqs[req.project_name.lower()] = req
+    def process(self, strict=True):
+        """Convert the project into ready to use data.
 
-    def read_all_requirements(self, global_req=False, strict=False):
-        """ Read all the requirements into a list.
-
-        Build ourselves a consolidated list of requirements. If global_req is
-        True then we are parsing the global requirements file only, and
-        ensure that we don't parse it's test-requirements.txt erroneously.
-
-        If strict is True then style checks should be performed while reading
-        the file.
+        - an iterable of requirement sets to check
+        - each set has the following rules:
+          - each has a list of Requirements objects
+          - duplicates are not permitted within that list
         """
-        if global_req:
-            self.read_requirements('global-requirements.txt', strict=strict)
-        else:
-            for fn in ['tools/pip-requires',
-                       'tools/test-requires',
-                       'requirements.txt',
-                       'test-requirements.txt'
-                       ]:
-                self.read_requirements(fn, strict=strict)
+        # First, parse.
+        reqs = collections.defaultdict(set)
+        for fname, content in self.project.get('requirements', {}).items():
+            if strict and not content.endswith('\n'):
+                raise Exception("Requirements file %s does not "
+                                "end with a newline." % fname)
+            parsed = requirement.parse(content)
+            # parsed is name -> [(Requirement, line)]
+            for name, entries in parsed.items():
+                if not name:
+                    # Comments and other unprocessed lines
+                    continue
+                if strict and name in reqs:
+                    print("Requirement %s present in multiple files" % name)
+                    self.failed = True
+                reqs[name].update(r for (r, line) in entries)
+
+        for name, content in project.extras(self.project):
+            parsed = requirement.parse(content)
+            for name, entries in parsed.items():
+                reqs[name].update(r for (r, line) in entries)
+
+        self.reqs = reqs
 
 
 def grab_args():
@@ -116,6 +103,21 @@ def tempdir():
         yield reqroot
     finally:
         shutil.rmtree(reqroot)
+
+
+def install_and_load_requirements(reqroot, reqdir):
+    sha = run_command("git --git-dir %s/.git rev-parse HEAD" % reqdir)[0]
+    print "requirements git sha: %s" % sha
+    req_venv = os.path.join(reqroot, 'venv')
+    req_pip = os.path.join(req_venv, 'bin/pip')
+    req_lib = os.path.join(req_venv, 'lib/python2.7/site-packages')
+    out, err = run_command("virtualenv " + req_venv)
+    out, err = run_command(req_pip + " install " + reqdir)
+    sys.path.append(req_lib)
+    global project
+    global requirement
+    from openstack_requirements import project  # noqa
+    from openstack_requirements import requirement  # noqa
 
 
 def main():
@@ -143,53 +145,54 @@ def main():
             print err
         else:
             reqdir = args.reqs
-        cwd = os.getcwd()
-        os.chdir(reqdir)
-        print "requirements git sha: %s" % run_command(
-            "git rev-parse HEAD")[0]
-        os_reqs = RequirementsList('openstack/requirements')
-        os_reqs.read_all_requirements(global_req=True)
 
-        os.chdir(cwd)
+        install_and_load_requirements(reqroot, reqdir)
+        global_reqs = requirement.parse(
+            open(reqdir + '/global-requirements.txt', 'rt').read())
+        for k, entries in global_reqs.items():
+            # Discard the lines: we don't need them.
+            global_reqs[k] = set(r for (r, line) in entries)
+        cwd = os.getcwd()
         # build a list of requirements in the proposed change,
         # and check them for style violations while doing so
         head = run_command("git rev-parse HEAD")[0]
-        head_reqs = RequirementsList('HEAD')
-        head_reqs.read_all_requirements(strict=True)
+        head_proj = project.read(cwd)
+        head_reqs = RequirementsList('HEAD', head_proj)
+        head_reqs.process(strict=False)
 
-        branch_reqs = RequirementsList(branch)
         if not args.local:
             # build a list of requirements already in the target branch,
             # so that we can create a diff and identify what's being changed
             run_command("git remote update")
             run_command("git checkout remotes/origin/%s" % branch)
-            branch_reqs.read_all_requirements()
+            branch_proj = project.read(cwd)
 
             # switch back to the proposed change now
             run_command("git checkout %s" % head)
+        else:
+            branch_proj = {'root': cwd}
+        branch_reqs = RequirementsList(branch, branch_proj)
+        branch_reqs.process()
 
         # iterate through the changing entries and see if they match the global
         # equivalents we want enforced
         failed = False
-        for req in head_reqs.reqs.values():
-            name = req.project_name.lower()
-            if name in branch_reqs.reqs and req == branch_reqs.reqs[name]:
+        for name, reqs in head_reqs.reqs.items():
+            if name in branch_reqs.reqs and reqs == branch_reqs.reqs[name]:
+                # Unchanged [or a change that preserves a current value]
                 continue
-            if name not in os_reqs.reqs:
+            if name not in global_reqs:
                 print(
-                    "Requirement %s not in openstack/requirements" % str(req))
+                    "Requirement %s not in openstack/requirements" % str(reqs))
                 failed = True
                 continue
-            # pkg_resources.Requirement implements __eq__() but not __ne__().
-            # There is no implied relationship between __eq__() and __ne__()
-            # so we must negate the result of == here instead of using !=.
-            if not (req == os_reqs.reqs[name]):
+            if reqs != global_reqs[name]:
                 print("Requirement %s does not match openstack/requirements "
-                      "value %s" % (str(req), str(os_reqs.reqs[name])))
+                      "value %s" % (str(reqs), str(global_reqs[name])))
                 failed = True
 
     # report the results
-    if failed or os_reqs.failed or head_reqs.failed or branch_reqs.failed:
+    if failed or head_reqs.failed or branch_reqs.failed:
         sys.exit(1)
     print("Updated requirements match openstack/requirements.")
 
