@@ -117,7 +117,9 @@
       # checkout current patchset
       - gerrit-git-prep
       - shell: |
+          mkdir -p .bundled_gems
           export GEM_HOME=`pwd`/.bundled_gems
+          bundle install
           export BEAKER_set=nodepool-{ostype}
           export BEAKER_debug=yes
           bundle exec rspec spec/acceptance
