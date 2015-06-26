@@ -78,3 +78,26 @@
     publishers:
       - devstack-logs
       - console-log
+
+- job:
+    name: 'akanda-appliance-buildimage'
+    node: 'bare-trusty'
+
+    builders:
+      - link-logs
+      - net-info
+      - gerrit-git-prep
+      - shell: |
+          #!/bin/bash -xe
+          tox -e build_image
+          mv build/akanda_appliance.qcow2 $WORKSPACE/akanda_appliance.qcow2
+
+    publishers:
+      - scp:
+          site: 'tarballs.openstack.org'
+          files:
+            - source: 'akanda_appliance.qcow2'
+              target: 'tarballs/akanda-appliance/images'
+              keep-hierarchy: false
+              copy-after-failure: false
+      - console-log
