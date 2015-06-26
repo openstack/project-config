@@ -73,17 +73,12 @@ class RequirementsList(object):
                 self.failed = True
             self.reqs[req.project_name.lower()] = req
 
-    def read_all_requirements(self, global_req=False, include_dev=False,
-                              strict=False):
+    def read_all_requirements(self, global_req=False, strict=False):
         """ Read all the requirements into a list.
 
         Build ourselves a consolidated list of requirements. If global_req is
         True then we are parsing the global requirements file only, and
         ensure that we don't parse it's test-requirements.txt erroneously.
-
-        If include_dev is true allow for development requirements, which
-        may be prereleased versions of libraries that would otherwise be
-        listed. This is most often used for oslo prereleases.
 
         If strict is True then style checks should be performed while reading
         the file.
@@ -97,9 +92,6 @@ class RequirementsList(object):
                        'test-requirements.txt'
                        ]:
                 self.read_requirements(fn, strict=strict)
-        if include_dev:
-            self.read_requirements('dev-requirements.txt',
-                                   ignore_dups=True, strict=strict)
 
 
 def grab_args():
@@ -172,12 +164,7 @@ def main():
         print "requirements git sha: %s" % run_command(
             "git rev-parse HEAD")[0]
         os_reqs = RequirementsList('openstack/requirements')
-        if branch == 'master' or branch.startswith('feature/'):
-            include_dev = True
-        else:
-            include_dev = False
-        os_reqs.read_all_requirements(include_dev=include_dev,
-                                      global_req=True)
+        os_reqs.read_all_requirements(global_req=True)
 
         # iterate through the changing entries and see if they match the global
         # equivalents we want enforced
