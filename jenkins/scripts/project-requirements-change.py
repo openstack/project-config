@@ -112,6 +112,7 @@ def grab_args():
     parser.add_argument('branch', nargs='?', default='master',
                         help='target branch for diffs')
     parser.add_argument('--zc', help='what zuul cloner to call')
+    parser.add_argument('--reqs', help='use a specified requirements tree')
 
     return parser.parse_args()
 
@@ -149,19 +150,24 @@ def main():
     # build a list of requirements from the global list in the
     # openstack/requirements project so we can match them to the changes
     with tempdir() as reqroot:
-        reqdir = os.path.join(reqroot, "openstack/requirements")
-        if args.zc is not None:
-            zc = args.zc
+        # Only clone requirements repo if no local repo is specified
+        # on the command line.
+        if args.reqs is None:
+            reqdir = os.path.join(reqroot, "openstack/requirements")
+            if args.zc is not None:
+                zc = args.zc
+            else:
+                zc = '/usr/zuul-env/bin/zuul-cloner'
+            out, err = run_command("%(zc)s "
+                                   "--cache-dir /opt/git "
+                                   "--workspace %(root)s "
+                                   "git://git.openstack.org "
+                                   "openstack/requirements"
+                                   % dict(zc=zc, root=reqroot))
+            print out
+            print err
         else:
-            zc = '/usr/zuul-env/bin/zuul-cloner'
-        out, err = run_command("%(zc)s "
-                               "--cache-dir /opt/git "
-                               "--workspace %(root)s "
-                               "git://git.openstack.org "
-                               "openstack/requirements"
-                               % dict(zc=zc, root=reqroot))
-        print out
-        print err
+            reqdir = args.reqs
         os.chdir(reqdir)
         print "requirements git sha: %s" % run_command(
             "git rev-parse HEAD")[0]
