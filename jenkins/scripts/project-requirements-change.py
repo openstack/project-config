@@ -122,23 +122,6 @@ def main():
     args = grab_args()
     branch = args.branch
 
-    # build a list of requirements in the proposed change,
-    # and check them for style violations while doing so
-    head = run_command("git rev-parse HEAD")[0]
-    head_reqs = RequirementsList('HEAD')
-    head_reqs.read_all_requirements(strict=True)
-
-    branch_reqs = RequirementsList(branch)
-    if not args.local:
-        # build a list of requirements already in the target branch,
-        # so that we can create a diff and identify what's being changed
-        run_command("git remote update")
-        run_command("git checkout remotes/origin/%s" % branch)
-        branch_reqs.read_all_requirements()
-
-        # switch back to the proposed change now
-        run_command("git checkout %s" % head)
-
     # build a list of requirements from the global list in the
     # openstack/requirements project so we can match them to the changes
     with tempdir() as reqroot:
@@ -160,11 +143,30 @@ def main():
             print err
         else:
             reqdir = args.reqs
+        cwd = os.getcwd()
         os.chdir(reqdir)
         print "requirements git sha: %s" % run_command(
             "git rev-parse HEAD")[0]
         os_reqs = RequirementsList('openstack/requirements')
         os_reqs.read_all_requirements(global_req=True)
+
+        os.chdir(cwd)
+        # build a list of requirements in the proposed change,
+        # and check them for style violations while doing so
+        head = run_command("git rev-parse HEAD")[0]
+        head_reqs = RequirementsList('HEAD')
+        head_reqs.read_all_requirements(strict=True)
+
+        branch_reqs = RequirementsList(branch)
+        if not args.local:
+            # build a list of requirements already in the target branch,
+            # so that we can create a diff and identify what's being changed
+            run_command("git remote update")
+            run_command("git checkout remotes/origin/%s" % branch)
+            branch_reqs.read_all_requirements()
+
+            # switch back to the proposed change now
+            run_command("git checkout %s" % head)
 
         # iterate through the changing entries and see if they match the global
         # equivalents we want enforced
