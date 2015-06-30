@@ -473,6 +473,10 @@
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
+          # For feature/qos branch, actually enable qos service plugin
+          if [[ "$BRANCH_OVERRIDE" =~ ^feature/qos$ ]] || [[ "$ZUUL_BRANCH" =~ ^feature/qos$ ]] ; then
+              export DEVSTACK_LOCAL_CONFIG="Q_SERVICE_PLUGIN_CLASSES=qos"
+          fi
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
 
@@ -1099,6 +1103,10 @@
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          # For feature/qos branch, actually enable qos service plugin
+          if [[ "$BRANCH_OVERRIDE" =~ ^feature/qos$ ]] || [[ "$ZUUL_BRANCH" =~ ^feature/qos$ ]] ; then
+              export DEVSTACK_LOCAL_CONFIG="Q_SERVICE_PLUGIN_CLASSES=qos"
           fi
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
