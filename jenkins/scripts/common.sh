@@ -15,4 +15,8 @@ function setup_git {
     git config user.name "OpenStack Proposal Bot"
     git config user.email "openstack-infra@lists.openstack.org"
     git config gitreview.username "proposal-bot"
+
+    # Initial state of repository is detached, create a branch to work
+    # from. Otherwise git review will complain.
+    git checkout -B proposals
 }
