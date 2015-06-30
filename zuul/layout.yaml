@@ -1698,16 +1698,18 @@ projects:
   - name: openstack/designate-dashboard
     template:
       - name: merge-check
+      - name: python-jobs
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
       - name: check-requirements
       - name: translation-jobs
     check:
       - gate-designate-dsvm-powerdns
-      - gate-designate-dashboard-pep8
+      - designate-dashboard-coverage
     gate:
       - gate-designate-dsvm-powerdns
-      - gate-designate-dashboard-pep8
+    post:
+      - designate-dashboard-coverage
 
   - name: openstack/designate-specs
     template:
