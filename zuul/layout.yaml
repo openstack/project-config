@@ -716,7 +716,7 @@ jobs:
     voting: false
 
   - name: ^(gate|check)-tempest-dsvm-cells$
-    voting: false
+    branch: ^(?!stable/(icehouse|juno|kilo)).*$
 
   - name: ^(gate|check)-grenade-dsvm$
     branch: ^(?!stable/icehouse).*$
@@ -748,9 +748,6 @@ jobs:
 
   - name: ^(gate|check)-grenade-dsvm-heat
     branch: ^(?!stable/(icehouse|juno|kilo)).*$
-    voting: false
-
-  - name: check-tempest-dsvm-cells
     voting: false
 
   - name: check-devstack-dsvm-updown
@@ -2356,6 +2353,7 @@ projects:
       - gate-grenade-dsvm-ironic-sideways
       - gate-tempest-dsvm-nova-v21-full
       - gate-tempest-dsvm-full-ceph
+      - gate-tempest-dsvm-cells
     post:
       - nova-coverage
     experimental:
