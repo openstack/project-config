@@ -1012,15 +1012,12 @@ jobs:
 
   - name: gate-keystone-tox-bandit
     branch: ^(?!stable/(icehouse|juno|kilo)).*$
-    voting: false
 
   - name: gate-keystonemiddleware-tox-bandit
     branch: ^(?!stable/(icehouse|juno|kilo)).*$
-    voting: false
 
   - name: gate-python-keystoneclient-tox-bandit
     branch: ^(?!stable/(icehouse|juno|kilo)).*$
-    voting: false
 
   - name: gate-rally-dsvm-keystone
     branch: ^(?!stable/icehouse).*$
@@ -1986,6 +1983,7 @@ projects:
       - gate-keystone-tox-bandit
     gate:
       - gate-swift-dsvm-functional
+      - gate-keystone-tox-bandit
     post:
       - keystone-coverage
     experimental:
@@ -2023,6 +2021,8 @@ projects:
       - name: lib-forward-testing
       - name: publish-to-pypi
     check:
+      - gate-keystonemiddleware-tox-bandit
+    gate:
       - gate-keystonemiddleware-tox-bandit
     post:
       - keystonemiddleware-coverage
@@ -2758,6 +2758,7 @@ projects:
       - gate-python-keystoneclient-tox-bandit
     gate:
       - gate-keystoneclient-dsvm-functional
+      - gate-python-keystoneclient-tox-bandit
     post:
       - python-keystoneclient-coverage
     experimental:
