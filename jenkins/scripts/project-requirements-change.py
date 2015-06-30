@@ -68,8 +68,8 @@ class RequirementsList(object):
                 if not name:
                     # Comments and other unprocessed lines
                     continue
-                if strict and name in reqs:
-                    print("Requirement %s present in multiple files" % name)
+                print("Requirement %s present in multiple files" % name)
+                if strict and name in reqs and not '-py' in fname:
                     self.failed = True
                 reqs[name].update(r for (r, line) in entries)
 
