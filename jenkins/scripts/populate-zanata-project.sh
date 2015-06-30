@@ -24,7 +24,7 @@ case "$PROJECT" in
         init_manuals "$PROJECT"
         setup_manuals "$PROJECT"
         ;;
-    django-openstack-auth)
+    django_openstack_auth)
         setup_django_openstack_auth
         ;;
     horizon)
