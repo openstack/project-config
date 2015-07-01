@@ -22,6 +22,27 @@
           done
 
 - builder:
+    name: zuul-git-prep
+    builders:
+      - shell: |
+          #!/bin/bash -xe
+          cat > clonemap.yaml << EOF
+          clonemap:
+            - name: $ZUUL_PROJECT
+              dest: .
+          EOF
+          # If this is called in a periodic job, these will not be set
+          export ZUUL_BRANCH=${{ZUUL_BRANCH:-master}}
+          export ZUUL_REF=${{ZUUL_REF:-None}}
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          /usr/zuul-env/bin/zuul-cloner -m clonemap.yaml --cache-dir /opt/git \
+              git://git.openstack.org \
+              $ZUUL_PROJECT
+
+- builder:
     name: branch-git-prep
     builders:
       - shell: |
