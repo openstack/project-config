@@ -22,6 +22,10 @@ git config user.name "OpenStack Proposal Bot"
 git config user.email "openstack-infra@lists.openstack.org"
 git config gitreview.username "proposal-bot"
 
+# Initial state of repository is detached, create a branch to work
+# from. Otherwise git review will complain.
+git checkout -B proposals
+
 change_id=""
 # See if there is an open change in the openstack/requirements topic
 # If so, get the change id for the existing change for use in the
