@@ -263,18 +263,27 @@
 
     jobs:
       - python-jobs
-      - '{pipeline}-heat-dsvm-functional-{datastore}{branch-designator}':
+      - '{pipeline}-heat-dsvm-functional-{engine}-{datastore}{branch-designator}':
           datastore: mysql
           pipeline: check
           node: 'devstack-precise || devstack-trusty'
           branch-designator: ''
           branch-override: default
-      - '{pipeline}-heat-dsvm-functional-{datastore}{branch-designator}':
+          engine: orig
+      - '{pipeline}-heat-dsvm-functional-{engine}-{datastore}{branch-designator}':
           datastore: postgres
           pipeline: check
           node: 'devstack-precise || devstack-trusty'
           branch-designator: ''
           branch-override: default
+          engine: orig
+      - '{pipeline}-heat-dsvm-functional-{engine}-{datastore}{branch-designator}':
+          datastore: mysql
+          pipeline: check
+          node: 'devstack-precise || devstack-trusty'
+          branch-designator: ''
+          branch-override: default
+          engine: convg
       - '{pipeline}-tempest-dsvm-heat{branch-designator}':
           pipeline: check
           node: 'devstack-precise || devstack-trusty'
