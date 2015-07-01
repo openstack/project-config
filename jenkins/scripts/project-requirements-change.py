@@ -56,9 +56,11 @@ class RequirementsList(object):
           - each has a list of Requirements objects
           - duplicates are not permitted within that list
         """
+        print("Checking %(name)s" % {'name': self.name})
         # First, parse.
         reqs = collections.defaultdict(set)
         for fname, content in self.project.get('requirements', {}).items():
+            print("Processing %(fname)s" % {'fname': fname})
             if strict and not content.endswith('\n'):
                 raise Exception("Requirements file %s does not "
                                 "end with a newline." % fname)
@@ -68,12 +70,18 @@ class RequirementsList(object):
                 if not name:
                     # Comments and other unprocessed lines
                     continue
-                print("Requirement %s present in multiple files" % name)
-                if strict and name in reqs and not '-py' in fname:
-                    self.failed = True
+                if name in reqs:
+                    print("Requirement %s present in multiple files" % name)
+                    if strict and not '-py' in fname:
+                        if not self.failed:
+                            self.failed = True
+                            print(
+                                "Marking %(name)s as failed - dupe in %(fname)s."
+                                % {'name': self.name, 'fname': fname})
                 reqs[name].update(r for (r, line) in entries)
 
         for name, content in project.extras(self.project):
+            print("Processing .[%(extra)s]" % {'extra': name})
             parsed = requirement.parse(content)
             for name, entries in parsed.items():
                 reqs[name].update(r for (r, line) in entries)
@@ -158,7 +166,7 @@ def main():
         head = run_command("git rev-parse HEAD")[0]
         head_proj = project.read(cwd)
         head_reqs = RequirementsList('HEAD', head_proj)
-        head_reqs.process(strict=False)
+        head_reqs.process()
 
         if not args.local:
             # build a list of requirements already in the target branch,
@@ -172,7 +180,8 @@ def main():
         else:
             branch_proj = {'root': cwd}
         branch_reqs = RequirementsList(branch, branch_proj)
-        branch_reqs.process()
+        # Don't error on the target branch being broken.
+        branch_reqs.process(strict=False)
 
         # iterate through the changing entries and see if they match the global
         # equivalents we want enforced
