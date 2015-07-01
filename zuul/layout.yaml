@@ -342,12 +342,6 @@ project-templates:
     gate:
       - 'gate-{name}-requirements'
 
-  - name: periodic-icehouse
-    periodic-stable:
-      - 'periodic-{name}-docs-icehouse'
-      - 'periodic-{name}-python26-icehouse'
-      - 'periodic-{name}-python27-icehouse'
-
   - name: periodic-juno
     periodic-stable:
       - 'periodic-{name}-docs-juno'
@@ -566,10 +560,6 @@ jobs:
   # groups works with php5.3 on precise
   - name: ^.*groups-(unittests|release).*$
     parameter-function: set_node_options_default_precise
-  # tempest and d-g branchless tests need to only run on master
-  # (needs to be early to not impact non-voting stanzas later)
-  - name: ^(?!periodic-).*-icehouse$
-    branch: ^master.*$
   # -nv jobs are never voting.
   - name: ^.*-nv$
     voting: false
@@ -688,27 +678,17 @@ jobs:
   - name: ^(gate|check)-zaqarclient-dsvm-functional
     voting: false
 
-  - name: ^(gate|check)-tempest-dsvm-neutron-full$
-    branch: ^(?!stable/icehouse).*$
-
-  - name: ^(gate|check)-tempest-dsvm-neutron-pg-full$
-    branch: ^(?!stable/icehouse).*$
-
-  - name: ^(gate|check)-tempest-dsvm-neutron$
-    branch: ^(stable/icehouse).*$
-
   - name: check-tempest-dsvm-neutron-nv
     branch: ^feature/pecan
 
   - name: check-heat-dsvm-functional-orig-mysql
-    branch: ^(?!stable/(icehouse|juno)).*$
+    branch: ^(?!stable/juno).*$
 
   - name: check-heat-dsvm-functional-orig-postgres
-    branch: ^(?!stable/icehouse).*$
     voting: false
 
   - name: check-heat-dsvm-functional-convg-mysql
-    branch: ^(?!stable/(icehouse|juno|kilo)).*$
+    branch: ^(?!stable/(juno|kilo)).*$
     voting: false
 
     # Images for Icehouse do not contain python34
@@ -724,25 +704,22 @@ jobs:
     voting: false
 
   - name: ^(gate|check)-tempest-dsvm-cells$
-    branch: ^(?!stable/(icehouse|juno|kilo)).*$
+    branch: ^(?!stable/(juno|kilo)).*$
 
   - name: ^(gate|check)-grenade-dsvm$
-    branch: ^(?!stable/icehouse).*$
+    branch: ^(?!stable/juno).*$
 
   - name: ^(gate|check)-grenade-dsvm-neutron$
-    branch: ^(?!stable/(icehouse|juno)).*$
+    branch: ^(?!stable/juno).*$
 
   - name: ^(gate|check)-grenade-dsvm-partial-ncpu$
-    branch: ^(?!stable/icehouse).*$
-
-  - name: ^(gate|check)-tempest-dsvm-ironic-pxe_ssh.*$
-    branch: ^(?!stable/icehouse).*$
+    branch: ^(?!stable/juno).*$
 
   - name: ^check-tempest-dsvm-ironic-parallel-nv$
     branch: ^(?!stable)
 
   - name: ^(gate|check)-grenade-dsvm-ironic-sideways.*$
-    branch: ^(proposed/juno|stable/juno)$
+    branch: stable/juno
 
     # only here until stable is votable, then merge
     # back to a single job
@@ -755,7 +732,7 @@ jobs:
     voting: false
 
   - name: ^(gate|check)-grenade-dsvm-heat
-    branch: ^(?!stable/(icehouse|juno|kilo)).*$
+    branch: ^(?!stable/(juno|kilo)).*$
     voting: false
 
   - name: check-devstack-dsvm-updown
@@ -782,30 +759,26 @@ jobs:
     branch: ^(?!stable)
 
   - name: check-tempest-dsvm-centos7
-    branch: ^(?!stable/icehouse).*$
     voting: false
 
   - name: check-tempest-dsvm-multinode-full
-    branch: ^(?!stable/(icehouse|juno)).*$
+    branch: ^(?!stable/juno).*$
     voting: false
 
   - name: check-tempest-dsvm-neutron-multinode-full
-    branch: ^(?!stable/(icehouse|juno)).*$
+    branch: ^(?!stable/juno).*$
     voting: false
 
   - name: check-tempest-dsvm-multinode-smoke
-    branch: ^(?!stable/(icehouse|juno)).*$
+    branch: ^(?!stable/juno).*$
     voting: false
 
   - name: check-tempest-dsvm-neutron-multinode-smoke
-    branch: ^(?!stable/(icehouse|juno)).*$
+    branch: ^(?!stable/juno).*$
     voting: false
 
-  - name: ^gate-designate-dsvm-.*$
-    branch: ^(?!stable/icehouse).*$
-
   - name: gate-designate-dsvm-bind9
-    branch: ^(?!stable/(?:icehouse|juno)).*$
+    branch: ^(?!stable/juno).*$
 
   - name: ^(gate|check)-tempest-dsvm-networking-midonet
     branch: ^(?!stable/(icehouse|juno)).*$
@@ -830,10 +803,10 @@ jobs:
     voting: false
 
   - name: ^(check|gate)-neutron-lbaasv1-dsvm-api$
-    branch: ^(?!stable/(?:icehouse|juno|kilo)).*$
+    branch: ^(?!stable/(?:juno|kilo)).*$
 
   - name: ^(check|gate)-neutron-lbaasv2-dsvm-api$
-    branch: ^(?!stable/(?:icehouse|juno|kilo)).*$
+    branch: ^(?!stable/(?:juno|kilo)).*$
 
   - name: ^(gate|check)-group-based-policy-dsvm-functional$
     voting: false
@@ -849,13 +822,13 @@ jobs:
     voting: false
 
   - name: gate-oslo.messaging-dsvm-functional-rabbit
-    branch: ^(?!stable/(icehouse|juno)).*$
+    branch: ^(?!stable/juno).*$
 
   - name: gate-oslo.messaging-dsvm-functional-qpid
-    branch: ^(?!stable/(icehouse|juno)).*$
+    branch: ^(?!stable/juno).*$
 
   - name: gate-oslo.messaging-dsvm-functional-amqp1-f21
-    branch: ^(?!stable/(icehouse|juno)).*$
+    branch: ^(?!stable/juno).*$
     voting: false
 
   - name: gate-rally-dsvm-cinder
@@ -985,7 +958,7 @@ jobs:
     voting: false
 
   - name: gate-ironic-python34
-    branch: ^(?!stable/(icehouse|juno|kilo)).*$
+    branch: ^(?!stable/(juno|kilo)).*$
 
   - name: gate-sahara-pylint
     voting: false
@@ -999,7 +972,7 @@ jobs:
     voting: false
 
   - name: ^(gate|check)-sahara-tox-py27-scenario-unit$
-    branch: ^(?!stable/(icehouse|juno)).*$
+    branch: ^(?!stable/juno).*$
 
   - name: sahara-coverage
     voting: false
@@ -1008,7 +981,7 @@ jobs:
     voting: false
 
   - name: gate-sahara-python34
-    branch: ^(?!stable/(icehouse|juno|kilo)).*$
+    branch: ^(?!stable/(juno|kilo)).*$
 
   - name: gate-kite-python34
     voting: false
@@ -1017,13 +990,13 @@ jobs:
     voting: false
 
   - name: gate-keystone-tox-bandit
-    branch: ^(?!stable/(icehouse|juno|kilo)).*$
+    branch: ^(?!stable/(juno|kilo)).*$
 
   - name: gate-keystonemiddleware-tox-bandit
-    branch: ^(?!stable/(icehouse|juno|kilo)).*$
+    branch: ^(?!stable/(juno|kilo)).*$
 
   - name: gate-python-keystoneclient-tox-bandit
-    branch: ^(?!stable/(icehouse|juno|kilo)).*$
+    branch: ^(?!stable/(juno|kilo)).*$
 
   - name: gate-rally-dsvm-keystone
     branch: ^(?!stable/icehouse).*$
@@ -1100,20 +1073,20 @@ jobs:
     voting: false
 
   - name: gate-neutron-python34
-    branch: ^(?!stable/(?:icehouse|juno|kilo)).*$
+    branch: ^(?!stable/(?:juno|kilo)).*$
 
   - name: gate-heat-python34
-    branch: ^(?!stable/(?:icehouse|juno|kilo)).*$
+    branch: ^(?!stable/(?:juno|kilo)).*$
     voting: false
 
   - name: gate-oslo.messaging-python34
-    branch: ^(?!stable/(?:icehouse|juno|kilo)).*$
+    branch: ^(?!stable/(?:juno|kilo)).*$
     # TODO(dhellmann): Remove this when bug 1367907 is fixed and
     # Ubuntu's version of python no longer dumps core on us.
     voting: false
 
   - name: gate-oslo.vmware-tox-bandit
-    branch: ^(?!stable/(icehouse|juno|kilo)).*$
+    branch: ^(?!stable/(juno|kilo)).*$
     voting: false
 
   - name: gate-solum-infra-guestagent-python34
@@ -1182,21 +1155,20 @@ jobs:
     voting: false
 
   - name: ^(gate|check)-neutron-dsvm-api$
-    branch: ^(?!stable/(icehouse|juno)).*$
+    branch: ^(?!stable/juno).*$
 
   - name: check-tempest-dsvm-neutron-dvr
-    branch: ^(?!stable/icehouse).*$
     voting: false
 
   - name: check-neutron-dsvm-fullstack
-    branch: ^(?!stable/(icehouse|juno|kilo)).*$
+    branch: ^(?!stable/(juno|kilo)).*$
     voting: false
 
   - name: check-tempest-dsvm-neutron-linuxbridge
     voting: false
 
   - name: check-tempest-dsvm-neutron-unstable
-    branch: ^(?!stable/(icehouse|juno|kilo)).*$
+    branch: ^(?!stable/(juno|kilo)).*$
     voting: false
 
   - name: gate-trove-buildimage-mysql
@@ -1210,9 +1182,6 @@ jobs:
 
   - name: gate-trove-functional-dsvm-mongodb
     voting: false
-
-  - name: gate-trove-functional-dsvm-mysql
-    branch: ^(?!stable/icehouse).*$
 
   - name: gate-trove-functional-dsvm-percona
     voting: false
@@ -1232,10 +1201,10 @@ jobs:
       - '^apidocs/.*$'
 
   - name: check-tempest-dsvm-full-ceph
-    branch: ^(?!stable/(icehouse|juno)).*$
+    branch: ^(?!stable/juno).*$
 
   - name: gate-tempest-dsvm-full-ceph
-    branch: ^(?!stable/(icehouse|juno)).*$
+    branch: ^(?!stable/juno).*$
 
   - name: gate-tomograph-python34
     voting: false
@@ -1255,7 +1224,6 @@ jobs:
   - name: gate-heat-templates-python27
 
   - name: gate-swift-tox-func
-    branch: ^(?!stable/icehouse).*$
     voting: false
 
   # Swift log publishing details
@@ -1279,17 +1247,16 @@ jobs:
     voting: false
 
   - name: ^(gate|check)-horizon-npm-run-.*$
-    branch: ^(?!stable/(icehouse|juno|kilo)).*$
+    branch: ^(?!stable/(juno|kilo)).*$
 
   - name: gate-tempest-dsvm-ceilometer-mongodb-full
-    branch: ^(?!stable/icehouse).*$
     voting: false
 
   - name: gate-tempest-dsvm-ceilometer-es
-    branch: ^(?!stable/(icehouse|juno)).*$
+    branch: ^(?!stable/juno).*$
 
   - name: gate-tempest-dsvm-ceilometer-es-full
-    branch: ^(?!stable/(icehouse|juno)).*$
+    branch: ^(?!stable/juno).*$
 
   - name: gate-ceilometer-python34
     branch: ^master$
@@ -1298,20 +1265,16 @@ jobs:
     voting: false
 
   - name: gate-nova-tox-functional
-    branch: ^(?!stable/(icehouse|juno)).*$
+    branch: ^(?!stable/juno).*$
 
   - name: gate-oslo.db-tox-sqla_08
     branch: ^stable/juno$
 
   - name: gate-horizon-dsvm-integration
-    branch: ^(?!stable/(icehouse|juno)).*$
+    branch: ^(?!stable/juno).*$
 
   - name: check-swiftclient-dsvm-functional
     branch: ^(?!stable/kilo).*$
-
-  # TODO(ihrachys): Enable again once the test is passing against icehouse
-  - name: ^(gate|check)-swift-dsvm-functional
-    branch: ^(?!stable/icehouse).*$
 
   - name: ^(gate|check)-glanceclient-dsvm-functional
     branch: ^(?!stable/kilo).*$
@@ -1355,10 +1318,10 @@ jobs:
     branch: ^(?!stable/(havana|icehouse|juno)).*$
 
   - name: ^(gate|check)-tempest-dsvm-nova-v21-full$
-    branch: ^(?!stable/(icehouse|juno)).*$
+    branch: ^(?!stable/juno).*$
 
   - name: ^(gate|check)-tempest-dsvm-nova-v21-neutron-full$
-    branch: ^(?!stable/(icehouse|juno)).*$
+    branch: ^(?!stable/juno).*$
     voting: false
     files:
       - '^nova/network/neutronv2/.*$'
@@ -1367,7 +1330,7 @@ jobs:
       - '^tempest/api/network/.*$'
 
   - name: ^(gate|check)-tempest-dsvm-nova-wsgi-full$
-    branch: ^(?!stable/(icehouse|juno)).*$
+    branch: ^(?!stable/juno).*$
 
   # TODO(yamamoto): Revisit when Neutron driver API become more stable.
   - name: gate-networking-ofagent-python27
@@ -1378,80 +1341,80 @@ jobs:
 
   # NOTE(jroll): This job was not working at Juno release.
   - name: ^(gate|check)-tempest-dsvm-ironic-agent_ssh$
-    branch: ^(?!stable/(icehouse|juno)).*$
+    branch: ^(?!stable/juno).*$
 
   # Python 2.6 deprecation
   - name: gate-barbican-python26
-    branch: ^stable/(icehouse|juno)$
+    branch: stable/juno
 
   - name: gate-ceilometer-python26
-    branch: ^stable/(icehouse|juno)$
+    branch: stable/juno
 
   - name: gate-cinder-python26
-    branch: ^stable/(icehouse|juno)$
+    branch: stable/juno
 
   - name: gate-cinder-python34
-    branch: ^(?!stable/(?:icehouse|juno|kilo)).*$
+    branch: ^(?!stable/(?:juno|kilo)).*$
 
   - name: gate-designate-python26
-    branch: ^stable/(icehouse|juno)$
+    branch: stable/juno
 
   - name: gate-django_openstack_auth-python26
-    branch: ^stable/(icehouse|juno)$
+    branch: stable/juno
 
   - name: gate-glance-python26
-    branch: ^stable/(icehouse|juno)$
+    branch: stable/juno
 
   - name: gate-glance-python34
-    branch: ^(?!stable/(?:icehouse|juno|kilo)).*$
+    branch: ^(?!stable/(?:juno|kilo)).*$
 
   - name: gate-glance_store-python26
     branch: ^stable/kilo$
 
   - name: gate-heat-python26
-    branch: ^stable/(icehouse|juno)$
+    branch: stable/juno
 
   - name: gate-horizon-python26
-    branch: ^stable/(icehouse|juno)$
+    branch: stable/juno
 
   - name: gate-ironic-python26
-    branch: ^stable/(icehouse|juno)$
+    branch: stable/juno
 
   - name: gate-keystone-python26
-    branch: ^stable/(icehouse|juno)$
+    branch: stable/juno
 
   - name: gate-keystonemiddleware-python26
-    branch: ^stable/(icehouse|juno)$
+    branch: stable/juno
 
   - name: gate-manila-python26
   # manila has only a Juno branch
     branch: ^stable/juno$
 
   - name: gate-neutron-python26
-    branch: ^stable/(icehouse|juno)$
+    branch: stable/juno
 
   - name: gate-nova-python26
-    branch: ^stable/(icehouse|juno)$
+    branch: stable/juno
 
   - name: gate-nova-python34
-    branch: ^(?!stable/(?:icehouse|juno|kilo)).*$
+    branch: ^(?!stable/(?:juno|kilo)).*$
 
   - name: gate-sahara-python26
-    branch: ^stable/(icehouse|juno)$
+    branch: stable/juno
 
   # sahara-dashboard has only an Icehouse branch
   - name: gate-sahara-dashboard-python26
-    branch: ^stable/icehouse$
+    branch: stable/icehouse
 
   - name: gate-swift-python26
-    branch: ^stable/(icehouse|juno)$
+    branch: stable/juno
 
   - name: gate-swift-python34
-    branch: ^(?!stable/(?:icehouse|juno|kilo)).*$
+    branch: ^(?!stable/(?:juno|kilo)).*$
     voting: false
 
   - name: gate-trove-python26
-    branch: ^stable/(icehouse|juno)$
+    branch: stable/juno
 
   - name: gate-tuskar-python26
     branch: ^stable/(icehouse|juno)$
@@ -1460,7 +1423,7 @@ jobs:
     branch: ^stable/(icehouse|juno)$
 
   - name: gate-zaqar-python26
-    branch: ^stable/(icehouse|juno)$
+    branch: stable/juno
 
   - name: gate-murano-python26
     branch: ^stable/(icehouse|juno)$
@@ -1475,22 +1438,22 @@ jobs:
   # Training guides begin
   # Build XML files only on Icehouse
   - name: gate-training-guides-tox-checklinks
-    branch: ^stable/icehouse$
+    branch: stable/icehouse
 
   - name: gate-training-guides-tox-checkniceness
-    branch: ^stable/icehouse$
+    branch: stable/icehouse
 
   - name: gate-training-guides-tox-checksyntax
-    branch: ^stable/icehouse$
+    branch: stable/icehouse
 
   - name: gate-training-guides-tox-checkdeletions
-    branch: ^stable/icehouse$
+    branch: stable/icehouse
 
   # slides job will not run on icehouse, only newer releases and master
   - name: gate-training-guides-tox-slides
     branch: ^(?!stable/icehouse).*$
-
   # Training guides end
+
   # os-ansible-deployment skip for rst/doc files
   - name: ^os-ansible-deployment-(dsvm-check-commit|check-lint)$
     skip-if:
@@ -1501,7 +1464,7 @@ jobs:
 
   # Keystoneclient added functional testing in Kilo
   - name: ^(gate|check)-keystoneclient-dsvm-functional$
-    branch: ^(?!stable/(?:icehouse|juno)).*$
+    branch: ^(?!stable/juno).*$
 
   # Ignore requirements on the keystoneclient/keystoneauth integration branch
   - name: gate-python-keystoneclient-requirements
@@ -1509,15 +1472,15 @@ jobs:
 
   # Ceilometerclient added functional testing in master only
   - name: ^(gate|check)-ceilometerclient-dsvm-functional$
-    branch: ^(?!stable/(?:icehouse|juno|kilo)).*$
+    branch: ^(?!stable/(?:juno|kilo)).*$
 
   # Saharaclient python 3.4 tests don't run on kilo or earlier
   - name: ^(gate|check)-python-saharaclient-python34$
-    branch: ^(?!stable/(?:icehouse|juno|kilo)).*$
+    branch: ^(?!stable/(?:juno|kilo)).*$
 
   # Saharaclient functional test don't run on kilo or earlier
   - name: ^(gate|check)-saharaclient-dsvm-functional$
-    branch: ^(?!stable/(?:icehouse|juno|kilo)).*$
+    branch: ^(?!stable/(?:juno|kilo)).*$
 
   # Only run the unit cross tests for cliff against master.
   - name: ^gate-cliff-tox-(openstackclient|neutronclient)-tip$
@@ -1578,7 +1541,6 @@ projects:
       - name: python3-jobs
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
-      - name: periodic-icehouse
       - name: periodic-juno
       - name: check-requirements
       - name: integrated-gate
@@ -1625,7 +1587,6 @@ projects:
       - name: python3-jobs
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
-      - name: periodic-icehouse
       - name: periodic-juno
       - name: check-requirements
       - name: integrated-gate
@@ -1752,7 +1713,6 @@ projects:
       - name: python-jobs
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
-      - name: periodic-icehouse
       - name: periodic-juno
       - name: check-requirements
       - name: integrated-gate
@@ -1820,7 +1780,6 @@ projects:
       - name: python-jobs
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
-      - name: periodic-icehouse
       - name: periodic-juno
       - name: check-requirements
       - name: translation-jobs
@@ -1869,7 +1828,6 @@ projects:
       - name: python-jobs
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
-      - name: periodic-icehouse
       - name: periodic-juno
       - name: check-requirements
       - name: translation-jobs
@@ -1978,7 +1936,6 @@ projects:
       - name: python-jobs
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
-      - name: periodic-icehouse
       - name: periodic-juno
       - name: check-requirements
       - name: integrated-gate
@@ -2247,7 +2204,6 @@ projects:
       - name: python3-jobs
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
-      - name: periodic-icehouse
       - name: periodic-juno
       - name: check-requirements
       - name: integrated-gate-neutron
@@ -2338,7 +2294,6 @@ projects:
       - name: python3-jobs
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
-      - name: periodic-icehouse
       - name: periodic-juno
       - name: check-requirements
       - name: integrated-gate
@@ -2492,7 +2447,6 @@ projects:
       - name: python-jobs
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
-      - name: periodic-icehouse
       - name: periodic-juno
       - name: check-requirements
       - name: translation-jobs
@@ -3072,7 +3026,6 @@ projects:
       - name: python3-jobs
       - name: openstack-server-publish-jobs
       - name: check-requirements
-      - name: periodic-icehouse
       - name: periodic-juno
     post:
       - oslo-incubator-coverage
@@ -4334,9 +4287,6 @@ projects:
     periodic-stable:
       # add periodic tempest jobs even when they run as compat jobs
       # on each tempest master check for stable-maint visiblity
-      - periodic-tempest-dsvm-full-icehouse
-      - periodic-tempest-dsvm-neutron-icehouse
-      - periodic-tempest-dsvm-postgres-full-icehouse
       - periodic-tempest-dsvm-full-juno
       - periodic-tempest-dsvm-neutron-full-juno
       - periodic-tempest-dsvm-postgres-full-juno
@@ -4803,10 +4753,6 @@ projects:
       - check-grenade-dsvm-partial-ncpu
       - check-neutron-dsvm-functional-nv
       - check-swift-dsvm-functional
-      - check-tempest-dsvm-full-icehouse-nv
-      - check-tempest-dsvm-neutron-icehouse-nv
-      - check-tempest-dsvm-postgres-full-icehouse-nv
-      - check-devstack-dsvm-cells-icehouse-nv
       - check-tempest-dsvm-full-juno-nv
       - check-tempest-dsvm-neutron-full-juno-nv
       - check-tempest-dsvm-postgres-full-juno-nv

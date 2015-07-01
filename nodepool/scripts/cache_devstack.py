@@ -24,10 +24,9 @@ from common import run_local
 DEVSTACK = os.path.expanduser('/opt/git/openstack-dev/devstack')
 CACHEDIR = os.path.expanduser('~/cache/files')
 
-# Some jobs require newer distro packages.  We pre-cache deb packages from
-# specified Ubuntu Cloud Archive pockets.  The icehouse pocket contains
-# Ubuntu 14.04 packages built for 12.04.
-UCA_POCKETS = ['icehouse']
+# Some jobs might require newer distro packages, so we can pre-cache
+# deb packages from specified Ubuntu Cloud Archive pockets.
+UCA_POCKETS = []
 
 
 def git_branches():

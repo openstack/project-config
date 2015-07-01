@@ -44,7 +44,6 @@
 
     jobs:
       - python-jobs
-      - python-icehouse-bitrot-jobs
       - python-juno-bitrot-jobs
       - openstack-publish-jobs
       - translation-jobs
@@ -98,7 +97,6 @@
 
     jobs:
       - python-jobs
-      - python-icehouse-bitrot-jobs
       - python-juno-bitrot-jobs
       - openstack-publish-jobs
       - gate-{name}-pylint
@@ -196,7 +194,6 @@
 
     jobs:
       - python-jobs
-      - python-icehouse-bitrot-jobs
       - python-juno-bitrot-jobs
       - openstack-publish-jobs
       - translation-jobs
@@ -294,7 +291,6 @@
           node: 'devstack-precise || devstack-trusty'
           branch-designator: ''
           branch-override: default
-      - python-icehouse-bitrot-jobs
       - python-juno-bitrot-jobs
       - openstack-publish-jobs
       - translation-jobs
@@ -326,7 +322,6 @@
 
     jobs:
       - python-jobs
-      - python-icehouse-bitrot-jobs
       - python-juno-bitrot-jobs
       - openstack-publish-jobs
       - gate-{name}-selenium
@@ -462,7 +457,6 @@
 
     jobs:
       - python-jobs
-      - python-icehouse-bitrot-jobs
       - python-juno-bitrot-jobs
       - openstack-publish-jobs
       - translation-jobs
@@ -679,7 +673,6 @@
 
     jobs:
       - python-jobs
-      - python-icehouse-bitrot-jobs
       - python-juno-bitrot-jobs
       - openstack-publish-jobs
       - rally-jobs
@@ -829,7 +822,6 @@
 
     jobs:
       - python-jobs
-      - python-icehouse-bitrot-jobs
       - python-juno-bitrot-jobs
       - openstack-publish-jobs
       - gate-{name}-pylint
@@ -965,7 +957,6 @@
 
     jobs:
       - python-jobs
-      - python-icehouse-bitrot-jobs
       - python-juno-bitrot-jobs
       - openstack-publish-jobs
       - translation-jobs
@@ -1532,7 +1523,6 @@
 
     jobs:
       - python-jobs
-      - python-icehouse-bitrot-jobs
       - python-juno-bitrot-jobs
       - openstack-publish-jobs
 
@@ -2875,11 +2865,6 @@
       - devstack-jobs:
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: '-icehouse'
-          branch-override: stable/icehouse
-      - devstack-jobs:
-          pipeline: gate
-          node: 'devstack-precise || devstack-trusty'
           branch-designator: '-juno'
           branch-override: stable/juno
       - devstack-jobs:
@@ -2889,16 +2874,6 @@
           branch-override: stable/kilo
       # Stable check jobs for testing devstack gate
       # tempest also uses these job definitions
-      - devstack-jobs:
-          pipeline: check
-          node: 'devstack-precise || devstack-trusty'
-          branch-designator: '-icehouse'
-          branch-override: stable/icehouse
-      - devstack-jobs:
-          pipeline: check
-          node: 'devstack-precise || devstack-trusty'
-          branch-designator: '-icehouse-nv'
-          branch-override: stable/icehouse
       - devstack-jobs:
           pipeline: check
           node: 'devstack-precise || devstack-trusty'
@@ -2920,11 +2895,6 @@
           branch-designator: '-kilo-nv'
           branch-override: stable/kilo
       # Periodic jobs for various branches
-      - devstack-jobs:
-          pipeline: periodic
-          node: 'devstack-precise || devstack-trusty'
-          branch-designator: '-icehouse'
-          branch-override: stable/icehouse
       - devstack-jobs:
           pipeline: periodic
           node: 'devstack-precise || devstack-trusty'
@@ -2969,16 +2939,6 @@
           node: ubuntu-trusty
           branch-designator: '-dibtest'
           branch-override: default
-      - '{pipeline}-tempest-dsvm-full{branch-designator}':
-          pipeline: experimental
-          node: devstack-precise-dib
-          branch-designator: '-icehouse-dibtest'
-          branch-override: stable/icehouse
-      - '{pipeline}-tempest-dsvm-neutron{branch-designator}':
-          pipeline: experimental
-          node: devstack-precise-dib
-          branch-designator: '-icehouse-dibtest'
-          branch-override: stable/icehouse
       # fedora jobs
       - '{pipeline}-tempest-dsvm-f{fedora-release}':
           fedora-release: 21

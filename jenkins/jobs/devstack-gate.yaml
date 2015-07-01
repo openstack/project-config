@@ -193,13 +193,9 @@
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TIMEOUT=120
           export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_TEMPEST_FULL=1
           export DEVSTACK_GATE_NEUTRON=1
           export BRANCH_OVERRIDE={branch-override}
-          # neutron icehouse does not pass tempest full reliably
-          if [ "$BRANCH_OVERRIDE" != "stable/icehouse" ] ; then
-              export DEVSTACK_GATE_TEMPEST_FULL=1
-          fi
-
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
@@ -722,19 +718,6 @@
 
           # Run only baremetal tests
           export DEVSTACK_GATE_TEMPEST_REGEX="baremetal"
-
-          if $(grep -Eqs 'Ubuntu 12.04' /etc/lsb-release); then
-              # pull in libvirt /w ovs support from ubuntu cloud-archive for
-              # Precise.
-              sudo apt-get update
-              sudo add-apt-repository cloud-archive:icehouse
-              sudo apt-get update
-          fi
-
-          # prevent sshd from jumping to the ovs bridge on Precise instances.
-          IP=$(ip addr show eth0 | grep 'inet ' | sed 's/inet \([0-9\.]*\)\/.*/\1/' | tr -d ' ')
-          sudo sed -i "s/#ListenAddress 0.0.0.0/ListenAddress $IP/" /etc/ssh/sshd_config
-          sudo service ssh restart
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
