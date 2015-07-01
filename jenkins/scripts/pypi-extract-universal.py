@@ -20,7 +20,7 @@ universal = False
 
 setup_cfg = ConfigParser.SafeConfigParser()
 setup_cfg.read("setup.cfg")
-if setup_cfg.has_section("wheel"):
+if setup_cfg.has_option("wheel", "universal"):
     universal = setup_cfg.getboolean("wheel", "universal")
 if universal:
     print("py2.py3")
