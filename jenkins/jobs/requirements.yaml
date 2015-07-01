@@ -93,14 +93,11 @@
       - revoke-sudo
       - link-logs
       - net-info
-      - gerrit-git-prep
+      - zuul-git-prep:
+          branch-override: '{branch-override}'
       - shell: |
-          #!/bin/bash -xe
-          export BRANCH_OVERRIDE={branch-override}
-          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
-              export ZUUL_BRANCH=$BRANCH_OVERRIDE
-          fi
-          /usr/local/jenkins/slave_scripts/propose_update.sh requirements-constraints
+          /usr/local/jenkins/slave_scripts/propose_update.sh \
+          requirements-constraints
 
     publishers:
       - console-log
