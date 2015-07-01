@@ -319,7 +319,9 @@ function extract_messages_log {
     project=$1
 
     # Update the .pot files
-    python setup.py $QUIET extract_messages
+    # The "_C" and "_P" prefix are for more-gettext-support blueprint,
+    # "_C" for message with context, "_P" for plural form message.
+    python setup.py $QUIET extract_messages --keyword "_C:1c,2 _P:1,2"
     for level in $LEVELS ; do
         python setup.py $QUIET extract_messages --no-default-keywords \
             --keyword ${LKEYWORD[$level]} \
