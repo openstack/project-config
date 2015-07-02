@@ -21,7 +21,7 @@ FALLBACKFILE=jenkins/data/bindep-fallback.txt
 PACKAGES=`git --git-dir=$FALLBACKREPO/.git show master:$FALLBACKFILE`
 REQSFILE=other-requirements.txt
 for REPO in /opt/git/*/* ; do
-    BRANCHES=`git --git-dir=$REPO/.git branch --list -r 'origin/[^H]*'`
+    BRANCHES=`git --git-dir=$REPO/.git branch -r|grep '^  origin/[^H]'`
     for BRANCH in $BRANCHES ; do
         REQS=`git --git-dir=$REPO/.git show $BRANCH:$REQSFILE 2>/dev/null`
         if [ -n "$REQS" ] ; then
