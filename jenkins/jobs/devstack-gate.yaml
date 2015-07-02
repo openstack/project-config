@@ -1997,6 +1997,39 @@
       - console-log
 
 
+- job-template:
+    name: '{pipeline}-tempest-dsvm-full-lio{branch-designator}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=120
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_TEMPEST_FULL=1
+          export CINDER_ISCSI_HELPER=lioadm
+          export CINDER_LVM_TYPE=thin
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+
 # A template for any project with a devstack-plugin to run the full
 # tempest suite with their project/plugin enabled.
 - job-template:
@@ -2205,6 +2238,7 @@
       - '{pipeline}-tempest-dsvm-neutron-keystonev3-full{branch-designator}'
       - '{pipeline}-tempest-dsvm-neutron-identity-v3-only-full{branch-designator}'
       - '{pipeline}-tempest-dsvm-full-ceph{branch-designator}'
+      - '{pipeline}-tempest-dsvm-full-lio{branch-designator}'
       - '{pipeline}-tempest-dsvm-nova-v21-full{branch-designator}'
       - '{pipeline}-tempest-dsvm-nova-v21-neutron-full{branch-designator}'
       - '{pipeline}-tempest-dsvm-nova-wsgi-full{branch-designator}'
