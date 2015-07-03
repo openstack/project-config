@@ -141,19 +141,7 @@
       - console-log
 
 - job-template:
-    name: 'gate-{name}-puppet-syntax'
-    node: '{node}'
-
-    builders:
-      - revoke-sudo
-      - gerrit-git-prep
-      - puppet-syntax
-
-    publishers:
-      - console-log
-
-- job-template:
-    name: 'gate-{name}-puppet-syntax-future'
+    name: 'gate-{name}-puppet-syntax-{puppet_version}'
     node: '{node}'
 
     builders:
@@ -161,7 +149,7 @@
       - revoke-sudo
       - gerrit-git-prep
       - shell: |
-          export PUPPET_GEM_VERSION='~> 3.8.0'
+          export PUPPET_GEM_VERSION='~> {puppet_version}'
           mkdir .bundled_gems
           export GEM_HOME=`pwd`/.bundled_gems
           bundle install
@@ -173,9 +161,12 @@
 
 - job-group:
     name: 'puppet-check-jobs'
+    puppet_version:
+      - 3
+      - 4
     jobs:
       - 'gate-{name}-puppet-lint'
-      - 'gate-{name}-puppet-syntax'
+      - 'gate-{name}-puppet-syntax-{puppet_version}'
 
 - job-group:
     name: 'puppet-module-unit'

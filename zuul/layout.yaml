@@ -476,19 +476,23 @@ project-templates:
       - gate-{name}-puppet-beaker-rspec-dsvm-trusty
       - gate-{name}-puppet-beaker-rspec-dsvm-centos7
 
-  - name: puppet-syntax-future
+  - name: puppet-syntax
     check:
-      - gate-{name}-puppet-syntax-future
+      - gate-{name}-puppet-syntax-3
+      - gate-{name}-puppet-syntax-4
     gate:
-      - gate-{name}-puppet-syntax-future
+      - gate-{name}-puppet-syntax-3
+      - gate-{name}-puppet-syntax-4
 
   - name: puppet-check-jobs
     check:
       - gate-{name}-puppet-lint
-      - gate-{name}-puppet-syntax
+      - gate-{name}-puppet-syntax-3
+      - gate-{name}-puppet-syntax-4
     gate:
       - gate-{name}-puppet-lint
-      - gate-{name}-puppet-syntax
+      - gate-{name}-puppet-syntax-3
+      - gate-{name}-puppet-syntax-4
 
   - name: puppet-module-unit-jobs
     check:
@@ -1318,11 +1322,11 @@ jobs:
   - name: ^gate-puppet-.*-puppet-beaker-rspec-upgrade-dsvm-.*$
     voting: false
 
-  - name: ^gate-puppet-((?!swift).)*-puppet-syntax-future$
+  - name: ^gate-puppet-((?!swift).)*-puppet-syntax-.*$
     branch: ^(?!stable/(havana|icehouse)).*$
 
   # puppet-swift can never be future parser compatible without breaking the API
-  - name: ^gate-puppet-swift-puppet-syntax-future$
+  - name: ^gate-puppet-swift-puppet-syntax-.*$
     branch: ^(?!stable/(havana|icehouse|juno)).*$
 
   - name: ^(gate|check)-tempest-dsvm-nova-v21-full$
@@ -3861,7 +3865,6 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-syntax-future
     check-tripleo:
       - check-tripleo-ironic-overcloud-f21puppet-nonha
 
@@ -3871,7 +3874,6 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-syntax-future
     check-tripleo:
       - check-tripleo-ironic-overcloud-f21puppet-nonha
 
@@ -3881,7 +3883,6 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-syntax-future
 
   - name: openstack/puppet-glance
     template:
@@ -3889,7 +3890,6 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-syntax-future
     check-tripleo:
       - check-tripleo-ironic-overcloud-f21puppet-nonha
 
@@ -3899,7 +3899,6 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-syntax-future
 
   - name: openstack/puppet-heat
     template:
@@ -3907,7 +3906,6 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-syntax-future
     check-tripleo:
       - check-tripleo-ironic-overcloud-f21puppet-nonha
 
@@ -3917,7 +3915,6 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-syntax-future
 
   - name: openstack/puppet-ironic
     template:
@@ -3925,7 +3922,6 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-syntax-future
 
   - name: openstack/puppet-keystone
     template:
@@ -3933,7 +3929,6 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-syntax-future
     check-tripleo:
       - check-tripleo-ironic-overcloud-f21puppet-nonha
 
@@ -3943,7 +3938,6 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-syntax-future
 
   - name: openstack/puppet-modulesync-configs
     template:
@@ -3955,7 +3949,6 @@ projects:
       - name: merge-check
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
-      - name: puppet-syntax-future
 
   - name: openstack/puppet-neutron
     template:
@@ -3963,7 +3956,6 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-syntax-future
     check-tripleo:
       - check-tripleo-ironic-overcloud-f21puppet-nonha
 
@@ -3973,7 +3965,6 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-syntax-future
     check-tripleo:
       - check-tripleo-ironic-overcloud-f21puppet-nonha
 
@@ -3987,7 +3978,6 @@ projects:
       - name: merge-check
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
-      - name: puppet-syntax-future
 
   - name: openstack/puppet-openstack-integration
     template:
@@ -4009,7 +3999,6 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-syntax-future
     check-tripleo:
       - check-tripleo-ironic-overcloud-f21puppet-nonha
 
@@ -4019,7 +4008,6 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-syntax-future
 
   - name: openstack/puppet-swift
     template:
@@ -4027,7 +4015,6 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-syntax-future
     check-tripleo:
       - check-tripleo-ironic-overcloud-f21puppet-nonha
 
@@ -4037,7 +4024,6 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-syntax-future
 
   - name: openstack/puppet-tripleo
     template:
@@ -4052,14 +4038,12 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-syntax-future
 
   - name: openstack/puppet-tuskar
     template:
       - name: merge-check
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
-      - name: puppet-syntax-future
 
   - name: openstack/puppet-vswitch
     template:
@@ -4067,7 +4051,6 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-syntax-future
 
   - name: openstack/puppet-zaqar
     template:
@@ -4075,7 +4058,6 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-syntax-future
 
   - name: openstack/python-neutron-pd-driver
     template:
@@ -5688,15 +5670,14 @@ projects:
       - name: merge-check
       - name: infra-puppet-apply-jobs
       - name: infra-publish-jobs
+      - name: puppet-syntax
     check:
       - gate-system-config-pep8
       - gate-system-config-bashate
-      - gate-system-config-puppet-syntax
       - gate-system-config-nodepool
     gate:
       - gate-system-config-pep8
       - gate-system-config-bashate
-      - gate-system-config-puppet-syntax
       - gate-system-config-nodepool
     experimental:
       - experimental-swift-logs-system-config-pep8-centos6
@@ -7277,21 +7258,18 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-syntax-future
 
   - name: stackforge/puppet-murano
     template:
       - name: merge-check
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
-      - name: puppet-syntax-future
 
   - name: stackforge/puppet-n1k-vsm
     template:
       - name: merge-check
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
-      - name: puppet-syntax-future
 
   - name: stackforge/puppet-nslcd
     template:
@@ -7314,7 +7292,6 @@ projects:
       - name: merge-check
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
-      - name: puppet-syntax-future
 
   - name: stackforge/puppet-openstack_dev_env
     template:
