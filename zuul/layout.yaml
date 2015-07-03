@@ -1453,6 +1453,10 @@ jobs:
   - name: gate-cinder-python34
     branch: ^(?!stable/(?:juno|kilo)).*$
 
+  - name: gate-keystone-python34
+    branch: ^(?!stable/(?:juno|kilo)).*$
+    voting: false
+
   - name: gate-swift-python34
     branch: ^(?!stable/(?:juno|kilo)).*$
     voting: false
@@ -1985,6 +1989,7 @@ projects:
       - name: translation-jobs
       - name: experimental-tripleo-jobs
     check:
+      - gate-keystone-python34
       - gate-rally-dsvm-keystone
       - gate-keystone-tox-bandit
     gate:
@@ -1994,7 +1999,6 @@ projects:
       - keystone-propose-config-updates
     experimental:
       - gate-grenade-dsvm-forward
-      - gate-keystone-python34
 
   - name: openstack/keystone-specs
     template:
