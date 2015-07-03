@@ -23,7 +23,8 @@ REQSFILE=other-requirements.txt
 for REPO in /opt/git/*/* ; do
     BRANCHES=`git --git-dir=$REPO/.git branch -r|grep '^  origin/[^H]'`
     for BRANCH in $BRANCHES ; do
-        REQS=`git --git-dir=$REPO/.git show $BRANCH:$REQSFILE 2>/dev/null`
+        REQS=`git --git-dir=$REPO/.git show $BRANCH:$REQSFILE 2>/dev/null \
+            ||true`
         if [ -n "$REQS" ] ; then
             PACKAGES=`echo -e "$PACKAGES\n$REQS" | sort -u`
         fi
