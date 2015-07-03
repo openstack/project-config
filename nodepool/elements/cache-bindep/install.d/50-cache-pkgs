@@ -21,10 +21,10 @@ FALLBACKFILE=jenkins/data/bindep-fallback.txt
 PACKAGES=`git --git-dir=$FALLBACKREPO/.git show master:$FALLBACKFILE`
 REQSFILE=other-requirements.txt
 for REPO in /opt/git/*/* ; do
-    BRANCHES=`git --git-dir=$REPO/.git branch -r|grep '^  origin/[^H]'`
+    BRANCHES=`git --git-dir=$REPO/.git branch -r | grep '^  origin/[^H]'`
     for BRANCH in $BRANCHES ; do
         REQS=`git --git-dir=$REPO/.git show $BRANCH:$REQSFILE 2>/dev/null \
-            ||true`
+            || true`
         if [ -n "$REQS" ] ; then
             PACKAGES=`echo -e "$PACKAGES\n$REQS" | sort -u`
         fi
@@ -32,10 +32,10 @@ for REPO in /opt/git/*/* ; do
 done
 # TODO(fungi) once https://review.openstack.org/195201 appears in a bindep
 # release, replace the next four lines with:
-# PACKAGELIST=`echo "$PACKAGES" | bindep -b -f -`
-PACKAGESFILE=`tempfile`
+# PACKAGELIST=`echo "$PACKAGES" | /usr/bindep-env/bin/bindep -b -f - || true`
+PACKAGESFILE=`mktemp`
 echo "$PACKAGES" > $PACKAGESFILE
-PACKAGELIST=`bindep -b -f $PACKAGESFILE`
+PACKAGELIST=`/usr/bindep-env/bin/bindep -b -f $PACKAGESFILE || true`
 rm $PACKAGESFILE
 
 if grep "^CentOS release 6" /etc/redhat-release ; then
