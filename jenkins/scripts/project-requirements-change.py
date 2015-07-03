@@ -166,7 +166,16 @@ def main():
         head = run_command("git rev-parse HEAD")[0]
         head_proj = project.read(cwd)
         head_reqs = RequirementsList('HEAD', head_proj)
-        head_reqs.process()
+        # Don't apply strict parsing rules to stable branches.
+        # Reasoning is:
+        #  - devstack etc protect us from functional issues
+        #  - we're backporting to stable, so guarding against
+        #    aesthetics and DRY concerns is not our business anymore
+        #  - if in future we have other not-functional linty style
+        #    things to add, we don't want them to affect stable
+        #    either.
+        head_strict = not branch.startswith('stable/')
+        head_reqs.process(strict=head_strict)
 
         if not args.local:
             # build a list of requirements already in the target branch,
