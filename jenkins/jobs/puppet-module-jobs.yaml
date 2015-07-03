@@ -143,6 +143,18 @@
       - console-log
 
 - job-template:
+    name: 'gate-{name}-puppet-syntax'
+    node: '{node}'
+
+    builders:
+      - revoke-sudo
+      - gerrit-git-prep
+      - puppet-syntax
+
+    publishers:
+      - console-log
+
+- job-template:
     name: 'gate-{name}-puppet-syntax-{puppet_version}'
     node: '{node}'
 
@@ -171,6 +183,7 @@
       - 4
     jobs:
       - 'gate-{name}-puppet-lint'
+      - 'gate-{name}-puppet-syntax'
       - 'gate-{name}-puppet-syntax-{puppet_version}'
 
 - job-group:

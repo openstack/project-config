@@ -203,6 +203,15 @@
             rake lint 2>&1
           fi
 
+- builder:
+    name: puppet-syntax
+    builders:
+      - shell: |
+          find . -iname *.pp | xargs puppet parser validate --modulepath=`pwd`/modules
+          for f in `find . -iname *.erb` ; do
+            erb -x -T '-' $f | ruby -c
+          done
+
 # note that this job uses an in-repo script for execution
 # in order to cater for differing requirements per branch
 - builder:
