@@ -503,6 +503,7 @@ project-templates:
       - gate-{name}-puppet-unit-3.7
       - gate-{name}-puppet-unit-3.8
       - gate-{name}-puppet-unit-4.0
+      - gate-{name}-puppet-unit-latest
     gate:
       - gate-{name}-puppet-unit-3.3
       - gate-{name}-puppet-unit-3.4
@@ -1320,6 +1321,11 @@ jobs:
 
   # Experimental job now
   - name: ^gate-puppet-.*-puppet-beaker-rspec-upgrade-dsvm-.*$
+    voting: false
+
+  # Aims to break when a new version of Puppet is released
+  - name: ^gate-puppet-.*-puppet-unit-latest$
+    branch: ^(?!stable/(grizzly|havana|icehouse|juno)).*$
     voting: false
 
   - name: ^gate-puppet-((?!swift).)*-puppet-syntax-.*$

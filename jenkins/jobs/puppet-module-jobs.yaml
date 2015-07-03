@@ -7,7 +7,9 @@
       - revoke-sudo
       - gerrit-git-prep
       - shell: |
-          export PUPPET_GEM_VERSION='~> {puppet_version}.0'
+          if [ "{puppet_version}" != "latest" ]; then
+            export PUPPET_GEM_VERSION='~> {puppet_version}.0'
+          fi
           mkdir .bundled_gems
           export GEM_HOME=`pwd`/.bundled_gems
           bundle install
@@ -177,6 +179,7 @@
       - 3.7
       - 3.8
       - 4.0
+      - 'latest'
     jobs:
       - 'gate-{name}-puppet-unit-{puppet_version}'
 
