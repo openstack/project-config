@@ -155,7 +155,10 @@
           mkdir .bundled_gems
           export GEM_HOME=`pwd`/.bundled_gems
           bundle install
-          export FUTURE_PARSER=yes
+          # FUTURE_PARSER=yes is only supported by Puppet 3.x
+          if [ "{puppet_version}" -lt "4" ]; then
+              export FUTURE_PARSER=yes
+          fi
           bundle exec rake syntax
 
     publishers:
