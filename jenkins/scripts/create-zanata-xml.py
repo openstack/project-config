@@ -14,6 +14,7 @@
 
 import argparse
 import os
+import sys
 from ZanataUtils import IniConfig, ProjectConfig
 
 
@@ -37,11 +38,14 @@ def get_args():
 
 def main():
     args = get_args()
-    zc = IniConfig(os.path.expanduser('~/.config/zanata.ini'))
     rules = args.rule or [('*.pot', '{locale}/LC_MESSAGES/{filename}.po')]
-    ProjectConfig(zc, args.file, rules, project=args.project,
-                  version=args.version,
-                  srcdir=args.srcdir, txdir=args.txdir)
+    try:
+        zc = IniConfig(os.path.expanduser('~/.config/zanata.ini'))
+        ProjectConfig(zc, args.file, rules, project=args.project,
+                      version=args.version,
+                      srcdir=args.srcdir, txdir=args.txdir)
+    except ValueError as e:
+        sys.exit(e)
 
 
 if __name__ == '__main__':
