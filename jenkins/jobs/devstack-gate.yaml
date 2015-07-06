@@ -3090,6 +3090,57 @@
       - devstack-logs
 
 
+- job-template:
+    name: 'gate-dsvm-os-loganalyze{job-suffix}'
+    node: 'ubuntu-trusty'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TEMPEST=1
+          export ENABLED_SERVICES=os-loganalyze
+          export PROJECTS="openstack-infra/os-loganalyze $PROJECTS"
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin devstack-plugin-os-loganalyze git://git.openstack.org/openstack-infra/os-loganalyze"
+          function post_test_hook {{
+              # Copy the tempest output to os-loganalze's DocumentRoot
+              sudo cp -r logs/* /var/www/logs/
+              # Grab normally marked up file
+              wget --header="Accept: text/html" http://localhost:8080/tempest.txt.gz
+              # Check display level options are available
+              if ! grep -q "<span id='selector'>" tempest.txt.gz; then
+                  return 1
+              fi
+              if ! grep -q "<a href='?level=DEBUG'>DEBUG</a> |" tempest.txt.gz; then
+                  return 1
+              fi
+              # Check when fetching as plain, options are missing
+              wget http://localhost:8080/tempest.txt.gz
+              if grep -q "<span id='selector'>" tempest.txt.gz; then
+                  return 1
+              fi
+              if grep -q "<a href='?level=DEBUG'>DEBUG</a> |" tempest.txt.gz; then
+                  return 1
+              fi
+          }}
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+
 - job:
     name: gate-devstack-gate-unittests
     node: ubuntu-trusty
