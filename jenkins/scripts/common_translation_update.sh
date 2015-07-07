@@ -119,6 +119,9 @@ function setup_manuals {
     declare -A SPECIAL_BOOKS
     source doc-tools-check-languages.conf
 
+    # Grab all of the rules for the documents we care about
+    ZANATA_RULES=
+
     # Generate pot one by one
     for FILE in ${DocFolder}/*; do
         # Skip non-directories
@@ -167,6 +170,7 @@ function setup_manuals {
                 --source-file ${DocFolder}/${DOCNAME}/source/locale/${DOCNAME}.pot \
                 --minimum-perc=$PERC \
                 -t PO --execute
+            ZANATA_RULES="$ZANATA_RULES -r ${DocFolder}/${DOCNAME}/source/locale/${DOCNAME}.pot ${DocFolder}/${DOCNAME}/source/locale/{locale}/LC_MESSAGES/${DOCNAME}.po"
         else
             # Update the .pot file
             ./tools/generatepot ${DOCNAME}
@@ -179,9 +183,16 @@ function setup_manuals {
                     --source-file ${DocFolder}/${DOCNAME}/locale/${DOCNAME}.pot \
                     --minimum-perc=$PERC \
                     -t PO --execute
+                ZANATA_RULES="$ZANATA_RULES -r ${DocFolder}/${DOCNAME}/locale/${DOCNAME}.pot ${DocFolder}/${DOCNAME}/locale/{locale}.po"
             fi
         fi
     done
+    # While we spin up, we want to not error out if we can't generate the
+    # zanata.xml file.
+    if ! /usr/local/jenkins/slave_scripts/create-zanata-xml.py -p $project \
+        -v master --srcdir . --txdir . $ZANATA_RULES -f zanata.xml; then
+        echo "Failed to generate zanata.xml"
+    fi
 
 }
 
