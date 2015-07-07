@@ -82,21 +82,21 @@
       - shell: |
           mkdir .bundled_gems
           export GEM_HOME=`pwd`/.bundled_gems
-          bundle install
           export BEAKER_set=nodepool-{ostype}
           export BEAKER_debug=yes
           # checkout last commit before current patchset
           git checkout HEAD~1
+          bundle install
           bundle exec rspec spec/acceptance
       # checkout current patchset
       - gerrit-git-prep
       - shell: |
           mkdir -p .bundled_gems
           export GEM_HOME=`pwd`/.bundled_gems
-          bundle install
           export BEAKER_set=nodepool-{ostype}
           export BEAKER_debug=yes
           export BEAKER_provision=no
+          bundle update
           bundle exec rspec spec/acceptance
 
     wrappers:
