@@ -20,7 +20,7 @@ source /usr/local/jenkins/slave_scripts/common_translation_update.sh
 
 setup_translation
 case "$PROJECT" in
-    api-site|ha-guide|operations-guide|security-doc)
+    api-site|ha-guide|openstack-manuals|operations-guide|security-doc)
         init_manuals "$PROJECT"
         setup_manuals "$PROJECT"
         ;;
