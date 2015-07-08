@@ -31,6 +31,19 @@
             - name: $ZUUL_PROJECT
               dest: .
           EOF
+          /usr/zuul-env/bin/zuul-cloner -m clonemap.yaml --cache-dir /opt/git \
+              git://git.openstack.org $ZUUL_PROJECT
+
+- builder:
+    name: zuul-git-branch-prep
+    builders:
+      - shell: |
+          #!/bin/bash -xe
+          cat > clonemap.yaml << EOF
+          clonemap:
+            - name: $ZUUL_PROJECT
+              dest: .
+          EOF
           # If this is called in a periodic job, these will not be set
           export ZUUL_BRANCH=${{ZUUL_BRANCH:-master}}
           export ZUUL_REF=${{ZUUL_REF:-None}}
@@ -39,8 +52,7 @@
               export ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
           /usr/zuul-env/bin/zuul-cloner -m clonemap.yaml --cache-dir /opt/git \
-              git://git.openstack.org \
-              $ZUUL_PROJECT
+              git://git.openstack.org $ZUUL_PROJECT
 
 - builder:
     name: branch-git-prep
@@ -477,24 +489,30 @@
           ip neighbor show
 
 - builder:
-    name: base-packages-trusty
+    name: install-distro-packages
     builders:
       - shell: |
           #!/bin/bash -xe
-          sudo apt-get update
-          sudo PATH=/usr/sbin:/sbin:$PATH DEBIAN_FRONTEND=noninteractive \
-              apt-get --option "Dpkg::Options::=--force-confold" --assume-yes \
-              install \
-                  build-essential \
-                  python-dev \
-                  mysql-client \
-                  mysql-server \
-                  libmysqlclient-dev \
-                  postgresql-client \
-                  postgresql \
-                  libpq-dev \
-                  libffi-dev \
-                  libxslt-dev \
+          if [ -e other-requirements.txt ] ; then
+              export DISTRO_PACKAGES=other-requirements.txt
+          else
+              mkdir -p .test
+              pushd .test
+              /usr/zuul-env/bin/zuul-cloner --cache-dir /opt/git \
+                  git://git.openstack.org openstack-infra/project-config
+              popd
+              export DISTRO_PACKAGES=.test/openstack-infra/project-config/jenkins/data/bindep-fallback.txt
+          fi
+          if apt-get -v >/dev/null ; then
+              sudo apt-get update
+              sudo PATH=/usr/sbin:/sbin:$PATH DEBIAN_FRONTEND=noninteractive \
+                  apt-get --option "Dpkg::Options::=--force-confold" \
+                  --assume-yes install \
+                  `/usr/bindep-env/bin/bindep -b -f $DISTRO_PACKAGES || true`
+          else
+              sudo PATH=/usr/sbin:/sbin:$PATH yum install -y \
+                  `/usr/bindep-env/bin/bindep -b -f $DISTRO_PACKAGES || true`
+          fi
 
 - builder:
     name: mysql-prep
