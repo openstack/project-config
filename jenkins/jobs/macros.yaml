@@ -51,6 +51,14 @@
           /usr/local/jenkins/slave_scripts/gerrit-git-prep.sh https://review.openstack.org git://git.openstack.org
 
 - builder:
+    name: zuul-clone
+    builders:
+      - shell: |
+          #!/bin/bash
+          /usr/zuul-env/bin/zuul-cloner --cache-dir /opt/git \
+              git://git.openstack.org {project}
+
+- builder:
     name: revoke-sudo
     builders:
       - shell: |

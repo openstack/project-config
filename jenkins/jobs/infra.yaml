@@ -103,6 +103,37 @@
       - zuul-swift-upload-logs-with-console:
           upload_source: 'applytest/*'
 
+
+- job-template:
+    name: 'gate-openstackci-beaker-{ostype}'
+    node: 'bare-{ostype}'
+
+    builders:
+      - link-logs
+      - zuul-clone:
+          project: openstack-infra/puppet-openstackci
+      - uninstall-puppet
+      - allow-local-ssh-root
+      - shell: |
+          sudo gem install bundler --no-rdoc --no-ri --verbose
+      - revoke-sudo
+      - shell: |
+          cd openstack-infra/puppet-openstackci
+          mkdir .bundled_gems
+          export GEM_HOME=`pwd`/.bundled_gems
+          bundle install
+          export BEAKER_set=nodepool-{ostype}
+          export BEAKER_debug=yes
+          bundle exec rspec spec/acceptance
+
+    wrappers:
+      - build-timeout:
+          timeout: 60
+      - timestamps
+
+    publishers:
+      - zuul-swift-upload-console-log
+
 - job:
     name: propose-project-config-update
     node: proposal
