@@ -841,18 +841,27 @@
       - python-jobs
       - python-kilo-bitrot-jobs
       - openstack-publish-jobs
-      - '{pipeline}-neutron-{lbaasversion}-dsvm-api{branch-designator}':
+      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}{branch-designator}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           branch-designator: ''
           branch-override: default
           lbaasversion: lbaasv2
-      - '{pipeline}-neutron-{lbaasversion}-dsvm-api{branch-designator}':
+          lbaastest: scenario
+      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}{branch-designator}':
+          pipeline: gate
+          node: 'devstack-precise || devstack-trusty'
+          branch-designator: ''
+          branch-override: default
+          lbaasversion: lbaasv2
+          lbaastest: api
+      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}{branch-designator}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           branch-designator: ''
           branch-override: default
           lbaasversion: lbaasv1
+          lbaastest: api
 
 - project:
     name: neutron-specs
