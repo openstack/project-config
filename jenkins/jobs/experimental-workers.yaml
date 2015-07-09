@@ -1,5 +1,5 @@
 - job:
-    name: experimental-nova-dsvm-python27
+    name: bindep-nova-python27
 
     wrappers:
       - build-timeout:
@@ -7,7 +7,8 @@
       - timestamps
 
     builders:
-      - base-packages-trusty
+      - zuul-git-prep
+      - install-distro-packages
       - mysql-prep
       - pgsql-prep
       - mysql-db:
@@ -15,7 +16,6 @@
       - pgsql-db:
           db_name: openstack_citest
       - revoke-sudo
-      - gerrit-git-prep
       - python27
       - assert-no-extra-files
 
@@ -24,4 +24,3 @@
       - console-log
 
     node: ubuntu-trusty
-
