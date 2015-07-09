@@ -12,7 +12,7 @@ if [[ -f $MARKER ]] ; then
 
     TODAY=$(date '+%Y%m%d')
     # Delete only once a day
-    if [[ $(date -f $MARKER '+%Y%m%d') != TODAY ]] ; then
+    if [[ $(date -f $MARKER '+%Y%m%d') != $TODAY ]] ; then
         rm -rf $VENV
     fi
 fi
