@@ -469,3 +469,14 @@ function compress_manual_po_files {
         mv "${i}.tmp" "$i"
     done
 }
+
+function pull_from_transifex {
+    # Download new files that are at least 75 % translated.
+    # Also downloads updates for existing files that are at least 75 %
+    # translated.
+    tx pull -a -f --minimum-perc=75
+
+    # Pull upstream translations of all downloaded files but do not
+    # download new files.
+    tx pull -f
+}

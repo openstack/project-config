@@ -25,14 +25,8 @@ setup_translation
 
 setup_django_openstack_auth
 
-# Download new files that are at least 75 % translated.
-# Also downloads updates for existing files that are at least 75 %
-# translated.
-tx pull -a -f --minimum-perc=75
-
-# Pull upstream translations of all downloaded files but do not
-# download new files.
-tx pull -f
+# Pull updated translations from Transifex.
+pull_from_transifex
 
 # Update the .pot file
 python setup.py extract_messages
