@@ -61,30 +61,44 @@
     builders:
       - link-logs
       - puppet-prepare-node
-      # checkout the current patchset
-      - gerrit-git-prep
       - allow-local-ssh-root
       - shell: |
           sudo gem install bundler --no-rdoc --no-ri --verbose
       - revoke-sudo
       - shell: |
+          #!/bin/bash -xe
+          # checkout the current branch
+          /usr/zuul-env/bin/zuul-cloner \
+              --cache-dir /opt/git \
+              --workspace $WORKSPACE/new \
+              git://git.openstack.org $ZUUL_PROJECT
+
+          cd $WORKSPACE/new/$ZUUL_PROJECT
+          # for debugging:
+          git branch -r
+          OLD_BRANCH=$(git branch -r |grep -E 'origin.*stable' |sed -e 's/  origin\///' | sort -d | tail -1)
+
+          # checkout the stable branch
+          /usr/zuul-env/bin/zuul-cloner \
+              --cache-dir /opt/git \
+              --workspace $WORKSPACE/old \
+              --branch $OLD_BRANCH
+              git://git.openstack.org $ZUUL_PROJECT
+
+          # install and test the stable branch
+          cd $WORKSPACE/old/$ZUUL_PROJECT
           mkdir .bundled_gems
           export GEM_HOME=`pwd`/.bundled_gems
           export BEAKER_set=nodepool-{ostype}
           export BEAKER_debug=yes
           export BEAKER_color=no
-          # checkout last commit before current patchset
-          git checkout HEAD~1
           bundle install
           bundle exec rspec spec/acceptance
-      # checkout current patchset
-      - gerrit-git-prep
-      - shell: |
+
+          # upgrade and test the current branch
+          cd $WORKSPACE/new/$ZUUL_PROJECT
           mkdir -p .bundled_gems
           export GEM_HOME=`pwd`/.bundled_gems
-          export BEAKER_set=nodepool-{ostype}
-          export BEAKER_debug=yes
-          export BEAKER_color=no
           export BEAKER_provision=no
           bundle update
           bundle exec rspec spec/acceptance

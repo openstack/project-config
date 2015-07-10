@@ -1391,8 +1391,13 @@ jobs:
     branch: ^(?!stable/(grizzly|havana|icehouse|juno)).*$
 
   # Experimental job now
+  # the job aims to test if patches in master don't break kilo branch
+  # so we need to run the job on master for now
   - name: ^gate-puppet-.*-puppet-beaker-rspec-upgrade-dsvm-.*$
-    branch: ^(?!stable/(grizzly|havana|icehouse|juno)).*$
+    branch: ^(?!stable/(grizzly|havana|icehouse|juno|kilo)).*$
+    skip-if:
+      # this module is not part of Puppet OpenStack work
+      - project: ^stackforge/puppet-ceph$
     voting: false
 
   # Aims to break when a new version of Puppet is released
