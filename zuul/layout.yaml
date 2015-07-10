@@ -3483,6 +3483,19 @@ projects:
 # Section: Other OpenStack projects
 ########################################################################
 
+
+  - name: openstack/anchor
+    template:
+      - name: merge-check
+    check:
+      - gate-anchor-pep8
+      - gate-anchor-python27
+    gate:
+      - gate-anchor-pep8
+      - gate-anchor-python27
+    experimental:
+      - gate-anchor-tox-bandit
+
   - name: openstack/api-wg
     template:
       - name: merge-check
@@ -3491,6 +3504,19 @@ projects:
       - gate-api-wg-python27
     gate:
       - gate-api-wg-python27
+
+  - name: openstack/bandit
+    template:
+      - name: merge-check
+      - name: python3-jobs
+      - name: check-requirements
+      - name: publish-to-pypi
+    check:
+      - gate-bandit-pep8
+      - gate-bandit-python27
+    gate:
+      - gate-bandit-pep8
+      - gate-bandit-python27
 
   - name: openstack/castellan
     template:
@@ -5926,18 +5952,6 @@ projects:
       - gate-akanda-rug-python27
       - gate-functional-dsvm-akanda
 
-  - name: stackforge/anchor
-    template:
-      - name: merge-check
-    check:
-      - gate-anchor-pep8
-      - gate-anchor-python27
-    gate:
-      - gate-anchor-pep8
-      - gate-anchor-python27
-    experimental:
-      - gate-anchor-tox-bandit
-
   - name: stackforge/anvil
     template:
       - name: merge-check
@@ -5963,19 +5977,6 @@ projects:
       - gate-aviator-tests
     gate:
       - gate-aviator-tests
-
-  - name: stackforge/bandit
-    template:
-      - name: merge-check
-      - name: python3-jobs
-      - name: check-requirements
-      - name: publish-to-pypi
-    check:
-      - gate-bandit-pep8
-      - gate-bandit-python27
-    gate:
-      - gate-bandit-pep8
-      - gate-bandit-python27
 
   - name: stackforge/bansho
     template:

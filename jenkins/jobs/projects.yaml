@@ -1990,11 +1990,30 @@
 ########################################################################
 
 - project:
+    name: anchor
+    node: 'bare-precise || bare-trusty'
+    tarball-site: tarballs.openstack.org
+
+    jobs:
+      - python-jobs
+      - 'gate-{name}-tox-{envlist}':
+          envlist: bandit
+
+- project:
     name: api-wg
     node: 'bare-precise || bare-trusty'
 
     jobs:
       - specs-jobs
+
+- project:
+    name: bandit
+    node: 'bare-precise || bare-trusty'
+    tarball-site: tarballs.openstack.org
+
+    jobs:
+      - python-jobs
+      - pypi-jobs
 
 - project:
     name: castellan
@@ -4257,16 +4276,6 @@
           branch-override: default
 
 - project:
-    name: anchor
-    node: 'bare-precise || bare-trusty'
-    tarball-site: tarballs.openstack.org
-
-    jobs:
-      - python-jobs
-      - 'gate-{name}-tox-{envlist}':
-          envlist: bandit
-
-- project:
     name: anvil
     node: 'bare-precise || bare-trusty'
     tarball-site: tarballs.openstack.org
@@ -4290,15 +4299,6 @@
 
     jobs:
       - 'gate-aviator-tests'
-
-- project:
-    name: bandit
-    node: 'bare-precise || bare-trusty'
-    tarball-site: tarballs.openstack.org
-
-    jobs:
-      - python-jobs
-      - pypi-jobs
 
 - project:
     name: billingstack
