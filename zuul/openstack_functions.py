@@ -45,7 +45,7 @@ def devstack_params(item, job, params):
     # Remove this when we are done doing prelimindary dib testing.
     if 'icehouse-dibtest' in job.name:
         params['ZUUL_NODE'] = 'devstack-precise-dib'
-    elif 'dibtest' in job.name or 'bindep-nova-python27' in job.name:
+    elif 'dibtest' in job.name:
         params['ZUUL_NODE'] = 'ubuntu-trusty'
     elif ((hasattr(change, 'branch') and
             change.branch == 'stable/icehouse') or
@@ -78,6 +78,8 @@ def default_params_trusty(item, job, params):
         ('icehouse' in job.name or
         'precise' in job.name)):
         params['ZUUL_NODE'] = 'bare-precise'
+    elif job.name == 'bindep-nova-python27':
+        params['ZUUL_NODE'] = 'ubuntu-trusty'
     else:
         params['ZUUL_NODE'] = 'bare-trusty'
 
