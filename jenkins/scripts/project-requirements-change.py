@@ -80,7 +80,7 @@ class RequirementsList(object):
                                 % {'name': self.name, 'fname': fname})
                 reqs[name].update(r for (r, line) in entries)
 
-        for name, content in project.extras(self.project):
+        for name, content in project.extras(self.project).items():
             print("Processing .[%(extra)s]" % {'extra': name})
             parsed = requirement.parse(content)
             for name, entries in parsed.items():
@@ -196,6 +196,12 @@ def main():
         # equivalents we want enforced
         failed = False
         for name, reqs in head_reqs.reqs.items():
+            if not name:
+                # Comments show up as unnamed requirements. There's no
+                # point in copying comments related to packages that
+                # aren't in the destination, so ignore the comments
+                # entirely.
+                continue
             if name in branch_reqs.reqs and reqs == branch_reqs.reqs[name]:
                 # Unchanged [or a change that preserves a current value]
                 continue
