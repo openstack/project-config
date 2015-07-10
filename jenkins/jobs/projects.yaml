@@ -124,6 +124,26 @@
       - specs-jobs
 
 - project:
+    name: cue
+    node: 'bare-precise || bare-trusty'
+    tarball-site: tarballs.openstack.org
+
+    jobs:
+      - hook-{name}-rtfd
+      - python-jobs
+      - gate-{name}-integrate-dsvm-rally
+      - 'gate-cue-integration-dsvm-{broker}':
+          broker: 'rabbitmq'
+
+- project:
+    name: cue-dashboard
+    node: 'bare-precise || bare-trusty'
+    tarball-site: tarballs.openstack.org
+
+    jobs:
+      - python-jobs
+
+- project:
     name: designate
     node: 'bare-precise || bare-trusty'
     tarball-site: tarballs.openstack.org
@@ -1149,6 +1169,15 @@
           branch-designator: ''
           branch-override: default
 
+- project:
+    name: python-cueclient
+    node: 'bare-precise || bare-trusty'
+    tarball-site: tarballs.openstack.org
+
+    jobs:
+      - python-jobs
+      - pypi-jobs
+      - hook-{name}-rtfd
 
 - project:
     name: python-designateclient
@@ -4474,26 +4503,6 @@
       - gate-{name}-chef-unit
 
 - project:
-    name: cue
-    node: 'bare-precise || bare-trusty'
-    tarball-site: tarballs.openstack.org
-
-    jobs:
-      - hook-{name}-rtfd
-      - python-jobs
-      - gate-{name}-integrate-dsvm-rally
-      - 'gate-cue-integration-dsvm-{broker}':
-          broker: 'rabbitmq'
-
-- project:
-    name: cue-dashboard
-    node: 'bare-precise || bare-trusty'
-    tarball-site: tarballs.openstack.org
-
-    jobs:
-      - python-jobs
-
-- project:
     name: devstack-plugin-glusterfs
     node: 'bare-precise || bare-trusty'
 
@@ -5465,16 +5474,6 @@
     jobs:
       - python-jobs
       - pypi-jobs
-
-- project:
-    name: python-cueclient
-    node: 'bare-precise || bare-trusty'
-    tarball-site: tarballs.openstack.org
-
-    jobs:
-      - python-jobs
-      - pypi-jobs
-      - hook-{name}-rtfd
 
 - project:
     name: python-fuelclient

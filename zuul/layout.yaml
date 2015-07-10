@@ -1683,6 +1683,27 @@ projects:
       - name: merge-check
       - name: stackforge-specs-jobs
 
+  - name: openstack/cue
+    template:
+      - name: merge-check
+      - name: docs-on-rtfd
+      - name: python-jobs
+    check:
+      - cue-coverage
+      - gate-cue-integration-dsvm-rabbitmq
+    gate:
+      - gate-cue-integration-dsvm-rabbitmq
+    pre-release:
+      - cue-tarball
+    release:
+      - cue-tarball
+    experimental:
+      - gate-cue-integrate-dsvm-rally
+
+  - name: openstack/cue-dashboard
+    template:
+      - name: merge-check
+      - name: python-jobs
 
   - name: openstack/designate
     template:
@@ -2666,6 +2687,14 @@ projects:
     gate:
       - gate-python-congressclient-pep8
       - gate-python-congressclient-python27
+
+  - name: openstack/python-cueclient
+    template:
+      - name: merge-check
+      - name: check-requirements
+      - name: python-jobs
+      - name: publish-to-pypi
+      - name: docs-on-rtfd
 
   - name: openstack/python-designateclient
     template:
@@ -6210,28 +6239,6 @@ projects:
       - name: merge-check
       - name: chef-jobs
 
-  - name: stackforge/cue
-    template:
-      - name: merge-check
-      - name: docs-on-rtfd
-      - name: python-jobs
-    check:
-      - cue-coverage
-      - gate-cue-integration-dsvm-rabbitmq
-    gate:
-      - gate-cue-integration-dsvm-rabbitmq
-    pre-release:
-      - cue-tarball
-    release:
-      - cue-tarball
-    experimental:
-      - gate-cue-integrate-dsvm-rally
-
-  - name: stackforge/cue-dashboard
-    template:
-      - name: merge-check
-      - name: python-jobs
-
   - name: stackforge/designate-msdnsagent
     template:
       - name: merge-check
@@ -7430,14 +7437,6 @@ projects:
       - name: merge-check
       - name: python-jobs
       - name: publish-to-pypi
-
-  - name: stackforge/python-cueclient
-    template:
-      - name: merge-check
-      - name: check-requirements
-      - name: python-jobs
-      - name: publish-to-pypi
-      - name: docs-on-rtfd
 
   - name: stackforge/python-fuelclient
     template:
