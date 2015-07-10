@@ -71,8 +71,10 @@ for PROJECT in $PROJECTS; do
 
     # Don't short circuit when one project fails to clone, just report the
     # error and move onto the next project.
-    GIT_REPO="ssh://$USERNAME@review.openstack.org:29418/$PROJECT.git"
-    if ! git clone $GIT_REPO; then
+    #
+    # TODO(fungi): switch to zuul-cloner once we add a persistent git cache
+    # to proposal.slave.openstack.org
+    if ! git clone git://git.openstack.org/$PROJECT.git; then
         # ALL_SUCCESS is being set to 1, which means that a failure condition
         # has been detected. The job will end in failure once it finishes
         # cycling through the remaining projects.
