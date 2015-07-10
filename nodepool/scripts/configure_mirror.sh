@@ -21,6 +21,9 @@ source /etc/nodepool/provider
 NODEPOOL_PYPI_MIRROR=${NODEPOOL_PYPI_MIRROR:-http://pypi.$NODEPOOL_REGION.openstack.org/simple}
 
 sudo sed -i -e "s,^index-url = .*,index-url = $NODEPOOL_PYPI_MIRROR," /etc/pip.conf
+cp /etc/pip.conf /tmp/pip.conf
+echo "no-binary=mock" >> /tmp/pip.conf
+sudo mv /tmp/pip.conf /etc/pip.conf
 
 cat >/home/jenkins/.pydistutils.cfg <<EOF
 [easy_install]
