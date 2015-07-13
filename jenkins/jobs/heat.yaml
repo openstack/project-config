@@ -180,3 +180,50 @@
      - test-results
      - devstack-logs
      - console-log
+
+
+- job-template:
+    name: '{pipeline}-grenade-dsvm-heat{branch-designator}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 130
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export OVERRIDE_ENABLED_SERVICES=c-api,c-bak,c-sch,c-vol,cinder,dstat,g-api,g-reg,h-api,h-api-cfn,h-api-cw,h-eng,heat,key,mysql,n-api,n-cond,n-cpu,n-crt,n-obj,n-sch,q-agt,q-dhcp,q-l3,q-meta,q-metering,q-svc,q-vpn,quantum,rabbit,s-account,s-container,s-object,s-proxy,q-lbaas,ceilometer-acompute,ceilometer-acentral,ceilometer-collector,ceilometer-api
+          export DEVSTACK_GATE_TIMEOUT=120
+          export DEVSTACK_GATE_NEUTRON=1
+          export DEVSTACK_GATE_TEMPEST=0
+          export DEVSTACK_GATE_GRENADE=pullup
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          export GRENADE_PLUGINRC="enable_grenade_plugin heat https://git.openstack.org/openstack/heat"
+
+          function pre_test_hook {{
+              cd /opt/stack/new/heat/heat_upgradetests
+              ./pre_test_hook.sh
+          }}
+          export -f pre_test_hook
+
+          function post_test_hook {{
+              cd /opt/stack/new/heat/heat_upgradetests
+              ./post_test_hook.sh
+          }}
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
