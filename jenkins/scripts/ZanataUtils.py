@@ -199,6 +199,9 @@ class ProjectConfig:
             new_rule = etree.SubElement(rules, 'rule')
             new_rule.attrib['pattern'] = rule['pattern']
             new_rule.text = rule['rule']
+        if self.excludes:
+            excludes = etree.SubElement(root, 'excludes')
+            excludes.text = self.excludes
         tag_prefix = self._get_tag_prefix(root)
         locale_sub = root.find('%slocales' % tag_prefix)
         locale_elements = locale_sub.findall('%slocale' % tag_prefix)
