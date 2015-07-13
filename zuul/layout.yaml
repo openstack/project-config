@@ -704,13 +704,13 @@ jobs:
   - name: gate-tempest-dsvm-neutron-nv
     branch: ^feature/pecan
 
-  - name: check-heat-dsvm-functional-orig-mysql
+  - name: gate-heat-dsvm-functional-orig-mysql
     branch: ^(?!stable/juno).*$
 
-  - name: check-heat-dsvm-functional-orig-postgres
+  - name: gate-heat-dsvm-functional-orig-postgres
     voting: false
 
-  - name: check-heat-dsvm-functional-convg-mysql
+  - name: gate-heat-dsvm-functional-convg-mysql
     branch: ^(?!stable/(juno|kilo)).*$
     voting: false
 
@@ -835,7 +835,7 @@ jobs:
   - name: ^gate-neutron-lbaasv2-dsvm-api$
     branch: ^(?!stable/(?:juno|kilo)).*$
 
-  - name: ^(gate|check)-group-based-policy-dsvm-functional$
+  - name: ^gate-group-based-policy-dsvm-functional$
     voting: false
 
   - name: ^gate-functional-dsvm-akanda.*$
@@ -878,7 +878,7 @@ jobs:
       - 'accessbot/channels.yaml'
       - 'gerritbot/channels.yaml'
 
-  - name: check-infra-docs-index
+  - name: gate-infra-docs-index
     files:
       - 'docs-site/.*'
       - 'tox.ini'
@@ -1311,7 +1311,7 @@ jobs:
   - name: check-swiftclient-dsvm-functional
     branch: ^(?!stable/kilo).*$
 
-  - name: ^(gate|check)-glanceclient-dsvm-functional
+  - name: ^gate-glanceclient-dsvm-functional
     branch: ^(?!stable/kilo).*$
 
   # TODO(kragniz): Enable voting for each driver when the jobs are
@@ -1320,7 +1320,7 @@ jobs:
     branch: ^(?!stable/kilo).*$
     voting: false
 
-  - name: check-kolla-functional-f21
+  - name: gate-kolla-functional-f21
     voting: false
 
   - name: ^(gate-)?devstack-publish-docs
@@ -1509,7 +1509,7 @@ jobs:
           - ^doc/.*
 
   # Keystoneclient added functional testing in Kilo
-  - name: ^(gate|check)-keystoneclient-dsvm-functional$
+  - name: ^gate-keystoneclient-dsvm-functional$
     branch: ^(?!stable/juno).*$
 
   # Ignore requirements on the keystoneclient/keystoneauth integration branch
@@ -1865,12 +1865,12 @@ projects:
       - name: translation-jobs
       - name: experimental-tripleo-jobs
     check:
-      - check-heat-dsvm-functional-orig-mysql
-      - check-tempest-dsvm-heat
+      - gate-heat-dsvm-functional-orig-mysql
+      - gate-tempest-dsvm-heat
       - gate-heat-python34
       - check-grenade-dsvm-heat
     gate:
-      - check-heat-dsvm-functional-orig-mysql
+      - gate-heat-dsvm-functional-orig-mysql
       - gate-tempest-dsvm-heat
     post:
       - heat-coverage
@@ -1878,8 +1878,8 @@ projects:
       - check-tripleo-ironic-overcloud-precise-nonha
     experimental:
       - gate-rally-dsvm-fakevirt-heat
-      - check-heat-dsvm-functional-orig-postgres
-      - check-heat-dsvm-functional-convg-mysql
+      - gate-heat-dsvm-functional-orig-postgres
+      - gate-heat-dsvm-functional-convg-mysql
 
   - name: openstack/heat-specs
     template:
@@ -1971,8 +1971,8 @@ projects:
     experimental:
       - check-grenade-dsvm-ironic
       - check-grenade-dsvm-partial-ironic
-      - check-ironic-dsvm-functional
-      - check-ironic-inspector-dsvm-nv
+      - gate-ironic-dsvm-functional
+      - gate-ironic-inspector-dsvm-nv
 
   - name: openstack/ironic-inspector
     template:
@@ -1985,7 +1985,7 @@ projects:
       - gate-ironic-inspector-pep8
       - gate-ironic-inspector-python27
       - gate-ironic-inspector-tox-func
-      - check-ironic-inspector-dsvm-nv
+      - gate-ironic-inspector-dsvm-nv
     gate:
       - gate-ironic-inspector-pep8
       - gate-ironic-inspector-python27
@@ -2775,7 +2775,7 @@ projects:
       - name: lib-forward-testing
       - name: experimental-tripleo-jobs
     check:
-      - check-glanceclient-dsvm-functional
+      - gate-glanceclient-dsvm-functional
     gate:
       - gate-glanceclient-dsvm-functional
     post:
@@ -2797,7 +2797,7 @@ projects:
     check:
       - gate-python-heatclient-pep8
       - gate-python-heatclient-python27
-      - check-heatclient-dsvm-functional
+      - gate-heatclient-dsvm-functional
     gate:
       - gate-python-heatclient-pep8
       - gate-python-heatclient-python27
@@ -2843,7 +2843,7 @@ projects:
     post:
       - python-ironicclient-coverage
     experimental:
-      - check-ironicclient-dsvm-functional
+      - gate-ironicclient-dsvm-functional
 
   - name: openstack/python-keystoneclient
     template:
@@ -2857,7 +2857,7 @@ projects:
       - name: experimental-tripleo-jobs
       - name: lib-forward-testing
     check:
-      - check-keystoneclient-dsvm-functional
+      - gate-keystoneclient-dsvm-functional
       - gate-python-keystoneclient-tox-bandit
     gate:
       - gate-keystoneclient-dsvm-functional
@@ -4389,7 +4389,7 @@ projects:
       - check-tempest-dsvm-nova-v21-full
       - check-tempest-dsvm-nova-v21-neutron-full
       - gate-tempest-dsvm-trove
-      - check-tempest-dsvm-heat
+      - gate-tempest-dsvm-heat
       - check-tempest-dsvm-sahara
     gate:
       - gate-tempest-pep8
@@ -4713,7 +4713,7 @@ projects:
     post:
       - devstack-publish-docs
     experimental:
-      - check-ironic-dsvm-functional
+      - gate-ironic-dsvm-functional
       - gate-neutron-dsvm-functional
       - check-tempest-dsvm-multinode-full
       - check-tempest-dsvm-neutron-multinode-full
@@ -5200,7 +5200,7 @@ projects:
       - gate-project-config-irc-access
       - gate-project-config-jenkins-project
       - gate-project-config-projects-yaml
-      - check-infra-docs-index
+      - gate-infra-docs-index
       - check-generate-specs-site
     gate:
       - project-config-gerrit
@@ -5209,7 +5209,7 @@ projects:
       - gate-project-config-irc-access
       - gate-project-config-jenkins-project
       - gate-project-config-projects-yaml
-      - check-infra-docs-index
+      - gate-infra-docs-index
       - check-generate-specs-site
     post:
       - publish-infra-docs-index
@@ -6713,7 +6713,7 @@ projects:
       - name: python-jobs
       - name: publish-to-pypi
     check:
-      - check-group-based-policy-dsvm-functional
+      - gate-group-based-policy-dsvm-functional
 
   - name: stackforge/group-based-policy-automation
     template:
@@ -6802,7 +6802,7 @@ projects:
     check:
       - gate-kolla-bashate
       - gate-kolla-pep8
-      - check-kolla-functional-f21
+      - gate-kolla-functional-f21
     gate:
       - gate-kolla-bashate
       - gate-kolla-pep8
