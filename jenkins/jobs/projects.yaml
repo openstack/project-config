@@ -658,17 +658,7 @@
       - python-jobs
       - pypi-jobs
       - '{pipeline}-tempest-dsvm-networking-midonet{branch-designator}':
-          pipeline: check
-          node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
-          branch-override: default
-      - '{pipeline}-tempest-dsvm-networking-midonet{branch-designator}':
           pipeline: gate
-          node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
-          branch-override: default
-      - '{pipeline}-tempest-dsvm-networking-midonet-v2{branch-designator}':
-          pipeline: check
           node: 'devstack-precise || devstack-trusty'
           branch-designator: ''
           branch-override: default
@@ -686,11 +676,6 @@
     jobs:
       - python-jobs
       - pypi-jobs
-      - '{pipeline}-tempest-dsvm-networking-odl{branch-designator}':
-          pipeline: check
-          node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
-          branch-override: default
       - '{pipeline}-tempest-dsvm-networking-odl{branch-designator}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
@@ -717,12 +702,7 @@
       - pypi-jobs
       - openstack-publish-jobs
       - '{pipeline}-tempest-dsvm-networking-ovn{branch-designator}':
-          pipeline: check
-          node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
-          branch-override: default
-      - '{pipeline}-install-dsvm-networking-ovn{branch-designator}':
-          pipeline: check
+          pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           branch-designator: ''
           branch-override: default
@@ -775,17 +755,12 @@
           branch-designator: ''
           branch-override: default
       - '{pipeline}-neutron-dsvm-functional{branch-designator}':
-          pipeline: check
-          node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
-          branch-override: default
-      - '{pipeline}-neutron-dsvm-functional{branch-designator}':
-          pipeline: check
+          pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           branch-designator: '-nv'
           branch-override: default
       - '{pipeline}-neutron-dsvm-fullstack{branch-designator}':
-          pipeline: check
+          pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           branch-designator: ''
           branch-override: default
@@ -794,23 +769,18 @@
           node: 'devstack-precise || devstack-trusty'
           branch-designator: ''
           branch-override: default
-      - '{pipeline}-neutron-dsvm-api{branch-designator}':
-          pipeline: check
-          node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
-          branch-override: default
       - '{pipeline}-tempest-dsvm-neutron-linuxbridge{branch-designator}':
-          pipeline: check
+          pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           branch-designator: ''
           branch-override: default
       - '{pipeline}-tempest-dsvm-neutron-unstable{branch-designator}':
-          pipeline: check
+          pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           branch-designator: ''
           branch-override: default
       - '{pipeline}-tempest-dsvm-neutron{branch-designator}':
-          pipeline: check
+          pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           branch-designator: '-nv'
           branch-override: default
@@ -830,11 +800,6 @@
           node: 'devstack-precise || devstack-trusty'
           branch-designator: ''
           branch-override: default
-      - '{pipeline}-neutron-fwaas-dsvm-functional{branch-designator}':
-          pipeline: check
-          node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
-          branch-override: default
 
 - project:
     name: neutron-lbaas
@@ -846,18 +811,6 @@
       - python-jobs
       - python-kilo-bitrot-jobs
       - openstack-publish-jobs
-      - '{pipeline}-neutron-{lbaasversion}-dsvm-api{branch-designator}':
-          pipeline: check
-          node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
-          branch-override: default
-          lbaasversion: lbaasv2
-      - '{pipeline}-neutron-{lbaasversion}-dsvm-api{branch-designator}':
-          pipeline: check
-          node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
-          branch-override: default
-          lbaasversion: lbaasv1
       - '{pipeline}-neutron-{lbaasversion}-dsvm-api{branch-designator}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
@@ -893,18 +846,8 @@
           node: 'devstack-precise || devstack-trusty'
           branch-designator: ''
           branch-override: default
-      - '{pipeline}-neutron-vpnaas-dsvm-functional{branch-designator}':
-          pipeline: check
-          node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
-          branch-override: default
       - '{pipeline}-neutron-vpnaas-dsvm-functional-sswan{branch-designator}':
           pipeline: gate
-          node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
-          branch-override: default
-      - '{pipeline}-neutron-vpnaas-dsvm-functional-sswan{branch-designator}':
-          pipeline: check
           node: 'devstack-precise || devstack-trusty'
           branch-designator: ''
           branch-override: default
@@ -1405,11 +1348,6 @@
       - pypi-jobs
       - 'lib-forward-testing-{name}'
       - '{pipeline}-neutronclient-dsvm-functional{branch-designator}':
-          pipeline: check
-          node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
-          branch-override: default
-      - '{pipeline}-neutronclient-dsvm-functional{branch-designator}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           branch-designator: ''
@@ -1427,11 +1365,6 @@
       - openstack-publish-jobs
       - pypi-jobs
       - 'lib-forward-testing-{name}'
-      - '{pipeline}-novaclient-dsvm-functional{branch-designator}':
-          pipeline: check
-          node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
-          branch-override: default
       - '{pipeline}-novaclient-dsvm-functional{branch-designator}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
@@ -4893,7 +4826,7 @@
       - openstack-publish-jobs
       - translation-jobs
       - '{pipeline}-functional-dsvm-magnum{branch-designator}':
-          pipeline: check
+          pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           branch-designator: ''
           branch-override: default
@@ -5569,7 +5502,7 @@
       - python-jobs
       - pypi-jobs
       - '{pipeline}-muranoclient-dsvm-functional{branch-designator}':
-          pipeline: check
+          pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           branch-designator: ''
           branch-override: default

@@ -701,7 +701,7 @@ jobs:
   - name: ^(gate|check)-zaqarclient-dsvm-functional
     voting: false
 
-  - name: check-tempest-dsvm-neutron-nv
+  - name: gate-tempest-dsvm-neutron-nv
     branch: ^feature/pecan
 
   - name: check-heat-dsvm-functional-orig-mysql
@@ -778,7 +778,7 @@ jobs:
   - name: gate-rally-dsvm-ec2-api-fakevirt
     voting: false
 
-  - name: check-functional-dsvm-magnum
+  - name: gate-functional-dsvm-magnum
     branch: ^(?!stable)
 
   - name: check-tempest-dsvm-centos7
@@ -807,18 +807,18 @@ jobs:
   - name: gate-designate-dsvm-bind9
     branch: ^(?!stable/juno).*$
 
-  - name: ^(gate|check)-tempest-dsvm-networking-midonet
+  - name: ^gate-tempest-dsvm-networking-midonet
     branch: ^(?!stable/(icehouse|juno)).*$
 
-  - name: ^(gate|check)-tempest-dsvm-networking-midonet-v2
+  - name: ^gate-tempest-dsvm-networking-midonet-v2
     branch: ^(?!stable/(icehouse|juno)).*$
     voting: false
 
-  - name: ^(gate|check)-tempest-dsvm-networking-odl
+  - name: ^gate-tempest-dsvm-networking-odl
     branch: ^(?!stable)
     voting: false
 
-  - name: ^(check)-tempest-dsvm-networking-ovn
+  - name: ^gate-tempest-dsvm-networking-ovn
     branch: ^(?!stable)
     voting: false
 
@@ -826,13 +826,13 @@ jobs:
     branch: ^(?!stable/kilo).*$
     voting: false
 
-  - name: ^check-neutron-fwaas-dsvm-functional$
+  - name: ^gate-neutron-fwaas-dsvm-functional$
     voting: false
 
-  - name: ^(check|gate)-neutron-lbaasv1-dsvm-api$
+  - name: ^gate-neutron-lbaasv1-dsvm-api$
     branch: ^(?!stable/(?:juno|kilo)).*$
 
-  - name: ^(check|gate)-neutron-lbaasv2-dsvm-api$
+  - name: ^gate-neutron-lbaasv2-dsvm-api$
     branch: ^(?!stable/(?:juno|kilo)).*$
 
   - name: ^(gate|check)-group-based-policy-dsvm-functional$
@@ -1089,7 +1089,7 @@ jobs:
   - name: gate-python-muranoclient-requirements
     voting: false
 
-  - name: ^(gate|check)-muranoclient-dsvm-functional$
+  - name: ^gate-muranoclient-dsvm-functional$
     voting: false
 
   - name: gate-murano-dashboard-requirements
@@ -1174,26 +1174,26 @@ jobs:
   - name: check-storyboard-js-integration
     voting: false
 
-  - name: check-tempest-dsvm-docker
+  - name: gate-tempest-dsvm-docker
     voting: false
 
-  - name: check-tempest-dsvm-docker-centos7
+  - name: gate-tempest-dsvm-docker-centos7
     voting: false
 
-  - name: ^(gate|check)-neutron-dsvm-api$
+  - name: ^gate-neutron-dsvm-api$
     branch: ^(?!stable/juno).*$
 
   - name: check-tempest-dsvm-neutron-dvr
     voting: false
 
-  - name: check-neutron-dsvm-fullstack
+  - name: gate-neutron-dsvm-fullstack
     branch: ^(?!stable/(juno|kilo)).*$
     voting: false
 
-  - name: check-tempest-dsvm-neutron-linuxbridge
+  - name: gate-tempest-dsvm-neutron-linuxbridge
     voting: false
 
-  - name: check-tempest-dsvm-neutron-unstable
+  - name: gate-tempest-dsvm-neutron-unstable
     branch: ^(?!stable/(juno|kilo)).*$
     voting: false
 
@@ -2110,7 +2110,7 @@ projects:
       - name: openstack-server-release-jobs
       - name: translation-jobs
     check:
-      - check-functional-dsvm-magnum
+      - gate-functional-dsvm-magnum
       - gate-magnum-tox-bandit
     post:
       - magnum-coverage
@@ -2264,11 +2264,11 @@ projects:
       - name: python3-jobs
       - name: publish-to-pypi
     check:
-      - check-tempest-dsvm-networking-midonet
+      - gate-tempest-dsvm-networking-midonet
     gate:
       - gate-tempest-dsvm-networking-midonet
     experimental:
-      - check-tempest-dsvm-networking-midonet-v2
+      - gate-tempest-dsvm-networking-midonet-v2
 
   - name: openstack/networking-odl
     template:
@@ -2276,7 +2276,7 @@ projects:
       - name: python-jobs
       - name: publish-to-pypi
     check:
-      - check-tempest-dsvm-networking-odl
+      - gate-tempest-dsvm-networking-odl
     gate:
       - gate-tempest-dsvm-networking-odl
 
@@ -2295,8 +2295,8 @@ projects:
       - name: publish-to-pypi
       - name: openstack-server-publish-jobs
     check:
-      - check-install-dsvm-networking-ovn
-      - check-tempest-dsvm-networking-ovn
+      - gate-install-dsvm-networking-ovn
+      - gate-tempest-dsvm-networking-ovn
     gate:
       - gate-install-dsvm-networking-ovn
 
@@ -2330,17 +2330,17 @@ projects:
       - name: translation-jobs
       - name: experimental-tripleo-jobs
     check:
-      - check-neutron-dsvm-api
-      - check-neutron-dsvm-functional
-      - check-neutron-dsvm-fullstack
+      - gate-neutron-dsvm-api
+      - gate-neutron-dsvm-functional
+      - gate-neutron-dsvm-fullstack
       - gate-rally-dsvm-neutron-neutron
       - check-tempest-dsvm-neutron-dvr
-      - check-tempest-dsvm-neutron-linuxbridge
-      - check-tempest-dsvm-neutron-nv
-      - check-neutron-lbaasv1-dsvm-api
-      - check-neutron-lbaasv2-dsvm-api
+      - gate-tempest-dsvm-neutron-linuxbridge
+      - gate-tempest-dsvm-neutron-nv
+      - gate-neutron-lbaasv1-dsvm-api
+      - gate-neutron-lbaasv2-dsvm-api
       - check-tempest-dsvm-neutron-large-ops
-      - check-tempest-dsvm-neutron-unstable
+      - gate-tempest-dsvm-neutron-unstable
       - check-tempest-dsvm-neutron-multinode-smoke
     gate:
       - gate-neutron-dsvm-api
@@ -2367,7 +2367,7 @@ projects:
     post:
       - neutron-fwaas-coverage
     experimental:
-      - check-neutron-fwaas-dsvm-functional
+      - gate-neutron-fwaas-dsvm-functional
 
   - name: openstack/neutron-lbaas
     template:
@@ -2379,8 +2379,8 @@ projects:
       - name: openstack-server-release-jobs
     check:
       - check-grenade-dsvm-neutron
-      - check-neutron-lbaasv1-dsvm-api
-      - check-neutron-lbaasv2-dsvm-api
+      - gate-neutron-lbaasv1-dsvm-api
+      - gate-neutron-lbaasv2-dsvm-api
     gate:
       - gate-neutron-lbaasv1-dsvm-api
       - gate-neutron-lbaasv2-dsvm-api
@@ -2403,8 +2403,8 @@ projects:
       - name: python-jobs
       - name: openstack-server-release-jobs
     check:
-      - check-neutron-vpnaas-dsvm-functional
-      - check-neutron-vpnaas-dsvm-functional-sswan
+      - gate-neutron-vpnaas-dsvm-functional
+      - gate-neutron-vpnaas-dsvm-functional-sswan
     gate:
       - gate-neutron-vpnaas-dsvm-functional
       - gate-neutron-vpnaas-dsvm-functional-sswan
@@ -2433,7 +2433,7 @@ projects:
       - check-grenade-dsvm-partial-ncpu
       - check-grenade-dsvm-ironic-sideways
       - check-tempest-dsvm-ironic-pxe_ssh
-      - check-tempest-dsvm-docker
+      - gate-tempest-dsvm-docker
       - check-tempest-dsvm-nova-v21-full
       - check-tempest-dsvm-nova-v21-neutron-full
       - check-tempest-dsvm-cells
@@ -2910,9 +2910,9 @@ projects:
       - name: python3-jobs
       - name: check-requirements
     check:
-      - check-manilaclient-dsvm-neutron-functional
+      - gate-manilaclient-dsvm-neutron-functional
     gate:
-      - check-manilaclient-dsvm-neutron-functional
+      - gate-manilaclient-dsvm-neutron-functional
     post:
       - python-manilaclient-coverage
 
@@ -2934,7 +2934,7 @@ projects:
     check:
       - gate-python-muranoclient-requirements
       - gate-murano-devstack-dsvm
-      - check-muranoclient-dsvm-functional
+      - gate-muranoclient-dsvm-functional
     gate:
       - gate-murano-devstack-dsvm
 
@@ -2951,7 +2951,7 @@ projects:
       - name: experimental-tripleo-jobs
       - name: lib-forward-testing
     check:
-      - check-neutronclient-dsvm-functional
+      - gate-neutronclient-dsvm-functional
     gate:
       - gate-neutronclient-dsvm-functional
     post:
@@ -2972,7 +2972,7 @@ projects:
       - name: experimental-tripleo-jobs
       - name: lib-forward-testing
     check:
-      - check-novaclient-dsvm-functional
+      - gate-novaclient-dsvm-functional
     gate:
       - gate-novaclient-dsvm-functional
     post:
@@ -4714,7 +4714,7 @@ projects:
       - devstack-publish-docs
     experimental:
       - check-ironic-dsvm-functional
-      - check-neutron-dsvm-functional
+      - gate-neutron-dsvm-functional
       - check-tempest-dsvm-multinode-full
       - check-tempest-dsvm-neutron-multinode-full
       - check-tempest-dsvm-neutron-dvr-multinode-full
@@ -4917,7 +4917,7 @@ projects:
       - check-dg-tempest-dsvm-full-reexec
       - check-dg-hooks-dsvm
       - check-grenade-dsvm-partial-ncpu
-      - check-neutron-dsvm-functional-nv
+      - gate-neutron-dsvm-functional-nv
       - check-swift-dsvm-functional-nv
       - check-tempest-dsvm-full-juno-nv
       - check-tempest-dsvm-neutron-full-juno-nv
@@ -7111,8 +7111,8 @@ projects:
       - name: python-jobs
       - name: check-requirements
     check:
-      - check-tempest-dsvm-docker
-      - check-tempest-dsvm-docker-centos7
+      - gate-tempest-dsvm-docker
+      - gate-tempest-dsvm-docker-centos7
     post:
       - nova-docker-coverage
 
