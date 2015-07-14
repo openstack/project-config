@@ -400,65 +400,65 @@
           branch-designator: ''
           branch-override: default
       - '{pipeline}-grenade-dsvm-ironic-sideways{branch-designator}':
-          pipeline: check
+          pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           branch-designator: '-nv'
           branch-override: default
       - '{pipeline}-tempest-dsvm-ironic-pxe_ssh{branch-designator}':
-          pipeline: check
+          pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           branch-designator: '-nv'
           branch-override: default
       - '{pipeline}-tempest-dsvm-ironic-pxe_ssh-postgres{branch-designator}':
-          pipeline: check
+          pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           branch-designator: '-nv'
           branch-override: default
       - '{pipeline}-tempest-dsvm-ironic-agent_ssh{branch-designator}':
-          pipeline: check
+          pipeline: gate
           node: 'devstack-trusty'
           branch-designator: '-nv'
           branch-override: default
       - '{pipeline}-tempest-dsvm-ironic-pxe_ipa{branch-designator}':
-          pipeline: check
+          pipeline: gate
           node: 'devstack-trusty'
           branch-designator: '-nv'
           branch-override: default
       - '{pipeline}-tempest-dsvm-ironic-pxe_ipa-src{branch-designator}':
-          pipeline: check
+          pipeline: gate
           node: 'devstack-trusty'
           branch-designator: '-nv'
           branch-override: default
       - '{pipeline}-tempest-dsvm-ironic-parallel{branch-designator}':
-          pipeline: check
+          pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           branch-designator: '-nv'
           branch-override: default
-      - 'check-tripleo-{jobname}':
+      - 'gate-tripleo-{jobname}':
           jobname: 'ironic-overcloud-f21-nonha'
           type: 'overcloud-f21-nonha'
           node: 'tripleo-f21'
-      - 'check-tripleo-{jobname}':
+      - 'gate-tripleo-{jobname}':
           jobname: 'ironic-overcloud-f21puppet-nonha'
           type: 'overcloud-f21puppet-nonha'
           node: 'tripleo-f21'
-      - 'check-tripleo-{jobname}':
+      - 'gate-tripleo-{jobname}':
           jobname: 'ironic-overcloud-f21puppet-ha'
           type: 'overcloud-f21puppet-ha'
           node: 'tripleo-f21'
-      - 'check-tripleo-{jobname}':
+      - 'gate-tripleo-{jobname}':
           jobname: 'ironic-overcloud-f21puppet-ceph'
           type: 'overcloud-f21puppet-ceph'
           node: 'tripleo-f21'
-      - 'check-tripleo-{jobname}':
+      - 'gate-tripleo-{jobname}':
           jobname: 'ironic-overcloud-precise-nonha'
           type: 'overcloud-precise-nonha'
           node: 'tripleo-precise'
-      - 'check-tripleo-{jobname}':
+      - 'gate-tripleo-{jobname}':
           jobname: 'ironic-undercloud-precise-nonha'
           type: 'undercloud-precise-nonha'
           node: 'tripleo-precise'
-      - 'check-tripleo-{jobname}':
+      - 'gate-tripleo-{jobname}':
           jobname: 'ironic-vlan-precise-nonha'
           type: 'vlan-precise-nonha'
           node: 'tripleo-precise'
@@ -948,11 +948,6 @@
       - gate-{name}-tox-{envlist}:
           envlist: bandit
       - '{pipeline}-tempest-dsvm-sahara{branch-designator}':
-          pipeline: check
-          node: 'devstack-trusty'
-          branch-designator: ''
-          branch-override: default
-      - '{pipeline}-tempest-dsvm-sahara{branch-designator}':
           pipeline: gate
           node: 'devstack-trusty'
           branch-designator: ''
@@ -1247,11 +1242,6 @@
           branch-designator: ''
           branch-override: default
       - '{pipeline}-tempest-dsvm-python-ironicclient-src{branch-designator}':
-          pipeline: check
-          node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
-          branch-override: default
-      - '{pipeline}-tempest-dsvm-python-ironicclient-src{branch-designator}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           branch-designator: ''
@@ -1386,11 +1376,6 @@
       - pypi-jobs
       - openstack-publish-jobs
       - 'lib-forward-testing-{name}'
-      - '{pipeline}-saharaclient-dsvm-functional{branch-designator}':
-          pipeline: check
-          node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
-          branch-override: default
       - '{pipeline}-saharaclient-dsvm-functional{branch-designator}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
@@ -2897,11 +2882,6 @@
           node: 'devstack-precise || devstack-trusty'
           branch-designator: ''
           branch-override: default
-      - devstack-jobs:
-          pipeline: check
-          node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
-          branch-override: default
       # Stable gate jobs for branchless tempest
       - devstack-jobs:
           pipeline: gate
@@ -2916,22 +2896,12 @@
       # Stable check jobs for testing devstack gate
       # tempest also uses these job definitions
       - devstack-jobs:
-          pipeline: check
-          node: 'devstack-precise || devstack-trusty'
-          branch-designator: '-juno'
-          branch-override: stable/juno
-      - devstack-jobs:
-          pipeline: check
+          pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           branch-designator: '-juno-nv'
           branch-override: stable/juno
       - devstack-jobs:
-          pipeline: check
-          node: 'devstack-precise || devstack-trusty'
-          branch-designator: '-kilo'
-          branch-override: stable/kilo
-      - devstack-jobs:
-          pipeline: check
+          pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           branch-designator: '-kilo-nv'
           branch-override: stable/kilo
@@ -2955,32 +2925,32 @@
       - devstack-gate-jobs:
           node: 'devstack-precise || devstack-trusty'
       - '{pipeline}-grenade-dsvm-multinode{branch-designator}':
-          pipeline: check
+          pipeline: gate
           node: devstack-trusty-2-node
           branch-designator: ''
           branch-override: default
       - '{pipeline}-tempest-dsvm-multinode-full{branch-designator}':
-          pipeline: check
+          pipeline: gate
           node: devstack-trusty-2-node
           branch-designator: ''
           branch-override: default
       - '{pipeline}-tempest-dsvm-neutron-multinode-full{branch-designator}':
-          pipeline: check
+          pipeline: gate
           node: devstack-trusty-2-node
           branch-designator: ''
           branch-override: default
       - '{pipeline}-tempest-dsvm-neutron-dvr-multinode-full{branch-designator}':
-          pipeline: check
+          pipeline: gate
           node: devstack-trusty-2-node
           branch-designator: ''
           branch-override: default
       - '{pipeline}-tempest-dsvm-multinode-smoke{branch-designator}':
-          pipeline: check
+          pipeline: gate
           node: devstack-trusty-2-node
           branch-designator: ''
           branch-override: default
       - '{pipeline}-tempest-dsvm-neutron-multinode-smoke{branch-designator}':
-          pipeline: check
+          pipeline: gate
           node: devstack-trusty-2-node
           branch-designator: ''
           branch-override: default
@@ -2998,7 +2968,7 @@
       # fedora jobs
       - '{pipeline}-tempest-dsvm-f{fedora-release}':
           fedora-release: 21
-          pipeline: check
+          pipeline: gate
           node: devstack-f21
 
 - project:
@@ -4421,11 +4391,11 @@
       - gate-{name}-bashate
       - '{pipeline}-tempest-dsvm-full-glusterfs{branch-designator}':
           node: devstack-precise || devstack-trusty
-          pipeline: check
+          pipeline: gate
           branch-designator: '-nv'
       - '{pipeline}-tempest-dsvm-full-glusterfs{branch-designator}':
           node: devstack-precise || devstack-trusty
-          pipeline: check
+          pipeline: gate
           branch-designator: ''
 
 - project:
@@ -4435,12 +4405,12 @@
     jobs:
       - gate-{name}-bashate
       - '{pipeline}-tempest-dsvm-full-{plugin}{branch-designator}':
-          pipeline: check
+          pipeline: gate
           plugin: sheepdog
           plugin-repo: stackforge/devstack-plugin-sheepdog
           branch-designator: ''
       - '{pipeline}-tempest-dsvm-full-{plugin}{branch-designator}':
-          pipeline: check
+          pipeline: gate
           plugin: sheepdog
           plugin-repo: stackforge/devstack-plugin-sheepdog
           branch-designator: '-nv'
@@ -4479,10 +4449,10 @@
     jobs:
       - gate-{name}-bashate
       - '{pipeline}-tempest-dsvm-full-drbd-devstack{branch-designator}':
-          pipeline: check
+          pipeline: gate
           branch-designator: '-nv'
       - '{pipeline}-tempest-dsvm-full-drbd-devstack{branch-designator}':
-          pipeline: check
+          pipeline: gate
           branch-designator: ''
 
 - project:
