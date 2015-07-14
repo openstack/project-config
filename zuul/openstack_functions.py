@@ -55,7 +55,7 @@ def devstack_params(item, job, params):
     elif 'centos7' in job.name:
         params['ZUUL_NODE'] = 'devstack-centos7'
     elif 'multinode' in job.name:
-        params['ZUUL_NODE'] = 'ubuntu-trusty-2-node'
+        params['ZUUL_NODE'] = 'devstack-trusty-2-node'
     else:
         params['ZUUL_NODE'] = 'devstack-trusty'
 
