@@ -1535,6 +1535,10 @@ jobs:
   - name: ^gate-cliff-tox-(openstackclient|neutronclient)-tip$
     branch: ^master$
 
+  # Set linting jobs as non-voting for merlin.
+  - name: ^gate-merlin-npm-run-lint$
+    voting: false
+
 # The project list is grouped by type of project, and within each
 # group, projects are sorted (mostly) alphabetically.
 projects:
@@ -6901,6 +6905,7 @@ projects:
       - name: merge-check
     check:
       - gate-merlin-npm-run-test-unit
+      - gate-merlin-npm-run-lint
     gate:
       - gate-merlin-npm-run-test-unit
     post:
