@@ -26,12 +26,17 @@
     builders:
       - shell: |
           #!/bin/bash -xe
-          cat > clonemap.yaml << EOF
+          CLONEMAP=`mktemp`
+          function cleanup {
+              rm -f $CLONEMAP
+          }
+          trap cleanup EXIT
+          cat > $CLONEMAP << EOF
           clonemap:
             - name: $ZUUL_PROJECT
               dest: .
           EOF
-          /usr/zuul-env/bin/zuul-cloner -m clonemap.yaml --cache-dir /opt/git \
+          /usr/zuul-env/bin/zuul-cloner -m $CLONEMAP --cache-dir /opt/git \
               git://git.openstack.org $ZUUL_PROJECT
 
 - builder:
@@ -39,7 +44,12 @@
     builders:
       - shell: |
           #!/bin/bash -xe
-          cat > clonemap.yaml << EOF
+          CLONEMAP=`mktemp`
+          function cleanup {
+              rm -f $CLONEMAP
+          }
+          trap cleanup EXIT
+          cat > $CLONEMAP << EOF
           clonemap:
             - name: $ZUUL_PROJECT
               dest: .
@@ -51,7 +61,7 @@
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
-          /usr/zuul-env/bin/zuul-cloner -m clonemap.yaml --cache-dir /opt/git \
+          /usr/zuul-env/bin/zuul-cloner -m $CLONEMAP --cache-dir /opt/git \
               git://git.openstack.org $ZUUL_PROJECT
 
 - builder:
