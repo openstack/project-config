@@ -996,12 +996,7 @@
           branch-designator: ''
           branch-override: default
       - '{pipeline}-swift-dsvm-functional{branch-designator}':
-          pipeline: check
-          node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
-          branch-override: default
-      - '{pipeline}-swift-dsvm-functional{branch-designator}':
-          pipeline: check
+          pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           branch-designator: '-nv'
           branch-override: default
@@ -1383,11 +1378,6 @@
       - python-jobs
       - translation-jobs
       - '{pipeline}-osc-dsvm-functional{branch-designator}':
-          pipeline: check
-          node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
-          branch-override: default
-      - '{pipeline}-osc-dsvm-functional{branch-designator}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           branch-designator: ''
@@ -1430,11 +1420,6 @@
       - python-jobs
       - openstack-publish-jobs
       - pypi-jobs
-      - '{pipeline}-swiftclient-dsvm-functional{branch-designator}':
-          pipeline: check
-          node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
-          branch-override: default
       - '{pipeline}-swiftclient-dsvm-functional{branch-designator}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
@@ -2646,11 +2631,7 @@
           node: 'devstack-precise || devstack-trusty'
           variant: ''
       - '{pipeline}-requirements-integration-dsvm{variant}':
-          pipeline: check
-          node: 'devstack-precise || devstack-trusty'
-          variant: ''
-      - '{pipeline}-requirements-integration-dsvm{variant}':
-          pipeline: check
+          pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           variant: '-resolver'
       - '{pipeline}-pbr-installation-dsvm{variant}':
@@ -2658,11 +2639,7 @@
           node: 'devstack-precise || devstack-trusty'
           variant: ''
       - '{pipeline}-pbr-installation-dsvm{variant}':
-          pipeline: check
-          node: 'devstack-precise || devstack-trusty'
-          variant: ''
-      - '{pipeline}-pbr-installation-dsvm{variant}':
-          pipeline: check
+          pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           variant: '-upstream'
       - '{pipeline}-pbr-installation-dsvm{variant}':
@@ -3995,16 +3972,6 @@
       - pypi-jobs
       - infra-publish-jobs
       - '{pipeline}-shade-dsvm-functional-neutron{branch-designator}':
-          pipeline: check
-          node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
-          branch-override: default
-      - '{pipeline}-shade-dsvm-functional-nova{branch-designator}':
-          pipeline: check
-          node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
-          branch-override: default
-      - '{pipeline}-shade-dsvm-functional-neutron{branch-designator}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           branch-designator: ''
@@ -4036,7 +4003,7 @@
     jobs:
       - python-jobs
       - pypi-jobs
-      - check-storyboard-js-integration
+      - gate-storyboard-js-integration
       - infra-publish-jobs
 
 - project:
@@ -4058,7 +4025,7 @@
           branch-designator: 'master'
       - '{name}-js-release-{branch-designator}':
           branch-designator: 'branch'
-      - check-storyboard-js-integration
+      - gate-storyboard-js-integration
 
 - project:
     name: subunit2sql
@@ -5507,17 +5474,11 @@
     jobs:
       - python-jobs
       - '{pipeline}-sdk-dsvm-functional{branch-designator}':
-          pipeline: check
-          node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
-          branch-override: default
-      - '{pipeline}-sdk-dsvm-functional{branch-designator}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           branch-designator: ''
           branch-override: default
       - pypi-jobs
-
 
 - project:
     name: python-opentsdbclient
@@ -5739,11 +5700,6 @@
           node: bare-centos6
       - gate-{name}-tox-{envlist}:
           envlist: py27sa07
-      - '{pipeline}-sqlalchemy-migrate-devstack-dsvm{branch-designator}':
-          pipeline: check
-          node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
-          branch-override: default
       - '{pipeline}-sqlalchemy-migrate-devstack-dsvm{branch-designator}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'

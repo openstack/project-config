@@ -671,7 +671,7 @@ jobs:
   - name: ^gate-puppet-zuul-puppet-beaker-rspec-dsvm-.*$
     voting: false
 
-  - name: check-requirements-integration-dsvm-resolver
+  - name: gate-requirements-integration-dsvm-resolver
     voting: false
 
   - name: gate-tempest-dsvm-full
@@ -886,7 +886,7 @@ jobs:
       - 'docs-site/.*'
       - 'tox.ini'
 
-  - name: check-generate-specs-site
+  - name: gate-generate-specs-site
     files:
       - 'specs/.*'
       - 'tox.ini'
@@ -1152,7 +1152,7 @@ jobs:
   - name: gate-dox-python34
     voting: false
 
-  - name: ^(gate|check)-sqlalchemy-migrate-devstack-dsvm$
+  - name: ^gate-sqlalchemy-migrate-devstack-dsvm$
     voting: false
 
   - name: gate-sqlalchemy-migrate-pep8
@@ -1178,7 +1178,7 @@ jobs:
   - name: gate-blazar-pylint
     voting: false
 
-  - name: check-storyboard-js-integration
+  - name: gate-storyboard-js-integration
     voting: false
 
   - name: gate-tempest-dsvm-docker
@@ -1311,7 +1311,7 @@ jobs:
     branch: ^(?!stable/juno).*$
     voting: false
 
-  - name: check-swiftclient-dsvm-functional
+  - name: gate-swiftclient-dsvm-functional
     branch: ^(?!stable/kilo).*$
 
   - name: ^gate-glanceclient-dsvm-functional
@@ -1381,7 +1381,7 @@ jobs:
     branch: ^(?!stable/kilo).*$
     voting: false
 
-  - name: check-sdk-dsvm-functional
+  - name: gate-sdk-dsvm-functional
     voting: false
 
   # NOTE(jroll): This job was not working at Juno release.
@@ -2569,7 +2569,7 @@ projects:
       - gate-swift-python34
       - check-tempest-dsvm-full
       - check-grenade-dsvm
-      - check-swift-dsvm-functional
+      - gate-swift-dsvm-functional
     gate:
       - gate-tempest-dsvm-full
       - gate-grenade-dsvm
@@ -3007,7 +3007,7 @@ projects:
       - name: translation-jobs
       - name: lib-forward-testing
     check:
-      - check-osc-dsvm-functional
+      - gate-osc-dsvm-functional
     gate:
       - gate-osc-dsvm-functional
     post:
@@ -3046,8 +3046,8 @@ projects:
       - name: experimental-tripleo-jobs
       - name: lib-forward-testing
     check:
-      - check-swift-dsvm-functional
-      - check-swiftclient-dsvm-functional
+      - gate-swift-dsvm-functional
+      - gate-swiftclient-dsvm-functional
     gate:
       - gate-swift-dsvm-functional
       - gate-swiftclient-dsvm-functional
@@ -4272,8 +4272,8 @@ projects:
     check:
       - gate-requirements-pep8
       - gate-requirements-python27
-      - check-requirements-integration-dsvm
-      - check-requirements-integration-dsvm-resolver
+      - gate-requirements-integration-dsvm
+      - gate-requirements-integration-dsvm-resolver
       - check-devstack-dsvm-cells
     gate:
       - gate-requirements-pep8
@@ -4310,7 +4310,7 @@ projects:
       - name: check-requirements
     check:
       - gate-sahara-extra-pep8
-      - check-sahara-extra-artifacts
+      - gate-sahara-extra-artifacts
     gate:
       - gate-sahara-extra-pep8
     post:
@@ -4724,7 +4724,7 @@ projects:
       - check-tempest-dsvm-f21
       - check-tempest-dsvm-centos7
       - gate-devstack-publish-docs
-      - check-swift-dsvm-functional-nv
+      - gate-swift-dsvm-functional-nv
       - check-grenade-dsvm-neutron
       - check-tempest-dsvm-multinode-smoke
       - check-tempest-dsvm-neutron-multinode-smoke
@@ -4835,13 +4835,13 @@ projects:
       - name: pypy-jobs
       - name: experimental-tripleo-jobs
     check:
-      - check-pbr-installation-dsvm
-      - check-pbr-installation-dsvm-upstream
+      - gate-pbr-installation-dsvm
+      - gate-pbr-installation-dsvm-upstream
     gate:
       - gate-pbr-installation-dsvm
     periodic:
-      - check-pbr-installation-dsvm
-      - check-pbr-installation-dsvm-upstream
+      - gate-pbr-installation-dsvm
+      - gate-pbr-installation-dsvm-upstream
     post:
       - pbr-coverage
     post:
@@ -4942,7 +4942,7 @@ projects:
       - check-dg-hooks-dsvm
       - check-grenade-dsvm-partial-ncpu
       - gate-neutron-dsvm-functional-nv
-      - check-swift-dsvm-functional-nv
+      - gate-swift-dsvm-functional-nv
       - check-tempest-dsvm-full-juno-nv
       - check-tempest-dsvm-neutron-full-juno-nv
       - check-tempest-dsvm-postgres-full-juno-nv
@@ -5225,7 +5225,7 @@ projects:
       - gate-project-config-jenkins-project
       - gate-project-config-projects-yaml
       - gate-infra-docs-index
-      - check-generate-specs-site
+      - gate-generate-specs-site
     gate:
       - project-config-gerrit
       - gate-project-config-layout
@@ -5234,7 +5234,7 @@ projects:
       - gate-project-config-jenkins-project
       - gate-project-config-projects-yaml
       - gate-infra-docs-index
-      - check-generate-specs-site
+      - gate-generate-specs-site
     post:
       - publish-infra-docs-index
       - publish-specs-site
@@ -5692,7 +5692,7 @@ projects:
       - name: publish-to-pypi
     check:
       - gate-pypi-mirror-pep8
-      - check-requirements-integration-dsvm
+      - gate-requirements-integration-dsvm
     gate:
       - gate-pypi-mirror-pep8
       - gate-requirements-integration-dsvm
@@ -5753,8 +5753,8 @@ projects:
       - name: infra-publish-jobs
     check:
       - shade-coverage
-      - check-shade-dsvm-functional-neutron
-      - check-shade-dsvm-functional-nova
+      - gate-shade-dsvm-functional-neutron
+      - gate-shade-dsvm-functional-nova
     gate:
       - gate-shade-dsvm-functional-neutron
       - gate-shade-dsvm-functional-nova
@@ -5781,7 +5781,7 @@ projects:
     check:
       - gate-storyboard-pep8
       - gate-storyboard-python27
-      - check-storyboard-js-integration
+      - gate-storyboard-js-integration
     gate:
       - gate-storyboard-pep8
       - gate-storyboard-python27
@@ -5802,7 +5802,7 @@ projects:
       - gate-storyboard-webclient-npm-run-test-functional
       - gate-storyboard-webclient-npm-run-test-integration
       - gate-storyboard-webclient-js-draft
-      - check-storyboard-js-integration
+      - gate-storyboard-js-integration
     gate:
       - gate-storyboard-webclient-npm-run-lint
       - gate-storyboard-webclient-npm-run-test-unit
@@ -7565,7 +7565,7 @@ projects:
       - name: pypy-jobs
       - name: publish-to-pypi
     check:
-      - check-sdk-dsvm-functional
+      - gate-sdk-dsvm-functional
     post:
       - python-openstacksdk-coverage
 
@@ -7839,7 +7839,7 @@ projects:
       - gate-sqlalchemy-migrate-python27
       - gate-sqlalchemy-migrate-tox-py26sa07
       - gate-sqlalchemy-migrate-tox-py27sa07
-      - check-sqlalchemy-migrate-devstack-dsvm
+      - gate-sqlalchemy-migrate-devstack-dsvm
     gate:
       - gate-sqlalchemy-migrate-python27
       - gate-sqlalchemy-migrate-tox-py26sa07
