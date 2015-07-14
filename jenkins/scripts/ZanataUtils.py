@@ -202,17 +202,14 @@ class ProjectConfig:
         tag_prefix = self._get_tag_prefix(root)
         locale_sub = root.find('%slocales' % tag_prefix)
         locale_elements = locale_sub.findall('%slocale' % tag_prefix)
-        locales = [x.text for x in locale_elements]
         # Work out which locales are trivially mappable to the names we
         # typically use (for example, en-gb vs en_GB) and add these mappings
         # to the configuration.
-        for l in locales:
-            parts = l.split('-')
+        for locale_element in locale_elements:
+            parts = locale_element.text.split('-')
             if len(parts) > 1:
                 parts[1] = parts[1].upper()
-                e = etree.SubElement(locale_sub, 'locale')
-                e.attrib['map-from'] = '_'.join(parts)
-                e.text = l
+                locale_element.attrib['map-from'] = '_'.join(parts)
         # TODO - add hardcoded mappings for additional
         # language names (for example zh-hans-*) ?
         # Work around https://bugzilla.redhat.com/show_bug.cgi?id=1219624
