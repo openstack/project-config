@@ -26,6 +26,7 @@ def get_args():
     parser.add_argument('-v', '--version')
     parser.add_argument('-s', '--srcdir')
     parser.add_argument('-d', '--txdir')
+    parser.add_argument('-e', '--excludes')
     parser.add_argument('-r', '--rule', nargs=2, metavar=('PATTERN', 'RULE'),
                         action='append',
                         help='Append a rule, used by the Zanata client to '
@@ -43,7 +44,8 @@ def main():
         zc = IniConfig(os.path.expanduser('~/.config/zanata.ini'))
         ProjectConfig(zc, args.file, rules, project=args.project,
                       version=args.version,
-                      srcdir=args.srcdir, txdir=args.txdir)
+                      srcdir=args.srcdir, txdir=args.txdir,
+                      excludes=args.excludes)
     except ValueError as e:
         sys.exit(e)
 

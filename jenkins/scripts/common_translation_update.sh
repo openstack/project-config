@@ -94,7 +94,7 @@ function setup_horizon {
         'horizon/locale/{locale}/LC_MESSAGES}/{filename}.po' \
         -r 'openstack_dashboard/*.pot' \
         'openstack_dashboard/locale/{locale}/LC_MESSAGES/{filename}.po' \
-        -f zanata.xml; then
+        -e '.*/**' -f zanata.xml; then
         echo "Failed to generate zanata.xml"
     fi
 
@@ -190,7 +190,8 @@ function setup_manuals {
     # While we spin up, we want to not error out if we can't generate the
     # zanata.xml file.
     if ! /usr/local/jenkins/slave_scripts/create-zanata-xml.py -p $project \
-        -v master --srcdir . --txdir . $ZANATA_RULES -f zanata.xml; then
+        -v master --srcdir . --txdir . $ZANATA_RULES -e '.*/**' \
+        -f zanata.xml; then
         echo "Failed to generate zanata.xml"
     fi
 
