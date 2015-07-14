@@ -304,30 +304,25 @@
       - python-jobs
       - '{pipeline}-heat-dsvm-functional-{engine}-{datastore}{branch-designator}':
           datastore: mysql
-          pipeline: check
+          pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           branch-designator: ''
           branch-override: default
           engine: orig
       - '{pipeline}-heat-dsvm-functional-{engine}-{datastore}{branch-designator}':
           datastore: postgres
-          pipeline: check
+          pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           branch-designator: ''
           branch-override: default
           engine: orig
       - '{pipeline}-heat-dsvm-functional-{engine}-{datastore}{branch-designator}':
           datastore: mysql
-          pipeline: check
+          pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           branch-designator: ''
           branch-override: default
           engine: convg
-      - '{pipeline}-tempest-dsvm-heat{branch-designator}':
-          pipeline: check
-          node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
-          branch-override: default
       - '{pipeline}-tempest-dsvm-heat{branch-designator}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
@@ -393,7 +388,7 @@
       - python-kilo-bitrot-jobs
       - translation-jobs
       - '{pipeline}-ironic-dsvm-functional{branch-designator}':
-          pipeline: check
+          pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           branch-designator: ''
           branch-override: default
@@ -473,7 +468,7 @@
       - gate-{name}-tox-{envlist}:
           envlist: func
       - '{pipeline}-ironic-inspector-dsvm{branch-designator}':
-          pipeline: check
+          pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           branch-designator: '-nv'
           branch-override: default
@@ -1196,11 +1191,6 @@
       - pypi-jobs
       - 'lib-forward-testing-{name}'
       - '{pipeline}-glanceclient-dsvm-functional{branch-designator}':
-          pipeline: check
-          node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
-          branch-override: default
-      - '{pipeline}-glanceclient-dsvm-functional{branch-designator}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           branch-designator: ''
@@ -1232,11 +1222,6 @@
       - pypi-jobs
       - 'lib-forward-testing-{name}'
       - '{pipeline}-heatclient-dsvm-functional{branch-designator}':
-          pipeline: check
-          node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
-          branch-override: default
-      - '{pipeline}-heatclient-dsvm-functional{branch-designator}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           branch-designator: ''
@@ -1267,7 +1252,7 @@
       - pypi-jobs
       - 'lib-forward-testing-{name}'
       - '{pipeline}-ironicclient-dsvm-functional{branch-designator}':
-          pipeline: check
+          pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           branch-designator: ''
           branch-override: default
@@ -1293,11 +1278,6 @@
       - openstack-publish-jobs
       - pypi-jobs
       - 'lib-forward-testing-{name}'
-      - '{pipeline}-keystoneclient-dsvm-functional{branch-designator}':
-          pipeline: check
-          node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
-          branch-override: default
       - '{pipeline}-keystoneclient-dsvm-functional{branch-designator}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
@@ -4691,11 +4671,6 @@
           node: 'devstack-precise || devstack-trusty'
           branch-designator: ''
           branch-override: default
-      - '{pipeline}-group-based-policy-dsvm-functional{branch-designator}':
-          pipeline: check
-          node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
-          branch-override: default
 
 - project:
     name: group-based-policy-automation
@@ -4775,9 +4750,6 @@
     jobs:
       - gate-{name}-bashate
       - gate-{name}-pep8
-      - '{pipeline}-kolla-functional-f21':
-          pipeline: check
-          node: 'devstack-f21'
       - '{pipeline}-kolla-functional-f21':
           pipeline: gate
           node: 'devstack-f21'
