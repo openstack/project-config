@@ -713,6 +713,20 @@
       - pypi-jobs
 
 - project:
+    name: networking-onos
+    node: 'bare-precise || bare-trusty'
+    tarball-site: tarballs.openstack.org
+
+    jobs:
+      - python-jobs
+      - pypi-jobs
+      - '{pipeline}-tempest-dsvm-networking-onos{branch-designator}':
+          pipeline: gate
+          node: 'devstack-precise || devstack-trusty'
+          branch-designator: ''
+          branch-override: default
+
+- project:
     name: networking-ovn
     node: 'bare-precise || bare-trusty'
     tarball-site: tarballs.openstack.org
