@@ -125,7 +125,46 @@
       - console-log
 
 - job:
-    name: 'gate-rally-dsvm-ec2-api-fakevirt'
+    name: 'ec2-api-functional-neutron-dsvm-full'
+    node: 'devstack-precise || devstack-trusty'
+
+    wrappers:
+      - build-timeout:
+          timeout: 185
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=180
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_TEMPEST_NOTESTS=1
+          export DEVSTACK_GATE_NEUTRON=1
+          export PROJECTS="stackforge/ec2-api $PROJECTS"
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin ec2-api git://git.openstack.org/stackforge/ec2-api"
+          export ENABLED_SERVICES+=,swift3
+
+          function post_test_hook {{
+              source $BASE/new/devstack/accrc/admin/admin
+              cd /opt/stack/new/ec2-api/
+              export RUN_LONG_TESTS=1
+              ./ec2api/tests/contrib/post_test_hook.sh
+          }}
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job:
+    name: 'ec2-api-rally-dsvm-fakevirt'
     node: 'devstack-precise || devstack-trusty'
 
     wrappers:
@@ -176,3 +215,4 @@
       - devstack-logs
       - console-log
       - rally-plot
+
