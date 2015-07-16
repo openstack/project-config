@@ -869,6 +869,9 @@ jobs:
   - name: gate-cinder-pylint
     voting: false
 
+  - name: gate-cinderclient-dsvm-functional
+    voting: false
+
   - name: dev-zuul-coverage
     voting: false
 
@@ -2728,11 +2731,12 @@ projects:
       - name: publish-to-pypi
       - name: pypy-jobs
       - name: experimental-tripleo-jobs
+    check:
+      - gate-cinderclient-dsvm-functional
     post:
       - python-cinderclient-coverage
     experimental:
       - gate-grenade-dsvm-forward
-      - gate-cinderclient-dsvm-functional
 
   - name: openstack/python-congressclient
     template:
