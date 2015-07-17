@@ -136,4 +136,9 @@ check_sudo_usage
 check_oom
 check_nose_html
 
+# Rename tox' .log files to .log.txt so that Apache serves them as
+# text/plain files since it can handle .txt special - and .log is
+# unknown and therefore served as binary.
+find .tox -type f -name "*.log" -exec mv {} {}.txt \
+
 exit $result
