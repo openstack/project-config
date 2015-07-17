@@ -1090,7 +1090,8 @@ jobs:
     voting: false
 
   - name: gate-murano-requirements
-    voting: false
+    # disable job in kilo/juno because of requirements doesn't match global.
+    branch: ^(?!stable/(?:juno|kilo)).*$
 
   - name: gate-rally-dsvm-murano-task
     branch: ^(?!stable/juno).*$
@@ -1108,13 +1109,15 @@ jobs:
     voting: false
 
   - name: gate-python-muranoclient-requirements
-    voting: false
+    # disable job in kilo/juno because of requirements doesn't match global.
+    branch: ^(?!stable/(?:juno|kilo)).*$
 
   - name: ^gate-muranoclient-dsvm-functional$
     voting: false
 
   - name: gate-murano-dashboard-requirements
-    voting: false
+    # disable job in kilo/juno because of requirements doesn't match global.
+    branch: ^(?!stable/(?:juno|kilo)).*$
 
   - name: murano-coverage
     voting: false
@@ -2210,10 +2213,10 @@ projects:
       - name: python-jobs
       - name: publish-to-pypi
       - name: docs-on-rtfd
+      - name: check-requirements
     check:
       - murano-coverage
       - gate-murano-pylint
-      - gate-murano-requirements
       - gate-murano-devstack-dsvm
       - gate-murano-congress-devstack-dsvm
       - gate-rally-dsvm-murano-task
@@ -2241,10 +2244,10 @@ projects:
     template:
       - name: merge-check
       - name: publish-to-pypi
+      - name: check-requirements
     check:
       - gate-murano-dashboard-pep8
       - gate-murano-dashboard-python27
-      - gate-murano-dashboard-requirements
       - gate-murano-devstack-dsvm
     gate:
       - gate-murano-dashboard-pep8
@@ -2989,8 +2992,8 @@ projects:
       - name: python26-jobs
       - name: python-jobs
       - name: publish-to-pypi
+      - name: check-requirements
     check:
-      - gate-python-muranoclient-requirements
       - gate-murano-devstack-dsvm
       - gate-muranoclient-dsvm-functional
     gate:
