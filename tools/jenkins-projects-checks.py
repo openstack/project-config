@@ -23,12 +23,14 @@ def normalize(s):
 
 
 def check_sections():
-    """Check that the projects are in alphabetical order per section."""
+    """Check that the projects are in alphabetical order per section
+    and that indenting looks correct"""
 
     # Note that the file has different sections and we need to check
     # entries within these sections only
     errors = False
     last = ""
+    count = 1
     for line in open('jenkins/jobs/projects.yaml', 'r'):
         if line.startswith('# Section:'):
             last = ""
@@ -42,6 +44,13 @@ def check_sections():
                       {"last": last, "current": current})
                 errors = True
             last = current
+        if (len(line) - len(line.lstrip(' '))) % 2 != 0:
+            print("Line %(count)s not indented by multiple of 2:\n\t%(line)s" %
+                  {"count": count, "line": line})
+            errors = True
+
+        count = count+1
+
     return errors
 
 
