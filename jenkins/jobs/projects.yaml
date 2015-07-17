@@ -664,6 +664,18 @@
       - pypi-jobs
 
 - project:
+    name: magnetodb
+    node: 'bare-precise || bare-trusty'
+    tarball-site: tarballs.openstack.org
+
+    jobs:
+      - hook-{name}-rtfd
+      - python-jobs
+      - pypi-jobs
+      - gate-magnetodb-cassandra-tox:
+          envlist: cassandra-integration-tests
+
+- project:
     name: manila
     node: 'bare-precise || bare-trusty'
     tarball-site: tarballs.openstack.org
@@ -1493,6 +1505,15 @@
       - python-jobs
       - pypi-jobs
 
+- project:
+    name: python-magnetodbclient
+    node: 'bare-precise || bare-trusty'
+    tarball-site: tarballs.openstack.org
+
+    jobs:
+      - hook-{name}-rtfd
+      - python-jobs
+      - pypi-jobs
 
 - project:
     name: python-manilaclient
@@ -2363,6 +2384,15 @@
       - python-jobs
       - openstack-publish-jobs
       - pypi-jobs
+
+- project:
+    name: magnetodb-specs
+    node: 'bare-precise || bare-trusty'
+    tarball-site: tarballs.openstack.org
+
+    jobs:
+      - hook-{name}-rtfd
+      - gate-{name}-docs
 
 - project:
     name: manila-image-elements
@@ -5378,27 +5408,6 @@
       - pypi-jobs
 
 - project:
-    name: magnetodb
-    node: 'bare-precise || bare-trusty'
-    tarball-site: tarballs.openstack.org
-
-    jobs:
-      - hook-{name}-rtfd
-      - python-jobs
-      - pypi-jobs
-      - gate-magnetodb-cassandra-tox:
-          envlist: cassandra-integration-tests
-
-- project:
-    name: magnetodb-specs
-    node: 'bare-precise || bare-trusty'
-    tarball-site: tarballs.openstack.org
-
-    jobs:
-      - hook-{name}-rtfd
-      - gate-{name}-docs
-
-- project:
     name: magnum
     node: 'bare-precise || bare-trusty'
     tarball-site: tarballs.openstack.org
@@ -6056,16 +6065,6 @@
     jobs:
       - python-jobs
       - hook-{name}-rtfd
-      - pypi-jobs
-
-- project:
-    name: python-magnetodbclient
-    node: 'bare-precise || bare-trusty'
-    tarball-site: tarballs.openstack.org
-
-    jobs:
-      - hook-{name}-rtfd
-      - python-jobs
       - pypi-jobs
 
 - project:
