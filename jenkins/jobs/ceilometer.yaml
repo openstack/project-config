@@ -132,3 +132,54 @@
       - test-results
       - devstack-logs
       - console-log
+
+- job:
+    name: 'gate-ceilometer-dsvm-integration'
+    node: 'devstack-precise || devstack-trusty'
+
+    wrappers:
+      - build-timeout:
+          timeout: 75
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+
+          export DEVSTACK_GATE_TIMEOUT=70
+          export DEVSTACK_GATE_HEAT=1
+          export DEVSTACK_GATE_NEUTRON=1
+          export DEVSTACK_GATE_TEMPEST=0
+          export DEVSTACK_GATE_EXERCISES=0
+          export DEVSTACK_GATE_INSTALL_TESTONLY=1
+
+          # Add just the needed telemetry services for this job (ceilometer-alarm* must be disabled)
+          s="ceilometer-acompute,ceilometer-acentral,ceilometer-collector,ceilometer-api,ceilometer-anotification,"
+          s+="aodh-api,aodh-alarm-notifier,aodh-alarm-evaluator,"
+          s+="gnocchi-api"
+          export ENABLE_SERVICES="$s"
+
+          export PROJECTS="openstack/aodh openstack/gnocchi"
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin aodh git://git.openstack.org/openstack/aodh"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin gnocchi git://git.openstack.org/openstack/gnocchi"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"GNOCCHI_ARCHIVE_POLICY=high"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"CEILOMETER_PIPELINE_INTERVAL=5"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"GNOCCHI_COORDINATOR_URL=redis://localhost:6379?timeout=5"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"GNOCCHI_STORAGE_BACKEND=file"
+
+          function post_test_hook {
+              cd /opt/stack/new/ceilometer/ceilometer/tests/integration/hooks/
+              ./post_test_hook.sh
+          }
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
