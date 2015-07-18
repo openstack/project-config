@@ -45,6 +45,8 @@ def devstack_params(item, job, params):
     # Remove this when we are done doing prelimindary dib testing.
     if 'icehouse-dibtest' in job.name:
         params['ZUUL_NODE'] = 'devstack-precise-dib'
+    elif 'multinode' in job.name and 'dibtest' in job.name:
+        params['ZUUL_NODE'] = 'ubuntu-trusty-2-node'
     elif 'dibtest' in job.name:
         params['ZUUL_NODE'] = 'ubuntu-trusty'
     elif ((hasattr(change, 'branch') and
