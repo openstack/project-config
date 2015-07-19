@@ -2177,8 +2177,9 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
       - name: publish-to-pypi
+    check:
+      - gate-mistral-dashboard-python34
 
   - name: openstack/mistral-extra
     template:
@@ -2302,6 +2303,12 @@ projects:
       - name: publish-to-pypi
     check:
       - gate-networking-ofagent-python34
+      - gate-networking-ofagent-pep8
+      - gate-networking-ofagent-docs
+      - gate-networking-ofagent-python27
+    gate:
+      - gate-networking-ofagent-docs
+      - gate-networking-ofagent-pep8
 
   - name: openstack/networking-onos
     template:
@@ -3133,13 +3140,13 @@ projects:
       - name: python26-jobs
       - name: python3-jobs
       - name: pypy-jobs
-      - name: check-requirements
       - name: publish-to-pypi
       - name: lib-forward-testing
       - name: openstack-server-publish-jobs
     check:
       - gate-cliff-tox-neutronclient-tip
       - gate-cliff-tox-openstackclient-tip
+      - gate-cliff-requirements
     gate:
       - gate-cliff-tox-neutronclient-tip
       - gate-cliff-tox-openstackclient-tip
@@ -3291,7 +3298,6 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
       - name: openstack-server-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
@@ -3303,6 +3309,7 @@ projects:
       - gate-oslo.messaging-dsvm-functional-rabbit
       - gate-oslo.messaging-dsvm-functional-qpid
       - gate-oslo.messaging-dsvm-functional-amqp1-f21
+      - gate-oslo.messaging-python34
     experimental:
       - gate-oslo.messaging-dsvm-functional-zeromq
     post:
@@ -5753,7 +5760,8 @@ projects:
       - name: merge-check
       - name: publish-to-pypi
       - name: python-jobs
-      - name: python3-jobs
+    check:
+      - gate-reviewstats-python34
 
   - name: openstack-infra/shade
     template:
@@ -6022,7 +6030,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+    check:
+      - gate-apps-catalog-python34
 
   - name: stackforge/aviator
     template:
@@ -6904,7 +6913,6 @@ projects:
       - gate-magnetodb-python27
       - gate-magnetodb-docs
       - gate-magnetodb-devstack-dsvm
-      - gate-magnetodb-cassandra-tox
     post:
       - magnetodb-branch-tarball
 
@@ -7819,10 +7827,11 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
       - name: check-requirements
       - name: publish-to-pypi
       - name: pypy-jobs
+    check:
+      - gate-solum-infra-guestagent-python34
     post:
       - solum-infra-guestagent-coverage
 
