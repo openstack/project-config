@@ -13,6 +13,7 @@
 # under the License.
 
 from io import BytesIO
+import json
 from lxml import etree
 import os
 import re
@@ -60,6 +61,41 @@ class IniConfig:
                 setattr(self, item_type, item[1])
 
 
+class ZanataRestService:
+    def __init__(self, zconfig, content_type='application/xml'):
+        self.url = zconfig.url
+        if "charset" not in content_type:
+            content_type = "%s;charset=utf8" % content_type
+        self.headers = {'Accept': content_type,
+                        'Content-Type': content_type,
+                        'X-Auth-User': zconfig.username,
+                        'X-Auth-Token': zconfig.key}
+
+    def _construct_url(self, url_fragment):
+        return urljoin(self.url, url_fragment)
+
+    def query(self, url_fragment, verify=False, raise_errors=True):
+        request_url = self._construct_url(url_fragment)
+        try:
+            r = requests.get(request_url, verify=verify, headers=self.headers)
+        except requests.exceptions.ConnectionError:
+            raise ValueError('Connection error')
+        if raise_errors and r.status_code != 200:
+            raise ValueError('Got status code %s for %s' %
+                             (r.status_code, request_url))
+        if raise_errors and not r.content:
+            raise ValueError('Did not recieve any data from %s' % request_url)
+        return r
+
+    def push(self, url_fragment, data, verify=False):
+        request_url = self._construct_url(url_fragment)
+        try:
+            return requests.put(request_url, verify=verify,
+                                headers=self.headers, data=json.dumps(data))
+        except requests.exceptions.ConnectionError:
+            raise ValueError('Connection error')
+
+
 class ProjectConfig:
     """Object that stores zanata.xml per-project configuration.
 
@@ -73,10 +109,7 @@ class ProjectConfig:
     rules (list): list of two-ples with pattern and rules
     """
     def __init__(self, zconfig, xmlfile, rules, **kwargs):
-        self.zc = zconfig
-        self.url = zconfig.url
-        self.username = zconfig.username
-        self.key = zconfig.key
+        self.rest_service = ZanataRestService(zconfig)
         self.xmlfile = xmlfile
         self.rules = self._parse_rules(rules)
         if os.path.isfile(os.path.abspath(xmlfile)):
@@ -136,28 +169,6 @@ class ProjectConfig:
         self._add_configuration(xml)
         self._write_xml(xml)
 
-    def _query_zanata_api(self, url_fragment, verify=False):
-        """Fetch a URL from Zanata
-
-        Attributes:
-        url_fragment: A URL fragment that will be joined to the server URL.
-        verify (bool): Verify the SSL certificate from the Zanata server.
-        """
-        request_url = urljoin(self.url, url_fragment)
-        try:
-            headers = {'Accept': 'application/xml',
-                       'X-Auth-User': self.username,
-                       'X-Auth-Token': self.key}
-            r = requests.get(request_url, verify=verify, headers=headers)
-        except requests.exceptions.ConnectionError:
-            raise ValueError('Connection error')
-        if r.status_code != 200:
-            raise ValueError('Got status code %s for %s' %
-                             (r.status_code, request_url))
-        if not r.content:
-            raise ValueError('Did not recieve any data from %s' % request_url)
-        return r.content
-
     def _fetch_zanata_xml(self, verify=False):
         """Get base zanata.xml
 
@@ -168,9 +179,10 @@ class ProjectConfig:
         verify (bool): Verify the SSL certificate from the Zanata server.
                        Default false.
         """
-        project_config = self._query_zanata_api(
+        r = self.rest_service.query(
             '/rest/projects/p/%s/iterations/i/%s/config'
             % (self.project, self.version), verify=verify)
+        project_config = r.content
         p = etree.XMLParser(remove_blank_text=True)
         try:
             xml = etree.parse(BytesIO(project_config), p)
