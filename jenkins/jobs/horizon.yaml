@@ -1,23 +1,4 @@
 - job:
-    name: gate-horizon-python27-django14
-    node: 'bare-precise || bare-trusty'
-
-    wrappers:
-      - build-timeout:
-          timeout: 40
-      - timestamps
-
-    builders:
-      - revoke-sudo
-      - gerrit-git-prep
-      - shell: '/usr/local/jenkins/slave_scripts/run-tox.sh py27dj14'
-      - assert-no-extra-files
-
-    publishers:
-      - test-results
-      - console-log
-
-- job:
     name: gate-horizon-jshint
     node: 'bare-precise || bare-trusty'
 
