@@ -2427,17 +2427,23 @@ projects:
   - name: openstack/neutron-vpnaas
     template:
       - name: check-requirements
-      - name: integrated-gate-neutron
       - name: merge-check
       - name: periodic-kilo
       - name: python-jobs
       - name: openstack-server-release-jobs
     check:
+      - gate-tempest-dsvm-neutron-full
       - gate-neutron-vpnaas-dsvm-functional
       - gate-neutron-vpnaas-dsvm-functional-sswan
     gate:
+      - gate-tempest-dsvm-neutron-full
       - gate-neutron-vpnaas-dsvm-functional
       - gate-neutron-vpnaas-dsvm-functional-sswan
+    periodic-qa:
+      - gate-tempest-dsvm-neutron-pg-full
+    experimental:
+      - gate-grenade-dsvm-neutron
+      - gate-tempest-dsvm-neutron-pg-full
     post:
       - neutron-vpnaas-coverage
 
