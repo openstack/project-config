@@ -1,5 +1,5 @@
 - job-template:
-    name: '{pipeline}-neutron-{lbaasversion}-dsvm-api{branch-designator}'
+    name: '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}{branch-designator}'
     node: '{node}'
 
     wrappers:
@@ -26,12 +26,12 @@
           fi
 
           function gate_hook {{
-              $BASE/new/neutron-lbaas/neutron_lbaas/tests/contrib/gate_hook.sh {lbaasversion}
+              $BASE/new/neutron-lbaas/neutron_lbaas/tests/contrib/gate_hook.sh {lbaasversion} {lbaastest}
           }}
           export -f gate_hook
 
           function post_test_hook {{
-              $BASE/new/neutron-lbaas/neutron_lbaas/tests/contrib/post_test_hook.sh {lbaasversion}
+              $BASE/new/neutron-lbaas/neutron_lbaas/tests/contrib/post_test_hook.sh {lbaasversion} {lbaastest}
           }}
           export -f post_test_hook
 
