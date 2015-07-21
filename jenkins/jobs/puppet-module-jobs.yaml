@@ -3,7 +3,7 @@
     node: '{node}'
 
     builders:
-      - uninstall-puppet
+      - puppet-prepare-node
       - revoke-sudo
       - gerrit-git-prep
       - shell: |
@@ -30,15 +30,7 @@
 
     builders:
       - link-logs
-      - uninstall-puppet
-      - shell: |
-          if [ -f /usr/bin/yum ]; then
-              sudo yum -y install libxml2-devel libxslt-devel ruby-devel
-              sudo yum -y groupinstall "Development Tools"
-          elif [ -f /usr/bin/apt-get ]; then
-              sudo apt-get update
-              sudo apt-get install -y libxml2-dev libxslt-dev zlib1g-dev
-          fi
+      - puppet-prepare-node
       - gerrit-git-prep
       - allow-local-ssh-root
       - shell: |
@@ -68,15 +60,7 @@
 
     builders:
       - link-logs
-      - uninstall-puppet
-      - shell: |
-          if [ -f /usr/bin/yum ]; then
-              sudo yum -y install libxml2-devel libxslt-devel ruby-devel
-              sudo yum -y groupinstall "Development Tools"
-          elif [ -f /usr/bin/apt-get ]; then
-              sudo apt-get update
-              sudo apt-get install -y libxml2-dev libxslt-dev zlib1g-dev
-          fi
+      - puppet-prepare-node
       # checkout the current patchset
       - gerrit-git-prep
       - allow-local-ssh-root
@@ -166,7 +150,7 @@
     node: '{node}'
 
     builders:
-      - uninstall-puppet
+      - puppet-prepare-node
       - revoke-sudo
       - gerrit-git-prep
       - shell: |
