@@ -1430,6 +1430,40 @@
 
 
 - job-template:
+    name: '{pipeline}-grenade-dsvm-neutron-vpnaas{branch-designator}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 130
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=120
+          export DEVSTACK_GATE_TEMPEST=0
+          export DEVSTACK_GATE_GRENADE=pullup
+          export DEVSTACK_GATE_NEUTRON=1
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          export GRENADE_PLUGINRC="enable_grenade_plugin neutron-vpnaas https://git.openstack.org/openstack/neutron-vpnaas"
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+
+- job-template:
     name: '{pipeline}-grenade-dsvm-partial-ncpu{branch-designator}'
     node: '{node}'
 
@@ -2363,6 +2397,7 @@
       - '{pipeline}-grenade-dsvm-forward{branch-designator}'
       - '{pipeline}-grenade-dsvm-neutron{branch-designator}'
       - '{pipeline}-grenade-dsvm-neutron-forward{branch-designator}'
+      - '{pipeline}-grenade-dsvm-neutron-vpnaas{branch-designator}'
       - '{pipeline}-grenade-dsvm-partial-ncpu{branch-designator}'
       - '{pipeline}-grenade-dsvm-ironic{branch-designator}'
       - '{pipeline}-grenade-dsvm-ironic-sideways{branch-designator}'
