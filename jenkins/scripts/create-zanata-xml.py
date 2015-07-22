@@ -39,7 +39,7 @@ def get_args():
 
 def main():
     args = get_args()
-    rules = args.rule or [('*.pot', '{locale}/LC_MESSAGES/{filename}.po')]
+    rules = args.rule or [('**/*.pot', '{locale}/LC_MESSAGES/{filename}.po')]
     try:
         zc = IniConfig(os.path.expanduser('~/.config/zanata.ini'))
         ProjectConfig(zc, args.file, rules, project=args.project,
