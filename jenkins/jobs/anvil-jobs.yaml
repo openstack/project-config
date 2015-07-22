@@ -1,0 +1,85 @@
+- job-template:
+    name: 'gate-anvil-rpms-{node}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 60
+      - timestamps
+
+    builders:
+      - gerrit-git-prep
+      - shell: |
+          #!/bin/bash -xe
+
+          export PYTHONUNBUFFERED=true
+          export LOG_COLOR=0
+
+          # TODO: Change this later.
+          origin_file="kilo-2015.1.0.yaml"
+
+          echo "--------------------------"
+          echo "Bootstrapping anvil (rpms)"
+          echo "--------------------------"
+          sudo VERBOSE=1 ./smithy --bootstrap
+
+          echo "---------"
+          echo "Preparing"
+          echo "---------"
+          ./smithy -a prepare -o conf/origins/$origin_file \
+                              --tee-file ./prepare.txt -j1 -v
+
+          echo "--------"
+          echo "Building"
+          echo "--------"
+          ./smithy -a build -o conf/origins/$origin_file \
+                            --tee-file ./build.txt -j1 -v
+
+          echo ":)"
+
+    publishers:
+      - zuul-swift-upload-console-log
+
+- job-template:
+    name: 'gate-anvil-venv-{node}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 60
+      - timestamps
+
+    builders:
+      - gerrit-git-prep
+      - shell: |
+          #!/bin/bash -xe
+
+          export PYTHONUNBUFFERED=true
+          export LOG_COLOR=0
+
+          # TODO: Change this later.
+          origin_file="kilo-venv-2015.1.0.yaml"
+
+          echo "--------------------------"
+          echo "Bootstrapping anvil (venv)"
+          echo "--------------------------"
+          sudo VERBOSE=1 ./smithy --bootstrap
+
+          echo "---------"
+          echo "Preparing"
+          echo "---------"
+          ./smithy -a prepare -o conf/origins/$origin_file \
+                              -p conf/personas/in-a-box/venv-all.yaml \
+                              --tee-file ./prepare.txt -j1 -v
+
+          echo "--------"
+          echo "Building"
+          echo "--------"
+          ./smithy -a build -o conf/origins/$origin_file \
+                            -p conf/personas/in-a-box/venv-all.yaml \
+                            --tee-file ./build.txt -j1 -v
+
+          echo ":)"
+
+    publishers:
+      - zuul-swift-upload-console-log
