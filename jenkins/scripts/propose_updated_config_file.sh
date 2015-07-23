@@ -18,6 +18,7 @@ PROJECT=$1
 BRANCH=$2
 INITIAL_COMMIT_MSG="Updating sample configuration file"
 USERNAME="proposal-bot"
+TOPIC="$PROJECT/genconf"
 SUCCESS=0
 
 setup_git
@@ -25,11 +26,11 @@ setup_git
 change_id=""
 # See if there is an open change, if so, get the change id for the
 # existing change for use in the commit message.
-change_info=$(ssh -p 29418 $USERNAME@review.openstack.org gerrit query --current-patch-set status:open project:$PROJECT owner:$USERNAME branch:$BRANCH)
+change_info=$(ssh -p 29418 $USERNAME@review.openstack.org gerrit query --current-patch-set status:open project:$PROJECT owner:$USERNAME branch:$BRANCH topic:$TOPIC)
 previous=$(echo "$change_info" | grep "^  number:" | awk '{print $2}')
 if [ "x${previous}" != "x" ] ; then
     change_id=$(echo "$change_info" | grep "^change" | awk '{print $2}')
-    # read return a non zero value when it reaches EOF. Because we use a
+    # read returns a non zero value when it reaches EOF. Because we use a
     # heredoc here it will always reach EOF and return a nonzero value.
     # Disable -e temporarily to get around the read.
     # The reason we use read is to allow for multiline variable content
@@ -63,7 +64,6 @@ if ! git diff --stat --exit-code HEAD ; then
     git commit $git_args <<EOF
 $COMMIT_MSG
 EOF
-    TOPIC="openstack/$PROJECT/genconf"
     OUTPUT=$(git review -t $TOPIC)
     RET=$?
     [[ "$RET" -eq "0" || "$OUTPUT" =~ "no new changes" || "$OUTPUT" =~ "no changes made" ]]
