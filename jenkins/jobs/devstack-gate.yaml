@@ -716,8 +716,8 @@
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_DEPLOY_DRIVER_ISCSI_WITH_IPA=True"
           fi
 
-          # Run only baremetal tests
-          export DEVSTACK_GATE_TEMPEST_REGEX="baremetal"
+          # Allow switching between full tempest and baremetal-only
+          export {tempest-env}
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
@@ -776,6 +776,32 @@
           deploy-with-ipa: 0
           client-from-source: 0
           branch-override: '{branch-override}'
+          tempest-env: 'DEVSTACK_GATE_TEMPEST_REGEX=baremetal'
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-tempest-dsvm-ironic-pxe_ssh-full{branch-designator}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - devstack-virtual-ironic:
+          postgres: 0
+          build-ramdisk: 1
+          deploy_driver: pxe_ssh
+          deploy-with-ipa: 0
+          client-from-source: 0
+          branch-override: '{branch-override}'
+          tempest-env: 'DEVSTACK_GATE_TEMPEST_FULL=1'
     publishers:
       - devstack-logs
       - console-log
@@ -800,6 +826,7 @@
           deploy-with-ipa: 0
           client-from-source: 0
           branch-override: '{branch-override}'
+          tempest-env: 'DEVSTACK_GATE_TEMPEST_REGEX=baremetal'
 
     publishers:
       - devstack-logs
@@ -862,6 +889,7 @@
           deploy-with-ipa: 1
           client-from-source: 0
           branch-override: '{branch-override}'
+          tempest-env: 'DEVSTACK_GATE_TEMPEST_REGEX=baremetal'
 
     publishers:
       - devstack-logs
@@ -887,6 +915,7 @@
           deploy-with-ipa: 1
           client-from-source: 0
           branch-override: '{branch-override}'
+          tempest-env: 'DEVSTACK_GATE_TEMPEST_REGEX=baremetal'
 
     publishers:
       - devstack-logs
@@ -912,6 +941,7 @@
           deploy-with-ipa: 0
           client-from-source: 0
           branch-override: '{branch-override}'
+          tempest-env: 'DEVSTACK_GATE_TEMPEST_REGEX=baremetal'
     publishers:
       - devstack-logs
       - console-log
@@ -936,6 +966,7 @@
           deploy-with-ipa: 1
           client-from-source: 0
           branch-override: '{branch-override}'
+          tempest-env: 'DEVSTACK_GATE_TEMPEST_REGEX=baremetal'
     publishers:
       - devstack-logs
       - console-log
@@ -960,6 +991,7 @@
           deploy-with-ipa: 0
           client-from-source: 1
           branch-override: '{branch-override}'
+          tempest-env: 'DEVSTACK_GATE_TEMPEST_REGEX=baremetal'
     publishers:
       - devstack-logs
       - console-log
