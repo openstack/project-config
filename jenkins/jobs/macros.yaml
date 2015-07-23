@@ -197,13 +197,17 @@
           sudo -H pip install diskimage-builder
 
 - builder:
-    name: uninstall-puppet
+    name: puppet-prepare-node
     builders:
       - shell: |
           if [ -f /usr/bin/yum ]; then
               sudo yum -y remove facter puppet
+              sudo yum -y install libxml2-devel libxslt-devel ruby-devel
+              sudo yum -y groupinstall "Development Tools"
           elif [ -f /usr/bin/apt-get ]; then
               sudo apt-get remove -y --purge facter puppet puppet-common
+              sudo apt-get update
+              sudo apt-get install -y libxml2-dev libxslt-dev zlib1g-dev
           fi
 
 - builder:
