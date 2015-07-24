@@ -476,6 +476,11 @@ project-templates:
       - gate-{name}-puppet-beaker-rspec-dsvm-trusty
       - gate-{name}-puppet-beaker-rspec-dsvm-centos7
 
+  - name: puppet-openstack-integration-jobs
+    check:
+      - gate-puppet-openstack-integration-dsvm-trusty
+      - gate-puppet-openstack-integration-dsvm-centos7
+
   - name: puppet-syntax
     check:
       - gate-{name}-puppet-syntax-3
@@ -672,6 +677,10 @@ jobs:
 
   - name: ^gate-infra-puppet-apply-devstack-.*$
     voting: false
+
+  - name: ^gate-puppet-openstack-integration-dsvm-.*$
+    voting: false
+    branch: ^(?!stable/kilo).*$
 
   - name: ^gate-puppet-openstack-integration-puppet-.*$
     branch: ^(?!stable/kilo).*$
@@ -4194,6 +4203,7 @@ projects:
     template:
       - name: merge-check
       - name: puppet-check-jobs
+      - name: puppet-openstack-integration-jobs
 
   - name: openstack/puppet-openstack-specs
     template:
