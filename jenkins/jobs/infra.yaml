@@ -88,10 +88,8 @@
     publishers:
       - zuul-swift-upload-console-log
 
-- job-template:
-    name: 'gate-infra-puppet-apply-{ostype}'
-    node: '{ostype}'
-
+- builder:
+    name: infra-puppet-apply
     builders:
       - shell: |
           #!/bin/bash -xe
@@ -99,10 +97,27 @@
           cd openstack-infra/system-config
           ./tools/apply-test.sh
 
+- job-template:
+    name: 'gate-infra-puppet-apply-{ostype}'
+    node: '{ostype}'
+
+    builders:
+      - infra-puppet-apply
+
     publishers:
       - zuul-swift-upload-logs-with-console:
           upload_source: 'applytest/*'
 
+- job-template:
+    name: 'gate-infra-puppet-apply-dsvm-{ostype}'
+    node: 'devstack-{ostype}'
+
+    builders:
+      - infra-puppet-apply
+
+    publishers:
+      - zuul-swift-upload-logs-with-console:
+          upload_source: 'applytest/*'
 
 - job-template:
     name: 'gate-openstackci-beaker-{ostype}-dsvm'
