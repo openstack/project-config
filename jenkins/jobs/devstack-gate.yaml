@@ -471,7 +471,12 @@
           fi
           # For feature/qos branch, actually enable qos service plugin
           if [[ "$BRANCH_OVERRIDE" =~ ^feature/qos$ ]] || [[ "$ZUUL_BRANCH" =~ ^feature/qos$ ]] ; then
+              # enable qos service plugin
               export DEVSTACK_LOCAL_CONFIG="Q_SERVICE_PLUGIN_CLASSES=qos"
+              # also enable qos ml2 extension driver
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"[[post-config|/\$Q_PLUGIN_CONF_FILE]]"
+              # port_security is enabled by default
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"extension_drivers = port_security,qos"
           fi
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
@@ -1121,7 +1126,12 @@
           fi
           # For feature/qos branch, actually enable qos service plugin
           if [[ "$BRANCH_OVERRIDE" =~ ^feature/qos$ ]] || [[ "$ZUUL_BRANCH" =~ ^feature/qos$ ]] ; then
+              # enable qos service plugin
               export DEVSTACK_LOCAL_CONFIG="Q_SERVICE_PLUGIN_CLASSES=qos"
+              # also enable qos ml2 extension driver
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"[[post-config|/\$Q_PLUGIN_CONF_FILE]]"
+              # port_security is enabled by default
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"extension_drivers = port_security,qos"
           fi
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
