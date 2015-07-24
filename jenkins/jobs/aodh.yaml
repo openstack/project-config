@@ -1,0 +1,39 @@
+- job-template:
+    name: '{pipeline}-aodh-dsvm-functional-{backend}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 95
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=90
+          export PROJECTS="openstack/aodh $PROJECTS"
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin aodh git://git.openstack.org/openstack/aodh"
+
+          function gate_hook {{
+              cd /opt/stack/new/aodh/devstack/gate
+              ./gate_hook.sh {backend}
+          }}
+          export -f gate_hook
+
+          function post_test_hook {{
+              cd /opt/stack/new/aodh/aodh/tests/functional/hooks
+              ./post_test_hook.sh {backend}
+          }}
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - test-results
+      - devstack-logs
+      - console-log
