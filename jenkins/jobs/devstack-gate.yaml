@@ -694,7 +694,7 @@
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_TIMEOUT=120
+          export DEVSTACK_GATE_TIMEOUT={devstack-timeout}
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_POSTGRES={postgres}
           export DEVSTACK_GATE_IRONIC=1
@@ -782,6 +782,7 @@
           client-from-source: 0
           branch-override: '{branch-override}'
           tempest-env: 'DEVSTACK_GATE_TEMPEST_REGEX=baremetal'
+          devstack-timeout: 120
     publishers:
       - devstack-logs
       - console-log
@@ -792,7 +793,7 @@
 
     wrappers:
       - build-timeout:
-          timeout: 125
+          timeout: 155
       - timestamps
 
     builders:
@@ -807,6 +808,7 @@
           client-from-source: 0
           branch-override: '{branch-override}'
           tempest-env: 'DEVSTACK_GATE_TEMPEST_FULL=1'
+          devstack-timeout: 150
     publishers:
       - devstack-logs
       - console-log
@@ -832,6 +834,7 @@
           client-from-source: 0
           branch-override: '{branch-override}'
           tempest-env: 'DEVSTACK_GATE_TEMPEST_REGEX=baremetal'
+          devstack-timeout: 120
 
     publishers:
       - devstack-logs
@@ -895,6 +898,7 @@
           client-from-source: 0
           branch-override: '{branch-override}'
           tempest-env: 'DEVSTACK_GATE_TEMPEST_REGEX=baremetal'
+          devstack-timeout: 120
 
     publishers:
       - devstack-logs
@@ -921,6 +925,7 @@
           client-from-source: 0
           branch-override: '{branch-override}'
           tempest-env: 'DEVSTACK_GATE_TEMPEST_REGEX=baremetal'
+          devstack-timeout: 120
 
     publishers:
       - devstack-logs
@@ -947,6 +952,7 @@
           client-from-source: 0
           branch-override: '{branch-override}'
           tempest-env: 'DEVSTACK_GATE_TEMPEST_REGEX=baremetal'
+          devstack-timeout: 120
     publishers:
       - devstack-logs
       - console-log
@@ -972,6 +978,7 @@
           client-from-source: 0
           branch-override: '{branch-override}'
           tempest-env: 'DEVSTACK_GATE_TEMPEST_REGEX=baremetal'
+          devstack-timeout: 120
     publishers:
       - devstack-logs
       - console-log
@@ -997,6 +1004,7 @@
           client-from-source: 1
           branch-override: '{branch-override}'
           tempest-env: 'DEVSTACK_GATE_TEMPEST_REGEX=baremetal'
+          devstack-timeout: 120
     publishers:
       - devstack-logs
       - console-log
