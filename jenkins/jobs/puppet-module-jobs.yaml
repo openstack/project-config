@@ -167,6 +167,27 @@
     publishers:
       - console-log
 
+- job-template:
+    name: 'gate-puppet-openstack-integration-dsvm-{ostype}'
+    node: 'devstack-{ostype}'
+
+    builders:
+      - link-logs
+      - zuul-clone:
+          project: openstack/puppet-openstack-integration
+      - shell: |
+          #!/bin/bash -xe
+          ./run_tests.sh
+
+    wrappers:
+      - build-timeout:
+          timeout: 60
+      - timestamps
+
+    publishers:
+      - devstack-logs
+      - console-log
+
 - job-group:
     name: 'puppet-check-jobs'
     puppet_version:
@@ -198,3 +219,11 @@
     jobs:
       - 'gate-{name}-puppet-beaker-rspec-dsvm-{ostype}'
       - 'gate-{name}-puppet-beaker-rspec-upgrade-dsvm-{ostype}'
+
+- job-group:
+    name: 'puppet-openstack-integration-jobs'
+    ostype:
+      - trusty
+      - centos7
+    jobs:
+      - 'gate-puppet-openstack-integration-dsvm-{ostype}'
