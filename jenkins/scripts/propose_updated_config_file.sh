@@ -64,7 +64,7 @@ if ! git diff --stat --exit-code HEAD ; then
     git commit $git_args <<EOF
 $COMMIT_MSG
 EOF
-    OUTPUT=$(git review -t $TOPIC)
+    OUTPUT=$(git review -t $TOPIC $BRANCH)
     RET=$?
     [[ "$RET" -eq "0" || "$OUTPUT" =~ "no new changes" || "$OUTPUT" =~ "no changes made" ]]
     SUCCESS=$?
