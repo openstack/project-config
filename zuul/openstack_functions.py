@@ -94,6 +94,7 @@ def set_node_options(item, job, params, default):
     params['OFFLINE_NODE_WHEN_COMPLETE'] = '1'
     proposal_re = r'^.*(merge-release-tags|(propose|upstream)-(.*?)-(constraints-.*|updates?))$'  # noqa
     release_re = r'^.*-(forge|jenkinsci|mavencentral|pypi-(both|wheel))-upload$'
+    hook_re = r'^hook-(.*?)-(rtfd)$'
     python26_re = r'^.*-(py(thon)?)?26.*$'
     centos6_re = r'^.*-centos6.*$'
     f21_re = r'^.*-f21.*$'
@@ -102,7 +103,8 @@ def set_node_options(item, job, params, default):
     puppetunit_re = (
         r'^gate-(puppet-.*|system-config)-puppet-(lint|syntax|unit).*$')
     # jobs run on the proposal worker
-    if re.match(proposal_re, job.name) or re.match(release_re, job.name):
+    if (re.match(proposal_re, job.name) or re.match(release_re, job.name) or
+            re.match(hook_re, job.name)):
         reusable_node(item, job, params)
     # Jobs needing python26
     elif re.match(python26_re, job.name):
