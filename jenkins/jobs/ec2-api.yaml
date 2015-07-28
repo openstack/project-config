@@ -148,12 +148,12 @@
           export DEVSTACK_LOCAL_CONFIG="enable_plugin ec2-api git://git.openstack.org/stackforge/ec2-api"
           export ENABLED_SERVICES+=,swift3
 
-          function post_test_hook {{
+          function post_test_hook {
               source $BASE/new/devstack/accrc/admin/admin
               cd /opt/stack/new/ec2-api/
               export RUN_LONG_TESTS=1
               ./ec2api/tests/contrib/post_test_hook.sh
-          }}
+          }
           export -f post_test_hook
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
