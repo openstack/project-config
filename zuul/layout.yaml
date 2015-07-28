@@ -1605,6 +1605,9 @@ jobs:
   - name: ^gate-ironic-inspector-dsvm.*$
     branch: ^(?!stable/1).*$
 
+  - name: ^gate-fuel-upgrade-.*$
+    voting: false
+
 # The project list is grouped by type of project, and within each
 # group, projects are sorted (mostly) alphabetically.
 projects:
@@ -6825,7 +6828,12 @@ projects:
   - name: stackforge/fuel-upgrade
     template:
       - name: merge-check
-      - name: noop-jobs
+    check:
+      - gate-fuel-upgrade-pep8
+      - gate-fuel-upgrade-python27
+      - gate-fuel-upgrade-python26
+    gate:
+      - noop
 
   - name: stackforge/fuel-web
     template:
