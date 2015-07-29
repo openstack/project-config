@@ -192,6 +192,9 @@
       - shell: |
           #!/bin/bash -xe
           cd openstack/puppet-openstack-integration
+          mkdir .bundled_gems
+          export GEM_HOME=`pwd`/.bundled_gems
+          gem install bundler --no-rdoc --no-ri --verbose
           ./run_tests.sh
 
     wrappers:
