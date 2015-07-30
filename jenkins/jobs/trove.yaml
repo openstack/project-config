@@ -28,7 +28,7 @@
 
 
 - job-template:
-    name: 'gate-trove-functional-dsvm-{datastore}'
+    name: 'gate-trove-functional-dsvm-{datastore}{branch-designator}'
     node: 'devstack-precise || devstack-trusty'
 
     wrappers:
@@ -56,6 +56,10 @@
           }}
           export -f post_test_hook
 
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
 
