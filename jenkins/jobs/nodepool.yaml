@@ -1,0 +1,53 @@
+- job-template:
+    name: '{pipeline}-dsvm-nodepool{branch-designator}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=120
+          # Disable tempest as nodepool is talking to the cloud not tempest.
+          export DEVSTACK_GATE_TEMPEST=0
+          # Use neutron as the public clouds in use are neutron based.
+          export DEVSTACK_GATE_NEUTRON=1
+          # Override so we get a bare minimum set of base compute services
+          # required to have nodepool function.
+          export OVERRIDE_ENABLED_SERVICES=dstat,g-api,g-reg,key,mysql,n-api,n-cond,n-cpu,n-crt,n-obj,n-sch,q-agt,q-dhcp,q-fwaas,q-l3,q-lbaas,q-meta,q-metering,q-svc,q-vpn,quantum,rabbit,s-account,s-container,s-object,s-proxy
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          # Because we are testing a non standard project, add the
+          # our project repository. This makes zuul do the right
+          # reference magic for testing changes.
+          export PROJECTS="openstack-infra/nodepool $PROJECTS"
+          # note the actual url here is somewhat irrelevant because it
+          # caches in nodepool, however make it a valid url for
+          # documentation purposes.
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin nodepool git://git.openstack.org/openstack-infra/nodepool"
+
+          function post_test_hook {{
+              set -e
+              # Sleep long enough for an image to be built and a slave to be
+              # booted using that image.
+              sleep 15m
+              nodepool image-list | grep ready
+              nodepool list | grep ready
+          }}
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
