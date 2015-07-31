@@ -165,8 +165,10 @@
 
     builders:
       - puppet-prepare-node
-      - revoke-sudo
       - gerrit-git-prep
+      - shell: |
+          sudo gem install bundler --no-rdoc --no-ri --verbose
+      - revoke-sudo
       - shell: |
           export PUPPET_GEM_VERSION='~> {puppet_version}'
           mkdir .bundled_gems
