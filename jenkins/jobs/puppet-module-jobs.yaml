@@ -160,8 +160,8 @@
       - console-log
 
 - job-template:
-    name: 'gate-{name}-puppet-syntax-{puppet_version}'
-    node: '{node}'
+    name: 'gate-{name}-puppet-syntax-{puppet_version}-dsvm-{ostype}'
+    node: 'devstack-{ostype}'
 
     builders:
       - puppet-prepare-node
@@ -211,10 +211,12 @@
     puppet_version:
       - 3
       - 4
+    ostype:
+      - centos7
     jobs:
       - 'gate-{name}-puppet-lint'
       - 'gate-{name}-puppet-syntax'
-      - 'gate-{name}-puppet-syntax-{puppet_version}'
+      - 'gate-{name}-puppet-syntax-{puppet_version}-dsvm-{ostype}'
 
 - job-group:
     name: 'puppet-module-unit'
