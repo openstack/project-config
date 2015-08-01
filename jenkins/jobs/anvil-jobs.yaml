@@ -39,6 +39,7 @@
           pip install -r requirements.txt
           pip freeze
           deactivate
+          ./smithy -a moo --tee-file ./moo.txt
 
           echo "---------"
           echo "Preparing"
@@ -49,8 +50,8 @@
           echo "--------"
           echo "Building"
           echo "--------"
-          ./smithy -a build -o conf/origins/$origin_file \
-                            --tee-file ./build.txt -j1 -v
+          sudo ./smithy -a build -o conf/origins/$origin_file \
+                                  --tee-file ./build.txt -j1 -v
 
           echo ":)"
 
@@ -94,13 +95,6 @@
           ./smithy -a prepare -o conf/origins/$origin_file \
                               -p conf/personas/in-a-box/venv-all.yaml \
                               --tee-file ./prepare.txt -j1 -v
-
-          echo "--------"
-          echo "Building"
-          echo "--------"
-          ./smithy -a build -o conf/origins/$origin_file \
-                            -p conf/personas/in-a-box/venv-all.yaml \
-                            --tee-file ./build.txt -j1 -v
 
           echo ":)"
 
