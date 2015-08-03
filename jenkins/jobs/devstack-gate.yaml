@@ -2287,6 +2287,47 @@
       - console-log
 
 
+- job-template:
+    name: '{pipeline}-tempest-dsvm-neutron-full-ssh{branch-designator}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=120
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_TEMPEST_FULL=1
+          export DEVSTACK_LOCAL_CONFIG="TEMPEST_RUN_VALIDATION=True"
+          export DEVSTACK_GATE_NEUTRON=1
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          # For feature/qos branch, actually enable qos service plugin
+          if [[ "$BRANCH_OVERRIDE" =~ ^feature/qos$ ]] || [[ "$ZUUL_BRANCH" =~ ^feature/qos$ ]] ; then
+              # enable qos service plugin
+              export DEVSTACK_LOCAL_CONFIG="Q_SERVICE_PLUGIN_CLASSES=qos"
+              # also enable qos ml2 extension driver
+              # (port_security is enabled in default gate job)
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_ML2_PLUGIN_EXT_DRIVERS=port_security,qos"
+          fi
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+
 - job:
     name: gate-devstack-gate-unittests
     node: 'bare-precise || bare-trusty'
@@ -2321,6 +2362,7 @@
       - '{pipeline}-tempest-master-dsvm-neutron{branch-designator}'
       - '{pipeline}-tempest-dsvm-neutron-dvr{branch-designator}'
       - '{pipeline}-tempest-dsvm-neutron-full{branch-designator}'
+      - '{pipeline}-tempest-dsvm-neutron-full-ssh{branch-designator}'
       - '{pipeline}-tempest-dsvm-neutron-pg-full{branch-designator}'
       - '{pipeline}-devstack-dsvm-cells{branch-designator}'
       - '{pipeline}-devstack-dsvm-updown{branch-designator}'
