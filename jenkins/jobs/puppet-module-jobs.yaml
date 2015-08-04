@@ -1,11 +1,13 @@
 - job-template:
-    name: 'gate-{name}-puppet-unit-{puppet_version}'
-    node: '{node}'
+    name: 'gate-{name}-puppet-unit-{puppet_version}-dsvm-{ostype}'
+    node: 'devstack-{ostype}'
 
     builders:
       - puppet-prepare-node
-      - revoke-sudo
       - gerrit-git-prep
+      - shell: |
+          sudo gem install bundler --no-rdoc --no-ri --verbose
+      - revoke-sudo
       - shell: |
           if [ "{puppet_version}" != "latest" ]; then
             export PUPPET_GEM_VERSION='~> {puppet_version}.0'
@@ -230,8 +232,10 @@
       - 3.8
       - 4.0
       - 'latest'
+    ostype:
+      - centos7
     jobs:
-      - 'gate-{name}-puppet-unit-{puppet_version}'
+      - 'gate-{name}-puppet-unit-{puppet_version}-dsvm-{ostype}'
 
 - job-group:
     name: 'puppet-beaker-jobs'
