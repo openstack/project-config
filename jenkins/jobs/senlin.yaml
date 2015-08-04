@@ -1,0 +1,38 @@
+- job-template:
+    name: '{pipeline}-senlin-dsvm-functional{branch-designator}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=120
+          export BRANCH_OVERRIDE={branch-override}
+          export PROJECTS="stackforge/senlin $PROJECTS"
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin senlin https://git.openstack.org/stackforge/senlin"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_service sl-api sl-eng"
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+
+          function post_test_hook {{
+              cd /opt/stack/new/senlin/senlin/tests/functional/
+              ./post_test_hook.sh
+          }}
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - test-results
+      - devstack-logs
+      - console-log
