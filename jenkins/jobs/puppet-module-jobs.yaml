@@ -5,8 +5,6 @@
     builders:
       - puppet-prepare-node
       - gerrit-git-prep
-      - shell: |
-          sudo gem install bundler --no-rdoc --no-ri --verbose
       - revoke-sudo
       - shell: |
           if [ "{puppet_version}" != "latest" ]; then
@@ -14,8 +12,9 @@
           fi
           mkdir .bundled_gems
           export GEM_HOME=`pwd`/.bundled_gems
-          bundle install
-          bundle exec rake spec SPEC_OPTS='--format documentation'
+          gem install bundler --no-rdoc --no-ri --verbose
+          $GEM_HOME/bin/bundle install
+          $GEM_HOME/bin/bundle exec rake spec SPEC_OPTS='--format documentation'
 
     wrappers:
       - build-timeout:
@@ -35,17 +34,16 @@
       - puppet-prepare-node
       - gerrit-git-prep
       - allow-local-ssh-root
-      - shell: |
-          sudo gem install bundler --no-rdoc --no-ri --verbose
       - revoke-sudo
       - shell: |
           mkdir .bundled_gems
           export GEM_HOME=`pwd`/.bundled_gems
-          bundle install
+          gem install bundler --no-rdoc --no-ri --verbose
+          $GEM_HOME/bin/bundle install
           export BEAKER_set=nodepool-{ostype}
           export BEAKER_debug=yes
           export BEAKER_color=no
-          bundle exec rspec spec/acceptance
+          $GEM_HOME/bin/bundle exec rspec spec/acceptance
 
     wrappers:
       - build-timeout:
@@ -64,8 +62,6 @@
       - link-logs
       - puppet-prepare-node
       - allow-local-ssh-root
-      - shell: |
-          sudo gem install bundler --no-rdoc --no-ri --verbose
       - revoke-sudo
       - shell: |
           #!/bin/bash -xe
@@ -94,16 +90,18 @@
           export BEAKER_set=nodepool-{ostype}
           export BEAKER_debug=yes
           export BEAKER_color=no
-          bundle install
-          bundle exec rspec spec/acceptance
+          gem install bundler --no-rdoc --no-ri --verbose
+          $GEM_HOME/bin/bundle install
+          $GEM_HOME/bin/bundle exec rspec spec/acceptance
 
           # upgrade and test the current branch
           cd $WORKSPACE/new/$ZUUL_PROJECT
           mkdir -p .bundled_gems
           export GEM_HOME=`pwd`/.bundled_gems
           export BEAKER_provision=no
-          bundle update
-          bundle exec rspec spec/acceptance
+          gem install bundler --no-rdoc --no-ri --verbose
+          $GEM_HOME/bin/bundle update
+          $GEM_HOME/bin/bundle exec rspec spec/acceptance
 
     wrappers:
       - build-timeout:
@@ -168,19 +166,18 @@
     builders:
       - puppet-prepare-node
       - gerrit-git-prep
-      - shell: |
-          sudo gem install bundler --no-rdoc --no-ri --verbose
       - revoke-sudo
       - shell: |
           export PUPPET_GEM_VERSION='~> {puppet_version}'
           mkdir .bundled_gems
           export GEM_HOME=`pwd`/.bundled_gems
-          bundle install
+          gem install bundler --no-rdoc --no-ri --verbose
+          $GEM_HOME/bin/bundle install
           # FUTURE_PARSER=yes is only supported by Puppet 3.x
           if [ "{puppet_version}" -lt "4" ]; then
               export FUTURE_PARSER=yes
           fi
-          bundle exec rake syntax
+          $GEM_HOME/bin/bundle exec rake syntax
 
     publishers:
       - console-log
