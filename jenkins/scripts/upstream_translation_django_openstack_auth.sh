@@ -39,8 +39,6 @@ if ! git diff-index --quiet HEAD --; then
 
     # And zanata, if we have an XML file.
     if [ -f zanata.xml ]; then
-        if ! zanata-cli -B -e push; then
-            echo "Pushing to Zanata failed"
-        fi
+        zanata-cli -B -e push
     fi
 fi

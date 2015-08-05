@@ -50,8 +50,6 @@ if ! git diff-index --quiet HEAD --; then
     # The Zanata client works out what to send based on the XML file, push if
     # we have one.
     if [ -f zanata.xml ]; then
-        if ! zanata-cli -B -e push; then
-            echo "Pushing to Zanata failed"
-        fi
+        zanata-cli -B -e push
     fi
 fi
