@@ -163,8 +163,13 @@ function setup_manuals {
         if [ ${IS_RST} -eq 1 ] ; then
             tox -e generatepot-rst -- ${DOCNAME}
             git add ${DocFolder}/${DOCNAME}/source/locale/${DOCNAME}.pot
+            SLUG=${DOCNAME}
+            if [ $SLUG = "glossary" ] ; then
+                # Transifex reserves glossary as SLUG, we need a different name.
+                SLUG="glossary-1"
+            fi
             # Set auto-local
-            tx set --auto-local -r openstack-manuals-i18n.${DOCNAME} \
+            tx set --auto-local -r openstack-manuals-i18n.${SLUG} \
                 "${DocFolder}/${DOCNAME}/source/locale/<lang>/LC_MESSAGES/${DOCNAME}.po" \
                 --source-lang en \
                 --source-file ${DocFolder}/${DOCNAME}/source/locale/${DOCNAME}.pot \
