@@ -9,7 +9,7 @@
 
 mkdir -p doc/build
 export HUDSON_PUBLISH_DOCS=1
-if [ "`tox -l | grep docs`" = "docs" ]; then
+if [ $(tox --showconfig | grep -c "\[testenv:docs\]") == 1 ]; then
     venv=docs
     tox -e$venv
 else
