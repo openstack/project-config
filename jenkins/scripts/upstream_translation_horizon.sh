@@ -43,8 +43,6 @@ if [ $(git diff --cached | egrep -v "(POT-Creation-Date|^[\+\-]#|^\+{3}|^\-{3})"
 
     # And zanata, if we have a zanata.xml
     if [ -f zanata.xml ]; then
-        if ! zanata-cli -B -e push; then
-            echo "Pushing to Zanata failed"
-        fi
+        zanata-cli -B -e push
     fi
 fi
