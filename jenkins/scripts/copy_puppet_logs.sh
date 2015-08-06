@@ -22,6 +22,8 @@ set -o errexit
 
 LOG_DIR=$WORKSPACE/logs
 
+mkdir $WORKSPACE/logs
+
 # PROJECTS
 #  - for each entry, we will probe /etc/${project} and /var/log/${project}
 #    and copy out files
