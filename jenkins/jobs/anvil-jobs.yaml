@@ -48,18 +48,21 @@
           echo "Preparing"
           echo "---------"
           ./smithy -a prepare -o conf/origins/$origin_file \
-                              --tee-file ./prepare.txt -j1 -v
+                              --tee-file ./prepare.txt -j1 -v \
+                              -d ./openstack
 
           echo "--------"
           echo "Building"
           echo "--------"
           sudo ./smithy -a build -o conf/origins/$origin_file \
-                                  --tee-file ./build.txt -j1 -v
+                                  --tee-file ./build.txt -j1 -v \
+                                  -d ./openstack
 
           echo ":)"
 
     publishers:
-      - zuul-swift-upload-console-log
+      - zuul-swift-upload-logs-with-console:
+          upload_source: 'openstack/deps/output/'
 
 - job-template:
     name: 'gate-anvil-venv-{node}'
@@ -97,7 +100,8 @@
           echo "---------"
           ./smithy -a prepare -o conf/origins/$origin_file \
                               -p conf/personas/in-a-box/venv-all.yaml \
-                              --tee-file ./prepare.txt -j1 -v
+                              --tee-file ./prepare.txt -j1 -v \
+                              -d ./openstack
 
           echo ":)"
 
