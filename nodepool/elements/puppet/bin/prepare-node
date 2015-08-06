@@ -49,7 +49,9 @@ EOF
 # Use detailed exit codes to get that info and determine whether
 # the return code indicates failure.
 set +e
-puppet apply --detailed-exitcodes --modulepath=/opt/build_git/openstack-infra/system-config/modules:/etc/puppet/modules /tmp/local.pp
+puppet apply --detailed-exitcodes --color=false \
+    --modulepath=/opt/build_git/openstack-infra/system-config/modules:/etc/puppet/modules \
+    /tmp/local.pp
 PUPPET_RETURN=$?
 if [ "$PUPPET_RETURN" -eq 4 ] || [ "$PUPPET_RETURN" -eq 6 ] ; then
     exit $PUPPET_RETURN

@@ -108,7 +108,8 @@ sudo /bin/bash /root/system-config/install_modules.sh
 
 set +e
 if [ -z "$NODEPOOL_SSH_KEY" ] ; then
-    sudo puppet apply --detailed-exitcodes --modulepath=/root/system-config/modules:/etc/puppet/modules \
+    sudo puppet apply --detailed-exitcodes --color=false \
+        --modulepath=/root/system-config/modules:/etc/puppet/modules \
         -e "class {'openstack_project::single_use_slave':
                     sudo => $SUDO,
                     thin => $THIN,
@@ -116,7 +117,8 @@ if [ -z "$NODEPOOL_SSH_KEY" ] ; then
             }"
     PUPPET_RET_CODE=$?
 else
-    sudo puppet apply --detailed-exitcodes --modulepath=/root/system-config/modules:/etc/puppet/modules \
+    sudo puppet apply --detailed-exitcodes --color=false \
+        --modulepath=/root/system-config/modules:/etc/puppet/modules \
         -e "class {'openstack_project::single_use_slave':
                     install_users => false,
                     sudo => $SUDO,
