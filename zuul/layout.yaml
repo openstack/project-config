@@ -1568,25 +1568,6 @@ jobs:
   - name: gate-ironic-python-agent-python34
     voting: false
 
-  # Training guides begin
-  # Build XML files only on Icehouse
-  - name: gate-training-guides-tox-checklinks
-    branch: stable/icehouse
-
-  - name: gate-training-guides-tox-checkniceness
-    branch: stable/icehouse
-
-  - name: gate-training-guides-tox-checksyntax
-    branch: stable/icehouse
-
-  - name: gate-training-guides-tox-checkdeletions
-    branch: stable/icehouse
-
-  # slides job will not run on icehouse, only newer releases and master
-  - name: gate-training-guides-tox-slides
-    branch: ^(?!stable/icehouse).*$
-  # Training guides end
-
   # os-ansible-deployment skip for rst/doc files
   - name: ^os-ansible-deployment-(dsvm-check-commit|check-lint)$
     skip-if:
@@ -4902,10 +4883,11 @@ projects:
   - name: openstack/training-guides
     template:
       - name: merge-check
-      - name: openstack-doc-gate
     check:
+      - gate-training-guides-tox-doc-publish-checkbuild
       - gate-training-guides-tox-slides
     gate:
+      - gate-training-guides-tox-doc-publish-checkbuild
       - gate-training-guides-tox-slides
     post:
       - training-guides-tox-doc-publishdocs
