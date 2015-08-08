@@ -602,9 +602,10 @@ jobs:
         all-files-match-any:
           - ^(test-|)requirements.txt$
 
-  # dsvm-neutron jobs should be conditionally skipped so they don't
-  # run in response to changes that do not influence their execution.
-  - name: ^.*(devstack|tempest|grenade|rally|neutron-lbaas)-dsvm.*$
+  # Skip these long-running and expensive devstack jobs when the
+  # change is only to documentation, unit tests or similar components
+  # that won't be exercised by the job anyway.
+  - name: ^.*(devstack|tempest|grenade|rally|swift|neutron-lbaas)-dsvm.*$
     skip-if:
       - project: ^openstack/neutron$
         branch: ^master$
