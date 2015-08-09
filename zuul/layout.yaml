@@ -1582,7 +1582,7 @@ jobs:
     voting: false
 
   # os-ansible-deployment skip for rst/doc files
-  - name: ^os-ansible-deployment-(dsvm-check-commit|check-lint)$
+  - name: ^gate-os-ansible-deployment-(dsvm-commit|lint)$
     skip-if:
       - project: ^stackforge/os-ansible-deployment$
         all-files-match-any:
@@ -7576,10 +7576,10 @@ projects:
     template:
       - name: merge-check
     check:
-      - os-ansible-deployment-check-lint
-      - os-ansible-deployment-dsvm-check-commit
+      - gate-os-ansible-deployment-lint
+      - gate-os-ansible-deployment-dsvm-commit
     gate:
-      - os-ansible-deployment-dsvm-check-commit
+      - gate-os-ansible-deployment-dsvm-commit
 
   - name: stackforge/os-ansible-deployment-specs
     template:
