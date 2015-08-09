@@ -1421,6 +1421,9 @@ jobs:
   - name: ^gate-puppet-.*-puppet-beaker-rspec-dsvm-.*$
     branch: ^(?!stable/(grizzly|havana|icehouse|juno)).*$
 
+  - name: ^gate-puppet-openstack_extras-puppet-beaker-rspec-dsvm-.*$
+    voting: false
+
   # the job aims to test if patches in master don't break kilo branch
   # so we need to run the job on master for now
   - name: ^gate-puppet-.*-puppet-beaker-rspec-upgrade-dsvm-.*$
@@ -4333,6 +4336,11 @@ projects:
       - name: merge-check
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
+    check:
+      - gate-puppet-openstack_extras-puppet-beaker-rspec-dsvm-trusty
+      - gate-puppet-openstack_extras-puppet-beaker-rspec-dsvm-centos7
+      - gate-puppet-openstack_extras-puppet-beaker-rspec-upgrade-dsvm-trusty
+      - gate-puppet-openstack_extras-puppet-beaker-rspec-upgrade-dsvm-centos7
 
   - name: openstack/puppet-openstack-integration
     template:
