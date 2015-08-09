@@ -103,12 +103,12 @@ sudo cp /etc/sudoers $LOG_DIR/sudoers.txt
 # apache logs; including wsgi stuff like horizon, keystone, etc.
 if uses_debs; then
     apache_logs=/var/log/apache2
-    if [[ -d /etc/apache2/sites-enabled ]]; then
+    if [ -d /etc/apache2/sites-enabled ]; then
         sudo cp /etc/apache2/sites-enabled/* $LOG_DIR/apache_config
     fi
 elif is_fedora; then
     apache_logs=/var/log/httpd
-    if [[ -d /etc/apache2/httpd/conf.d ]]; then
+    if [ -d /etc/apache2/httpd/conf.d ]; then
         sudo cp /etc/httpd/conf.d/* $LOG_DIR/apache_config
     fi
 fi
