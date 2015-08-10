@@ -204,6 +204,19 @@
       - gate-{name}-bashate
 
 - project:
+    name: devstack-plugin-hdfs
+    node: 'bare-precise || bare-trusty'
+
+    jobs:
+      - gate-{name}-bashate
+      - '{pipeline}-tempest-dsvm-full-{plugin}{branch-designator}':
+          node: devstack-precise || devstack-trusty
+          pipeline: gate
+          plugin: hdfs
+          plugin-repo: openstack/devstack-plugin-hdfs
+          branch-designator: '-nv'
+
+- project:
     name: devstack-plugin-zmq
     node: 'bare-precise || bare-trusty'
 
