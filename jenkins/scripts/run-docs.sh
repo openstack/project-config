@@ -7,15 +7,11 @@
 # what packages we ended up testing.
 #
 
+venv=venv
+
 mkdir -p doc/build
 export HUDSON_PUBLISH_DOCS=1
-if [ $(tox --showconfig | grep -c "\[testenv:docs\]") == 1 ]; then
-    venv=docs
-    tox -e$venv
-else
-    venv=venv
-    tox -e$venv -- python setup.py build_sphinx
-fi
+tox -e$venv -- python setup.py build_sphinx
 result=$?
 
 [ -e .tox/$venv/bin/pbr ] && freezecmd=pbr || freezecmd=pip
