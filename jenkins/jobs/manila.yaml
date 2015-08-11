@@ -379,3 +379,129 @@
     publishers:
       - devstack-logs
       - console-log
+
+
+- job:
+    name: gate-manila-tempest-dsvm-neutron-glusterfs
+    node: 'devstack-precise || devstack-trusty'
+
+    wrappers:
+      - build-timeout:
+          timeout: 65
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=60
+          export DEVSTACK_GATE_NEUTRON=1
+          export ENABLED_SERVICES=tempest
+          export PROJECTS="stackforge/devstack-plugin-glusterfs $PROJECTS"
+
+          if [[ $ZUUL_BRANCH = "stable/juno" ]]; then
+              # Juno version uses 'hooks' approach that requires explicit
+              # enabling of services.
+              ENABLED_SERVICES+=,manila,m-api,m-shr,m-sch
+          else
+              # Enable manila devstack plugin. Provided repo should be cloned by zuul before devstack run
+              # and below provided link should not be used.
+              export DEVSTACK_LOCAL_CONFIG="enable_plugin manila git://git.openstack.org/openstack/manila"
+          fi
+
+          # Enable devstack-plugin-glusterfs plugin, to install and configure GlusterFS.
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin devstack-plugin-glusterfs git://git.openstack.org/stackforge/devstack-plugin-glusterfs"
+
+          # Configure devstack-plugin-glusterfs to enable GlusterFS as a backend for Manila.
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"CONFIGURE_GLUSTERFS_MANILA=True"
+
+          # Configure devstack-plugin-glusterfs to use glusterfs-native driver.
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"GLUSTERFS_MANILA_DRIVER_TYPE=glusterfs"
+
+          # Keep localrc to be able to set some vars in pre_test_hook
+          export KEEP_LOCALRC=1
+
+          function pre_test_hook {
+              # Configure devstack to run manila installation without handling of share servers
+              source $BASE/new/manila/contrib/ci/pre_test_hook.sh False
+          }
+          export -f pre_test_hook
+
+          function post_test_hook {
+              # Configure and run tempest on singlebackend manila installation
+              source $BASE/new/manila/contrib/ci/post_test_hook.sh singlebackend
+          }
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+
+- job:
+    name: gate-manila-tempest-dsvm-neutron-glusterfs-native
+    node: 'devstack-precise || devstack-trusty'
+
+    wrappers:
+      - build-timeout:
+          timeout: 65
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=60
+          export DEVSTACK_GATE_NEUTRON=1
+          export ENABLED_SERVICES=tempest
+          export PROJECTS="stackforge/devstack-plugin-glusterfs $PROJECTS"
+
+          if [[ $ZUUL_BRANCH = "stable/juno" ]]; then
+              # Juno version uses 'hooks' approach that requires explicit
+              # enabling of services.
+              ENABLED_SERVICES+=,manila,m-api,m-shr,m-sch
+          else
+              # Enable manila devstack plugin. Provided repo should be cloned by zuul before devstack run
+              # and below provided link should not be used.
+              export DEVSTACK_LOCAL_CONFIG="enable_plugin manila git://git.openstack.org/openstack/manila"
+          fi
+
+          # Enable devstack-plugin-glusterfs plugin, to install and configure GlusterFS.
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin devstack-plugin-glusterfs git://git.openstack.org/stackforge/devstack-plugin-glusterfs"
+
+          # Configure devstack-plugin-glusterfs to enable GlusterFS as a backend for Manila.
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"CONFIGURE_GLUSTERFS_MANILA=True"
+
+          # Configure devstack-plugin-glusterfs to use glusterfs-native driver.
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"GLUSTERFS_MANILA_DRIVER_TYPE=glusterfs-native"
+
+          # Keep localrc to be able to set some vars in pre_test_hook
+          export KEEP_LOCALRC=1
+
+          function pre_test_hook {
+              # Configure devstack to run manila installation without handling of share servers
+              source $BASE/new/manila/contrib/ci/pre_test_hook.sh False
+          }
+          export -f pre_test_hook
+
+          function post_test_hook {
+              # Configure and run tempest on singlebackend manila installation
+              source $BASE/new/manila/contrib/ci/post_test_hook.sh singlebackend
+          }
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
