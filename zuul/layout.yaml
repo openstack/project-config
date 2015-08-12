@@ -4948,8 +4948,13 @@ projects:
   - name: openstack/security-doc
     template:
       - name: merge-check
-      - name: openstack-doc-gate
       - name: openstack-doc-translation
+    check:
+      - gate-security-doc-tox-checkniceness
+      - gate-security-doc-tox-doc-publish-checkbuild
+    gate:
+      - gate-security-doc-tox-checkniceness
+      - gate-security-doc-tox-doc-publish-checkbuild
     post:
       - security-doc-tox-doc-publishdocs
 
