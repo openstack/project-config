@@ -31,6 +31,23 @@
 
     node: 'proposal'
 
+- job-template:
+    name: '{name}-propose-translation-update-zanta'
+
+    builders:
+      - revoke-sudo
+      - branch-git-prep:
+          branch: master
+      - shell: |
+          #!/bin/bash -xe
+          /usr/local/jenkins/slave_scripts/propose_translation_update.sh {name} zanata
+
+    publishers:
+      - console-log
+      - proposal-slave-cleanup
+
+    node: 'proposal'
+
 - job:
     name: 'django_openstack_auth-upstream-translation-update'
 
@@ -57,6 +74,23 @@
       - shell: |
           #!/bin/bash -xe
           /usr/local/jenkins/slave_scripts/propose_translation_update_django_openstack_auth.sh
+
+    publishers:
+      - console-log
+      - proposal-slave-cleanup
+
+    node: 'proposal'
+
+- job:
+    name: 'django_openstack_auth-propose-translation-update-zanata'
+
+    builders:
+      - revoke-sudo
+      - branch-git-prep:
+          branch: master
+      - shell: |
+          #!/bin/bash -xe
+          /usr/local/jenkins/slave_scripts/propose_translation_update_django_openstack_auth.sh zanata
 
     publishers:
       - console-log

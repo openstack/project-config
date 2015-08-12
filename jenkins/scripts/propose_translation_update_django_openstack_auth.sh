@@ -12,21 +12,32 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-COMMIT_MSG="Imported Translations from Transifex"
+SOFTWARE="Transifex"
+
+if [ -n "$1" -a "$1" = "zanata" ]; then
+    SOFTWARE="Zanata"
+fi
 
 source /usr/local/jenkins/slave_scripts/common_translation_update.sh
 
 setup_git
 
-setup_review
+setup_review "$SOFTWARE"
 
 # Setup basic connection for transifex.
 setup_translation
 
 setup_django_openstack_auth
 
-# Pull updated translations from Transifex.
-pull_from_transifex
+# Pull updated translations from Transifex, or Zanata.
+case "$SOFTWARE" in
+    Transifex)
+        pull_from_transifex
+        ;;
+    Zanata)
+        pull_from_zanata "openstack_auth"
+        ;;
+esac
 
 # Update the .pot file
 python setup.py extract_messages
