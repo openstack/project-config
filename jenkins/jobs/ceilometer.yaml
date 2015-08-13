@@ -83,6 +83,10 @@
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
 
+          if [ "{backend}" = "postgresql" ] ; then
+              export DEVSTACK_GATE_POSTGRES=1
+          fi
+
           function post_test_hook {{
               # Configure and run functional tests
               $BASE/new/ceilometer/ceilometer/tests/functional/hooks/post_test_hook.sh "{backend}"
