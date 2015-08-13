@@ -112,7 +112,9 @@ elif is_fedora; then
         sudo cp /etc/httpd/conf.d/* $LOG_DIR/apache_config
     fi
 fi
-sudo cp -r ${apache_logs} $LOG_DIR/apache
+if [ -d ${apache_logs} ]; then
+    sudo cp -r ${apache_logs} $LOG_DIR/apache
+fi
 
 # package status
 if [ `command -v dpkg` ]; then
