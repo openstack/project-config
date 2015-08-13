@@ -418,7 +418,17 @@
           # Configure devstack-plugin-glusterfs to enable GlusterFS as a backend for Manila.
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"CONFIGURE_GLUSTERFS_MANILA=True"
 
-          # Configure devstack-plugin-glusterfs to use glusterfs-native driver.
+          # Configure devstack-plugin-glusterfs to disable GlusterFS as a backend for Cinder.
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"CONFIGURE_GLUSTERFS_CINDER=False"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"CINDER_ENABLED_BACKENDS=lvm:lvmdriver-1"
+
+          # Configure devstack-plugin-glusterfs to disable GlusterFS as a backend for Nova.
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"CONFIGURE_GLUSTERFS_NOVA=False"
+
+          # Configure devstack-plugin-glusterfs to disable GlusterFS as a backend for Glance.
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"CONFIGURE_GLUSTERFS_GLANCE=False"
+
+          # Configure devstack-plugin-glusterfs to use glusterfs-nfs driver.
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"GLUSTERFS_MANILA_DRIVER_TYPE=glusterfs"
 
           # Keep localrc to be able to set some vars in pre_test_hook
@@ -426,13 +436,13 @@
 
           function pre_test_hook {
               # Configure devstack to run manila installation without handling of share servers
-              source $BASE/new/manila/contrib/ci/pre_test_hook.sh False
+              source $BASE/new/devstack-plugin-glusterfs/devstack/pre_test_hook.sh
           }
           export -f pre_test_hook
 
           function post_test_hook {
               # Configure and run tempest on singlebackend manila installation
-              source $BASE/new/manila/contrib/ci/post_test_hook.sh singlebackend
+              source $BASE/new/devstack-plugin-glusterfs/devstack/post_test_hook.sh singlebackend
           }
           export -f post_test_hook
 
@@ -481,6 +491,16 @@
           # Configure devstack-plugin-glusterfs to enable GlusterFS as a backend for Manila.
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"CONFIGURE_GLUSTERFS_MANILA=True"
 
+          # Configure devstack-plugin-glusterfs to disable GlusterFS as a backend for Cinder.
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"CONFIGURE_GLUSTERFS_CINDER=False"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"CINDER_ENABLED_BACKENDS=lvm:lvmdriver-1"
+
+          # Configure devstack-plugin-glusterfs to disable GlusterFS as a backend for Nova.
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"CONFIGURE_GLUSTERFS_NOVA=False"
+
+          # Configure devstack-plugin-glusterfs to disable GlusterFS as a backend for Glance.
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"CONFIGURE_GLUSTERFS_GLANCE=False"
+
           # Configure devstack-plugin-glusterfs to use glusterfs-native driver.
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"GLUSTERFS_MANILA_DRIVER_TYPE=glusterfs-native"
 
@@ -489,13 +509,13 @@
 
           function pre_test_hook {
               # Configure devstack to run manila installation without handling of share servers
-              source $BASE/new/manila/contrib/ci/pre_test_hook.sh False
+              source $BASE/new/devstack-plugin-glusterfs/devstack/pre_test_hook.sh
           }
           export -f pre_test_hook
 
           function post_test_hook {
               # Configure and run tempest on singlebackend manila installation
-              source $BASE/new/manila/contrib/ci/post_test_hook.sh singlebackend
+              source $BASE/new/devstack-plugin-glusterfs/devstack/post_test_hook.sh singlebackend
           }
           export -f post_test_hook
 
