@@ -56,7 +56,7 @@ for p in $PROJECTS; do
     if [ -d /etc/$p ]; then
         sudo cp -r /etc/$p $LOG_DIR/etc/
     fi
-    if [ -d $/var/log/$p ]; then
+    if [ -d /var/log/$p ]; then
         sudo cp -r /var/log/$p $LOG_DIR
     fi
 done
