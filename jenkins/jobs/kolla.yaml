@@ -18,3 +18,25 @@
 
     publishers:
       - console-log
+
+
+- job-template:
+    name: '{pipeline}-kolla-build-images-{distro}-{type}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 60
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - gerrit-git-prep
+      - shell: |
+          #!/bin/bash -xe
+          tests/setup_gate.sh
+          tox -e images-{distro}-{type}
+
+    publishers:
+      - console-log
