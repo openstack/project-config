@@ -99,6 +99,7 @@ def set_node_options(item, job, params, default):
     centos6_re = r'^.*-centos6.*$'
     f21_re = r'^.*-f21.*$'
     tripleo_re = r'^.*-tripleo.*$'
+    kolla_image_re = r'^.*-kolla-build-images-.*$'
     devstack_re = r'^.*-dsvm.*$'
     puppetunit_re = (
         r'^gate-(puppet-.*|system-config)-puppet-(lint|syntax|unit).*$')
@@ -109,6 +110,11 @@ def set_node_options(item, job, params, default):
     # Jobs needing python26
     elif re.match(python26_re, job.name):
         # Pass because job specified label is always correct.
+        pass
+    # Kolla build image jobs always have the correct node label.
+    # Put before distro specific overrides as they list distros in
+    # the jobs names unrelated to where job should run.
+    elif re.match(kolla_image_re, job.name):
         pass
     # Jobs needing centos6
     elif re.match(centos6_re, job.name):
