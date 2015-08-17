@@ -104,11 +104,13 @@ sudo cp /etc/sudoers $LOG_DIR/sudoers.txt
 if uses_debs; then
     apache_logs=/var/log/apache2
     if [ -d /etc/apache2/sites-enabled ]; then
+        mkdir $LOG_DIR/apache_config
         sudo cp /etc/apache2/sites-enabled/* $LOG_DIR/apache_config
     fi
 elif is_fedora; then
     apache_logs=/var/log/httpd
-    if [ -d /etc/apache2/httpd/conf.d ]; then
+    if [ -d /etc/httpd/conf.d ]; then
+        mkdir $LOG_DIR/apache_config
         sudo cp /etc/httpd/conf.d/* $LOG_DIR/apache_config
     fi
 fi
