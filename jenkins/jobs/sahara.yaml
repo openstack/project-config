@@ -184,3 +184,55 @@
     publishers:
       - devstack-logs
       - console-log
+
+
+- job-template:
+    name: '{pipeline}-sahara-dsvm-scenario-{network}-{engine}{branch-designator}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=120
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin sahara git://git.openstack.org/openstack/sahara"
+          export DEVSTACK_GATE_TEMPEST=0
+          export DEVSTACK_GATE_EXERCISES=0
+          export DEVSTACK_GATE_INSTALL_TESTONLY=1
+          export KEEP_LOCALRC=1
+
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+
+          if [ "{network}" == "neutron" ] ; then
+              export DEVSTACK_GATE_NEUTRON=1
+          fi
+
+          function pre_test_hook {{
+              cd /opt/stack/new/sahara/tools/gate/scenario
+              ./pre_test_hook.sh {network} {engine}
+          }}
+          export -f pre_test_hook
+
+          function post_test_hook {{
+              cd /opt/stack/new/sahara/tools/gate/scenario
+              ./post_test_hook.sh {network} {engine}
+          }}
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
