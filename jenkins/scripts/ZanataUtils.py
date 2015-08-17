@@ -215,18 +215,6 @@ class ProjectConfig:
             excludes = etree.SubElement(root, 'excludes')
             excludes.text = self.excludes
         tag_prefix = self._get_tag_prefix(root)
-        locale_sub = root.find('%slocales' % tag_prefix)
-        locale_elements = locale_sub.findall('%slocale' % tag_prefix)
-        # Work out which locales are trivially mappable to the names we
-        # typically use (for example, en-gb vs en_GB) and add these mappings
-        # to the configuration.
-        for locale_element in locale_elements:
-            parts = locale_element.text.split('-')
-            if len(parts) > 1:
-                parts[1] = parts[1].upper()
-                locale_element.attrib['map-from'] = '_'.join(parts)
-        # TODO - add hardcoded mappings for additional
-        # language names (for example zh-hans-*) ?
         # Work around https://bugzilla.redhat.com/show_bug.cgi?id=1219624
         # by removing port number in URL if it's there
         url = root.find('%surl' % tag_prefix)
