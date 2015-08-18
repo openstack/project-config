@@ -382,7 +382,7 @@
 
 
 - job:
-    name: gate-manila-tempest-dsvm-neutron-glusterfs
+    name: gate-manila-tempest-dsvm-glusterfs
     node: 'devstack-precise || devstack-trusty'
 
     wrappers:
@@ -428,7 +428,7 @@
           # Configure devstack-plugin-glusterfs to disable GlusterFS as a backend for Glance.
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"CONFIGURE_GLUSTERFS_GLANCE=False"
 
-          # Configure devstack-plugin-glusterfs to use glusterfs-nfs driver.
+          # Configure devstack-plugin-glusterfs to use glusterfs driver.
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"GLUSTERFS_MANILA_DRIVER_TYPE=glusterfs"
 
           # Keep localrc to be able to set some vars in pre_test_hook
@@ -436,13 +436,13 @@
 
           function pre_test_hook {
               # Configure devstack to run manila installation without handling of share servers
-              source $BASE/new/devstack-plugin-glusterfs/devstack/pre_test_hook.sh
+              source $BASE/new/devstack-plugin-glusterfs/manila/pre_test_hook.sh
           }
           export -f pre_test_hook
 
           function post_test_hook {
               # Configure and run tempest on singlebackend manila installation
-              source $BASE/new/devstack-plugin-glusterfs/devstack/post_test_hook.sh singlebackend
+              source $BASE/new/devstack-plugin-glusterfs/manila/post_test_hook.sh singlebackend
           }
           export -f post_test_hook
 
@@ -455,7 +455,7 @@
 
 
 - job:
-    name: gate-manila-tempest-dsvm-neutron-glusterfs-native
+    name: gate-manila-tempest-dsvm-glusterfs-native
     node: 'devstack-precise || devstack-trusty'
 
     wrappers:
@@ -509,13 +509,13 @@
 
           function pre_test_hook {
               # Configure devstack to run manila installation without handling of share servers
-              source $BASE/new/devstack-plugin-glusterfs/devstack/pre_test_hook.sh
+              source $BASE/new/devstack-plugin-glusterfs/manila/pre_test_hook.sh
           }
           export -f pre_test_hook
 
           function post_test_hook {
               # Configure and run tempest on singlebackend manila installation
-              source $BASE/new/devstack-plugin-glusterfs/devstack/post_test_hook.sh singlebackend
+              source $BASE/new/devstack-plugin-glusterfs/manila/post_test_hook.sh singlebackend
           }
           export -f post_test_hook
 
