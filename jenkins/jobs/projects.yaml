@@ -70,7 +70,7 @@
       - python-kilo-bitrot-jobs
       - openstack-publish-jobs
       - translation-jobs
-      - rally-jobs
+      - gate-rally-dsvm-fakevirt-{name}
       - 'gate-tempest-dsvm-ceilometer-{backend}-full{branch-designator}':
           backend: 'mongodb'
           node: 'devstack-trusty'
@@ -131,7 +131,7 @@
       - openstack-publish-jobs
       - gate-{name}-pylint
       - translation-jobs
-      - rally-jobs
+      - gate-rally-dsvm-{name}
 
 - project:
     name: cinder-specs
@@ -173,7 +173,7 @@
       - openstack-publish-jobs
       - pypi-jobs
       - translation-jobs
-      - rally-jobs
+      - gate-rally-dsvm-designate-{name}
       - 'gate-designate-dsvm-{designate-driver}':
           node: 'devstack-precise || devstack-trusty'
           designate-driver:
@@ -278,7 +278,7 @@
       - python-kilo-bitrot-jobs
       - openstack-publish-jobs
       - translation-jobs
-      - rally-jobs
+      - gate-rally-dsvm-{name}
 
 - project:
     name: glance-specs
@@ -386,7 +386,7 @@
       - python-kilo-bitrot-jobs
       - openstack-publish-jobs
       - translation-jobs
-      - rally-jobs
+      - gate-rally-dsvm-fakevirt-{name}
 
 - project:
     name: heat-specs
@@ -571,7 +571,7 @@
       - python-kilo-bitrot-jobs
       - openstack-publish-jobs
       - translation-jobs
-      - rally-jobs
+      - gate-rally-dsvm-{name}
       - 'gate-{name}-tox-{envlist}':
           envlist: bandit
 
@@ -887,7 +887,7 @@
       - python-juno-bitrot-jobs
       - python-kilo-bitrot-jobs
       - openstack-publish-jobs
-      - rally-jobs
+      - gate-rally-dsvm-neutron-{name}
       - translation-jobs
       - '{pipeline}-neutron-dsvm-functional{branch-designator}':
           pipeline: gate
@@ -1248,7 +1248,7 @@
       - python-jobs
       - openstack-publish-jobs
       - translation-jobs
-      - rally-jobs
+      - gate-rally-dsvm-zaqar-{name}
       - '{pipeline}-tempest-dsvm-{backend}-zaqar{branch-designator}':
           pipeline: gate
           node: 'devstack-trusty'
@@ -2781,7 +2781,6 @@
     jobs:
       - python-jobs
       - pypi-jobs
-      - rally-jobs
       - hook-{name}-rtfd
       - gate-rally-install-{node}:
           node: bare-precise
@@ -2801,6 +2800,13 @@
       - gate-rally-dsvm-rally-{service}:
           neutron: 0
           service: nova
+      - gate-rally-dsvm-{name}
+      - gate-rally-dsvm-designate-{name}
+      - gate-rally-dsvm-ironic-{name}
+      - gate-rally-dsvm-murano-{name}
+      - gate-rally-dsvm-mistral-{name}
+      - gate-rally-dsvm-neutron-{name}
+      - gate-rally-dsvm-zaqar-{name}
 
 - project:
     name: releases
