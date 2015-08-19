@@ -476,6 +476,13 @@ project-templates:
       - gate-{name}-puppet-beaker-rspec-dsvm-trusty
       - gate-{name}-puppet-beaker-rspec-dsvm-centos7
 
+  - name: puppet-beaker-jobs-nv
+    check:
+      - gate-{name}-puppet-beaker-rspec-dsvm-trusty-nv
+      - gate-{name}-puppet-beaker-rspec-dsvm-centos7-nv
+      - gate-{name}-puppet-beaker-rspec-upgrade-dsvm-trusty-nv
+      - gate-{name}-puppet-beaker-rspec-upgrade-dsvm-centos7-nv
+
   - name: puppet-openstack-integration-jobs
     check:
       - gate-puppet-openstack-integration-dsvm-trusty
@@ -691,9 +698,6 @@ jobs:
 
   - name: ^gate-puppet-openstack-integration-puppet-.*$
     branch: ^(?!stable/kilo).*$
-
-  - name: ^gate-puppet-zuul-puppet-beaker-rspec-dsvm-.*$
-    voting: false
 
   - name: gate-requirements-integration-dsvm-resolver
     voting: false
@@ -5580,6 +5584,7 @@ projects:
       - name: merge-check
       - name: infra-puppet-check-jobs
       - name: infra-puppet-apply-jobs
+      - name: puppet-beaker-jobs-nv
 
   - name: openstack-infra/puppet-ansible
     template:
@@ -6013,7 +6018,7 @@ projects:
       - name: merge-check
       - name: infra-puppet-check-jobs
       - name: infra-puppet-apply-jobs
-      - name: puppet-beaker-jobs
+      - name: puppet-beaker-jobs-nv
 
   - name: openstack-infra/pypi-mirror
     template:
