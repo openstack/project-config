@@ -130,7 +130,7 @@ def set_node_options(item, job, params, default):
         # Pass because job specified label is always correct.
         pass
     # openstack-ansible jobs
-    elif re.match(openstack_ansible__re, job.name):
+    elif re.match(openstack_ansible_re, job.name):
         # Pass because job specified label is always correct.
         pass
     # Puppet-OpenStack jobs
