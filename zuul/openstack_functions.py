@@ -100,6 +100,7 @@ def set_node_options(item, job, params, default):
     f21_re = r'^.*-f21.*$'
     tripleo_re = r'^.*-tripleo.*$'
     kolla_image_re = r'^.*-kolla-build-images-.*$'
+    openstack_ansible_re = r'^.*-(os-ansible-deployment|openstack-ansible)-.*$'
     devstack_re = r'^.*-dsvm.*$'
     puppetunit_re = (
         r'^gate-(puppet-.*|system-config)-puppet-(lint|syntax|unit).*$')
@@ -126,6 +127,10 @@ def set_node_options(item, job, params, default):
         pass
     # Jobs needing tripleo slaves
     elif re.match(tripleo_re, job.name):
+        # Pass because job specified label is always correct.
+        pass
+    # openstack-ansible jobs
+    elif re.match(openstack_ansible__re, job.name):
         # Pass because job specified label is always correct.
         pass
     # Puppet-OpenStack jobs
