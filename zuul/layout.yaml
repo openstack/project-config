@@ -2090,6 +2090,20 @@ projects:
       - name: python-jobs
       - name: publish-to-pypi
 
+  - name: openstack/instack
+    template:
+      - name: merge-check
+      - name: noop-jobs
+    check-tripleo:
+      - gate-tripleo-ironic-overcloud-f21-nonha
+
+  - name: openstack/instack-undercloud
+    template:
+      - name: merge-check
+      - name: noop-jobs
+    check-tripleo:
+      - gate-tripleo-ironic-overcloud-f21-nonha
+
   - name: openstack/ironic
     template:
       - name: merge-check
@@ -4556,6 +4570,13 @@ projects:
       - name: python-jobs
       - name: publish-to-pypi
 
+  - name: openstack/python-tripleoclient
+    template:
+      - name: merge-check
+      - name: noop-jobs
+    check-tripleo:
+      - gate-tripleo-ironic-overcloud-f21-nonha
+
   - name: openstack/rally
     template:
       - name: merge-check
@@ -4876,6 +4897,16 @@ projects:
       - name: publish-to-pypi
       - name: python-jobs
       - name: python3-jobs
+
+  - name: openstack/tripleo-docs
+    template:
+      - name: merge-check
+    check:
+      - gate-tripleo-docs-docs
+    gate:
+      - gate-tripleo-docs-docs
+    post:
+      - tripleo-docs-docs
 
   - name: openstack/tripleo-heat-templates
     template:
