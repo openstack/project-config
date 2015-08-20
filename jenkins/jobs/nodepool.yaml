@@ -39,12 +39,7 @@
           export DEVSTACK_LOCAL_CONFIG="enable_plugin nodepool git://git.openstack.org/openstack-infra/nodepool"
 
           function post_test_hook {{
-              set -e
-              # Sleep long enough for an image to be built and a slave to be
-              # booted using that image.
-              sleep 15m
-              nodepool image-list | grep ready
-              nodepool list | grep ready
+              /opt/stack/new/nodepool/tools/check_devstack_plugin.sh
           }}
           export -f post_test_hook
 
