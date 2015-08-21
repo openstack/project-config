@@ -183,6 +183,27 @@
       - console-log
 
 - job-template:
+    name: 'gate-puppet-openstack-integration-dsvm-multinode{branch-designator}'
+    node: '{node}'
+
+    builders:
+      - link-logs
+      - zuul-clone:
+          project: openstack/puppet-openstack-integration
+      - shell: |
+          #!/bin/bash -xe
+          cd openstack/puppet-openstack-integration
+          ./run_multinode.sh
+
+    wrappers:
+      - build-timeout:
+          timeout: 60
+      - timestamps
+
+    publishers:
+      - console-log
+
+- job-template:
     name: 'gate-puppet-openstack-integration-dsvm-{ostype}'
     node: 'devstack-{ostype}'
 
