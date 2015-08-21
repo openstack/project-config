@@ -9,4 +9,4 @@ cat >bootstrap/environment.php <<EOF
 });
 EOF
 curl -s https://getcomposer.org/installer | /usr/bin/php
-php composer.phar install --prefer-dist
+php composer.phar install --prefer-dist --ignore-platform-reqs
