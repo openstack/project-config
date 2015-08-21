@@ -1272,6 +1272,10 @@ jobs:
   - name: gate-manila-tempest-dsvm-neutron-glusterfs-native
     voting: false
 
+  - name: gate-manila-tempest-dsvm-neutron-hdfs
+    branch: ^(?!stable/juno).*$
+    voting: false
+
   - name: gate-rally-dsvm-manila-multibackend
     voting: false
 
@@ -2331,6 +2335,7 @@ projects:
       - gate-manila-tempest-dsvm-tempest-plugin
       - gate-manila-tempest-dsvm-neutron-glusterfs
       - gate-manila-tempest-dsvm-neutron-glusterfs-native
+      - gate-manila-tempest-dsvm-neutron-hdfs
 
   - name: openstack/mistral
     template:
@@ -3953,9 +3958,11 @@ projects:
       - name: merge-check
     check:
       - gate-devstack-plugin-hdfs-bashate
-      - gate-tempest-dsvm-full-hdfs-nv
+      - gate-tempest-dsvm-full-hdfs
+      - gate-manila-tempest-dsvm-neutron-hdfs
     gate:
       - gate-devstack-plugin-hdfs-bashate
+      - gate-tempest-dsvm-full-hdfs
 
   - name: openstack/devstack-plugin-zmq
     template:
