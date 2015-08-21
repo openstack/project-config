@@ -91,9 +91,9 @@ function setup_horizon {
     # zanata.xml file.
     if ! /usr/local/jenkins/slave_scripts/create-zanata-xml.py -p $project \
         -v master --srcdir . --txdir . -r 'horizon/*.pot' \
-        'horizon/locale/{locale}/LC_MESSAGES}/{filename}.po' \
+        'horizon/locale/{locale_with_underscore}/LC_MESSAGES}/{filename}.po' \
         -r 'openstack_dashboard/*.pot' \
-        'openstack_dashboard/locale/{locale}/LC_MESSAGES/{filename}.po' \
+        'openstack_dashboard/locale/{locale_with_underscore}/LC_MESSAGES/{filename}.po' \
         -e '.*/**' -f zanata.xml; then
         echo "Failed to generate zanata.xml"
     fi
@@ -170,7 +170,7 @@ function setup_manuals {
                 --source-file ${DocFolder}/${DOCNAME}/source/locale/${DOCNAME}.pot \
                 --minimum-perc=$PERC \
                 -t PO --execute
-            ZANATA_RULES="$ZANATA_RULES -r ${DocFolder}/${DOCNAME}/source/locale/${DOCNAME}.pot ${DocFolder}/${DOCNAME}/source/locale/{locale}/LC_MESSAGES/${DOCNAME}.po"
+            ZANATA_RULES="$ZANATA_RULES -r ${DocFolder}/${DOCNAME}/source/locale/${DOCNAME}.pot ${DocFolder}/${DOCNAME}/source/locale/{locale_with_underscore}/LC_MESSAGES/${DOCNAME}.po"
         else
             # Update the .pot file
             ./tools/generatepot ${DOCNAME}
@@ -188,7 +188,7 @@ function setup_manuals {
                     --source-file ${DocFolder}/${DOCNAME}/locale/${DOCNAME}.pot \
                     --minimum-perc=$PERC \
                     -t PO --execute
-                ZANATA_RULES="$ZANATA_RULES -r ${DocFolder}/${DOCNAME}/locale/${DOCNAME}.pot ${DocFolder}/${DOCNAME}/locale/{locale}.po"
+                ZANATA_RULES="$ZANATA_RULES -r ${DocFolder}/${DOCNAME}/locale/${DOCNAME}.pot ${DocFolder}/${DOCNAME}/locale/{locale_with_underscore}.po"
             fi
         fi
     done
