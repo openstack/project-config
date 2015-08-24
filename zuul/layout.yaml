@@ -1030,9 +1030,6 @@ jobs:
   - name: gate-congress-python34
     voting: false
 
-  - name: gate-cloudkitty-dashboard-python34
-    voting: false
-
   - name: gate-cue-python34
     voting: false
 
@@ -6646,23 +6643,21 @@ projects:
   - name: stackforge/cloudkitty
     template:
       - name: merge-check
-      - name: docs-on-rtfd
+      - name: python-jobs
       - name: python3-jobs
-    check:
-      - gate-cloudkitty-docs
-      - gate-cloudkitty-pep8
-      - gate-cloudkitty-python27
-    gate:
-      - gate-cloudkitty-docs
-      - gate-cloudkitty-pep8
-      - gate-cloudkitty-python27
+      - name: docs-on-rtfd
+      - name: publish-to-pypi
+    post:
+      - cloudkitty-coverage
 
   - name: stackforge/cloudkitty-dashboard
     template:
       - name: merge-check
       - name: python-jobs
-    experimental:
-      - gate-cloudkitty-dashboard-python34
+      - name: python3-jobs
+      - name: publish-to-pypi
+    post:
+      - cloudkitty-dashboard-coverage
 
   - name: stackforge/cloudpulse
     template:
@@ -8004,6 +7999,7 @@ projects:
       - name: merge-check
       - name: python-jobs
       - name: python3-jobs
+      - name: publish-to-pypi
     post:
       - python-cloudkittyclient-coverage
 
