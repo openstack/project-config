@@ -206,7 +206,6 @@
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TIMEOUT=120
           export DEVSTACK_LOCAL_CONFIG="enable_plugin sahara git://git.openstack.org/openstack/sahara"
-          export DEVSTACK_GATE_HEAT=1
           export DEVSTACK_GATE_TEMPEST=0
           export DEVSTACK_GATE_EXERCISES=0
           export DEVSTACK_GATE_INSTALL_TESTONLY=1
@@ -219,6 +218,10 @@
 
           if [ "{network}" == "neutron" ] ; then
               export DEVSTACK_GATE_NEUTRON=1
+          fi
+
+          if [ "{engine}" == "heat" ] ; then
+              export DEVSTACK_GATE_HEAT=1
           fi
 
           function pre_test_hook {{
