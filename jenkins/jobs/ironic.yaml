@@ -62,8 +62,8 @@
           export DEVSTACK_LOCAL_CONFIG="enable_plugin ironic git://git.openstack.org/openstack/ironic"
 
           function post_test_hook {{
-              source $BASE/new/devstack/openrc admin admin
-              (cd /opt/stack/new/python-ironicclient && sudo -H -u stack ./tools/run_functional.sh)
+              # Configure and run functional tests 
+              $BASE/new/python-ironicclient/ironicclient/tests/functional/hooks/post_test_hook.sh
           }}
 
           export -f post_test_hook
