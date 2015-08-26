@@ -37,7 +37,14 @@ if ! git diff-index --quiet HEAD --; then
 
     # Transifex project name does not include "."
     tx_project=${PROJECT/\./}
-    tx --debug --traceback push -s -r ${tx_project}.${tx_project}-translations
+
+    # Only push if there is actual content in the file. We check
+    # that the file contains at least one non-empty msgid string.
+    if grep -q 'msgid "[^"]' ${PROJECT}/locale/${PROJECT}.pot ; then
+        tx --debug --traceback push -s \
+            -r ${tx_project}.${tx_project}-translations
+    fi
+
     for level in $LEVELS ; do
         # Only push if there is actual content in the file. We check
         # that the file contains at least one non-empty msgid string.
