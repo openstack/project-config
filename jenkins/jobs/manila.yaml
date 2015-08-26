@@ -528,7 +528,7 @@
 
 
 - job:
-    name: gate-manila-tempest-dsvm-neutron-hdfs
+    name: gate-manila-tempest-dsvm-hdfs
     node: 'devstack-precise || devstack-trusty'
 
     wrappers:
@@ -560,13 +560,13 @@
 
           function pre_test_hook {
               # Configure devstack to run manila installation without handling of share servers
-              source $BASE/new/devstack-plugin-hdfs/devstack/pre_test_hook.sh
+              source $BASE/new/devstack-plugin-hdfs/manila/pre_test_hook.sh
           }
           export -f pre_test_hook
 
           function post_test_hook {
               # Configure and run tempest on singlebackend manila installation
-              source $BASE/new/devstack-plugin-hdfs/devstack/post_test_hook.sh
+              source $BASE/new/devstack-plugin-hdfs/manila/post_test_hook.sh
           }
           export -f post_test_hook
 
