@@ -126,8 +126,10 @@ if [ `command -v rpm` ]; then
     rpm -qa > $LOG_DIR/rpm-qa.txt
 fi
 
-# system status
+# system status & informations
 df -h > $LOG_DIR/df.txt
+free -m > $LOG_DIR/free.txt
+cat /proc/cpuinfo > $LOG_DIR/cpuinfo.txt
 ps -eo user,pid,ppid,lwp,%cpu,%mem,size,rss,cmd > $LOG_DIR/ps.txt
 
 # Make sure jenkins can read all the logs and configs
