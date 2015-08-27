@@ -118,6 +118,10 @@ if [ -d ${apache_logs} ]; then
     sudo cp -r ${apache_logs} $LOG_DIR/apache
 fi
 
+if [ -d /tmp/openstack/tempest ]; then
+    sudo cp /tmp/openstack/tempest/etc/tempest.conf $LOG_DIR/
+fi
+
 # package status
 if [ `command -v dpkg` ]; then
     dpkg -l> $LOG_DIR/dpkg-l.txt
