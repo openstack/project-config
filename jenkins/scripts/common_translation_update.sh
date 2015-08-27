@@ -194,12 +194,9 @@ function setup_manuals {
     done
     # While we spin up, we want to not error out if we can't generate the
     # zanata.xml file.
-    EXCLUDE='.*/**'
-    if [ "$project" = "openstack-manuals" ]; then
-        EXCLUDE='.*/**,*/source/common/*'
-    fi
+    EXCLUDE='.*/**,**/source/common/**'
     if ! /usr/local/jenkins/slave_scripts/create-zanata-xml.py -p $project \
-        -v master --srcdir . --txdir . $ZANATA_RULES -e $EXCLUDE \
+        -v master --srcdir . --txdir . $ZANATA_RULES -e "$EXCLUDE" \
         -f zanata.xml; then
         echo "Failed to generate zanata.xml"
     fi
