@@ -26,3 +26,33 @@
     publishers:
       - console-log
       - devstack-logs
+
+- job:
+    name: 'gate-bifrost-integration-dibipa-debian-nv'
+    node: 'bare-trusty'
+
+    wrappers:
+      - build-timeout:
+          timeout: 120
+
+    builders:
+      - link-logs
+      - net-info
+      - shell: |
+          #!/bin/bash -eux
+          cd $WORKSPACE
+
+          /usr/zuul-env/bin/zuul-cloner --cache-dir /opt/git \
+            git://git.openstack.org \
+            openstack/bifrost \
+            openstack/diskimage-builder \
+            openstack/ironic \
+            openstack/python-ironicclient \
+            openstack-infra/shade
+          export GIT_BASE=$(pwd)
+          cd openstack/bifrost
+          scripts/test-bifrost-build-images.sh
+
+    publishers:
+      - console-log
+      - devstack-logs
