@@ -1504,6 +1504,9 @@ jobs:
   - name: gate-sdk-dsvm-functional
     voting: false
 
+  - name: ^gate-fuel-agent.*$
+    voting: false
+
   # NOTE(jroll): This job was not working at Juno release.
   - name: ^gate-tempest-dsvm-ironic-agent_ssh$
     branch: ^(?!stable/juno).*$
@@ -6940,7 +6943,13 @@ projects:
   - name: stackforge/fuel-agent
     template:
       - name: merge-check
-      - name: noop-jobs
+    check:
+      - gate-fuel-agent-docs
+      - gate-fuel-agent-pep8
+      - gate-fuel-agent-python26
+      - gate-fuel-agent-python27
+    gate:
+      - noop
 
   - name: stackforge/fuel-astute
     template:
