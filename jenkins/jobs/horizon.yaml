@@ -48,3 +48,17 @@
       - test-results
       - devstack-logs
       - console-log
+
+- job:
+    name: gate-horizon-selenium-headless
+    node: 'bare-precise || bare-trusty'
+
+    builders:
+      - revoke-sudo
+      - gerrit-git-prep
+      - shell: |
+          #!/bin/bash -xe
+          NOSE_WITH_XUNIT=1 tox -evenv -- /bin/bash run_tests.sh -N --only-selenium --selenium-headless
+
+    publishers:
+      - console-log
