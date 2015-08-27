@@ -29,10 +29,10 @@ mv /tmp/forwarding.conf /etc/unbound/
 chown root:root /etc/unbound/forwarding.conf
 chmod a+r /etc/unbound/forwarding.conf
 
-# HPCloud has selinux enabled by default, Rackspace apparently not.
-# Regardless, apply the correct context.
+# If we have selinux install, restore default SELinux contents when ever
+# possible. Currently this only seems relevant for RHEL based DIBs.
 if [ -x /sbin/restorecon ] ; then
-    chcon system_u:object_r:named_conf_t:s0 /etc/unbound/forwarding.conf
+    restorecon -v /etc/unbound/forwarding.conf
 fi
 
 # Overwrite /etc/resolv.conf at boot
