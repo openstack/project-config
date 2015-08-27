@@ -15,6 +15,7 @@
 # limitations under the License.
 
 import argparse
+import re
 import sys
 import yaml
 
@@ -52,6 +53,25 @@ for p in projects:
     if args.verbose:
         print('Checking %s' % name)
     description = p.get('description')
+
+    # *very* simple check for common description mistakes
+    badwords = (
+        # (words), what_words_should_be
+        (('openstack', 'Openstack', 'Open Stack'), 'OpenStack'),
+        (('Devstack', 'devstack'), 'DevStack')
+    )
+    if description:
+        for words, should_be in badwords:
+            for word in words:
+                # look for the bad word hanging out on it's own.  Only
+                # trick is "\b" doesn't consider "-" or '.' as a
+                # word-boundary, so ignore it if it looks like some
+                # sort of job-description (e.g. "foo-devstack-bar") or
+                # a url ("foo.openstack.org")
+                if re.search(r'(?<![-.])\b%s\b' % word, description):
+                    print "Error: %s: should be %s" % (description, should_be)
+                    found_errors += 1
+
     if not description and repo_group in DESCRIPTION_REQUIRED:
         found_errors += 1
         print("Error: Project %s has no description" % name)
