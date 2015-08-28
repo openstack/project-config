@@ -119,7 +119,7 @@ if [ -d ${apache_logs} ]; then
 fi
 
 if [ -d /tmp/openstack/tempest ]; then
-    sudo cp /tmp/openstack/tempest/etc/tempest.conf $LOG_DIR/
+    sudo cp /tmp/openstack/tempest/etc/tempest.conf $LOG_DIR/tempest.conf.txt
 fi
 
 # package status
