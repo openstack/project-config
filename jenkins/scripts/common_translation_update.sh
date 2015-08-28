@@ -46,13 +46,9 @@ function setup_project {
         --source-file ${project}/locale/${project}.pot -t PO \
         --execute
 
-    # While we spin up, we want to not error out if we can't generate the
-    # zanata.xml file.
-    if ! /usr/local/jenkins/slave_scripts/create-zanata-xml.py -p $project \
+    /usr/local/jenkins/slave_scripts/create-zanata-xml.py -p $project \
         -v master --srcdir ${project}/locale --txdir ${project}/locale \
-        -f zanata.xml; then
-        echo "Failed to generate zanata.xml"
-    fi
+        -f zanata.xml
 }
 
 # Setup project horizon for transifex
@@ -87,17 +83,12 @@ function setup_horizon {
         --source-file openstack_dashboard/locale/djangojs.pot \
         -t PO --execute
 
-    # While we spin up, we want to not error out if we can't generate the
-    # zanata.xml file.
-    if ! /usr/local/jenkins/slave_scripts/create-zanata-xml.py -p $project \
+    /usr/local/jenkins/slave_scripts/create-zanata-xml.py -p $project \
         -v master --srcdir . --txdir . -r 'horizon/*.pot' \
         'horizon/locale/{locale_with_underscore}/LC_MESSAGES}/{filename}.po' \
         -r 'openstack_dashboard/*.pot' \
         'openstack_dashboard/locale/{locale_with_underscore}/LC_MESSAGES/{filename}.po' \
-        -e '.*/**' -f zanata.xml; then
-        echo "Failed to generate zanata.xml"
-    fi
-
+        -e '.*/**' -f zanata.xml
 }
 
 # Set global variable DocFolder for manuals projects
@@ -192,15 +183,10 @@ function setup_manuals {
             fi
         fi
     done
-    # While we spin up, we want to not error out if we can't generate the
-    # zanata.xml file.
     EXCLUDE='.*/**,**/source/common/**'
-    if ! /usr/local/jenkins/slave_scripts/create-zanata-xml.py -p $project \
+    /usr/local/jenkins/slave_scripts/create-zanata-xml.py -p $project \
         -v master --srcdir . --txdir . $ZANATA_RULES -e "$EXCLUDE" \
-        -f zanata.xml; then
-        echo "Failed to generate zanata.xml"
-    fi
-
+        -f zanata.xml
 }
 
 # Setup project so that git review works, sets global variable
@@ -344,14 +330,9 @@ function setup_django_openstack_auth {
         --source-file openstack_auth/locale/openstack_auth.pot -t PO \
         --execute
 
-    # While we spin up, we want to not error out if we can't generate the
-    # zanata.xml file.
-    if ! /usr/local/jenkins/slave_scripts/create-zanata-xml.py \
+    /usr/local/jenkins/slave_scripts/create-zanata-xml.py \
         -p django_openstack_auth -v master --srcdir openstack_auth/locale \
-        --txdir openstack_auth/locale -f zanata.xml; then
-        echo "Failed to generate zanata.xml"
-    fi
-
+        --txdir openstack_auth/locale -f zanata.xml
 }
 
 # Filter out files that we do not want to commit
