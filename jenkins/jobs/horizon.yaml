@@ -48,6 +48,17 @@
       - test-results
       - devstack-logs
       - console-log
+      - publish-screenshots
+
+- publisher:
+    name: publish-screenshots
+    publishers:
+      - scp:
+          site: 'static.openstack.org'
+          files:
+            - target: 'logs/$LOG_PATH/screenshots'
+              source: 'integration_tests_screenshots/**'
+              copy-after-failure: true
 
 - job:
     name: gate-horizon-selenium-headless
