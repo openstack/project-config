@@ -2871,16 +2871,16 @@
     name: releases
     node: 'bare-precise || bare-trusty'
     tarball-site: tarballs.openstack.org
-    docroot: governance
+    doc-publisher-site: docs.openstack.org
 
     jobs:
       - 'gate-{name}-docs'
-      - 'static-{name}-publish'
       - 'gate-{name}-tox-{envlist}':
           envlist: validate
       - 'gate-{name}-tox-{envlist}':
           envlist: list-changes
       - gate-{name}-pep8
+      - publish-release-history
 
 - project:
     name: requirements
