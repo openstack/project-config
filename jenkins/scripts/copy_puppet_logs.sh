@@ -91,6 +91,11 @@ if [ -f /var/log/mysql.log ] ; then
     sudo cp /var/log/mysql.log $LOG_DIR/
 fi
 
+# dstat logs
+if [ -f /var/log/dstat.log ] ; then
+    sudo cp /var/log/dstat.log $LOG_DIR/
+fi
+
 # libvirt
 if [ -d /var/log/libvirt ] ; then
     sudo cp -r /var/log/libvirt $LOG_DIR/
