@@ -1,0 +1,37 @@
+# Grenade does not support "python setup.py publish_sphinx", thus
+# we cannot use the normal docs jobs.
+- job:
+    name: grenade-publish-docs
+    node: 'bare-precise || bare-trusty'
+
+    builders:
+      - revoke-sudo
+      - gerrit-git-prep
+      - tox:
+          envlist: 'docs'
+
+    publishers:
+      - ftp:
+          site: 'docs.openstack.org'
+          source: 'doc/build/html/**'
+          target: 'developer/grenade'
+          remove-prefix: 'doc/build/html'
+          excludes: ''
+      - console-log
+      - zuul-swift-upload-console-log
+
+- job:
+    name: gate-grenade-publish-docs
+    node: 'bare-precise || bare-trusty'
+
+    builders:
+      - revoke-sudo
+      - gerrit-git-prep
+      - tox:
+          envlist: 'docs'
+
+    publishers:
+      - console-log
+      - upload-sphinx-draft
+      - zuul-swift-upload-console-log
+      # TODO(jhesketh): Add job for uploading built docs
