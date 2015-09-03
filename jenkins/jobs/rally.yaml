@@ -57,8 +57,10 @@
           export DEVSTACK_GATE_TEMPEST_LARGE_OPS={large_ops}
           export DEVSTACK_GATE_EXERCISES=0
           export DEVSTACK_GATE_TIMEOUT=120
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin rally git://git.openstack.org/openstack/rally"
           export RALLY_SCENARIO={scenario}
+
+          DEVSTACK_LOCAL_CONFIG="enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
+          DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin rally git://git.openstack.org/openstack/rally"
 
           ENABLED_SERVICES=sahara,key,horizon,
           ENABLED_SERVICES+=cinder,c-api,c-vol,c-sch,c-bak
@@ -79,6 +81,7 @@
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin zaqar git://git.openstack.org/openstack/zaqar"
           fi
           export ENABLED_SERVICES
+          export DEVSTACK_LOCAL_CONFIG
 
           function post_test_hook {{
               $BASE/new/rally/tests/ci/rally-gate.sh
@@ -112,9 +115,11 @@
           ENABLED_SERVICES+=ceilometer-anotification,ceilometer-collector,
           ENABLED_SERVICES+=ceilometer-alarm-evaluator,ceilometer-alarm-notifier,
           ENABLED_SERVICES+=designate,designate-api,designate-central,designate-sink,designate-mdns,
-
           export ENABLED_SERVICES
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin rally git://git.openstack.org/openstack/rally"
+
+          DEVSTACK_LOCAL_CONFIG="enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
+          DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin rally git://git.openstack.org/openstack/rally"
+          export DEVSTACK_LOCAL_CONFIG
 
           function pre_test_hook {{
               # Install designate-devstack integration
