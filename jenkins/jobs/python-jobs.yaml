@@ -108,6 +108,28 @@
     node: '{node}'
 
 - job-template:
+    name: 'gate-{name}-python27-constraints'
+
+    wrappers:
+      - build-timeout:
+          timeout: 50
+      - timestamps
+
+    builders:
+      - revoke-sudo
+      - zuul-git-prep-upper-constraints
+      - tox:
+          envlist: py27-constraints
+      - assert-no-extra-files
+
+    publishers:
+      - test-results
+      - console-log
+      - zuul-swift-test-results-with-console
+
+    node: '{node}'
+
+- job-template:
     name: 'gate-{name}-python34'
 
     wrappers:
@@ -129,6 +151,28 @@
     node: '{node}'
 
 - job-template:
+    name: 'gate-{name}-python34-constraints'
+
+    wrappers:
+      - build-timeout:
+          timeout: 40
+      - timestamps
+
+    builders:
+      - revoke-sudo
+      - zuul-git-prep-upper-constraints
+      - tox:
+          envlist: py34-constraints
+      - assert-no-extra-files
+
+    publishers:
+      - test-results
+      - console-log
+      - zuul-swift-test-results-with-console
+
+    node: '{node}'
+
+- job-template:
     name: 'gate-{name}-pypy'
 
     wrappers:
@@ -140,6 +184,28 @@
       - revoke-sudo
       - gerrit-git-prep
       - pypy
+      - assert-no-extra-files
+
+    publishers:
+      - test-results
+      - console-log
+      - zuul-swift-test-results-with-console
+
+    node: '{node}'
+
+- job-template:
+    name: 'gate-{name}-pypy-constraints'
+
+    wrappers:
+      - build-timeout:
+          timeout: 40
+      - timestamps
+
+    builders:
+      - revoke-sudo
+      - zuul-git-prep-upper-constraints
+      - tox:
+          envlist: pypy-constraints
       - assert-no-extra-files
 
     publishers:
@@ -288,3 +354,10 @@
       # pip-missing-reqs isn't standard
       # gate-{name}-tox-{envlist} also isn't standard, but is reserved for
       # projects that want to run specific jobs via tox
+
+- job-group:
+    name: python-constraints-jobs
+    jobs:
+      - 'gate-{name}-python27-constraints'
+      - 'gate-{name}-python34-constraints'
+      - 'gate-{name}-pypy-constraints'

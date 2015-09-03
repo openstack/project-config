@@ -257,6 +257,12 @@ project-templates:
     post:
       - '{name}-branch-tarball'
 
+  - name: python-constraints-jobs
+    check:
+      - 'gate-{name}-python27-constraints'
+    gate:
+      - 'gate-{name}-python27-constraints'
+
   - name: grenade
     check:
       - 'gate-grenade-dsvm'
@@ -310,6 +316,12 @@ project-templates:
     gate:
       - 'gate-{name}-python34'
 
+  - name: python3-constraints-jobs
+    check:
+      - 'gate-{name}-python34-constraints'
+    gate:
+      - 'gate-{name}-python34-constraints'
+
   # Python 2.6 is deprecated, these jobs will be removed once no
   # OpenStack projects needs it (once Juno is retired).
   - name: python26-jobs
@@ -325,6 +337,12 @@ project-templates:
     # Readd it once the job is voting again.
     # gate:
     #  - 'gate-{name}-pypy'
+
+  - name: pypy-constraints-jobs
+    check:
+      - 'gate-{name}-pypy-constraints'
+    gate:
+      - 'gate-{name}-pypy-constraints'
 
   - name: openstack-server-publish-jobs
     post:
@@ -1716,6 +1734,12 @@ jobs:
 
   - name: gate-tempest-dsvm-neutron-large-ops-liberty
     branch: master
+
+  # Constraints Jobs
+  - name: ^gate-.*-py(?:thon\d\d|py)-constraints$
+    branch: ^(?!stable/(?:juno|kilo)).*$
+
+  # End Constraints Jobs
 
 # The project list is grouped by type of project, and within each
 # group, projects are sorted (mostly) alphabetically.
