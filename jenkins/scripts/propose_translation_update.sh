@@ -42,7 +42,7 @@ case "$SOFTWARE" in
         pull_from_transifex
         ;;
     Zanata)
-        pull_from_zanata "$PROJECT"
+        pull_from_zanata
         ;;
 esac
 
