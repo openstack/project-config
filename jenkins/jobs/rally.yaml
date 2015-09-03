@@ -76,22 +76,8 @@
               ENABLED_SERVICES+=ironic,ir-api,ir-cond,
           fi
           export ENABLED_SERVICES
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin rally git://git.openstack.org/openstack/rally"
 
-          # TODO(mrostecki): Remove this if statement after implementing
-          # Devstack plugin in Rally.
-          if [ -d $BASE/new/rally/devstack ]; then
-              # New-style Devstack integration
-              export DEVSTACK_LOCAL_CONFIG="enable_plugin rally git://git.openstack.org/openstack/rally"
-          else
-              # Old-style Devstack integration
-              ENABLED_SERVICES+=rally,
-
-              function pre_test_hook {{
-                  # Install rally-devstack integration
-                  cp -r $BASE/new/rally/contrib/devstack/* $BASE/new/devstack/
-              }}
-              export -f pre_test_hook
-          fi
           function post_test_hook {{
               $BASE/new/rally/tests/ci/rally-gate.sh
           }}
@@ -126,30 +112,13 @@
           ENABLED_SERVICES+=designate,designate-api,designate-central,designate-sink,designate-mdns,
 
           export ENABLED_SERVICES
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin rally git://git.openstack.org/openstack/rally"
 
-          # TODO(mrostecki): Remove this if statement after implementing
-          # Devstack plugin in Rally.
-          if [ -d $BASE/new/rally/devstack ]; then
-              # New-style Devstack integration
-              export DEVSTACK_LOCAL_CONFIG="enable_plugin rally git://git.openstack.org/openstack/rally"
-
-              function pre_test_hook {{
-                  # Install designate-devstack integration
-                  cd /opt/stack/new/designate/contrib/devstack
-                  ./pre_test_hook.sh
-              }}
-          else
-              # Old-style Devstack integration
-              ENABLED_SERVICES+=rally,
-
-              function pre_test_hook {{
-                  # Install rally-devstack integration
-                  cp -r $BASE/new/rally/contrib/devstack/* $BASE/new/devstack/
-                  # Install designate-devstack integration
-                  cd /opt/stack/new/designate/contrib/devstack
-                  ./pre_test_hook.sh
-              }}
-          fi
+          function pre_test_hook {{
+              # Install designate-devstack integration
+              cd /opt/stack/new/designate/contrib/devstack
+              ./pre_test_hook.sh
+          }}
           export -f pre_test_hook
 
           function post_test_hook {{
@@ -179,27 +148,13 @@
           # Keep localrc to be able to set some vars in pre_test_hook
           export KEEP_LOCALRC=1
 
-          # TODO(mrostecki): Remove this if statement after implementing
-          # Devstack plugin in Rally.
-          if [ -d $BASE/new/rally/devstack ]; then
-              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin rally git://git.openstack.org/openstack/rally"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin rally git://git.openstack.org/openstack/rally"
 
-              function pre_test_hook {{
-                  # Install manila-devstack integration
-                  # 'dhss' means 'drivers handle share servers'
-                  source $BASE/new/manila/contrib/ci/pre_test_hook.sh {dhss}
-              }}
-          else
-              # Old-style Devstack integration
-              export ENABLED_SERVICES=rally,
-              function pre_test_hook {{
-                  # Install rally-devstack integration
-                  cp -r $BASE/new/rally/contrib/devstack/* $BASE/new/devstack/
-                  # Install manila-devstack integration
-                  # 'dhss' means 'drivers handle share servers'
-                  source $BASE/new/manila/contrib/ci/pre_test_hook.sh {dhss}
-              }}
-          fi
+          function pre_test_hook {{
+              # Install manila-devstack integration
+              # 'dhss' means 'drivers handle share servers'
+              source $BASE/new/manila/contrib/ci/pre_test_hook.sh {dhss}
+          }}
           export -f pre_test_hook
 
           function post_test_hook {{
@@ -272,30 +227,13 @@
           ENABLED_SERVICES=h-api,h-api-cfn,h-api-cw,h-eng,heat,
           ENABLED_SERVICES+=murano,murano-api,murano-engine,
           export ENABLED_SERVICES
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin rally git://git.openstack.org/openstack/rally"
 
-          # TODO(mrostecki): Remove this if statement after implementing
-          # Devstack plugin in Rally.
-          if [ -d $BASE/new/rally/devstack ]; then
-              # New-style Devstack integration
-              export DEVSTACK_LOCAL_CONFIG="enable_plugin rally git://git.openstack.org/openstack/rally"
-
-              function pre_test_hook {{
-                  # Install murano-devstack integration
-                  cd /opt/stack/new/murano/functionaltests
-                  ./pre_test_hook.sh
-              }}
-          else
-              # Old-style Devstack integration
-              ENABLED_SERVICES+=rally,
-
-              function pre_test_hook {{
-                  # Install rally-devstack integration
-                  cp -r $BASE/new/rally/contrib/devstack/* $BASE/new/devstack/
-                  # Install murano-devstack integration
-                  cd /opt/stack/new/murano/functionaltests
-                  ./pre_test_hook.sh
-              }}
-          fi
+          function pre_test_hook {{
+              # Install murano-devstack integration
+              cd /opt/stack/new/murano/functionaltests
+              ./pre_test_hook.sh
+          }}
           export -f pre_test_hook
 
           function post_test_hook {{
@@ -326,30 +264,13 @@
           export RALLY_SCENARIO={scenario}
 
           export ENABLED_SERVICES=mistral,h-api,h-api-cfn,h-api-cw,h-eng,heat,
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin rally git://git.openstack.org/openstack/rally"
 
-          # TODO(mrostecki): Remove this if statement after implementing
-          # Devstack plugin in Rally.
-          if [ -d $BASE/new/rally/devstack ]; then
-              # New-style Devstack integration
-              export DEVSTACK_LOCAL_CONFIG="enable_plugin rally git://git.openstack.org/openstack/rally"
-
-              function pre_test_hook {{
-                  # Install mistral-devstack integration
-                  cd /opt/stack/new/mistral/functionaltests
-                  ./pre_test_hook.sh
-              }}
-          else
-              # Old-style Devstack integration
-              ENABLED_SERVICES+=rally,
-
-              function pre_test_hook {{
-                  # Install rally-devstack integration
-                  cp -r $BASE/new/rally/contrib/devstack/* $BASE/new/devstack/
-                  # Install mistral-devstack integration
-                  cd /opt/stack/new/mistral/functionaltests
-                  ./pre_test_hook.sh
-              }}
-          fi
+          function pre_test_hook {{
+              # Install mistral-devstack integration
+              cd /opt/stack/new/mistral/functionaltests
+              ./pre_test_hook.sh
+          }}
           export -f pre_test_hook
 
           function post_test_hook {{
@@ -650,22 +571,7 @@
       - shell: |
           #/bin/bash -xe
           export PROJECTS="openstack/rally $PROJECTS"
-
-          # TODO(mrostecki): Remove this if statement after implementing
-          # Devstack plugin in Rally.
-          if [ -d $BASE/new/rally/devstack ]; then
-              # New-style Devstack integration
-              export DEVSTACK_LOCAL_CONFIG="enable_plugin rally git://git.openstack.org/openstack/rally"
-          else
-              # Old-style Devstack integration
-              export ENABLED_SERVICES=rally,
-
-              function pre_test_hook {
-                  # Install rally-devstack integration
-                  cp -r $BASE/new/rally/contrib/devstack/* $BASE/new/devstack/
-              }
-              export -f pre_test_hook
-          fi
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin rally git://git.openstack.org/openstack/rally"
 
           function post_test_hook {
               cd $BASE/new/rally
@@ -711,22 +617,7 @@
           export PROJECTS="openstack/rally $PROJECTS"
           export DEVSTACK_GATE_EXERCISES=0
           export DEVSTACK_GATE_TIMEOUT=120
-
-          # TODO(mrostecki): Remove this if statement after implementing
-          # Devstack plugin in Rally.
-          if [ -d $BASE/new/rally/devstack ]; then
-              # New-style Devstack integration
-              export DEVSTACK_LOCAL_CONFIG="enable_plugin rally git://git.openstack.org/openstack/rally"
-          else
-              # Old-style Devstack integration
-              export ENABLED_SERVICES=rally,
-
-              function pre_test_hook {
-                  # Install rally-devstack integration
-                  cp -r $BASE/new/rally/contrib/devstack/* $BASE/new/devstack/
-              }
-              export -f pre_test_hook
-          fi
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin rally git://git.openstack.org/openstack/rally"
 
           function post_test_hook {
               $BASE/new/rally/tests/ci/rally-verify.sh
