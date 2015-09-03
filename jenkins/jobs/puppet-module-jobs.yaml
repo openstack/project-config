@@ -26,6 +26,44 @@
 
 
 - job-template:
+    name: 'gate-{name}-puppet-unit-dsvm-{ostype}'
+    node: 'devstack-{ostype}'
+
+    builders:
+      - puppet-prepare-node
+      - gerrit-git-prep
+      - revoke-sudo
+      - shell: |
+          #!/bin/bash -xe
+          RESULT=0
+          for PUPPET_VERSION in {puppet_unit_version}; do
+              if [ "$PUPPET_VERSION" != "latest" ]; then
+                export PUPPET_GEM_VERSION="~> $PUPPET_VERSION.0"
+              fi
+              mkdir .bundled_gems_$PUPPET_VERSION
+              export GEM_HOME=`pwd`/.bundled_gems_$PUPPET_VERSION
+              gem install bundler --no-rdoc --no-ri --verbose
+              $GEM_HOME/bin/bundle install
+              set +e
+              $GEM_HOME/bin/bundle exec rake spec SPEC_OPTS='--format documentation'
+              OUT=$?
+              set -e
+              if [ "$OUT" -gt "0" ]; then
+                RESULT=1
+              fi
+          done
+          exit $RESULT
+
+    wrappers:
+      - build-timeout:
+          timeout: 60
+      - timestamps
+
+    publishers:
+      - console-log
+
+
+- job-template:
     name: 'gate-{name}-puppet-beaker-rspec-dsvm-{ostype}{branch-designator}'
     node: 'devstack-{ostype}'
 
@@ -251,10 +289,12 @@
       - 3.8
       - 4.0
       - 'latest'
+    puppet_unit_version: '3.3 3.4 3.6 3.7 3.8 4.0 latest'
     ostype:
       - centos7
     jobs:
       - 'gate-{name}-puppet-unit-{puppet_version}-dsvm-{ostype}'
+      - 'gate-{name}-puppet-unit-dsvm-{ostype}'
 
 - job-group:
     name: 'puppet-beaker-jobs'
