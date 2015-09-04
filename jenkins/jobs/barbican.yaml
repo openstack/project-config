@@ -79,7 +79,7 @@
       - console-log
 
 - job:
-    name: gate-barbican-devstack-dsvm-new-plugin
+    name: gate-barbican-devstack-dsvm-new
     node: 'devstack-precise || devstack-trusty'
 
     wrappers:
@@ -96,6 +96,45 @@
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TIMEOUT=60
           export ENABLED_SERVICES=tempest,keystone
+          export PROJECTS="openstack/barbican $PROJECTS"
+          export PROJECTS="openstack/python-barbicanclient $PROJECTS"
+
+          function gate_hook {
+              $BASE/new/barbican/devstack/gate_hook.sh
+          }
+          export -f gate_hook
+
+          function post_test_hook {
+              cd /opt/stack/new/barbican/functionaltests
+              ./post_test_hook.sh
+          }
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job:
+    name: gate-barbican-dogtag-devstack-dsvm-f21-new
+    node: 'devstack-f21'
+
+    wrappers:
+      - build-timeout:
+          timeout: 65
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=60
+          export ENABLED_SERVICES=barbican-dogtag,tempest,keystone
           export PROJECTS="openstack/barbican $PROJECTS"
           export PROJECTS="openstack/python-barbicanclient $PROJECTS"
 
