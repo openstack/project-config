@@ -1,0 +1,20 @@
+# This job is meant to be used *only* by the openstack/releases
+# repository for publishing the release history after building the
+# documentation in that repository.
+- job-template:
+    name: publish-release-history
+    node: '{node}'
+
+    builders:
+        - revoke-sudo
+        - gerrit-git-prep
+        - docs
+
+    publishers:
+        - console-log
+        - ftp:
+            site: '{doc-publisher-site}'
+            source: 'doc/build/html/**'
+            target: 'releases'
+            remove-prefix: 'doc/build/html'
+            excludes: ''
