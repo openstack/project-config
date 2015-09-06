@@ -217,3 +217,16 @@
       - zuul-swift-upload-logs-with-console:
           upload_source: 'output/*'
 
+- job:
+    name: gate-infra-ansible
+    node: 'bare-precise || bare-trusty'
+
+    builders:
+      - ansible-prep
+      - ansible-lint-prep
+      - revoke-sudo
+      - gerrit-git-prep
+      - run-tests
+
+    publishers:
+      - console-log
