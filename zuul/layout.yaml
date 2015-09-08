@@ -4829,6 +4829,30 @@ projects:
       - gate-rally-dsvm-designate-rally
       - gate-rally-dsvm-zaqar-rally
 
+  - name: openstack/refstack
+    template:
+      - name: merge-check
+      - name: javascript-jobs
+    check:
+      - gate-refstack-pep8
+      - gate-refstack-python27
+      - gate-refstack-python34
+    gate:
+      - gate-refstack-pep8
+      - gate-refstack-python27
+
+  - name: openstack/refstack-client
+    template:
+      - name: merge-check
+    check:
+      - gate-refstack-client-pep8
+      - gate-refstack-client-python27
+    gate:
+      - gate-refstack-client-pep8
+      - gate-refstack-client-python27
+    post:
+      - refstack-client-coverage
+
   - name: openstack/releases
     template:
       - name: merge-check
@@ -8440,30 +8464,6 @@ projects:
     template:
       - name: merge-check
       - name: noop-jobs
-
-  - name: stackforge/refstack
-    template:
-      - name: merge-check
-      - name: javascript-jobs
-    check:
-      - gate-refstack-pep8
-      - gate-refstack-python27
-      - gate-refstack-python34
-    gate:
-      - gate-refstack-pep8
-      - gate-refstack-python27
-
-  - name: stackforge/refstack-client
-    template:
-      - name: merge-check
-    check:
-      - gate-refstack-client-pep8
-      - gate-refstack-client-python27
-    gate:
-      - gate-refstack-client-pep8
-      - gate-refstack-client-python27
-    post:
-      - refstack-client-coverage
 
   - name: stackforge/requests-mock
     template:
