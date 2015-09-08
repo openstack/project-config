@@ -589,18 +589,13 @@ project-templates:
 
   - name: check-tripleo-jobs
     check-tripleo:
-      - gate-tripleo-ironic-overcloud-f21-nonha
-      - gate-tripleo-ironic-overcloud-f21puppet-nonha
-
-  - name: check-tripleo-puppet-jobs
-    check-tripleo:
-      - gate-tripleo-ironic-overcloud-f21puppet-nonha
-      - gate-tripleo-ironic-overcloud-f21puppet-ha
       - gate-tripleo-ironic-overcloud-f21puppet-ceph
+      - gate-tripleo-ironic-overcloud-f21puppet-ha
+      - gate-tripleo-ironic-overcloud-f21puppet-nonha
 
   - name: experimental-tripleo-jobs
     experimental-tripleo:
-      - gate-tripleo-ironic-overcloud-f21-nonha
+      - gate-tripleo-ironic-overcloud-f21puppet-nonha
 
   - name: javascript-jobs
     check:
@@ -2207,15 +2202,13 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-    check-tripleo:
-      - gate-tripleo-ironic-overcloud-f21-nonha
+      - name: check-tripleo-jobs
 
   - name: openstack/instack-undercloud
     template:
       - name: merge-check
       - name: python-jobs
-    check-tripleo:
-      - gate-tripleo-ironic-overcloud-f21-nonha
+      - name: check-tripleo-jobs
 
   - name: openstack/ironic
     template:
@@ -4268,12 +4261,13 @@ projects:
       - name: merge-check
       - name: check-requirements
       - name: publish-to-pypi
-      - name: check-tripleo-jobs
     check:
       - gate-dib-dsvm-functests-devstack-trusty
       - gate-dib-dsvm-functests-devstack-centos7
       - gate-dib-dsvm-functests-devstack-f21
       - gate-tempest-dsvm-ironic-pxe_ssh-dib
+    check-tripleo:
+      - gate-tripleo-ironic-overcloud-f21puppet-nonha
     gate:
       - gate-dib-dsvm-functests-devstack-trusty
       - gate-dib-dsvm-functests-devstack-centos7
@@ -4290,12 +4284,13 @@ projects:
       - name: publish-to-pypi
       - name: python-jobs
       - name: python3-jobs
-      - name: check-tripleo-jobs
     check:
       - gate-dib-dsvm-functests-devstack-trusty
       - gate-dib-dsvm-functests-devstack-centos7
       - gate-dib-dsvm-functests-devstack-f21
       - gate-tempest-dsvm-ironic-pxe_ssh-dib
+    check-tripleo:
+      - gate-tripleo-ironic-overcloud-f21puppet-nonha
     gate:
       - gate-dib-dsvm-functests-devstack-trusty
       - gate-dib-dsvm-functests-devstack-centos7
@@ -4864,7 +4859,7 @@ projects:
       - name: merge-check
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
-      - name: check-tripleo-puppet-jobs
+      - name: check-tripleo-jobs
 
   - name: openstack/puppet-trove
     template:
@@ -4921,8 +4916,7 @@ projects:
       - name: python-jobs
       - name: check-requirements
       - name: publish-to-pypi
-    check-tripleo:
-      - gate-tripleo-ironic-overcloud-f21-nonha
+      - name: check-tripleo-jobs
 
   - name: openstack/rally
     template:
@@ -5306,9 +5300,6 @@ projects:
       - name: publish-to-pypi
       - name: noop-jobs
       - name: check-tripleo-jobs
-    check-tripleo:
-      - gate-tripleo-ironic-overcloud-f21puppet-ha
-      - gate-tripleo-ironic-overcloud-f21puppet-ceph
     post:
       - tripleo-heat-templates-branch-tarball
 
@@ -5327,8 +5318,6 @@ projects:
       - name: check-tripleo-jobs
     check:
       - gate-tripleo-incubator-docs
-    check-tripleo:
-      - gate-tripleo-ironic-overcloud-f21puppet-ha
     gate:
       - gate-tripleo-incubator-docs
     post:
@@ -5342,7 +5331,7 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: check-tripleo-puppet-jobs
+      - name: check-tripleo-jobs
 
   - name: openstack/tripleo-specs
     template:
@@ -6746,9 +6735,6 @@ projects:
       - name: merge-check
       - name: noop-jobs
       - name: check-tripleo-jobs
-    check-tripleo:
-      - gate-tripleo-ironic-overcloud-f21puppet-ha
-      - gate-tripleo-ironic-overcloud-f21puppet-ceph
 
   - name: openstack-infra/trystack-site
     template:
