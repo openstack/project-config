@@ -84,9 +84,9 @@ function setup_horizon {
         -t PO --execute
 
     /usr/local/jenkins/slave_scripts/create-zanata-xml.py -p $project \
-        -v master --srcdir . --txdir . -r 'horizon/*.pot' \
+        -v master --srcdir . --txdir . -r './horizon/locale/*.pot' \
         'horizon/locale/{locale_with_underscore}/LC_MESSAGES/{filename}.po' \
-        -r 'openstack_dashboard/*.pot' \
+        -r './openstack_dashboard/locale/*.pot' \
         'openstack_dashboard/locale/{locale_with_underscore}/LC_MESSAGES/{filename}.po' \
         -e '.*/**' -f zanata.xml
 }
