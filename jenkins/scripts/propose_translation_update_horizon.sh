@@ -12,16 +12,29 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+SOFTWARE="Transifex"
+
+if [ -n "$1" -a "$1" = "zanata" ]; then
+    SOFTWARE="Zanata"
+fi
+
 source /usr/local/jenkins/slave_scripts/common_translation_update.sh
 
 setup_git
 
-setup_review
+setup_review "$SOFTWARE"
 setup_translation
 setup_horizon
 
-# Pull updated translations from Transifex.
-pull_from_transifex
+# Pull updated translations from Transifex, or Zanata.
+case "$SOFTWARE" in
+    Transifex)
+        pull_from_transifex
+        ;;
+    Zanata)
+        pull_from_zanata
+        ;;
+esac
 
 # Invoke run_tests.sh to update the po files
 # Or else, "../manage.py makemessages" can be used.

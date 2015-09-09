@@ -35,7 +35,7 @@ case "$SOFTWARE" in
         pull_from_transifex
         ;;
     Zanata)
-        pull_from_zanata "openstack_auth"
+        pull_from_zanata
         ;;
 esac
 

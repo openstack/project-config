@@ -131,6 +131,23 @@
 
     node: 'proposal'
 
+- job:
+    name: 'horizon-propose-translation-update-zanata'
+
+    builders:
+      - revoke-sudo
+      - branch-git-prep:
+          branch: master
+      - shell: |
+          #!/bin/bash -xe
+          /usr/local/jenkins/slave_scripts/propose_translation_update_horizon.sh zanata
+
+    publishers:
+      - console-log
+      - proposal-slave-cleanup
+
+    node: 'proposal'
+
 - job-template:
     name: '{name}-manuals-upstream-translation-update'
 
@@ -164,6 +181,23 @@
 
     node: 'proposal'
 
+- job-template:
+    name: '{name}-manuals-propose-translation-update-zanata'
+
+    builders:
+      - revoke-sudo
+      - branch-git-prep:
+          branch: master
+      - shell: |
+          #!/bin/bash -xe
+          /usr/local/jenkins/slave_scripts/propose_translation_update_manuals.sh {name} zanata
+
+    publishers:
+      - console-log
+      - proposal-slave-cleanup
+
+    node: 'proposal'
+
 - job-group:
     name: translation-jobs
     jobs:
@@ -171,10 +205,26 @@
       - '{name}-propose-translation-update'
 
 - job-group:
+    name: translation-jobs-zanata
+    jobs:
+      - '{name}-upstream-translation-update'
+      - '{name}-propose-translation-update-zanata'
+
+- job-group:
     name: manual-translation-jobs
     jobs:
       - '{name}-manuals-upstream-translation-update'
       - '{name}-manuals-propose-translation-update'
+      - 'gate-{name}-tox-{envlist}':
+          envlist: checklang
+      - '{name}-tox-doc-{envlist}':
+          envlist: publishlang
+
+- job-group:
+    name: manual-translation-jobs-zanata
+    jobs:
+      - '{name}-manuals-upstream-translation-update'
+      - '{name}-manuals-propose-translation-update-zanata'
       - 'gate-{name}-tox-{envlist}':
           envlist: checklang
       - '{name}-tox-doc-{envlist}':
