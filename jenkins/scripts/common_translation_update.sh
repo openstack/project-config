@@ -96,8 +96,10 @@ function init_manuals {
     project=$1
 
     DocFolder="doc"
+    ZanataDocFolder="./doc"
     if [ $project = "api-site" -o $project = "security-doc" ] ; then
         DocFolder="./"
+        ZanataDocFolder="."
     fi
 }
 
@@ -161,7 +163,7 @@ function setup_manuals {
                 --source-file ${DocFolder}/${DOCNAME}/source/locale/${DOCNAME}.pot \
                 --minimum-perc=$PERC \
                 -t PO --execute
-            ZANATA_RULES="$ZANATA_RULES -r ${DocFolder}/${DOCNAME}/source/locale/${DOCNAME}.pot ${DocFolder}/${DOCNAME}/source/locale/{locale_with_underscore}/LC_MESSAGES/${DOCNAME}.po"
+            ZANATA_RULES="$ZANATA_RULES -r ${ZanataDocFolder}/${DOCNAME}/source/locale/${DOCNAME}.pot ${DocFolder}/${DOCNAME}/source/locale/{locale_with_underscore}/LC_MESSAGES/${DOCNAME}.po"
         else
             # Update the .pot file
             ./tools/generatepot ${DOCNAME}
@@ -179,7 +181,7 @@ function setup_manuals {
                     --source-file ${DocFolder}/${DOCNAME}/locale/${DOCNAME}.pot \
                     --minimum-perc=$PERC \
                     -t PO --execute
-                ZANATA_RULES="$ZANATA_RULES -r ${DocFolder}/${DOCNAME}/locale/${DOCNAME}.pot ${DocFolder}/${DOCNAME}/locale/{locale_with_underscore}.po"
+                ZANATA_RULES="$ZANATA_RULES -r ${ZanataDocFolder}/${DOCNAME}/locale/${DOCNAME}.pot ${DocFolder}/${DOCNAME}/locale/{locale_with_underscore}.po"
             fi
         fi
     done
