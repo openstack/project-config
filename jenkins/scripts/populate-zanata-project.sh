@@ -33,11 +33,15 @@ case "$PROJECT" in
         ;;
     *)
         setup_project "$PROJECT"
+        setup_loglevel_vars
+        setup_loglevel_project "$PROJECT"
         ;;
 esac
 
 # Download all files from transifex
 tx pull -a -f --minimum-perc=0
+# Grab any new translations that may have been made in zanata
+zanata-cli -B -e pull
 
 # And upload them to Zanata
 zanata-cli -B -e push --push-type both
