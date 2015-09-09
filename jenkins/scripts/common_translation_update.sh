@@ -332,7 +332,8 @@ function setup_django_openstack_auth {
 
     /usr/local/jenkins/slave_scripts/create-zanata-xml.py \
         -p django_openstack_auth -v master --srcdir openstack_auth/locale \
-        --txdir openstack_auth/locale -f zanata.xml
+        --txdir openstack_auth/locale -r '**/*.pot' \
+        '{locale_with_underscore}/LC_MESSAGES/django.po' -f zanata.xml
 }
 
 # Filter out files that we do not want to commit
