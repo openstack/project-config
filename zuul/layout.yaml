@@ -395,11 +395,28 @@ project-templates:
     periodic:
       - '{name}-manuals-propose-translation-update'
 
+  - name: openstack-doc-translation-zanata
+    check:
+      - 'gate-{name}-tox-checklang'
+    gate:
+      - 'gate-{name}-tox-checklang'
+    post:
+      - '{name}-manuals-upstream-translation-update'
+      - '{name}-tox-doc-publishlang'
+    periodic:
+      - '{name}-manuals-propose-translation-update-zanata'
+
   - name: translation-jobs
     post:
       - '{name}-upstream-translation-update'
     periodic:
       - '{name}-propose-translation-update'
+
+  - name: translation-jobs-zanata
+    post:
+      - '{name}-upstream-translation-update'
+    periodic:
+      - '{name}-propose-translation-update-zanata'
 
   - name: infra-publish-jobs
     check:
