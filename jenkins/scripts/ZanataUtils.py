@@ -62,7 +62,7 @@ class IniConfig:
 
 
 class ZanataRestService:
-    def __init__(self, zconfig, content_type='application/xml'):
+    def __init__(self, zconfig, content_type='application/xml', verify=True):
         self.url = zconfig.url
         if "charset" not in content_type:
             content_type = "%s;charset=utf8" % content_type
@@ -70,14 +70,16 @@ class ZanataRestService:
                         'Content-Type': content_type,
                         'X-Auth-User': zconfig.username,
                         'X-Auth-Token': zconfig.key}
+        self.verify = verify
 
     def _construct_url(self, url_fragment):
         return urljoin(self.url, url_fragment)
 
-    def query(self, url_fragment, verify=False, raise_errors=True):
+    def query(self, url_fragment, raise_errors=True):
         request_url = self._construct_url(url_fragment)
         try:
-            r = requests.get(request_url, verify=verify, headers=self.headers)
+            r = requests.get(request_url, verify=self.verify,
+                             headers=self.headers)
         except requests.exceptions.ConnectionError:
             raise ValueError('Connection error')
         if raise_errors and r.status_code != 200:
@@ -87,10 +89,10 @@ class ZanataRestService:
             raise ValueError('Did not recieve any data from %s' % request_url)
         return r
 
-    def push(self, url_fragment, data, verify=False):
+    def push(self, url_fragment, data):
         request_url = self._construct_url(url_fragment)
         try:
-            return requests.put(request_url, verify=verify,
+            return requests.put(request_url, verify=self.verify,
                                 headers=self.headers, data=json.dumps(data))
         except requests.exceptions.ConnectionError:
             raise ValueError('Connection error')
@@ -108,8 +110,8 @@ class ProjectConfig:
     xmlfile (str): path to zanata.xml to read or write
     rules (list): list of two-ples with pattern and rules
     """
-    def __init__(self, zconfig, xmlfile, rules, **kwargs):
-        self.rest_service = ZanataRestService(zconfig)
+    def __init__(self, zconfig, xmlfile, rules, verify, **kwargs):
+        self.rest_service = ZanataRestService(zconfig, verify=verify)
         self.xmlfile = xmlfile
         self.rules = self._parse_rules(rules)
         if os.path.isfile(os.path.abspath(xmlfile)):
@@ -181,7 +183,7 @@ class ProjectConfig:
         """
         r = self.rest_service.query(
             '/rest/projects/p/%s/iterations/i/%s/config'
-            % (self.project, self.version), verify=verify)
+            % (self.project, self.version))
         project_config = r.content
         p = etree.XMLParser(remove_blank_text=True)
         try:

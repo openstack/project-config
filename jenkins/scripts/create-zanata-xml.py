@@ -33,6 +33,8 @@ def get_args():
                         'match .pot files to translations. Can be specified '
                         'multiple times, and if no rules are specified a '
                         'default will be used.')
+    parser.add_argument('--no-verify', action='store_false', dest='verify',
+                        help='Do not perform HTTPS certificate verification')
     parser.add_argument('-f', '--file', required=True)
     return parser.parse_args()
 
@@ -44,7 +46,7 @@ def main():
     rules = args.rule or [default_rule]
     try:
         zc = IniConfig(os.path.expanduser('~/.config/zanata.ini'))
-        ProjectConfig(zc, args.file, rules, project=args.project,
+        ProjectConfig(zc, args.file, rules, args.verify, project=args.project,
                       version=args.version,
                       srcdir=args.srcdir, txdir=args.txdir,
                       excludes=args.excludes)
