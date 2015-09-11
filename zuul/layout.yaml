@@ -1077,7 +1077,7 @@ jobs:
       - '^.*requirements.txt$'
       - '^.*requirements-py[2,3].txt$'
 
-  - name: gate-apps-catalog-python34
+  - name: gate-app-catalog-python34
     voting: false
 
   - name: barbican-coverage
@@ -4001,6 +4001,21 @@ projects:
     gate:
       - gate-api-wg-python27
 
+  - name: openstack/app-catalog
+    template:
+      - name: merge-check
+      - name: python-jobs
+    check:
+      - gate-app-catalog-python34
+      - gate-app-catalog-npm-run-lint
+    gate:
+      - gate-app-catalog-npm-run-lint
+
+  - name: openstack/app-catalog-ui
+    template:
+      - name: merge-check
+      - name: noop-jobs
+
   - name: openstack/bandit
     template:
       - name: merge-check
@@ -6734,21 +6749,6 @@ projects:
       - gate-anvil-venv-bare-trusty
       - gate-anvil-rpms-dsvm-devstack-centos7
       - gate-anvil-pylint
-
-  - name: stackforge/apps-catalog
-    template:
-      - name: merge-check
-      - name: python-jobs
-    check:
-      - gate-apps-catalog-python34
-      - gate-apps-catalog-npm-run-lint
-    gate:
-      - gate-apps-catalog-npm-run-lint
-
-  - name: stackforge/apps-catalog-ui
-    template:
-      - name: merge-check
-      - name: noop-jobs
 
   - name: stackforge/aviator
     template:
