@@ -2401,6 +2401,27 @@ projects:
     check:
       - gate-kuryr-requirements
 
+  - name: openstack/magnetodb
+    template:
+      - name: merge-check
+      - name: publish-to-pypi
+      - name: docs-on-rtfd
+    check:
+      - gate-magnetodb-pep8
+      - gate-magnetodb-python27
+      - gate-magnetodb-docs
+      - gate-magnetodb-requirements
+      - gate-magnetodb-devstack-dsvm
+      - gate-magnetodb-cassandra-tox
+    gate:
+      - gate-magnetodb-pep8
+      - gate-magnetodb-python27
+      - gate-magnetodb-docs
+      - gate-magnetodb-devstack-dsvm
+      - gate-magnetodb-cassandra-tox
+    post:
+      - magnetodb-branch-tarball
+
   - name: openstack/magnum
     template:
       - name: merge-check
@@ -3315,6 +3336,17 @@ projects:
       - name: publish-to-pypi
     post:
       - python-kiteclient-coverage
+
+  - name: openstack/python-magnetodbclient
+    template:
+      - name: merge-check
+      - name: check-requirements
+      - name: docs-on-rtfd
+      - name: python-jobs
+    pre-release:
+      - python-magnetodbclient-tarball
+    release:
+      - python-magnetodbclient-tarball
 
   - name: openstack/python-magnumclient
     template:
@@ -4264,6 +4296,12 @@ projects:
       - gate-tempest-dsvm-ironic-pxe_ipa-src
     post:
       - ironic-python-agent-buildimage-coreos
+
+  - name: openstack/magnetodb-specs
+    template:
+      - name: merge-check
+      - name: stackforge-specs-jobs
+      - name: docs-on-rtfd
 
   - name: openstack/manila-image-elements
     template:
@@ -7676,32 +7714,6 @@ projects:
     check:
       - logaas-coverage
 
-  - name: stackforge/magnetodb
-    template:
-      - name: merge-check
-      - name: publish-to-pypi
-      - name: docs-on-rtfd
-    check:
-      - gate-magnetodb-pep8
-      - gate-magnetodb-python27
-      - gate-magnetodb-docs
-      - gate-magnetodb-requirements
-      - gate-magnetodb-devstack-dsvm
-      - gate-magnetodb-cassandra-tox
-    gate:
-      - gate-magnetodb-pep8
-      - gate-magnetodb-python27
-      - gate-magnetodb-docs
-      - gate-magnetodb-devstack-dsvm
-    post:
-      - magnetodb-branch-tarball
-
-  - name: stackforge/magnetodb-specs
-    template:
-      - name: merge-check
-      - name: stackforge-specs-jobs
-      - name: docs-on-rtfd
-
   - name: stackforge/mercador-pub
     template:
       - name: merge-check
@@ -8312,17 +8324,6 @@ projects:
     post:
       - python-libraclient-coverage
       - python-libraclient-branch-tarball
-
-  - name: stackforge/python-magnetodbclient
-    template:
-      - name: merge-check
-      - name: check-requirements
-      - name: docs-on-rtfd
-      - name: python-jobs
-    pre-release:
-      - python-magnetodbclient-tarball
-    release:
-      - python-magnetodbclient-tarball
 
   - name: stackforge/python-mercadorclient
     template:
