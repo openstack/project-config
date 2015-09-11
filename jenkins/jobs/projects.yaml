@@ -2421,6 +2421,29 @@
       - openstack-publish-jobs
 
 - project:
+    name: openstack-ansible
+    node: 'bare-precise || bare-trusty'
+    doc-publisher-site: docs.openstack.org
+
+    jobs:
+      - openstack-publish-jobs
+      - 'gate-{name}-docs'
+      - 'gate-{name}-lint'
+      - 'gate-{name}-dsvm-commit{branch-designator}':
+          node: 'devstack-trusty'
+          branch-designator: ''
+      - 'gate-{name}-dsvm-commit{branch-designator}':
+          node: 'ubuntu-trusty'
+          branch-designator: '-nv'
+
+- project:
+    name: openstack-ansible-specs
+    node: 'bare-precise || bare-trusty'
+
+    jobs:
+      - specs-jobs
+
+- project:
     name: openstack-chef-repo
     node: 'bare-precise || bare-trusty'
 
@@ -5769,28 +5792,6 @@
 
     jobs:
       - gate-{name}-pep8
-
-- project:
-    name: os-ansible-deployment
-    node: 'bare-precise || bare-trusty'
-
-    jobs:
-      - 'gate-{name}-docs'
-      - 'gate-{name}-lint'
-      - 'gate-{name}-dsvm-commit{branch-designator}':
-          node: 'devstack-trusty'
-          branch-designator: ''
-      - 'gate-{name}-dsvm-commit{branch-designator}':
-          node: 'ubuntu-trusty'
-          branch-designator: '-nv'
-      - hook-{name}-rtfd
-
-- project:
-    name: os-ansible-deployment-specs
-    node: 'bare-precise || bare-trusty'
-
-    jobs:
-      - specs-jobs
 
 - project:
     name: osprofiler

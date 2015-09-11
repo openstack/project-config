@@ -1668,10 +1668,10 @@ jobs:
   - name: gate-glance-python34
     branch: ^(?!stable/(?:juno|kilo)).*$
 
-  # os-ansible-deployment skip for rst/doc files
-  - name: ^gate-os-ansible-deployment-(dsvm-commit|lint)$
+  # openstack-ansible skip for rst/doc files
+  - name: ^gate-openstack-ansible-(dsvm-commit|lint)$
     skip-if:
-      - project: ^stackforge/os-ansible-deployment$
+      - project: ^openstack/openstack-ansible$
         all-files-match-any:
           - ^.*\.rst$
           - ^doc/.*
@@ -4327,6 +4327,27 @@ projects:
     template:
       - name: merge-check
       - name: noop-jobs
+
+  # note that these jobs use an in-repo script for execution
+  # in order to cater for differing requirements per branch
+  - name: openstack/openstack-ansible
+    template:
+      - name: merge-check
+      - name: openstack-server-publish-jobs
+    check:
+      - gate-openstack-ansible-docs
+      - gate-openstack-ansible-lint
+      - gate-openstack-ansible-dsvm-commit
+    experimental:
+      - gate-openstack-ansible-dsvm-commit-nv
+    gate:
+      - gate-openstack-ansible-docs
+      - gate-openstack-ansible-dsvm-commit
+
+  - name: openstack/openstack-ansible-specs
+    template:
+      - name: merge-check
+      - name: openstack-specs-jobs
 
   - name: openstack/openstack-chef-repo
     template:
@@ -8050,27 +8071,6 @@ projects:
     template:
       - name: merge-check
       - name: noop-jobs
-
-  # note that these jobs use an in-repo script for execution
-  # in order to cater for differing requirements per branch
-  - name: stackforge/os-ansible-deployment
-    template:
-      - name: merge-check
-      - name: docs-on-rtfd
-    check:
-      - gate-os-ansible-deployment-docs
-      - gate-os-ansible-deployment-lint
-      - gate-os-ansible-deployment-dsvm-commit
-    experimental:
-      - gate-os-ansible-deployment-dsvm-commit-nv
-    gate:
-      - gate-os-ansible-deployment-docs
-      - gate-os-ansible-deployment-dsvm-commit
-
-  - name: stackforge/os-ansible-deployment-specs
-    template:
-      - name: merge-check
-      - name: stackforge-specs-jobs
 
   - name: stackforge/osprofiler
     template:

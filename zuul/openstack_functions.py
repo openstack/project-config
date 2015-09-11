@@ -100,7 +100,7 @@ def set_node_options(item, job, params, default):
     f21_re = r'^.*-f21.*$'
     tripleo_re = r'^.*-tripleo.*$'
     kolla_image_re = r'^.*-kolla-build-images-.*$'
-    openstack_ansible_re = r'^.*-(os-ansible-deployment|openstack-ansible)-.*$'
+    openstack_ansible_re = r'^.*-openstack-ansible-.*$'
     devstack_re = r'^.*-dsvm.*$'
     puppetunit_re = (
         r'^gate-(puppet-.*|system-config)-puppet-(lint|syntax|unit).*$')
