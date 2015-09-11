@@ -206,10 +206,10 @@ EOF
     set -e
     git review -s
 
-    # See if there is an open change in the transifex/translations
+    # See if there is an open change in the zanata/translations
     # topic. If so, get the change id for the existing change for use
     # in the commit msg.
-    change_info=$(ssh -p 29418 proposal-bot@review.openstack.org gerrit query --current-patch-set status:open project:$FULL_PROJECT topic:transifex/translations owner:proposal-bot)
+    change_info=$(ssh -p 29418 proposal-bot@review.openstack.org gerrit query --current-patch-set status:open project:$FULL_PROJECT topic:zanata/translations owner:proposal-bot)
     previous=$(echo "$change_info" | grep "^  number:" | awk '{print $2}')
     if [ -n "$previous" ]; then
         change_id=$(echo "$change_info" | grep "^change" | awk '{print $2}')
@@ -269,7 +269,7 @@ function send_patch {
         git commit -F- <<EOF
 $COMMIT_MSG
 EOF
-        git review -t transifex/translations
+        git review -t zanata/translations
 
     fi
 }
