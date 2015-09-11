@@ -2924,6 +2924,53 @@ projects:
       - name: check-requirements
       - name: translation-jobs
 
+  - name: openstack/solum
+    template:
+      - name: merge-check
+      - name: python-jobs
+      - name: check-requirements
+      - name: openstack-server-publish-jobs
+      - name: pypy-jobs
+    check:
+      - gate-solum-python34
+      - gate-solum-devstack-dsvm
+      - gate-solum-devstack-dsvm-centos7
+    gate:
+      - gate-solum-devstack-dsvm
+    post:
+      - solum-coverage
+    pre-release:
+      - solum-tarball
+    release:
+      - solum-tarball
+
+  - name: openstack/solum-dashboard
+    template:
+      - name: merge-check
+      - name: python-jobs
+      - name: check-requirements
+      - name: publish-to-pypi
+      - name: pypy-jobs
+    post:
+      - solum-dashboard-coverage
+
+  - name: openstack/solum-infra-guestagent
+    template:
+      - name: merge-check
+      - name: python-jobs
+      - name: check-requirements
+      - name: publish-to-pypi
+      - name: pypy-jobs
+    check:
+      - gate-solum-infra-guestagent-python34
+    post:
+      - solum-infra-guestagent-coverage
+
+  - name: openstack/solum-specs
+    template:
+      - name: merge-check
+      - name: openstack-specs-jobs
+
   - name: openstack/swift
     template:
       - name: merge-check
@@ -3258,7 +3305,6 @@ projects:
     experimental:
       - gate-python-keystoneclient-kerberos-python34
 
-
   - name: openstack/python-kiteclient
     template:
       - name: merge-check
@@ -3404,6 +3450,17 @@ projects:
       - python-saharaclient-coverage
     experimental:
        - gate-python-saharaclient-pypy
+
+  - name: openstack/python-solumclient
+    template:
+      - name: merge-check
+      - name: python-jobs
+      - name: python3-jobs
+      - name: check-requirements
+      - name: publish-to-pypi
+      - name: pypy-jobs
+    post:
+      - python-solumclient-coverage
 
   - name: openstack/python-swiftclient
     template:
@@ -5190,6 +5247,7 @@ projects:
       - gate-security-doc-tox-doc-publish-checkbuild
     post:
       - security-doc-tox-doc-publishdocs
+
 
   - name: openstack/training-guides
     template:
@@ -8341,17 +8399,6 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
 
-  - name: stackforge/python-solumclient
-    template:
-      - name: merge-check
-      - name: python-jobs
-      - name: python3-jobs
-      - name: check-requirements
-      - name: publish-to-pypi
-      - name: pypy-jobs
-    post:
-      - python-solumclient-coverage
-
   - name: stackforge/python-sticksclient
     template:
       - name: merge-check
@@ -8505,53 +8552,6 @@ projects:
       - name: python-jobs
       - name: python3-jobs
       - name: publish-to-pypi
-
-  - name: stackforge/solum
-    template:
-      - name: merge-check
-      - name: python-jobs
-      - name: check-requirements
-      - name: docs-on-rtfd
-      - name: pypy-jobs
-    check:
-      - gate-solum-python34
-      - gate-solum-devstack-dsvm
-      - gate-solum-devstack-dsvm-centos7
-    gate:
-      - gate-solum-devstack-dsvm
-    post:
-      - solum-coverage
-    pre-release:
-      - solum-tarball
-    release:
-      - solum-tarball
-
-  - name: stackforge/solum-dashboard
-    template:
-      - name: merge-check
-      - name: python-jobs
-      - name: check-requirements
-      - name: publish-to-pypi
-      - name: pypy-jobs
-    post:
-      - solum-dashboard-coverage
-
-  - name: stackforge/solum-infra-guestagent
-    template:
-      - name: merge-check
-      - name: python-jobs
-      - name: check-requirements
-      - name: publish-to-pypi
-      - name: pypy-jobs
-    check:
-      - gate-solum-infra-guestagent-python34
-    post:
-      - solum-infra-guestagent-coverage
-
-  - name: stackforge/solum-specs
-    template:
-      - name: merge-check
-      - name: stackforge-specs-jobs
 
   - name: stackforge/sphinxcontrib-docbookrestapi
     template:
