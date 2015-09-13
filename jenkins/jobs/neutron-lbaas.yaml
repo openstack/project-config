@@ -24,6 +24,8 @@
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
+          export PROJECTS="openstack/barbican $PROJECTS"
+          export PROJECTS="openstack/python-barbicanclient $PROJECTS"
 
           function gate_hook {{
               $BASE/new/neutron-lbaas/neutron_lbaas/tests/contrib/gate_hook.sh {lbaasversion} {lbaastest}
