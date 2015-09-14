@@ -19,12 +19,7 @@
           export PROJECTS="openstack/mistral $PROJECTS"
           export PROJECTS="openstack/mistral-dashboard $PROJECTS"
           export PROJECTS="openstack/python-mistralclient $PROJECTS"
-
-          function pre_test_hook {
-              cd /opt/stack/new/mistral/functionaltests
-              ./pre_test_hook.sh
-          }
-          export -f pre_test_hook
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin mistral https://git.openstack.org/openstack/mistral"
 
           function post_test_hook {
               cd /opt/stack/new/mistral/functionaltests
