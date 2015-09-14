@@ -646,7 +646,7 @@ jobs:
   # Skip these long-running and expensive devstack jobs when the
   # change is only to documentation, unit tests or similar components
   # that won't be exercised by the job anyway.
-  - name: ^.*(devstack|tempest|grenade|rally|swift|neutron-lbaas)-dsvm.*$
+  - name: ^.*(devstack|tempest|grenade|rally|swift|neutron-lbaas|ironic-inspector)-dsvm.*$
     skip-if:
       - project: ^openstack/neutron$
         all-files-match-any:
@@ -667,6 +667,13 @@ jobs:
           - ^.*\.rst$
           - ^doc/.*$
           - ^nova/tests/.*$
+          - ^tools/.*$
+          - ^tox.ini$
+      - project: ^openstack/ironic$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+          - ^ironic/tests/.*$
           - ^tools/.*$
           - ^tox.ini$
       - project: ^openstack/tempest$
@@ -705,6 +712,13 @@ jobs:
   - name: ^.*nova-(tox-functional|python27|python34)$
     skip-if:
       - project: ^openstack/nova$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+  # Skip non-doc jobs for doc-only ironic changes.
+  - name: ^.*ironic-(pep8|python27|python34)$
+    skip-if:
+      - project: ^openstack/ironic$
         all-files-match-any:
           - ^.*\.rst$
           - ^doc/.*$
