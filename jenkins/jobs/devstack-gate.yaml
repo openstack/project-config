@@ -2110,12 +2110,6 @@
 # tempest-dsvm-full-ceph-src-{name} - run a devstack ceph tempest job,
 # but use the zuul git ref for name instead of the released library
 # version.
-#
-# Purpose: this allows libraries to test their proposed commits to
-# ensure they don't break OpenStack on their next release. It is
-# expected to eventually be part of all library jobs in OpenStack, as
-# the main tempest-dsvm jobs will be using only released versions of
-# libraries.
 - job-template:
     name: '{pipeline}-tempest-dsvm-full-ceph-src-{name}{branch-designator}'
     node: '{node}'
@@ -2184,6 +2178,43 @@
     publishers:
       - devstack-logs
       - console-log
+
+# tempest-dsvm-full-lio-src-{name} - run a devstack LVM/LIO tempest job,
+# but use the zuul git ref for name instead of the released library
+# version.
+- job-template:
+    name: '{pipeline}-tempest-dsvm-full-lio-src-{name}{branch-designator}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=120
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_TEMPEST_FULL=1
+          export DEVSTACK_LOCAL_CONFIG="CINDER_ISCSI_HELPER=lioadm"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"CINDER_LVM_TYPE=thin"
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          export DEVSTACK_PROJECT_FROM_GIT={name}
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
 
 
 # A template for any project with a devstack-plugin to run the full
