@@ -14,7 +14,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-# The script is to push the updated English po to Transifex.
+# The script is to push the updated PoT to Zanata.
 
 if ! echo $ZUUL_REFNAME | grep master; then
     exit 0
@@ -34,11 +34,6 @@ python setup.py extract_messages
 git add openstack_auth/locale/*
 
 if ! git diff-index --quiet HEAD --; then
-    # Push .pot changes to transifex
-    tx --debug --traceback push -s
-
-    # And zanata, if we have an XML file.
-    if [ -f zanata.xml ]; then
-        zanata-cli -B -e push
-    fi
+    # The Zanata client works out what to send based on the zanata.xml file.
+    zanata-cli -B -e push
 fi

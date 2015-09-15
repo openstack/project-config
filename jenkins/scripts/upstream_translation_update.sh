@@ -33,30 +33,6 @@ extract_messages_log "$PROJECT"
 git add $PROJECT/locale/*
 
 if ! git diff-index --quiet HEAD --; then
-    # Push .pot changes to transifex
-
-    # Transifex project name does not include "."
-    tx_project=${PROJECT/\./}
-
-    # Only push if there is actual content in the file. We check
-    # that the file contains at least one non-empty msgid string.
-    if grep -q 'msgid "[^"]' ${PROJECT}/locale/${PROJECT}.pot ; then
-        tx --debug --traceback push -s \
-            -r ${tx_project}.${tx_project}-translations
-    fi
-
-    for level in $LEVELS ; do
-        # Only push if there is actual content in the file. We check
-        # that the file contains at least one non-empty msgid string.
-        if grep -q 'msgid "[^"]' ${PROJECT}/locale/${PROJECT}-log-${level}.pot
-        then
-            tx --debug --traceback push -s \
-                -r ${tx_project}.${tx_project}-log-${level}-translations
-        fi
-    done
-    # The Zanata client works out what to send based on the XML file, push if
-    # we have one.
-    if [ -f zanata.xml ]; then
-        zanata-cli -B -e push
-    fi
+    # The Zanata client works out what to send based on the zanata.xml file.
+    zanata-cli -B -e push
 fi

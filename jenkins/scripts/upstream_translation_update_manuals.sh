@@ -14,7 +14,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-# The script is to push the updated PoT to Transifex.
+# The script is to push the updated PoT to Zanata.
 
 PROJECT=$1
 
@@ -32,11 +32,6 @@ setup_translation
 setup_manuals "$PROJECT"
 
 if ! git diff --cached --quiet HEAD --; then
-    # Push .pot changes to transifex
-    tx --debug --traceback push -s
-
-    # And zanata, if we have an XML file.
-    if [ -f zanata.xml ]; then
-        zanata-cli -B -e push
-    fi
+    # The Zanata client works out what to send based on the zanata.xml file.
+    zanata-cli -B -e push
 fi
