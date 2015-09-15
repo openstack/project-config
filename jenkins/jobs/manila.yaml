@@ -156,7 +156,7 @@
 
 
 - job:
-    name: gate-manila-tempest-dsvm-neutron-no-share-servers
+    name: gate-manila-tempest-dsvm-neutron-no-share-servers-multibackend
     node: 'devstack-precise || devstack-trusty'
 
     wrappers:
@@ -195,8 +195,8 @@
           export -f pre_test_hook
 
           function post_test_hook {
-              # Configure and run tempest on singlebackend manila installation
-              source $BASE/new/manila/contrib/ci/post_test_hook.sh singlebackend
+              # Configure and run tempest on multibackend manila installation
+              source $BASE/new/manila/contrib/ci/post_test_hook.sh multibackend
           }
           export -f post_test_hook
 
@@ -260,7 +260,7 @@
       - console-log
 
 - job:
-    name: gate-manila-tempest-dsvm-neutron-scenario
+    name: gate-manila-tempest-dsvm-neutron-scenario-multibackend
     node: 'devstack-precise || devstack-trusty'
 
     wrappers:
@@ -298,8 +298,8 @@
           export -f pre_test_hook
 
           function post_test_hook {
-              # Configure and run tempest on singlebackend manila installation
-              source $BASE/new/manila/contrib/ci/post_test_hook.sh singlebackend
+              # Configure and run tempest on multibackend manila installation
+              source $BASE/new/manila/contrib/ci/post_test_hook.sh multibackend
           }
           export -f post_test_hook
 
