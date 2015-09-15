@@ -57,6 +57,7 @@
           export DEVSTACK_GATE_TEMPEST_LARGE_OPS={large_ops}
           export DEVSTACK_GATE_EXERCISES=0
           export DEVSTACK_GATE_TIMEOUT=120
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin rally git://git.openstack.org/openstack/rally"
           export RALLY_SCENARIO={scenario}
 
           ENABLED_SERVICES=sahara,key,horizon,
@@ -74,8 +75,10 @@
           if [ $DEVSTACK_GATE_IRONIC -ne 0 ]; then
               ENABLED_SERVICES+=ironic,ir-api,ir-cond,
           fi
+          if [ $DEVSTACK_GATE_ZAQAR -ne 0 ]; then
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin zaqar git://git.openstack.org/openstack/zaqar"
+          fi
           export ENABLED_SERVICES
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin rally git://git.openstack.org/openstack/rally"
 
           function post_test_hook {{
               $BASE/new/rally/tests/ci/rally-gate.sh
