@@ -16,13 +16,7 @@
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TIMEOUT=120
           export DEVSTACK_GATE_NEUTRON=1
-          export DEVSTACK_GATE_TEMPEST=0
-
-          s="rabbit,mysql,key,n-cpu,n-api,n-crt,n-obj,n-cond,n-sch"
-          s+=",n-cauth,neutron,q-svc,q-df-l3,q-df-agt,q-dhcp,q-meta,cinder"
-          s+=",g-api,g-reg,c-api,c-vol,c-sch,c-bak"
-          export OVERRIDE_ENABLED_SERVICES="$s"
-
+          export DEVSTACK_GATE_TEMPEST=1
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -31,13 +25,16 @@
           # our project repository. This makes zuul do the right
           # reference magic for testing changes.
           export PROJECTS="openstack/dragonflow $PROJECTS"
-
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin dragonflow https://git.openstack.org/openstack/dragonflow"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_ENABLE_DRAGONFLOW=True"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"ML2_L3_PLUGIN=dragonflow.neutron.services.l3.l3_controller_plugin.ControllerL3ServicePlugin"
+          # Note the actual url here is somewhat irrelevant because it
+          # caches in nodepool, however make it a valid url for
+          # documentation purposes.
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin dragonflow git://git.openstack.org/openstack/dragonflow"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_ENABLE_DRAGONFLOW_LOCAL_CONTROLLER=True"
 
           # Keep localrc to be able to set some vars in pre_test_hook
           export KEEP_LOCALRC=1
+
+          export DEVSTACK_GATE_SETTINGS=/opt/stack/new/dragonflow/devstack/devstackgaterc
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
