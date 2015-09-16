@@ -358,11 +358,12 @@ function filter_commits {
     for f in $(git diff --cached --name-only --diff-filter=AM); do
         # It's ok if the grep fails
         set +e
+        REGEX="(POT-Creation-Date|Project-Id-Version|PO-Revision-Date|Last-Translator|X-Generator)"
         changed=$(git diff --cached "$f" \
-            | egrep -v "(POT-Creation-Date|Project-Id-Version|PO-Revision-Date|Last-Translator)" \
+            | egrep -v "$REGEX" \
             | egrep -c "^([-+][^-+#])")
         added=$(git diff --cached "$f" \
-            | egrep -v "(POT-Creation-Date|Project-Id-Version|PO-Revision-Date|Last-Translator)" \
+            | egrep -v "$REGEX" \
             | egrep -c "^([+][^+#])")
         set -e
         if [ $changed -eq 0 ]; then
