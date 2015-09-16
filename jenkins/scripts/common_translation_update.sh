@@ -185,7 +185,11 @@ function setup_manuals {
             fi
         fi
     done
-    EXCLUDE='.*/**,**/source/common/**'
+    if [ "$project" == "openstack-manuals" ]; then
+        EXCLUDE='.*/**,**/source/common/**'
+    else
+        EXCLUDE='.*/**,**/source/common/**,**/glossary/**'
+    fi
     /usr/local/jenkins/slave_scripts/create-zanata-xml.py -p $project \
         -v master --srcdir . --txdir . $ZANATA_RULES -e "$EXCLUDE" \
         -f zanata.xml
