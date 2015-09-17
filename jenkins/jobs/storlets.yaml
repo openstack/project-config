@@ -1,0 +1,13 @@
+- job:
+    name: 'gate-storlets-functional'
+    node: 'bare-precise || bare-trusty'
+
+    builders:
+      - gerrit-git-prep
+      - shell: |
+          #!/bin/bash -xe
+          tests/setup_functional_test.sh
+          tox -e func
+
+    publishers:
+      - console-log
