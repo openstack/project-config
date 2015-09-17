@@ -1518,8 +1518,8 @@ jobs:
     branch: ^master
 
   # Puppet 4 is really supported after Juno release
-  - name: ^gate-puppet-.*-puppet-unit-4.0$
-    branch: ^(?!stable/(grizzly|havana|icehouse|juno)).*$
+  - name: ^gate-puppet-.*-puppet-unit-4.0-dsvm-.*$
+    branch: ^(?!stable/(icehouse|juno)).*$
     skip-if:
       # this module is not part of Puppet OpenStack work
       # and is not Puppet4 compliant
@@ -1527,31 +1527,31 @@ jobs:
 
   # Beaker tests have been introduced after Juno release
   - name: ^gate-puppet-.*-puppet-beaker-rspec-dsvm-.*$
-    branch: ^(?!stable/(grizzly|havana|icehouse|juno)).*$
-
-  - name: ^gate-puppet-openstack_extras-puppet-beaker-rspec-dsvm-.*$
-    voting: false
+    branch: ^(?!stable/(icehouse|juno)).*$
 
   # the job aims to test if patches in master don't break kilo branch
   # so we need to run the job on master for now
   - name: ^gate-puppet-.*-puppet-beaker-rspec-upgrade-dsvm-.*$
-    branch: ^(?!stable/(grizzly|havana|icehouse|juno|kilo)).*$
+    branch: ^(?!stable/(icehouse|juno|kilo)).*$
     skip-if:
       # this module is not part of Puppet OpenStack work
       - project: ^stackforge/puppet-ceph$
     voting: false
 
   # Aims to break when a new version of Puppet is released
-  - name: ^gate-puppet-.*-puppet-unit-latest$
-    branch: ^(?!stable/(grizzly|havana|icehouse|juno)).*$
+  # For now, run the jobs only on master so if the job starts to
+  # break due to Puppet new major release, we will see which branch
+  # we need to test.
+  - name: ^gate-puppet-.*-puppet-unit-latest-dsvm-.*$
+    branch: ^(?!stable/(icehouse|juno|kilo)).*$
     voting: false
 
   - name: ^gate-puppet-((?!swift).)*-puppet-syntax-.*$
-    branch: ^(?!stable/(havana|icehouse)).*$
+    branch: ^(?!stable/(icehouse)).*$
 
   # puppet-swift can never be future parser compatible without breaking the API
-  - name: ^gate-puppet-swift-puppet-syntax-.*$
-    branch: ^(?!stable/(havana|icehouse|juno)).*$
+  - name: ^gate-puppet-swift-puppet-syntax-4.0-dsvm-.*$
+    branch: ^(?!stable/(icehouse|juno)).*$
 
   - name: ^gate-tempest-dsvm-nova-v20
     branch: ^(?!stable/(juno|kilo)).*$
