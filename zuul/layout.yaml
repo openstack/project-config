@@ -866,7 +866,7 @@ jobs:
     voting: false
 
   - name: gate-ec2-api-python34
-    voting: false
+    branch: ^(?!stable/kilo).*$
 
   - name: gate-tempest-dsvm-ec2api
     voting: false
@@ -7281,11 +7281,11 @@ projects:
   - name: stackforge/ec2-api
     template:
       - name: python-jobs
+      - name: python3-jobs
       - name: merge-check
       - name: check-requirements
       - name: publish-to-pypi
     check:
-      - gate-ec2-api-python34
       - gate-tempest-dsvm-ec2api
       - gate-functional-neutron-dsvm-ec2api
       - gate-functional-nova-network-dsvm-ec2api
