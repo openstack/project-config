@@ -18,9 +18,6 @@ setup_git
 
 setup_review
 
-# Setup basic connection for transifex.
-setup_translation
-
 setup_django_openstack_auth
 
 # Pull updated translations from Zanata.

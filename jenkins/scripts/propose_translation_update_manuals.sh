@@ -25,7 +25,6 @@ init_manuals "$PROJECT"
 
 setup_git
 setup_review
-setup_translation
 
 setup_manuals "$PROJECT"
 
