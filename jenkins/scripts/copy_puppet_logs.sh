@@ -116,12 +116,18 @@ if uses_debs; then
     if [ -d /etc/apache2/sites-enabled ]; then
         mkdir $LOG_DIR/apache_config
         sudo cp /etc/apache2/sites-enabled/* $LOG_DIR/apache_config
+        for f in `ls $LOG_DIR/apache_config`; do
+            mv $LOG_DIR/apache_config/${f} $LOG_DIR/apache_config/${f}.txt
+        done
     fi
 elif is_fedora; then
     apache_logs=/var/log/httpd
     if [ -d /etc/httpd/conf.d ]; then
         mkdir $LOG_DIR/apache_config
         sudo cp /etc/httpd/conf.d/* $LOG_DIR/apache_config
+        for f in `ls $LOG_DIR/apache_config`; do
+            mv $LOG_DIR/apache_config/${f} $LOG_DIR/apache_config/${f}.txt
+        done
     fi
 fi
 if [ -d ${apache_logs} ]; then
