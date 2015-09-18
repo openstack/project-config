@@ -198,11 +198,10 @@ function setup_manuals {
 # Setup project so that git review works, sets global variable
 # COMMIT_MSG.
 function setup_review {
-    local TRANSLATION_SOFTWARE=${1:-Transifex}
     FULL_PROJECT=$(grep project .gitreview  | cut -f2 -d= |sed -e 's/\.git$//')
     set +e
     read -d '' COMMIT_MSG <<EOF
-Imported Translations from $TRANSLATION_SOFTWARE
+Imported Translations from Zanata
 
 For more information about this automatic import see:
 https://wiki.openstack.org/wiki/Translations/Infrastructure
@@ -469,17 +468,6 @@ function compress_manual_po_files {
             --output="${i}.tmp"
         mv "${i}.tmp" "$i"
     done
-}
-
-function pull_from_transifex {
-    # Download new files that are at least 75 % translated.
-    # Also downloads updates for existing files that are at least 75 %
-    # translated.
-    tx pull -a -f --minimum-perc=75
-
-    # Pull upstream translations of all downloaded files but do not
-    # download new files.
-    tx pull -f
 }
 
 function pull_from_zanata {

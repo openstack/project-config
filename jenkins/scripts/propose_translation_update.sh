@@ -13,11 +13,6 @@
 # under the License.
 
 PROJECT=$1
-SOFTWARE="Transifex"
-
-if [ -n "$2" -a "$2" = "zanata" ]; then
-    SOFTWARE="Zanata"
-fi
 
 source /usr/local/jenkins/slave_scripts/common_translation_update.sh
 
@@ -25,7 +20,7 @@ source /usr/local/jenkins/slave_scripts/common_translation_update.sh
 setup_git
 
 # Check whether a review already exists, setup review commit message.
-setup_review "$SOFTWARE"
+setup_review
 # Setup basic connection for transifex.
 setup_translation
 # Project specific transifex setup.
@@ -36,15 +31,8 @@ setup_loglevel_vars
 # Project specific transifex setup for log translations.
 setup_loglevel_project "$PROJECT"
 
-# Pull updated translations from Transifex, or Zanata.
-case "$SOFTWARE" in
-    Transifex)
-        pull_from_transifex
-        ;;
-    Zanata)
-        pull_from_zanata
-        ;;
-esac
+# Pull updated translations from Zanata
+pull_from_zanata
 
 # Extract all messages from project, including log messages.
 extract_messages_log "$PROJECT"
