@@ -15,7 +15,7 @@
     node: 'proposal'
 
 - job-template:
-    name: '{name}-propose-translation-update-zanata'
+    name: '{name}-propose-translation-update'
 
     builders:
       - revoke-sudo
@@ -23,7 +23,7 @@
           branch: master
       - shell: |
           #!/bin/bash -xe
-          /usr/local/jenkins/slave_scripts/propose_translation_update.sh {name} zanata
+          /usr/local/jenkins/slave_scripts/propose_translation_update.sh {name}
 
     publishers:
       - console-log
@@ -48,7 +48,7 @@
     node: 'proposal'
 
 - job:
-    name: 'django_openstack_auth-propose-translation-update-zanata'
+    name: 'django_openstack_auth-propose-translation-update'
 
     builders:
       - revoke-sudo
@@ -56,7 +56,7 @@
           branch: master
       - shell: |
           #!/bin/bash -xe
-          /usr/local/jenkins/slave_scripts/propose_translation_update_django_openstack_auth.sh zanata
+          /usr/local/jenkins/slave_scripts/propose_translation_update_django_openstack_auth.sh
 
     publishers:
       - console-log
@@ -81,7 +81,7 @@
     node: 'proposal'
 
 - job:
-    name: 'horizon-propose-translation-update-zanata'
+    name: 'horizon-propose-translation-update'
 
     builders:
       - revoke-sudo
@@ -89,7 +89,7 @@
           branch: master
       - shell: |
           #!/bin/bash -xe
-          /usr/local/jenkins/slave_scripts/propose_translation_update_horizon.sh zanata
+          /usr/local/jenkins/slave_scripts/propose_translation_update_horizon.sh
 
     publishers:
       - console-log
@@ -114,7 +114,7 @@
     node: 'proposal'
 
 - job-template:
-    name: '{name}-manuals-propose-translation-update-zanata'
+    name: '{name}-manuals-propose-translation-update'
 
     builders:
       - revoke-sudo
@@ -122,7 +122,7 @@
           branch: master
       - shell: |
           #!/bin/bash -xe
-          /usr/local/jenkins/slave_scripts/propose_translation_update_manuals.sh {name} zanata
+          /usr/local/jenkins/slave_scripts/propose_translation_update_manuals.sh {name}
 
     publishers:
       - console-log
@@ -131,16 +131,16 @@
     node: 'proposal'
 
 - job-group:
-    name: translation-jobs-zanata
+    name: translation-jobs
     jobs:
       - '{name}-upstream-translation-update'
-      - '{name}-propose-translation-update-zanata'
+      - '{name}-propose-translation-update'
 
 - job-group:
-    name: manual-translation-jobs-zanata
+    name: manual-translation-jobs
     jobs:
       - '{name}-manuals-upstream-translation-update'
-      - '{name}-manuals-propose-translation-update-zanata'
+      - '{name}-manuals-propose-translation-update'
       - 'gate-{name}-tox-{envlist}':
           envlist: checklang
       - '{name}-tox-doc-{envlist}':
