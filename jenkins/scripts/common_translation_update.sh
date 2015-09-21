@@ -28,7 +28,7 @@ function setup_project {
         -f zanata.xml
 }
 
-# Setup project horizon for transifex
+# Setup project horizon for Zanata
 function setup_horizon {
     local project=horizon
 
@@ -53,7 +53,7 @@ function init_manuals {
 }
 
 # Setup project manuals projects (api-site, openstack-manuals,
-# operations-guide) for transifex
+# operations-guide) for Zanata
 function setup_manuals {
     local project=$1
 
@@ -109,11 +109,6 @@ function setup_manuals {
         else
             # Update the .pot file
             ./tools/generatepot ${DOCNAME}
-            SLUG=${DOCNAME}
-            if [ $SLUG = "glossary" ] ; then
-                # Transifex reserves glossary as SLUG, we need a different name.
-                SLUG="glossary-1"
-            fi
             if [ -f ${DocFolder}/${DOCNAME}/locale/${DOCNAME}.pot ]; then
                 # Add all changed files to git
                 git add ${DocFolder}/${DOCNAME}/locale/${DOCNAME}.pot
@@ -235,7 +230,7 @@ function extract_messages_log {
     done
 }
 
-# Setup project django_openstack_auth for transifex and Zanata
+# Setup project django_openstack_auth for Zanata
 function setup_django_openstack_auth {
 
     /usr/local/jenkins/slave_scripts/create-zanata-xml.py \

@@ -14,7 +14,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-# The script is to pull the translations from Transifex,
+# The script is to pull the translations from OpenStack's Zanata server,
 # and push to Gerrit.
 
 PROJECT=$1
