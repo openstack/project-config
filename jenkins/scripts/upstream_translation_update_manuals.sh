@@ -27,7 +27,6 @@ source /usr/local/jenkins/slave_scripts/common_translation_update.sh
 init_manuals "$PROJECT"
 
 setup_git
-setup_translation
 
 setup_manuals "$PROJECT"
 

@@ -25,7 +25,6 @@ fi
 source /usr/local/jenkins/slave_scripts/common_translation_update.sh
 
 setup_git
-setup_translation
 
 setup_horizon
 

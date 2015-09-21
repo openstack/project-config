@@ -21,15 +21,11 @@ setup_git
 
 # Check whether a review already exists, setup review commit message.
 setup_review
-# Setup basic connection for transifex.
-setup_translation
-# Project specific transifex setup.
+# Project specific setup.
 setup_project "$PROJECT"
 
 # Setup some global vars which will be used in the rest of the script.
 setup_loglevel_vars
-# Project specific transifex setup for log translations.
-setup_loglevel_project "$PROJECT"
 
 # Pull updated translations from Zanata
 pull_from_zanata
