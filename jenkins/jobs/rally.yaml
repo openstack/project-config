@@ -265,15 +265,9 @@
           export DEVSTACK_GATE_TIMEOUT=120
           export RALLY_SCENARIO={scenario}
 
-          export ENABLED_SERVICES=mistral,h-api,h-api-cfn,h-api-cw,h-eng,heat,
+          export ENABLED_SERVICES=h-api,h-api-cfn,h-api-cw,h-eng,heat,
           export DEVSTACK_LOCAL_CONFIG="enable_plugin rally git://git.openstack.org/openstack/rally"
-
-          function pre_test_hook {{
-              # Install mistral-devstack integration
-              cd /opt/stack/new/mistral/functionaltests
-              ./pre_test_hook.sh
-          }}
-          export -f pre_test_hook
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin mistral https://git.openstack.org/openstack/mistral"
 
           function post_test_hook {{
               $BASE/new/rally/tests/ci/rally-gate.sh
