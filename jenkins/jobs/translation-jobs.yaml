@@ -15,15 +15,15 @@
     node: 'proposal'
 
 - job-template:
-    name: '{name}-propose-translation-update'
+    name: '{name}-propose-translation-update{suffix}'
 
     builders:
       - revoke-sudo
       - branch-git-prep:
-          branch: master
+          branch: '{branch}'
       - shell: |
           #!/bin/bash -xe
-          /usr/local/jenkins/slave_scripts/propose_translation_update.sh {name}
+          /usr/local/jenkins/slave_scripts/propose_translation_update.sh {name} {branch}
 
     publishers:
       - console-log
@@ -33,15 +33,19 @@
 
 - job-group:
     name: translation-jobs
+    suffix: ''
+    branch: master
     jobs:
       - '{name}-upstream-translation-update'
-      - '{name}-propose-translation-update'
+      - '{name}-propose-translation-update{suffix}'
 
 - job-group:
     name: manual-translation-jobs
+    suffix: ''
+    branch: master
     jobs:
       - '{name}-upstream-translation-update'
-      - '{name}-propose-translation-update'
+      - '{name}-propose-translation-update{suffix}'
       - 'gate-{name}-tox-{envlist}':
           envlist: checklang
       - '{name}-tox-doc-{envlist}':
