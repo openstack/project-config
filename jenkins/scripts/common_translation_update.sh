@@ -22,18 +22,20 @@ QUIET="--quiet"
 # Setup a project for Zanata
 function setup_project {
     local project=$1
+    local version=${2:-master}
 
     /usr/local/jenkins/slave_scripts/create-zanata-xml.py -p $project \
-        -v master --srcdir ${project}/locale --txdir ${project}/locale \
+        -v $version --srcdir ${project}/locale --txdir ${project}/locale \
         -f zanata.xml
 }
 
 # Setup project horizon for Zanata
 function setup_horizon {
     local project=horizon
+    local version=${1:-master}
 
     /usr/local/jenkins/slave_scripts/create-zanata-xml.py -p $project \
-        -v master --srcdir . --txdir . -r './horizon/locale/*.pot' \
+        -v $version --srcdir . --txdir . -r './horizon/locale/*.pot' \
         'horizon/locale/{locale_with_underscore}/LC_MESSAGES/{filename}.po' \
         -r './openstack_dashboard/locale/*.pot' \
         'openstack_dashboard/locale/{locale_with_underscore}/LC_MESSAGES/{filename}.po' \
@@ -56,6 +58,7 @@ function init_manuals {
 # operations-guide) for Zanata
 function setup_manuals {
     local project=$1
+    local version=${2:-master}
 
     # Fill in associative array SPECIAL_BOOKS
     declare -A SPECIAL_BOOKS
@@ -122,7 +125,7 @@ function setup_manuals {
         EXCLUDE='.*/**,**/source/common/**,**/glossary/**'
     fi
     /usr/local/jenkins/slave_scripts/create-zanata-xml.py -p $project \
-        -v master --srcdir . --txdir . $ZANATA_RULES -e "$EXCLUDE" \
+        -v $version --srcdir . --txdir . $ZANATA_RULES -e "$EXCLUDE" \
         -f zanata.xml
 }
 
@@ -237,9 +240,11 @@ function extract_messages_log {
 
 # Setup project django_openstack_auth for Zanata
 function setup_django_openstack_auth {
+    local project=django_openstack_auth
+    local version=${1:-master}
 
     /usr/local/jenkins/slave_scripts/create-zanata-xml.py \
-        -p django_openstack_auth -v master --srcdir openstack_auth/locale \
+        -p $project -v $version --srcdir openstack_auth/locale \
         --txdir openstack_auth/locale -r '**/*.pot' \
         '{locale_with_underscore}/LC_MESSAGES/django.po' -f zanata.xml
 }
