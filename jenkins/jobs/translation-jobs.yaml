@@ -32,22 +32,6 @@
     node: 'proposal'
 
 - job:
-    name: 'django_openstack_auth-upstream-translation-update'
-
-    builders:
-      - revoke-sudo
-      - gerrit-git-prep
-      - shell: |
-          #!/bin/bash -xe
-          /usr/local/jenkins/slave_scripts/upstream_translation_django_openstack_auth.sh
-
-    publishers:
-      - console-log
-      - proposal-slave-cleanup
-
-    node: 'proposal'
-
-- job:
     name: 'django_openstack_auth-propose-translation-update'
 
     builders:
@@ -65,22 +49,6 @@
     node: 'proposal'
 
 - job:
-    name: 'horizon-upstream-translation-update'
-
-    builders:
-      - revoke-sudo
-      - gerrit-git-prep
-      - shell: |
-          #!/bin/bash -xe
-          /usr/local/jenkins/slave_scripts/upstream_translation_horizon.sh
-
-    publishers:
-      - console-log
-      - proposal-slave-cleanup
-
-    node: 'proposal'
-
-- job:
     name: 'horizon-propose-translation-update'
 
     builders:
@@ -90,22 +58,6 @@
       - shell: |
           #!/bin/bash -xe
           /usr/local/jenkins/slave_scripts/propose_translation_update_horizon.sh
-
-    publishers:
-      - console-log
-      - proposal-slave-cleanup
-
-    node: 'proposal'
-
-- job-template:
-    name: '{name}-manuals-upstream-translation-update'
-
-    builders:
-      - revoke-sudo
-      - gerrit-git-prep
-      - shell: |
-          #!/bin/bash -xe
-          /usr/local/jenkins/slave_scripts/upstream_translation_update_manuals.sh {name}
 
     publishers:
       - console-log
@@ -139,7 +91,7 @@
 - job-group:
     name: manual-translation-jobs
     jobs:
-      - '{name}-manuals-upstream-translation-update'
+      - '{name}-upstream-translation-update'
       - '{name}-manuals-propose-translation-update'
       - 'gate-{name}-tox-{envlist}':
           envlist: checklang
