@@ -171,15 +171,12 @@ class ProjectConfig:
         self._add_configuration(xml)
         self._write_xml(xml)
 
-    def _fetch_zanata_xml(self, verify=False):
+    def _fetch_zanata_xml(self):
         """Get base zanata.xml
 
         Download a basic version of the configuration for the project
         using Zanata's REST API.
 
-        Attributes:
-        verify (bool): Verify the SSL certificate from the Zanata server.
-                       Default false.
         """
         r = self.rest_service.query(
             '/rest/projects/p/%s/iterations/i/%s/config'
