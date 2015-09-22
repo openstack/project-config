@@ -22,35 +22,24 @@ source /usr/local/jenkins/slave_scripts/common_translation_update.sh
 
 setup_git
 
+# Project setup and updating POT files.
 case "$PROJECT" in
     api-site|ha-guide|openstack-manuals|operations-guide|security-doc)
         init_manuals "$PROJECT"
+        # POT file extraction is done in setup_manuals.
         setup_manuals "$PROJECT"
         ;;
     django_openstack_auth)
         setup_django_openstack_auth
+        python setup.py extract_messages
         ;;
     horizon)
         setup_horizon
+        ./run_tests.sh --makemessages -V
         ;;
     *)
         setup_project "$PROJECT"
         setup_loglevel_vars
-        ;;
-esac
-
-# Update all pot files
-case "$PROJECT" in
-    api-site|ha-guide|openstack-manuals|operations-guide|security-doc)
-        # Nothing to do, extraction is done in setup_manuals
-        ;;
-    django_openstack_auth)
-        python setup.py extract_messages
-        ;;
-    horizon)
-        ./run_tests.sh --makemessages -V
-        ;;
-    *)
         extract_messages_log "$PROJECT"
         ;;
 esac
