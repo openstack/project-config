@@ -21,16 +21,48 @@ fi
 source /usr/local/jenkins/slave_scripts/common_translation_update.sh
 
 setup_git
-setup_project "$PROJECT"
 
-setup_loglevel_vars
+case "$PROJECT" in
+    api-site|ha-guide|openstack-manuals|operations-guide|security-doc)
+        init_manuals "$PROJECT"
+        setup_manuals "$PROJECT"
+        ;;
+    django_openstack_auth)
+        setup_django_openstack_auth
+        ;;
+    horizon)
+        setup_horizon
+        ;;
+    *)
+        setup_project "$PROJECT"
+        setup_loglevel_vars
+        ;;
+esac
 
-extract_messages_log "$PROJECT"
+# Update all pot files
+case "$PROJECT" in
+    api-site|ha-guide|openstack-manuals|operations-guide|security-doc)
+        # Nothing to do, extraction is done in setup_manuals
+        ;;
+    django_openstack_auth)
+        python setup.py extract_messages
+        ;;
+    horizon)
+        ./run_tests.sh --makemessages -V
+        ;;
+    *)
+        extract_messages_log "$PROJECT"
+        ;;
+esac
 
-# Add all changed files to git
-git add $PROJECT/locale/*
+# Add all changed files to git.
+# Note that setup_manuals did the git add already, so we can skip it
+# here.
+if [[ ! $PROJECT =~ api-site|ha-guide|openstack-manuals|operations-guide|security-doc ]]; then
+    git add */locale/*
+fi
 
-if ! git diff-index --quiet HEAD --; then
+if [ $(git diff --cached | egrep -v "(POT-Creation-Date|^[\+\-]#|^\+{3}|^\-{3})" | egrep -c "^[\-\+]") -gt 0 ]; then
     # The Zanata client works out what to send based on the zanata.xml file.
     zanata-cli -B -e push
 fi
