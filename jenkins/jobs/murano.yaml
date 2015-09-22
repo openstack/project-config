@@ -66,10 +66,12 @@
           export PROJECTS="openstack/python-muranoclient $PROJECTS"
           export PROJECTS="openstack/congress $PROJECTS"
           export PROJECTS="openstack/python-congressclient $PROJECTS"
+          export PROJECTS="openstack/mistral $PROJECTS"
+          export PROJECTS="openstack/python-mistralclient $PROJECTS"
           export KEEP_LOCALRC=1
 
           export DEVSTACK_LOCAL_CONFIG="enable_plugin mistral git://git.openstack.org/openstack/mistral"
-          export DEVSTACK_LOCAL_CONFIG="MURANO_ENABLE_MODEL_POLICY_ENFORCEMENT=True $DEVSTACK_LOCAL_CONFIG"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"MURANO_ENABLE_MODEL_POLICY_ENFORCEMENT=True"
 
           function pre_test_hook {
               cd /opt/stack/new/murano/functionaltests
