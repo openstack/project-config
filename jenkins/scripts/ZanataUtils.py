@@ -101,9 +101,7 @@ class ZanataRestService:
 class ProjectConfig:
     """Object that stores zanata.xml per-project configuration.
 
-    Given an existing zanata.xml, read in the values and make
-    them accessible. Otherwise, write out a zanata.xml file
-    for the project given the supplied values.
+    Write out a zanata.xml file for the project given the supplied values.
 
     Attributes:
     zconfig (IniConfig): zanata.ini values
@@ -114,12 +112,9 @@ class ProjectConfig:
         self.rest_service = ZanataRestService(zconfig, verify=verify)
         self.xmlfile = xmlfile
         self.rules = self._parse_rules(rules)
-        if os.path.isfile(os.path.abspath(xmlfile)):
-            self._load_config()
-        else:
-            for key, value in kwargs.items():
-                setattr(self, key, value)
-            self._create_config()
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+        self._create_config()
 
     def _get_tag_prefix(self, root):
         """XML utility method
@@ -136,29 +131,6 @@ class ProjectConfig:
         Returns a list of dictionaries with 'pattern' and 'rule' keys.
         """
         return [{'pattern': rule[0], 'rule': rule[1]} for rule in rules]
-
-    def _load_config(self):
-        """Load configuration from an existing zanata.xml
-
-        Load and store project configuration from zanata.xml
-
-        """
-        try:
-            with open(self.xmlfile, 'r') as f:
-                xml = etree.parse(f)
-        except IOError:
-            raise ValueError('Cannot load zanata.xml for this project')
-        except etree.ParseError:
-            raise ValueError('Cannot parse zanata.xml for this project')
-        root = xml.getroot()
-        tag_prefix = self._get_tag_prefix(root)
-        self.project = root.find('%sproject' % tag_prefix).text
-        self.version = root.find('%sproject-version' % tag_prefix).text
-        self.srcdir = root.find('%ssrc-dir' % tag_prefix).text
-        self.txdir = root.find('%strans-dir' % tag_prefix).text
-        rules = root.find('%srules' % tag_prefix)
-        self.rules = self._parse_rules([(tag.get('pattern', tag.text))
-                                       for tag in rules.getchildren()])
 
     def _create_config(self):
         """Create zanata.xml
