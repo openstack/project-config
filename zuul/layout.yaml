@@ -447,10 +447,9 @@ project-templates:
   - name: chef-rake-jobs
     check:
       - 'gate-{name}-chef-rake'
+      - 'gate-{name}-chef-rake-integration'
     gate:
       - 'gate-{name}-chef-rake'
-    experimental:
-      - 'gate-{name}-chef-rake-integration'
 
   # Note that we only publish integrated and incubated
   # projects/programs on specs.o.o - the publish-specs job should not
@@ -606,6 +605,9 @@ jobs:
   - name: ^gate-.*-chef-(lint|style|unit|repo)$
     parameter-function: set_node_options_default_precise
     branch: ^stable/(icehouse|juno)$
+  - name: ^gate-.*-chef-rake-integration$
+    branch: ^(?!stable/(icehouse|juno)).*$
+    voting: false
   - name: ^gate-.*-chef-rake.*$
     branch: ^(?!stable/(icehouse|juno)).*$
   # openstackid doesn't work with php5-mcrypt on trusty
