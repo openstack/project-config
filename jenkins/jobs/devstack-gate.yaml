@@ -730,6 +730,40 @@
       - devstack-logs
       - console-log
 
+- job-template:
+    name: '{pipeline}-tempest-dsvm-lxc{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=120
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_LOCAL_CONFIG="LIBVIRT_TYPE=lxc"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"NOVA_BACKEND=LVM"
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+
+          export DEVSTACK_GATE_SETTINGS=/opt/stack/new/nova/devstack/tempest-dsvm-lxc-rc
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
 - builder:
     # NOTE(adam_g): This is a temporary macro until we can define the Ironic d-s-g job in a
     # standard, minimal fashion.
@@ -2512,6 +2546,7 @@
       - '{pipeline}-tempest-dsvm-cells{job-suffix}'
       - '{pipeline}-tempest-dsvm-large-ops{job-suffix}'
       - '{pipeline}-tempest-dsvm-large-ops-testing{job-suffix}'
+      - '{pipeline}-tempest-dsvm-lxc{job-suffix}'
       - '{pipeline}-tempest-dsvm-neutron-large-ops{job-suffix}'
       - '{pipeline}-tempest-dsvm-neutron-large-ops-testing{job-suffix}'
       - '{pipeline}-tempest-dsvm-postgres-full{job-suffix}'
