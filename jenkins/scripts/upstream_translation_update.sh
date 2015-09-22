@@ -64,5 +64,6 @@ fi
 
 if [ $(git diff --cached | egrep -v "(POT-Creation-Date|^[\+\-]#|^\+{3}|^\-{3})" | egrep -c "^[\-\+]") -gt 0 ]; then
     # The Zanata client works out what to send based on the zanata.xml file.
-    zanata-cli -B -e push
+    # Do not copy translations from other files for this change.
+    zanata-cli -B -e push --copy-trans False
 fi
