@@ -75,6 +75,7 @@ function propose_python {
     pull_from_zanata
 
     # Extract all messages from project, including log messages.
+    extract_messages
     extract_messages_log "$PROJECT"
 
     update_po_files "$PROJECT"
@@ -139,7 +140,7 @@ function propose_django_openstack_auth {
     pull_from_zanata
 
     # Update the .pot file
-    python setup.py extract_messages
+    extract_messages
 
     update_po_files "openstack_auth"
 

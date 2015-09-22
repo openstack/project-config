@@ -213,16 +213,21 @@ function setup_loglevel_vars {
     LKEYWORD['critical']='_LC'
 }
 
-
-# Run extract_messages for user visible messages and log messages.
-# Needs variables setup via setup_loglevel_vars.
-function extract_messages_log {
-    project=$1
+# Run extract_messages for user visible messages.
+function extract_messages {
 
     # Update the .pot files
     # The "_C" and "_P" prefix are for more-gettext-support blueprint,
     # "_C" for message with context, "_P" for plural form message.
     python setup.py $QUIET extract_messages --keyword "_C:1c,2 _P:1,2"
+}
+
+# Run extract_messages for log messages.
+# Needs variables setup via setup_loglevel_vars.
+function extract_messages_log {
+    project=$1
+
+    # Update the .pot files
     for level in $LEVELS ; do
         python setup.py $QUIET extract_messages --no-default-keywords \
             --keyword ${LKEYWORD[$level]} \
