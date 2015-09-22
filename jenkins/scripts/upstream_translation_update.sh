@@ -31,7 +31,7 @@ case "$PROJECT" in
         ;;
     django_openstack_auth)
         setup_django_openstack_auth
-        python setup.py extract_messages
+        extract_messages
         ;;
     horizon)
         setup_horizon
@@ -40,6 +40,7 @@ case "$PROJECT" in
     *)
         setup_project "$PROJECT"
         setup_loglevel_vars
+        extract_messages
         extract_messages_log "$PROJECT"
         ;;
 esac
