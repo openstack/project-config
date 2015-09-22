@@ -22,8 +22,9 @@
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
           export PROJECTS="openstack/magnum $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin magnum git://git.openstack.org/openstack/magnum"
           export PROJECTS="openstack/barbican $PROJECTS"
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin magnum git://git.openstack.org/openstack/magnum"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin barbican git://git.openstack.org/openstack/barbican"
 
           function post_test_hook {{
               source $BASE/new/devstack/accrc/admin/admin
