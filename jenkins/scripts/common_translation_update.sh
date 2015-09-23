@@ -132,6 +132,9 @@ function setup_manuals {
 # Setup project so that git review works, sets global variable
 # COMMIT_MSG.
 function setup_review {
+    # Note we cannot rely on the default branch in .gitreview being
+    # correct so we are very explicit here.
+    local branch=${1:-master}
     FULL_PROJECT=$(grep project .gitreview  | cut -f2 -d= |sed -e 's/\.git$//')
     set +e
     read -d '' COMMIT_MSG <<EOF
@@ -146,7 +149,7 @@ EOF
     # See if there is an open change in the zanata/translations
     # topic. If so, get the change id for the existing change for use
     # in the commit msg.
-    change_info=$(ssh -p 29418 proposal-bot@review.openstack.org gerrit query --current-patch-set status:open project:$FULL_PROJECT topic:zanata/translations owner:proposal-bot)
+    change_info=$(ssh -p 29418 proposal-bot@review.openstack.org gerrit query --current-patch-set status:open project:$FULL_PROJECT branch:$branch topic:zanata/translations owner:proposal-bot)
     previous=$(echo "$change_info" | grep "^  number:" | awk '{print $2}')
     if [ -n "$previous" ]; then
         change_id=$(echo "$change_info" | grep "^change" | awk '{print $2}')
@@ -189,6 +192,7 @@ EOF
 
 # Propose patch using COMMIT_MSG
 function send_patch {
+    local branch=${1:-master}
 
     # We don't have any repos storing zanata.xml, so just remove it.
     rm -f zanata.xml
@@ -199,7 +203,9 @@ function send_patch {
         git commit -F- <<EOF
 $COMMIT_MSG
 EOF
-        git review -t zanata/translations
+        # We cannot rely on the default branch in .gitreview being
+        # correct so we are very explicit here.
+        git review -t zanata/translations $branch
 
     fi
 }
