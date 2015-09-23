@@ -39,6 +39,9 @@
           function post_test_hook {
               cd /opt/stack/new/horizon
               sudo -H -u stack tox -e py27integration
+              if [ -d openstack_dashboard/test/integration_tests/integration_tests_screenshots/ ]; then
+                cp -r openstack_dashboard/test/integration_tests/integration_tests_screenshots/ /home/jenkins/workspace/gate-horizon-dsvm-integration/
+              fi
           }
           export -f post_test_hook
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
@@ -57,7 +60,7 @@
           site: 'static.openstack.org'
           files:
             - target: 'logs/$LOG_PATH/screenshots'
-              source: '/opt/stack/new/horizon/openstack_dashboard/test/integration_tests/integration_tests_screenshots/**'
+              source: 'integration_tests_screenshots/**'
               copy-after-failure: true
 
 - job:
