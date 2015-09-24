@@ -1710,6 +1710,7 @@ jobs:
   # neutronclient-test-dsvm-functional-adv-svcs
   - name: ^gate-neutronclient-test-dsvm-functional.*$
     branch: ^(?!stable/juno).*$
+    voting: false
 
   - name: ^gate-ironic-inspector-dsvm.*$
     branch: ^(?!stable/1).*$
@@ -3461,14 +3462,14 @@ projects:
       - name: lib-forward-testing
     check:
       - gate-neutronclient-dsvm-functional
+      - gate-neutronclient-test-dsvm-functional
+      - gate-neutronclient-test-dsvm-functional-adv-svcs
     gate:
       - gate-neutronclient-dsvm-functional
     post:
       - python-neutronclient-coverage
     experimental:
       - gate-grenade-dsvm-forward
-      - gate-neutronclient-test-dsvm-functional
-      - gate-neutronclient-test-dsvm-functional-adv-svcs
 
   - name: openstack/python-novaclient
     template:
