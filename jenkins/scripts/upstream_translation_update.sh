@@ -20,15 +20,13 @@ ZANATA_VERSION=${ZUUL_REFNAME//\//-}
 
 source /usr/local/jenkins/slave_scripts/common_translation_update.sh
 
-function check_version_exists {
-    local version=$1
-    if ! zanata-cli -B list-remote --project-version $version > /dev/null 2>&1 ; then
-        # Exit successfully so that lack of a version doesn't cause
-        # the jenkins jobs to fail. This is necessary because not all
-        # branches of a project will be translated.
-        exit 0
-    fi
-}
+if ! /usr/local/jenkins/slave_scripts/query-zanata-project-version.py \
+    -p $PROJECT -v $ZANATA_VERSION; then
+    # Exit successfully so that lack of a version doesn't cause the jenkins
+    # jobs to fail. This is necessary because not all branches of a project
+    # will be translated.
+    exit 0
+fi
 
 setup_git
 
@@ -38,21 +36,17 @@ case "$PROJECT" in
         init_manuals "$PROJECT"
         # POT file extraction is done in setup_manuals.
         setup_manuals "$PROJECT" "$ZANATA_VERSION"
-        check_version_exists "$ZANATA_VERSION"
         ;;
     django_openstack_auth)
         setup_django_openstack_auth "$ZANATA_VERSION"
-        check_version_exists "$ZANATA_VERSION"
         extract_messages
         ;;
     horizon)
         setup_horizon "$ZANATA_VERSION"
-        check_version_exists "$ZANATA_VERSION"
         ./run_tests.sh --makemessages -V
         ;;
     *)
         setup_project "$PROJECT" "$ZANATA_VERSION"
-        check_version_exists "$ZANATA_VERSION"
         setup_loglevel_vars
         extract_messages
         extract_messages_log "$PROJECT"
