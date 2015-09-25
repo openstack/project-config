@@ -24,7 +24,7 @@ source /usr/local/jenkins/slave_scripts/common_translation_update.sh
 function propose_manuals {
 
     # Pull updated translations from Zanata.
-    pull_from_zanata_manuals "$PROJECT"
+    pull_from_zanata "$PROJECT"
 
     # Compress downloaded po files
     # Only touch glossary in openstack-manuals but not in any other
@@ -76,7 +76,7 @@ function update_po_files {
 function propose_python {
 
     # Pull updated translations from Zanata
-    pull_from_zanata
+    pull_from_zanata "$PROJECT"
 
     # Extract all messages from project, including log messages.
     extract_messages
@@ -124,7 +124,7 @@ function propose_python {
 function propose_horizon {
 
     # Pull updated translations from Zanata.
-    pull_from_zanata
+    pull_from_zanata "$PROJECT"
 
     # Invoke run_tests.sh to update the po files
     # Or else, "../manage.py makemessages" can be used.
@@ -141,7 +141,7 @@ function propose_horizon {
 function propose_django_openstack_auth {
 
     # Pull updated translations from Zanata.
-    pull_from_zanata
+    pull_from_zanata "$PROJECT"
 
     # Update the .pot file
     extract_messages

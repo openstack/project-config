@@ -385,25 +385,7 @@ function compress_manual_po_files {
 }
 
 function pull_from_zanata {
-    # Since Zanata does not currently have an option to not download new
-    # files, we download everything, and then remove new files that are not
-    # translated enough.
-    zanata-cli -B -e pull
 
-    for i in $(find . -name '*.po' ! -path './.*' -prune | cut -b3-); do
-        check_po_file "$i"
-        if [ $RATIO -lt 75 ]; then
-            # This means the file is below the ratio, but we only want to
-            # delete it if is a new file. Files known to git that drop below
-            # 20% will be cleaned up by cleanup_po_files.
-            if ! git ls-files | grep -xq "$i"; then
-                rm -f "$i"
-            fi
-        fi
-    done
-}
-
-function pull_from_zanata_manuals {
     local project=$1
 
     # Since Zanata does not currently have an option to not download new
@@ -411,9 +393,12 @@ function pull_from_zanata_manuals {
     # translated enough.
     zanata-cli -B -e pull
 
+
     for i in $(find . -name '*.po' ! -path './.*' -prune | cut -b3-); do
-        # We want new files to be >75% translated. The glossary and common
-        # documents in openstack-manuals have that relaxed to >8%.
+        check_po_file "$i"
+        # We want new files to be >75% translated. The glossary and
+        # common documents in openstack-manuals have that relaxed to
+        # >8%.
         percentage=75
         if [ $project = "openstack-manuals" ]; then
             case "$i" in
@@ -422,14 +407,12 @@ function pull_from_zanata_manuals {
                     ;;
             esac
         fi
-        check_po_file "$i"
-        if git ls-files | grep -xq "$i"; then
-            # Existing file, we only want to update it if it's >50% translated.
-            if [ $RATIO -lt 50 ]; then
-                git checkout "$i"
-            fi
-        else
-            if [ $RATIO -lt $percentage ]; then
+        if [ $RATIO -lt $percentage ]; then
+            # This means the file is below the ratio, but we only want
+            # to delete it, if it is a new file. Files known to git
+            # that drop below 20% will be cleaned up by
+            # cleanup_po_files.
+            if ! git ls-files | grep -xq "$i"; then
                 rm -f "$i"
             fi
         fi
