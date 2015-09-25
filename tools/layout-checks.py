@@ -75,10 +75,26 @@ def check_sections():
             last = current
     return errors
 
+def check_formatting():
+    errors = False
+    count = 1
+
+    print("Checking indents")
+    print("================")
+
+    for line in open('zuul/layout.yaml', 'r'):
+        if (len(line) - len(line.lstrip(' '))) % 2 != 0:
+            print("Line %(count)s not indented by multiple of 2:\n\t%(line)s" %
+                  {"count": count, "line": line})
+            errors = True
+        count = count + 1
+
+    return errors
 
 def check_all():
     errors = check_sections()
     errors = check_merge_template() or errors
+    errors = check_formatting() or errors
 
     if errors:
         print("\nFound errors in layout.yaml!")
