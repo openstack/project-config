@@ -16,6 +16,7 @@
 
 import argparse
 import os
+import json
 import sys
 from ZanataUtils import IniConfig, ZanataRestService
 
@@ -34,7 +35,8 @@ def get_args():
 def main():
     args = get_args()
     zc = IniConfig(os.path.expanduser('~/.config/zanata.ini'))
-    rest_service = ZanataRestService(zc, verify=args.verify)
+    rest_service = ZanataRestService(zc, content_type='application/json',
+                                     verify=args.verify)
     try:
         r = rest_service.query(
             '/rest/projects/p/%s/iterations/i/%s'
@@ -42,6 +44,9 @@ def main():
     except ValueError:
         sys.exit(1)
     if r.status_code == 200:
+        details = json.loads(r.content)
+        if details['status'] == 'READONLY':
+            sys.exit(1)
         sys.exit(0)
 
 
