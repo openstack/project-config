@@ -234,13 +234,23 @@ function extract_messages {
 # Run extract_messages for log messages.
 # Needs variables setup via setup_loglevel_vars.
 function extract_messages_log {
-    project=$1
+    local project=$1
+    local POT
+    local trans
 
     # Update the .pot files
     for level in $LEVELS ; do
+        POT=${project}/locale/${project}-log-${level}.pot
         python setup.py $QUIET extract_messages --no-default-keywords \
             --keyword ${LKEYWORD[$level]} \
-            --output-file ${project}/locale/${project}-log-${level}.pot
+            --output-file ${POT}
+        # We don't need to add or send around empty source files.
+        trans=$(msgfmt --statistics -o /dev/null ${POT} 2>&1)
+        if [ "$trans" = "0 translated messages." ] ; then
+            rm $POT
+            # Remove file from git if it's under version control.
+            git rm --ignore-unmatch $POT
+        fi
     done
 }
 
