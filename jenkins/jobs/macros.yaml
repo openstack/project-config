@@ -117,9 +117,15 @@
       - shell: "/usr/local/jenkins/slave_scripts/run-cover.sh"
 
 - builder:
+    name: docs-env
+    builders:
+      - shell: "/usr/local/jenkins/slave_scripts/run-docs.sh {env}"
+
+- builder:
     name: docs
     builders:
-      - shell: "/usr/local/jenkins/slave_scripts/run-docs.sh"
+      - docs-env:
+          env: venv
 
 - builder:
     name: maven-test

@@ -230,6 +230,21 @@
     node: '{node}'
 
 - job-template:
+    name: 'gate-{name}-docs-constraints'
+
+    builders:
+      - revoke-sudo
+      - zuul-git-prep-upper-constraints
+      - docs-env:
+          env: venv-constraints
+
+    publishers:
+      - zuul-swift-upload-console-log
+      - upload-sphinx-draft
+
+    node: '{node}'
+
+- job-template:
     name: 'gate-{name}-tox-{envlist}'
 
     wrappers:
@@ -361,3 +376,4 @@
       - 'gate-{name}-python27-constraints'
       - 'gate-{name}-python34-constraints'
       - 'gate-{name}-pypy-constraints'
+      - 'gate-{name}-docs-constraints'
