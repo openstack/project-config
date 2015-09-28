@@ -4464,9 +4464,15 @@ projects:
     check:
       - gate-openstack-ansible-docs
       - gate-openstack-ansible-lint
+      # This check uses the newer 'ubuntu-trusty' image which
+      # is consistent between cloud providers. It is in the
+      # final stage of testing.
+      - gate-openstack-ansible-commit-nv
+      # This check uses the 'devstack-trusty' image which is
+      # inconsistent between cloud providers. This will be
+      # removed once gate-openstack-ansible-commit is converted
+      # to a voting check.
       - gate-openstack-ansible-dsvm-commit
-    experimental:
-      - gate-openstack-ansible-dsvm-commit-nv
     gate:
       - gate-openstack-ansible-docs
       - gate-openstack-ansible-dsvm-commit
