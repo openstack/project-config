@@ -14,9 +14,13 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+venv=${1:-venv}
+
+export UPPER_CONSTRAINTS_FILE=$(pwd)/upper-constraints.txt
+
 rm -f dist/*.whl
-tox -evenv pip install wheel
-tox -evenv python setup.py bdist_wheel
+tox -e$venv pip install wheel
+tox -e$venv python setup.py bdist_wheel
 
 FILES=dist/*.whl
 for f in $FILES; do
