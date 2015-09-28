@@ -721,6 +721,27 @@ jobs:
           - ^.*\.rst$
           - ^doc/.*$
 
+  # skip expensive dib jobs for docs changes; readme's are rst files,
+  # and doc/*
+  - name: ^.*dib-dsvm-functests-.*$
+    skip-if:
+      - project: ^openstack/diskimage-builder$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+  - name: ^.*diskimage-builder-(python27|python34)$
+    skip-if:
+      - project: ^openstack/diskimage-builder$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+  - name: ^.*tempest-dsvm-ironic-pxe_ssh-dib$
+    skip-if:
+      - project: ^openstack/diskimage-builder$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+
   # Do not run the documentation publishing jobs ({name}-docs) from
   # "bug/" branches. The (?!gate-) prefix is used in the regex because
   # we *do* want the gate docs jobs to run, just not the jobs in the
