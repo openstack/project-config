@@ -17,6 +17,7 @@
           export DEVSTACK_GATE_TIMEOUT=120
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_CEILOMETER_BACKEND={backend}
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -49,6 +50,7 @@
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_TEMPEST_FULL=1
           export DEVSTACK_GATE_CEILOMETER_BACKEND={backend}
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -78,6 +80,7 @@
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TIMEOUT=120
           export DEVSTACK_GATE_CEILOMETER_BACKEND={backend}
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -169,7 +172,8 @@
           export ENABLE_SERVICES="$s"
 
           export PROJECTS="openstack/aodh openstack/gnocchi"
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin aodh git://git.openstack.org/openstack/aodh"
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin aodh git://git.openstack.org/openstack/aodh"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin gnocchi git://git.openstack.org/openstack/gnocchi"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"GNOCCHI_ARCHIVE_POLICY=high"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"CEILOMETER_PIPELINE_INTERVAL=5"
