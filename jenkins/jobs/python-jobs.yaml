@@ -9,7 +9,8 @@
     builders:
       - revoke-sudo
       - gerrit-git-prep
-      - coverage
+      - coverage:
+          env: cover
 
     publishers:
       - zuul-swift-upload-logs-with-console:
@@ -17,6 +18,25 @@
 
     node: '{node}'
 
+- job-template:
+    name: '{name}-coverage-constraints'
+
+    wrappers:
+      - build-timeout:
+          timeout: 40
+      - timestamps
+
+    builders:
+      - revoke-sudo
+      - zuul-git-prep-upper-constraints
+      - coverage:
+          env: cover-constraints
+
+    publishers:
+      - zuul-swift-upload-logs-with-console:
+          upload_source: 'cover-constraints/'
+
+    node: '{node}'
 
 - job-template:
     name: 'gate-{name}-pep8'
@@ -389,6 +409,7 @@
 - job-group:
     name: python-constraints-jobs
     jobs:
+      - '{name}-coverage-constraints'
       - 'gate-{name}-pep8-constraints'
       - 'gate-{name}-python27-constraints'
       - 'gate-{name}-python34-constraints'

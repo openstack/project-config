@@ -5,8 +5,9 @@
 # what packages we ended up testing.
 
 export NOSE_COVER_HTML=1
+export UPPER_CONSTRAINTS_FILE=$(pwd)/upper-constraints.txt
 
-venv=cover
+venv=${1:-cover}
 
 # Workaround the combo of tox running setup.py outside of virtualenv
 # and RHEL having an old distribute. The next line can be removed
