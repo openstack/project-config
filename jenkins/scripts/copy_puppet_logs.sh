@@ -33,7 +33,7 @@ mkdir $WORKSPACE/logs
 for project in /etc/puppet/modules/*; do
     # find Puppet OpenStack modules
     if [ -f $project/metadata.json ]; then
-        if grep -q 'github.com/openstack/puppet' $project/metadata.json; then
+        if egrep -q "github.com/(stackforge|openstack)/puppet" $project/metadata.json; then
             PROJECTS+="$(basename $project) "
         fi
     fi
