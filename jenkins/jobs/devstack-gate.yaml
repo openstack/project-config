@@ -2293,6 +2293,39 @@
 
 
 - job-template:
+    name: '{pipeline}-tempest-dsvm-full-bdd{branch-designator}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - link-logs
+      - contact:
+          name: Ivan Kolodyazhny
+          email: e0ne@e0ne.info
+          irc: e0ne
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=120
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_TEMPEST_FULL=1
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin devstack-plugin-bdd git://git.openstack.org/openstack/devstack-plugin-bdd"
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+
+- job-template:
     name: '{pipeline}-tempest-dsvm-trove{branch-designator}'
     node: '{node}'
 
