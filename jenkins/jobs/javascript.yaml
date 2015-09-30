@@ -141,6 +141,18 @@
               copy-after-failure: false
     node: '{node}'
 
+# Uploads a release tarball to npm.
+- job-template:
+    name: '{name}-npm-publish'
+    node: release
+
+    builders:
+      - shell: |
+          /usr/local/jenkins/slave_scripts/npm-tarball-upload.sh {name} {tarball-site}
+
+    publishers:
+      - console-log
+
 - job-group:
     name: javascript-jobs
     jobs:
@@ -148,3 +160,9 @@
           command: 'lint'
       - 'gate-{name}-npm-run-{command}':
           command: 'test'
+
+- job-group:
+    name: publish-to-npm
+    jobs:
+      - '{name}-npm-publish-tarball'
+      - '{name}-npm-publish'
