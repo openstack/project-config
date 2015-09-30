@@ -141,7 +141,7 @@ fi
 if [ -d /etc/openstack-dashboard ]; then
     sudo cp -r /etc/openstack-dashboard $LOG_DIR/etc/openstack-dashboard
     for f in `ls $LOG_DIR/etc/openstack-dashboard`; do
-        mv $LOG_DIR/etc/openstack-dashboard/${f} $LOG_DIR/etc/openstack-dashboard/${f}.txt
+        sudo mv $LOG_DIR/etc/openstack-dashboard/${f} $LOG_DIR/etc/openstack-dashboard/${f}.txt
     done
 fi
 
