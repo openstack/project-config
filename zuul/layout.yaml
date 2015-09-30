@@ -1727,15 +1727,10 @@ jobs:
   - name: ^gate-cliff-tox-(openstackclient|neutronclient)-tip$
     branch: ^master$
 
-  # Skip Juno for neutronclient-dsvm-functional
-  - name: ^gate-neutronclient-dsvm-functional$
-    branch: ^(?!stable/juno).*$
-
   # Skip Juno for neutronclient-test-dsvm-functional and
   # neutronclient-test-dsvm-functional-adv-svcs
   - name: ^gate-neutronclient-test-dsvm-functional.*$
     branch: ^(?!stable/juno).*$
-    voting: false
 
   - name: ^gate-ironic-inspector-dsvm.*$
     branch: ^(?!stable/1).*$
@@ -3481,11 +3476,11 @@ projects:
       - name: pypy-jobs
       - name: lib-forward-testing
     check:
-      - gate-neutronclient-dsvm-functional
       - gate-neutronclient-test-dsvm-functional
       - gate-neutronclient-test-dsvm-functional-adv-svcs
     gate:
-      - gate-neutronclient-dsvm-functional
+      - gate-neutronclient-test-dsvm-functional
+      - gate-neutronclient-test-dsvm-functional-adv-svcs
     post:
       - python-neutronclient-coverage
     experimental:
