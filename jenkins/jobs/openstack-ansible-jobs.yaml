@@ -15,7 +15,24 @@
       - console-log
 
 - job-template:
-    name: 'gate-{name}-dsvm-commit{branch-designator}'
+    name: 'gate-{name}-dsvm-commit'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 90
+      - timestamps
+
+    builders:
+      - gerrit-git-prep
+      - ansible-check-commit
+
+    publishers:
+      - console-log
+      - devstack-logs
+
+- job-template:
+    name: 'gate-{name}-commit{branch-designator}'
     node: '{node}'
 
     wrappers:
