@@ -92,7 +92,8 @@ def check_formatting():
     return errors
 
 def check_all():
-    errors = check_sections()
+    errors = False               # this can be removed when the following check is re-enabled
+    # errors = check_sections()  # disabling alphabetical order check for mass stackforge rename
     errors = check_merge_template() or errors
     errors = check_formatting() or errors
 
