@@ -15,6 +15,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+if [[ ${YUM:-yum} == "dnf" ]]; then
+    echo "*** caching disabled for dnf"
+    echo "*** see https://etherpad.openstack.org/p/infra-f22"
+    exit 0
+fi
+
 # Build up a list of packages to install by concatenating bindep lists
 FALLBACKREPO=/opt/git/openstack-infra/project-config
 FALLBACKFILE=jenkins/data/bindep-fallback.txt

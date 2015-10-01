@@ -17,6 +17,12 @@
 
 set -e
 
+if [[ ${YUM:-yum} == "dnf" ]]; then
+    echo "*** caching disabled for dnf"
+    echo "*** see https://etherpad.openstack.org/p/infra-f22"
+    exit 0
+fi
+
 if grep "^CentOS release 6" /etc/redhat-release ; then
     # --downloadonly is provided by the yum-plugin-downloadonly package on
     # CentOS 6.x
