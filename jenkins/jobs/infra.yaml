@@ -230,3 +230,17 @@
 
     publishers:
       - console-log
+
+
+- job:
+    name: gate-project-config-dib
+    node: 'bare-precise || bare-trusty'
+
+    builders:
+      - revoke-sudo
+      - gerrit-git-prep
+      - tox:
+          envlist: 'dib'
+
+    publishers:
+      - zuul-swift-upload-console-log
