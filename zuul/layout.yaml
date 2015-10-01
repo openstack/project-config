@@ -1719,12 +1719,22 @@ jobs:
     branch: ^(?!stable/(?:juno|kilo)).*$
 
   # openstack-ansible skip for rst/doc files
-  - name: ^gate-openstack-ansible-(dsvm-commit|lint)$
+  - name: ^gate-openstack-ansible-(commit-nv|dsvm-commit|lint|pep8|bashate)$
     skip-if:
       - project: ^openstack/openstack-ansible$
         all-files-match-any:
           - ^.*\.rst$
           - ^doc/.*
+
+  # pep8 compliance was only introduced in kilo
+  - name: ^gate-openstack-ansible-pep8$
+    branch: ^(?!juno).*$
+    voting: false
+
+  # bashate compliance was only introduced in kilo
+  - name: ^gate-openstack-ansible-bashate$
+    branch: ^(?!juno).*$
+    voting: false
 
   # Keystoneclient added functional testing in Kilo
   - name: ^gate-keystoneclient-dsvm-functional$
@@ -4532,6 +4542,8 @@ projects:
     check:
       - gate-openstack-ansible-docs
       - gate-openstack-ansible-lint
+      - gate-openstack-ansible-pep8
+      - gate-openstack-ansible-bashate
       # This check uses the newer 'ubuntu-trusty' image which
       # is consistent between cloud providers. It is in the
       # final stage of testing.
