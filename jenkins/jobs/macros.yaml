@@ -179,8 +179,15 @@
       - shell: |
           export DISPLAY=:99
           npm install
+
           # Try running as a standard lifecycle script, otherwise try custom.
-          npm {command} --silent || npm run {command} --silent
+          npm_lifecycle_phases="publish install version test stop start restart"
+
+          if [[ $npm_lifecycle_phases =~ (^| ){command}($| ) ]]; then
+              npm {command} --silent
+          else
+              npm run {command} --silent
+          fi
 
 - builder:
     name: xvfb-start
