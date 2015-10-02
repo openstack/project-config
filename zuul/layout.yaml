@@ -712,8 +712,9 @@ jobs:
         all-files-match-any:
           - ^.*\.rst$
           - ^doc/.*$
-  # Skip non-doc jobs for doc-only ironic changes.
-  - name: ^.*ironic-(pep8|python27|python34)$
+  # Skip non-doc jobs for doc-only ironic changes. Since documents are checked
+  # by ironic-pep8 it should not be skipped.
+  - name: ^.*ironic-(python27|python34)$
     skip-if:
       - project: ^openstack/ironic$
         all-files-match-any:
