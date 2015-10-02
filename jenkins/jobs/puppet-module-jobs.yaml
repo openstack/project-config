@@ -243,7 +243,7 @@
       - console-log
 
 - job-template:
-    name: 'gate-puppet-openstack-integration-dsvm-{ostype}'
+    name: 'gate-puppet-openstack-integration-{scenario}-dsvm-{ostype}'
     node: 'devstack-{ostype}'
 
     builders:
@@ -252,6 +252,7 @@
           project: openstack/puppet-openstack-integration
       - shell: |
           #!/bin/bash -xe
+          export SCENARIO={scenario}
           cd openstack/puppet-openstack-integration
           mkdir .bundled_gems
           export GEM_HOME=`pwd`/.bundled_gems
@@ -311,5 +312,8 @@
     ostype:
       - trusty
       - centos7
+    scenario:
+      - scenario001
+      - scenario002
     jobs:
-      - 'gate-puppet-openstack-integration-dsvm-{ostype}'
+      - 'gate-puppet-openstack-integration-{scenario}-dsvm-{ostype}'
