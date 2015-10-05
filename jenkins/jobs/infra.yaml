@@ -37,6 +37,19 @@
       - zuul-swift-upload-console-log
 
 - job:
+    name: gate-project-config-grafyaml
+    node: 'bare-precise || bare-trusty'
+
+    builders:
+      - revoke-sudo
+      - gerrit-git-prep
+      - tox:
+          envlist: 'grafyaml'
+
+    publishers:
+      - zuul-swift-upload-console-log
+
+- job:
     name: gate-project-config-layout
     node: 'bare-precise || bare-trusty'
 
