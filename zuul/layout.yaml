@@ -1265,6 +1265,11 @@ jobs:
   - name: ^gate-.*-docs$
     success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/doc/build/html/
 
+  - name: gate-compute-api-guide
+    success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/doc/build/html/
+    voting: false
+    branch: ^(?!stable/(juno|kilo|liberty)).*$
+
   - name: ^gate-.*-js-draft
     parameter-function: set_node_options_default_trusty
     success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/dist/
@@ -6454,6 +6459,7 @@ projects:
       - gate-tempest-dsvm-cells
       - gate-tempest-dsvm-full-ceph
       - gate-tempest-dsvm-multinode-full
+      - gate-compute-api-guide
     gate:
       - gate-nova-tox-functional
       - gate-devstack-dsvm-cells
@@ -6463,6 +6469,7 @@ projects:
       - gate-tempest-dsvm-cells
     post:
       - nova-coverage
+      - compute-api-guide
     experimental:
       - gate-grenade-dsvm-forward
       - gate-nova-pip-missing-reqs
