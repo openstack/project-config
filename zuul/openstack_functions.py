@@ -97,7 +97,7 @@ def set_node_options(item, job, params, default):
     hook_re = r'^hook-(.*?)-(rtfd)$'
     python26_re = r'^.*-(py(thon)?)?26.*$'
     centos6_re = r'^.*-centos6.*$'
-    f21_re = r'^.*-f21.*$'
+    fedora_re = r'^.*-f2(1|2).*$'
     tripleo_re = r'^.*-tripleo.*$'
     kolla_image_re = r'^.*-kolla-build-images-.*$'
     openstack_ansible_re = r'^.*-openstack-ansible-.*$'
@@ -121,8 +121,8 @@ def set_node_options(item, job, params, default):
     elif re.match(centos6_re, job.name):
         # Pass because job specified label is always correct.
         pass
-    # Jobs needing fedora 21
-    elif re.match(f21_re, job.name):
+    # Jobs needing fedora 2[1|2]
+    elif re.match(fedora_re, job.name):
         # Pass because job specified label is always correct.
         pass
     # Jobs needing tripleo slaves
