@@ -235,14 +235,13 @@
     node: 'bare-precise || bare-trusty'
 
     builders:
-      - ansible-prep
-      - ansible-lint-prep
       - revoke-sudo
       - gerrit-git-prep
-      - run-tests
+      - tox:
+          envlist: 'ansible-syntax-check'
 
     publishers:
-      - console-log
+      - zuul-swift-upload-console-log
 
 
 - job:
