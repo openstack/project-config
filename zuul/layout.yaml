@@ -1066,6 +1066,11 @@ jobs:
       - '^grafana/.*$'
       - 'tox.ini'
 
+  - name: gate-project-config-dib
+    files:
+      - '^nodepool/elements/.*$'
+      - 'tox.ini'
+
   - name: gate-project-config-projects-yaml
     files:
       - 'check_valid_gerrit_projects.py'
@@ -6275,6 +6280,7 @@ projects:
       - gate-project-config-projects-yaml
       - gate-infra-docs-index
       - gate-generate-specs-site
+      - gate-project-config-dib
     gate:
       - project-config-gerrit
       - gate-project-config-grafyaml
@@ -6285,13 +6291,12 @@ projects:
       - gate-project-config-projects-yaml
       - gate-infra-docs-index
       - gate-generate-specs-site
+      - gate-project-config-dib
     post:
       - publish-infra-docs-index
       - publish-specs-site
     periodic:
       - propose-project-config-update
-    experimental:
-      - gate-project-config-dib
 
   - name: openstack-infra/project-config-example
     template:
