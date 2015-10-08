@@ -641,7 +641,7 @@ jobs:
   # Skip these long-running and expensive devstack jobs when the
   # change is only to documentation, unit tests or similar components
   # that won't be exercised by the job anyway.
-  - name: ^.*(devstack|tempest|grenade|rally|swift|neutron-lbaas|ironic-inspector)-dsvm.*$
+  - name: ^.*(devstack|tempest|grenade|rally|swift|neutron-lbaas|ironic-inspector|heat)-dsvm.*$
     skip-if:
       - project: ^openstack/neutron$
         all-files-match-any:
@@ -679,6 +679,13 @@ jobs:
           - ^doc/.*$
           - ^ironic_inspector/test/.*$
           - ^tox.ini$
+      # In heat, ^tox.ini and some scripts in ^tools/ are used
+      # in heat-dsvm-functional gates, so not skipping on those changes
+      - project: ^openstack/heat$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+          - ^heat/tests/.*$
       - project: ^openstack/tempest$
         all-files-match-any:
           - ^.*\.rst$
@@ -710,6 +717,14 @@ jobs:
   - name: ^.*nova-(tox-functional|python27|python34)$
     skip-if:
       - project: ^openstack/nova$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+  # Skip non-doc jobs for doc-only heat changes. Since doc/source/*
+  # is checked by heat-pep8, this job should not be skipped
+  - name: ^.*heat-(python27|python34)$
+    skip-if:
+      - project: ^openstack/heat$
         all-files-match-any:
           - ^.*\.rst$
           - ^doc/.*$
