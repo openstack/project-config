@@ -1761,8 +1761,8 @@ jobs:
   - name: gate-glance-python34
     branch: ^(?!stable/(?:juno|kilo)).*$
 
-  # openstack-ansible skip for rst/doc files
-  - name: ^gate-openstack-ansible-(commit-nv|dsvm-commit|lint|pep8|bashate)$
+  # skip all openstack-ansible jobs except the docs job for rst/doc files
+  - name: ^gate-openstack-ansible-(?!docs).*$
     skip-if:
       - project: ^openstack/openstack-ansible$
         all-files-match-any:
