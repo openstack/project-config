@@ -27,7 +27,7 @@
           }}
           export -f post_test_hook
 
-          sed -ie 's/identity_api_version: 3/identity_api_version: 2.0/g' ~/.config/openstack/clouds.yaml
+          sed -ie "s/identity_api_version: '3'/identity_api_version: '2.0'/g" ~/.config/openstack/clouds.yaml
           sed -ie '/^.*domain_id.*$/d' ~/.config/openstack/clouds.yaml
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
