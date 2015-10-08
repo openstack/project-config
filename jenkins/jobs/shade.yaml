@@ -13,6 +13,7 @@
       - devstack-checkout
       - shell: |
           #!/bin/bash -xe
+          export SHADE_USE_KEYSTONE_V2=1
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TIMEOUT=60
           export DEVSTACK_GATE_NEUTRON=1
@@ -26,9 +27,6 @@
               $BASE/new/shade/shade/tests/functional/hooks/post_test_hook.sh
           }}
           export -f post_test_hook
-
-          sed -ie "s/identity_api_version: '3'/identity_api_version: '2.0'/g" ~/.config/openstack/clouds.yaml
-          sed -ie '/^.*domain_id.*$/d' ~/.config/openstack/clouds.yaml
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
 
