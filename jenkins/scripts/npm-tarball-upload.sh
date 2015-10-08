@@ -21,7 +21,7 @@ TARBALL_SITE=$2
 TAG=$(echo $ZUUL_REF | sed 's/^refs.tags.//')
 
 # Build the filename from the discovered tag and projectname.
-FILENAME="$PROJECT-$TAG.tgz"
+FILENAME="$PROJECT-$TAG.tar.gz"
 
 rm -rf *tgz
 curl --fail -o $FILENAME http://$TARBALL_SITE/$PROJECT/$FILENAME
