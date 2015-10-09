@@ -38,6 +38,24 @@
           target: '/'
           remove-prefix: 'publish-docs/api-ref/'
 
+- job:
+    name: openstack-api-ref-publish-lang
+    node: 'bare-precise || bare-trusty'
+
+    builders:
+      - revoke-sudo
+      - gerrit-git-prep
+      - tox:
+          envlist: 'publishlang-api'
+
+    publishers:
+      - console-log
+      - upload-doc-build-results
+      - ftp:
+          site: developer.openstack.org
+          source: 'publish-docs/api-ref/**'
+          target: '/'
+          remove-prefix: 'publish-docs/api-ref/'
 
 # in zuul/layout.yaml specified to only run against master branch.
 # this copies static files from www
