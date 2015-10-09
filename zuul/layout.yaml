@@ -1801,19 +1801,11 @@ jobs:
   # this applies to all openstack-ansible repositories
   - name: ^gate-openstack-ansible.*-bashate$
     branch: ^(?!juno).*$
-    voting: false
 
   # pep8 compliance was only introduced in kilo
   # this applies to all openstack-ansible repositories
   - name: ^gate-openstack-ansible.*-pep8$
     branch: ^(?!juno).*$
-    voting: false
-
-  # ansible-lint compliance only applies to role repositories
-  # all role repositories have the a name of the form
-  # openstack-ansible-<role>
-  - name: ^gate-openstack-ansible-.*-ansible-lint$
-    voting: false
 
   # Keystoneclient added functional testing in Kilo
   - name: ^gate-keystoneclient-dsvm-functional$
@@ -4665,6 +4657,8 @@ projects:
       - gate-openstack-ansible-dsvm-commit
     gate:
       - gate-openstack-ansible-docs
+      - gate-openstack-ansible-pep8
+      - gate-openstack-ansible-bashate
       - gate-openstack-ansible-dsvm-commit
 
   - name: openstack/openstack-ansible-security
@@ -4678,6 +4672,9 @@ projects:
       - gate-openstack-ansible-security-ansible-lint
     gate:
       - gate-openstack-ansible-security-docs
+      - gate-openstack-ansible-security-pep8
+      - gate-openstack-ansible-security-bashate
+      - gate-openstack-ansible-security-ansible-lint
 
   - name: openstack/openstack-ansible-specs
     template:
