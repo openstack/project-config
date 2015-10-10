@@ -5680,10 +5680,18 @@ projects:
       - name: merge-check
       - name: openstack-doc-gate
       - name: openstack-doc-translation
+    check:
+      - gate-api-site-tox-checklang
+    gate:
+      - gate-api-site-tox-checklang
     post:
-      - api-site-tox-doc-publishdocs
+      - api-site-upstream-translation-update
+    post:
       - openstack-api-site
       - openstack-api-ref
+      - openstack-api-ref-publish-lang
+    periodic:
+      - api-site-propose-translation-update
 
   - name: openstack/docs-specs
     template:
