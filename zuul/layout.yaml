@@ -1362,6 +1362,10 @@ jobs:
     # Ubuntu's version of python no longer dumps core on us.
     voting: false
 
+  - name: gate-oslo.rootwrap-python34
+    branch: ^(?!stable/(?:juno|kilo)).*$
+    voting: false
+
   - name: gate-oslo.vmware-tox-bandit
     branch: ^(?!stable/(juno|kilo)).*$
     voting: false
@@ -4037,6 +4041,7 @@ projects:
       - name: publish-to-pypi
       - name: lib-forward-testing
     check:
+      - gate-oslo.rootwrap-python34
       - gate-tempest-dsvm-largeops-src-oslo.rootwrap
 
   - name: openstack/oslo.serialization
