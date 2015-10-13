@@ -316,19 +316,18 @@
       - shell: |
           #!/bin/bash -xe
           export PROJECTS="openstack/rally $PROJECTS"
-          export ENABLED_SERVICES=rally
+          export PROJECTS="openstack/cue openstack/python-cueclient openstack/cue-dashboard $PROJECTS"
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TIMEOUT=100
           export DEVSTACK_GATE_TEMPEST=0
           export DEVSTACK_GATE_EXERCISES=0
           export RALLY_SCENARIO={scenario}
-          export PROJECTS="openstack/cue openstack/python-cueclient openstack/cue-dashboard $PROJECTS"
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin rally git://git.openstack.org/openstack/rally"
+
           function pre_test_hook {{
               # Install cue-devstack integration
               cd /opt/stack/new/cue/tests
               ./pre_test_hook.sh {broker}
-              # Install rally-devstack integration
-              cp -r $BASE/new/rally/contrib/devstack/* $BASE/new/devstack/
           }}
           export -f pre_test_hook
           function gate_hook {{
