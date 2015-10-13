@@ -1212,6 +1212,9 @@ jobs:
   - name: gate-ironicclient-dsvm-functional
     voting: false
 
+  - name: ^gate-tripleo-heat-templates-puppet-.*$
+    voting: false
+
 # Continous publishing from master of the following documentation targets:
   - name: ^.*-tox-doc-publishlang$
     branch: master
@@ -9117,6 +9120,10 @@ projects:
       - name: publish-to-pypi
       - name: noop-jobs
       - name: check-tripleo-jobs
+    check:
+      - gate-tripleo-heat-templates-puppet-lint
+      - gate-tripleo-heat-templates-puppet-syntax-3-dsvm-centos7
+      - gate-tripleo-heat-templates-puppet-syntax-4-dsvm-centos7
     post:
       - tripleo-heat-templates-branch-tarball
 
