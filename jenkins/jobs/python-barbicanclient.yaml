@@ -19,11 +19,10 @@
           export PROJECTS="openstack/barbican $PROJECTS"
           export PROJECTS="openstack/python-barbicanclient $PROJECTS"
 
-          function pre_test_hook {
-              cd /opt/stack/new/barbican/functionaltests
-              ./pre_test_hook.sh
+          function gate_hook {
+              $BASE/new/barbican/devstack/gate_hook.sh
           }
-          export -f pre_test_hook
+          export -f gate_hook
 
           function post_test_hook {
               cd /opt/stack/new/python-barbicanclient/functionaltests
