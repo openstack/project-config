@@ -1751,6 +1751,9 @@ jobs:
   - name: ^gate-network-checker.*$
     voting: false
 
+  - name: ^gate-shotgun.*$
+    voting: false
+
   # NOTE(jroll): This job was not working at Juno release.
   - name: ^gate-tempest-dsvm-ironic-agent_ssh$
     branch: ^(?!stable/juno).*$
@@ -8246,6 +8249,15 @@ projects:
       - name: python-jobs
       - name: python3-jobs
       - name: publish-to-pypi
+
+  - name: openstack/shotgun
+    template:
+      - name: merge-check
+    check:
+      - gate-shotgun-pep8
+      - gate-shotgun-python27
+    gate:
+      - noop
 
   - name: openstack/solum
     template:
