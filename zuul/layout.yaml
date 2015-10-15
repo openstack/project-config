@@ -1694,6 +1694,9 @@ jobs:
   - name: ^gate-fuel-docs.*$
     voting: false
 
+  - name: ^gate-fuel-library.*$
+    voting: false
+
   - name: ^gate-fuel-ostf.*$
     voting: false
 
@@ -4434,7 +4437,17 @@ projects:
   - name: openstack/fuel-library
     template:
       - name: merge-check
-      - name: noop-jobs
+    check:
+      - gate-fuel-library-puppet-lint
+      - gate-fuel-library-puppet-syntax-3-dsvm-centos7
+      - gate-fuel-library-puppet-unit-3.3-dsvm-centos7
+      - gate-fuel-library-puppet-unit-3.4-dsvm-centos7
+      - gate-fuel-library-puppet-unit-3.6-dsvm-centos7
+      - gate-fuel-library-puppet-unit-3.7-dsvm-centos7
+      - gate-fuel-library-puppet-unit-3.8-dsvm-centos7
+    gate:
+      - noop
+
 
   - name: openstack/fuel-main
     template:
