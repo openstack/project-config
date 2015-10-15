@@ -98,7 +98,7 @@ def set_node_options(item, job, params, default):
     python26_re = r'^.*-(py(thon)?)?26.*$'
     centos6_re = r'^.*-centos6.*$'
     fedora_re = r'^.*-f2(1|2).*$'
-    tripleo_re = r'^.*-tripleo.*$'
+    tripleo_re = r'^.*-tripleo-ci.*$'
     kolla_image_re = r'^.*-kolla-build-images-.*$'
     openstack_ansible_re = r'^.*-openstack-ansible-.*$'
     devstack_re = r'^.*-dsvm.*$'
