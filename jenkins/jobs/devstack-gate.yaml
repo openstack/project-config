@@ -2282,6 +2282,39 @@
       - console-log
 
 
+# A Template to to run a oslo.messaging devstack-plugin with oslo.messaging
+# code picked up from source
+- job-template:
+    name: '{pipeline}-oslo.messaging-src-dsvm-full-{plugin}{branch-designator}'
+    node: 'devstack-precise || devstack-trusty'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=120
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_TEMPEST_FULL=1
+          export PROJECTS="{plugin-repo} openstack/oslo.messaging $PROJECTS"
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin devstack-plugin-{plugin} git://git.openstack.org/{plugin-repo}"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"LIBS_FROM_GIT=oslo.messaging"
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+
 # A template for the misnamed drbd-devstack project.
 # Runs the full tempest suite.
 - job-template:
