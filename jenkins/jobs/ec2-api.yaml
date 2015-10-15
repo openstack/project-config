@@ -29,7 +29,7 @@
           # Because we are testing a non standard project, add the
           # our project repository. This makes zuul do the right
           # reference magic for testing changes.
-          export PROJECTS="stackforge/ec2-api $PROJECTS"
+          export PROJECTS="openstack/ec2-api $PROJECTS"
           # note the actual url here is somewhat irrelevant because it
           # caches in nodepool, however make it a valid url for
           # documentation purposes.
@@ -66,7 +66,7 @@
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
-          export PROJECTS="stackforge/ec2-api $PROJECTS"
+          export PROJECTS="openstack/ec2-api $PROJECTS"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin ec2-api git://git.openstack.org/stackforge/ec2-api"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin neutron-vpnaas git://git.openstack.org/openstack/neutron-vpnaas"
 
@@ -108,7 +108,7 @@
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
-          export PROJECTS="stackforge/ec2-api $PROJECTS"
+          export PROJECTS="openstack/ec2-api $PROJECTS"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin ec2-api git://git.openstack.org/stackforge/ec2-api"
 
           function post_test_hook {{
@@ -146,8 +146,8 @@
           export DEVSTACK_GATE_TEMPEST_NOTESTS=1
           export DEVSTACK_GATE_NEUTRON=1
 
-          export PROJECTS="stackforge/ec2-api $PROJECTS"
-          export PROJECTS="stackforge/swift3 $PROJECTS"
+          export PROJECTS="openstack/ec2-api $PROJECTS"
+          export PROJECTS="openstack/swift3 $PROJECTS"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin ec2-api git://git.openstack.org/stackforge/ec2-api"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin neutron-vpnaas git://git.openstack.org/openstack/neutron-vpnaas"
           export ENABLED_SERVICES+=,swift3
@@ -181,7 +181,7 @@
       - devstack-checkout
       - shell: |
           #!/bin/bash -xe
-          export PROJECTS="stackforge/ec2-api $PROJECTS"
+          export PROJECTS="openstack/ec2-api $PROJECTS"
           export PROJECTS="openstack/rally $PROJECTS"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin ec2-api git://git.openstack.org/stackforge/ec2-api"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin rally git://git.openstack.org/openstack/rally"
