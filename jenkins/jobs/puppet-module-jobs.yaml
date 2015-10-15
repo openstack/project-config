@@ -94,64 +94,6 @@
       - console-log
 
 - job-template:
-    name: 'gate-{name}-puppet-beaker-rspec-upgrade-dsvm-{ostype}{branch-designator}'
-    node: 'devstack-{ostype}'
-
-    builders:
-      - link-logs
-      - puppet-prepare-node
-      - allow-local-ssh-root
-      - shell: |
-          #!/bin/bash -xe
-          # checkout the current branch
-          /usr/zuul-env/bin/zuul-cloner \
-              --cache-dir /opt/git \
-              --workspace $WORKSPACE/new \
-              git://git.openstack.org $ZUUL_PROJECT
-
-          cd $WORKSPACE/new/$ZUUL_PROJECT
-          # for debugging:
-          git branch -r
-          OLD_BRANCH=$(git branch -r |grep -E 'origin.*stable' |sed -e 's/  origin\///' | sort -d | tail -1)
-
-          # checkout the stable branch
-          /usr/zuul-env/bin/zuul-cloner \
-              --cache-dir /opt/git \
-              --workspace $WORKSPACE/old \
-              --branch $OLD_BRANCH \
-              git://git.openstack.org $ZUUL_PROJECT
-
-          # install and test the stable branch
-          cd $WORKSPACE/old/$ZUUL_PROJECT
-          mkdir .bundled_gems
-          export GEM_HOME=`pwd`/.bundled_gems
-          export BEAKER_set=nodepool-{ostype}
-          export BEAKER_debug=yes
-          export BEAKER_color=no
-          gem install bundler --no-rdoc --no-ri --verbose
-          $GEM_HOME/bin/bundle install
-          $GEM_HOME/bin/bundle exec rspec spec/acceptance
-
-          # upgrade and test the current branch
-          cd $WORKSPACE/new/$ZUUL_PROJECT
-          mkdir -p .bundled_gems
-          export GEM_HOME=`pwd`/.bundled_gems
-          export BEAKER_provision=no
-          gem install bundler --no-rdoc --no-ri --verbose
-          $GEM_HOME/bin/bundle update
-          $GEM_HOME/bin/bundle exec rspec spec/acceptance
-
-    wrappers:
-      - build-timeout:
-          timeout: 60
-      - timestamps
-
-    publishers:
-      - copy-puppet-logs
-      - devstack-logs
-      - console-log
-
-- job-template:
     name: '{name}-forge-upload'
     node: release
 
@@ -305,7 +247,6 @@
       - centos7
     jobs:
       - 'gate-{name}-puppet-beaker-rspec-dsvm-{ostype}{branch-designator}'
-      - 'gate-{name}-puppet-beaker-rspec-upgrade-dsvm-{ostype}{branch-designator}'
 
 - job-group:
     name: 'puppet-openstack-integration-jobs'

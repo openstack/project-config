@@ -521,11 +521,6 @@ project-templates:
       - gate-{name}-puppet-beaker-rspec-dsvm-trusty
       - gate-{name}-puppet-beaker-rspec-dsvm-centos7
 
-  - name: puppet-beaker-upgrade-jobs
-    check:
-      - gate-{name}-puppet-beaker-rspec-upgrade-dsvm-trusty
-      - gate-{name}-puppet-beaker-rspec-upgrade-dsvm-centos7
-
   - name: puppet-beaker-jobs-nv
     check:
       - gate-{name}-puppet-beaker-rspec-dsvm-trusty-nv
@@ -1653,15 +1648,6 @@ jobs:
   # Beaker tests have been introduced after Juno release
   - name: ^gate-puppet-.*-puppet-beaker-rspec-dsvm-.*$
     branch: ^(?!stable/(icehouse|juno)).*$
-
-  # the job aims to test if patches in master don't break kilo branch
-  # so we need to run the job on master for now
-  - name: ^gate-puppet-.*-puppet-beaker-rspec-upgrade-dsvm-.*$
-    branch: ^(?!stable/(icehouse|juno|kilo)).*$
-    skip-if:
-      # this module is not part of Puppet OpenStack work
-      - project: ^stackforge/puppet-ceph$
-    voting: false
 
   # Aims to break when a new version of Puppet is released
   # For now, run the jobs only on master so if the job starts to
@@ -6846,7 +6832,6 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-beaker-upgrade-jobs
 
   - name: openstack/puppet-autossh
     template:
@@ -6859,7 +6844,6 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-beaker-upgrade-jobs
 
   - name: openstack/puppet-ceilometer
     template:
@@ -6867,7 +6851,6 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-beaker-upgrade-jobs
       - name: puppet-openstack-integration-jobs
     check-tripleo:
       - gate-tripleo-ci-ironic-overcloud-f21puppet-nonha
@@ -6885,7 +6868,6 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-beaker-upgrade-jobs
       - name: puppet-openstack-integration-jobs
     check-tripleo:
       - gate-tripleo-ci-ironic-overcloud-f21puppet-nonha
@@ -6896,7 +6878,6 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-beaker-upgrade-jobs
 
   - name: openstack/puppet-glance
     template:
@@ -6904,7 +6885,6 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-beaker-upgrade-jobs
       - name: puppet-openstack-integration-jobs
     check-tripleo:
       - gate-tripleo-ci-ironic-overcloud-f21puppet-nonha
@@ -6915,7 +6895,6 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-beaker-upgrade-jobs
 
   - name: openstack/puppet-heat
     template:
@@ -6923,7 +6902,6 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-beaker-upgrade-jobs
       - name: puppet-openstack-integration-jobs
     check-tripleo:
       - gate-tripleo-ci-ironic-overcloud-f21puppet-nonha
@@ -6934,7 +6912,6 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-beaker-upgrade-jobs
       - name: puppet-openstack-integration-jobs
 
   - name: openstack/puppet-ironic
@@ -6943,7 +6920,6 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-beaker-upgrade-jobs
 
   - name: openstack/puppet-keystone
     template:
@@ -6951,7 +6927,6 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-beaker-upgrade-jobs
       - name: puppet-openstack-integration-jobs
     check-tripleo:
       - gate-tripleo-ci-ironic-overcloud-f21puppet-nonha
@@ -6962,7 +6937,6 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-beaker-upgrade-jobs
 
   - name: openstack/puppet-mistral
     template:
@@ -7000,7 +6974,6 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-beaker-upgrade-jobs
       - name: puppet-openstack-integration-jobs
     check-tripleo:
       - gate-tripleo-ci-ironic-overcloud-f21puppet-nonha
@@ -7011,7 +6984,6 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-beaker-upgrade-jobs
       - name: puppet-openstack-integration-jobs
     check-tripleo:
       - gate-tripleo-ci-ironic-overcloud-f21puppet-nonha
@@ -7030,8 +7002,6 @@ projects:
     check:
       - gate-puppet-openstack_extras-puppet-beaker-rspec-dsvm-trusty
       - gate-puppet-openstack_extras-puppet-beaker-rspec-dsvm-centos7
-      - gate-puppet-openstack_extras-puppet-beaker-rspec-upgrade-dsvm-trusty
-      - gate-puppet-openstack_extras-puppet-beaker-rspec-upgrade-dsvm-centos7
 
   - name: openstack/puppet-openstack-integration
     template:
@@ -7061,7 +7031,6 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-beaker-upgrade-jobs
       - name: puppet-openstack-integration-jobs
     check-tripleo:
       - gate-tripleo-ci-ironic-overcloud-f21puppet-nonha
@@ -7072,7 +7041,6 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-beaker-upgrade-jobs
       - name: puppet-openstack-integration-jobs
 
   - name: openstack/puppet-setproxy
@@ -7091,7 +7059,6 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-beaker-upgrade-jobs
       - name: puppet-openstack-integration-jobs
     check-tripleo:
       - gate-tripleo-ci-ironic-overcloud-f21puppet-nonha
@@ -7102,7 +7069,6 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-beaker-upgrade-jobs
       - name: puppet-openstack-integration-jobs
 
   - name: openstack/puppet-tripleo
@@ -7118,7 +7084,6 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-beaker-upgrade-jobs
       - name: puppet-openstack-integration-jobs
 
   - name: openstack/puppet-tuskar
@@ -7133,7 +7098,6 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-beaker-upgrade-jobs
       - name: puppet-openstack-integration-jobs
 
   - name: openstack/puppet-zaqar
@@ -7142,7 +7106,6 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-beaker-upgrade-jobs
 
   - name: openstack/pycadf
     template:
