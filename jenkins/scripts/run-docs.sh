@@ -36,15 +36,13 @@ elif echo $ZUUL_REFNAME | grep refs/tags/ >/dev/null ; then
     # root in the tagname dir.
     TAG=$(echo $ZUUL_REFNAME | sed 's/refs.tags.//')
     if [ ! -z $TAG ] ; then
-        if echo $ZUUL_PROJECT | grep 'python-.*client' ; then
-            # This is a hack to ignore the year.release tags in python-*client
-            # projects.
-            LATEST=$(git tag | sed -n -e '/^2012\..*$/d' -e '/^\([0-9]\+\.\?\)\+$/p' | sort -V | tail -1)
-        else
-            # Take all tags of the form (number.)+, sort them, then take the
-            # largest
-            LATEST=$(git tag | sed -n '/^\([0-9]\+\.\?\)\+$/p' | sort -V | tail -1)
-        fi
+        # This is a hack to ignore the year.release tags in projects since
+        # now all projects use semver based versions instead of date based
+        # versions. The date versions will sort higher even though they
+        # should not so we just special case it here.
+        LATEST=$(git tag | sed -n -e '/^20[0-9]\{2\}\..*$/d' -e '/^\([0-9]\+\.\?\)\{1,3\}.*$/p' | sort -V | tail -1)
+        # Now publish to / and /$TAG if this is the latest version or
+        # just /$TAG if this is not the latest version.
         if [ "$TAG" = "$LATEST" ] ; then
             # Copy the docs into a subdir if this is a tagged build
             mkdir doc/build/$TAG
