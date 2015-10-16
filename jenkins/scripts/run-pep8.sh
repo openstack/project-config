@@ -14,7 +14,9 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-venv=pep8
+venv=${1:-pep8}
+
+export UPPER_CONSTRAINTS_FILE=$(pwd)/upper-constraints.txt
 
 tox -v -e$venv
 rc=$?

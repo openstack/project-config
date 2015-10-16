@@ -24,7 +24,22 @@
     builders:
       - revoke-sudo
       - gerrit-git-prep
-      - pep8
+      - pep8:
+          env: pep8
+
+    publishers:
+      - zuul-swift-upload-console-log
+
+    node: '{node}'
+
+- job-template:
+    name: 'gate-{name}-pep8-constraints'
+
+    builders:
+      - revoke-sudo
+      - zuul-git-prep-upper-constraints
+      - pep8:
+          env: pep8-constraints
 
     publishers:
       - zuul-swift-upload-console-log
@@ -39,6 +54,7 @@
       - revoke-sudo
       - gerrit-git-prep
       - pep8:
+          env: pep8
       - shell: purposefully_fail_me
 
     publishers:
@@ -373,6 +389,7 @@
 - job-group:
     name: python-constraints-jobs
     jobs:
+      - 'gate-{name}-pep8-constraints'
       - 'gate-{name}-python27-constraints'
       - 'gate-{name}-python34-constraints'
       - 'gate-{name}-pypy-constraints'
