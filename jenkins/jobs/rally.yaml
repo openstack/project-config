@@ -233,9 +233,21 @@
           export RALLY_SCENARIO={scenario}
 
           ENABLED_SERVICES=h-api,h-api-cfn,h-api-cw,h-eng,heat,
-          ENABLED_SERVICES+=murano,murano-api,murano-engine,
-          export ENABLED_SERVICES
           export DEVSTACK_LOCAL_CONFIG="enable_plugin rally git://git.openstack.org/openstack/rally"
+
+          if [[ $ZUUL_BRANCH =~ "kilo" ]]; then
+              # Kilo version uses 'hooks' approach that requires explicit
+              # enabling of services.
+              # todo(freerunner): Remove this ugly workaround when kilo support will be
+              # todo(freerunner): dropped off.
+              ENABLED_SERVICES+=,murano,murano-api,murano-engine
+          else
+              # Enable murano devstack plugin. Provided repo should be cloned by zuul before devstack run
+              # and below provided link should not be used.
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin murano git://git.openstack.org/openstack/murano"
+          fi
+
+          export ENABLED_SERVICES
 
           function pre_test_hook {{
               # Install murano-devstack integration
