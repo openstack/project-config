@@ -48,22 +48,20 @@ def normalize(s):
     return s.lower().replace("_", "-")
 
 
-def check_sections():
+def check_projects_sorted():
     """Check that the projects are in alphabetical order per section."""
 
-    print("Checking sections for alphabetical order")
-    print("========================================")
+    print("Checking project list for alphabetical order")
+    print("============================================")
     # Note that the file has different sections and we need to sort
     # entries within these sections.
     errors = False
-    # Skip all entries before the first section header
+    # Skip all entries before the project list
     firstEntry = True
     last = ""
     for line in open('zuul/layout.yaml', 'r'):
-        if line.startswith('# Section:'):
+        if line.startswith('projects:'):
             last = ""
-            section = line[10:].strip()
-            print("Checking section '%s'" % section)
             firstEntry = False
         if line.startswith('  - name: ') and not firstEntry:
             current = line[10:].strip()
@@ -92,8 +90,7 @@ def check_formatting():
     return errors
 
 def check_all():
-    errors = False               # this can be removed when the following check is re-enabled
-    # errors = check_sections()  # disabling alphabetical order check for mass stackforge rename
+    errors = check_projects_sorted()
     errors = check_merge_template() or errors
     errors = check_formatting() or errors
 
