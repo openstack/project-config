@@ -22,8 +22,8 @@ def normalize(s):
     return s.lower().replace("_", "-")
 
 
-def check_sections():
-    """Check that the projects are in alphabetical order per section
+def check_alphabetical():
+    """Check that the projects are in alphabetical order
     and that indenting looks correct"""
 
     # Note that the file has different sections and we need to check
@@ -32,10 +32,6 @@ def check_sections():
     last = ""
     count = 1
     for line in open('jenkins/jobs/projects.yaml', 'r'):
-        if line.startswith('# Section:'):
-            last = ""
-            section = line[10:].strip()
-            print("Checking section '%s'" % section)
         if line.startswith('    name: '):
             i = line.find(' name: ')
             current = line[i + 7:].strip()
@@ -55,7 +51,7 @@ def check_sections():
 
 
 def check_all():
-    errors = check_sections()
+    errors = check_alphabetical()
 
     if errors:
         print("Found errors in jenkins/jobs/projects.yaml!")
