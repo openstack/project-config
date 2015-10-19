@@ -1715,16 +1715,21 @@ jobs:
   - name: gate-sdk-dsvm-functional
     voting: false
 
-  - name: ^gate-fuel-agent.*$
+  - name: gate-fuel-agent-docs
+    branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
     voting: false
+
+  - name: ^gate-fuel-agent.*$
+    branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
 
   - name: ^gate-fuel-dev-tools.*$
-    voting: false
+    branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
 
   - name: ^gate-fuel-devops.*$
-    voting: false
+    branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
 
   - name: ^gate-fuel-docs.*$
+    branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
     voting: false
 
   - name: ^gate-fuel-library.*$
@@ -1733,20 +1738,45 @@ jobs:
   - name: ^gate-fuel-menu.*$
     voting: false
 
+  - name: gate-fuel-mirror-python26
+    branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
+    voting: false
+
+  - name: ^gate-fuel-mirror.*$
+    branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
+
   - name: ^gate-fuel-ostf.*$
+    branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
+
+  - name: gate-fuel-plugins-python26
+    branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
     voting: false
 
   - name: ^gate-fuel-plugins.*$
-    voting: false
+    branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
 
   - name: ^gate-fuel-qa.*$
-    voting: false
+    branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
+
+  - name: ^gate-fuel-specs.*$
+    branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
 
   - name: ^gate-fuel-stats.*$
+    branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
+
+  - name: gate-fuel-upgrade-python26
+    branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
+    voting: false
+
+  - name: ^gate-fuel-upgrade.*$
+    branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
+
+  - name: gate-fuel-web-python26
+    branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
     voting: false
 
   - name: ^gate-fuel-web.*$
-    voting: false
+    branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
 
   - name: ^gate-network-checker.*$
     voting: false
@@ -1916,9 +1946,6 @@ jobs:
 
   - name: ^gate-ironic-inspector-dsvm.*$
     branch: ^(?!stable/1).*$
-
-  - name: ^gate-fuel-upgrade-.*$
-    voting: false
 
   - name: gate-python-designateclient-python34
 
@@ -4456,14 +4483,15 @@ projects:
   - name: openstack/fuel-agent
     template:
       - name: merge-check
+      - name: python26-jobs
+      - name: python3-jobs
     check:
       - gate-fuel-agent-docs
       - gate-fuel-agent-pep8
-      - gate-fuel-agent-python26
       - gate-fuel-agent-python27
-      - gate-fuel-agent-python34
     gate:
-      - noop
+      - gate-fuel-agent-pep8
+      - gate-fuel-agent-python27
 
   - name: openstack/fuel-astute
     template:
@@ -4473,31 +4501,29 @@ projects:
   - name: openstack/fuel-dev-tools
     template:
       - name: merge-check
-      - name: noop-jobs
     check:
-      - gate-fuel-dev-tools-docs
       - gate-fuel-dev-tools-pep8
-      - gate-fuel-dev-tools-python26
       - gate-fuel-dev-tools-python27
-      - gate-fuel-dev-tools-python34
+    gate:
+      - gate-fuel-dev-tools-pep8
+      - gate-fuel-dev-tools-python27
 
   - name: openstack/fuel-devops
     template:
       - name: merge-check
-      - name: noop-jobs
     check:
-      - gate-fuel-devops-docs
       - gate-fuel-devops-pep8
-      - gate-fuel-devops-python26
       - gate-fuel-devops-python27
-      - gate-fuel-devops-python34
+    gate:
+      - gate-fuel-devops-pep8
+      - gate-fuel-devops-python27
 
   - name: openstack/fuel-docs
     template:
       - name: merge-check
       - name: noop-jobs
     check:
-      - gate-fuel-docs-pep8
+      - gate-fuel-docs-docs
 
   - name: openstack/fuel-library
     template:
@@ -4531,7 +4557,14 @@ projects:
   - name: openstack/fuel-mirror
     template:
       - name: merge-check
-      - name: noop-jobs
+      - name: python3-jobs
+    check:
+      - gate-fuel-mirror-pep8
+      - gate-fuel-mirror-python26
+      - gate-fuel-mirror-python27
+    gate:
+      - gate-fuel-mirror-pep8
+      - gate-fuel-mirror-python27
 
   - name: openstack/fuel-nailgun-agent
     template:
@@ -4541,25 +4574,21 @@ projects:
   - name: openstack/fuel-octane
     template:
       - name: merge-check
+      - name: python26-jobs
     check:
       - gate-fuel-octane-pep8
-      - gate-fuel-octane-python26
       - gate-fuel-octane-python27
     gate:
       - gate-fuel-octane-pep8
-      - gate-fuel-octane-python26
       - gate-fuel-octane-python27
 
   - name: openstack/fuel-ostf
     template:
       - name: merge-check
-      - name: noop-jobs
     check:
-      - gate-fuel-ostf-docs
       - gate-fuel-ostf-pep8
-      - gate-fuel-ostf-python26
-      - gate-fuel-ostf-python27
-      - gate-fuel-ostf-python34
+    gate:
+      - gate-fuel-ostf-pep8
 
   - name: openstack/fuel-plugin-availability-zones
     template:
@@ -4809,24 +4838,21 @@ projects:
   - name: openstack/fuel-plugins
     template:
       - name: merge-check
-      - name: noop-jobs
     check:
-      - gate-fuel-plugins-docs
       - gate-fuel-plugins-pep8
       - gate-fuel-plugins-python26
       - gate-fuel-plugins-python27
-      - gate-fuel-plugins-python34
+    gate:
+      - gate-fuel-plugins-pep8
+      - gate-fuel-plugins-python27
 
   - name: openstack/fuel-qa
     template:
       - name: merge-check
-      - name: noop-jobs
     check:
-      - gate-fuel-qa-docs
       - gate-fuel-qa-pep8
-      - gate-fuel-qa-python26
-      - gate-fuel-qa-python27
-      - gate-fuel-qa-python34
+    gate:
+      - gate-fuel-qa-pep8
 
   - name: openstack/fuel-specs
     template:
@@ -4840,13 +4866,12 @@ projects:
   - name: openstack/fuel-stats
     template:
       - name: merge-check
-      - name: noop-jobs
     check:
-      - gate-fuel-stats-docs
       - gate-fuel-stats-pep8
-      - gate-fuel-stats-python26
       - gate-fuel-stats-python27
-      - gate-fuel-stats-python34
+    gate:
+      - gate-fuel-stats-pep8
+      - gate-fuel-stats-python27
 
   - name: openstack/fuel-upgrade
     template:
@@ -4856,18 +4881,19 @@ projects:
       - gate-fuel-upgrade-python27
       - gate-fuel-upgrade-python26
     gate:
-      - noop
+      - gate-fuel-upgrade-pep8
+      - gate-fuel-upgrade-python27
 
   - name: openstack/fuel-web
     template:
       - name: merge-check
-      - name: noop-jobs
     check:
-      - gate-fuel-web-docs
       - gate-fuel-web-pep8
       - gate-fuel-web-python26
       - gate-fuel-web-python27
-      - gate-fuel-web-python34
+    gate:
+      - gate-fuel-web-pep8
+      - gate-fuel-web-python27
 
   - name: openstack/futurist
     template:
