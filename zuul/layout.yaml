@@ -1086,7 +1086,7 @@ jobs:
   - name: gate-tempest-dsvm-neutron-nv
     branch: ^feature/pecan
 
-  - name: gate-heat-dsvm-functional-orig-postgres
+  - name: ^gate-heat-dsvm-functional-orig-postgres-lbaasv2
     voting: false
 
   # NOTE(tonyb) (heat) functional testing was introduced in the liberty
@@ -1094,7 +1094,7 @@ jobs:
   - name: gate-heatclient-dsvm-functional
     branch: ^(?!stable/kilo).*$
 
-  - name: gate-heat-dsvm-functional-convg-mysql
+  - name: ^gate-heat-dsvm-functional-convg-mysql-lbaasv2
     branch: ^(?!stable/(kilo|liberty)).*$
 
   - name: gate-tempest-dsvm-heat
@@ -5739,14 +5739,15 @@ projects:
       - name: experimental-tripleo-jobs
       - name: release-notes-jobs
     check:
-      - gate-heat-dsvm-functional-orig-mysql
-      - gate-heat-dsvm-functional-convg-mysql
+      - gate-heat-dsvm-functional-orig-mysql-lbaasv1
+      - gate-heat-dsvm-functional-orig-mysql-lbaasv2
+      - gate-heat-dsvm-functional-convg-mysql-lbaasv2
       - gate-tempest-dsvm-heat
       - gate-tempest-dsvm-heat-apache
       - gate-grenade-dsvm-heat
     gate:
-      - gate-heat-dsvm-functional-orig-mysql
-      - gate-heat-dsvm-functional-convg-mysql
+      - gate-heat-dsvm-functional-orig-mysql-lbaasv2
+      - gate-heat-dsvm-functional-convg-mysql-lbaasv2
       - gate-tempest-dsvm-heat
       - gate-tempest-dsvm-heat-apache
       - gate-grenade-dsvm-heat
@@ -5754,7 +5755,7 @@ projects:
       - heat-coverage
     experimental:
       - gate-rally-dsvm-fakevirt-heat
-      - gate-heat-dsvm-functional-orig-postgres
+      - gate-heat-dsvm-functional-orig-postgres-lbaasv2
 
   - name: openstack/heat-cfntools
     template:

@@ -1963,27 +1963,39 @@
 
     jobs:
       - python-jobs
-      - '{pipeline}-heat-dsvm-functional-{engine}-{datastore}{job-suffix}':
+      - '{pipeline}-heat-dsvm-functional-{engine}-{datastore}-{lbaasversion}{job-suffix}':
           datastore: mysql
           pipeline: gate
           node: devstack-trusty
           job-suffix: ''
           branch-override: default
           engine: orig
-      - '{pipeline}-heat-dsvm-functional-{engine}-{datastore}{job-suffix}':
+          lbaasversion: lbaasv1
+      - '{pipeline}-heat-dsvm-functional-{engine}-{datastore}-{lbaasversion}{job-suffix}':
+          datastore: mysql
+          pipeline: gate
+          node: devstack-trusty
+          job-suffix: ''
+          branch-designator: ''
+          branch-override: default
+          engine: orig
+          lbaasversion: lbaasv2
+      - '{pipeline}-heat-dsvm-functional-{engine}-{datastore}-{lbaasversion}{job-suffix}':
           datastore: postgres
           pipeline: gate
           node: devstack-trusty
           job-suffix: ''
           branch-override: default
           engine: orig
-      - '{pipeline}-heat-dsvm-functional-{engine}-{datastore}{job-suffix}':
+          lbaasversion: lbaasv2
+      - '{pipeline}-heat-dsvm-functional-{engine}-{datastore}-{lbaasversion}{job-suffix}':
           datastore: mysql
           pipeline: gate
           node: devstack-trusty
           job-suffix: ''
           branch-override: default
           engine: convg
+          lbaasversion: lbaasv2
       - '{pipeline}-tempest-dsvm-heat{job-suffix}':
           pipeline: gate
           node: devstack-trusty
