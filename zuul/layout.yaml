@@ -861,6 +861,11 @@ jobs:
     branch: ^(?!stable/(juno|kilo)).*$
     voting: false
 
+    # NOTE(sambetts) Make requirements check non-voting for networking-cisco
+    # until cisco requirements are in global requirements.
+  - name: gate-networking-cisco-requirements
+    voting: false
+
     # Images for Icehouse do not contain python34
   - name: ^gate-.*-python34$
     branch: ^(?!stable/icehouse).*$
@@ -5770,10 +5775,12 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
+      - name: python3-jobs
       - name: publish-to-pypi
-      - name: check-requirements
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
+    check:
+      - gate-networking-cisco-requirements
 
   - name: openstack/networking-edge-vpn
     template:
