@@ -780,7 +780,7 @@ jobs:
   # Skip non-doc jobs for doc-only nova changes.  Since
   # doc/source/conf.py is checked by nova-(pep8|pylint), those jobs
   # should not be skipped.
-  - name: ^.*nova-(tox-functional|python27|python34)$
+  - name: ^.*nova-(tox-functional|python27|python34)(-constraints)?$
     skip-if:
       - project: ^openstack/nova$
         all-files-match-any:
@@ -1764,7 +1764,7 @@ jobs:
   - name: gate-nova-pip-missing-reqs
     voting: false
 
-  - name: gate-nova-tox-functional
+  - name: ^gate-nova-tox-functional(-constraints)?$
     branch: ^(?!stable/juno).*$
 
   - name: gate-oslo.db-tox-sqla_08
@@ -2123,6 +2123,21 @@ jobs:
     voting: false
 
   - name: gate-neutron-docs-constraints
+    voting: false
+
+  - name: gate-nova-python27-constraints
+    voting: false
+
+  - name: gate-nova-python34-constraints
+    voting: false
+
+  - name: gate-nova-pep8-constraints
+    voting: false
+
+  - name: gate-nova-docs-constraints
+    voting: false
+
+  - name: gate-nova-tox-functional-constraints
     voting: false
 
   - name: gate-python-fuelclient-python34
@@ -6545,6 +6560,11 @@ projects:
       - gate-tempest-dsvm-full-ceph
       - gate-tempest-dsvm-multinode-full
       - gate-compute-api-guide
+      - gate-nova-python27-constraints
+      - gate-nova-python34-constraints
+      - gate-nova-docs-constraints
+      - gate-nova-pep8-constraints
+      - gate-nova-tox-functional-constraints
     gate:
       - gate-nova-tox-functional
       - gate-devstack-dsvm-cells
@@ -6555,6 +6575,7 @@ projects:
     post:
       - nova-coverage
       - compute-api-guide
+      - nova-coverage-constraints
     experimental:
       - gate-grenade-dsvm-forward
       - gate-nova-pip-missing-reqs
