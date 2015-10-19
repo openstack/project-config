@@ -1,5 +1,5 @@
 - job:
-    # run bashate changes over devstack
+    # run bashate changes over devstack & devstack-gate
     name: 'gate-bashate-devstack'
     node: ubuntu-trusty
 
@@ -17,10 +17,18 @@
           /usr/zuul-env/bin/zuul-cloner --cache-dir /opt/git \
             git://git.openstack.org \
             openstack-dev/bashate \
-            openstack-dev/devstack
+            openstack-dev/devstack \
+            openstack-infra/devstack-gate
 
-          cd openstack-dev/devstack
-          BASHATE_INSTALL_PATH=$WORKSPACE/openstack-dev/bashate tox -e bashate
+          export BASHATE_INSTALL_PATH=$WORKSPACE/openstack-dev/bashate
+
+          pushd openstack-dev/devstack
+          tox -e bashate
+          popd
+
+          pushd openstack-infra/devstack-gate
+          tox -e bashate
+          popd
 
     publishers:
       - console-log
