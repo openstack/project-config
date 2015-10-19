@@ -54,7 +54,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-heat-dsvm-functional-{engine}-{datastore}{job-suffix}'
+    name: '{pipeline}-heat-dsvm-functional-{engine}-{datastore}-{lbaasversion}{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -69,7 +69,13 @@
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
-          services=c-api,c-bak,c-sch,c-vol,cinder,dstat,g-api,g-reg,h-api,h-api-cfn,h-api-cw,h-eng,heat,key,mysql,n-api,n-cond,n-cpu,n-crt,n-sch,q-agt,q-dhcp,q-l3,q-meta,q-metering,q-svc,q-vpn,rabbit,s-account,s-container,s-object,s-proxy,q-lbaas,ceilometer-acompute,ceilometer-acentral,ceilometer-collector,ceilometer-api,ceilometer-anotification
+          services=c-api,c-bak,c-sch,c-vol,cinder,dstat,g-api,g-reg,h-api
+          services+=,h-api-cfn,h-api-cw,h-eng,heat,key,mysql,n-api,n-cond
+          services+=,n-cpu,n-crt,n-sch,q-agt,q-dhcp,q-l3,q-meta,q-metering
+          services+=,q-svc,q-vpn,rabbit,s-account,s-container,s-object,s-proxy
+          services+=,ceilometer-acompute,ceilometer-acentral
+          services+=,ceilometer-collector,ceilometer-api
+          services+=,ceilometer-anotification
           # n-obj has been removed from mitaka
           if [[ "stable/kilo stable/liberty" =~ $ZUUL_BRANCH ]]; then
               services+=,n-obj,
@@ -91,6 +97,20 @@
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin aodh git://git.openstack.org/openstack/aodh"
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin zaqar git://git.openstack.org/openstack/zaqar"
           fi
+
+          if [ "{lbaasversion}" = "lbaasv2" ]; then
+              # Enable LBaaS V2 plugin
+              export PROJECTS="openstack/neutron-lbaas $PROJECTS"
+              services+=",q-lbaasv2"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin neutron-lbaas https://git.openstack.org/openstack/neutron-lbaas"
+              # Enable default recommended implementation for LBaaS v2, Octavia
+              export PROJECTS="openstack/octavia $PROJECTS"
+              services+=",octavia,o-cw,o-hk,o-hm,o-api"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin octavia https://git.openstack.org/openstack/octavia"
+          else
+              services+=",q-lbaas"
+          fi
+
           export OVERRIDE_ENABLED_SERVICES=$services
 
           if [ "{datastore}" == "postgres" ] ; then
