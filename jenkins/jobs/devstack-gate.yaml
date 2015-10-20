@@ -2354,7 +2354,7 @@
 
 
 - job-template:
-    name: '{pipeline}-tempest-dsvm-full-glusterfs{branch-designator}'
+    name: '{pipeline}-cinder-tempest-dsvm-glusterfs{branch-designator}'
     node: '{node}'
 
     wrappers:
@@ -2373,6 +2373,11 @@
           export DEVSTACK_GATE_TEMPEST=1
           export PROJECTS="openstack/devstack-plugin-glusterfs $PROJECTS"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin devstack-plugin-glusterfs git://git.openstack.org/stackforge/devstack-plugin-glusterfs"
+
+          # Configure devstack-plugin-glusterfs to enable GlusterFS as a backend for Glance, Nova and Cinder.
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"CONFIGURE_GLUSTERFS_GLANCE=True"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"CONFIGURE_GLUSTERFS_NOVA=True"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"CONFIGURE_GLUSTERFS_CINDER=True"
 
           # Skip test_volume_boot_pattern test cases for GlusterFS until bug 1444806 is fixed.
           # Below regex also exclude the slow tag.
