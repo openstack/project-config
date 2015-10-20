@@ -2217,17 +2217,38 @@
       - openstack-publish-jobs
       - 'gate-{name}-tox-{envlist}':
           envlist: validate-contents
-      - '{pipeline}-kolla-build-images-{distro}-{type}':
+      - '{pipeline}-kolla-{action}-images-{distro}-{type}':
+          action: build
           distro: centos
           node: 'devstack-centos7'
           pipeline: gate
           type: binary
-      - '{pipeline}-kolla-build-images-{distro}-{type}':
+      - '{pipeline}-kolla-{action}-images-{distro}-{type}':
+          action: deploy
+          distro: centos
+          node: 'devstack-centos7'
+          pipeline: gate
+          type: binary
+      - '{pipeline}-kolla-{action}-images-{distro}-{type}':
+          action: build
           distro: centos
           node: 'devstack-centos7'
           pipeline: gate
           type: source
-      - '{pipeline}-kolla-build-images-{distro}-{type}':
+      - '{pipeline}-kolla-{action}-images-{distro}-{type}':
+          action: deploy
+          distro: centos
+          node: 'devstack-centos7'
+          pipeline: gate
+          type: source
+      - '{pipeline}-kolla-{action}-images-{distro}-{type}':
+          action: build
+          distro: ubuntu
+          node: 'devstack-trusty'
+          pipeline: gate
+          type: source
+      - '{pipeline}-kolla-{action}-images-{distro}-{type}':
+          action: deploy
           distro: ubuntu
           node: 'devstack-trusty'
           pipeline: gate
