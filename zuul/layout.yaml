@@ -660,7 +660,7 @@ jobs:
   # Skip these long-running and expensive devstack jobs when the
   # change is only to documentation, unit tests or similar components
   # that won't be exercised by the job anyway.
-  - name: ^.*(devstack|tempest|grenade|rally|swift|neutron-lbaas|ironic-inspector|heat)-dsvm.*$
+  - name: ^.*(devstack|tempest|grenade|rally|swift|neutron-lbaas|neutron-vpnaas|ironic-inspector|heat)-dsvm.*$
     skip-if:
       - project: ^openstack/neutron$
         all-files-match-any:
@@ -676,6 +676,11 @@ jobs:
           - ^neutron-lbaas/tests/unit/.*$
           - ^tools/.*$
           - ^tox.ini$
+      - project: ^openstack/neutron-vpnaas$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+          - ^neutron-vpnaas/tests/unit/.*$
       - project: ^openstack/nova$
         all-files-match-any:
           - ^.*\.rst$
