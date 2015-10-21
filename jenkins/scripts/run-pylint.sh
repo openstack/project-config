@@ -14,7 +14,10 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+venv=${1:-pylint}
+export UPPER_CONSTRAINTS_FILE=$(pwd)/upper-constraints.txt
+
 set -o pipefail
-tox -v -epylint | tee pylint.txt
+tox -v -e$venv | tee pylint.txt
 set +o pipefail
 

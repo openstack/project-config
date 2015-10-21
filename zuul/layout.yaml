@@ -1175,7 +1175,7 @@ jobs:
     branch: ^(?!stable/(?:juno|kilo)).*$
     voting: false
 
-  - name: gate-cinder-pylint
+  - name: ^gate-cinder-pylint(-constraints)?$
     voting: false
 
   - name: gate-cinderclient-dsvm-functional
@@ -2011,7 +2011,7 @@ jobs:
   # End of Python 2.6 depreciation
 
   # Python 3.4 jobs
-  - name: gate-cinder-python34
+  - name: ^gate-cinder-python34(-constraints)?$
     branch: ^(?!stable/(?:juno|kilo)).*$
 
   - name: gate-keystone-python34
@@ -2143,6 +2143,9 @@ jobs:
     voting: false
 
   - name: gate-nova-tox-functional-constraints
+    voting: false
+
+  - name: ^gate-cinder-.*-constraints$
     voting: false
 
   - name: gate-python-fuelclient-python34
@@ -3958,6 +3961,11 @@ projects:
       - gate-tempest-dsvm-full-drbd-devstack-nv
       - gate-tempest-dsvm-full-lio
       - gate-tempest-dsvm-full-bdd-nv
+      - gate-cinder-python27-constraints
+      - gate-cinder-python34-constraints
+      - gate-cinder-docs-constraints
+      - gate-cinder-pep8-constraints
+      - gate-cinder-pylint-constraints
     gate:
       - gate-devstack-dsvm-cells
       - gate-tempest-dsvm-full-ceph
