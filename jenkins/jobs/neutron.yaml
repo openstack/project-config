@@ -83,7 +83,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-neutron-dsvm-functional{branch-designator}'
+    name: '{pipeline}-neutron-dsvm-functional{python}{branch-designator}'
     node: '{node}'
 
     wrappers:
@@ -125,7 +125,7 @@
 
           function post_test_hook {{
               if [[ -e $BASE/new/neutron/neutron/tests/contrib/post_test_hook.sh ]]; then
-                 bash -xe $BASE/new/neutron/neutron/tests/contrib/post_test_hook.sh dsvm-functional
+                 bash -xe $BASE/new/neutron/neutron/tests/contrib/post_test_hook.sh dsvm-functional{python}
               else
                  # Before kilo
                  bash -xe $BASE/new/neutron/neutron/tests/functional/contrib/post_test_hook.sh
