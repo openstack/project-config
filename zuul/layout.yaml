@@ -1057,6 +1057,12 @@ jobs:
   - name: gate-oslo.messaging-dsvm-functional-amqp1-f21
     branch: ^(?!stable/juno).*$
 
+  #TODO(dims): When feature/pika merges to oslo.messaging master
+  #then we should run this job against master
+  - name: gate-oslo.messaging-dsvm-functional-pika
+    branch: feature/pika
+    voting: false
+
   - name: gate-oslo.messaging-dsvm-functional-zeromq
     branch: ^(?!stable/(?:juno|kilo|liberty)).*$
 
@@ -1471,6 +1477,12 @@ jobs:
 
   - name: gate-oslo.messaging-src-dsvm-full-zmq
     branch: ^(?!stable/(?:juno|kilo|liberty)).*$
+    voting: false
+
+  #TODO(dims): When feature/pika merges to oslo.messaging master
+  #then we should run this job against master
+  - name: gate-oslo.messaging-src-dsvm-full-pika
+    branch: feature/pika
     voting: false
 
   - name: gate-manila-tempest-dsvm-hdfs
@@ -6635,9 +6647,11 @@ projects:
       - gate-oslo.messaging-dsvm-functional-rabbit
       - gate-oslo.messaging-dsvm-functional-qpid
       - gate-oslo.messaging-dsvm-functional-amqp1-f21
+      - gate-oslo.messaging-dsvm-functional-pika
       - gate-oslo.messaging-dsvm-functional-zeromq
       - gate-oslo.messaging-python34
       - gate-oslo.messaging-src-dsvm-full-amqp1-f21
+      - gate-oslo.messaging-src-dsvm-full-pika
       - gate-oslo.messaging-src-dsvm-full-zmq
     post:
       - oslo.messaging-coverage
