@@ -1741,6 +1741,9 @@ jobs:
   - name: ^gate-fuel-web.*$
     voting: false
 
+  - name: ^gate-network-checker.*$
+    voting: false
+
   # NOTE(jroll): This job was not working at Juno release.
   - name: ^gate-tempest-dsvm-ironic-agent_ssh$
     branch: ^(?!stable/juno).*$
@@ -5785,6 +5788,15 @@ projects:
       - name: publish-to-pypi
     check:
       - nerd-reviewer-coverage
+
+  - name: openstack/network-checker
+    template:
+      - name: merge-check
+    check:
+      - gate-network-checker-pep8
+      - gate-network-checker-python27
+    gate:
+      - noop
 
   - name: openstack/networking-6wind
     template:
