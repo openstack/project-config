@@ -266,6 +266,8 @@ project-templates:
       - 'gate-{name}-docs-constraints'
       - 'gate-{name}-pep8-constraints'
       - 'gate-{name}-python27-constraints'
+    post:
+      - '{name}-branch-tarball-constraints'
 
   - name: grenade
     check:
@@ -455,6 +457,13 @@ project-templates:
       - '{name}-tarball'
     release:
       - '{name}-tarball'
+      - '{name}-merge-release-tags'
+
+  - name: openstack-server-release-jobs-constraints
+    pre-release:
+      - '{name}-tarball-constraints'
+    release:
+      - '{name}-tarball-constraints'
       - '{name}-merge-release-tags'
 
   - name: docs-on-rtfd
