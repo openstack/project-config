@@ -1,0 +1,38 @@
+- job:
+    name: gate-freezer-devstack-dsvm
+    node: 'devstack-precise || devstack-trusty'
+
+    wrappers:
+      - build-timeout:
+          timeout: 65
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=60
+          export PROJECTS="openstack/freezer-api $PROJECTS"
+          export PROJECTS="openstack/freezer-web-ui $PROJECTS"
+          export PROJECTS="openstack/freezer $PROJECTS"
+
+          function gate_hook {
+              $BASE/new/freezer-api/devstack/gate_hook.sh
+          }
+          export -f gate_hook
+
+          function post_test_hook {
+              cd /opt/stack/new/freezer-api/tests
+              ./post_test_hook.sh
+          }
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
