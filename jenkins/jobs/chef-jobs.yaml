@@ -59,6 +59,23 @@
       - console-log
 
 - job-template:
+    name: 'periodic-{name}-chef-rake-integration'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 60
+      - timestamps
+
+    builders:
+      - gerrit-git-prep
+      - chef-bootstrap
+      - chef-rake-integration
+
+    publishers:
+      - console-log
+
+- job-template:
     name: 'gate-{name}-chef-lint'
     node: '{node}'
 
@@ -124,3 +141,4 @@
       - 'gate-{name}-chef-unit'
       - 'gate-{name}-chef-rake'
       - 'gate-{name}-chef-rake-integration'
+      - 'periodic-{name}-chef-rake-integration'
