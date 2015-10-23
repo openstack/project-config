@@ -739,6 +739,11 @@ jobs:
         all-files-match-any:
           - ^.*\.rst$
           - ^doc/.*$
+      - project: ^openstack/networking-midonet$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+          - ^midonet/neutron/tests/.*$
 
   # Skip non-doc jobs for doc-only neutron changes.  Since
   # doc/source/conf.py is checked by neutron-(pep8|pylint), those jobs
@@ -990,6 +995,18 @@ jobs:
 
   - name: gate-networking-midonet-python34
     branch: ^(?!stable/(icehouse|juno|kilo)).*$
+
+  - name: ^gate-tempest-dsvm-networking-midonet-v1
+    branch: ^(?!stable/(icehouse|juno)).*$
+    voting: false
+
+  - name: ^gate-tempest-dsvm-networking-midonet-v2
+    branch: ^(?!stable/(icehouse|juno)).*$
+    voting: false
+
+  - name: ^gate-tempest-dsvm-networking-midonet-ml2
+    branch: ^(?!stable/(icehouse|juno|kilo)).*$
+    voting: false
 
   - name: ^gate-tempest-dsvm-networking-odl
     branch: ^(?!stable)
@@ -5992,8 +6009,13 @@ projects:
       - name: publish-to-pypi
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
+    check:
+      - gate-tempest-dsvm-networking-midonet-v1
+      - gate-tempest-dsvm-networking-midonet-v2
     post:
       - networking-midonet-coverage
+    experimental:
+      - gate-tempest-dsvm-networking-midonet-ml2
 
   - name: openstack/networking-mlnx
     template:
