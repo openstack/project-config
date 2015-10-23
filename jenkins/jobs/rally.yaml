@@ -50,6 +50,7 @@
           #!/bin/bash -xe
           export PROJECTS="openstack/rally $PROJECTS"
           export PROJECTS="openstack/ceilometer $PROJECTS"
+          export PROJECTS="openstack/aodh $PROJECTS"
           export CEILOMETER_NOTIFICATION_TOPICS=notifications,profiler
           export DEVSTACK_GATE_NEUTRON={neutron}
           export DEVSTACK_GATE_IRONIC={ironic}
@@ -60,6 +61,7 @@
           export RALLY_SCENARIO={scenario}
 
           DEVSTACK_LOCAL_CONFIG="enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
+          DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin aodh git://git.openstack.org/openstack/aodh"
           DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin rally git://git.openstack.org/openstack/rally"
           DEVSTACK_LOCAL_CONFIG+=$'\n'"CINDER_ENABLE_V1_API=True"
 
@@ -71,7 +73,7 @@
           ENABLED_SERVICES+=s-proxy,s-account,s-container,s-object,
           ENABLED_SERVICES+=ceilometer-acompute,ceilometer-acentral,ceilometer-api,
           ENABLED_SERVICES+=ceilometer-anotification,ceilometer-collector,
-          ENABLED_SERVICES+=ceilometer-alarm-evaluator,ceilometer-alarm-notifier,
+          ENABLED_SERVICES+=aodh-api,aodh-evaluator,aodh-notifier,
           if [ $DEVSTACK_GATE_NEUTRON -ne 1 ]; then
               ENABLED_SERVICES+=n-net,n-api-meta,
           fi
@@ -102,6 +104,7 @@
           #!/bin/bash -xe
           export PROJECTS="openstack/rally $PROJECTS"
           export PROJECTS="openstack/ceilometer $PROJECTS"
+          export PROJECTS="openstack/aodh $PROJECTS"
           export PROJECTS="openstack/designate $PROJECTS"
           export PROJECTS="openstack/python-designateclient $PROJECTS"
           export PROJECTS="openstack/designate-dashboard $PROJECTS"
@@ -114,11 +117,12 @@
 
           ENABLED_SERVICES=ceilometer-acompute,ceilometer-acentral,ceilometer-api,
           ENABLED_SERVICES+=ceilometer-anotification,ceilometer-collector,
-          ENABLED_SERVICES+=ceilometer-alarm-evaluator,ceilometer-alarm-notifier,
+          ENABLED_SERVICES+=aodh-api,aodh-alarm-evaluator,aodh-alarm-notifier,
           ENABLED_SERVICES+=designate,designate-api,designate-central,designate-sink,designate-mdns,
           export ENABLED_SERVICES
 
           DEVSTACK_LOCAL_CONFIG="enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
+          DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin aodh git://git.openstack.org/openstack/aodh"
           DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin rally git://git.openstack.org/openstack/rally"
           export DEVSTACK_LOCAL_CONFIG
 
