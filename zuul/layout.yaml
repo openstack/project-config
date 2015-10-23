@@ -1745,6 +1745,10 @@ jobs:
     voting: false
 
   - name: ^gate-fuel-library.*$
+    branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
+
+  - name: ^gate-fuel-library-puppet-(unit-4\.0|syntax-4)-dsvm-centos7
+    branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
     voting: false
 
   - name: ^gate-fuel-menu.*$
@@ -4543,14 +4547,21 @@ projects:
     check:
       - gate-fuel-library-puppet-lint
       - gate-fuel-library-puppet-syntax-3-dsvm-centos7
+      - gate-fuel-library-puppet-syntax-4-dsvm-centos7
       - gate-fuel-library-puppet-unit-3.3-dsvm-centos7
       - gate-fuel-library-puppet-unit-3.4-dsvm-centos7
       - gate-fuel-library-puppet-unit-3.6-dsvm-centos7
       - gate-fuel-library-puppet-unit-3.7-dsvm-centos7
       - gate-fuel-library-puppet-unit-3.8-dsvm-centos7
+      - gate-fuel-library-puppet-unit-4.0-dsvm-centos7
     gate:
-      - noop
-
+      - gate-fuel-library-puppet-lint
+      - gate-fuel-library-puppet-syntax-3-dsvm-centos7
+      - gate-fuel-library-puppet-unit-3.3-dsvm-centos7
+      - gate-fuel-library-puppet-unit-3.4-dsvm-centos7
+      - gate-fuel-library-puppet-unit-3.6-dsvm-centos7
+      - gate-fuel-library-puppet-unit-3.7-dsvm-centos7
+      - gate-fuel-library-puppet-unit-3.8-dsvm-centos7
 
   - name: openstack/fuel-main
     template:
