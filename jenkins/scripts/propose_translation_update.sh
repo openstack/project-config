@@ -138,7 +138,8 @@ function propose_horizon {
     git add horizon/locale/* openstack_dashboard/locale/*
 }
 
-function propose_django_openstack_auth {
+function propose_django {
+    local directory=$1
 
     # Pull updated translations from Zanata.
     pull_from_zanata "$PROJECT"
@@ -146,13 +147,13 @@ function propose_django_openstack_auth {
     # Update the .pot file
     extract_messages
 
-    update_po_files "openstack_auth"
+    update_po_files "$directory"
 
     # Compress downloaded po files
-    compress_po_files "openstack_auth"
+    compress_po_files "$directory"
 
     # Add all changed files to git
-    git add openstack_auth/locale/*
+    git add $directory/locale/*
 }
 
 # Setup git repository for git review.
@@ -169,11 +170,15 @@ case "$PROJECT" in
         ;;
     django_openstack_auth)
         setup_django_openstack_auth "$ZANATA_VERSION"
-        propose_django_openstack_auth
+        propose_django "openstack_auth"
         ;;
     horizon)
         setup_horizon "$ZANATA_VERSION"
         propose_horizon
+        ;;
+    magnum-ui)
+        setup_magnum_ui "$ZANATA_VERSION"
+        propose_django "magnum_ui"
         ;;
     *)
         # Project specific setup.

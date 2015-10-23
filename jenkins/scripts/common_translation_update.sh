@@ -265,6 +265,17 @@ function setup_django_openstack_auth {
         '{locale_with_underscore}/LC_MESSAGES/django.po' -f zanata.xml
 }
 
+# Setup project magnum-ui for Zanata
+function setup_magnum_ui {
+    local project=magnum-ui
+    local version=${1:-master}
+
+    /usr/local/jenkins/slave_scripts/create-zanata-xml.py \
+        -p $project -v $version --srcdir magnum_ui/locale \
+        --txdir magnum_ui/locale -r '**/*.pot' \
+        '{locale_with_underscore}/LC_MESSAGES/{filename}.po' -f zanata.xml
+}
+
 # Filter out files that we do not want to commit
 function filter_commits {
     # Don't add new empty files.
