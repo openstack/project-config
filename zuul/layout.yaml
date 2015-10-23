@@ -1161,6 +1161,9 @@ jobs:
   - name: ^gate-tripleo-.*$
     branch: ^master$
 
+  - name: gate-ironicclient-dsvm-functional
+    voting: false
+
 # Continous publishing from master of the following documentation targets:
   - name: ^.*-tox-doc-publishlang$
     branch: master
@@ -7566,12 +7569,11 @@ projects:
       - name: pypy-jobs
     check:
       - gate-tempest-dsvm-python-ironicclient-src
+      - gate-ironicclient-dsvm-functional
     gate:
       - gate-tempest-dsvm-python-ironicclient-src
     post:
       - python-ironicclient-coverage
-    experimental:
-      - gate-ironicclient-dsvm-functional
 
   - name: openstack/python-jenkins
     template:
