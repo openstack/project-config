@@ -23,8 +23,6 @@ import sys
 import tempfile
 import yaml
 
-found_errors = 0
-
 
 @contextlib.contextmanager
 def tempdir():
@@ -36,7 +34,7 @@ def tempdir():
 
 
 def check_repo(repo_path):
-    global found_errors
+    found_errors = 0
 
     print("Checking git repo '%s':" % repo_path)
     with tempdir() as repopath:
@@ -59,10 +57,11 @@ def check_repo(repo_path):
             print("  Found no tags.")
     # Just an empty line for nicer formatting
     print("")
+    return found_errors
 
 
 def main():
-    global found_errors
+    found_errors = 0
 
     parser = argparse.ArgumentParser()
     parser.add_argument('-v', '--verbose',
@@ -124,7 +123,7 @@ def main():
         # but not git@
         upstream = p.get('upstream')
         if upstream and 'track-upstream' not in p.get('options', []):
-            check_repo(upstream)
+            found_errors += check_repo(upstream)
         if upstream:
             for prefix in VALID_SCHEMES:
                 if upstream.startswith(prefix):
