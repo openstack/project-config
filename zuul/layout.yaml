@@ -955,6 +955,12 @@ jobs:
   - name: gate-ec2-api-python34
     branch: ^(?!stable/kilo).*$
 
+  - name: gate-functional-neutron-dsvm-gceapi
+    voting: false
+
+  - name: gate-functional-nova-network-dsvm-gceapi
+    voting: false
+
   - name: gate-tempest-dsvm-ec2api
     voting: false
 
@@ -4916,14 +4922,12 @@ projects:
 
   - name: openstack/gce-api
     template:
+      - name: python-jobs
       - name: merge-check
       - name: check-requirements
     check:
-      - gate-gce-api-pep8
-      - gate-gce-api-python27
-    gate:
-      - gate-gce-api-pep8
-      - gate-gce-api-python27
+      - gate-functional-neutron-dsvm-gceapi
+      - gate-functional-nova-network-dsvm-gceapi
 
   - name: openstack/gerrit-dash-creator
     template:
