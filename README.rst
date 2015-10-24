@@ -22,7 +22,7 @@ This dir contains the main project registry in projects.yaml along
 with all of the gerrit project ACLs in the acls subdir. You will need
 to edit these files to add new projects to Gerrit.
 
-See the `StackForge Documentation <http://docs.openstack.org/infra/system-config/stackforge.html>`_
+See the `Creator's Guide in the Infra Manual  <http://docs.openstack.org/infra/manual/creators.html>`_
 for info on adding projects.
 
 `Gerrit Documentation <http://docs.openstack.org/infra/system-config/gerrit.html>`_
