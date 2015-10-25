@@ -14,7 +14,7 @@
       - shell: |
           #!/bin/bash -xe
           # Start with the base set of services
-          ENABLED_SERVICES=mysql,rabbit,key,tempest,g-api,g-reg,
+          ENABLED_SERVICES=mysql,rabbit,key,g-api,g-reg,
           # Add Nova services (except for nova-network)
           ENABLED_SERVICES+=n-api,n-cond,n-cpu,n-crt,n-obj,n-sch
           # Enable Neutron
@@ -22,9 +22,7 @@
           export ENABLED_SERVICES
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TIMEOUT=120
-          export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_NEUTRON=1
-          export DEVSTACK_GATE_TEMPEST_FULL=1
           export DEVSTACK_GATE_NEUTRON_DVR=1
           export BRANCH_OVERRIDE={branch-override}
           export PROJECTS="openstack/scalpels $PROJECTS"
@@ -32,6 +30,13 @@
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
+
+          function pre_test_hook {{
+              # setup DEVSTACK_GATE_* options here
+              $BASE/new/scalpels/tests/ci/pre-test-hook.sh
+          }}
+          export -f pre_test_hook
+
           function post_test_hook {{
               $BASE/new/scalpels/tests/ci/scalpels-ci.sh
           }}
