@@ -20,7 +20,6 @@
           export PROJECTS="openstack/murano $PROJECTS"
           export PROJECTS="openstack/murano-dashboard $PROJECTS"
           export PROJECTS="openstack/python-muranoclient $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin murano git://git.openstack.org/openstack/murano"
           export KEEP_LOCALRC=1
 
           if [[ $ZUUL_BRANCH =~ "kilo" ]]; then
@@ -85,7 +84,6 @@
           export KEEP_LOCALRC=1
 
           export DEVSTACK_LOCAL_CONFIG="enable_plugin mistral git://git.openstack.org/openstack/mistral"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin murano git://git.openstack.org/openstack/murano"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"MURANO_ENABLE_MODEL_POLICY_ENFORCEMENT=True"
 
           if [[ $ZUUL_BRANCH =~ "kilo" ]]; then
@@ -146,7 +144,6 @@
           export PROJECTS="openstack/murano $PROJECTS"
           export PROJECTS="openstack/murano-dashboard $PROJECTS"
           export PROJECTS="openstack/python-muranoclient $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin murano git://git.openstack.org/openstack/murano"
           export KEEP_LOCALRC=1
 
           if [[ $ZUUL_BRANCH =~ "kilo" ]]; then
@@ -158,7 +155,7 @@
           else
               # Enable murano devstack plugin. Provided repo should be cloned by zuul before devstack run
               # and below provided link should not be used.
-              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin murano git://git.openstack.org/openstack/murano"
+              export DEVSTACK_LOCAL_CONFIG="enable_plugin murano git://git.openstack.org/openstack/murano"
           fi
 
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
