@@ -7,8 +7,8 @@ END_UUID=$(cat /proc/sys/kernel/random/uuid)
 
 echo "Grabbing consoleLog ($END_UUID)"
 
-# Since we are appending to fetched logs, remove any possibly old runs
-rm -f /tmp/console.html
+# Since we are appending to fetched logs, clear any possibly old runs
+echo > /tmp/console.html
 
 # Grab the HTML version of the log (includes timestamps)
 TRIES=0
@@ -16,6 +16,7 @@ console_log_path='logText/progressiveHtml'
 while ! grep -q "$END_UUID" /tmp/console.html; do
     TRIES=$((TRIES+1))
     if [ $TRIES -gt $RETRY_LIMIT ]; then
+        echo "Failed grabbing consoleLog within $RETRY_LIMIT retries."
         break
     fi
     sleep 3
