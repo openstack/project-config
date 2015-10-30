@@ -621,14 +621,26 @@
               copy-after-failure: true
 
 
-- job:
-    name: 'gate-rally-dsvm-verify'
+- job-template:
+    name: 'gate-rally-dsvm-verify-{mode}'
     node: 'devstack-precise || devstack-trusty'
 
     wrappers:
       - build-timeout:
           timeout: 120
 
+    builders:
+      - devstack-rally-verify:
+          mode: '{mode}'
+          compare: '{compare}'
+
+    publishers:
+      - devstack-logs
+      - console-log
+      - rally-verify
+
+- builder:
+    name: devstack-rally-verify
     builders:
       - link-logs
       - devstack-checkout
@@ -639,15 +651,14 @@
           export DEVSTACK_GATE_TIMEOUT=120
           export DEVSTACK_LOCAL_CONFIG="enable_plugin rally git://git.openstack.org/openstack/rally"
 
-          function post_test_hook {
-              $BASE/new/rally/tests/ci/rally-verify.sh
-          }
+          function post_test_hook {{
+              if [ '{compare}' == 'true' ]; then
+                  $BASE/new/rally/tests/ci/rally_verify.py --mode '{mode}' --compare
+              else
+                  $BASE/new/rally/tests/ci/rally_verify.py --mode '{mode}'
+              fi
+          }}
           export -f post_test_hook
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
-
-    publishers:
-      - devstack-logs
-      - console-log
-      - rally-verify

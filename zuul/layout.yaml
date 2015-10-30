@@ -933,6 +933,15 @@ jobs:
   - name: gate-rally-dsvm-designate-designate
     voting: false
 
+  - name: gate-rally-dsvm-verify-full
+    files:
+      - ^rally/verification.*$
+      - ^rally/cli/commands/verify.py$
+      - ^rally/ui/templates/verification.*$
+      - ^tests/unit/verification.*$
+      - ^tests/unit/cli/commands/test_verify.py$
+      - ^tests/ci/.*verify.*$
+
   - name: gate-rally-dsvm-zaqar-zaqar
     voting: false
 
@@ -8604,7 +8613,8 @@ projects:
       - gate-rally-dsvm-neutron-rally
       - gate-rally-dsvm-neutron-unstable
       - gate-rally-dsvm-cli
-      - gate-rally-dsvm-verify
+      - gate-rally-dsvm-verify-light
+      - gate-rally-dsvm-verify-full
       - gate-rally-tox-self
     gate:
       - gate-rally-install-bare-centos6
@@ -8612,7 +8622,8 @@ projects:
       - gate-rally-dsvm-rally
       - gate-rally-dsvm-neutron-rally
       - gate-rally-dsvm-cli
-      - gate-rally-dsvm-verify
+      - gate-rally-dsvm-verify-light
+      - gate-rally-dsvm-verify-full
     post:
       - rally-coverage
     experimental:
