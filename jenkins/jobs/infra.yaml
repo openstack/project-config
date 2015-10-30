@@ -89,6 +89,19 @@
       - zuul-swift-upload-console-log
 
 - job:
+    name: gate-project-config-nodepool
+    node: 'bare-precise || bare-trusty'
+
+    builders:
+      - revoke-sudo
+      - gerrit-git-prep
+      - tox:
+          envlist: 'nodepool'
+
+    publishers:
+      - zuul-swift-upload-console-log
+
+- job:
     name: gate-project-config-projects-yaml
     node: 'bare-precise || bare-trusty'
 

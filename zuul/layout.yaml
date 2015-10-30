@@ -1150,6 +1150,10 @@ jobs:
     failure-message: Jenkins XML output has changed.
     success-message: Jenkins XML output is unchanged.
 
+  # Making non-voting while bootstrapping in nodepool.yaml
+  - name: gate-system-config-nodepool
+    voting: false
+
   - name: gate-dsvm-nodepool
     voting: false
 
@@ -1186,6 +1190,13 @@ jobs:
   - name: gate-project-config-dib
     files:
       - '^nodepool/elements/.*$'
+      - 'tox.ini'
+
+  # Making non-voting while bootstrapping in nodepool.yaml
+  - name: gate-project-config-nodepool
+    voting: false
+    files:
+      - '^nodepool/nodepool.yaml'
       - 'tox.ini'
 
   - name: gate-project-config-projects-yaml
@@ -2596,6 +2607,7 @@ projects:
       - gate-project-config-pep8
       - gate-project-config-irc-access
       - gate-project-config-jenkins-project
+      - gate-project-config-nodepool
       - gate-project-config-projects-yaml
       - gate-infra-docs-index
       - gate-generate-specs-site
@@ -2606,6 +2618,8 @@ projects:
       - gate-project-config-layout
       - gate-project-config-pep8
       - gate-project-config-irc-access
+      #TODO(asselin) add back when it becomes voting
+      #- gate-project-config-nodepool
       - gate-project-config-jenkins-project
       - gate-project-config-projects-yaml
       - gate-infra-docs-index
@@ -3343,12 +3357,12 @@ projects:
     check:
       - gate-system-config-pep8
       - gate-system-config-bashate
+      #TODO(asselin) remove this job after migration is complete
       - gate-system-config-nodepool
       - gate-system-config-puppet-syntax
     gate:
       - gate-system-config-pep8
       - gate-system-config-bashate
-      - gate-system-config-nodepool
       - gate-system-config-puppet-syntax
     experimental:
       - experimental-swift-logs-system-config-pep8-centos6
