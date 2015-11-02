@@ -63,15 +63,15 @@
     jobs:
       - python-jobs
       - hook-{name}-rtfd
-      - '{pipeline}-functional-dsvm-akanda{branch-designator}':
+      - '{pipeline}-functional-dsvm-akanda{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: 'stable/liberty'
-      - '{pipeline}-functional-dsvm-akanda-appliance-src{branch-designator}':
+      - '{pipeline}-functional-dsvm-akanda-appliance-src{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: 'stable/liberty'
 
 - project:
@@ -308,53 +308,53 @@
       - translation-jobs
       - translation-jobs-liberty
       - gate-rally-dsvm-fakevirt-{name}
-      - 'gate-tempest-dsvm-ceilometer-{backend}-full{branch-designator}':
+      - 'gate-tempest-dsvm-ceilometer-{backend}-full{job-suffix}':
           backend: 'mongodb'
           node: 'devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - 'gate-tempest-dsvm-ceilometer-{backend}-full{branch-designator}':
+      - 'gate-tempest-dsvm-ceilometer-{backend}-full{job-suffix}':
           backend: 'mysql'
           node: 'devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - 'gate-tempest-dsvm-ceilometer-{backend}-full{branch-designator}':
+      - 'gate-tempest-dsvm-ceilometer-{backend}-full{job-suffix}':
           backend: 'postgresql'
           node: 'devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - 'gate-tempest-dsvm-ceilometer-{backend}{branch-designator}':
+      - 'gate-tempest-dsvm-ceilometer-{backend}{job-suffix}':
           backend: 'es'
           node: 'devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - 'gate-tempest-dsvm-ceilometer-{backend}-full{branch-designator}':
+      - 'gate-tempest-dsvm-ceilometer-{backend}-full{job-suffix}':
           backend: 'es'
           node: 'devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - 'gate-tempest-dsvm-ceilometer-{backend}-neutron-full{branch-designator}':
+      - 'gate-tempest-dsvm-ceilometer-{backend}-neutron-full{job-suffix}':
           backend: 'mysql'
           node: 'devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - '{pipeline}-ceilometer-dsvm-functional-{backend}{branch-designator}':
+      - '{pipeline}-ceilometer-dsvm-functional-{backend}{job-suffix}':
           pipeline: 'gate'
           backend: 'mongodb'
           node: 'devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - '{pipeline}-ceilometer-dsvm-functional-{backend}{branch-designator}':
+      - '{pipeline}-ceilometer-dsvm-functional-{backend}{job-suffix}':
           pipeline: 'gate'
           backend: 'mysql'
           node: 'devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - '{pipeline}-ceilometer-dsvm-functional-{backend}{branch-designator}':
+      - '{pipeline}-ceilometer-dsvm-functional-{backend}{job-suffix}':
           node: 'devstack-precise || devstack-trusty'
           pipeline: gate
           backend: postgresql
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -390,11 +390,11 @@
       - python-jobs
       - openstack-publish-jobs
       - pypi-jobs
-      - '{pipeline}-tempest-dsvm-neutron-src-{name}{branch-designator}-plugin':
+      - '{pipeline}-tempest-dsvm-neutron-src-{name}{job-suffix}-plugin':
           project-repo: ceilometer
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -429,10 +429,10 @@
       - translation-jobs
       - translation-jobs-liberty
       - gate-rally-dsvm-{name}
-      - '{pipeline}-cinder-dsvm-apache{branch-designator}':
+      - '{pipeline}-cinder-dsvm-apache{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -582,15 +582,15 @@
 
     jobs:
       - python-jobs
-      - '{pipeline}-congress-dsvm-api{branch-designator}':
+      - '{pipeline}-congress-dsvm-api{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - '{pipeline}-install-dsvm-networking-bgpvpn{branch-designator}':
+      - '{pipeline}-install-dsvm-networking-bgpvpn{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: '-liberty'
+          job-suffix: '-liberty'
           branch-override: stable/liberty
 
 - project:
@@ -821,105 +821,105 @@
       - devstack-jobs:
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
       # Stable gate jobs for branchless tempest
       - devstack-jobs:
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: '-juno'
+          job-suffix: '-juno'
           branch-override: stable/juno
       - devstack-jobs:
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: '-kilo'
+          job-suffix: '-kilo'
           branch-override: stable/kilo
       - devstack-jobs:
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: '-liberty'
+          job-suffix: '-liberty'
           branch-override: stable/liberty
       # Stable check jobs for testing devstack gate
       # tempest also uses these job definitions
       - devstack-jobs:
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: '-juno-nv'
+          job-suffix: '-juno-nv'
           branch-override: stable/juno
       - devstack-jobs:
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: '-kilo-nv'
+          job-suffix: '-kilo-nv'
           branch-override: stable/kilo
       - devstack-jobs:
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: '-liberty-nv'
+          job-suffix: '-liberty-nv'
           branch-override: stable/liberty
       # Periodic jobs for various branches
       - devstack-jobs:
           pipeline: periodic
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: '-juno'
+          job-suffix: '-juno'
           branch-override: stable/juno
       - devstack-jobs:
           pipeline: periodic
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: '-kilo'
+          job-suffix: '-kilo'
           branch-override: stable/kilo
       - devstack-jobs:
           pipeline: periodic
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: '-liberty'
+          job-suffix: '-liberty'
           branch-override: stable/liberty
       - devstack-jobs:
           pipeline: periodic
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: '-master'
+          job-suffix: '-master'
           branch-override: master
       # Special jobs for devstack-gate
       - devstack-gate-jobs:
           node: 'devstack-precise || devstack-trusty'
-      - '{pipeline}-grenade-dsvm-multinode{branch-designator}':
+      - '{pipeline}-grenade-dsvm-multinode{job-suffix}':
           pipeline: gate
           node: devstack-trusty-2-node
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - '{pipeline}-grenade-dsvm-multinode{branch-designator}':
+      - '{pipeline}-grenade-dsvm-multinode{job-suffix}':
           pipeline: gate
           node: devstack-trusty-2-node
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
-      - '{pipeline}-tempest-dsvm-multinode-full{branch-designator}':
+      - '{pipeline}-tempest-dsvm-multinode-full{job-suffix}':
           pipeline: gate
           node: devstack-trusty-2-node
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - '{pipeline}-tempest-dsvm-neutron-multinode-full{branch-designator}':
+      - '{pipeline}-tempest-dsvm-neutron-multinode-full{job-suffix}':
           pipeline: gate
           node: devstack-trusty-2-node
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - '{pipeline}-tempest-dsvm-neutron-dvr-multinode-full{branch-designator}':
+      - '{pipeline}-tempest-dsvm-neutron-dvr-multinode-full{job-suffix}':
           pipeline: gate
           node: devstack-trusty-2-node
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
       # Experimental jobs for testing dib images.
-      - '{pipeline}-tempest-dsvm-full{branch-designator}':
+      - '{pipeline}-tempest-dsvm-full{job-suffix}':
           pipeline: experimental
           node: ubuntu-trusty
-          branch-designator: '-dibtest'
+          job-suffix: '-dibtest'
           branch-override: default
-      - '{pipeline}-tempest-dsvm-neutron-full{branch-designator}':
+      - '{pipeline}-tempest-dsvm-neutron-full{job-suffix}':
           pipeline: experimental
           node: ubuntu-trusty
-          branch-designator: '-dibtest'
+          job-suffix: '-dibtest'
           branch-override: default
-      - '{pipeline}-tempest-dsvm-multinode-full{branch-designator}':
+      - '{pipeline}-tempest-dsvm-multinode-full{job-suffix}':
           pipeline: experimental
           node: ubuntu-trusty-2-node
-          branch-designator: '-dibtest'
+          job-suffix: '-dibtest'
           branch-override: default
       # fedora jobs
       - '{pipeline}-tempest-dsvm-f{fedora-release}':
@@ -937,11 +937,11 @@
 
     jobs:
       - gate-{name}-bashate
-      - '{pipeline}-tempest-dsvm-full-{plugin}{branch-designator}':
+      - '{pipeline}-tempest-dsvm-full-{plugin}{job-suffix}':
           pipeline: gate
           plugin: amqp1
           plugin-repo: openstack/devstack-plugin-amqp1
-          branch-designator: ''
+          job-suffix: ''
 
 - project:
     name: devstack-plugin-bdd
@@ -949,14 +949,14 @@
 
     jobs:
       - gate-{name}-bashate
-      - '{pipeline}-tempest-dsvm-full-bdd{branch-designator}':
+      - '{pipeline}-tempest-dsvm-full-bdd{job-suffix}':
           node: devstack-precise || devstack-trusty
           pipeline: gate
-          branch-designator: '-nv'
-      - '{pipeline}-tempest-dsvm-full-bdd{branch-designator}':
+          job-suffix: '-nv'
+      - '{pipeline}-tempest-dsvm-full-bdd{job-suffix}':
           node: devstack-precise || devstack-trusty
           pipeline: gate
-          branch-designator: ''
+          job-suffix: ''
 
 - project:
     name: devstack-plugin-glusterfs
@@ -964,14 +964,14 @@
 
     jobs:
       - gate-{name}-bashate
-      - '{pipeline}-cinder-tempest-dsvm-glusterfs{branch-designator}':
+      - '{pipeline}-cinder-tempest-dsvm-glusterfs{job-suffix}':
           node: devstack-precise || devstack-trusty
           pipeline: gate
-          branch-designator: '-nv'
-      - '{pipeline}-cinder-tempest-dsvm-glusterfs{branch-designator}':
+          job-suffix: '-nv'
+      - '{pipeline}-cinder-tempest-dsvm-glusterfs{job-suffix}':
           node: devstack-precise || devstack-trusty
           pipeline: gate
-          branch-designator: ''
+          job-suffix: ''
 
 - project:
     name: devstack-plugin-hdfs
@@ -979,12 +979,12 @@
 
     jobs:
       - gate-{name}-bashate
-      - '{pipeline}-tempest-dsvm-full-{plugin}{branch-designator}':
+      - '{pipeline}-tempest-dsvm-full-{plugin}{job-suffix}':
           node: devstack-precise || devstack-trusty
           pipeline: gate
           plugin: hdfs
           plugin-repo: openstack/devstack-plugin-hdfs
-          branch-designator: ''
+          job-suffix: ''
 
 - project:
     name: devstack-plugin-pika
@@ -998,16 +998,16 @@
 
     jobs:
       - gate-{name}-bashate
-      - '{pipeline}-tempest-dsvm-full-{plugin}{branch-designator}':
+      - '{pipeline}-tempest-dsvm-full-{plugin}{job-suffix}':
           pipeline: gate
           plugin: sheepdog
           plugin-repo: openstack/devstack-plugin-sheepdog
-          branch-designator: ''
-      - '{pipeline}-tempest-dsvm-full-{plugin}{branch-designator}':
+          job-suffix: ''
+      - '{pipeline}-tempest-dsvm-full-{plugin}{job-suffix}':
           pipeline: gate
           plugin: sheepdog
           plugin-repo: openstack/devstack-plugin-sheepdog
-          branch-designator: '-nv'
+          job-suffix: '-nv'
 
 - project:
     name: devstack-plugin-zmq
@@ -1015,11 +1015,11 @@
 
     jobs:
       - gate-{name}-bashate
-      - '{pipeline}-tempest-dsvm-full-{plugin}{branch-designator}':
+      - '{pipeline}-tempest-dsvm-full-{plugin}{job-suffix}':
           pipeline: gate
           plugin: zmq
           plugin-repo: openstack/devstack-plugin-zmq
-          branch-designator: ''
+          job-suffix: ''
 
 - project:
     name: dib-utils
@@ -1046,10 +1046,10 @@
           node: devstack-centos7
       - gate-dib-dsvm-functests-{node}:
           node: devstack-f21
-      - '{pipeline}-tempest-dsvm-ironic-pxe_ssh{branch-designator}':
+      - '{pipeline}-tempest-dsvm-ironic-pxe_ssh{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: '-dib'
+          job-suffix: '-dib'
           branch-override: default
 
 - project:
@@ -1120,10 +1120,10 @@
       - python-jobs
       - pypi-jobs
       - openstack-publish-jobs
-      - '{pipeline}-tempest-dsvm-dragonflow{branch-designator}':
+      - '{pipeline}-tempest-dsvm-dragonflow{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -1132,12 +1132,12 @@
 
     jobs:
       - gate-{name}-bashate
-      - '{pipeline}-tempest-dsvm-full-drbd-devstack{branch-designator}':
+      - '{pipeline}-tempest-dsvm-full-drbd-devstack{job-suffix}':
           pipeline: gate
-          branch-designator: '-nv'
-      - '{pipeline}-tempest-dsvm-full-drbd-devstack{branch-designator}':
+          job-suffix: '-nv'
+      - '{pipeline}-tempest-dsvm-full-drbd-devstack{job-suffix}':
           pipeline: gate
-          branch-designator: ''
+          job-suffix: ''
 
 - project:
     name: driverlog
@@ -1155,20 +1155,20 @@
     jobs:
       - python-jobs
       - pypi-jobs
-      - '{pipeline}-tempest-dsvm-ec2api{branch-designator}':
+      - '{pipeline}-tempest-dsvm-ec2api{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - '{pipeline}-functional-neutron-dsvm-ec2api{branch-designator}':
+      - '{pipeline}-functional-neutron-dsvm-ec2api{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - '{pipeline}-functional-nova-network-dsvm-ec2api{branch-designator}':
+      - '{pipeline}-functional-nova-network-dsvm-ec2api{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -1418,15 +1418,15 @@
 
     jobs:
       - python-jobs
-      - '{pipeline}-functional-neutron-dsvm-gceapi{branch-designator}':
+      - '{pipeline}-functional-neutron-dsvm-gceapi{job-suffix}':
             pipeline: gate
             node: 'devstack-precise || devstack-trusty'
-            branch-designator: ''
+            job-suffix: ''
             branch-override: default
-      - '{pipeline}-functional-nova-network-dsvm-gceapi{branch-designator}':
+      - '{pipeline}-functional-nova-network-dsvm-gceapi{job-suffix}':
             pipeline: gate
             node: 'devstack-precise || devstack-trusty'
-            branch-designator: ''
+            job-suffix: ''
             branch-override: default
 
 - project:
@@ -1573,12 +1573,12 @@
           driver: filesystem
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - '{pipeline}-tempest-dsvm-full-ceph-src-{name}{branch-designator}':
+      - '{pipeline}-tempest-dsvm-full-ceph-src-{name}{job-suffix}':
           node: 'devstack-precise || devstack-trusty'
           pipeline: gate
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -1655,15 +1655,15 @@
     jobs:
       - python-jobs
       - pypi-jobs
-      - '{pipeline}-group-based-policy-dsvm-functional{branch-designator}':
+      - '{pipeline}-group-based-policy-dsvm-functional{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - '{pipeline}-group-based-policy-dsvm-rally{branch-designator}':
+      - '{pipeline}-group-based-policy-dsvm-rally{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -1699,10 +1699,10 @@
 
     jobs:
       - gate-groups-unittests
-      - 'groups-release-{branch-designator}':
-          branch-designator: 'master'
-      - 'groups-release-{branch-designator}':
-          branch-designator: 'branch'
+      - 'groups-release-{job-suffix}':
+          job-suffix: 'master'
+      - 'groups-release-{job-suffix}':
+          job-suffix: 'branch'
 
 - project:
     name: groups-static-pages
@@ -1742,62 +1742,62 @@
 
     jobs:
       - python-jobs
-      - '{pipeline}-heat-dsvm-functional-aodh-{engine}-{datastore}{branch-designator}':
+      - '{pipeline}-heat-dsvm-functional-aodh-{engine}-{datastore}{job-suffix}':
           datastore: postgres
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
           engine: orig
-      - '{pipeline}-heat-dsvm-functional-aodh-{engine}-{datastore}{branch-designator}':
+      - '{pipeline}-heat-dsvm-functional-aodh-{engine}-{datastore}{job-suffix}':
           datastore: mysql
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
           engine: orig
-      - '{pipeline}-heat-dsvm-functional-aodh-{engine}-{datastore}{branch-designator}':
+      - '{pipeline}-heat-dsvm-functional-aodh-{engine}-{datastore}{job-suffix}':
           datastore: mysql
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
           engine: convg
-      - '{pipeline}-heat-dsvm-functional-{engine}-{datastore}{branch-designator}':
+      - '{pipeline}-heat-dsvm-functional-{engine}-{datastore}{job-suffix}':
           datastore: mysql
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
           engine: orig
-      - '{pipeline}-heat-dsvm-functional-{engine}-{datastore}{branch-designator}':
+      - '{pipeline}-heat-dsvm-functional-{engine}-{datastore}{job-suffix}':
           datastore: postgres
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
           engine: orig
-      - '{pipeline}-heat-dsvm-functional-{engine}-{datastore}{branch-designator}':
+      - '{pipeline}-heat-dsvm-functional-{engine}-{datastore}{job-suffix}':
           datastore: mysql
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
           engine: convg
-      - '{pipeline}-tempest-dsvm-heat{branch-designator}':
+      - '{pipeline}-tempest-dsvm-heat{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - '{pipeline}-grenade-dsvm-heat{branch-designator}':
+      - '{pipeline}-grenade-dsvm-heat{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - '{pipeline}-grenade-dsvm-heat{branch-designator}':
+      - '{pipeline}-grenade-dsvm-heat{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
       - python-juno-bitrot-jobs
       - python-kilo-bitrot-jobs
@@ -1950,55 +1950,55 @@
       - python-liberty-bitrot-jobs
       - translation-jobs
       - translation-jobs-liberty
-      - '{pipeline}-ironic-dsvm-functional{branch-designator}':
+      - '{pipeline}-ironic-dsvm-functional{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - '{pipeline}-grenade-dsvm-ironic-sideways{branch-designator}':
+      - '{pipeline}-grenade-dsvm-ironic-sideways{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
-      - '{pipeline}-tempest-dsvm-ironic-pxe_ssh{branch-designator}':
+      - '{pipeline}-tempest-dsvm-ironic-pxe_ssh{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
-      - '{pipeline}-tempest-dsvm-ironic-pxe_ipa-full{branch-designator}':
+      - '{pipeline}-tempest-dsvm-ironic-pxe_ipa-full{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
-      - '{pipeline}-tempest-dsvm-ironic-pxe_ssh-postgres{branch-designator}':
+      - '{pipeline}-tempest-dsvm-ironic-pxe_ssh-postgres{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
-      - '{pipeline}-tempest-dsvm-ironic-agent_ssh{branch-designator}':
+      - '{pipeline}-tempest-dsvm-ironic-agent_ssh{job-suffix}':
           pipeline: gate
           node: 'devstack-trusty'
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
-      - '{pipeline}-tempest-dsvm-ironic-pxe_ipa{branch-designator}':
+      - '{pipeline}-tempest-dsvm-ironic-pxe_ipa{job-suffix}':
           pipeline: gate
           node: 'devstack-trusty'
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
-      - '{pipeline}-tempest-dsvm-ironic-pxe_ipa-src{branch-designator}':
+      - '{pipeline}-tempest-dsvm-ironic-pxe_ipa-src{job-suffix}':
           pipeline: gate
           node: 'devstack-trusty'
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
-      - '{pipeline}-tempest-dsvm-ironic-parallel{branch-designator}':
+      - '{pipeline}-tempest-dsvm-ironic-parallel{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
-      - '{pipeline}-ironic-inspector-dsvm{branch-designator}':
+      - '{pipeline}-ironic-inspector-dsvm{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
       - 'gate-tripleo-ci-{jobname}':
           jobname: 'f21-nonha'
@@ -2024,10 +2024,10 @@
       - translation-jobs
       - gate-{name}-tox-{envlist}:
           envlist: func
-      - '{pipeline}-ironic-inspector-dsvm{branch-designator}':
+      - '{pipeline}-ironic-inspector-dsvm{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -2038,10 +2038,10 @@
     jobs:
       - python-jobs
       - pypi-jobs
-      - '{pipeline}-tempest-dsvm-ironic-lib-src{branch-designator}':
+      - '{pipeline}-tempest-dsvm-ironic-lib-src{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -2285,10 +2285,10 @@
       - python-jobs
       - openstack-publish-jobs
       - translation-jobs
-      - '{pipeline}-functional-dsvm-magnum{branch-designator}':
+      - '{pipeline}-functional-dsvm-magnum{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
       - 'gate-{name}-tox-{envlist}':
           envlist: bandit
@@ -2358,10 +2358,10 @@
 
     jobs:
       - javascript-jobs
-      - '{name}-js-release-{branch-designator}':
-          branch-designator: 'master'
-      - '{name}-js-release-{branch-designator}':
-          branch-designator: 'branch'
+      - '{name}-js-release-{job-suffix}':
+          job-suffix: 'master'
+      - '{name}-js-release-{job-suffix}':
+          job-suffix: 'branch'
 
 - project:
     name: mistral
@@ -2630,10 +2630,10 @@
       - python-jobs
       - openstack-publish-jobs
       - pypi-jobs
-      - '{pipeline}-install-dsvm-networking-bgpvpn{branch-designator}':
+      - '{pipeline}-install-dsvm-networking-bgpvpn{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -2753,20 +2753,20 @@
       - python-jobs
       - pypi-jobs
       - openstack-publish-jobs
-      - '{pipeline}-tempest-dsvm-networking-midonet-v1{branch-designator}':
+      - '{pipeline}-tempest-dsvm-networking-midonet-v1{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - '{pipeline}-tempest-dsvm-networking-midonet-v2{branch-designator}':
+      - '{pipeline}-tempest-dsvm-networking-midonet-v2{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - '{pipeline}-tempest-dsvm-networking-midonet-ml2{branch-designator}':
+      - '{pipeline}-tempest-dsvm-networking-midonet-ml2{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -2795,10 +2795,10 @@
       - python-jobs
       - openstack-publish-jobs
       - pypi-jobs
-      - '{pipeline}-tempest-dsvm-networking-odl{branch-designator}':
+      - '{pipeline}-tempest-dsvm-networking-odl{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -2822,10 +2822,10 @@
       - python-jobs
       - openstack-publish-jobs
       - pypi-jobs
-      - '{pipeline}-tempest-dsvm-networking-onos{branch-designator}':
+      - '{pipeline}-tempest-dsvm-networking-onos{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -2838,10 +2838,10 @@
       - python-jobs
       - pypi-jobs
       - openstack-publish-jobs
-      - '{pipeline}-tempest-dsvm-networking-ovn{branch-designator}':
+      - '{pipeline}-tempest-dsvm-networking-ovn{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -2917,53 +2917,53 @@
       - gate-rally-dsvm-neutron-{name}
       - translation-jobs
       - translation-jobs-liberty
-      - '{pipeline}-neutron-dsvm-functional{python}{branch-designator}':
+      - '{pipeline}-neutron-dsvm-functional{python}{job-suffix}':
           pipeline: gate
           python: ''
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - '{pipeline}-neutron-dsvm-functional{python}{branch-designator}':
+      - '{pipeline}-neutron-dsvm-functional{python}{job-suffix}':
           pipeline: gate
           python: '-py34'
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - '{pipeline}-neutron-dsvm-functional{python}{branch-designator}':
+      - '{pipeline}-neutron-dsvm-functional{python}{job-suffix}':
           pipeline: gate
           python: ''
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
-      - '{pipeline}-neutron-dsvm-fullstack{branch-designator}':
+      - '{pipeline}-neutron-dsvm-fullstack{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - '{pipeline}-neutron-dsvm-api{branch-designator}':
+      - '{pipeline}-neutron-dsvm-api{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - '{pipeline}-tempest-dsvm-neutron-linuxbridge{branch-designator}':
+      - '{pipeline}-tempest-dsvm-neutron-linuxbridge{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - '{pipeline}-tempest-dsvm-neutron{branch-designator}':
+      - '{pipeline}-tempest-dsvm-neutron{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
-      - '{pipeline}-tempest-dsvm-neutron-ipv6only{branch-designator}':
+      - '{pipeline}-tempest-dsvm-neutron-ipv6only{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - '{pipeline}-tempest-dsvm-neutron-serviceipv6{branch-designator}':
+      - '{pipeline}-tempest-dsvm-neutron-serviceipv6{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -2977,15 +2977,15 @@
       - python-kilo-bitrot-jobs
       - python-liberty-bitrot-jobs
       - openstack-publish-jobs
-      - '{pipeline}-neutron-fwaas-dsvm-api{branch-designator}':
+      - '{pipeline}-neutron-fwaas-dsvm-api{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - '{pipeline}-neutron-fwaas-dsvm-functional{branch-designator}':
+      - '{pipeline}-neutron-fwaas-dsvm-functional{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -2999,66 +2999,66 @@
       - python-kilo-bitrot-jobs
       - python-liberty-bitrot-jobs
       - openstack-publish-jobs
-      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}{branch-designator}':
+      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
           lbaasversion: lbaasv2
           lbaastest: scenario
-      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}{branch-designator}':
+      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
           lbaasversion: lbaasv2
           lbaastest: minimal
-      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}{branch-designator}':
+      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
           lbaasversion: lbaasv1
           lbaastest: api
-      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}{branch-designator}':
+      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
           lbaasversion: lbaasv2-octavia
           lbaastest: api
-      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}{branch-designator}':
+      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
           lbaasversion: lbaasv2
           lbaastest: healthmonitor
-      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}{branch-designator}':
+      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
           lbaasversion: lbaasv2
           lbaastest: listener
-      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}{branch-designator}':
+      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
           lbaasversion: lbaasv2
           lbaastest: loadbalancer
-      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}{branch-designator}':
+      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
           lbaasversion: lbaasv2
           lbaastest: member
-      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}{branch-designator}':
+      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
           lbaasversion: lbaasv2
           lbaastest: pool
@@ -3091,33 +3091,33 @@
       - python-kilo-bitrot-jobs
       - python-liberty-bitrot-jobs
       - openstack-publish-jobs
-      - '{pipeline}-neutron-vpnaas-dsvm-functional{branch-designator}':
+      - '{pipeline}-neutron-vpnaas-dsvm-functional{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - '{pipeline}-neutron-vpnaas-dsvm-functional-sswan{branch-designator}':
+      - '{pipeline}-neutron-vpnaas-dsvm-functional-sswan{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - '{pipeline}-neutron-vpnaas-test-dsvm-{vpnaastest}{branch-designator}':
+      - '{pipeline}-neutron-vpnaas-test-dsvm-{vpnaastest}{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           vpnaastest: functional
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - '{pipeline}-neutron-vpnaas-test-dsvm-{vpnaastest}{branch-designator}':
+      - '{pipeline}-neutron-vpnaas-test-dsvm-{vpnaastest}{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           vpnaastest: functional-sswan
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - '{pipeline}-neutron-vpnaas-test-dsvm-{vpnaastest}{branch-designator}':
+      - '{pipeline}-neutron-vpnaas-test-dsvm-{vpnaastest}{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           vpnaastest: api
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -3131,15 +3131,15 @@
       - python-jobs
       - pypi-jobs
       - infra-publish-jobs
-      - '{pipeline}-dsvm-nodepool{branch-designator}':
+      - '{pipeline}-dsvm-nodepool{job-suffix}':
           pipeline: gate
           node: devstack-trusty
-          branch-designator: ''
+          job-suffix: ''
           branch-override: 'default'
-      - '{pipeline}-dsvm-nodepool-src-shade{branch-designator}':
+      - '{pipeline}-dsvm-nodepool-src-shade{job-suffix}':
           pipeline: gate
           node: devstack-trusty
-          branch-designator: ''
+          job-suffix: ''
           branch-override: 'default'
 
 - project:
@@ -3254,9 +3254,9 @@
       # This check uses the newer 'ubuntu-trusty' image which
       # is consistent between cloud providers. It is in the
       # final stage of testing.
-      - 'gate-{name}-commit{branch-designator}':
+      - 'gate-{name}-commit{job-suffix}':
           node: 'ubuntu-trusty'
-          branch-designator: '-nv'
+          job-suffix: '-nv'
       # This check uses the 'devstack-trusty' image which is
       # inconsistent between cloud providers. This will be
       # removed once gate-openstack-ansible-commit is converted
@@ -3360,10 +3360,10 @@
 
     jobs:
       - gate-openstackid-unittests
-      - 'openstackid-release-{branch-designator}':
-          branch-designator: 'master'
-      - 'openstackid-release-{branch-designator}':
-          branch-designator: 'branch'
+      - 'openstackid-release-{job-suffix}':
+          job-suffix: 'master'
+      - 'openstackid-release-{job-suffix}':
+          job-suffix: 'branch'
       - infra-publish-jobs
       - 'gate-{name}-docs'
 
@@ -3395,15 +3395,15 @@
       - pypi-jobs
       - python-jobs
       - 'lib-forward-testing-{name}'
-      - '{pipeline}-tempest-dsvm-full-ceph-src-{name}{branch-designator}':
+      - '{pipeline}-tempest-dsvm-full-ceph-src-{name}{job-suffix}':
           node: 'devstack-precise || devstack-trusty'
           pipeline: gate
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - '{pipeline}-tempest-dsvm-full-lio-src-{name}{branch-designator}':
+      - '{pipeline}-tempest-dsvm-full-lio-src-{name}{job-suffix}':
           node: 'devstack-precise || devstack-trusty'
           pipeline: gate
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -3577,10 +3577,10 @@
       - translation-jobs
       - 'gate-{name}-tox-{envlist}'
       - 'lib-forward-testing-{name}'
-      - '{pipeline}-tempest-dsvm-largeops-src-{name}{branch-designator}':
+      - '{pipeline}-tempest-dsvm-largeops-src-{name}{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -3608,10 +3608,10 @@
       - pypi-jobs
       - translation-jobs
       - 'lib-forward-testing-{name}'
-      - '{pipeline}-tempest-dsvm-largeops-src-{name}{branch-designator}':
+      - '{pipeline}-tempest-dsvm-largeops-src-{name}{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -3626,65 +3626,65 @@
       - pypi-jobs
       - translation-jobs
       - 'lib-forward-testing-{name}'
-      - '{pipeline}-tempest-dsvm-largeops-src-{name}{branch-designator}':
+      - '{pipeline}-tempest-dsvm-largeops-src-{name}{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
       - '{pipeline}-oslo.messaging-dsvm-functional-{driver}{ostype}':
           driver: rabbit
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           ostype: ''
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
       - '{pipeline}-oslo.messaging-dsvm-functional-{driver}{ostype}':
           driver: qpid
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           ostype: ''
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
       - '{pipeline}-oslo.messaging-dsvm-functional-{driver}{ostype}':
           driver: zeromq
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           ostype: ''
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
       - '{pipeline}-oslo.messaging-dsvm-functional-{driver}{ostype}':
           driver: pika
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           ostype: ''
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
       - '{pipeline}-oslo.messaging-dsvm-functional-{driver}{ostype}':
           driver: amqp1
           pipeline: gate
           node: 'devstack-f21'
           ostype: '-f21'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - '{pipeline}-oslo.messaging-src-dsvm-full-{plugin}{ostype}{branch-designator}':
+      - '{pipeline}-oslo.messaging-src-dsvm-full-{plugin}{ostype}{job-suffix}':
           pipeline: gate
           plugin: zmq
           ostype: ''
           plugin-repo: openstack/devstack-plugin-zmq
-          branch-designator: ''
-      - '{pipeline}-oslo.messaging-src-dsvm-full-{plugin}{ostype}{branch-designator}':
+          job-suffix: ''
+      - '{pipeline}-oslo.messaging-src-dsvm-full-{plugin}{ostype}{job-suffix}':
           pipeline: gate
           plugin: amqp1
           node: 'devstack-f21'
           ostype: '-f21'
           plugin-repo: openstack/devstack-plugin-amqp1
-          branch-designator: ''
-      - '{pipeline}-oslo.messaging-src-dsvm-full-{plugin}{ostype}{branch-designator}':
+          job-suffix: ''
+      - '{pipeline}-oslo.messaging-src-dsvm-full-{plugin}{ostype}{job-suffix}':
           pipeline: gate
           plugin: pika
           ostype: ''
           plugin-repo: openstack/devstack-plugin-pika
-          branch-designator: ''
+          job-suffix: ''
 
 - project:
     name: oslo.middleware
@@ -3746,10 +3746,10 @@
       - openstack-publish-jobs
       - pypi-jobs
       - 'lib-forward-testing-{name}'
-      - '{pipeline}-tempest-dsvm-largeops-src-{name}{branch-designator}':
+      - '{pipeline}-tempest-dsvm-largeops-src-{name}{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -3946,7 +3946,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -3957,7 +3957,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -3969,7 +3969,7 @@
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs:
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -3980,7 +3980,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -3991,7 +3991,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4002,7 +4002,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4013,7 +4013,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4032,7 +4032,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4044,7 +4044,7 @@
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs:
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -4055,7 +4055,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4066,7 +4066,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4078,7 +4078,7 @@
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs:
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -4090,7 +4090,7 @@
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs:
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -4101,7 +4101,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4113,7 +4113,7 @@
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs:
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -4124,7 +4124,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4136,7 +4136,7 @@
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs:
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -4147,7 +4147,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4158,7 +4158,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4169,7 +4169,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4180,7 +4180,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4191,7 +4191,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4202,7 +4202,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4213,7 +4213,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4224,7 +4224,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4235,7 +4235,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4247,7 +4247,7 @@
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs:
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -4259,7 +4259,7 @@
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs:
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -4270,7 +4270,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4281,7 +4281,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4292,7 +4292,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4304,7 +4304,7 @@
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs:
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -4316,7 +4316,7 @@
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs:
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -4327,7 +4327,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4339,7 +4339,7 @@
       - puppet-check-jobs
       - '{name}-forge-upload'
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4350,7 +4350,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4361,7 +4361,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4373,7 +4373,7 @@
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs:
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -4384,7 +4384,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4395,7 +4395,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4406,7 +4406,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4418,7 +4418,7 @@
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs:
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -4429,7 +4429,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4440,7 +4440,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4451,7 +4451,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4462,7 +4462,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4473,7 +4473,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4484,7 +4484,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4496,7 +4496,7 @@
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs:
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -4507,7 +4507,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4518,7 +4518,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4548,7 +4548,7 @@
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs:
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -4559,7 +4559,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4580,7 +4580,7 @@
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs:
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -4591,7 +4591,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4603,7 +4603,7 @@
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs:
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -4614,7 +4614,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4625,7 +4625,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4637,7 +4637,7 @@
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs:
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -4648,7 +4648,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4659,9 +4659,9 @@
     jobs:
       - puppet-check-jobs
       - puppet-openstack-integration-jobs
-      - 'gate-puppet-openstack-integration-dsvm-multinode{branch-designator}':
+      - 'gate-puppet-openstack-integration-dsvm-multinode{job-suffix}':
           node: devstack-trusty-2-node
-          branch-designator: '-nv'
+          job-suffix: '-nv'
 
 - project:
     name: puppet-openstack-specs
@@ -4678,7 +4678,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
       - 'gate-openstackci-beaker-{ostype}-dsvm':
           ostype: centos7
@@ -4693,7 +4693,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4705,7 +4705,7 @@
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs:
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -4716,7 +4716,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4727,7 +4727,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4738,7 +4738,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4749,7 +4749,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4760,7 +4760,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4771,7 +4771,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4782,7 +4782,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4793,7 +4793,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4804,7 +4804,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4815,7 +4815,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4826,7 +4826,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4837,7 +4837,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4849,7 +4849,7 @@
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs:
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -4868,7 +4868,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4879,7 +4879,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4890,7 +4890,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4901,7 +4901,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4912,7 +4912,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4923,7 +4923,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4935,7 +4935,7 @@
       - puppet-check-jobs
       - '{name}-forge-upload'
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4946,7 +4946,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4957,7 +4957,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -4969,7 +4969,7 @@
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs:
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -4981,7 +4981,7 @@
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs:
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -4992,7 +4992,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -5013,7 +5013,7 @@
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs:
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -5033,7 +5033,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -5044,7 +5044,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -5055,7 +5055,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -5066,7 +5066,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -5077,7 +5077,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -5089,7 +5089,7 @@
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs:
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -5100,7 +5100,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -5111,7 +5111,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -5123,7 +5123,7 @@
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs:
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -5134,7 +5134,7 @@
     jobs:
       - puppet-check-jobs
       - puppet-beaker-jobs:
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -5209,16 +5209,16 @@
       - python-jobs
       - openstack-publish-jobs
       - pypi-jobs
-      - '{pipeline}-tempest-dsvm-neutron-src-{name}{branch-designator}-plugin':
+      - '{pipeline}-tempest-dsvm-neutron-src-{name}{job-suffix}-plugin':
           project-repo: ceilometer
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - '{pipeline}-ceilometerclient-dsvm-functional{branch-designator}':
+      - '{pipeline}-ceilometerclient-dsvm-functional{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -5240,10 +5240,10 @@
       - openstack-publish-jobs
       - pypi-jobs
       - 'lib-forward-testing-{name}'
-      - '{pipeline}-cinderclient-dsvm-functional{branch-designator}':
+      - '{pipeline}-cinderclient-dsvm-functional{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -5331,10 +5331,10 @@
       - openstack-publish-jobs
       - pypi-jobs
       - 'lib-forward-testing-{name}'
-      - '{pipeline}-glanceclient-dsvm-functional{branch-designator}':
+      - '{pipeline}-glanceclient-dsvm-functional{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -5381,10 +5381,10 @@
       - pypi-jobs
       - translation-jobs
       - 'lib-forward-testing-{name}'
-      - '{pipeline}-heatclient-dsvm-functional{branch-designator}':
+      - '{pipeline}-heatclient-dsvm-functional{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -5397,10 +5397,10 @@
       - pypi-jobs
       - gate-{name}-tox-{envlist}:
           envlist: func
-      - '{pipeline}-python-ironic-inspector-client-dsvm{branch-designator}':
+      - '{pipeline}-python-ironic-inspector-client-dsvm{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -5414,15 +5414,15 @@
       - openstack-publish-jobs
       - pypi-jobs
       - 'lib-forward-testing-{name}'
-      - '{pipeline}-ironicclient-dsvm-functional{branch-designator}':
+      - '{pipeline}-ironicclient-dsvm-functional{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - '{pipeline}-tempest-dsvm-python-ironicclient-src{branch-designator}':
+      - '{pipeline}-tempest-dsvm-python-ironicclient-src{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -5447,10 +5447,10 @@
       - pypi-jobs
       - translation-jobs
       - 'lib-forward-testing-{name}'
-      - '{pipeline}-keystoneclient-dsvm-functional{branch-designator}':
+      - '{pipeline}-keystoneclient-dsvm-functional{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
       - 'gate-{name}-tox-{envlist}':
           envlist: bandit
@@ -5526,10 +5526,10 @@
     jobs:
       - python-jobs
       - pypi-jobs
-      - '{pipeline}-muranoclient-dsvm-functional{branch-designator}':
+      - '{pipeline}-muranoclient-dsvm-functional{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -5552,17 +5552,17 @@
       - openstack-publish-jobs
       - pypi-jobs
       - 'lib-forward-testing-{name}'
-      - '{pipeline}-neutronclient-test-dsvm-{which-test}{branch-designator}':
+      - '{pipeline}-neutronclient-test-dsvm-{which-test}{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           which-test: functional
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - '{pipeline}-neutronclient-test-dsvm-{which-test}{branch-designator}':
+      - '{pipeline}-neutronclient-test-dsvm-{which-test}{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           which-test: functional-adv-svcs
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -5577,10 +5577,10 @@
       - pypi-jobs
       - translation-jobs
       - 'lib-forward-testing-{name}'
-      - '{pipeline}-novaclient-dsvm-functional{branch-designator}':
+      - '{pipeline}-novaclient-dsvm-functional{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -5600,10 +5600,10 @@
     jobs:
       - python-jobs
       - translation-jobs
-      - '{pipeline}-osc-dsvm-functional{branch-designator}':
+      - '{pipeline}-osc-dsvm-functional{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
       - openstack-publish-jobs
       - pypi-jobs
@@ -5616,10 +5616,10 @@
 
     jobs:
       - python-jobs
-      - '{pipeline}-sdk-dsvm-functional{branch-designator}':
+      - '{pipeline}-sdk-dsvm-functional{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
       - pypi-jobs
 
@@ -5649,15 +5649,15 @@
       - python-jobs
       - pypi-jobs
       - openstack-publish-jobs
-      - '{pipeline}-tempest-dsvm-neutron-src-python-saharaclient{branch-designator}':
+      - '{pipeline}-tempest-dsvm-neutron-src-python-saharaclient{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - '{pipeline}-saharaclient-dsvm-functional{branch-designator}':
+      - '{pipeline}-saharaclient-dsvm-functional{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -5723,10 +5723,10 @@
       - python-jobs
       - openstack-publish-jobs
       - pypi-jobs
-      - '{pipeline}-swiftclient-dsvm-functional{branch-designator}':
+      - '{pipeline}-swiftclient-dsvm-functional{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
       - 'lib-forward-testing-{name}'
 
@@ -5756,10 +5756,10 @@
       - python-jobs
       - openstack-publish-jobs
       - pypi-jobs
-      - '{pipeline}-tempest-dsvm-neutron-src-python-troveclient{branch-designator}':
+      - '{pipeline}-tempest-dsvm-neutron-src-python-troveclient{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -5789,10 +5789,10 @@
     jobs:
       - python-jobs
       - pypi-jobs
-      - '{pipeline}-zaqarclient-dsvm-functional{branch-designator}':
+      - '{pipeline}-zaqarclient-dsvm-functional{job-suffix}':
           pipeline: gate
           node: 'devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
       - 'lib-forward-testing-{name}'
 
@@ -5932,11 +5932,11 @@
       - gate-{name}-python27
       - gate-{name}-pypy
       - openstack-publish-jobs
-      - propose-requirements-constraints{branch-designator}:
-          branch-designator: '-master'
+      - propose-requirements-constraints{job-suffix}:
+          job-suffix: '-master'
           branch-override: master
-      - propose-requirements-constraints{branch-designator}:
-          branch-designator: '-liberty'
+      - propose-requirements-constraints{job-suffix}:
+          job-suffix: '-liberty'
           branch-override: stable/liberty
       - 'gate-{name}-tox-{envlist}':
           envlist: validate
@@ -6004,36 +6004,36 @@
           envlist: "py27-scenario-unit"
       - gate-{name}-tox-{envlist}:
           envlist: bandit
-      - '{pipeline}-tempest-dsvm-sahara{branch-designator}':
+      - '{pipeline}-tempest-dsvm-sahara{job-suffix}':
           pipeline: gate
           node: 'devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - '{pipeline}-sahara-dsvm-scenario-{network}-{engine}{branch-designator}':
+      - '{pipeline}-sahara-dsvm-scenario-{network}-{engine}{job-suffix}':
           pipeline: gate
           node: 'devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
           network: neutron
           engine: heat
-      - '{pipeline}-sahara-dsvm-scenario-{network}-{engine}{branch-designator}':
+      - '{pipeline}-sahara-dsvm-scenario-{network}-{engine}{job-suffix}':
           pipeline: gate
           node: 'devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
           network: nova
           engine: heat
-      - '{pipeline}-sahara-dsvm-scenario-{network}-{engine}{branch-designator}':
+      - '{pipeline}-sahara-dsvm-scenario-{network}-{engine}{job-suffix}':
           pipeline: gate
           node: 'devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
           network: neutron
           engine: direct
-      - '{pipeline}-sahara-dsvm-scenario-{network}-{engine}{branch-designator}':
+      - '{pipeline}-sahara-dsvm-scenario-{network}-{engine}{job-suffix}':
           pipeline: gate
           node: 'devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
           network: nova
           engine: direct
@@ -6104,10 +6104,10 @@
     jobs:
       - python-jobs
       - pypi-jobs
-      - '{pipeline}-scalpels-dsvm-neutron{branch-designator}':
+      - '{pipeline}-scalpels-dsvm-neutron{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -6142,10 +6142,10 @@
     tarball-site: tarballs.openstack.org
     jobs:
       - python-jobs
-      - '{pipeline}-senlin-dsvm-functional{branch-designator}':
+      - '{pipeline}-senlin-dsvm-functional{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
       - pypi-jobs
 
@@ -6169,20 +6169,20 @@
       - python-jobs
       - pypi-jobs
       - infra-publish-jobs
-      - '{pipeline}-shade-dsvm-functional-keystone2{branch-designator}':
+      - '{pipeline}-shade-dsvm-functional-keystone2{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - '{pipeline}-shade-dsvm-functional-neutron{branch-designator}':
+      - '{pipeline}-shade-dsvm-functional-neutron{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - '{pipeline}-shade-dsvm-functional-nova{branch-designator}':
+      - '{pipeline}-shade-dsvm-functional-nova{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -6258,10 +6258,10 @@
           node: bare-centos6
       - gate-{name}-tox-{envlist}:
           envlist: py27sa07
-      - '{pipeline}-sqlalchemy-migrate-devstack-dsvm{branch-designator}':
+      - '{pipeline}-sqlalchemy-migrate-devstack-dsvm{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
       - hook-{name}-rtfd
       - pypi-jobs
@@ -6440,10 +6440,10 @@
       - 'gate-{name}-npm-run-{command}':
           command: 'test-integration'
       - gate-{name}-js-draft
-      - '{name}-js-release-{branch-designator}':
-          branch-designator: 'master'
-      - '{name}-js-release-{branch-designator}':
-          branch-designator: 'branch'
+      - '{name}-js-release-{job-suffix}':
+          job-suffix: 'master'
+      - '{name}-js-release-{job-suffix}':
+          job-suffix: 'branch'
       - gate-storyboard-js-integration
 
 - project:
@@ -6479,15 +6479,15 @@
       - translation-jobs
       - 'gate-{name}-tox-{envlist}':
           envlist: func
-      - '{pipeline}-swift-dsvm-functional{branch-designator}':
+      - '{pipeline}-swift-dsvm-functional{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - '{pipeline}-swift-dsvm-functional{branch-designator}':
+      - '{pipeline}-swift-dsvm-functional{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: '-nv'
+          job-suffix: '-nv'
           branch-override: default
 # No one is interested in stable/ branches on swift, so don't run bitrot jobs
 
@@ -6531,10 +6531,10 @@
           envlist: keystone
       - gate-{name}-tox-{envlist}:
           envlist: s3acl
-      - '{pipeline}-tempest-dsvm-swift3{branch-designator}':
+      - '{pipeline}-tempest-dsvm-swift3{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -6587,10 +6587,10 @@
     jobs:
       - python-jobs
       - hook-{name}-rtfd
-      - '{pipeline}-tacker-dsvm-functional{branch-designator}':
+      - '{pipeline}-tacker-dsvm-functional{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -6798,25 +6798,25 @@
       - openstack-publish-jobs
       - translation-jobs
       - openstack-doc-jobs
-      - 'gate-trove-functional-dsvm-{datastore}{branch-designator}':
+      - 'gate-trove-functional-dsvm-{datastore}{job-suffix}':
           datastore: 'mysql'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - 'gate-trove-functional-dsvm-{datastore}{branch-designator}':
+      - 'gate-trove-functional-dsvm-{datastore}{job-suffix}':
           datastore: 'percona'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - 'gate-trove-functional-dsvm-{datastore}{branch-designator}':
+      - 'gate-trove-functional-dsvm-{datastore}{job-suffix}':
           datastore: 'mongodb'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
-      - 'gate-trove-functional-dsvm-{datastore}{branch-designator}':
+      - 'gate-trove-functional-dsvm-{datastore}{job-suffix}':
           datastore: 'mysql'
-          branch-designator: '-kilo'
+          job-suffix: '-kilo'
           branch-override: stable/kilo
-      - 'gate-trove-functional-dsvm-{datastore}{branch-designator}':
+      - 'gate-trove-functional-dsvm-{datastore}{job-suffix}':
           datastore: 'mysql'
-          branch-designator: '-juno'
+          job-suffix: '-juno'
           branch-override: stable/juno
       - 'gate-trove-buildimage-{datastore}':
           datastore: 'mysql'
@@ -6883,10 +6883,10 @@
 
     jobs:
       - gate-{name}-js-draft
-      - '{name}-js-release-{branch-designator}':
-          branch-designator: 'master'
-      - '{name}-js-release-{branch-designator}':
-          branch-designator: 'branch'
+      - '{name}-js-release-{job-suffix}':
+          job-suffix: 'master'
+      - '{name}-js-release-{job-suffix}':
+          job-suffix: 'branch'
 
 - project:
     name: vitrage
@@ -7214,16 +7214,16 @@
       - 'gate-{name}-tox-{envlist}':
           envlist: integration
       - gate-rally-dsvm-zaqar-{name}
-      - '{pipeline}-tempest-dsvm-{backend}-zaqar{branch-designator}':
+      - '{pipeline}-tempest-dsvm-{backend}-zaqar{job-suffix}':
           pipeline: gate
           node: 'devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
           backend: mongodb
-      - '{pipeline}-tempest-dsvm-{backend}-zaqar{branch-designator}':
+      - '{pipeline}-tempest-dsvm-{backend}-zaqar{job-suffix}':
           pipeline: gate
           node: 'devstack-trusty'
-          branch-designator: ''
+          job-suffix: ''
           branch-override: default
           backend: redis
 
