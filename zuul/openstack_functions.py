@@ -87,7 +87,7 @@ def default_params_trusty(item, job, params):
 
 
 def set_node_options(item, job, params, default):
-    # Set up log url paramter for all jobs
+    # Set up log url parameter for all jobs
     set_log_url(item, job, params)
     # Default to single use node. Potentially overriden below.
     # Select node to run job on.
