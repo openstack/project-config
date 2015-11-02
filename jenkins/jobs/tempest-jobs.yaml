@@ -6,3 +6,12 @@
           node: 'devstack-precise || devstack-trusty'
           job-suffix: ''
           branch-override: default
+
+- job-group:
+    name: 'stable-compat-jobs-{name}'
+    jobs:
+      - '{pipeline}-tempest-dsvm-neutron-src-{name}{job-suffix}':
+          pipeline: gate
+          node: 'devstack-precise || devstack-trusty'
+          job-suffix: '-liberty'
+          branch-override: stable/liberty
