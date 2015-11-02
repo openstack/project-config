@@ -2243,6 +2243,19 @@
           type: source
 
 - project:
+    name: kolla-mesos
+    node: 'bare-precise || bare-trusty'
+    doc-publisher-site: docs.openstack.org
+
+    jobs:
+      - gate-{name}-bashate
+      - gate-{name}-pep8
+      - 'gate-{name}-requirements'
+      - openstack-publish-jobs
+      - 'gate-{name}-tox-{envlist}':
+          envlist: validate-contents
+
+- project:
     name: kosmos
     node: 'bare-precise || bare-trusty'
     tarball-site: tarballs.openstack.org
