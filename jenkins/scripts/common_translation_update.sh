@@ -193,6 +193,9 @@ EOF
 # Propose patch using COMMIT_MSG
 function send_patch {
     local branch=${1:-master}
+    local output
+    local ret
+    local success=0
 
     # We don't have any repos storing zanata.xml, so just remove it.
     rm -f zanata.xml
@@ -203,11 +206,17 @@ function send_patch {
         git commit -F- <<EOF
 $COMMIT_MSG
 EOF
+        # Do error checking manually to ignore one class of failure.
+        set +e
         # We cannot rely on the default branch in .gitreview being
         # correct so we are very explicit here.
-        git review -t zanata/translations $branch
-
+        output=$(git review -t zanata/translations $branch)
+        ret=$?
+        [[ "$ret" -eq "0" || "$output" =~ "No changes between prior commit" ]]
+        success=$?
+        set -e
     fi
+    return $success
 }
 
 # Setup global variables LEVELS and LKEYWORDS
