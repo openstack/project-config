@@ -1,5 +1,5 @@
 - builder:
-    name: akanda-dsvm
+    name: astara-dsvm
     builders:
       - shell: |
           #!/bin/bash -xe
@@ -12,15 +12,14 @@
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
 
-          export PROJECTS="openstack/akanda-rug $PROJECTS"
-          export PROJECTS="openstack/akanda-neutron $PROJECTS"
-          export PROJECTS="openstack/akanda-appliance $PROJECTS"
-          export PROJECTS="openstack/akanda-appliance-builder $PROJECTS"
-          export PROJECTS="openstack/akanda-horizon $PROJECTS"
+          export PROJECTS="openstack/astara $PROJECTS"
+          export PROJECTS="openstack/astara-neutron $PROJECTS"
+          export PROJECTS="openstack/astara-appliance $PROJECTS"
+          export PROJECTS="openstack/astara-horizon $PROJECTS"
 
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin akanda-rug https://git.openstack.org/openstack/akanda-rug"$'\n'"enable_service ak-rug"
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin astara https://git.openstack.org/openstack/astara"$'\n'"enable_service astara"
 
-          export BUILD_APPLIANCE={build-akanda-appliance}
+          export BUILD_APPLIANCE={build-astara-appliance}
           if [ "$BUILD_APPLIANCE" == "1" ] ; then
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"BUILD_AKANDA_APPLIANCE_IMAGE=True"
           fi
@@ -28,7 +27,7 @@
           if [ "$DEVSTACK_GATE_TEMPEST" == "0" ]; then
               function post_test_hook {{
                     source $BASE/new/devstack/openrc admin admin
-                    cd /opt/stack/new/akanda-rug
+                    cd /opt/stack/new/astara
                     sudo -H -E -u stack ./tools/run_functional.sh
               }}
               export -f post_test_hook
@@ -38,7 +37,7 @@
           ./safe-devstack-vm-gate-wrap.sh
 
 - job-template:
-    name: '{pipeline}-functional-dsvm-akanda{job-suffix}'
+    name: '{pipeline}-functional-dsvm-astara{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -50,8 +49,8 @@
       - link-logs
       - net-info
       - devstack-checkout
-      - akanda-dsvm:
-          build-akanda-appliance: 0
+      - astara-dsvm:
+          build-astara-appliance: 0
           run-tempest: 0
           branch-override: '{branch-override}'
     publishers:
@@ -59,7 +58,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-functional-dsvm-akanda-appliance-src{job-suffix}'
+    name: '{pipeline}-functional-dsvm-astara-appliance-src{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -71,8 +70,8 @@
       - link-logs
       - net-info
       - devstack-checkout
-      - akanda-dsvm:
-          build-akanda-appliance: 1
+      - astara-dsvm:
+          build-astara-appliance: 1
           run-tempest: 0
           branch-override: '{branch-override}'
     publishers:
@@ -80,7 +79,7 @@
       - console-log
 
 - job:
-    name: 'akanda-appliance-buildimage'
+    name: 'astara-appliance-buildimage'
     node: 'bare-trusty'
 
     builders:
@@ -91,14 +90,14 @@
       - shell: |
           #!/bin/bash -xe
           tox -e build_image
-          mv build/akanda_appliance.qcow2 $WORKSPACE/akanda_appliance.qcow2
+          mv build/astara_appliance.qcow2 $WORKSPACE/astara_appliance.qcow2
 
     publishers:
       - scp:
           site: 'tarballs.openstack.org'
           files:
-            - source: 'akanda_appliance.qcow2'
-              target: 'tarballs/akanda-appliance/images'
+            - source: 'astara_appliance.qcow2'
+              target: 'tarballs/astara-appliance/images'
               keep-hierarchy: false
               copy-after-failure: false
       - console-log
