@@ -200,16 +200,19 @@
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TIMEOUT=120
           export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_NEUTRON=1
+          # Allow tempest to use site-packages with plugins
+          export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
           export PROJECTS="openstack/murano $PROJECTS"
           export PROJECTS="openstack/murano-dashboard $PROJECTS"
           export PROJECTS="openstack/python-muranoclient $PROJECTS"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin murano git://git.openstack.org/openstack/murano"
-          export ENABLED_SERVICES=murano-cfapi
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
           if [ "{mode}" = "cfapi" ]; then
+              export ENABLED_SERVICES+=,murano-cfapi
               export DEVSTACK_GATE_TEMPEST_REGEX="service_broker"
           fi
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
