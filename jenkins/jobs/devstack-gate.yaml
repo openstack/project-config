@@ -136,7 +136,11 @@
       - devstack-checkout
       - shell: |
           #!/bin/bash -xe
-          export PROJECTS="openstack/{name} $PROJECTS"
+          REPOSITORY="openstack/{name}"
+          if [ "{name}" = "pbr" ]; then
+              REPOSITORY="openstack-dev/pbr"
+          fi
+          export PROJECTS="$REPOSITORY $PROJECTS"
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TIMEOUT=120
           export DEVSTACK_GATE_TEMPEST=1
