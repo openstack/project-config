@@ -6103,9 +6103,14 @@
     jobs:
       - python-jobs
       - pypi-jobs
-      - '{pipeline}-scalpels-dsvm-neutron{job-suffix}':
+      - '{pipeline}-scalpels-dsvm-neutron{job-suffix}-{ostype}':
+          ostype: 'devstack-trusty'
           pipeline: gate
-          node: 'devstack-precise || devstack-trusty'
+          job-suffix: ''
+          branch-override: default
+      - '{pipeline}-scalpels-dsvm-neutron{job-suffix}-{ostype}':
+          ostype: 'fedora-22'
+          pipeline: gate
           job-suffix: ''
           branch-override: default
 
