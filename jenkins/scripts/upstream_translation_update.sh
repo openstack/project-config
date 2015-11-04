@@ -47,7 +47,7 @@ case "$PROJECT" in
         ;;
     magnum-ui)
         setup_magnum_ui "$ZANATA_VERSION"
-        extract_messages
+        ./run_tests.sh --makemessages -V
         ;;
     *)
         setup_project "$PROJECT" "$ZANATA_VERSION"
