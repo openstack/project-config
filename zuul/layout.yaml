@@ -306,6 +306,10 @@ project-templates:
     gate:
       - 'gate-tempest-dsvm-neutron-src-{name}'
 
+  - name: stable-compat-jobs
+    check:
+      - 'gate-tempest-dsvm-neutron-src-{name}-liberty'
+
   - name: lib-forward-testing-plugin
     check:
       - 'gate-tempest-dsvm-neutron-src-{name}-plugin'
@@ -1108,6 +1112,10 @@ jobs:
 # For Gerrit ver 2.8.x and later (using buck)
   - name: ^.*gerrit.*buck$
     branch: ^openstack/(?!2\.4).*$
+
+  - name: ^gate-tempest-dsvm-neutron-src-.*-liberty$
+    branch: ^(?!stable/(?:juno|kilo|liberty)).*$
+    voting: false
 
   - name: gate-oslo.messaging-dsvm-functional-rabbit
     branch: ^(?!stable/juno).*$
@@ -6827,6 +6835,7 @@ projects:
       - name: translation-jobs
       - name: python3-jobs
       - name: lib-forward-testing
+      - name: stable-compat-jobs
 
   - name: openstack/oslo.concurrency
     template:
@@ -6839,6 +6848,7 @@ projects:
       - name: python3-jobs
       - name: translation-jobs
       - name: lib-forward-testing
+      - name: stable-compat-jobs
     post:
       - oslo.concurrency-coverage
 
@@ -6852,6 +6862,7 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
       - name: lib-forward-testing
+      - name: stable-compat-jobs
 
   - name: openstack/oslo.context
     template:
@@ -6863,6 +6874,7 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
       - name: lib-forward-testing
+      - name: stable-compat-jobs
 
   - name: openstack/oslo.db
     template:
@@ -6875,6 +6887,7 @@ projects:
       - name: publish-to-pypi
       - name: translation-jobs
       - name: lib-forward-testing
+      - name: stable-compat-jobs
     check:
       - gate-tempest-dsvm-largeops-src-oslo.db
       - gate-oslo.db-tox-sqla_08
@@ -6892,6 +6905,7 @@ projects:
       - name: publish-to-pypi
       - name: translation-jobs
       - name: lib-forward-testing
+      - name: stable-compat-jobs
     post:
       - oslo.i18n-coverage
 
@@ -6906,6 +6920,7 @@ projects:
       - name: publish-to-pypi
       - name: translation-jobs
       - name: lib-forward-testing
+      - name: stable-compat-jobs
     check:
       - gate-tempest-dsvm-largeops-src-oslo.log
 
@@ -6918,6 +6933,7 @@ projects:
       - name: publish-to-pypi
       - name: translation-jobs
       - name: lib-forward-testing
+      - name: stable-compat-jobs
     check:
       - gate-tempest-dsvm-largeops-src-oslo.messaging
       - gate-oslo.messaging-dsvm-functional-rabbit
@@ -6944,6 +6960,7 @@ projects:
       - name: publish-to-pypi
       - name: translation-jobs
       - name: lib-forward-testing
+      - name: stable-compat-jobs
 
   - name: openstack/oslo.policy
     template:
@@ -6955,6 +6972,7 @@ projects:
       - name: publish-to-pypi
       - name: translation-jobs
       - name: lib-forward-testing
+      - name: stable-compat-jobs
 
   - name: openstack/oslo.privsep
     template:
@@ -6977,6 +6995,7 @@ projects:
       - name: publish-to-pypi
       - name: translation-jobs
       - name: lib-forward-testing
+      - name: stable-compat-jobs
 
   - name: openstack/oslo.rootwrap
     template:
@@ -6988,6 +7007,7 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
       - name: lib-forward-testing
+      - name: stable-compat-jobs
     check:
       - gate-tempest-dsvm-largeops-src-oslo.rootwrap
 
@@ -7001,6 +7021,7 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
       - name: lib-forward-testing
+      - name: stable-compat-jobs
 
   - name: openstack/oslo.service
     template:
@@ -7012,6 +7033,7 @@ projects:
       - name: publish-to-pypi
       - name: translation-jobs
       - name: lib-forward-testing
+      - name: stable-compat-jobs
 
   - name: openstack/oslo.utils
     template:
@@ -7024,6 +7046,7 @@ projects:
       - name: publish-to-pypi
       - name: translation-jobs
       - name: lib-forward-testing
+      - name: stable-compat-jobs
 
   - name: openstack/oslo.versionedobjects
     template:
@@ -7035,6 +7058,7 @@ projects:
       - name: publish-to-pypi
       - name: translation-jobs
       - name: lib-forward-testing
+      - name: stable-compat-jobs
 
   - name: openstack/oslo.vmware
     template:
@@ -7047,6 +7071,7 @@ projects:
       - name: publish-to-pypi
       - name: translation-jobs
       - name: lib-forward-testing
+      - name: stable-compat-jobs
     check:
       - gate-oslo.vmware-tox-bandit
 
