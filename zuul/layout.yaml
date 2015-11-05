@@ -1765,13 +1765,13 @@ jobs:
   - name: ^(gate-)?devstack-publish-docs
     branch: ^master
 
-  # puppet-openstack_extras beaker tests have been introduced after Kilo release
-  - name: ^gate-puppet-openstack_extras-puppet-beaker-rspec-dsvm-.*$
-    branch: ^(?!stable/(icehouse|juno|kilo)).*$
-
-  # other beaker tests have been introduced after Juno release
+  # beaker tests have been introduced after Juno release
   - name: ^gate-puppet-.*-puppet-beaker-rspec-dsvm-.*$
     branch: ^(?!stable/(icehouse|juno)).*$
+
+  # except for puppet-openstack_extras beaker that have been introduced after Kilo
+  - name: ^gate-puppet-openstack_extras-puppet-beaker-rspec-dsvm-.*$
+    branch: ^(?!stable/(icehouse|juno|kilo)).*$
 
   # Aims to break when a new version of Puppet is released
   # For now, run the jobs only on master so if the job starts to
