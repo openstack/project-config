@@ -1002,7 +1002,10 @@ jobs:
   - name: gate-tempest-dsvm-swift3
     voting: false
 
-  - name: gate-functional-dsvm-magnum
+  - name: gate-functional-dsvm-magnum-api
+    branch: ^(?!stable/kilo).*$
+
+  - name: gate-functional-dsvm-magnum-k8s
     branch: ^(?!stable/kilo).*$
 
   - name: gate-tempest-dsvm-centos7
@@ -5707,7 +5710,8 @@ projects:
       - name: openstack-server-release-jobs
       - name: translation-jobs
     check:
-      - gate-functional-dsvm-magnum
+      - gate-functional-dsvm-magnum-api
+      - gate-functional-dsvm-magnum-k8s
       - gate-magnum-tox-bandit
       - magnum-coverage
 

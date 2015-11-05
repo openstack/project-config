@@ -1,5 +1,5 @@
 - job-template:
-    name: '{pipeline}-functional-dsvm-magnum{job-suffix}'
+    name: '{pipeline}-functional-dsvm-magnum-{coe}{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -30,7 +30,7 @@
           function post_test_hook {{
               source $BASE/new/devstack/accrc/admin/admin
               cd /opt/stack/new/magnum/
-              ./magnum/tests/contrib/post_test_hook.sh
+              ./magnum/tests/contrib/post_test_hook.sh {coe}
           }}
           export -f post_test_hook
 

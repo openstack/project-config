@@ -2311,9 +2311,16 @@
       - python-jobs
       - openstack-publish-jobs
       - translation-jobs
-      - '{pipeline}-functional-dsvm-magnum{job-suffix}':
+      - '{pipeline}-functional-dsvm-magnum-{coe}{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
+          coe: 'api'
+          job-suffix: ''
+          branch-override: default
+      - '{pipeline}-functional-dsvm-magnum-{coe}{job-suffix}':
+          pipeline: gate
+          node: 'devstack-precise || devstack-trusty'
+          coe: 'k8s'
           job-suffix: ''
           branch-override: default
       - 'gate-{name}-tox-{envlist}':
