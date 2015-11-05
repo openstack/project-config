@@ -839,10 +839,12 @@ jobs:
   - name: ^gate-openstackci-beaker-.*$
     voting: false
 
-  - name: ^gate-puppet-openstack-integration-.*-dsvm-.*$
+  # puppet-integration scenario jobs non-voting and run after stable/kilo
+  - name: ^gate-puppet-openstack-integration-scenario00(1|2)-.*-dsvm-.*$
     voting: false
     branch: ^(?!stable/kilo).*$
 
+  # puppet-integration lint/syntax jobs run only after stable/kilo
   - name: ^gate-puppet-openstack-integration-puppet-.*$
     branch: ^(?!stable/kilo).*$
 
