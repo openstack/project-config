@@ -766,7 +766,7 @@
               export DEVSTACK_PROJECT_FROM_GIT="ironic-lib"
           fi
 
-          # The IPA ramdisk need at least 1GB of RAM to run
+          # The IPA ramdisk needs at least 1GB of RAM to run
           export DEVSTACK_LOCAL_CONFIG="IRONIC_VM_SPECS_RAM=1024"$'\n'"IRONIC_VM_COUNT=1"
 
           export DEPLOY_WITH_IPA={deploy-with-ipa}
@@ -1591,6 +1591,9 @@
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_VIRT_DRIVER=ironic
           export TEMPEST_CONCURRENCY=2
+          # The IPA ramdisk needs at least 1GB of RAM to run
+          export DEVSTACK_LOCAL_CONFIG="IRONIC_VM_SPECS_RAM=1024"$'\n'"IRONIC_VM_COUNT=1"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_DEPLOY_DRIVER_ISCSI_WITH_IPA=True"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -1632,6 +1635,9 @@
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_VIRT_DRIVER=ironic
           export TEMPEST_CONCURRENCY=2
+          # The IPA ramdisk needs at least 1GB of RAM to run
+          export DEVSTACK_LOCAL_CONFIG="IRONIC_VM_SPECS_RAM=1024"$'\n'"IRONIC_VM_COUNT=1"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_DEPLOY_DRIVER_ISCSI_WITH_IPA=True"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
