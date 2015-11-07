@@ -4,7 +4,7 @@
 
     wrappers:
       - build-timeout:
-          timeout: 65
+          timeout: 125
       - timestamps
 
     builders:
@@ -15,9 +15,10 @@
           #!/bin/bash -xe
           export SHADE_USE_KEYSTONE_V2=1
           export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_TIMEOUT=60
+          export DEVSTACK_GATE_TIMEOUT=120
           export DEVSTACK_GATE_NEUTRON=1
           export PROJECTS="openstack-infra/shade $PROJECTS"
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin magnum git://git.openstack.org/openstack/magnum"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -40,7 +41,7 @@
 
     wrappers:
       - build-timeout:
-          timeout: 65
+          timeout: 125
       - timestamps
 
     builders:
@@ -50,9 +51,10 @@
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_TIMEOUT=60
+          export DEVSTACK_GATE_TIMEOUT=120
           export DEVSTACK_GATE_NEUTRON=1
           export PROJECTS="openstack-infra/shade $PROJECTS"
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin magnum git://git.openstack.org/openstack/magnum"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
