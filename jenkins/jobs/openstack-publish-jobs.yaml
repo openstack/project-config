@@ -34,6 +34,29 @@
     node: 'proposal'
 
 
+# Publish releasenotes to docs.openstack.org/releasenotes/. This is
+# always published from master branch.
+- job-template:
+    name: '{name}-releasenotes'
+    node: 'bare-precise || bare-trusty'
+
+    builders:
+      - revoke-sudo
+      - branch-git-prep:
+          branch: master
+      - tox:
+          envlist: 'releasenotes'
+
+    publishers:
+      - ftp:
+          site: '{doc-publisher-site}'
+          source: 'releasenotes/build/html/**'
+          target: 'releasenotes/{name}'
+          remove-prefix: 'releasenotes/build/html'
+          excludes: ''
+      - console-log
+
+
 - job-group:
     name: openstack-publish-jobs
     jobs:
@@ -46,3 +69,4 @@
     jobs:
       - 'gate-{name}-tox-{envlist}':
           envlist: releasenotes
+      - '{name}-releasenotes'
