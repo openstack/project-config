@@ -99,7 +99,7 @@ def set_node_options(item, job, params, default):
     centos6_re = r'^.*-centos6.*$'
     fedora_re = r'^.*-f(edora-)?2(1|2).*$'
     tripleo_re = r'^.*-tripleo-ci.*$'
-    kolla_image_re = r'^.*-kolla-(build|deploy)-images-.*$'
+    kolla_image_re = r'^.*-kolla-dsvm-(build|deploy)-images-.*$'
     openstack_ansible_re = r'^.*-openstack-ansible-.*$'
     devstack_re = r'^.*-dsvm.*$'
     puppetunit_re = (
