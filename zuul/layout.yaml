@@ -729,6 +729,15 @@ jobs:
           - ^.*\.rst$
           - ^doc/.*$
           - ^heat/tests/.*$
+      - project: ^openstack/horizon$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+          - ^horizon/test/.*$
+          - ^openstack_dashboard/test/.*$
+          - ^openstack_dashboard/.*/tests?\.py$
+          - ^tools/.*$
+          - ^tox.ini$
       - project: ^openstack/tempest$
         all-files-match-any:
           - ^.*\.rst$
@@ -778,6 +787,14 @@ jobs:
   - name: ^.*heat-(python27|python34)$
     skip-if:
       - project: ^openstack/heat$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+  # Skip non-doc jobs for doc-only horizon changes. Since doc/source/*
+  # is checked by horizon-pep8, this job should not be skipped
+  - name: ^.*horizon-(python27|python34|tox-py27dj.*|npm-run-.*|selenium-headless|dsvm-integration)$
+    skip-if:
+      - project: ^openstack/horizon$
         all-files-match-any:
           - ^.*\.rst$
           - ^doc/.*$
