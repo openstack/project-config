@@ -14,6 +14,11 @@
       - shell: |
           #!/bin/bash -xe
           export TOCI_JOBTYPE={type}
+
+          # ZUUL Doesn't set these for periodic jobs
+          export ZUUL_BRANCH=${{ZUUL_BRANCH:-master}}
+          export ZUUL_REF=${{ZUUL_REF:-None}}
+
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TIMEOUT=170
           export DEVSTACK_GATE_TEMPEST=0
