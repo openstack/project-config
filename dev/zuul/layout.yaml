@@ -81,7 +81,7 @@ pipelines:
     description: This pipeline runs jobs in response to any tag event.
     manager: IndependentPipelineManager
     source: gerrit
-    precedence: high
+    precedence: low
     trigger:
       gerrit:
         - event: ref-updated
@@ -91,7 +91,7 @@ pipelines:
     description: This pipeline runs jobs on projects in response to pre-release tags.
     manager: IndependentPipelineManager
     source: gerrit
-    precedence: high
+    precedence: low
     trigger:
       gerrit:
         - event: ref-updated
@@ -101,7 +101,7 @@ pipelines:
     description: When a commit is tagged as a release, this pipeline runs jobs that publish archives and documentation.
     manager: IndependentPipelineManager
     source: gerrit
-    precedence: high
+    precedence: low
     trigger:
       gerrit:
         - event: ref-updated
@@ -149,6 +149,7 @@ pipelines:
       on the same project are still mergeable.
     failure-message: Build failed (merge-check pipeline).
     manager: IndependentPipelineManager
+    ignore-dependencies: true
     source: gerrit
     precedence: low
     require:
