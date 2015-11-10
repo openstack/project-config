@@ -1995,11 +1995,12 @@
           node: 'devstack-precise || devstack-trusty'
           job-suffix: '-nv'
           branch-override: default
-      - '{pipeline}-ironic-inspector-dsvm{job-suffix}':
+      - '{pipeline}-ironic-inspector-dsvm-{ramdisk}{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           job-suffix: '-nv'
           branch-override: default
+          ramdisk: dib
       - '{trigger}-tripleo-ci-{jobname}':
           jobname: 'f21-nonha'
           type: 'nonha'
@@ -2042,11 +2043,18 @@
       - translation-jobs
       - gate-{name}-tox-{envlist}:
           envlist: func
-      - '{pipeline}-ironic-inspector-dsvm{job-suffix}':
+      - '{pipeline}-ironic-inspector-dsvm-{ramdisk}{job-suffix}':
           pipeline: gate
           node: 'devstack-precise || devstack-trusty'
           job-suffix: ''
           branch-override: default
+          ramdisk: 'dib'
+      - '{pipeline}-ironic-inspector-dsvm-{ramdisk}{job-suffix}':
+          pipeline: gate
+          node: 'devstack-precise || devstack-trusty'
+          job-suffix: '-nv'
+          branch-override: default
+          ramdisk: 'ipa'
 
 - project:
     name: ironic-lib
