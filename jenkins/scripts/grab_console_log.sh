@@ -8,7 +8,8 @@ END_UUID=$(cat /proc/sys/kernel/random/uuid)
 echo "Grabbing consoleLog ($END_UUID)"
 
 # Since we are appending to fetched logs, clear any possibly old runs
-echo > /tmp/console.html
+# Don't add a newline so we end up with a 0 byte file.
+echo -n > /tmp/console.html
 
 # Grab the HTML version of the log (includes timestamps)
 TRIES=0
