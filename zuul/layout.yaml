@@ -1472,9 +1472,6 @@ jobs:
     # disable job in kilo/juno because of requirements doesn't match global.
     branch: ^(?!stable/(?:juno|kilo)).*$
 
-  - name: ^gate-muranoclient-dsvm-functional$
-    voting: false
-
   - name: gate-murano-dashboard-requirements
     # disable job in kilo/juno because of requirements doesn't match global.
     branch: ^(?!stable/(?:juno|kilo)).*$
@@ -7971,11 +7968,10 @@ projects:
       - name: publish-to-pypi
       - name: check-requirements
     check:
-      - gate-murano-devstack-dsvm
       - gate-python-muranoclient-python34
       - gate-muranoclient-dsvm-functional
     gate:
-      - gate-murano-devstack-dsvm
+      - gate-muranoclient-dsvm-functional
 
   - name: openstack/python-neutron-pd-driver
     template:
