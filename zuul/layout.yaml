@@ -1837,10 +1837,6 @@ jobs:
   - name: gate-sdk-dsvm-functional
     voting: false
 
-  - name: gate-fuel-agent-docs
-    branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
-    voting: false
-
   - name: ^gate-fuel-agent.*$
     branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
 
@@ -1861,9 +1857,6 @@ jobs:
     branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
     voting: false
 
-  - name: ^gate-fuel-menu.*$
-    voting: false
-
   - name: gate-fuel-mirror-python26
     branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
     voting: false
@@ -1873,6 +1866,9 @@ jobs:
 
   - name: ^gate-fuel-ostf.*$
     branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
+
+  - name: gate-fuel-ostf-python27
+    voting: false
 
   - name: gate-fuel-plugins-python26
     branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
@@ -1903,12 +1899,6 @@ jobs:
 
   - name: gate-fuel-web-python27
     branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
-
-  - name: ^gate-network-checker.*$
-    voting: false
-
-  - name: ^gate-shotgun.*$
-    voting: false
 
   # NOTE(jroll): This job was not working at Juno release.
   - name: ^gate-tempest-dsvm-ironic-agent_ssh$
@@ -4656,7 +4646,6 @@ projects:
       - name: python26-jobs
       - name: python3-jobs
     check:
-      - gate-fuel-agent-docs
       - gate-fuel-agent-pep8
       - gate-fuel-agent-python27
     gate:
@@ -4729,7 +4718,8 @@ projects:
       - gate-fuel-menu-pep8
       - gate-fuel-menu-python27
     gate:
-      - noop
+      - gate-fuel-menu-pep8
+      - gate-fuel-menu-python27
 
   - name: openstack/fuel-mirror
     template:
@@ -4764,6 +4754,7 @@ projects:
       - name: merge-check
     check:
       - gate-fuel-ostf-pep8
+      - gate-fuel-ostf-python27
     gate:
       - gate-fuel-ostf-pep8
 
@@ -6087,7 +6078,8 @@ projects:
       - gate-network-checker-pep8
       - gate-network-checker-python27
     gate:
-      - noop
+      - gate-network-checker-pep8
+      - gate-network-checker-python27
 
   - name: openstack/networking-6wind
     template:
@@ -8612,7 +8604,8 @@ projects:
       - gate-shotgun-pep8
       - gate-shotgun-python27
     gate:
-      - noop
+      - gate-shotgun-pep8
+      - gate-shotgun-python27
 
   - name: openstack/smaug
     template:
