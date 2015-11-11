@@ -466,8 +466,6 @@ project-templates:
   - name: release-notes-jobs
     check:
       - 'gate-{name}-tox-releasenotes'
-    gate:
-      - 'gate-{name}-tox-releasenotes'
 
   - name: openstack-server-release-jobs-constraints
     pre-release:
@@ -2083,6 +2081,10 @@ jobs:
     voting: false
 
   - name: gate-tempest-dsvm-neutron-full-ssh
+    voting: false
+
+  - name: ^gate-.*-tox-releasenotes$
+    branch: ^(?!stable/(?:juno|kilo)).*$
     voting: false
 
   # Constraints Jobs
