@@ -2009,6 +2009,42 @@
       - devstack-logs
       - console-log
 
+
+- job-template:
+    name: '{pipeline}-tempest-dsvm-multinode-live-migration{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=120
+          export DEVSTACK_GATE_CONFIGDRIVE=0
+          export BRANCH_OVERRIDE={branch-override}
+          export DEVSTACK_GATE_TOPOLOGY="multinode"
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+          function post_test_hook {{
+              /opt/stack/new/nova/nova/tests/live_migration/run_tests.sh
+          }}
+          export -f post_test_hook
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+
 - job-template:
     name: '{pipeline}-grenade-dsvm-multinode{job-suffix}'
     node: '{node}'
