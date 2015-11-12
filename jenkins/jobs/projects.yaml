@@ -33,6 +33,18 @@
       - ansible-lint-jobs
 
 - project:
+    name: ansible-role-nodepool
+    node: 'bare-precise || bare-trusty'
+    tarball-site: tarballs.openstack.org
+
+    jobs:
+      # NOTE(pabelanger): We should talk to other ansible project and see about
+      # migrating gate-{project}-ansible-lint to use tox. Then we can drop this
+      # gate in favor for that.
+      - 'gate-{name}-tox-{envlist}':
+          envlist: ansible-lint
+
+- project:
     name: anvil
     node: 'bare-precise || bare-trusty'
     tarball-site: tarballs.openstack.org
