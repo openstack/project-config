@@ -1727,46 +1727,6 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-grenade-dsvm-ironic-sideways{job-suffix}'
-    node: '{node}'
-
-    wrappers:
-      - build-timeout:
-          timeout: 130
-      - timestamps
-
-    builders:
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - shell: |
-          #!/bin/bash -xe
-          export PROJECTS="openstack/ironic $PROJECTS"
-          export PROJECTS="openstack/ironic-lib $PROJECTS"
-          export PROJECTS="openstack/ironic-python-agent $PROJECTS"
-          export PROJECTS="openstack/python-ironicclient $PROJECTS"
-          export PROJECTS="openstack-dev/grenade $PROJECTS"
-          export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_TIMEOUT=120
-          export DEVSTACK_GATE_TEMPEST=0
-          export DEVSTACK_GATE_GRENADE=sideways-ironic
-          export DEVSTACK_GATE_IRONIC=1
-          export DEVSTACK_GATE_NEUTRON=1
-          export DEVSTACK_GATE_VIRT_DRIVER=ironic
-          export TEMPEST_CONCURRENCY=2
-          export BRANCH_OVERRIDE={branch-override}
-          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
-              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
-          fi
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
-
-    publishers:
-      - devstack-logs
-      - console-log
-
-
-- job-template:
     name: '{pipeline}-grenade-dsvm-neutron-sideways{job-suffix}'
     node: '{node}'
 
@@ -2601,7 +2561,6 @@
       - '{pipeline}-grenade-dsvm-neutron-vpnaas{job-suffix}'
       - '{pipeline}-grenade-dsvm-partial-ncpu{job-suffix}'
       - '{pipeline}-grenade-dsvm-ironic{job-suffix}'
-      - '{pipeline}-grenade-dsvm-ironic-sideways{job-suffix}'
       - '{pipeline}-grenade-dsvm-partial-ironic{job-suffix}'
       - '{pipeline}-grenade-dsvm-neutron-sideways{job-suffix}'
       - '{pipeline}-grenade-dsvm-ceilometer{job-suffix}'
