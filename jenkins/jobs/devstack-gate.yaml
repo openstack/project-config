@@ -808,6 +808,11 @@
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_DEPLOY_DRIVER_ISCSI_WITH_IPA=True"
           fi
 
+          export IPXE_ENABLED={ipxe-enabled}
+          if [ "$IPXE_ENABLED" == "1" ] ; then
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_IPXE_ENABLED=True"
+          fi
+
           # Allow switching between full tempest and baremetal-only
           export {tempest-env}
 
@@ -869,6 +874,7 @@
           deploy-with-ipa: 0
           client-from-source: 0
           ironic-lib-from-source: 0
+          ipxe-enabled: 0
           branch-override: '{branch-override}'
           tempest-env: 'DEVSTACK_GATE_TEMPEST_REGEX=baremetal'
           devstack-timeout: 120
@@ -896,6 +902,7 @@
           deploy-with-ipa: 1
           client-from-source: 0
           ironic-lib-from-source: 0
+          ipxe-enabled: 0
           branch-override: '{branch-override}'
           tempest-env: 'DEVSTACK_GATE_TEMPEST_FULL=1'
           devstack-timeout: 150
@@ -923,6 +930,7 @@
           deploy-with-ipa: 0
           client-from-source: 0
           ironic-lib-from-source: 0
+          ipxe-enabled: 0
           branch-override: '{branch-override}'
           tempest-env: 'DEVSTACK_GATE_TEMPEST_REGEX=baremetal'
           devstack-timeout: 120
@@ -992,6 +1000,7 @@
           deploy-with-ipa: 1
           client-from-source: 0
           ironic-lib-from-source: 0
+          ipxe-enabled: 0
           branch-override: '{branch-override}'
           tempest-env: 'DEVSTACK_GATE_TEMPEST_REGEX=baremetal'
           devstack-timeout: 120
@@ -1020,6 +1029,36 @@
           deploy-with-ipa: 1
           client-from-source: 0
           ironic-lib-from-source: 0
+          ipxe-enabled: 0
+          branch-override: '{branch-override}'
+          tempest-env: 'DEVSTACK_GATE_TEMPEST_REGEX=baremetal'
+          devstack-timeout: 120
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-tempest-dsvm-ironic-pxe_ipa-ipxe{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - devstack-virtual-ironic:
+          postgres: 0
+          build-ramdisk: 0
+          deploy_driver: pxe_ssh
+          deploy-with-ipa: 1
+          client-from-source: 0
+          ironic-lib-from-source: 0
+          ipxe-enabled: 1
           branch-override: '{branch-override}'
           tempest-env: 'DEVSTACK_GATE_TEMPEST_REGEX=baremetal'
           devstack-timeout: 120
@@ -1048,6 +1087,7 @@
           deploy-with-ipa: 0
           client-from-source: 0
           ironic-lib-from-source: 0
+          ipxe-enabled: 0
           branch-override: '{branch-override}'
           tempest-env: 'DEVSTACK_GATE_TEMPEST_REGEX=baremetal'
           devstack-timeout: 120
@@ -1075,6 +1115,7 @@
           deploy-with-ipa: 1
           client-from-source: 0
           ironic-lib-from-source: 0
+          ipxe-enabled: 0
           branch-override: '{branch-override}'
           tempest-env: 'DEVSTACK_GATE_TEMPEST_REGEX=baremetal'
           devstack-timeout: 120
@@ -1102,6 +1143,7 @@
           deploy-with-ipa: 0
           client-from-source: 1
           ironic-lib-from-source: 0
+          ipxe-enabled: 0
           branch-override: '{branch-override}'
           tempest-env: 'DEVSTACK_GATE_TEMPEST_REGEX=baremetal'
           devstack-timeout: 120
@@ -1129,6 +1171,7 @@
           deploy-with-ipa: 0
           client-from-source: 0
           ironic-lib-from-source: 1
+          ipxe-enabled: 0
           branch-override: '{branch-override}'
           tempest-env: 'DEVSTACK_GATE_TEMPEST_REGEX=baremetal'
           devstack-timeout: 120
@@ -2568,6 +2611,7 @@
       - '{pipeline}-tempest-dsvm-ironic-agent_ssh-src{job-suffix}'
       - '{pipeline}-tempest-dsvm-ironic-pxe_ipa{job-suffix}'
       - '{pipeline}-tempest-dsvm-ironic-pxe_ipa-src{job-suffix}'
+      - '{pipeline}-tempest-dsvm-ironic-pxe_ipa-ipxe{job-suffix}'
       - '{pipeline}-tempest-dsvm-ironic-parallel{job-suffix}'
       - '{pipeline}-tempest-dsvm-all{job-suffix}'
       - '{pipeline}-tempest-dsvm-coverage{job-suffix}'
