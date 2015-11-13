@@ -952,8 +952,10 @@ jobs:
   - name: ^gate-grenade-dsvm-neutron$
     branch: ^(?!stable/juno).*$
 
+    # this is a deprecated way of testing, multinode grenade should be
+    # used to test this from mitaka forward.
   - name: ^gate-grenade-dsvm-partial-ncpu$
-    branch: ^(?!stable/juno).*$
+    branch: ^stable/(kilo|liberty)$
 
   - name: ^gate-grenade-dsvm-multinode
     branch: ^(?!stable/(juno|kilo|liberty)).*$
@@ -2177,12 +2179,13 @@ projects:
       - gate-grenade-dsvm-neutron
       - gate-tempest-dsvm-multinode-full
       - gate-tempest-dsvm-neutron-multinode-full
-      - gate-grenade-dsvm-multinode-nv
+      - gate-grenade-dsvm-multinode
     gate:
       - gate-devstack-bashate
       - gate-devstack-dsvm-cells
       - gate-grenade-dsvm-forward
       - gate-grenade-dsvm-partial-ncpu
+      - gate-grenade-dsvm-multinode
     post:
       - devstack-publish-docs
     experimental:
@@ -2213,13 +2216,14 @@ projects:
       - gate-grenade-dsvm-neutron
       - gate-grenade-dsvm-partial-ncpu
       - gate-grenade-dsvm-heat-nv
-      - gate-grenade-dsvm-multinode-nv
+      - gate-grenade-dsvm-multinode
       - gate-grenade-publish-docs
     gate:
       - gate-grenade-dsvm
       - gate-grenade-dsvm-forward
       - gate-grenade-dsvm-neutron
       - gate-grenade-dsvm-partial-ncpu
+      - gate-grenade-dsvm-multinode
       - gate-grenade-publish-docs
     post:
       - grenade-publish-docs
@@ -2388,7 +2392,7 @@ projects:
       - gate-devstack-dsvm-cells
       - gate-dg-hooks-dsvm
       - gate-grenade-dsvm-partial-ncpu
-      - gate-grenade-dsvm-multinode-nv
+      - gate-grenade-dsvm-multinode
       - gate-neutron-dsvm-functional-nv
       - gate-swift-dsvm-functional-nv
       - gate-tempest-dsvm-full-juno-nv
@@ -2409,6 +2413,7 @@ projects:
       - gate-devstack-gate-unittests
       - gate-devstack-dsvm-cells
       - gate-grenade-dsvm-partial-ncpu
+      - gate-grenade-dsvm-multinode
     experimental:
       - gate-grenade-dsvm-forward
       - gate-tempest-dsvm-neutron-dvr-multinode-full
@@ -6497,7 +6502,7 @@ projects:
       - gate-devstack-dsvm-cells
       - gate-nova-tox-functional
       - gate-grenade-dsvm-partial-ncpu
-      - gate-grenade-dsvm-multinode-nv
+      - gate-grenade-dsvm-multinode
       - gate-tempest-dsvm-ironic-pxe_ipa-nv
       - gate-tempest-dsvm-nova-v20-api
       - gate-tempest-dsvm-nova-v20-api-legacy
@@ -6509,6 +6514,7 @@ projects:
       - gate-nova-tox-functional
       - gate-devstack-dsvm-cells
       - gate-grenade-dsvm-partial-ncpu
+      - gate-grenade-dsvm-multinode
       - gate-tempest-dsvm-full-ceph
       - gate-tempest-dsvm-cells
     post:
@@ -9088,7 +9094,7 @@ projects:
       - gate-tempest-docs
       - gate-tempest-python27
       - gate-grenade-dsvm-partial-ncpu
-      - gate-grenade-dsvm-multinode-nv
+      - gate-grenade-dsvm-multinode
       - gate-grenade-dsvm-neutron
       - gate-tempest-dsvm-ironic-agent_ssh
       - gate-tempest-dsvm-neutron-full-ssh
@@ -9116,6 +9122,7 @@ projects:
       - gate-tempest-docs
       - gate-tempest-python27
       - gate-grenade-dsvm-partial-ncpu
+      - gate-grenade-dsvm-multinode
       - gate-tempest-dsvm-trove
       - gate-tempest-dsvm-heat
       - gate-tempest-dsvm-sahara
