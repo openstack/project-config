@@ -1,0 +1,63 @@
+- job-template:
+    name: '{pipeline}-tempest-dsvm-networking-ofagent{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PROJECTS="openstack/networking-ofagent $PROJECTS"
+          export KEEP_LOCALRC=1
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=120
+          export DEVSTACK_GATE_NEUTRON=1
+          export DEVSTACK_GATE_TEMPEST=1
+
+          # localrc
+          DEVSTACK_LOCAL_CONFIG="Q_PLUGIN=ml2"
+          DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_AGENT=ofagent"
+          DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_ML2_PLUGIN_FLAT_TYPE_OPTIONS='flat_networks=\*'"
+          DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_ML2_PLUGIN_MECHANISM_DRIVERS=ofagent,l2population"
+          DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_USE_PROVIDERNET_FOR_PUBLIC=True"
+          DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_USE_PUBLIC_VETH=True"
+          DEVSTACK_LOCAL_CONFIG+=$'\n'"PUBLIC_BRIDGE=br-int"
+          DEVSTACK_LOCAL_CONFIG+=$'\n'"PUBLIC_PHYSICAL_NETWORK=public"
+          DEVSTACK_LOCAL_CONFIG+=$'\n'"OFAGENT_PHYSICAL_INTERFACE_MAPPINGS=public:veth-pub-int"
+          DEVSTACK_LOCAL_CONFIG+=$'\n'"ENABLE_TENANT_TUNNELS=True"
+          DEVSTACK_LOCAL_CONFIG+=$'\n'"TENANT_TUNNEL_RANGES=1:1000"
+          DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin networking-ofagent git://git.openstack.org/openstack/networking-ofagent"
+          export DEVSTACK_LOCAL_CONFIG
+
+          # tempest tests
+          export DEVSTACK_GATE_TEMPEST_REGEX='(?!.*\[.*\bslow\b.*\])((network)|(neutron))'
+
+          # pre_test_hook
+          function pre_test_hook {{
+              local pre_test_hook_sh=$BASE/new/networking-ofagent/devstack_gate/pre_test_hook.sh
+              if [[ -e "$pre_test_hook_sh" ]]; then
+                  bash -x $pre_test_hook_sh
+              fi
+          }}
+          export -f pre_test_hook
+
+          # gate_hook
+          function gate_hook {{
+              $BASE/new/devstack-gate/devstack-vm-gate.sh
+              local retval=$?
+              local post_test_sh=$BASE/new/networking-ofagent/devstack_gate/post_test.sh
+              if [[ -e "$post_test_sh" ]]; then
+                  bash -x $post_test_sh
+              fi
+              return $retval
+          }}
+          export -f gate_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
