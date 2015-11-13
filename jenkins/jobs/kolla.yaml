@@ -1,5 +1,5 @@
 - job-template:
-    name: '{pipeline}-kolla-dsvm-{action}-images-{distro}-{type}'
+    name: '{pipeline}-kolla-dsvm-{action}-{distro}-{type}'
     node: '{node}'
 
     wrappers:
@@ -14,7 +14,7 @@
       - shell: |
           #!/bin/bash -xe
           tests/setup_gate.sh
-          tox -e {action}-images-{distro}-{type}
+          tox -e {action}-{distro}-{type}
 
     publishers:
       - console-log
