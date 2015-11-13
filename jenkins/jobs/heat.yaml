@@ -68,7 +68,7 @@
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
-          export OVERRIDE_ENABLED_SERVICES=c-api,c-bak,c-sch,c-vol,cinder,dstat,g-api,g-reg,h-api,h-api-cfn,h-api-cw,h-eng,heat,key,mysql,n-api,n-cond,n-cpu,n-crt,n-obj,n-sch,q-agt,q-dhcp,q-l3,q-meta,q-metering,q-svc,q-vpn,quantum,rabbit,s-account,s-container,s-object,s-proxy,q-lbaas,ceilometer-acompute,ceilometer-acentral,ceilometer-collector,ceilometer-api,ceilometer-anotification,aodh-api,aodh-alarm-evaluator,aodh-alarm-notifier
+          services=c-api,c-bak,c-sch,c-vol,cinder,dstat,g-api,g-reg,h-api,h-api-cfn,h-api-cw,h-eng,heat,key,mysql,n-api,n-cond,n-cpu,n-crt,n-obj,n-sch,q-agt,q-dhcp,q-l3,q-meta,q-metering,q-svc,q-vpn,quantum,rabbit,s-account,s-container,s-object,s-proxy,q-lbaas,ceilometer-acompute,ceilometer-acentral,ceilometer-collector,ceilometer-api,ceilometer-anotification
           export HEAT_BUILD_PIP_MIRROR=True
           export DEVSTACK_GATE_TIMEOUT=70
           export DEVSTACK_GATE_NEUTRON=1
@@ -76,9 +76,15 @@
           export DEVSTACK_GATE_EXERCISES=0
           export DEVSTACK_GATE_INSTALL_TESTONLY=1
           export KEEP_LOCALRC=1
-          export PROJECTS="openstack/aodh"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin aodh git://git.openstack.org/openstack/aodh"
+          if [[ "$ZUUL_BRANCH" == "stable/juno" || "$ZUUL_BRANCH" == "stable/kilo" ]]; then
+              services+=,ceilometer-alarm-evaluator,ceilometer-alarm-notifier
+          else
+              export PROJECTS="openstack/aodh"
+              services+=,aodh-api,aodh-alarm-evaluator,aodh-alarm-notifier
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin aodh git://git.openstack.org/openstack/aodh"
+          fi
+          export OVERRIDE_ENABLED_SERVICES=$services
 
           if [ "{datastore}" == "postgres" ] ; then
               export DEVSTACK_GATE_POSTGRES=1
