@@ -1461,7 +1461,8 @@ jobs:
     voting: false
 
   - name: gate-python-muranoclient-python34
-    voting: false
+    # python3 support was implemented in mitaka
+    branch: ^(?!stable/(?:juno|kilo|liberty)).*$
 
   - name: gate-murano-requirements
     # disable job in kilo/juno because of requirements doesn't match global.
@@ -8020,10 +8021,10 @@ projects:
       - name: merge-check
       - name: python26-jobs
       - name: python-jobs
+      - name: python3-jobs
       - name: publish-to-pypi
       - name: check-requirements
     check:
-      - gate-python-muranoclient-python34
       - gate-muranoclient-dsvm-functional
     gate:
       - gate-muranoclient-dsvm-functional
