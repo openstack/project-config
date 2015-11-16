@@ -1266,9 +1266,6 @@ jobs:
       - 'tools/check_projects_yaml_alphabetized.sh'
       - 'tox.ini'
 
-  - name: ^gate-tripleo-.*$
-    branch: ^master$
-
   - name: gate-ironicclient-dsvm-functional
     voting: false
 
@@ -9336,7 +9333,6 @@ projects:
     template:
       - name: merge-check
       - name: publish-to-pypi
-      - name: noop-jobs
       - name: check-tripleo-jobs
     check:
       - gate-tripleo-heat-templates-puppet-lint
@@ -9344,6 +9340,8 @@ projects:
       - gate-tripleo-heat-templates-puppet-syntax-4-dsvm-centos7
     post:
       - tripleo-heat-templates-branch-tarball
+    gate:
+      - noop
 
   - name: openstack/tripleo-image-elements
     template:
