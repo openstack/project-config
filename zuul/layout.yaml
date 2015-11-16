@@ -466,6 +466,8 @@ project-templates:
   - name: release-notes-jobs
     check:
       - 'gate-{name}-releasenotes'
+    gate:
+      - 'gate-{name}-releasenotes'
     post:
       - '{name}-releasenotes'
 
@@ -2113,7 +2115,6 @@ jobs:
   - name: ^gate-.*-releasenotes$
     success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/releasenotes/build/html/
     branch: ^(?!stable/(?:juno|kilo)).*$
-    voting: false
     files:
       - '^releasenotes/.*'
       - '^tox.ini'
