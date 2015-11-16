@@ -13,6 +13,24 @@
     publishers:
       - console-log
 
+- job-template:
+    name: '{pipeline}-ansible-dsvm-functional-{ostype}{job-suffix}'
+    node: 'devstack-{ostype}'
+
+    builder:
+      - zuul-clone:
+          project: $ZUUL_PROJECT
+      # NOTE(pabelanger): We should be using the tox builder for this, however I
+      # cannot see a better way of adding cd $ZUUL_PROJECT without exposing a
+      # new variable to the tox builder.
+      - shell: |
+          #!/bin/bash -xe
+          cd $ZUUL_PROJECT
+          /usr/local/jenkins/slave_scripts/run-tox.sh ansible-functional
+
+    publishers:
+      - zuul-swift-upload-console-log
+
 - job-group:
     name: 'ansible-lint-jobs'
     jobs:
