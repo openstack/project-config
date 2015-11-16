@@ -37,6 +37,9 @@ case "$PROJECT" in
         # POT file extraction is done in setup_manuals.
         setup_manuals "$PROJECT" "$ZANATA_VERSION"
         ;;
+    training-guides)
+        setup_training_guides "$ZANATA_VERSION"
+        ;;
     django_openstack_auth)
         setup_django_openstack_auth "$ZANATA_VERSION"
         extract_messages

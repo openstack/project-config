@@ -129,6 +129,23 @@ function setup_manuals {
         -f zanata.xml
 }
 
+# Setup a training-guides project for Zanata
+function setup_training_guides {
+    local project=$1
+    local version=${2:-master}
+
+    # Minimum amount of translation done, 75 % by default.
+    PERC=75
+
+    # Update the .pot file
+    tox -e generatepot-training
+
+    /usr/local/jenkins/slave_scripts/create-zanata-xml.py -p $project \
+        -v $version --srcdir doc/upstream-training/locale \
+        --txdir doc/upstream-training/locale \
+        -f zanata.xml
+}
+
 # Setup project so that git review works, sets global variable
 # COMMIT_MSG.
 function setup_review {
