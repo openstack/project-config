@@ -76,7 +76,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-ironic-inspector-dsvm{job-suffix}'
+    name: '{pipeline}-ironic-inspector-dsvm-{ramdisk}{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -103,6 +103,10 @@
 
           export PROJECTS="openstack/ironic-inspector $PROJECTS"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin ironic-inspector https://git.openstack.org/openstack/ironic-inspector"
+          if [ "{ramdisk}" == "ipa" ] ; then
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_DEPLOY_DRIVER_ISCSI_WITH_IPA=True"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_INSPECTOR_RAMDISK_ELEMENT=ironic-agent"
+          fi
 
           function post_test_hook {{
                 source $BASE/new/devstack/openrc admin admin
