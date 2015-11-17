@@ -1869,10 +1869,6 @@ jobs:
   - name: ^gate-fuel-devops-python.*$
     branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
 
-  - name: ^gate-fuel-docs.*$
-    branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
-    voting: false
-
   - name: ^gate-fuel-library-puppet-syntax.*$
     branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
 
@@ -1892,7 +1888,6 @@ jobs:
 
   - name: gate-fuel-ostf-python27
     branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
-    voting: false
 
   - name: gate-fuel-plugins-python26
     branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
@@ -4718,8 +4713,9 @@ projects:
   - name: openstack/fuel-docs
     template:
       - name: merge-check
-      - name: noop-jobs
     check:
+      - gate-fuel-docs-docs
+    gate:
       - gate-fuel-docs-docs
 
   - name: openstack/fuel-library
@@ -4795,6 +4791,7 @@ projects:
       - gate-fuel-ostf-python27
     gate:
       - gate-fuel-ostf-pep8
+      - gate-fuel-ostf-python27
 
   - name: openstack/fuel-plugin-availability-zones
     template:
