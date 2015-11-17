@@ -109,3 +109,21 @@
           target: 'api-guide/compute'
           remove-prefix: 'api-guide/build/html/'
 
+- job:
+    name: python-openstacksdk-docs
+    description: Build and publish the Python SDK docs from source.
+    node: 'bare-precise || bare-trusty'
+
+    builders:
+      - revoke-sudo
+      - gerrit-git-prep
+      - docs
+
+    publishers:
+      - ftp:
+          site: developer.openstack.org
+          source: 'doc/build/html/**'
+          target: 'sdks/python/openstacksdk'
+          remove-prefix: 'doc/build/html/'
+          excludes: ''
+      - console-log
