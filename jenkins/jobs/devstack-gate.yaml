@@ -2481,6 +2481,45 @@
       - console-log
 
 
+# run the tests for all the layer4 services together. This means we know they all work.
+- job-template:
+    name: '{pipeline}-tempest-dsvm-layer4{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          #
+          # tests heat, sahara, trove in a single job.
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=120
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_HEAT=1
+          export DEVSTACK_GATE_TEMPEST_REGEX="database|data_processing|orchestration"
+          DEVSTACK_LOCAL_CONFIG=$'\n'"enable_plugin trove git://git.openstack.org/openstack/trove"
+          DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin sahara git://git.openstack.org/openstack/sahara"
+          export DEVSTACK_LOCAL_CONFIG
+
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+
 - job-template:
     name: '{pipeline}-tempest-dsvm-trove{job-suffix}'
     node: '{node}'
@@ -2628,5 +2667,6 @@
       - '{pipeline}-tempest-dsvm-nova-v20-api-legacy{job-suffix}'
       - '{pipeline}-tempest-dsvm-nova-wsgi-full{job-suffix}'
       - '{pipeline}-tempest-dsvm-trove{job-suffix}'
+      - '{pipeline}-tempest-dsvm-layer4{job-suffix}'
       - '{pipeline}-grenade-dsvm-trove{job-suffix}'
       - '{pipeline}-grenade-dsvm-sahara{job-suffix}'
