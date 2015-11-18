@@ -1,6 +1,6 @@
-- job:
-    name: gate-mistral-devstack-dsvm
-    node: 'devstack-precise || devstack-trusty'
+- job-template:
+    name: '{pipeline}-{component}-devstack-dsvm'
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -15,18 +15,22 @@
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TIMEOUT=60
-          export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_NEUTRON=1
-          export ENABLED_SERVICES=h-api,h-api-cfn,h-api-cw,h-eng,heat
+
+          if [ "{component}" = "python-mistralclient" ] ; then
+              export DEVSTACK_PROJECT_FROM_GIT="python-mistralclient"
+          fi
+
+          export ENABLED_SERVICES=h-api,h-api-cfn,h-api-cw,h-eng,heat,tempest
           export PROJECTS="openstack/mistral $PROJECTS"
           export PROJECTS="openstack/mistral-dashboard $PROJECTS"
           export PROJECTS="openstack/python-mistralclient $PROJECTS"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin mistral https://git.openstack.org/openstack/mistral"
 
-          function post_test_hook {
-              cd /opt/stack/new/mistral/functionaltests
+          function post_test_hook {{
+              cd /opt/stack/new/{component}/functionaltests
               ./post_test_hook.sh
-          }
+          }}
           export -f post_test_hook
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
