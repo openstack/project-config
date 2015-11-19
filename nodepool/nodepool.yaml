@@ -35,6 +35,7 @@ labels:
       - name: rax-iad
       - name: ovh-gra1
       - name: bluebox-sjc1
+      - name: internap-nyj01
   - name: devstack-precise-check
     image: devstack-precise-check
     min-ready: 0
@@ -68,6 +69,7 @@ labels:
       - name: rax-iad
       - name: ovh-gra1
       - name: bluebox-sjc1
+      - name: internap-nyj01
   # Special dib specific labels for testing dib based images
   # in new providers as we dibify them.
   - name: devstack-trusty-dib
@@ -121,6 +123,7 @@ labels:
       - name: rax-iad
       - name: ovh-gra1
       - name: bluebox-sjc1
+      - name: internap-nyj01
   - name: ubuntu-trusty
     image: ubuntu-trusty
     ready-script: configure_mirror.sh
@@ -136,12 +139,14 @@ labels:
       - name: rax-iad
       - name: ovh-gra1
       - name: bluebox-sjc1
+      - name: internap-nyj01
   - name: ubuntu-trusty-check
     image: ubuntu-trusty-check
     min-ready: 1
     providers:
       - name: ovh-gra1
       - name: bluebox-sjc1
+      - name: internap-nyj01
   - name: ubuntu-trusty-2-node
     image: ubuntu-trusty
     ready-script: multinode_setup.sh
@@ -158,6 +163,7 @@ labels:
       - name: hpcloud-b5
       - name: ovh-gra1
       - name: bluebox-sjc1
+      - name: internap-nyj01
   - name: devstack-trusty-2-node
     image: devstack-trusty
     ready-script: multinode_setup.sh
@@ -174,6 +180,7 @@ labels:
       - name: hpcloud-b5
       - name: ovh-gra1
       - name: bluebox-sjc1
+      - name: internap-nyj01
   - name: devstack-precise-2-node
     image: devstack-precise
     ready-script: multinode_setup.sh
@@ -1049,6 +1056,44 @@ providers:
       - name: ubuntu-trusty
         min-ram: 8000
         name-filter: 'nodepool'
+        diskimage: ubuntu-trusty
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+  - name: internap-nyj01
+    region-name: 'nyj01'
+    cloud: internap
+    api-timeout: 60
+    boot-timeout: 120
+    max-servers: 0
+    rate: 0.001
+    images:
+      - name: centos-6
+        min-ram: 8000
+        name-filter: 'A1.8'
+        diskimage: centos-6
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+      - name: devstack-precise
+        min-ram: 8000
+        name-filter: 'A1.8'
+        diskimage: devstack-precise
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+      - name: devstack-trusty
+        min-ram: 8000
+        name-filter: 'A1.8'
+        diskimage: devstack-trusty
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+      - name: ubuntu-trusty-check
+        min-ram: 8000
+        name-filter: 'A1.8'
+        diskimage: ubuntu-trusty
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+      - name: ubuntu-trusty
+        min-ram: 8000
+        name-filter: 'A1.8'
         diskimage: ubuntu-trusty
         username: jenkins
         private-key: /home/nodepool/.ssh/id_rsa
