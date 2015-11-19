@@ -170,6 +170,8 @@
           export -f pre_test_hook
 
           function post_test_hook {{
+              source $BASE/new/manila/contrib/ci/common.sh
+              manila_wait_for_drivers_init /etc/manila/manila.conf
               $BASE/new/rally/tests/ci/rally-gate.sh
           }}
           export -f post_test_hook
