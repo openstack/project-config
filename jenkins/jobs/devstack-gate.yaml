@@ -151,6 +151,13 @@
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
           export DEVSTACK_PROJECT_FROM_GIT={name}
+
+          # Even if the branch is overridden, make sure we use
+          # the correct branch using the OVERRIDE_*_PROJECT_BRANCH
+          # variable.
+          local uc_project=`echo $DEVSTACK_PROJECT_FROM_GIT | tr [:lower:] [:upper:] | tr '-' '_' | sed 's/[^A-Z_]//'`
+          export "OVERRIDE_"$uc_project"_PROJECT_BRANCH"=$ZUUL_BRANCH
+
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
 
