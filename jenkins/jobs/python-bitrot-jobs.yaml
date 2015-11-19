@@ -49,6 +49,29 @@
 
 
 - job-template:
+    name: 'periodic-{name}-python27-constraints{branch-name}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 40
+      - timestamps
+
+    builders:
+      - revoke-sudo
+      - branch-git-prep:
+          branch: '{branch}'
+      - tox:
+          envlist: py27-constraints
+      - assert-no-extra-files
+
+    publishers:
+      - test-results
+      - console-log
+
+    node: '{node}'
+
+
+- job-template:
     name: 'periodic-{name}-docs{branch-name}'
 
     wrappers:
@@ -61,6 +84,27 @@
       - branch-git-prep:
           branch: '{branch}'
       - docs
+
+    publishers:
+      - console-log
+
+    node: '{node}'
+
+
+- job-template:
+    name: 'periodic-{name}-docs-constraints{branch-name}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 40
+      - timestamps
+
+    builders:
+      - revoke-sudo
+      - branch-git-prep:
+          branch: '{branch}'
+      - docs-env:
+          env: venv-constraints
 
     publishers:
       - console-log
@@ -96,4 +140,6 @@
     node: 'bare-precise || bare-trusty'
     jobs:
       - 'periodic-{name}-python27{branch-name}'
+      - 'periodic-{name}-python27-constraints{branch-name}'
       - 'periodic-{name}-docs{branch-name}'
+      - 'periodic-{name}-docs-constraints{branch-name}'
