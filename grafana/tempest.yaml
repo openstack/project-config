@@ -1,0 +1,25 @@
+dashboard:
+  title: Tempest Failure Rate
+  rows:
+    - title: Description
+      height: 100px
+      panels:
+        - title: Description
+          content: |
+            **This dashboard is managed by [Grafyaml](http://docs.openstack.org/infra/system-config/grafyaml.html).**
+
+            If you would like to make changes to this dashboard, please see the grafana directory in [project-config](https://git.openstack.org/cgit/openstack-infra/project-config/tree/grafana/tempest.yaml).
+          type: text
+    - title: Graphs
+      height: 320px
+      panels:
+        - title: Job Failure Rates
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-tempest-dsvm-full.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-tempest-dsvm-full.{SUCCESS,FAILURE})),'12hours'), 'gate-tempest-dsvm-full (check)')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-tempest-dsvm-full.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-tempest-dsvm-full.{SUCCESS,FAILURE})),'12hours'), 'gate-tempest-dsvm-full (gate)')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-tempest-dsvm-neutron-full.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-tempest-dsvm-neutron-full.{SUCCESS,FAILURE})),'12hours'), 'gate-tempest-dsvm-neutron-full (check)')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-tempest-dsvm-neutron-full.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-tempest-dsvm-neutron-full.{SUCCESS,FAILURE})),'12hours'), 'gate-tempest-dsvm-neutron-full (gate)')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-grenade-dsvm.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-grenade-dsvm.{SUCCESS,FAILURE})),'12hours'), 'gate-grenade-dsvm (check)')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-grenade-dsvm.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-grenade-dsvm.{SUCCESS,FAILURE})),'12hours'), 'gate-grenade-dsvm (gate)')
+          type: graph
