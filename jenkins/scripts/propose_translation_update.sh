@@ -59,6 +59,19 @@ function propose_manuals {
     done
 }
 
+# Propose updates for training-guides
+function propose_training_guides {
+
+    # Pull updated translations from Zanata.
+    pull_from_zanata "$PROJECT"
+
+    # Compress downloaded po files
+    compress_po_files "doc/upstream-training"
+
+    # Add all changed files to git
+    git add doc/upstream-training/locale/*
+}
+
 function update_po_files {
 
     DIRECTORY=$1
@@ -182,6 +195,10 @@ case "$PROJECT" in
         init_manuals "$PROJECT"
         setup_manuals "$PROJECT" "$ZANATA_VERSION"
         propose_manuals
+        ;;
+    training-guides)
+        setup_training_guides "$ZANATA_VERSION"
+        propose_training_guides
         ;;
     django_openstack_auth)
         setup_django_openstack_auth "$ZANATA_VERSION"
