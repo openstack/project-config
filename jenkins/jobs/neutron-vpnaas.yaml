@@ -1,5 +1,5 @@
 - job-template:
-    name: '{pipeline}-neutron-vpnaas-dsvm-functional{job-suffix}'
+    name: '{pipeline}-neutron-vpnaas-dsvm-{vpnaastest}{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -26,102 +26,12 @@
           fi
 
           function gate_hook {{
-              bash -xe $BASE/new/neutron-vpnaas/neutron_vpnaas/tests/contrib/gate_hook.sh dsvm-functional
+              bash -xe $BASE/new/neutron-vpnaas/neutron_vpnaas/tests/contrib/gate_hook.sh dsvm-{vpnaastest}
           }}
           export -f gate_hook
 
           function post_test_hook {{
-             bash -xe $BASE/new/neutron-vpnaas/neutron_vpnaas/tests/contrib/post_test_hook.sh dsvm-functional
-          }}
-          export -f post_test_hook
-
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
-
-    publishers:
-      - test-results
-      - devstack-logs
-      - console-log
-
-- job-template:
-    name: '{pipeline}-neutron-vpnaas-dsvm-functional-sswan{job-suffix}'
-    node: '{node}'
-
-    wrappers:
-      - build-timeout:
-          timeout: 125
-      - timestamps
-
-    builders:
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - shell: |
-          #!/bin/bash -xe
-          export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_UNSTACK=1
-          export DEVSTACK_GATE_TIMEOUT=120
-          export DEVSTACK_GATE_TEMPEST=0
-          export DEVSTACK_GATE_EXERCISES=0
-          export DEVSTACK_GATE_NEUTRON=1
-          export DEVSTACK_GATE_INSTALL_TESTONLY=1
-          export BRANCH_OVERRIDE={branch-override}
-          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
-              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
-          fi
-
-          function gate_hook {{
-              bash -xe $BASE/new/neutron-vpnaas/neutron_vpnaas/tests/contrib/gate_hook.sh dsvm-functional-sswan
-          }}
-          export -f gate_hook
-
-          function post_test_hook {{
-             bash -xe $BASE/new/neutron-vpnaas/neutron_vpnaas/tests/contrib/post_test_hook.sh dsvm-functional-sswan
-          }}
-          export -f post_test_hook
-
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
-
-    publishers:
-      - test-results
-      - devstack-logs
-      - console-log
-
-- job-template:
-    name: '{pipeline}-neutron-vpnaas-test-dsvm-{vpnaastest}{job-suffix}'
-    node: '{node}'
-
-    wrappers:
-      - build-timeout:
-          timeout: 125
-      - timestamps
-
-    builders:
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - shell: |
-          #!/bin/bash -xe
-          export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_UNSTACK=1
-          export DEVSTACK_GATE_TIMEOUT=120
-          export DEVSTACK_GATE_TEMPEST=0
-          export DEVSTACK_GATE_EXERCISES=0
-          export DEVSTACK_GATE_NEUTRON=1
-          export DEVSTACK_GATE_INSTALL_TESTONLY=1
-          export BRANCH_OVERRIDE={branch-override}
-          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
-              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
-          fi
-
-          function gate_hook {{
-              bash -xe $BASE/new/neutron-vpnaas/neutron_vpnaas/tests/contrib/gate_hook.sh {vpnaastest}
-          }}
-          export -f gate_hook
-
-          function post_test_hook {{
-             bash -xe $BASE/new/neutron-vpnaas/neutron_vpnaas/tests/contrib/post_test_hook.sh {vpnaastest}
+             bash -xe $BASE/new/neutron-vpnaas/neutron_vpnaas/tests/contrib/post_test_hook.sh dsvm-{vpnaastest}
           }}
           export -f post_test_hook
 
