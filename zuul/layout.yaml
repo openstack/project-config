@@ -5983,9 +5983,14 @@ projects:
   - name: openstack/monasca-log-api
     template:
       - name: merge-check
+      - name: publish-to-pypi
     check:
+      - gate-monasca-log-api-pep8
+      - gate-monasca-log-api-python27
       - gate-monasca-log-api-build
     gate:
+      - gate-monasca-log-api-pep8
+      - gate-monasca-log-api-python27
       - gate-monasca-log-api-build
     post:
       - monasca-log-api-localrepo-upload
