@@ -995,12 +995,7 @@ jobs:
     voting: false
 
   - name: ^gate-tempest-dsvm-cells$
-    branch: ^(?!stable/(juno|kilo)).*$
-
-  # the devstack cells job only should be run on versions the tempest
-  # cells job does not work on.
-  - name: ^gate-devstack-dsvm-cells$
-    branch: ^(stable/(juno|kilo)).*$
+    branch: ^(?!stable/(kilo)).*$
 
     # don't run any grenade jobs on the oldest supported stable
     # branch, this lets us catch all jobs that don't otherwise have
@@ -2262,7 +2257,6 @@ projects:
     check:
       - gate-devstack-bashate
       - gate-devstack-unit-tests
-      - gate-devstack-dsvm-cells
       - gate-grenade-dsvm-partial-ncpu
       - gate-tempest-dsvm-ironic-agent_ssh
       - gate-devstack-dsvm-updown
@@ -2277,7 +2271,6 @@ projects:
       - gate-grenade-dsvm-multinode
     gate:
       - gate-devstack-bashate
-      - gate-devstack-dsvm-cells
       - gate-grenade-dsvm-forward
       - gate-grenade-dsvm-partial-ncpu
       - gate-grenade-dsvm-multinode
@@ -2484,7 +2477,6 @@ projects:
     check:
       - gate-devstack-gate-unittests
       - gate-devstack-gate-bashate
-      - gate-devstack-dsvm-cells
       - gate-dg-hooks-dsvm
       - gate-grenade-dsvm-partial-ncpu
       - gate-grenade-dsvm-multinode
@@ -2506,7 +2498,6 @@ projects:
       - gate-tempest-dsvm-neutron-multinode-full
     gate:
       - gate-devstack-gate-unittests
-      - gate-devstack-dsvm-cells
       - gate-grenade-dsvm-partial-ncpu
       - gate-grenade-dsvm-multinode
     experimental:
@@ -3943,7 +3934,6 @@ projects:
       - name: translation-jobs-liberty
       - name: release-notes-jobs
     check:
-      - gate-devstack-dsvm-cells
       - gate-tempest-dsvm-ceilometer-mongodb-full
       - gate-tempest-dsvm-ceilometer-mysql-neutron-full
       - gate-tempest-dsvm-ceilometer-mysql-full
@@ -3954,7 +3944,6 @@ projects:
       - gate-grenade-dsvm-ceilometer
       - gate-ceilometer-dsvm-integration
     gate:
-      - gate-devstack-dsvm-cells
       - gate-ceilometer-dsvm-functional-mongodb
       - gate-ceilometer-dsvm-functional-mysql
       - gate-ceilometer-dsvm-functional-postgresql
@@ -4031,7 +4020,6 @@ projects:
       - name: release-notes-jobs
     check:
       - gate-cinder-pylint
-      - gate-devstack-dsvm-cells
       - gate-rally-dsvm-cinder
       - gate-tempest-dsvm-full-ceph
       - gate-cinder-dsvm-apache
@@ -4048,7 +4036,6 @@ projects:
       - gate-cinder-pep8-constraints
       - gate-cinder-pylint-constraints
     gate:
-      - gate-devstack-dsvm-cells
       - gate-tempest-dsvm-full-ceph
     experimental:
       - gate-grenade-dsvm-forward
@@ -5355,7 +5342,6 @@ projects:
       - name: large-ops
       - name: release-notes-jobs
     check:
-      - gate-devstack-dsvm-cells
       - gate-tempest-dsvm-full-ceph
       - gate-rally-dsvm-glance
       - gate-glance-python27-constraints
@@ -5363,7 +5349,6 @@ projects:
       - gate-glance-docs-constraints
       - gate-glance-pep8-constraints
     gate:
-      - gate-devstack-dsvm-cells
       - gate-tempest-dsvm-full-ceph
     experimental:
       - gate-grenade-dsvm-forward
@@ -6698,7 +6683,6 @@ projects:
       - name: experimental-tripleo-jobs
       - name: release-notes-jobs
     check:
-      - gate-devstack-dsvm-cells
       - gate-nova-tox-functional
       - gate-grenade-dsvm-partial-ncpu
       - gate-grenade-dsvm-multinode
@@ -6716,7 +6700,6 @@ projects:
       - gate-nova-tox-constraints-functional-constraints
     gate:
       - gate-nova-tox-functional
-      - gate-devstack-dsvm-cells
       - gate-grenade-dsvm-partial-ncpu
       - gate-grenade-dsvm-multinode
       - gate-tempest-dsvm-full-ceph
@@ -8706,13 +8689,11 @@ projects:
       - gate-requirements-python27
       - gate-requirements-integration-dsvm
       - gate-requirements-integration-dsvm-resolver
-      - gate-devstack-dsvm-cells
       - gate-requirements-tox-validate
     gate:
       - gate-requirements-pep8
       - gate-requirements-python27
       - gate-requirements-integration-dsvm
-      - gate-devstack-dsvm-cells
       - gate-requirements-tox-validate
     periodic:
       - propose-requirements-constraints-master
