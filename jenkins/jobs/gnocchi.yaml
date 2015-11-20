@@ -18,11 +18,10 @@
           export PROJECTS="openstack/gnocchi $PROJECTS"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin gnocchi git://git.openstack.org/openstack/gnocchi"
 
-          if [ "$ZUUL_BRANCH" = "stable/1.0" ] ; then
-              export OVERRIDE_ZUUL_BRANCH=stable/kilo
-          elif [ "$ZUUL_BRANCH" = "stable/1.3" ] ; then
-              export OVERRIDE_ZUUL_BRANCH=stable/liberty
-          fi
+          case "$ZUUL_BRANCH" in
+              "stable/1.0"|"stable/1.1"|"stable/1.2") export OVERRIDE_ZUUL_BRANCH=stable/kilo ;;
+              "stable/1.3") export OVERRIDE_ZUUL_BRANCH=stable/liberty ;;
+          esac
 
           function gate_hook {{
               cd /opt/stack/new/gnocchi/devstack/gate
