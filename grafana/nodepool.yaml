@@ -1,0 +1,36 @@
+dashboard:
+  title: Nodepool
+  rows:
+    - title: Description
+      height: 100px
+      panels:
+        - title: Description
+          content: |
+            **This dashboard is managed by [Grafyaml](http://docs.openstack.org/infra/system-config/grafyaml.html).**
+
+            If you would like to make changes to this dashboard, please see the grafana directory in [project-config](https://git.openstack.org/cgit/openstack-infra/project-config/tree/grafana/nodepool.yaml).
+          type: text
+    - title: Jenkins Masters
+      showTitle: true
+      height: 320px
+      panels:
+        - title: Building Nodes
+          span: 4
+          targets:
+            - target: aliasByNode(stats.guages.nodepool.target.*.nodes.building, 4)
+          type: graph
+        - title: Ready Nodes
+          span: 4
+          targets:
+            - target: aliasByNode(stats.guages.nodepool.target.*.nodes.ready, 4)
+          type: graph
+        - title: Used Nodes
+          span: 4
+          targets:
+            - target: aliasByNode(stats.guages.nodepool.target.*.nodes.used, 4)
+          type: graph
+        - title: Deleting Nodes
+          span: 4
+          targets:
+            - target: aliasByNode(stats.guages.nodepool.target.*.nodes.delete, 4)
+          type: graph
