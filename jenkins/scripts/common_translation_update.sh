@@ -82,18 +82,6 @@ function setup_manuals {
         if [ "$project" != "openstack-manuals" -a "$DOCNAME" == "glossary" ]; then
             continue
         fi
-        # Minimum amount of translation done, 75 % by default.
-        PERC=75
-        if [ "$project" == "openstack-manuals" ]; then
-            # The common and glossary directories are used by the
-            # other guides, let's be more liberal here since teams
-            # might only translate the files used by a single
-            # guide. We use 8 % since that downloads the currently
-            # translated files.
-            if [ "$DOCNAME" == "common" -o "$DOCNAME" == "glossary" ]; then
-                PERC=8
-            fi
-        fi
         IS_RST=0
         if [ ${SPECIAL_BOOKS["${DOCNAME}"]+_} ] ; then
             case "${SPECIAL_BOOKS["${DOCNAME}"]}" in
@@ -133,9 +121,6 @@ function setup_manuals {
 function setup_training_guides {
     local project=$1
     local version=${2:-master}
-
-    # Minimum amount of translation done, 75 % by default.
-    PERC=75
 
     # Update the .pot file
     tox -e generatepot-training
