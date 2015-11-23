@@ -67,6 +67,13 @@ function setup_manuals {
     # Grab all of the rules for the documents we care about
     ZANATA_RULES=
 
+    # List of directories to skip
+    if [ "$project" == "openstack-manuals" ]; then
+        EXCLUDE='.*/**,**/source/common/**'
+    else
+        EXCLUDE='.*/**,**/source/common/**,**/glossary/**'
+    fi
+
     # Generate pot one by one
     for FILE in ${DocFolder}/*; do
         # Skip non-directories
@@ -89,6 +96,7 @@ function setup_manuals {
                     IS_RST=1
                     ;;
                 skip)
+                    EXCLUDE="$EXCLUDE,${DocFolder}/${DOCNAME}/**"
                     continue
                     ;;
             esac
@@ -107,11 +115,6 @@ function setup_manuals {
             fi
         fi
     done
-    if [ "$project" == "openstack-manuals" ]; then
-        EXCLUDE='.*/**,**/source/common/**'
-    else
-        EXCLUDE='.*/**,**/source/common/**,**/glossary/**'
-    fi
     /usr/local/jenkins/slave_scripts/create-zanata-xml.py -p $project \
         -v $version --srcdir . --txdir . $ZANATA_RULES -e "$EXCLUDE" \
         -f zanata.xml
