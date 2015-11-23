@@ -245,6 +245,16 @@ project-templates:
     merge-check:
       - noop
 
+  - name: ansible-role-jobs
+    check:
+      - 'gate-{name}-docs'
+      - 'gate-{name}-pep8'
+      - 'gate-{name}-tox-ansible-lint'
+    gate:
+      - 'gate-{name}-docs'
+      - 'gate-{name}-pep8'
+      - 'gate-{name}-tox-ansible-lint'
+
   - name: python-jobs
     check:
       - 'gate-{name}-pep8'
@@ -3585,12 +3595,10 @@ projects:
   - name: openstack/ansible-role-nodepool
     template:
       - name: merge-check
+      - name: ansible-role-jobs
     check:
-      - gate-ansible-role-nodepool-tox-ansible-lint
-      - gate-ansible-dsvm-functional-centos7-nv
-      - gate-ansible-dsvm-functional-trusty-nv
-    gate:
-      - gate-ansible-role-nodepool-tox-ansible-lint
+      - gate-ansible-role-nodepool-dsvm-functional-centos7-nv
+      - gate-ansible-role-nodepool-dsvm-functional-trusty-nv
 
   - name: openstack/anvil
     template:
@@ -6746,106 +6754,71 @@ projects:
   - name: openstack/openstack-ansible-apt_package_pinning
     template:
       - name: merge-check
+      - name: ansible-role-jobs
       - name: openstack-server-publish-jobs
     check:
-      - gate-openstack-ansible-apt_package_pinning-docs
-      - gate-openstack-ansible-apt_package_pinning-pep8
-      - gate-openstack-ansible-apt_package_pinning-ansible-lint
       - gate-openstack-ansible-apt_package_pinning-tox-ansible-functional
     gate:
-      - gate-openstack-ansible-apt_package_pinning-docs
-      - gate-openstack-ansible-apt_package_pinning-pep8
-      - gate-openstack-ansible-apt_package_pinning-ansible-lint
       - gate-openstack-ansible-apt_package_pinning-tox-ansible-functional
 
   - name: openstack/openstack-ansible-lxc_container_create
     template:
       - name: merge-check
+      - name: ansible-role-jobs
       - name: openstack-server-publish-jobs
     check:
-      - gate-openstack-ansible-lxc_container_create-docs
-      - gate-openstack-ansible-lxc_container_create-pep8
-      - gate-openstack-ansible-lxc_container_create-ansible-lint
       - gate-openstack-ansible-lxc_container_create-tox-ansible-functional
     gate:
-      - gate-openstack-ansible-lxc_container_create-docs
-      - gate-openstack-ansible-lxc_container_create-pep8
-      - gate-openstack-ansible-lxc_container_create-ansible-lint
       - gate-openstack-ansible-lxc_container_create-tox-ansible-functional
 
   - name: openstack/openstack-ansible-lxc_hosts
     template:
       - name: merge-check
+      - name: ansible-role-jobs
       - name: openstack-server-publish-jobs
     check:
-      - gate-openstack-ansible-lxc_hosts-docs
-      - gate-openstack-ansible-lxc_hosts-pep8
-      - gate-openstack-ansible-lxc_hosts-ansible-lint
       - gate-openstack-ansible-lxc_hosts-tox-ansible-functional
     gate:
-      - gate-openstack-ansible-lxc_hosts-docs
-      - gate-openstack-ansible-lxc_hosts-pep8
-      - gate-openstack-ansible-lxc_hosts-ansible-lint
       - gate-openstack-ansible-lxc_hosts-tox-ansible-functional
 
   - name: openstack/openstack-ansible-openstack_hosts
     template:
       - name: merge-check
+      - name: ansible-role-jobs
       - name: openstack-server-publish-jobs
     check:
-      - gate-openstack-ansible-openstack_hosts-docs
-      - gate-openstack-ansible-openstack_hosts-pep8
-      - gate-openstack-ansible-openstack_hosts-ansible-lint
       - gate-openstack-ansible-openstack_hosts-tox-ansible-functional
     gate:
-      - gate-openstack-ansible-openstack_hosts-docs
-      - gate-openstack-ansible-openstack_hosts-pep8
-      - gate-openstack-ansible-openstack_hosts-ansible-lint
       - gate-openstack-ansible-openstack_hosts-tox-ansible-functional
 
   - name: openstack/openstack-ansible-pip_install
     template:
       - name: merge-check
+      - name: ansible-role-jobs
       - name: openstack-server-publish-jobs
     check:
-      - gate-openstack-ansible-pip_install-docs
-      - gate-openstack-ansible-pip_install-pep8
-      - gate-openstack-ansible-pip_install-ansible-lint
       - gate-openstack-ansible-pip_install-tox-ansible-functional
     gate:
-      - gate-openstack-ansible-pip_install-docs
-      - gate-openstack-ansible-pip_install-pep8
-      - gate-openstack-ansible-pip_install-ansible-lint
       - gate-openstack-ansible-pip_install-tox-ansible-functional
 
   - name: openstack/openstack-ansible-py_from_git
     template:
       - name: merge-check
+      - name: ansible-role-jobs
       - name: openstack-server-publish-jobs
     check:
-      - gate-openstack-ansible-py_from_git-docs
-      - gate-openstack-ansible-py_from_git-pep8
-      - gate-openstack-ansible-py_from_git-ansible-lint
       - gate-openstack-ansible-py_from_git-tox-ansible-functional
     gate:
-      - gate-openstack-ansible-py_from_git-docs
-      - gate-openstack-ansible-py_from_git-pep8
-      - gate-openstack-ansible-py_from_git-ansible-lint
       - gate-openstack-ansible-py_from_git-tox-ansible-functional
 
   - name: openstack/openstack-ansible-rsyslog_client
     template:
       - name: merge-check
+      - name: ansible-role-jobs
       - name: openstack-server-publish-jobs
     check:
-      - gate-openstack-ansible-rsyslog_client-docs
-      - gate-openstack-ansible-rsyslog_client-pep8
-      - gate-openstack-ansible-rsyslog_client-ansible-lint
       - gate-openstack-ansible-rsyslog_client-tox-ansible-functional
     gate:
-      - gate-openstack-ansible-rsyslog_client-docs
-      - gate-openstack-ansible-rsyslog_client-pep8
-      - gate-openstack-ansible-rsyslog_client-ansible-lint
       - gate-openstack-ansible-rsyslog_client-tox-ansible-functional
 
   - name: openstack/openstack-ansible-security

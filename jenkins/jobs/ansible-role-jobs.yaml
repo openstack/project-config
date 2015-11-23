@@ -14,7 +14,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-ansible-dsvm-functional-{ostype}{job-suffix}'
+    name: '{pipeline}-{name}-dsvm-functional-{ostype}{job-suffix}'
     node: 'devstack-{ostype}'
 
     builders:
@@ -26,6 +26,21 @@
       - zuul-swift-upload-console-log
 
 - job-group:
+    # TODO(pabelanger): Remove in favor of ansible-role-jobs
     name: 'ansible-lint-jobs'
     jobs:
       - 'gate-{name}-ansible-lint'
+
+- job-group:
+    name: 'ansible-role-jobs'
+    jobs:
+      - 'gate-{name}-docs'
+      - 'gate-{name}-pep8'
+      - 'gate-{name}-tox-{envlist}':
+          envlist: ansible-lint
+      - '{pipeline}-{name}-dsvm-functional-{ostype}{job-suffix}':
+          job-suffix: '-nv'
+          ostype:
+            - centos7
+            - trusty
+          pipeline: gate
