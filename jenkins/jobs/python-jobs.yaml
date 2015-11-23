@@ -87,13 +87,27 @@
     builders:
       - revoke-sudo
       - gerrit-git-prep
-      - pylint
+      - pylint:
+          env: pylint
 
     publishers:
       - zuul-swift-upload-console-log
 
     node: '{node}'
 
+- job-template:
+    name: 'gate-{name}-pylint-constraints'
+
+    builders:
+      - revoke-sudo
+      - gerrit-git-prep
+      - pylint:
+          env: pylint-constraints
+
+    publishers:
+      - zuul-swift-upload-console-log
+
+    node: '{node}'
 
 - job-template:
     name: 'gate-{name}-python26'
