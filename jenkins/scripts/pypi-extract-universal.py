@@ -21,7 +21,7 @@ universal = False
 setup_cfg = ConfigParser.SafeConfigParser()
 setup_cfg.read("setup.cfg")
 if setup_cfg.has_option("bdist_wheel", "universal"):
-    universal = setup_cfg.getboolean("wheel", "universal")
+    universal = setup_cfg.getboolean("bdist_wheel", "universal")
 elif setup_cfg.has_option("wheel", "universal"):
     universal = setup_cfg.getboolean("wheel", "universal")
 
