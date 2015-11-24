@@ -374,6 +374,12 @@ project-templates:
     release:
       - '{name}-docs'
 
+  - name: openstack-server-publish-jobs-constraints
+    post:
+      - '{name}-docs-constraints'
+    release:
+      - '{name}-docs-constraints'
+
   - name: openstack-client-publish-jobs
     release:
       - '{name}-docs'
@@ -399,6 +405,11 @@ project-templates:
     periodic-stable:
       - 'periodic-{name}-docs-liberty'
       - 'periodic-{name}-python27-liberty'
+
+  - name: periodic-liberty-constraints
+    periodic-stable:
+      - 'periodic-{name}-docs-constraints-liberty'
+      - 'periodic-{name}-python27-constraints-liberty'
 
 
   # Used for building documentation projects that contain
@@ -2131,17 +2142,23 @@ jobs:
   - name: ^gate-.*-constraints$
     branch: ^(?!stable/(?:juno|kilo)).*$
 
-  - name: gate-neutron-python27-constraints
-    voting: false
+  - name: gate-neutron-python27
+    branch: ^(?:stable/(?:juno|kilo)).*$
 
-  - name: gate-neutron-python34-constraints
-    voting: false
+  - name: gate-neutron-pep8
+    branch: ^(?:stable/(?:juno|kilo)).*$
 
-  - name: gate-neutron-pep8-constraints
-    voting: false
+  - name: gate-neutron-docs
+    branch: ^(?:stable/(?:juno|kilo)).*$
 
-  - name: gate-neutron-docs-constraints
-    voting: false
+  - name: neutron-coverage
+    branch: ^(?:stable/(?:juno|kilo)).*$
+
+  - name: neutron-docs
+    branch: ^(?:stable/(?:juno|kilo)).*$
+
+  - name: neutron-branch-tarball
+    branch: ^(?:stable/(?:juno|kilo)).*$
 
   - name: gate-nova-python27-constraints
     voting: false
@@ -6467,12 +6484,16 @@ projects:
       - name: merge-check
       - name: python26-jobs
       - name: python-jobs
+      - name: python-constraints-jobs
       - name: python3-jobs
+      - name: python3-constraints-jobs
       - name: openstack-server-publish-jobs
+      - name: openstack-server-publish-jobs-constraints
       - name: openstack-server-release-jobs
+      - name: openstack-server-release-jobs-constraints
       - name: periodic-juno
       - name: periodic-kilo
-      - name: periodic-liberty
+      - name: periodic-liberty-constraints
       - name: check-requirements
       - name: integrated-gate-neutron
       - name: translation-jobs
@@ -6492,10 +6513,6 @@ projects:
       - gate-tempest-dsvm-neutron-large-ops
       - gate-tempest-dsvm-neutron-multinode-full
       - gate-tempest-dsvm-neutron-dvr-multinode-full
-      - gate-neutron-python27-constraints
-      - gate-neutron-python34-constraints
-      - gate-neutron-docs-constraints
-      - gate-neutron-pep8-constraints
       - gate-tempest-dsvm-ironic-pxe_ipa-nv
     gate:
       - gate-neutron-dsvm-api

@@ -18,6 +18,26 @@
 
 
 - job-template:
+    name: '{name}-docs-constraints'
+    node: 'bare-precise || bare-trusty'
+
+    builders:
+      - revoke-sudo
+      - gerrit-git-prep
+      - docs-env:
+          env: venv-constraints
+
+    publishers:
+      - ftp:
+          site: '{doc-publisher-site}'
+          source: 'doc/build/html/**'
+          target: 'developer/{name}'
+          remove-prefix: 'doc/build/html'
+          excludes: ''
+      - console-log
+
+
+- job-template:
     name: '{name}-merge-release-tags'
 
     builders:
@@ -76,6 +96,7 @@
     name: openstack-publish-jobs
     jobs:
       - '{name}-docs'
+      - '{name}-docs-constraints'
       - '{name}-merge-release-tags'
 
 
