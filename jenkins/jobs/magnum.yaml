@@ -17,6 +17,10 @@
           export DEVSTACK_GATE_TIMEOUT=120
           export DEVSTACK_GATE_TEMPEST=0
           export DEVSTACK_GATE_NEUTRON=1
+
+          # Enable tempest for tempest plugin
+          export ENABLED_SERVICES=tempest
+
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -26,6 +30,9 @@
           export PROJECTS="openstack/barbican $PROJECTS"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin magnum git://git.openstack.org/openstack/magnum"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
+
+          # Keep localrc to be able to set some vars in post_test_hook
+          export KEEP_LOCALRC=1
 
           function post_test_hook {{
               source $BASE/new/devstack/accrc/admin/admin
