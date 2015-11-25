@@ -2485,7 +2485,8 @@
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TIMEOUT=120
           export DEVSTACK_GATE_TEMPEST=1
-          export DEVSTACK_GATE_TEMPEST_REGEX="volume"
+          # BDD driver doesn't support 'in-use' volume attachement so we need to skip such tests
+          export DEVSTACK_GATE_TEMPEST_REGEX="^(?!.*(volume_in_use|test_volume_boot_pattern)).*volume"
           export TEMPEST_CONCURRENCY=1
           export PROJECTS="openstack/devstack-plugin-bdd $PROJECTS"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin devstack-plugin-bdd git://git.openstack.org/openstack/devstack-plugin-bdd"
