@@ -69,7 +69,7 @@ function propose_training_guides {
     compress_po_files "doc/upstream-training"
 
     # Add all changed files to git
-    git add doc/upstream-training/locale/*
+    git add doc/upstream-training/source/locale/*
 }
 
 function update_po_files {
