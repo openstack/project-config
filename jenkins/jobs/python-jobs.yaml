@@ -317,6 +317,28 @@
     node: '{node}'
 
 - job-template:
+    name: 'gate-{name}-tox-constraints-{envlist}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 40
+      - timestamps
+
+    builders:
+      - revoke-sudo
+      - zuul-git-prep-upper-constraints
+      - tox:
+          envlist: '{envlist}'
+      - assert-no-extra-files
+
+    publishers:
+      - test-results
+      - console-log
+      - zuul-swift-test-results-with-console
+
+    node: '{node}'
+
+- job-template:
     name: '{name}-tarball'
     node: 'bare-precise || bare-trusty'
 
