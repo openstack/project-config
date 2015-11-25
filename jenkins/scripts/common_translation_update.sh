@@ -122,15 +122,15 @@ function setup_manuals {
 
 # Setup a training-guides project for Zanata
 function setup_training_guides {
-    local project=$1
-    local version=${2:-master}
+    local project=training-guides
+    local version=${1:-master}
 
     # Update the .pot file
     tox -e generatepot-training
 
     /usr/local/jenkins/slave_scripts/create-zanata-xml.py -p $project \
-        -v $version --srcdir doc/upstream-training/locale \
-        --txdir doc/upstream-training/locale \
+        -v $version --srcdir doc/upstream-training/source/locale \
+        --txdir doc/upstream-training/source/locale \
         -f zanata.xml
 }
 
