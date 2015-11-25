@@ -384,6 +384,11 @@ project-templates:
     release:
       - '{name}-docs'
 
+  # This job needs to run on all repositories that are part of the
+  # global requirements syncing which is setup in the requirements
+  # repository. If a repository is in requirements/projects.txt, it
+  # has to run these jobs as voting as specified in
+  # http://docs.openstack.org/developer/requirements/#enforcement-in-projects
   - name: check-requirements
     check:
       - 'gate-{name}-requirements'
