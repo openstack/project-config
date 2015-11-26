@@ -203,6 +203,23 @@
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
 
+          # NOTE(sileht): This job runs on Aodh, Ceilometer and Gnocchi
+          # Gnocchi uses an independant release cycle. So we map here
+          # which Gnocchi version can be used with other OpenStack
+          # componements and the reverse.
+          gnocchi_branch=
+          if [ "$ZUUL_PROJECT" == "openstack/gnocchi" ]; then
+              case "$ZUUL_BRANCH" in
+                  "stable/1.0"|"stable/1.1"|"stable/1.2") export OVERRIDE_ZUUL_BRANCH=stable/kilo ;;
+                  "stable/1.3") export OVERRIDE_ZUUL_BRANCH=stable/liberty ;;
+              esac
+          else
+              case "$ZUUL_BRANCH" in
+                  "stable/kilo") gnocchi_branch="stable/1.2";
+                  "stable/liberty") gnocchi_branch="stable/1.3";
+              esac
+          fi
+
           export DEVSTACK_GATE_TIMEOUT=120
           export DEVSTACK_GATE_HEAT=1
           export DEVSTACK_GATE_NEUTRON=1
@@ -219,7 +236,7 @@
           export PROJECTS="openstack/aodh openstack/gnocchi"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin aodh git://git.openstack.org/openstack/aodh"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin gnocchi git://git.openstack.org/openstack/gnocchi"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin gnocchi git://git.openstack.org/openstack/gnocchi $gnocchi_branch"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"GNOCCHI_ARCHIVE_POLICY=high"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"CEILOMETER_PIPELINE_INTERVAL=5"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"GNOCCHI_COORDINATOR_URL=redis://localhost:6379?timeout=5"
