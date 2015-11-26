@@ -166,6 +166,7 @@
           export DEVSTACK_LOCAL_CONFIG="enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
           # NOTE(sileht): in liberty and kilo telemetry-alarming was in ceilometer code tree
           if [[ "$ZUUL_BRANCH" != "stable/juno" && "$ZUUL_BRANCH" != "stable/kilo" && "$ZUUL_BRANCH" != "stable/liberty" ]] ; then
+              export PROJECTS="openstack/aodh $PROJECTS"
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin aodh git://git.openstack.org/openstack/aodh"
           fi
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
