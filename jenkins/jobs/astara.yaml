@@ -21,7 +21,7 @@
 
           export BUILD_APPLIANCE={build-astara-appliance}
           if [ "$BUILD_APPLIANCE" == "1" ] ; then
-              export DEVSTACK_LOCAL_CONFIG+=$'\n'"BUILD_AKANDA_APPLIANCE_IMAGE=True"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"BUILD_ASTARA_APPLIANCE_IMAGE=True"
           fi
 
           if [ "$DEVSTACK_GATE_TEMPEST" == "0" ]; then
@@ -90,13 +90,13 @@
       - shell: |
           #!/bin/bash -xe
           tox -e build_image
-          mv build/astara_appliance.qcow2 $WORKSPACE/astara_appliance.qcow2
+          mv build/astara_appliance*.qcow2 $WORKSPACE/
 
     publishers:
       - scp:
           site: 'tarballs.openstack.org'
           files:
-            - source: 'astara_appliance.qcow2'
+            - source: 'astara_appliance*.qcow2'
               target: 'tarballs/astara-appliance/images'
               keep-hierarchy: false
               copy-after-failure: false
