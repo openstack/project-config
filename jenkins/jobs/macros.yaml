@@ -69,6 +69,30 @@
           cp $REQS_DIR/upper-constraints.txt ./
 
 - builder:
+    name: zuul-git-branch-prep-upper-constraints
+    builders:
+      - shell: |
+          #!/bin/bash -xe
+          export BRANCH={branch}
+          CLONEMAP=`mktemp`
+          REQS_DIR=`mktemp -d`
+          function cleanup {{
+              rm -rf $CLONEMAP $REQS_DIR
+          }}
+          trap cleanup EXIT
+          cat > $CLONEMAP << EOF
+          clonemap:
+            - name: $ZUUL_PROJECT
+              dest: .
+            - name: openstack/requirements
+              dest: $REQS_DIR
+          EOF
+          /usr/zuul-env/bin/zuul-cloner -m $CLONEMAP --cache-dir /opt/git \
+              --branch=$BRANCH \
+              git://git.openstack.org $ZUUL_PROJECT openstack/requirements
+          cp $REQS_DIR/upper-constraints.txt ./
+
+- builder:
     name: zuul-git-branch-prep
     builders:
       - shell: |
