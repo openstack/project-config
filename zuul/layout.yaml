@@ -2076,7 +2076,7 @@ jobs:
   - name: gate-nova-python34
     branch: ^(?!stable/(?:juno|kilo)).*$
 
-  - name: gate-glance-python34
+  - name: ^gate-glance-python34(-constraints)?$
     branch: ^(?!stable/(?:juno|kilo)).*$
 
   # skip all openstack-ansible jobs except the docs job for rst/doc files
@@ -2213,6 +2213,9 @@ jobs:
   - name: ^gate-cinder-.*-constraints$
     voting: false
   # End Constraints Jobs
+
+  - name: ^gate-glance-.*-constraints$
+    voting: false
 
   - name: gate-python-fuelclient-python34
     branch: ^(?!stable/(?:6\.1|7.0)).*$
@@ -5372,6 +5375,10 @@ projects:
       - gate-devstack-dsvm-cells
       - gate-tempest-dsvm-full-ceph
       - gate-rally-dsvm-glance
+      - gate-glance-python27-constraints
+      - gate-glance-python34-constraints
+      - gate-glance-docs-constraints
+      - gate-glance-pep8-constraints
     gate:
       - gate-devstack-dsvm-cells
       - gate-tempest-dsvm-full-ceph
