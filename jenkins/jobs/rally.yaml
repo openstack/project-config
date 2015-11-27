@@ -66,7 +66,7 @@
           DEVSTACK_LOCAL_CONFIG+=$'\n'"CINDER_ENABLE_V1_API=True"
 
           ENABLED_SERVICES=sahara,key,horizon,
-          ENABLED_SERVICES+=cinder,c-api,c-vol,c-sch,c-bak
+          ENABLED_SERVICES+=cinder,c-api,c-vol,c-sch,c-bak,
           ENABLED_SERVICES+=g-api,g-reg,
           ENABLED_SERVICES+=heat,h-api,h-api-cfn,h-api-cw,h-eng,
           ENABLED_SERVICES+=n-api,n-crt,n-obj,n-cpu,n-sch,n-cond,
@@ -633,6 +633,10 @@
       - devstack-rally-verify:
           mode: '{mode}'
           compare: '{compare}'
+          ceilometer: '{ceilometer}'
+          heat: '{heat}'
+          neutron: '{neutron}'
+          sahara: '{sahara}'
 
     publishers:
       - devstack-logs
@@ -647,9 +651,45 @@
       - shell: |
           #/bin/bash -xe
           export PROJECTS="openstack/rally $PROJECTS"
+          export DEVSTACK_GATE_CEILOMETER={ceilometer}
+          export DEVSTACK_GATE_HEAT={heat}
+          export DEVSTACK_GATE_NEUTRON={neutron}
+          export DEVSTACK_GATE_SAHARA={sahara}
           export DEVSTACK_GATE_EXERCISES=0
           export DEVSTACK_GATE_TIMEOUT=120
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin rally git://git.openstack.org/openstack/rally"
+
+          DEVSTACK_LOCAL_CONFIG=$"enable_plugin rally git://git.openstack.org/openstack/rally"
+          DEVSTACK_LOCAL_CONFIG+=$'\n'"CINDER_ENABLE_V1_API=True"
+
+          ENABLED_SERVICES=key,horizon,
+          ENABLED_SERVICES+=cinder,c-api,c-vol,c-sch,c-bak,
+          ENABLED_SERVICES+=g-api,g-reg,
+          ENABLED_SERVICES+=n-api,n-crt,n-obj,n-cpu,n-sch,n-cond,
+          ENABLED_SERVICES+=s-proxy,s-account,s-container,s-object,
+          if [ $DEVSTACK_GATE_NEUTRON -ne 1 ]; then
+              ENABLED_SERVICES+=n-net,n-api-meta,
+          fi
+          if [ DEVSTACK_GATE_CEILOMETER -ne 0 ]; then
+              export CEILOMETER_NOTIFICATION_TOPICS=notifications,profiler
+
+              export PROJECTS="openstack/ceilometer $PROJECTS"
+              export PROJECTS="openstack/aodh $PROJECTS"
+
+              DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
+              DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin aodh git://git.openstack.org/openstack/aodh"
+
+              ENABLED_SERVICES+=ceilometer-acompute,ceilometer-acentral,ceilometer-api,
+              ENABLED_SERVICES+=ceilometer-anotification,ceilometer-collector,
+              ENABLED_SERVICES+=aodh-api,aodh-evaluator,aodh-notifier,
+          fi
+          if [ $DEVSTACK_GATE_HEAT -ne 0 ]; then
+              ENABLED_SERVICES+=heat,h-api,h-api-cfn,h-api-cw,h-eng,
+          fi
+          if [ DEVSTACK_GATE_SAHARA -ne 0 ]; then
+              ENABLED_SERVICES+=sahara,
+          fi
+          export ENABLED_SERVICES
+          export DEVSTACK_LOCAL_CONFIG
 
           function post_test_hook {{
               if [ '{compare}' == 'true' ]; then
