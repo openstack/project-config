@@ -2088,6 +2088,18 @@ jobs:
   - name: ^gate-glance-python34(-constraints)?$
     branch: ^(?!stable/(?:juno|kilo)).*$
 
+  - name: gate-murano-python34
+    branch: ^(?!stable/(?:juno|kilo|liberty)).*$
+    voting: false
+
+  - name: gate-murano-dashboard-python34
+    branch: ^(?!stable/(?:juno|kilo|liberty)).*$
+    voting: false
+
+  - name: gate-murano-agent-python34
+    branch: ^(?!stable/(?:juno|kilo|liberty)).*$
+    voting: false
+
   # skip all openstack-ansible jobs except the docs job for rst/doc files
   - name: ^gate-openstack-ansible-(?!docs).*$
     skip-if:
@@ -6237,6 +6249,7 @@ projects:
       - gate-murano-congress-devstack-dsvm
       - gate-rally-dsvm-murano-task
       - gate-tempest-dsvm-murano-cfapi
+      - gate-murano-python34
     gate:
       - gate-murano-devstack-dsvm
     post:
@@ -6249,6 +6262,7 @@ projects:
       - name: publish-to-pypi
     check:
       - gate-murano-agent-requirements
+      - gate-murano-agent-python34
     post:
       - murano-agent-coverage
 
@@ -6265,6 +6279,7 @@ projects:
     check:
       - gate-murano-dashboard-pep8
       - gate-murano-dashboard-python27
+      - gate-murano-dashboard-python34
       - gate-murano-dashboard-npm-run-lint
       - gate-murano-devstack-dsvm
     gate:
