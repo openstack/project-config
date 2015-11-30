@@ -34,6 +34,7 @@ labels:
       - name: rax-ord
       - name: rax-iad
       - name: ovh-gra1
+      - name: ovh-bhs1
       - name: bluebox-sjc1
       - name: internap-nyj01
   - name: devstack-precise-check
@@ -68,6 +69,7 @@ labels:
       - name: rax-ord
       - name: rax-iad
       - name: ovh-gra1
+      - name: ovh-bhs1
       - name: bluebox-sjc1
       - name: internap-nyj01
   # Special dib specific labels for testing dib based images
@@ -122,6 +124,7 @@ labels:
       - name: rax-ord
       - name: rax-iad
       - name: ovh-gra1
+      - name: ovh-bhs1
       - name: bluebox-sjc1
       - name: internap-nyj01
   - name: ubuntu-trusty
@@ -138,6 +141,7 @@ labels:
       - name: rax-ord
       - name: rax-iad
       - name: ovh-gra1
+      - name: ovh-bhs1
       - name: bluebox-sjc1
       - name: internap-nyj01
   - name: ubuntu-trusty-check
@@ -145,6 +149,7 @@ labels:
     min-ready: 1
     providers:
       - name: ovh-gra1
+      - name: ovh-bhs1
       - name: bluebox-sjc1
       - name: internap-nyj01
   - name: ubuntu-trusty-2-node
@@ -162,6 +167,7 @@ labels:
       - name: hpcloud-b4
       - name: hpcloud-b5
       - name: ovh-gra1
+      - name: ovh-bhs1
       - name: bluebox-sjc1
       - name: internap-nyj01
   - name: devstack-trusty-2-node
@@ -179,6 +185,7 @@ labels:
       - name: hpcloud-b4
       - name: hpcloud-b5
       - name: ovh-gra1
+      - name: ovh-bhs1
       - name: bluebox-sjc1
       - name: internap-nyj01
   - name: devstack-precise-2-node
@@ -983,6 +990,45 @@ providers:
         config-drive: true
   - name: ovh-gra1
     region-name: 'GRA1'
+    cloud: ovh
+    api-timeout: 60
+    boot-timeout: 120
+    max-servers: 79
+    rate: 0.1
+    image-type: raw
+    images:
+      - name: centos-6
+        min-ram: 8000
+        name-filter: 'ssd-osFoundation-3'
+        diskimage: centos-6
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+      - name: devstack-precise
+        min-ram: 8000
+        name-filter: 'ssd-osFoundation-3'
+        diskimage: devstack-precise
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+      - name: devstack-trusty
+        min-ram: 8000
+        name-filter: 'ssd-osFoundation-3'
+        diskimage: devstack-trusty
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+      - name: ubuntu-trusty-check
+        min-ram: 8000
+        name-filter: 'ssd-osFoundation-3'
+        diskimage: ubuntu-trusty
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+      - name: ubuntu-trusty
+        min-ram: 8000
+        name-filter: 'ssd-osFoundation-3'
+        diskimage: ubuntu-trusty
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+  - name: ovh-bhs1
+    region-name: 'BHS1'
     cloud: ovh
     api-timeout: 60
     boot-timeout: 120
