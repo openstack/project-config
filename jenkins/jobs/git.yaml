@@ -1,0 +1,15 @@
+# General jobs relating to git (such as commit messages)
+
+- job-template:
+    name: 'gate-{name}-commit-message'
+    node: 'bare-precise || bare-trusty'
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - revoke-sudo
+      - zuul-git-prep
+      - shell: /usr/local/jenkins/slave_scripts/check-git-commit-message.sh
+
+    publishers:
+      - zuul-swift-upload-console-log
