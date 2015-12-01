@@ -261,6 +261,19 @@ labels:
       - name: hpcloud-b3
       - name: hpcloud-b4
       - name: hpcloud-b5
+  - name: fedora-23
+    image: fedora-23
+    ready-script: configure_mirror.sh
+    min-ready: 1
+    providers:
+      - name: rax-dfw
+      - name: rax-ord
+      - name: rax-iad
+      - name: hpcloud-b1
+      - name: hpcloud-b2
+      - name: hpcloud-b3
+      - name: hpcloud-b4
+      - name: hpcloud-b5
   - name: tripleo-f21
     image: tripleo-f21
     min-ready: 16
@@ -346,6 +359,12 @@ providers:
         username: jenkins
         private-key: /home/nodepool/.ssh/id_rsa
         config-drive: true
+      - name: fedora-23
+        min-ram: 8192
+        diskimage: fedora-23
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
       - name: devstack-centos7
         base-image: 'CentOS 7 (PVHVM)'
         min-ram: 8192
@@ -424,6 +443,12 @@ providers:
       - name: fedora-22
         min-ram: 8192
         diskimage: fedora-22
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+      - name: fedora-23
+        min-ram: 8192
+        diskimage: fedora-23
         username: jenkins
         private-key: /home/nodepool/.ssh/id_rsa
         config-drive: true
@@ -512,6 +537,12 @@ providers:
       - name: fedora-22
         min-ram: 8192
         diskimage: fedora-22
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+      - name: fedora-23
+        min-ram: 8192
+        diskimage: fedora-23
         username: jenkins
         private-key: /home/nodepool/.ssh/id_rsa
         config-drive: true
@@ -625,6 +656,12 @@ providers:
         username: jenkins
         private-key: /home/nodepool/.ssh/id_rsa
         config-drive: true
+      - name: fedora-23
+        min-ram: 30720
+        diskimage: fedora-23
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
   - name: hpcloud-b2
     region-name: 'region-b.geo-1'
     cloud: hpcloud
@@ -715,6 +752,12 @@ providers:
         username: jenkins
         private-key: /home/nodepool/.ssh/id_rsa
         config-drive: true
+      - name: fedora-23
+        min-ram: 30720
+        diskimage: fedora-23
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
   - name: hpcloud-b3
     region-name: 'region-b.geo-1'
     cloud: hpcloud
@@ -802,6 +845,12 @@ providers:
       - name: fedora-22
         min-ram: 30720
         diskimage: fedora-22
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+      - name: fedora-23
+        min-ram: 30720
+        diskimage: fedora-23
         username: jenkins
         private-key: /home/nodepool/.ssh/id_rsa
         config-drive: true
@@ -896,6 +945,12 @@ providers:
         username: jenkins
         private-key: /home/nodepool/.ssh/id_rsa
         config-drive: true
+      - name: fedora-23
+        min-ram: 30720
+        diskimage: fedora-23
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
   - name: hpcloud-b5
     region-name: 'region-b.geo-1'
     cloud: hpcloud
@@ -985,6 +1040,12 @@ providers:
       - name: fedora-22
         min-ram: 30720
         diskimage: fedora-22
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+      - name: fedora-23
+        min-ram: 30720
+        diskimage: fedora-23
         username: jenkins
         private-key: /home/nodepool/.ssh/id_rsa
         config-drive: true
@@ -1270,6 +1331,20 @@ diskimages:
       - node-devstack
       - puppet
     release: 22
+    env-vars:
+      TMPDIR: /opt/dib_tmp
+      DIB_IMAGE_CACHE: /opt/dib_cache
+      QEMU_IMG_OPTIONS: compat=0.10
+  - name: fedora-23
+    elements:
+      - fedora-minimal
+      - vm
+      - simple-init
+      - openstack-repos
+      - nodepool-base
+      - node-devstack
+      - puppet
+    release: 23
     env-vars:
       TMPDIR: /opt/dib_tmp
       DIB_IMAGE_CACHE: /opt/dib_cache
