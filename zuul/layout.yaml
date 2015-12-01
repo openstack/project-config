@@ -863,6 +863,14 @@ jobs:
         all-files-match-any:
           - ^.*\.rst$
           - ^doc/.*$
+  # Skip non-doc jobs for doc-only bifrost changes. Since documents
+  # are checked by bifrost-pep8, that job should not be skipped.
+  - name: ^.*bifrost-(python27|integration-coreosipa-cirros|integration-dibipa-debian-nv)$
+    skip-if:
+      - project: ^openstack/bifrost$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
   # Skip non-doc jobs for doc-only networking-midonet changes.  Since
   # doc/source/conf.py is checked by networking-midonet-pep8, that job
   # should not be skipped.
