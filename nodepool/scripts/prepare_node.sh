@@ -251,6 +251,3 @@ sudo -H /usr/zuul-swift-logs-env/bin/pip install python-magic argparse \
 # https://bugs.launchpad.net/ubuntu/+source/python2.7/+bug/839588
 sudo -H virtualenv /usr/os-testr-env
 sudo -H /usr/os-testr-env/bin/pip install os-testr
-
-sync
-sleep 5

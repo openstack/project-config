@@ -25,6 +25,3 @@ export THIN='true'
 sudo ip link set mtu 1458 dev eth0
 ./prepare_node.sh "$HOSTNAME"
 sudo -u jenkins -i /opt/nodepool-scripts/prepare_tripleo.sh "$HOSTNAME"
-
-sync
-sleep 5

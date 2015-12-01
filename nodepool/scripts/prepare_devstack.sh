@@ -20,6 +20,3 @@ cd /opt/nodepool-scripts/
 ./install_devstack_dependencies.sh
 DISTRIB_CODENAME=$(lsb_release -sc)
 python ./cache_devstack.py $DISTRIB_CODENAME
-
-sync
-sleep 5
