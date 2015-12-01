@@ -651,12 +651,14 @@
       - shell: |
           #/bin/bash -xe
           export PROJECTS="openstack/rally $PROJECTS"
+
           export DEVSTACK_GATE_CEILOMETER={ceilometer}
           export DEVSTACK_GATE_HEAT={heat}
           export DEVSTACK_GATE_NEUTRON={neutron}
           export DEVSTACK_GATE_SAHARA={sahara}
           export DEVSTACK_GATE_EXERCISES=0
           export DEVSTACK_GATE_TIMEOUT=120
+          export RALLY_DO_COMPARE={compare}
 
           DEVSTACK_LOCAL_CONFIG=$"enable_plugin rally git://git.openstack.org/openstack/rally"
           DEVSTACK_LOCAL_CONFIG+=$'\n'"CINDER_ENABLE_V1_API=True"
@@ -668,8 +670,11 @@
           ENABLED_SERVICES+=s-proxy,s-account,s-container,s-object,
           if [ $DEVSTACK_GATE_NEUTRON -ne 1 ]; then
               ENABLED_SERVICES+=n-net,n-api-meta,
+          else
+              ENABLED_SERVICES+=q-svc,q-dhcp,q-meta,q-agt,q-l3,
+              export DISABLED_SERVICES=n-net
           fi
-          if [ DEVSTACK_GATE_CEILOMETER -ne 0 ]; then
+          if [ $DEVSTACK_GATE_CEILOMETER -ne 0 ]; then
               export CEILOMETER_NOTIFICATION_TOPICS=notifications,profiler
 
               export PROJECTS="openstack/ceilometer $PROJECTS"
@@ -685,14 +690,14 @@
           if [ $DEVSTACK_GATE_HEAT -ne 0 ]; then
               ENABLED_SERVICES+=heat,h-api,h-api-cfn,h-api-cw,h-eng,
           fi
-          if [ DEVSTACK_GATE_SAHARA -ne 0 ]; then
+          if [ $DEVSTACK_GATE_SAHARA -ne 0 ]; then
               ENABLED_SERVICES+=sahara,
           fi
           export ENABLED_SERVICES
           export DEVSTACK_LOCAL_CONFIG
 
           function post_test_hook {{
-              if [ '{compare}' == 'true' ]; then
+              if [ $RALLY_DO_COMPARE -ne 0 ]; then
                   $BASE/new/rally/tests/ci/rally_verify.py --mode '{mode}' --compare
               else
                   $BASE/new/rally/tests/ci/rally_verify.py --mode '{mode}'
