@@ -72,7 +72,7 @@
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TIMEOUT=60
           export DEVSTACK_GATE_NEUTRON=1
-          export ENABLED_SERVICES=tempest,congress
+          export ENABLED_SERVICES=tempest
           export PROJECTS="openstack/murano $PROJECTS"
           export PROJECTS="openstack/murano-dashboard $PROJECTS"
           export PROJECTS="openstack/python-muranoclient $PROJECTS"
@@ -84,6 +84,7 @@
           export KEEP_LOCALRC=1
 
           export DEVSTACK_LOCAL_CONFIG="enable_plugin mistral git://git.openstack.org/openstack/mistral"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin congress git://git.openstack.org/openstack/congress"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"MURANO_ENABLE_MODEL_POLICY_ENFORCEMENT=True"
 
           if [[ $ZUUL_BRANCH =~ "kilo" ]]; then
