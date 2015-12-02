@@ -980,6 +980,12 @@ jobs:
   - name: gate-heat-dsvm-functional-convg-mysql
     branch: ^(?!stable/(juno|kilo|liberty)).*$
 
+  - name: gate-tempest-dsvm-heat
+    branch: ^(stable/(juno|kilo|liberty)).*$
+
+  - name: gate-tempest-dsvm-heat-apache
+    branch: ^(?!stable/(juno|kilo|liberty)).*$
+
     # NOTE(sambetts) Make requirements check non-voting for networking-cisco
     # until cisco requirements are in global requirements.
   - name: gate-networking-cisco-requirements
@@ -987,10 +993,6 @@ jobs:
 
   - name: gate-neutron-dsvm-functional-py34
     branch: ^(?!stable/(juno|kilo|liberty)).*$
-    voting: false
-
-  - name: gate-tempest-dsvm-heat-apache
-    branch: ^(?!stable/(juno|kilo)).*$
     voting: false
 
     # BUG #1290562 pypy does not work with new setuptools, so is breaking
@@ -5503,18 +5505,19 @@ projects:
       - gate-heat-dsvm-functional-orig-mysql
       - gate-heat-dsvm-functional-convg-mysql
       - gate-tempest-dsvm-heat
+      - gate-tempest-dsvm-heat-apache
       - gate-grenade-dsvm-heat
     gate:
       - gate-heat-dsvm-functional-orig-mysql
       - gate-heat-dsvm-functional-convg-mysql
       - gate-tempest-dsvm-heat
+      - gate-tempest-dsvm-heat-apache
       - gate-grenade-dsvm-heat
     post:
       - heat-coverage
     experimental:
       - gate-rally-dsvm-fakevirt-heat
       - gate-heat-dsvm-functional-orig-postgres
-      - gate-tempest-dsvm-heat-apache
 
   - name: openstack/heat-cfntools
     template:
