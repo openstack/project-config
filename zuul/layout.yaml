@@ -1013,11 +1013,11 @@ jobs:
   - name: ^gate-devstack-dsvm-cells$
     branch: ^(stable/(juno|kilo)).*$
 
-  - name: ^gate-grenade-dsvm$
-    branch: ^(?!stable/juno).*$
-
-  - name: ^gate-grenade-dsvm-neutron$
-    branch: ^(?!stable/juno).*$
+    # don't run any grenade jobs on the oldest supported stable
+    # branch, this lets us catch all jobs that don't otherwise have
+    # additional modifications.
+  - name: ^gate-grenade-dsvm
+    branch: ^(?!stable/kilo).*$
 
     # this is a deprecated way of testing, multinode grenade should be
     # used to test this from mitaka forward.
@@ -1025,7 +1025,7 @@ jobs:
     branch: ^stable/(kilo|liberty)$
 
   - name: ^gate-grenade-dsvm-multinode
-    branch: ^(?!stable/(juno|kilo|liberty)).*$
+    branch: ^(?!stable/(kilo|liberty)).*$
 
     # Note(tonyb) This code was added in kilo.  Testing it in Juno isn't
     # helpful.
@@ -1047,9 +1047,6 @@ jobs:
 
   - name: ^gate-grenade-dsvm-neutron-vpnaas
     voting: false
-
-  - name: ^gate-grenade-dsvm-heat
-    branch: ^(?!stable/(juno|kilo)).*$
 
   - name: gate-devstack-dsvm-updown
     branch: ^(?!stable)
@@ -1464,10 +1461,6 @@ jobs:
   - name: gate-sahara-python34
     branch: ^(?!stable/(juno|kilo)).*$
 
-  - name: gate-grenade-dsvm-sahara
-    branch: ^(?!stable/(icehouse|juno|kilo)).*$
-    voting: false
-
   - name: ^gate-sahara-dsvm-scenario.*-heat$
     branch: ^(?!stable/(icehouse|juno|kilo|liberty)).*$
 
@@ -1805,9 +1798,6 @@ jobs:
 
   - name: ^gate-horizon-npm-run-.*$
     branch: ^(?!stable/(juno|kilo)).*$
-
-  - name: gate-grenade-dsvm-ceilometer
-    branch: ^(?!stable/juno).*$
 
   - name: gate-aodh-dsvm-functional-hbase
     branch: ^(?!stable/liberty).*$
