@@ -16,8 +16,24 @@
 
 mkdir -p .test
 cd .test
-[ -d zuul ] || git clone https://git.openstack.org/openstack-infra/zuul --depth 1
-[ -d jenkins-job-builder ] || git clone https://git.openstack.org/openstack-infra/jenkins-job-builder --depth 1
+
+echo "Setting up .test"
+if [ -d zuul ]; then
+    echo "Updating zuul"
+    cd zuul; git pull; cd ..
+else
+    echo "Cloning zuul"
+    git clone https://git.openstack.org/openstack-infra/zuul --depth 1
+fi
+
+if [ -d jenkins-job-builder ]; then
+    echo "Updating jenkins-job-builder"
+    cd jenkins-job-builder; git pull; cd ..
+else
+    echo "Cloning jenkins-job-builder"
+    git clone https://git.openstack.org/openstack-infra/jenkins-job-builder --depth 1
+fi
+
 cd jenkins-job-builder
 # These are $WORKSPACE/.test/jenkins-job-builder/.test/...
 mkdir -p .test/new/config
