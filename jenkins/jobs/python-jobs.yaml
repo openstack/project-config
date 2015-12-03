@@ -75,23 +75,6 @@
     node: '{node}'
 
 - job-template:
-    name: 'experimental-swift-logs-{name}-pep8-centos6'
-    node: 'bare-centos6'
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - revoke-sudo
-      - gerrit-git-prep
-      - pep8:
-          env: pep8
-      - shell: purposefully_fail_me
-
-    publishers:
-      - zuul-swift-upload-logs-with-console:
-          upload_source: '.tox/pep8/log'
-
-- job-template:
     name: 'gate-{name}-pylint'
 
     builders:
