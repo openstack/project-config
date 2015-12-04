@@ -50,27 +50,9 @@ echo "$PACKAGES" > $PACKAGESFILE
 PACKAGELIST=`/usr/bindep-env/bin/bindep -b -f $PACKAGESFILE || true`
 rm $PACKAGESFILE
 
-if grep "^CentOS release 6" /etc/redhat-release ; then
-    # --downloadonly is provided by the yum-plugin-downloadonly package on
-    # CentOS 6.x
-    CENTOS6=1
-    yum install -y yum-plugin-downloadonly
-else
-    CENTOS6=0
-fi
-
 if [ -f /usr/bin/apt-get ] ; then
     # --ignore-missing conflicts with set -e, so force it to be ok
     apt-get -y --ignore-missing -d install $PACKAGELIST || true
 else
-    if [ $CENTOS6 -eq 1 ] ; then
-        # some packages may depend on python-setuptools, which is not
-        # installed and cannot be reinstalled on CentOS 6.x once yum
-        # has erased them, so use --skip-broken to avoid aborting; also
-        # on this platform --downloadonly causes yum to return nonzero
-        # even when it succeeds, so ignore its exit code
-        yum install -y --downloadonly --skip-broken $PACKAGELIST || true
-    else
-        yum install -y --downloadonly $PACKAGELIST
-    fi
+    yum install -y --downloadonly $PACKAGELIST
 fi

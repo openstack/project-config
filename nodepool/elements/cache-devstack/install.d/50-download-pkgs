@@ -27,31 +27,13 @@ if [[ ${YUM:-yum} == "dnf" ]]; then
     exit 0
 fi
 
-if grep "^CentOS release 6" /etc/redhat-release ; then
-    # --downloadonly is provided by the yum-plugin-downloadonly package on
-    # CentOS 6.x
-    CENTOS6=1
-    yum install -y yum-plugin-downloadonly
-else
-    CENTOS6=0
-fi
-
 while read line ; do
 
     if [ -f /usr/bin/apt-get ] ; then
         # --ignore-missing conflicts with set -e, so force it to be ok
         apt-get -y --ignore-missing -d install $line || true
     else
-        if [ $CENTOS6 -eq 1 ] ; then
-            # some packages may depend on python-setuptools, which is not
-            # installed and cannot be reinstalled on CentOS 6.x once yum
-            # has erased them, so use --skip-broken to avoid aborting; also
-            # on this platform --downloadonly causes yum to return nonzero
-            # even when it succeeds, so ignore its exit code
-            yum install -y --downloadonly --skip-broken $line || true
-        else
-            yum install -y --downloadonly $line
-        fi
+        yum install -y --downloadonly $line
     fi
 
 done < /tmp/pkgs-to-install
