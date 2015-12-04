@@ -95,7 +95,6 @@ def set_node_options(item, job, params, default):
     proposal_re = r'^.*(merge-release-tags|(propose|upstream)-(.*?)-(constraints-.*|updates?|update-liberty))$'  # noqa
     release_re = r'^.*-(forge|jenkinsci|mavencentral|pypi-(both|wheel)|npm)-upload$'
     hook_re = r'^hook-(.*?)-(rtfd)$'
-    centos6_re = r'^.*-centos6.*$'
     fedora_re = r'^.*-f(edora-)?2(1|2|3).*$'
     tripleo_re = r'^.*-tripleo-ci.*$'
     kolla_image_re = r'^.*-kolla-dsvm-(build|deploy)-.*$'
@@ -111,10 +110,6 @@ def set_node_options(item, job, params, default):
     # Put before distro specific overrides as they list distros in
     # the jobs names unrelated to where job should run.
     elif re.match(kolla_image_re, job.name):
-        pass
-    # Jobs needing centos6
-    elif re.match(centos6_re, job.name):
-        # Pass because job specified label is always correct.
         pass
     # Jobs needing fedora 2[1|2|3]
     elif re.match(fedora_re, job.name):
