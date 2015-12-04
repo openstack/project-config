@@ -1929,29 +1929,17 @@ jobs:
     branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
     voting: false
 
-  - name: gate-fuel-mirror-python26
-    branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
-    voting: false
-
   - name: ^gate-fuel-mirror-python.*$
     branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
 
   - name: gate-fuel-ostf-python27
     branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
 
-  - name: gate-fuel-plugins-python26
-    branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
-    voting: false
-
   - name: ^gate-fuel-plugins-python.*$
     branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
 
   - name: ^gate-fuel-stats-python.*$
     branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
-
-  - name: gate-fuel-upgrade-python26
-    branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
-    voting: false
 
   - name: ^gate-fuel-upgrade-python.*$
     branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
@@ -1963,13 +1951,6 @@ jobs:
   - name: ^gate-tempest-dsvm-ironic-agent_ssh$
     branch: ^(?!stable/juno).*$
 
-  # Python 2.6 deprecation
-  - name: gate-barbican-python26
-    branch: stable/juno
-
-  - name: gate-ceilometer-python26
-    branch: stable/juno
-
   - name: gate-ceilometer-dsvm-functional-mongodb
     branch: ^(?!stable/(juno|kilo)).*$
 
@@ -1978,72 +1959,6 @@ jobs:
 
   - name: gate-ceilometer-dsvm-functional-postgresql
     branch: ^(?!stable/(juno|kilo)).*$
-
-  - name: gate-cinder-python26
-    branch: stable/juno
-
-  - name: gate-designate-python26
-    branch: stable/juno
-
-  - name: gate-django_openstack_auth-python26
-    branch: stable/juno
-
-  - name: gate-glance-python26
-    branch: stable/juno
-
-  - name: gate-glance_store-python26
-    branch: ^stable/kilo$
-
-  - name: gate-heat-python26
-    branch: stable/juno
-
-  - name: gate-horizon-python26
-    branch: stable/juno
-
-  - name: gate-ironic-python26
-    branch: stable/juno
-
-  - name: gate-manila-python26
-  # manila has only a Juno branch
-    branch: ^stable/juno$
-
-  - name: gate-neutron-python26
-    branch: stable/juno
-
-  - name: gate-nova-python26
-    branch: stable/juno
-
-  - name: gate-sahara-python26
-    branch: stable/juno
-
-  # sahara-dashboard has only an Icehouse branch
-  - name: gate-sahara-dashboard-python26
-    branch: stable/icehouse
-
-  - name: gate-swift-python26
-    branch: stable/juno
-
-  - name: gate-trove-python26
-    branch: stable/juno
-
-  - name: gate-tuskar-python26
-    branch: ^stable/(icehouse|juno)$
-
-  - name: gate-tuskar-ui-python26
-    branch: ^stable/(icehouse|juno)$
-
-  - name: gate-zaqar-python26
-    branch: stable/juno
-
-  - name: gate-murano-python26
-    branch: ^stable/(icehouse|juno)$
-
-  - name: gate-murano-agent-python26
-    branch: ^stable/(icehouse|juno)$
-
-  - name: gate-murano-dashboard-python26
-    branch: ^stable/(icehouse|juno)$
-  # End of Python 2.6 depreciation
 
   # Python 3.4 jobs
   - name: ^gate-cinder-python34(-constraints)?$
@@ -2329,7 +2244,6 @@ projects:
   - name: openstack-dev/hacking
     template:
       - name: merge-check
-      - name: python26-jobs
       - name: python-jobs
       - name: python3-jobs
       - name: publish-to-pypi
@@ -2347,7 +2261,6 @@ projects:
   - name: openstack-dev/heat-cfnclient
     template:
       - name: merge-check
-      - name: python26-jobs
     check:
       - gate-heat-cfnclient-pep8
       - gate-heat-cfnclient-python27
@@ -2444,7 +2357,6 @@ projects:
       - name: publish-to-pypi
       - name: pypy-jobs
       - name: python-jobs
-      - name: python26-jobs
     check:
       - gate-bindep-docs
     gate:
@@ -2578,7 +2490,6 @@ projects:
   - name: openstack-infra/git-review
     template:
       - name: merge-check
-      - name: python26-jobs
       - name: python3-jobs
       - name: publish-to-pypi
     check:
@@ -3614,7 +3525,6 @@ projects:
     template:
       - name: merge-check
       - name: publish-to-pypi
-      - name: python26-jobs
       - name: python-jobs
       - name: infra-publish-jobs
     check:
@@ -3835,7 +3745,6 @@ projects:
   - name: openstack/barbican
     template:
       - name: merge-check
-      - name: python26-jobs
       - name: python-jobs
       - name: python3-jobs
       - name: translation-jobs
@@ -3904,7 +3813,6 @@ projects:
   - name: openstack/castellan
     template:
       - name: merge-check
-      - name: python26-jobs
       - name: python-jobs
       - name: python3-jobs
       - name: publish-to-pypi
@@ -3926,7 +3834,6 @@ projects:
   - name: openstack/ceilometer
     template:
       - name: merge-check
-      - name: python26-jobs
       - name: python-jobs
       - name: python3-jobs
       - name: openstack-server-publish-jobs
@@ -4009,7 +3916,6 @@ projects:
   - name: openstack/cinder
     template:
       - name: merge-check
-      - name: python26-jobs
       - name: python-jobs
       - name: python3-jobs
       - name: openstack-server-publish-jobs
@@ -4073,7 +3979,6 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python26-jobs
       - name: python3-jobs
       - name: pypy-jobs
       - name: publish-to-pypi
@@ -4091,7 +3996,6 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python26-jobs
       - name: python3-jobs
     check:
       - gate-cloud-init-tox-py27-coverage
@@ -4192,7 +4096,6 @@ projects:
   - name: openstack/compass-core
     template:
       - name: merge-check
-      - name: python26-jobs
     check:
       - gate-compass-core-pep8
       - gate-compass-core-python27
@@ -4405,7 +4308,6 @@ projects:
   - name: openstack/designate
     template:
       - name: merge-check
-      - name: python26-jobs
       - name: python-jobs
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
@@ -4591,7 +4493,6 @@ projects:
   - name: openstack/django_openstack_auth
     template:
       - name: merge-check
-      - name: python26-jobs
       - name: python-jobs
       - name: python3-jobs
       - name: openstack-client-publish-jobs
@@ -4798,7 +4699,6 @@ projects:
   - name: openstack/fuel-agent
     template:
       - name: merge-check
-      - name: python26-jobs
       - name: python3-jobs
     check:
       - gate-fuel-agent-pep8
@@ -4886,7 +4786,6 @@ projects:
       - name: python3-jobs
     check:
       - gate-fuel-mirror-pep8
-      - gate-fuel-mirror-python26
       - gate-fuel-mirror-python27
     gate:
       - gate-fuel-mirror-pep8
@@ -4903,7 +4802,6 @@ projects:
   - name: openstack/fuel-octane
     template:
       - name: merge-check
-      - name: python26-jobs
     check:
       - gate-fuel-octane-pep8
       - gate-fuel-octane-python27
@@ -5221,7 +5119,6 @@ projects:
       - name: merge-check
     check:
       - gate-fuel-plugins-pep8
-      - gate-fuel-plugins-python26
       - gate-fuel-plugins-python27
     gate:
       - gate-fuel-plugins-pep8
@@ -5256,7 +5153,6 @@ projects:
     check:
       - gate-fuel-upgrade-pep8
       - gate-fuel-upgrade-python27
-      - gate-fuel-upgrade-python26
     gate:
       - gate-fuel-upgrade-pep8
       - gate-fuel-upgrade-python27
@@ -5333,7 +5229,6 @@ projects:
   - name: openstack/glance
     template:
       - name: merge-check
-      - name: python26-jobs
       - name: python3-jobs
       - name: python-jobs
       - name: openstack-server-publish-jobs
@@ -5371,7 +5266,6 @@ projects:
   - name: openstack/glance_store
     template:
       - name: merge-check
-      - name: python26-jobs
       - name: python-jobs
       - name: python3-jobs
       - name: openstack-server-publish-jobs
@@ -5465,7 +5359,6 @@ projects:
   - name: openstack/heat
     template:
       - name: merge-check
-      - name: python26-jobs
       - name: python-jobs
       - name: python3-jobs
       - name: openstack-server-publish-jobs
@@ -5500,7 +5393,6 @@ projects:
       - name: merge-check
       - name: check-requirements
       - name: publish-to-pypi
-      - name: python26-jobs
       - name: python3-jobs
     check:
       - gate-heat-cfntools-pep8
@@ -5550,7 +5442,6 @@ projects:
   - name: openstack/horizon
     template:
       - name: merge-check
-      - name: python26-jobs
       - name: python-jobs
       - name: python3-jobs
       - name: openstack-server-publish-jobs
@@ -5627,7 +5518,6 @@ projects:
   - name: openstack/ironic
     template:
       - name: merge-check
-      - name: python26-jobs
       - name: python-jobs
       - name: python3-jobs
       - name: openstack-server-publish-jobs
@@ -5832,7 +5722,6 @@ projects:
   - name: openstack/kite
     template:
       - name: merge-check
-      - name: python26-jobs
       - name: python-jobs
       - name: check-requirements
       - name: openstack-server-release-jobs
@@ -5942,7 +5831,6 @@ projects:
       - name: merge-check
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
-      - name: python26-jobs
       - name: python-jobs
       - name: python3-jobs
       - name: check-requirements
@@ -6532,7 +6420,6 @@ projects:
   - name: openstack/neutron
     template:
       - name: merge-check
-      - name: python26-jobs
       - name: python-jobs
       - name: python-constraints-jobs
       - name: python3-constraints-jobs
@@ -6677,7 +6564,6 @@ projects:
   - name: openstack/nova
     template:
       - name: merge-check
-      - name: python26-jobs
       - name: python-jobs
       - name: python3-jobs
       - name: openstack-server-publish-jobs
@@ -7036,7 +6922,6 @@ projects:
       - name: merge-check
       - name: check-requirements
       - name: publish-to-pypi
-      - name: python26-jobs
       - name: python3-jobs
       - name: check-tripleo-jobs
     check:
@@ -7093,7 +6978,6 @@ projects:
       - name: merge-check
       - name: check-requirements
       - name: publish-to-pypi
-      - name: python26-jobs
       - name: python3-jobs
       - name: check-tripleo-jobs
     check:
@@ -7113,7 +6997,6 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
       - name: check-tripleo-jobs
-      - name: python26-jobs
     check:
       - gate-os-net-config-pep8
       - gate-os-net-config-python27
@@ -7130,7 +7013,6 @@ projects:
       - name: merge-check
       - name: check-requirements
       - name: publish-to-pypi
-      - name: python26-jobs
       - name: python3-jobs
       - name: check-tripleo-jobs
     check:
@@ -8581,7 +8463,6 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python26-jobs
       - name: python3-jobs
       # NOTE(andreykurilin): Disabled to get release out of the door"
       #- name: check-requirements
@@ -8726,7 +8607,6 @@ projects:
   - name: openstack/sahara
     template:
       - name: merge-check
-      - name: python26-jobs
       - name: python-jobs
       - name: python3-jobs
       - name: periodic-kilo
@@ -8771,7 +8651,6 @@ projects:
       - name: merge-check
       - name: check-requirements
       - name: publish-to-pypi
-      - name: python26-jobs
     check:
       - gate-sahara-dashboard-pep8
       - gate-sahara-dashboard-python27
@@ -8978,17 +8857,14 @@ projects:
       - name: merge-check
       - name: publish-to-pypi
       - name: docs-on-rtfd
-      - name: python26-jobs
       - name: python3-jobs
     check:
       - gate-sqlalchemy-migrate-pep8
       - gate-sqlalchemy-migrate-python27
-      - gate-sqlalchemy-migrate-tox-py26sa07
       - gate-sqlalchemy-migrate-tox-py27sa07
       - gate-sqlalchemy-migrate-devstack-dsvm
     gate:
       - gate-sqlalchemy-migrate-python27
-      - gate-sqlalchemy-migrate-tox-py26sa07
       - gate-sqlalchemy-migrate-tox-py27sa07
     post:
       - sqlalchemy-migrate-branch-tarball
@@ -9188,7 +9064,6 @@ projects:
   - name: openstack/swift
     template:
       - name: merge-check
-      - name: python26-jobs
       - name: python-jobs
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
@@ -9214,7 +9089,6 @@ projects:
     template:
       - name: merge-check
       - name: publish-to-pypi
-      - name: python26-jobs
     check:
       - gate-swift-bench-pep8
       - gate-swift-bench-python27
@@ -9620,7 +9494,6 @@ projects:
   - name: openstack/trove
     template:
       - name: merge-check
-      - name: python26-jobs
       - name: python-jobs
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
@@ -9691,7 +9564,6 @@ projects:
   - name: openstack/tuskar
     template:
       - name: merge-check
-      - name: python26-jobs
       - name: python-jobs
       - name: check-tripleo-jobs
       - name: openstack-server-publish-jobs
@@ -9708,7 +9580,6 @@ projects:
       - name: merge-check
       - name: publish-to-pypi
       - name: experimental-tripleo-jobs
-      - name: python26-jobs
       - name: openstack-client-publish-jobs
     check:
       - gate-tuskar-ui-pep8
@@ -9961,7 +9832,6 @@ projects:
   - name: openstack/zaqar
     template:
       - name: merge-check
-      - name: python26-jobs
       - name: python3-jobs
       - name: python-jobs
       - name: check-requirements
