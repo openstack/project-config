@@ -96,6 +96,11 @@ if [ -f /tmp/openstack/tempest/tempest.log ] ; then
     sudo cp /tmp/openstack/tempest/tempest.log $LOG_DIR/
 fi
 
+# Tempest subunit results
+if [ -f /tmp/openstack/tempest/testrepository.subunit ] ; then
+    sudo cp /tmp/openstack/tempest/testrepository.subunit $LOG_DIR/testrepository.subunit
+fi
+
 # dstat logs
 if [ -f /var/log/dstat.log ] ; then
     sudo cp /var/log/dstat.log $LOG_DIR/
