@@ -95,7 +95,6 @@ def set_node_options(item, job, params, default):
     proposal_re = r'^.*(merge-release-tags|(propose|upstream)-(.*?)-(constraints-.*|updates?|update-liberty))$'  # noqa
     release_re = r'^.*-(forge|jenkinsci|mavencentral|pypi-(both|wheel)|npm)-upload$'
     hook_re = r'^hook-(.*?)-(rtfd)$'
-    python26_re = r'^.*-(py(thon)?)?26.*$'
     centos6_re = r'^.*-centos6.*$'
     fedora_re = r'^.*-f(edora-)?2(1|2|3).*$'
     tripleo_re = r'^.*-tripleo-ci.*$'
@@ -108,10 +107,6 @@ def set_node_options(item, job, params, default):
     if (re.match(proposal_re, job.name) or re.match(release_re, job.name) or
             re.match(hook_re, job.name)):
         reusable_node(item, job, params)
-    # Jobs needing python26
-    elif re.match(python26_re, job.name):
-        # Pass because job specified label is always correct.
-        pass
     # Kolla build image jobs always have the correct node label.
     # Put before distro specific overrides as they list distros in
     # the jobs names unrelated to where job should run.

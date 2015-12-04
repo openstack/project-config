@@ -90,7 +90,6 @@ def set_node_options(item, job, params, default):
     params['OFFLINE_NODE_WHEN_COMPLETE'] = '1'
     proposal_re = r'^.*(merge-release-tags|(propose|upstream)-(.*?)-updates?)$'  # noqa
     release_re = r'^.*-(jenkinsci|mavencentral|pypi-(both|wheel))-upload$'
-    python26_re = r'^.*-(py(thon)?)?26.*$'
     centos6_re = r'^.*-centos6.*$'
     f20_re = r'^.*-f20.*$'
     f21_re = r'^.*-f21.*$'
@@ -100,10 +99,6 @@ def set_node_options(item, job, params, default):
     # jobs run on the proposal worker
     if re.match(proposal_re, job.name) or re.match(release_re, job.name):
         reusable_node(item, job, params)
-    # Jobs needing python26
-    elif re.match(python26_re, job.name):
-        # Pass because job specified label is always correct.
-        pass
     # Jobs needing centos6
     elif re.match(centos6_re, job.name):
         # Pass because job specified label is always correct.
