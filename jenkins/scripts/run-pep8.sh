@@ -18,6 +18,9 @@ venv=${1:-pep8}
 
 export UPPER_CONSTRAINTS_FILE=$(pwd)/upper-constraints.txt
 
+python setup.py sdist
+sdistrc=$?
+
 tox -v -e$venv
 rc=$?
 
@@ -27,5 +30,13 @@ echo "Begin $freezecmd freeze output from test virtualenv:"
 echo "======================================================================"
 .tox/${venv}/bin/${freezecmd} freeze
 echo "======================================================================"
+
+if [ ! $sdistrc ] ; then
+    echo "******************************************************************"
+    echo "Project cannot create sdist tarball!!!"
+    echo "To reproduce this locally, run: 'python setup.py sdist'"
+    echo "******************************************************************"
+    exit $sdistrc
+fi
 
 exit $rc
