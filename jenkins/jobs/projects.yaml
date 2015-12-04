@@ -997,12 +997,19 @@
 
     jobs:
       - gate-{name}-bashate
-      - '{pipeline}-tempest-dsvm-full-devstack-plugin-ceph{branch-designator}':
+      - '{pipeline}-tempest-dsvm-full-devstack-plugin-ceph{job-suffix}':
           node: devstack-precise || devstack-trusty
           pipeline: gate
           plugin: ceph
           plugin-repo: openstack/devstack-plugin-ceph
-          branch-designator: ''
+          job-suffix: '-nv'
+          branch-override: default
+      - '{pipeline}-tempest-dsvm-full-devstack-plugin-ceph{job-suffix}':
+          node: devstack-precise || devstack-trusty
+          pipeline: gate
+          plugin: ceph
+          plugin-repo: openstack/devstack-plugin-ceph
+          job-suffix: ''
           branch-override: default
 
 - project:
