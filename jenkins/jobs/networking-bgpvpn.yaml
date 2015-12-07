@@ -48,3 +48,51 @@
       - devstack-logs
       - console-log
 
+- job-template:
+    name: '{pipeline}-install-dsvm-networking-bgpvpn-bagpipe{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=120
+          export DEVSTACK_GATE_NEUTRON=1
+          # For now, simply enable bringing stack.sh up with the BGPVPN service plugin.
+          # Future jobs will run tempest.
+          export DEVSTACK_GATE_TEMPEST=0
+          # Enable only a very minimal set of services
+          export OVERRIDE_ENABLED_SERVICES=q-svc,q-agt,q-dhcp,q-l3,key,mysql,rabbit
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          # Because we are testing a non standard project, add
+          # our project repository. This makes zuul do the right
+          # reference magic for testing changes.
+          export PROJECTS="openstack/networking-bgpvpn $PROJECTS"
+          # Note the actual url here is somewhat irrelevant because it
+          # caches in nodepool, however make it a valid url for
+          # documentation purposes.
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin networking-bgpvpn git://git.openstack.org/openstack/networking-bgpvpn"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"NETWORKING_BGPVPN_DRIVER=BGPVPN:BaGPipe:networking_bgpvpn.neutron.services.service_drivers.bagpipe.bagpipe.BaGPipeBGPVPNDriver:default"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin networking-bagpipe https://git.openstack.org/openstack/networking-bagpipe"
+
+          # Keep localrc to be able to set some vars in pre_test_hook
+          export KEEP_LOCALRC=1
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
