@@ -25,3 +25,41 @@
 
     publishers:
       - console-log
+- job:
+    name: 'dib-buildimage-debian-ironic-agent'
+    node: 'bare-trusty'
+
+    builders:
+      - link-logs
+      - net-info
+      - shell: |
+          #!/bin/bash -eux
+          cd ~
+
+          /usr/zuul-env/bin/zuul-cloner --cache-dir /opt/git \
+            git://git.openstack.org \
+            openstack/diskimage-builder \
+            openstack/dib-utils
+
+          export PATH=$PATH:$(pwd)/openstack/dib-utils/bin
+          export PATH=$PATH:$(pwd)/openstack/diskimage-builder/bin
+
+          ./openstack/diskimage-builder/tests/install_test_deps.sh
+
+          DIB_RELEASE="jessie" diskimage-builder \
+            -o ~/debian-jessie-ironic-agent \
+            debian ironic-agent
+
+    publishers:
+      - scp:
+          site: 'tarballs.openstack.org'
+          files:
+            - source: 'debian-jessie-ironic-agent.vmlinuz'
+              target: 'images/ironic-agent/debian-jessie/'
+              keep-hierarchy: false
+              copy-after-failure: false
+            - source: 'debian-jessie-ironic-agent.initramfs'
+              target: 'images/ironic-agent/debian-jessie/debian-jessie-ironic-agent.initramfs'
+              keep-hierarchy: false
+              copy-after-failure: false
+      - console-log
