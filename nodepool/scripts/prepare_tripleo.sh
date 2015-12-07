@@ -60,6 +60,3 @@ else
     echo "Unsupported distro."
     exit 1
 fi
-
-sync
-sleep 5
