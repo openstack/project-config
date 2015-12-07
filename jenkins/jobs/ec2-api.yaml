@@ -43,7 +43,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-functional-neutron-dsvm-ec2api{job-suffix}'
+    name: '{pipeline}-functional-{network}-dsvm-ec2api{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -60,50 +60,6 @@
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TIMEOUT=120
           export DEVSTACK_GATE_TEMPEST=1
-          export DEVSTACK_GATE_TEMPEST_NOTESTS=1
-          export DEVSTACK_GATE_NEUTRON=1
-          export BRANCH_OVERRIDE={branch-override}
-          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
-              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
-          fi
-          export PROJECTS="openstack/ec2-api $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin ec2-api git://git.openstack.org/openstack/ec2-api"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin neutron-vpnaas git://git.openstack.org/openstack/neutron-vpnaas"
-
-          function post_test_hook {{
-              source $BASE/new/devstack/accrc/admin/admin
-              cd /opt/stack/new/ec2-api/
-              ./ec2api/tests/contrib/post_test_hook.sh
-          }}
-          export -f post_test_hook
-
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
-
-    publishers:
-      - devstack-logs
-      - console-log
-
-- job-template:
-    name: '{pipeline}-functional-nova-network-dsvm-ec2api{job-suffix}'
-    node: '{node}'
-
-    wrappers:
-      - build-timeout:
-          timeout: 125
-      - timestamps
-
-    builders:
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - shell: |
-          #!/bin/bash -xe
-          export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_TIMEOUT=120
-          export DEVSTACK_GATE_TEMPEST=1
-          export DEVSTACK_GATE_TEMPEST_NOTESTS=1
-          export DEVSTACK_GATE_NEUTRON=0
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -111,12 +67,25 @@
           export PROJECTS="openstack/ec2-api $PROJECTS"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin ec2-api git://git.openstack.org/openstack/ec2-api"
 
-          function post_test_hook {{
-              source $BASE/new/devstack/accrc/admin/admin
-              cd /opt/stack/new/ec2-api/
-              ./ec2api/tests/contrib/post_test_hook.sh
-          }}
-          export -f post_test_hook
+          if [ "{network}" = "neutron" ] ; then
+              export DEVSTACK_GATE_NEUTRON=1
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin neutron-vpnaas git://git.openstack.org/openstack/neutron-vpnaas"
+          else
+              export DEVSTACK_GATE_NEUTRON=0
+          fi
+
+          if [ "$ZUUL_BRANCH" = "stable/kilo" ] ; then
+              export DEVSTACK_GATE_TEMPEST_NOTESTS=1
+              function post_test_hook {{
+                  source $BASE/new/devstack/accrc/admin/admin
+                  cd /opt/stack/new/ec2-api/
+                  ./ec2api/tests/contrib/post_test_hook.sh
+              }}
+              export -f post_test_hook
+          else
+              export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
+              export DEVSTACK_GATE_TEMPEST_REGEX="ec2api.tests.functional"
+          fi
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
@@ -152,10 +121,10 @@
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin neutron-vpnaas git://git.openstack.org/openstack/neutron-vpnaas"
           export ENABLED_SERVICES+=,swift3
 
+          export RUN_LONG_TESTS=1
           function post_test_hook {
               source $BASE/new/devstack/accrc/admin/admin
               cd /opt/stack/new/ec2-api/
-              export RUN_LONG_TESTS=1
               ./ec2api/tests/contrib/post_test_hook.sh
           }
           export -f post_test_hook
