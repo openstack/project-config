@@ -80,6 +80,54 @@
       - console-log
 
 - job-template:
+    name: '{pipeline}-tempest-dsvm-neutron-dvr-ovs-native{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          # Start with the base set of services
+          OVERRIDE_ENABLED_SERVICES=mysql,rabbit,key,tempest,g-api,g-reg
+          # Add Nova services (except for nova-network)
+          OVERRIDE_ENABLED_SERVICES+=,n-api,n-cond,n-cpu,n-crt,n-obj,n-sch
+          # Enable Neutron
+          OVERRIDE_ENABLED_SERVICES+=,q-svc,q-dhcp,q-meta,q-l3,q-agt
+          export OVERRIDE_ENABLED_SERVICES
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=120
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_NEUTRON=1
+          export DEVSTACK_GATE_TEMPEST_FULL=1
+          export DEVSTACK_GATE_NEUTRON_DVR=1
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          # Add configrations for ovs native interface in local.conf
+          function pre_test_hook {{
+              local localconf=$BASE/new/devstack/local.conf
+              echo "[[post-config|/\$Q_PLUGIN_CONF_FILE]]" >> $localconf
+              echo "[ovs]" >> $localconf
+              echo "of_interface=native" >> $localconf
+          }}
+          export -f pre_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
     name: '{pipeline}-neutron-dsvm-functional{python}{job-suffix}'
     node: '{node}'
 
@@ -294,6 +342,46 @@
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-tempest-dsvm-neutron-ovs-native{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=120
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_TEMPEST_FULL=1
+          export DEVSTACK_GATE_NEUTRON=1
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          # Add configrations for ovs native interface in local.conf
+          function pre_test_hook {{
+              local localconf=$BASE/new/devstack/local.conf
+              echo "[[post-config|/\$Q_PLUGIN_CONF_FILE]]" >> $localconf
+              echo "[ovs]" >> $localconf
+              echo "of_interface=native" >> $localconf
+          }}
+          export -f pre_test_hook
+
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
 
