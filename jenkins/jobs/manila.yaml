@@ -1,5 +1,5 @@
-- job:
-    name: gate-manila-tempest-dsvm-neutron-postgres
+- job-template:
+    name: 'gate-manila-tempest-dsvm-{description}'
     node: 'devstack-precise || devstack-trusty'
 
     wrappers:
@@ -8,6 +8,8 @@
       - timestamps
 
     builders:
+      - print-template-name:
+          template-name: "{template-name}"
       - link-logs
       - net-info
       - devstack-checkout
@@ -16,7 +18,7 @@
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TIMEOUT=70
           export DEVSTACK_GATE_NEUTRON=1
-          export DEVSTACK_GATE_POSTGRES=1
+          export DEVSTACK_GATE_POSTGRES={postgres_enabled}
           export ENABLED_SERVICES=tempest
 
           if [[ $ZUUL_BRANCH = "stable/juno" ]]; then
@@ -24,23 +26,27 @@
               # enabling of services.
               ENABLED_SERVICES+=,manila,m-api,m-shr,m-sch
           else
-              # Enable manila devstack plugin. Provided repo should be cloned by zuul before devstack run
-              # and below provided link should not be used.
+              # Enable manila devstack plugin. Provided repo should be
+              # cloned by zuul before devstack run and below provided
+              # link should not be used.
               export DEVSTACK_LOCAL_CONFIG="enable_plugin manila git://git.openstack.org/openstack/manila"
           fi
 
           # Keep localrc to be able to set some vars in pre_test_hook
           export KEEP_LOCALRC=1
 
-          function pre_test_hook {
-              source $BASE/new/manila/contrib/ci/pre_test_hook.sh
-          }
+          function pre_test_hook {{
+              # Variable 'dhss' means 'driver handles share servers',
+              # boolean-like.
+              source $BASE/new/manila/contrib/ci/pre_test_hook.sh {dhss}
+          }}
           export -f pre_test_hook
 
-          function post_test_hook {
-              # Configure and run tempest on singlebackend manila installation
-              source $BASE/new/manila/contrib/ci/post_test_hook.sh singlebackend
-          }
+          function post_test_hook {{
+              # Configure and run tempest on 'singlebackend' or
+              # 'multibackend' manila installation.
+              source $BASE/new/manila/contrib/ci/post_test_hook.sh {back_end_type}
+          }}
           export -f post_test_hook
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
@@ -49,164 +55,6 @@
     publishers:
       - devstack-logs
       - console-log
-
-
-- job:
-    name: gate-manila-tempest-dsvm-neutron
-    node: 'devstack-precise || devstack-trusty'
-
-    wrappers:
-      - build-timeout:
-          timeout: 75
-      - timestamps
-
-    builders:
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - shell: |
-          #!/bin/bash -xe
-          export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_TIMEOUT=70
-          export DEVSTACK_GATE_NEUTRON=1
-          export ENABLED_SERVICES=tempest
-
-          if [[ $ZUUL_BRANCH = "stable/juno" ]]; then
-              # Juno version uses 'hooks' approach that requires explicit
-              # enabling of services.
-              ENABLED_SERVICES+=,manila,m-api,m-shr,m-sch
-          else
-              # Enable manila devstack plugin. Provided repo should be cloned by zuul before devstack run
-              # and below provided link should not be used.
-              export DEVSTACK_LOCAL_CONFIG="enable_plugin manila git://git.openstack.org/openstack/manila"
-          fi
-
-          # Keep localrc to be able to set some vars in pre_test_hook
-          export KEEP_LOCALRC=1
-
-          function pre_test_hook {
-              source $BASE/new/manila/contrib/ci/pre_test_hook.sh
-          }
-          export -f pre_test_hook
-
-          function post_test_hook {
-              # Configure and run tempest on singlebackend manila installation
-              source $BASE/new/manila/contrib/ci/post_test_hook.sh singlebackend
-          }
-          export -f post_test_hook
-
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
-
-    publishers:
-      - devstack-logs
-      - console-log
-
-
-- job:
-    name: gate-manila-tempest-dsvm-neutron-multibackend
-    node: 'devstack-precise || devstack-trusty'
-
-    wrappers:
-      - build-timeout:
-          timeout: 75
-      - timestamps
-
-    builders:
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - shell: |
-          #!/bin/bash -xe
-          export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_TIMEOUT=70
-          export DEVSTACK_GATE_NEUTRON=1
-          export ENABLED_SERVICES=tempest
-
-          if [[ $ZUUL_BRANCH = "stable/juno" ]]; then
-              # Juno version uses 'hooks' approach that requires explicit
-              # enabling of services.
-              ENABLED_SERVICES+=,manila,m-api,m-shr,m-sch
-          else
-              # Enable manila devstack plugin. Provided repo should be cloned by zuul before devstack run
-              # and below provided link should not be used.
-              export DEVSTACK_LOCAL_CONFIG="enable_plugin manila git://git.openstack.org/openstack/manila"
-          fi
-
-          # Keep localrc to be able to set some vars in pre_test_hook
-          export KEEP_LOCALRC=1
-
-          function pre_test_hook {
-              source $BASE/new/manila/contrib/ci/pre_test_hook.sh
-          }
-          export -f pre_test_hook
-
-          function post_test_hook {
-              # Configure and run tempest on multibackend manila installation
-              source $BASE/new/manila/contrib/ci/post_test_hook.sh multibackend
-          }
-          export -f post_test_hook
-
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
-
-    publishers:
-      - devstack-logs
-      - console-log
-
-
-- job:
-    name: gate-manila-tempest-dsvm-neutron-no-share-servers-multibackend
-    node: 'devstack-precise || devstack-trusty'
-
-    wrappers:
-      - build-timeout:
-          timeout: 75
-      - timestamps
-
-    builders:
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - shell: |
-          #!/bin/bash -xe
-          export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_TIMEOUT=70
-          export DEVSTACK_GATE_NEUTRON=1
-          export ENABLED_SERVICES=tempest
-
-          if [[ $ZUUL_BRANCH = "stable/juno" ]]; then
-              # Juno version uses 'hooks' approach that requires explicit
-              # enabling of services.
-              ENABLED_SERVICES+=,manila,m-api,m-shr,m-sch
-          else
-              # Enable manila devstack plugin. Provided repo should be cloned by zuul before devstack run
-              # and below provided link should not be used.
-              export DEVSTACK_LOCAL_CONFIG="enable_plugin manila git://git.openstack.org/openstack/manila"
-          fi
-
-          # Keep localrc to be able to set some vars in pre_test_hook
-          export KEEP_LOCALRC=1
-
-          function pre_test_hook {
-              # Configure devstack to run manila installation without handling of share servers
-              source $BASE/new/manila/contrib/ci/pre_test_hook.sh False
-          }
-          export -f pre_test_hook
-
-          function post_test_hook {
-              # Configure and run tempest on multibackend manila installation
-              source $BASE/new/manila/contrib/ci/post_test_hook.sh multibackend
-          }
-          export -f post_test_hook
-
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
-
-    publishers:
-      - devstack-logs
-      - console-log
-
 
 - job:
     name: gate-manilaclient-dsvm-neutron-functional
@@ -260,56 +108,6 @@
       - devstack-logs
       - console-log
 
-- job:
-    name: gate-manila-tempest-dsvm-neutron-scenario-multibackend
-    node: 'devstack-precise || devstack-trusty'
-
-    wrappers:
-      - build-timeout:
-          timeout: 75
-      - timestamps
-
-    builders:
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - shell: |
-          #!/bin/bash -xe
-          export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_TIMEOUT=70
-          export DEVSTACK_GATE_NEUTRON=1
-          export ENABLED_SERVICES=tempest
-
-          if [[ $ZUUL_BRANCH = "stable/juno" ]]; then
-              # Juno version uses 'hooks' approach that requires explicit
-              # enabling of services.
-              ENABLED_SERVICES+=,manila,m-api,m-shr,m-sch
-          else
-              # Enable manila devstack plugin. Provided repo should be cloned by zuul before devstack run
-              # and below provided link should not be used.
-              export DEVSTACK_LOCAL_CONFIG="enable_plugin manila git://git.openstack.org/openstack/manila"
-          fi
-
-          # Keep localrc to be able to set some vars in pre_test_hook
-          export KEEP_LOCALRC=1
-
-          function pre_test_hook {
-              source $BASE/new/manila/contrib/ci/pre_test_hook.sh
-          }
-          export -f pre_test_hook
-
-          function post_test_hook {
-              # Configure and run tempest on multibackend manila installation
-              source $BASE/new/manila/contrib/ci/post_test_hook.sh multibackend
-          }
-          export -f post_test_hook
-
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
-
-    publishers:
-      - devstack-logs
-      - console-log
 
 - job-template:
     name: 'gate-manila-buildimage-{os-element}'
