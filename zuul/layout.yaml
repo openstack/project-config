@@ -1062,11 +1062,10 @@ jobs:
     voting: false
 
   - name: gate-tempest-dsvm-multinode-full
-    branch: ^(?!stable/juno).*$
     voting: false
 
   - name: gate-tempest-dsvm-multinode-live-migration
-    branch: ^(?!stable/(juno|kilo|liberty)).*$
+    branch: ^(?!stable/(kilo|liberty)).*$
     voting: false
 
   - name: gate-tempest-dsvm-neutron-multinode-full
@@ -1331,7 +1330,7 @@ jobs:
   - name: gate-compute-api-guide
     success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/api-guide/build/html/
     voting: false
-    branch: ^(?!stable/(juno|kilo|liberty)).*$
+    branch: ^(?!stable/(kilo|liberty)).*$
 
   - name: ^gate-.*-js-draft
     parameter-function: set_node_options_default_trusty
@@ -1693,9 +1692,6 @@ jobs:
     branch: ^master$
     voting: false
 
-  - name: gate-tempest-dsvm-neutron-linuxbridge
-    branch: ^(?!stable/juno).*$
-
   - name: gate-trove-buildimage-mysql
     voting: false
 
@@ -1728,14 +1724,7 @@ jobs:
     files:
       - '^apidocs/.*$'
 
-  - name: gate-tempest-dsvm-full-ceph
-    branch: ^(?!stable/juno).*$
-
-  - name: gate-tempest-dsvm-full-devstack-plugin-ceph-nv
-    branch: ^(?!stable/juno).*$
-
   - name: gate-tempest-dsvm-full-lio
-    branch: ^(?!stable/juno).*$
     voting: false
 
   # Swift log publishing details
@@ -1838,7 +1827,7 @@ jobs:
     branch: ^(?!stable/kilo).*$
 
   - name: ^gate-tempest-dsvm-lxc
-    branch: ^(?!stable/(juno|kilo|liberty)).*$
+    branch: ^(?!stable/(kilo|liberty)).*$
 
   # TODO(yamamoto): Revisit when Neutron driver API become more stable.
   - name: gate-networking-ofagent-python27
@@ -1962,11 +1951,11 @@ jobs:
 
   # Saharaclient python 3.4 tests don't run on kilo or earlier
   - name: ^gate-python-saharaclient-python34$
-    branch: ^(?!stable/(?:juno|kilo)).*$
+    branch: ^(?!stable/kilo).*$
 
   # Saharaclient functional test don't run on kilo or earlier
   - name: ^gate-saharaclient-dsvm-functional$
-    branch: ^(?!stable/(?:juno|kilo)).*$
+    branch: ^(?!stable/kilo).*$
 
   # Only run the unit cross tests for cliff against master.
   - name: ^gate-cliff-tox-(openstackclient|neutronclient)-tip$
@@ -2012,10 +2001,10 @@ jobs:
 
   # Constraints Jobs
   - name: ^gate-.*-constraints$
-    branch: ^(?!stable/(?:juno|kilo)).*$
+    branch: ^(?!stable/kilo).*$
 
   - name: ^.*-tarball-constraints$
-    branch: ^(?!stable/(?:juno|kilo)).*$
+    branch: ^(?!stable/kilo).*$
 
   - name: gate-neutron-python27
     branch: ^(?:stable/kilo).*$
@@ -2052,10 +2041,10 @@ jobs:
 
   - name: ^gate-cinder-.*-constraints$
     voting: false
-  # End Constraints Jobs
 
   - name: ^gate-glance-.*-constraints$
     voting: false
+  # End Constraints Jobs
 
   - name: gate-python-fuelclient-python34
     branch: ^(?!stable/(?:6\.1|7.0)).*$
