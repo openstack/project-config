@@ -18,8 +18,9 @@ venv=${1:-pep8}
 
 export UPPER_CONSTRAINTS_FILE=$(pwd)/upper-constraints.txt
 
-python setup.py sdist
+virtualenv sdist_check && sdist_check/bin/pip install pbr && sdist_check/bin/python setup.py sdist
 sdistrc=$?
+rm -rf sdist_check
 
 tox -v -e$venv
 rc=$?
