@@ -565,28 +565,23 @@
 - builder:
     name: install-distro-packages
     builders:
+      - shell: /usr/local/jenkins/slave_scripts/install-distro-packages.sh
+
+- builder:
+    name: install-distro-packages-fallback-test
+    builders:
       - shell: |
           #!/bin/bash -xe
-          if [ -e other-requirements.txt ] ; then
-              export DISTRO_PACKAGES=other-requirements.txt
-          else
-              mkdir -p .test
-              pushd .test
-              /usr/zuul-env/bin/zuul-cloner --cache-dir /opt/git \
-                  git://git.openstack.org openstack-infra/project-config
-              popd
-              export DISTRO_PACKAGES=.test/openstack-infra/project-config/jenkins/data/bindep-fallback.txt
+          if [ "$ZUUL_PROJECT" == "openstack-infra/bindep" ] ; then
+              # if testing a change to bindep, use its entrypoint
+              virtualenv bindep-env
+              bindep-env/bin/pip install -U .
+              export BINDEP=bindep-env/bin/bindep
+          elif [ "$ZUUL_PROJECT" == "openstack-infra/project-config" ] ; then
+              # if testing a change to project-config, use its fallback list
+              export PACKAGES=jenkins/data/bindep-fallback.txt
           fi
-          if apt-get -v >/dev/null ; then
-              sudo apt-get update
-              sudo PATH=/usr/sbin:/sbin:$PATH DEBIAN_FRONTEND=noninteractive \
-                  apt-get --option "Dpkg::Options::=--force-confold" \
-                  --assume-yes install \
-                  `/usr/bindep-env/bin/bindep -b -f $DISTRO_PACKAGES || true`
-          else
-              sudo PATH=/usr/sbin:/sbin:$PATH yum install -y \
-                  `/usr/bindep-env/bin/bindep -b -f $DISTRO_PACKAGES || true`
-          fi
+          /usr/local/jenkins/slave_scripts/install-distro-packages.sh
 
 - builder:
     name: mysql-prep

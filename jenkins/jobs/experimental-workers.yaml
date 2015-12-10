@@ -24,3 +24,19 @@
       - console-log
 
     node: ubuntu-trusty
+
+- job-template:
+    name: gate-bindep-fallback-{node}
+
+    wrappers:
+      - timestamps
+
+    builders:
+      - zuul-git-prep
+      - install-distro-packages-fallback-test
+
+    publishers:
+      - test-results
+      - console-log
+
+    node: '{node}'
