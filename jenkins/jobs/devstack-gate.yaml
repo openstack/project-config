@@ -833,6 +833,13 @@
           # Allow switching between full tempest and baremetal-only
           export {tempest-env}
 
+          # Allow using the devstack plugin in ironic's tree.
+          # This is temporary until we ensure it's working as expected.
+          export IRONIC_DEVSTACK_PLUGIN_ENABLED={devstack-plugin-enabled}
+          if [ "$IRONIC_DEVSTACK_PLUGIN_ENABLED" == "1" ] ; then
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ironic git://git.openstack.org/openstack/ironic"
+          fi
+
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
 
@@ -896,6 +903,7 @@
           client-from-source: 0
           ironic-lib-from-source: 0
           ipxe-enabled: 0
+          devstack-plugin-enabled: 0
           branch-override: '{branch-override}'
           tempest-env: 'DEVSTACK_GATE_TEMPEST_REGEX=baremetal'
           devstack-timeout: 120
@@ -926,6 +934,7 @@
           client-from-source: 0
           ironic-lib-from-source: 0
           ipxe-enabled: 0
+          devstack-plugin-enabled: 0
           branch-override: '{branch-override}'
           tempest-env: 'DEVSTACK_GATE_TEMPEST_FULL=1'
           devstack-timeout: 150
@@ -956,6 +965,7 @@
           client-from-source: 0
           ironic-lib-from-source: 0
           ipxe-enabled: 0
+          devstack-plugin-enabled: 0
           branch-override: '{branch-override}'
           tempest-env: 'DEVSTACK_GATE_TEMPEST_REGEX=baremetal'
           devstack-timeout: 120
@@ -1030,6 +1040,39 @@
           client-from-source: 0
           ironic-lib-from-source: 0
           ipxe-enabled: 0
+          devstack-plugin-enabled: 0
+          branch-override: '{branch-override}'
+          tempest-env: 'DEVSTACK_GATE_TEMPEST_REGEX=baremetal'
+          devstack-timeout: 120
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-tempest-dsvm-ironic-pxe_ipa-dsplugin{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - devstack-virtual-ironic:
+          postgres: 0
+          build-ramdisk: 0
+          deploy_driver: pxe_ssh
+          deploy-with-ipa: 1
+          client-from-source: 0
+          ironic-lib-from-source: 0
+          ipxe-enabled: 0
+          devstack-plugin-enabled: 1
           branch-override: '{branch-override}'
           tempest-env: 'DEVSTACK_GATE_TEMPEST_REGEX=baremetal'
           devstack-timeout: 120
@@ -1061,6 +1104,7 @@
           client-from-source: 0
           ironic-lib-from-source: 0
           ipxe-enabled: 0
+          devstack-plugin-enabled: 0
           branch-override: '{branch-override}'
           tempest-env: 'DEVSTACK_GATE_TEMPEST_REGEX=baremetal'
           devstack-timeout: 120
@@ -1092,6 +1136,7 @@
           client-from-source: 0
           ironic-lib-from-source: 0
           ipxe-enabled: 1
+          devstack-plugin-enabled: 0
           branch-override: '{branch-override}'
           tempest-env: 'DEVSTACK_GATE_TEMPEST_REGEX=baremetal'
           devstack-timeout: 120
@@ -1123,6 +1168,7 @@
           client-from-source: 0
           ironic-lib-from-source: 0
           ipxe-enabled: 0
+          devstack-plugin-enabled: 0
           branch-override: '{branch-override}'
           tempest-env: 'DEVSTACK_GATE_TEMPEST_REGEX=baremetal'
           devstack-timeout: 120
@@ -1153,6 +1199,7 @@
           client-from-source: 0
           ironic-lib-from-source: 0
           ipxe-enabled: 0
+          devstack-plugin-enabled: 0
           branch-override: '{branch-override}'
           tempest-env: 'DEVSTACK_GATE_TEMPEST_REGEX=baremetal'
           devstack-timeout: 120
@@ -1183,6 +1230,7 @@
           client-from-source: 1
           ironic-lib-from-source: 0
           ipxe-enabled: 0
+          devstack-plugin-enabled: 0
           branch-override: '{branch-override}'
           tempest-env: 'DEVSTACK_GATE_TEMPEST_REGEX=baremetal'
           devstack-timeout: 120
@@ -1213,6 +1261,7 @@
           client-from-source: 0
           ironic-lib-from-source: 1
           ipxe-enabled: 0
+          devstack-plugin-enabled: 0
           branch-override: '{branch-override}'
           tempest-env: 'DEVSTACK_GATE_TEMPEST_REGEX=baremetal'
           devstack-timeout: 120
