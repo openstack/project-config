@@ -5236,22 +5236,34 @@ projects:
   - name: openstack/gnocchi
     template:
       - name: merge-check
-      - name: python-jobs
-      - name: python3-jobs
       - name: openstack-server-publish-jobs
       - name: publish-to-pypi
     check:
+      - gate-gnocchi-pep8
+      - gate-gnocchi-docs
+      - gate-gnocchi-tox-py27-mysql
+      - gate-gnocchi-tox-py27-postgresql
+      - gate-gnocchi-tox-py34-mysql
+      - gate-gnocchi-tox-py34-postgresql
       - gate-gnocchi-bashate
       - gate-gnocchi-dsvm-functional-file-mysql
       - gate-gnocchi-dsvm-functional-swift-postgresql
       - gate-gnocchi-dsvm-functional-ceph-mysql
       - gate-ceilometer-dsvm-integration
     gate:
+      - gate-gnocchi-pep8
+      - gate-gnocchi-docs
+      - gate-gnocchi-tox-py27-mysql
+      - gate-gnocchi-tox-py27-postgresql
+      - gate-gnocchi-tox-py34-mysql
+      - gate-gnocchi-tox-py34-postgresql
       - gate-gnocchi-bashate
       - gate-gnocchi-dsvm-functional-file-mysql
       - gate-gnocchi-dsvm-functional-swift-postgresql
       - gate-gnocchi-dsvm-functional-ceph-mysql
       - gate-ceilometer-dsvm-integration
+    post:
+      - gnocchi-branch-tarball
     experimental:
       - gate-gnocchi-dsvm-functional-influxdb-mysql
 
