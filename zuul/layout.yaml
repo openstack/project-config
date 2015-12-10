@@ -1458,9 +1458,6 @@ jobs:
   - name: gate-kuryr-requirements
     voting: false
 
-  - name: gate-install-dsvm-kuryr-nv
-    branch: ^(?!stable/(juno|kilo|liberty)).*$
-
   - name: gate-python-keystoneclient-tox-bandit
     branch: ^(?!stable/kilo).*$
 
@@ -5784,7 +5781,10 @@ projects:
       - name: openstack-server-publish-jobs
     check:
       - gate-kuryr-requirements
-      - gate-install-dsvm-kuryr-nv
+      - gate-install-dsvm-kuryr
+      - gate-kuryr-dsvm-fullstack-nv
+    gate:
+      - gate-install-dsvm-kuryr
 
   - name: openstack/kwapi
     template:
