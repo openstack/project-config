@@ -90,7 +90,13 @@
       - shell: |
           #!/bin/bash -xe
           tox -e build_image
-          mv build/astara_appliance*.qcow2 $WORKSPACE/
+          if [[ "$ZUUL_REFNAME" =~ "stable" ]]; then
+              branch="$(echo $ZUUL_REFNAME | cut -d/ -f2)"
+              branch_tag="_$branch"
+          else
+              branch_tag=""
+          fi
+          mv build/astara_appliance*.qcow2 $WORKSPACE/astara_appliance$branch_tag.qcow2
 
     publishers:
       - scp:
