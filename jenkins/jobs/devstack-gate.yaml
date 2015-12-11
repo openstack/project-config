@@ -1548,6 +1548,48 @@
 
 
 - job-template:
+    name: '{pipeline}-{name}-src-grenade-dsvm{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 130
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PROJECTS="openstack-dev/grenade openstack/{name} $PROJECTS"
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=120
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_GRENADE=pullup
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          export DEVSTACK_PROJECT_FROM_GIT={name}
+
+          # Even if the branch is overridden, make sure we use
+          # the correct branch using the OVERRIDE_*_PROJECT_BRANCH
+          # variable.
+          uc_project=`echo $DEVSTACK_PROJECT_FROM_GIT | tr [:lower:] [:upper:] | tr '-' '_' | sed 's/[^A-Z_]//'`
+          export "OVERRIDE_"$uc_project"_PROJECT_BRANCH"=$ZUUL_BRANCH
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+
+- job-template:
     name: '{pipeline}-grenade-dsvm-forward{job-suffix}'
     node: '{node}'
 
@@ -2192,6 +2234,49 @@
 
 
 - job-template:
+    name: '{pipeline}-{name}-src-grenade-dsvm-multinode{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PROJECTS="openstack-dev/grenade openstack/{name} $PROJECTS"
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=120
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_GRENADE=pullup
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          export DEVSTACK_GATE_TOPOLOGY="multinode"
+          export DEVSTACK_PROJECT_FROM_GIT={name}
+
+          # Even if the branch is overridden, make sure we use
+          # the correct branch using the OVERRIDE_*_PROJECT_BRANCH
+          # variable.
+          uc_project=`echo $DEVSTACK_PROJECT_FROM_GIT | tr [:lower:] [:upper:] | tr '-' '_' | sed 's/[^A-Z_]//'`
+          export "OVERRIDE_"$uc_project"_PROJECT_BRANCH"=$ZUUL_BRANCH
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+
+- job-template:
     name: '{pipeline}-tempest-dsvm-neutron-multinode-full{job-suffix}'
     node: '{node}'
 
@@ -2809,6 +2894,7 @@
       - '{pipeline}-tempest-dsvm-postgres-full{job-suffix}'
       - '{pipeline}-tempest-dsvm-postgres-zeromq-full{job-suffix}'
       - '{pipeline}-grenade-dsvm{job-suffix}'
+      - '{pipeline}-{name}-src-grenade-dsvm{job-suffix}'
       - '{pipeline}-grenade-dsvm-forward{job-suffix}'
       - '{pipeline}-grenade-dsvm-neutron{job-suffix}'
       - '{pipeline}-grenade-dsvm-neutron-forward{job-suffix}'
