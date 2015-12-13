@@ -82,6 +82,7 @@ def main():
     VALID_SCHEMES = ['https://', 'http://', 'git://']
     DESCRIPTION_REQUIRED = ['openstack', 'openstack-infra', 'openstack-dev',
                             'stackforge']
+    VALID_OPTIONS = ['delay-release', 'track-upstream', 'translate']
 
     for p in projects:
         name = p.get('project')
@@ -142,6 +143,12 @@ def main():
                 found_errors += 1
                 print("Error: Unknown keyword '%s' in project %s" %
                       (entry, name))
+        # Check for valid options
+        for option in p.get('options', []):
+            if not option in VALID_OPTIONS:
+                found_errors += 1
+                print("Error: Unknown option '%s' in project %s" %
+                      (option, name))
 
     if found_errors:
         print("Found %d error(s) in %s" % (found_errors, args.infile))
