@@ -14,10 +14,12 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-{name}-dsvm-functional-{ostype}{job-suffix}'
+    name: '{pipeline}-{name}-dsvm-ansible-functional-{ostype}{job-suffix}'
     node: 'devstack-{ostype}'
 
     builders:
+      - print-template-name:
+          template-name: "{template-name}"
       - zuul-git-prep
       - shell: |
           # Allow Jenkins user to ssh into localhost
@@ -44,13 +46,13 @@
       - 'gate-{name}-pep8'
       - 'gate-{name}-tox-{envlist}':
           envlist: ansible-lint
-      - '{pipeline}-{name}-dsvm-functional-{ostype}{job-suffix}':
+      - '{pipeline}-{name}-dsvm-ansible-functional-{ostype}{job-suffix}':
           job-suffix: '-nv'
           ostype:
             - centos7
             - trusty
           pipeline: gate
-      - '{pipeline}-{name}-dsvm-functional-{ostype}{job-suffix}':
+      - '{pipeline}-{name}-dsvm-ansible-functional-{ostype}{job-suffix}':
           job-suffix: ''
           ostype:
             - centos7
