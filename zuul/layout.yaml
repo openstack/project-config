@@ -77,6 +77,16 @@ pipelines:
         - event: ref-updated
           ref: ^(?!refs/).*$
 
+  - name: release-post
+    description: This pipeline runs release-process-critical jobs that operate after specific changes are merged.
+    manager: IndependentPipelineManager
+    source: gerrit
+    precedence: high
+    trigger:
+      gerrit:
+        - event: ref-updated
+          ref: ^(?!refs/).*$
+
   - name: tag
     description: This pipeline runs jobs in response to any tag event.
     manager: IndependentPipelineManager
@@ -8643,7 +8653,7 @@ projects:
     gate:
       - gate-releases-tox-validate
       - gate-releases-docs
-    post:
+    release-post:
       - publish-release-history
 
   - name: openstack/renderspec
