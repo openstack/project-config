@@ -1957,12 +1957,19 @@ jobs:
           - ^.*\.rst$
           - ^doc/.*
 
+  # skip all openstack-ansible jobs except the releasenotes job for releasenotes
+  - name: ^gate-openstack-ansible-(?!releasenotes).*$
+    skip-if:
+      - project: ^openstack/openstack-ansible$
+        all-files-match-any:
+          - ^releasenotes/.*
+
   # skip the new ubuntu-trusty based commit check for the juno
   # branch as it will never work
   - name: ^gate-openstack-ansible-commit.*$
     branch: ^(?!juno).*$
 
-  # pep8 compliance was only introduced in kilo
+  # lint compliance was only introduced in kilo
   # this applies to all openstack-ansible repositories
   - name: ^gate-openstack-ansible.*-pep8$
     branch: ^(?!juno).*$
