@@ -260,39 +260,6 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-tempest-master-dsvm-full{job-suffix}'
-    node: '{node}'
-
-    wrappers:
-      - build-timeout:
-          timeout: 125
-      - timestamps
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - shell: |
-          #!/bin/bash -xe
-          export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_TIMEOUT=120
-          export DEVSTACK_GATE_TEMPEST=1
-          export DEVSTACK_GATE_TEMPEST_FULL=1
-          export BRANCH_OVERRIDE={branch-override}
-          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
-              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
-          fi
-          export OVERRIDE_TEMPEST_PROJECT_BRANCH=master
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
-
-    publishers:
-      - devstack-logs
-      - console-log
-
-- job-template:
     name: '{pipeline}-tempest-dsvm-full-non-isolated{job-suffix}'
     node: '{node}'
 
@@ -483,41 +450,6 @@
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
-
-    publishers:
-      - devstack-logs
-      - console-log
-
-
-- job-template:
-    name: '{pipeline}-tempest-master-dsvm-neutron{job-suffix}'
-    node: '{node}'
-
-    wrappers:
-      - build-timeout:
-          timeout: 125
-      - timestamps
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - shell: |
-          #!/bin/bash -xe
-          export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_TIMEOUT=120
-          export DEVSTACK_GATE_TEMPEST=1
-          export DEVSTACK_GATE_NEUTRON=1
-          export DEVSTACK_GATE_SMOKE_SERIAL=1
-          export BRANCH_OVERRIDE={branch-override}
-          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
-              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
-          fi
-          export OVERRIDE_TEMPEST_PROJECT_BRANCH=master
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
 
@@ -2831,10 +2763,8 @@
       - '{pipeline}-tempest-dsvm-neutron-src-{name}{job-suffix}'
       - '{pipeline}-tempest-dsvm-largeops-src-{name}{job-suffix}'
       - '{pipeline}-tempest-dsvm-full-ceph-src-{name}{job-suffix}'
-      - '{pipeline}-tempest-master-dsvm-full{job-suffix}'
       - '{pipeline}-tempest-dsvm-neutron{job-suffix}'
       - '{pipeline}-tempest-dsvm-neutron-ovs-native{job-suffix}'
-      - '{pipeline}-tempest-master-dsvm-neutron{job-suffix}'
       - '{pipeline}-tempest-dsvm-neutron-dvr{job-suffix}'
       - '{pipeline}-tempest-dsvm-neutron-dvr-ovs-native{job-suffix}'
       - '{pipeline}-tempest-dsvm-neutron-full{job-suffix}'
