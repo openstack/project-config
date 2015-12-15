@@ -16,6 +16,8 @@
 # limitations under the License.
 
 import yaml
+import os
+import re
 import sys
 
 layout = yaml.load(open('zuul/layout.yaml'))
@@ -89,10 +91,44 @@ def check_formatting():
 
     return errors
 
+def grep(source, pattern):
+    found = False
+    p = re.compile(pattern)
+    for line in open(source, "r").readlines():
+        if p.match(line):
+            found = True
+            break
+    return found
+
+
+def check_jobs():
+    """Check that jobs have matches"""
+    errors = False
+
+    print("Checking job section regex expressions")
+    print("======================================")
+
+    # The job-list.txt file is created by tools/run-layout.sh and
+    # thus should exist if this is run from tox. If this is manually invoked
+    # the file might not exist, in that case pass the test.
+    job_list = ".test/job-list.txt"
+    if not os.path.isfile(job_list):
+        print("Job list file %s does not exist, not checking jobs section"
+              % job_list)
+        return False
+    for jobs in layout['jobs']:
+        found = grep(job_list, jobs['name'])
+        if not found:
+            print ("Regex %s has no matches in job list" % jobs['name'])
+            errors = True
+
+    return errors
+
 def check_all():
     errors = check_projects_sorted()
     errors = check_merge_template() or errors
     errors = check_formatting() or errors
+    errors = check_jobs() or errors
 
     if errors:
         print("\nFound errors in layout.yaml!")
