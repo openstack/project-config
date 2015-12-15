@@ -113,6 +113,50 @@
       - devstack-logs
       - console-log
 
+# tempest-dsvm-test-accounts-src-{name} - run a devstack tempest job, but use
+# the zuul git ref for name instead of the released library version. This uses
+# preprovisioned test accounts instead of dynamically provisioned ones.
+#
+# Purpose: this allows libraries to test their proposed commits to
+# ensure they don't break OpenStack on their next release. It is
+# expected to eventually be part of all library jobs in OpenStack, as
+# the main tempest-dsvm jobs will be using only released versions of
+# libraries.
+- job-template:
+    name: '{pipeline}-tempest-dsvm-test-accounts-src-{name}{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PROJECTS="openstack/{name} $PROJECTS"
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=120
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_TEMPEST_FULL=1
+          export DEVSTACK_LOCAL_CONFIG="TEMPEST_USE_TEST_ACCOUNTS=True"
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          export DEVSTACK_PROJECT_FROM_GIT={name}
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
 # tempest-dsvm-neutron-src-{name} - run a devstack tempest job, but
 # use the zuul git ref for name instead of the released library
 # version. This uses neutron instead of nova-network.
@@ -2760,6 +2804,7 @@
     jobs:
       - '{pipeline}-tempest-dsvm-full{job-suffix}'
       - '{pipeline}-tempest-dsvm-src-{name}{job-suffix}'
+      - '{pipeline}-tempest-dsvm-test-accounts-src-{name}{job-suffix}'
       - '{pipeline}-tempest-dsvm-neutron-src-{name}{job-suffix}'
       - '{pipeline}-tempest-dsvm-largeops-src-{name}{job-suffix}'
       - '{pipeline}-tempest-dsvm-full-ceph-src-{name}{job-suffix}'
