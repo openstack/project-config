@@ -131,21 +131,47 @@
           DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin rally git://git.openstack.org/openstack/rally"
           export DEVSTACK_LOCAL_CONFIG
 
-          function pre_test_hook {{
-              # Install designate-devstack integration
-              cd /opt/stack/new/designate/contrib/devstack
-              ./pre_test_hook.sh
-          }}
-          export -f pre_test_hook
+          if [[ "stable/kilo stable/liberty" =~ $ZUUL_BRANCH ]]; then
+              # Kilo/Liberty version uses the older 'hooks' approach to adding
+              # the Designate plugin
 
-          function post_test_hook {{
-              $BASE/new/rally/tests/ci/rally-gate.sh
-          }}
-          export -f post_test_hook
+              function gate_hook {{
+                  cd /opt/stack/new/designate/contrib/devstack
+                  ./gate_hook.sh
+              }}
+              export -f gate_hook
+
+              function pre_test_hook {{
+                  cd /opt/stack/new/designate/contrib/devstack
+                  ./pre_test_hook.sh
+              }}
+              export -f pre_test_hook
+
+              function post_test_hook {{
+                  cd /opt/stack/new/designate/contrib/devstack
+                  ./post_test_hook.sh
+              }}
+              export -f post_test_hook
+
+          else
+              # Otherwise, enable the Designate devstack plugin.
+              DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin designate git://git.openstack.org/openstack/designate"
+
+              function gate_hook {{
+                  cd /opt/stack/new/designate/devstack/gate
+                  ./gate_hook.sh
+              }}
+              export -f gate_hook
+
+              function post_test_hook {{
+                  cd /opt/stack/new/designate/devstack/gate
+                  ./post_test_hook.sh
+              }}
+              export -f post_test_hook
+          fi
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
-
 
 - builder:
     name: devstack-manila-rally-gate-multibackend
