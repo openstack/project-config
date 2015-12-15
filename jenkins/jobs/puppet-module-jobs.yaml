@@ -14,7 +14,10 @@
           fi
           mkdir .bundled_gems
           export GEM_HOME=`pwd`/.bundled_gems
-          gem install bundler --no-rdoc --no-ri --verbose
+          # We need to pin bundler to the previous release because of:
+          # https://github.com/bundler/bundler/issues/4149
+          # This workaround can be dropped once 1.12.0 is released.
+          gem install bundler --no-rdoc --no-ri --verbose -v 1.10.6
           $GEM_HOME/bin/bundle install
           $GEM_HOME/bin/bundle exec rake spec SPEC_OPTS='--format documentation'
 
