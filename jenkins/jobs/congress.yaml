@@ -13,7 +13,7 @@
       - devstack-checkout
       - shell: |
           #!/bin/bash -xe
-          ENABLED_SERVICES=congress,tempest,
+          ENABLED_SERVICES=tempest,
           ENABLED_SERVICES+=key,g-api,g-reg,
           ENABLED_SERVICES+=n-api,n-crt,n-obj,n-cpu,n-sch,n-cauth,
           ENABLED_SERVICES+=horizon,mysql,rabbit,sysstat,
@@ -22,8 +22,7 @@
           ENABLED_SERVICES+=s-proxy,s-object,s-container,s-account,
           ENABLED_SERVICES+=h-eng,h-api,h-api-cfn,h-api-cw
 
-          DEVSTACK_LOCAL_CONFIG="enable_plugin congress git://git.openstack.org/openstack/congress"
-          DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
+          DEVSTACK_LOCAL_CONFIG="enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
 
           export ENABLED_SERVICES
           export DEVSTACK_LOCAL_CONFIG
@@ -36,6 +35,20 @@
           export PROJECTS="openstack/congress $PROJECTS"
           export PROJECTS="openstack/python-congressclient $PROJECTS"
           export DEVSTACK_PROJECT_FROM_GIT=python-congressclient
+          if [[ "stable/kilo stable/liberty" =~ $ZUUL_BRANCH ]]; then
+              # Kilo/Liberty version uses the older 'hooks' approach to adding
+              # the congress plugin
+              ENABLED_SERVICES+=,congress
+              function pre_test_hook {{
+                # Install congress-devstack
+                cp -r $BASE/new/congress/contrib/devstack/* $BASE/new/devstack/
+              }}
+              export -f pre_test_hook
+          else
+              # Enable congress devstack plugin.
+              DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin congress git://git.openstack.org/openstack/congress"
+          fi
+
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
