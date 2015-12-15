@@ -57,3 +57,47 @@
     publishers:
       - devstack-logs
       - console-log
+
+- job-template:
+    name: '{pipeline}-networking-ovn-dsvm-rally{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=120
+          export DEVSTACK_GATE_NEUTRON=1
+          export DEVSTACK_GATE_TEMPEST=1
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          export PROJECTS="openstack/networking-ovn $PROJECTS"
+          export PROJECTS="openstack/rally $PROJECTS"
+
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin networking-ovn git://git.openstack.org/openstack/networking-ovn"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin rally git://git.openstack.org/openstack/rally"
+
+          export OVERRIDE_ENABLED_SERVICES=key,rally,n-api,n-cpu,n-cond,n-sch,n-crt,n-cauth,n-obj,g-api,g-reg,rabbit,tempest,mysql,dstat,ovn-northd,ovn-controller,q-svc,q-dhcp,q-l3
+
+          function post_test_hook {{
+              $BASE/new/rally/tests/ci/rally-gate.sh
+          }}
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - test-results
+      - devstack-logs
+      - console-log
