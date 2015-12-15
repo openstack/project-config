@@ -14,10 +14,7 @@
           fi
           mkdir .bundled_gems
           export GEM_HOME=`pwd`/.bundled_gems
-          # We need to pin bundler to the previous release because of:
-          # https://github.com/bundler/bundler/issues/4149
-          # This workaround can be dropped once 1.12.0 is released.
-          gem install bundler --no-rdoc --no-ri --verbose -v 1.10.6
+          gem install bundler --no-rdoc --no-ri --verbose
           $GEM_HOME/bin/bundle install
           $GEM_HOME/bin/bundle exec rake spec SPEC_OPTS='--format documentation'
 
@@ -50,10 +47,7 @@
               rm -f Gemfile.lock
               mkdir .bundled_gems_$PUPPET_VERSION
               export GEM_HOME=`pwd`/.bundled_gems_$PUPPET_VERSION
-              # We need to pin bundler to the previous release because of:
-              # https://github.com/bundler/bundler/issues/4149
-              # This workaround can be dropped once 1.12.0 is released.
-              gem install bundler --no-rdoc --no-ri --verbose -v 1.10.6
+              gem install bundler --no-rdoc --no-ri --verbose
               $GEM_HOME/bin/bundle install
               set +e
               $GEM_HOME/bin/bundle exec rake spec SPEC_OPTS='--format documentation'
@@ -172,10 +166,7 @@
           export PUPPET_GEM_VERSION='~> {puppet_version}'
           mkdir .bundled_gems
           export GEM_HOME=`pwd`/.bundled_gems
-          # We need to pin bundler to the previous release because of:
-          # https://github.com/bundler/bundler/issues/4149
-          # This workaround can be dropped once 1.12.0 is released.
-          gem install bundler --no-rdoc --no-ri --verbose -v 1.10.6
+          gem install bundler --no-rdoc --no-ri --verbose
           $GEM_HOME/bin/bundle install
           # FUTURE_PARSER=yes is only supported by Puppet 3.x
           if [ "{puppet_version}" -lt "4" ]; then
