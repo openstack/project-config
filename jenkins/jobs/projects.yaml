@@ -1062,6 +1062,18 @@
           job-suffix: ''
 
 - project:
+    name: devstack-plugin-kafka
+    node: 'bare-precise || bare-trusty'
+
+    jobs:
+      - gate-{name}-bashate
+      - '{pipeline}-tempest-dsvm-full-{plugin}{job-suffix}':
+          pipeline: gate
+          plugin: kafka
+          plugin-repo: openstack/devstack-plugin-kafka
+          job-suffix: ''
+
+- project:
     name: devstack-plugin-pika
     node: 'bare-precise || bare-trusty'
     jobs:
