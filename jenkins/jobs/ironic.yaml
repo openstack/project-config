@@ -101,8 +101,13 @@
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
 
-          export PROJECTS="openstack/ironic-inspector $PROJECTS"
+          export PROJECTS="openstack/ironic openstack/ironic-inspector $PROJECTS"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin ironic-inspector https://git.openstack.org/openstack/ironic-inspector"
+          # devstack plugin didn't exist until mitaka
+          if [[ "$ZUUL_BRANCH" != "stable/liberty" ]] ; then
+              export DEVSTACK_LOCAL_CONFIG+='\n'"enable_plugin ironic git://git.openstack.org/openstack/ironic
+          fi
+
           if [ "{ramdisk}" == "ipa" ] ; then
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_DEPLOY_DRIVER_ISCSI_WITH_IPA=True"
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_INSPECTOR_RAMDISK_ELEMENT=ironic-agent"
@@ -152,8 +157,12 @@
           fi
           export DEVSTACK_PROJECT_FROM_GIT="python-ironic-inspector-client"
 
-          export PROJECTS="openstack/python-ironic-inspector-client openstack/ironic-inspector $PROJECTS"
+          export PROJECTS="openstack/ironic openstack/python-ironic-inspector-client openstack/ironic-inspector $PROJECTS"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin ironic-inspector https://git.openstack.org/openstack/ironic-inspector"
+          # devstack plugin didn't exist until mitaka
+          if [[ "$ZUUL_BRANCH" != "stable/liberty" ]] ; then
+              export DEVSTACK_LOCAL_CONFIG+='\n'"enable_plugin ironic git://git.openstack.org/openstack/ironic
+          fi
 
           function post_test_hook {{
                 source $BASE/new/devstack/openrc admin admin
