@@ -44,8 +44,12 @@ cp jenkins/jobs/* .test/jenkins-job-builder/.test/new/config
 cd .test/jenkins-job-builder
 tox -e compare-xml-new
 
+# Note that the job-list.txt file is also used by
+# tools/layout-checks.py, if this file gets changed, we need to adapt
+# the test as well.
 cd ..
 find jenkins-job-builder/.test/new/out/ -printf "%f\n" > job-list.txt
+
 
 cd zuul
 tox -e venv -- zuul-server -c etc/zuul.conf-sample -l ../../zuul/layout.yaml -t ../job-list.txt
