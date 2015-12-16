@@ -243,6 +243,10 @@
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"GNOCCHI_COORDINATOR_URL=redis://localhost:6379?timeout=5"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"GNOCCHI_STORAGE_BACKEND=file"
 
+          if [ "$ZUUL_PROJECT" == "openstack/oslo.messaging" ]; then
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"LIBS_FROM_GIT=oslo.messaging"
+          fi
+
           function post_test_hook {
               cd /opt/stack/new/ceilometer/ceilometer/tests/integration/hooks/
               ./post_test_hook.sh
