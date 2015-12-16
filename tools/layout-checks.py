@@ -92,9 +92,11 @@ def check_formatting():
     return errors
 
 def grep(source, pattern):
+    """Run regex PATTERN over each line in SOURCE and return
+    True if any match found"""
     found = False
     p = re.compile(pattern)
-    for line in open(source, "r").readlines():
+    for line in source:
         if p.match(line):
             found = True
             break
@@ -111,11 +113,15 @@ def check_jobs():
     # The job-list.txt file is created by tools/run-layout.sh and
     # thus should exist if this is run from tox. If this is manually invoked
     # the file might not exist, in that case pass the test.
-    job_list = ".test/job-list.txt"
-    if not os.path.isfile(job_list):
+    job_list_file = ".test/job-list.txt"
+    if not os.path.isfile(job_list_file):
         print("Job list file %s does not exist, not checking jobs section"
-              % job_list)
+              % job_list_file)
         return False
+
+    with open(job_list_file, 'r') as f:
+        job_list = [line.rstrip() for line in f]
+
     for jobs in layout['jobs']:
         found = grep(job_list, jobs['name'])
         if not found:
