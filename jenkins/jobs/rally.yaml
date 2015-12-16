@@ -54,7 +54,6 @@
           export CEILOMETER_NOTIFICATION_TOPICS=notifications,profiler
           export DEVSTACK_GATE_NEUTRON={neutron}
           export DEVSTACK_GATE_IRONIC={ironic}
-          export DEVSTACK_GATE_MONASCA={monasca}
           export DEVSTACK_GATE_ZAQAR={zaqar}
           export DEVSTACK_GATE_TEMPEST_LARGE_OPS={large_ops}
           export DEVSTACK_GATE_EXERCISES=0
@@ -83,10 +82,6 @@
           fi
           if [ $DEVSTACK_GATE_ZAQAR -ne 0 ]; then
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin zaqar git://git.openstack.org/openstack/zaqar"
-          fi
-          if [ $DEVSTACK_GATE_MONASCA -ne 0 ]; then
-              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin monasca-api git://git.openstack.org/openstack/monasca-api"
-              export PROJECTS="openstack/monasca-api $PROJECTS"
           fi
           export ENABLED_SERVICES
           export DEVSTACK_LOCAL_CONFIG
@@ -348,7 +343,6 @@
             neutron: '1'
             ironic: '1'
             zaqar: '0'
-            monasca: '0'
             large_ops: '0'
 
     publishers:
@@ -492,7 +486,6 @@
           ironic: '0'
           neutron: '0'
           zaqar: '0'
-          monasca: '0'
           large_ops: '0'
 
     publishers:
@@ -516,7 +509,6 @@
           ironic: '0'
           neutron: '1'
           zaqar: '0'
-          monasca: '0'
           large_ops: '0'
 
     publishers:
@@ -540,7 +532,6 @@
           ironic: '0'
           neutron: '0'
           zaqar: '0'
-          monasca: '0'
           large_ops: '10'
 
     publishers:
@@ -564,7 +555,6 @@
           ironic: '0'
           neutron: '0'
           zaqar: '1'
-          monasca: '0'
           large_ops: '0'
 
     publishers:
@@ -587,7 +577,6 @@
           ironic: '0'
           neutron: '{neutron}'
           zaqar: '0'
-          monasca: '0'
           large_ops: '0'
 
     publishers:
@@ -751,6 +740,44 @@
       - rally-verify
 
 
+- builder:
+    name: devstack-monasca-rally-gate
+    builders:
+      - link-logs
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PROJECTS="openstack/rally $PROJECTS"
+          export PROJECTS="openstack/monasca $PROJECTS"
+          export PROJECTS="openstack/python-monascaclient $PROJECTS"
+
+          export DEVSTACK_GATE_NEUTRON=1
+          export DEVSTACK_GATE_EXERCISES=0
+          export DEVSTACK_GATE_TIMEOUT=120
+          export RALLY_SCENARIO={scenario}
+
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin monasca-api git://git.openstack.org/openstack/monasca-api"
+
+          ENABLED_SERVICES=rabbit,mysql,key
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin rally git://git.openstack.org/openstack/rally"
+
+
+          export ENABLED_SERVICES
+
+          function pre_test_hook {{
+              source $BASE/new/monasca-api/devstack/pre_test_hook.sh
+          }}
+          export -f pre_test_hook
+
+          function post_test_hook {{
+              $BASE/new/rally/tests/ci/rally-gate.sh
+          }}
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+
 - job-template:
     name: 'gate-rally-dsvm-monasca-{name}'
     node: 'devstack-precise || devstack-trusty'
@@ -761,13 +788,8 @@
       - timestamps
 
     builders:
-        - devstack-rally-gate:
+        - devstack-monasca-rally-gate:
             scenario: '{name}-monasca'
-            neutron: '1'
-            ironic: '0'
-            zaqar: '0'
-            monasca: '1'
-            large_ops: '0'
 
     publishers:
       - devstack-logs
