@@ -60,10 +60,15 @@
           export DEVSTACK_GATE_TEMPEST=0
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_INSTALL_TESTONLY=1
+
+          export OVERRIDE_ENABLED_SERVICES=kuryr,etcd-server,docker-engine,q-svc,q-dhcp,q-agt,q-l3,key,mysql,rabbit
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
+
+          export PROJECTS="openstack/kuryr $PROJECTS"
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin kuryr http://git.openstack.org/openstack/kuryr"
 
           function gate_hook {{
               bash -xe $BASE/new/kuryr/kuryr/tests/contrib/gate_hook.sh fullstack
