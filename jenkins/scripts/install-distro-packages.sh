@@ -6,6 +6,7 @@ export BINDEP=${BINDEP:-/usr/bindep-env/bin/bindep}
 # figure out which bindep list to use
 if [ -n "$PACKAGES" ] ; then
     # already set in the calling environment
+    :
 elif [ -e other-requirements.txt ] ; then
     # project has its own bindep list
     export PACKAGES=other-requirements.txt
