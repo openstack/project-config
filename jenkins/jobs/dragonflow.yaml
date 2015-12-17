@@ -87,3 +87,59 @@
       - test-results
       - devstack-logs
       - console-log
+
+
+- job-template:
+    name: '{pipeline}-dragonflow-dsvm-fullstack{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TIMEOUT=120
+          export DEVSTACK_GATE_TEMPEST=0
+          export DEVSTACK_GATE_NEUTRON=1
+          export DEVSTACK_GATE_INSTALL_TESTONLY=1
+
+          OVERRIDE_ENABLED_SERVICES=key,n-api,n-cpu,n-cond,n-sch,n-crt,n-cauth,n-obj,
+          OVERRIDE_ENABLED_SERVICES+=g-api,g-reg,c-sch,c-api,c-vol,rabbit,tempest,mysql,
+          OVERRIDE_ENABLED_SERVICES+=dstat,df-controller,df-etcd,df-etcd-server,q-svc,q-l3
+          export OVERRIDE_ENABLED_SERVICES
+
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+
+          export PROJECTS="openstack/dragonflow $PROJECTS"
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin dragonflow git://git.openstack.org/openstack/dragonflow"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_ENABLE_DRAGONFLOW_LOCAL_CONTROLLER=True"
+
+          function gate_hook {{
+              bash -xe $BASE/new/dragonflow/dragonflow/tests/contrib/gate_hook.sh fullstack
+          }}
+          export -f gate_hook
+
+          function post_test_hook {{
+              bash -xe $BASE/new/dragonflow/dragonflow/tests/contrib/post_test_hook.sh fullstack
+          }}
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - test-results
+      - devstack-logs
+      - console-log
