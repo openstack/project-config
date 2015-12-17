@@ -747,6 +747,8 @@
       - devstack-checkout
       - shell: |
           #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export OVERRIDE_ENABLED_SERVICES=key,mysql,rabbit
           export PROJECTS="openstack/rally $PROJECTS"
           export PROJECTS="openstack/monasca-api $PROJECTS"
           export PROJECTS="openstack/python-monascaclient $PROJECTS"
@@ -757,12 +759,7 @@
           export RALLY_SCENARIO={scenario}
 
           export DEVSTACK_LOCAL_CONFIG="enable_plugin monasca-api git://git.openstack.org/openstack/monasca-api"
-
-          ENABLED_SERVICES=rabbit,mysql,key
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin rally git://git.openstack.org/openstack/rally"
-
-
-          export ENABLED_SERVICES
 
           function pre_test_hook {{
               source $BASE/new/monasca-api/devstack/pre_test_hook.sh
