@@ -143,14 +143,14 @@
               export -f pre_test_hook
 
               function post_test_hook {{
-                  cd /opt/stack/new/designate/contrib/devstack
-                  ./post_test_hook.sh
+                  $BASE/new/rally/tests/ci/rally-gate.sh
               }}
               export -f post_test_hook
 
           else
               # Otherwise, enable the Designate devstack plugin.
               DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin designate git://git.openstack.org/openstack/designate"
+              export DEVSTACK_LOCAL_CONFIG
 
               function gate_hook {{
                   cd /opt/stack/new/designate/devstack/gate
@@ -159,8 +159,7 @@
               export -f gate_hook
 
               function post_test_hook {{
-                  cd /opt/stack/new/designate/devstack/gate
-                  ./post_test_hook.sh
+                  $BASE/new/rally/tests/ci/rally-gate.sh
               }}
               export -f post_test_hook
           fi
