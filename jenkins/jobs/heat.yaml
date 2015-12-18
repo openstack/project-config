@@ -72,7 +72,7 @@
           services=c-api,c-bak,c-sch,c-vol,cinder,dstat,g-api,g-reg,h-api
           services+=,h-api-cfn,h-api-cw,h-eng,heat,key,mysql,n-api,n-cond
           services+=,n-cpu,n-crt,n-sch,q-agt,q-dhcp,q-l3,q-meta,q-metering
-          services+=,q-svc,q-vpn,rabbit,s-account,s-container,s-object,s-proxy
+          services+=,q-svc,rabbit,s-account,s-container,s-object,s-proxy
           services+=,ceilometer-acompute,ceilometer-acentral
           services+=,ceilometer-collector,ceilometer-api
           services+=,ceilometer-anotification
@@ -89,13 +89,16 @@
           export DEVSTACK_LOCAL_CONFIG="enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
           if [[ "$ZUUL_BRANCH" == "stable/kilo" ]]; then
               services+=,ceilometer-alarm-evaluator,ceilometer-alarm-notifier
+              services+=,q-vpn'
           else
               export PROJECTS="openstack/aodh $PROJECTS"
               export PROJECTS="openstack/zaqar $PROJECTS"
               export PROJECTS="openstack/python-zaqarclient $PROJECTS"
+              export PROJECTS="openstack/neutron-vpnaas $PROJECTS"
               services+=,aodh-api,aodh-alarm-evaluator,aodh-alarm-notifier
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin aodh git://git.openstack.org/openstack/aodh"
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin zaqar git://git.openstack.org/openstack/zaqar"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin neutron-vpnaas git://git.openstack.org/openstack/neutron-vpnaas"
           fi
 
           if [ "{lbaasversion}" = "lbaasv2" ]; then
