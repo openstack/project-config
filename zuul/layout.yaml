@@ -1818,6 +1818,10 @@ jobs:
     # NOTE(flaper87): Disable job in Kilo until we fix the gate.
     branch: ^(?!stable/kilo).*$
 
+  - name: gate-glance-tox-bandit
+    branch: ^(?!stable/(kilo|liberty)).*$
+    voting: false
+
   - name: gate-kolla-dsvm-build-centos-binary
     voting: false
 
@@ -5271,6 +5275,10 @@ projects:
       - gate-tempest-dsvm-full-ceph
     experimental:
       - gate-grenade-dsvm-forward
+      # NOTE(avarner): this bandit test is in experimental until we've tested
+      # it on some large commits. Then, it will go into check, so it runs on
+      # every commit.
+      - gate-glance-tox-bandit
 
   - name: openstack/glance-specs
     template:
