@@ -44,9 +44,31 @@ def run_command(cmd):
 class RequirementsList(object):
     def __init__(self, name, project):
         self.name = name
-        self.reqs = {}
-        self.failed = False
+        self.reqs_by_file = {}
         self.project = project
+        self.failed = False
+
+    @property
+    def reqs(self):
+        return {k: v for d in self.reqs_by_file.values()
+                for k, v in d.items()}
+
+    def extract_reqs(self, content):
+        reqs = collections.defaultdict(set)
+        parsed = requirement.parse(content)
+        for name, entries in parsed.items():
+            if not name:
+                # Comments and other unprocessed lines
+                continue
+            list_reqs = [r for (r, line) in entries]
+            # Strip the comments out before checking if there are duplicates
+            list_reqs_stripped = [r._replace(comment='') for r in list_reqs]
+            if len(list_reqs_stripped) != len(set(list_reqs_stripped)):
+                print("Requirements file has duplicate entries "
+                      "for package %s : %r." % (name, list_reqs))
+                self.failed = True
+            reqs[name].update(list_reqs)
+        return reqs
 
     def process(self, strict=True):
         """Convert the project into ready to use data.
@@ -58,35 +80,16 @@ class RequirementsList(object):
         """
         print("Checking %(name)s" % {'name': self.name})
         # First, parse.
-        reqs = collections.defaultdict(set)
         for fname, content in self.project.get('requirements', {}).items():
             print("Processing %(fname)s" % {'fname': fname})
             if strict and not content.endswith('\n'):
-                raise Exception("Requirements file %s does not "
-                                "end with a newline." % fname)
-            parsed = requirement.parse(content)
-            # parsed is name -> [(Requirement, line)]
-            for name, entries in parsed.items():
-                if not name:
-                    # Comments and other unprocessed lines
-                    continue
-                if name in reqs:
-                    print("Requirement %s present in multiple files" % name)
-                    if strict and not '-py' in fname:
-                        if not self.failed:
-                            self.failed = True
-                            print(
-                                "Marking %(name)s as failed - dupe in %(fname)s."
-                                % {'name': self.name, 'fname': fname})
-                reqs[name].update(r for (r, line) in entries)
+                print("Requirements file %s does not "
+                      "end with a newline." % fname)
+            self.reqs_by_file[fname] = self.extract_reqs(content)
 
         for name, content in project.extras(self.project).items():
             print("Processing .[%(extra)s]" % {'extra': name})
-            parsed = requirement.parse(content)
-            for name, entries in parsed.items():
-                reqs[name].update(r for (r, line) in entries)
-
-        self.reqs = reqs
+            self.reqs_by_file[name] = self.extract_reqs(content)
 
 
 def grab_args():
@@ -128,9 +131,24 @@ def install_and_load_requirements(reqroot, reqdir):
     from openstack_requirements import requirement  # noqa
 
 
+def _is_requirement_in_global_reqs(req, global_reqs):
+    # Compare all fields except the extras field as the global
+    # requirements should not have any lines with the extras syntax
+    # example: oslo.db[xyz]<1.2.3
+    for req2 in global_reqs:
+        if (req.package == req2.package and
+                    req.location == req2.location and
+                    req.specifiers == req2.specifiers and
+                    req.markers == req2.markers and
+                    req.comment == req2.comment):
+            return True
+    return False
+
+
 def main():
     args = grab_args()
     branch = args.branch
+    failed = False
 
     # build a list of requirements from the global list in the
     # openstack/requirements project so we can match them to the changes
@@ -194,26 +212,43 @@ def main():
 
         # iterate through the changing entries and see if they match the global
         # equivalents we want enforced
-        failed = False
-        for name, reqs in head_reqs.reqs.items():
-            if not name:
-                # Comments show up as unnamed requirements. There's no
-                # point in copying comments related to packages that
-                # aren't in the destination, so ignore the comments
-                # entirely.
-                continue
-            if name in branch_reqs.reqs and reqs == branch_reqs.reqs[name]:
-                # Unchanged [or a change that preserves a current value]
-                continue
-            if name not in global_reqs:
-                print(
-                    "Requirement %s not in openstack/requirements" % str(reqs))
-                failed = True
-                continue
-            if reqs != global_reqs[name]:
-                print("Requirement %s does not match openstack/requirements "
-                      "value %s" % (str(reqs), str(global_reqs[name])))
-                failed = True
+        for fname, freqs in head_reqs.reqs_by_file.items():
+            print("Validating %(fname)s" % {'fname': fname})
+            for name, reqs in freqs.items():
+                counts = {}
+                if (name in branch_reqs.reqs and
+                            reqs == branch_reqs.reqs[name]):
+                    # Unchanged [or a change that preserves a current value]
+                    continue
+                if name not in global_reqs:
+                    failed = True
+                    print("Requirement %s not in openstack/requirements" %
+                          str(reqs))
+                    continue
+                if reqs == global_reqs[name]:
+                    continue
+                for req in reqs:
+                    if req.extras:
+                        for extra in req.extras:
+                            counts[extra] = counts.get(extra, 0) + 1
+                    else:
+                        counts[''] = counts.get('', 0) + 1
+                    if not _is_requirement_in_global_reqs(
+                            req, global_reqs[name]):
+                        failed = True
+                        print("Requirement for package %s : %s does "
+                              "not match openstack/requirements value : %s" % (
+                                  name, str(req), str(global_reqs[name])))
+                for extra, count in counts.items():
+                    if count != len(global_reqs[name]):
+                        failed = True
+                        print("Package %s%s requirement does not match "
+                              "number of lines (%d) in "
+                              "openstack/requirements" % (
+                                  name,
+                                  ('[%s]' % extra) if extra else '',
+                                  len(global_reqs[name])))
+
 
     # report the results
     if failed or head_reqs.failed or branch_reqs.failed:
