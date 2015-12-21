@@ -1416,6 +1416,12 @@ jobs:
   - name: magnum-coverage
     voting: false
 
+  - name: gate-python-barbicanclient-devstack-dsvm
+    branch: ^(?!stable/kilo).*$
+
+  - name: gate-python-barbicanclient-devstack-dsvm-oldstable
+    branch: ^stable/kilo$
+
   - name: gate-barbican-devstack-dsvm
     branch: ^(?!stable/kilo).*$
 
@@ -7967,8 +7973,10 @@ projects:
       - name: check-requirements
     check:
       - gate-python-barbicanclient-devstack-dsvm
+      - gate-python-barbicanclient-devstack-dsvm-oldstable
     gate:
       - gate-python-barbicanclient-devstack-dsvm
+      - gate-python-barbicanclient-devstack-dsvm-oldstable
 
   - name: openstack/python-blazarclient
     template:
