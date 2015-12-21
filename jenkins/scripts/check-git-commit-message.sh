@@ -1,4 +1,4 @@
-#!/bin/bash -xe
+#!/bin/bash -x
 
 # Copyright 2015 Rackspace Australia
 #
