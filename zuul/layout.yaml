@@ -686,28 +686,16 @@ project-templates:
 
 jobs:
   - name: ^.*$
-    parameter-function: set_node_options_default_trusty
+    parameter-function: set_node_options
     swift:
       - name: logs
-  # The infra puppet configs predominantly run on precise nodes.
-  # Test puppet for infra by default on precise nodes until that changes.
-  - name: ^gate-system-config-puppet.*$
-    parameter-function: set_node_options_default_precise
-  # Berkshelf 3.x requires GeCode 3.x on precise.
   - name: ^gate-.*-chef-(lint|style|unit|repo)$
-    parameter-function: set_node_options_default_precise
     branch: ^stable/(icehouse|juno)$
   - name: ^gate-.*-chef-rake-integration$
     branch: ^(?!stable/(icehouse|juno)).*$
     voting: false
   - name: ^gate-.*-chef-rake.*$
     branch: ^(?!stable/(icehouse|juno)).*$
-  # openstackid doesn't work with php5-mcrypt on trusty
-  - name: ^.*openstackid-(unittests|release).*$
-    parameter-function: set_node_options_default_precise
-  # groups works with php5.3 on precise
-  - name: ^.*groups-(unittests|release).*$
-    parameter-function: set_node_options_default_precise
   # -nv jobs are never voting.
   - name: ^.*-nv$
     voting: false
@@ -1395,7 +1383,6 @@ jobs:
     branch: ^(?!stable/(kilo|liberty)).*$
 
   - name: ^gate-.*-js-draft
-    parameter-function: set_node_options_default_trusty
     success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/dist/
 
   - name: infra-publications-publish
