@@ -12,6 +12,8 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+source /usr/local/jenkins/slave_scripts/common.sh
+
 PROJECT="openstack/app-catalog"
 BRANCH="proposals"
 INITIAL_COMMIT_MSG="Detect dead links"
