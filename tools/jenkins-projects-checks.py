@@ -22,7 +22,8 @@ import voluptuous as v
 
 BUILDER = v.Schema({
     v.Required('name'): v.All(str),
-    v.Required('builders'): v.All(list)
+    v.Required('builders'): v.All(list),
+    'description': v.All(str)
 }, extra=True)
 
 JOB = v.Schema({
@@ -37,12 +38,14 @@ JOB = v.Schema({
 
 JOB_GROUP = v.Schema({
     v.Required('name'): v.All(str),
-    v.Required('jobs'): v.All(list)
+    v.Required('jobs'): v.All(list),
+    'description': v.All(str)
 }, extra=True)
 
 JOB_TEMPLATE = v.Schema({
     v.Required('builders'): v.All(list),
     v.Required('name'): v.All(str),
+    'description': v.All(str),
     'node': v.All(str),
     'publishers': v.All(list),
     'wrappers': v.All(list)
@@ -50,12 +53,14 @@ JOB_TEMPLATE = v.Schema({
 
 PROJECT = v.Schema({
     v.Required('name'): v.All(str),
-    v.Required('jobs'): v.All(list)
+    v.Required('jobs'): v.All(list),
+    'description': v.All(str)
 }, extra=True)
 
 PUBLISHER = v.Schema({
     v.Required('name'): v.All(str),
-    v.Required('publishers'): v.All(list)
+    v.Required('publishers'): v.All(list),
+    'description': v.All(str)
 })
 
 def normalize(s):
