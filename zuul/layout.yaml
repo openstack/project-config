@@ -2071,9 +2071,17 @@ jobs:
   - name: ^gate-(keystoneauth|keystonemiddleware|python-keystoneclient)-releasenotes$
     branch: ^(?!stable/(?:juno|kilo|liberty)).*$
 
+  # skip gate-openstack-ansible-releasenotes jobs for juno & kilo branches
+  - name: ^gate-openstack-ansible-releasenotes$
+    branch: ^(?!juno|kilo).*$
+
     # Post job is run on liberty and newer branches only
   - name: ^(?!gate).*-releasenotes$
     branch: ^(?!stable/(?:juno|kilo)).*$
+
+  # Skip openstack-ansible-releasenotes post jobs for juno & kilo branches
+  - name: ^openstack-ansible-releasenotes$
+    branch: ^(?!juno|kilo).*$
 
   # Constraints Jobs
   - name: ^gate-.*-constraints$
