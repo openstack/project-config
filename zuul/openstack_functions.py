@@ -36,7 +36,7 @@ def reusable_node(item, job, params):
         del params['OFFLINE_NODE_WHEN_COMPLETE']
 
 
-def set_node_options(item, job, params, default):
+def set_node_options(item, job, params):
     # Set up log url parameter for all jobs
     set_log_url(item, job, params)
     # Default to single use node. Potentially overriden below.
