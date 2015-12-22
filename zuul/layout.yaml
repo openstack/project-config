@@ -2136,6 +2136,10 @@ jobs:
   - name: gate-tooz-tox-py34-consul
     voting: false
 
+    # Requirements project publishes documents from master only.
+  - name: ^(?:gate-)requirements-docs$
+    branch: master
+
 ########################################################################
 # The project list is sorted alphabetically.
 ########################################################################
@@ -8775,6 +8779,7 @@ projects:
       - name: pypy-jobs
       - name: openstack-server-publish-jobs
     check:
+      - gate-requirements-docs
       - gate-requirements-pep8
       - gate-requirements-python27
       - gate-requirements-integration-dsvm
@@ -8782,6 +8787,7 @@ projects:
       - gate-requirements-tox-validate
       - gate-grenade-dsvm-multinode
     gate:
+      - gate-requirements-docs
       - gate-requirements-pep8
       - gate-requirements-python27
       - gate-requirements-integration-dsvm
