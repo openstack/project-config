@@ -19,7 +19,9 @@
 # cpu resources can be used without the risk of becoming dependent on more
 # memory.
 if [ -f /etc/default/grub ] ; then
-    sudo sed -i -e 's/^GRUB_TIMEOUT=[0-9]\+/GRUB_TIMEOUT=0/' -e 's/#\?GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="mem=9023M /g' /etc/default/grub
+    sudo sed -i -e 's/^GRUB_TIMEOUT=[0-9]\+/GRUB_TIMEOUT=0/' \
+        -e 's/#\?GRUB_CMDLINE_LINUX="/GRUB_CMDLINE_LINUX="mem=9023M /g' \
+        /etc/default/grub
     if which update-grub &> /dev/null ; then
         sudo update-grub
     else
@@ -27,5 +29,6 @@ if [ -f /etc/default/grub ] ; then
         sudo /usr/sbin/grub2-mkconfig -o /boot/grub2/grub.cfg
     fi
 elif [ -f /boot/grub/grub.conf ] ; then
-    sudo sed -i -e 's/^timeout=[0-9]\+/timeout=0/' -e 's/\(^\s\+kernel.*\)/\1 mem=9023M/' /boot/grub/grub.conf
+    sudo sed -i -e 's/^timeout=[0-9]\+/timeout=0/' \
+        -e 's/\(^\s\+kernel.*\)/\1 mem=9023M/' /boot/grub/grub.conf
 fi

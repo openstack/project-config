@@ -97,7 +97,8 @@ function main {
             download_appliance "$STAGING_APPLIANCE_URL"
             create_ramdisk_contents /root/xenserver.iso
             extract_xs_installer /root/xenserver.iso /opt/xs-install
-            generate_xs_installer_grub_config /opt/xs-install file:///tmp/ramdisk/answerfile.xml
+            generate_xs_installer_grub_config /opt/xs-install \
+                file:///tmp/ramdisk/answerfile.xml
             configure_grub
             update-grub
             create_resizing_initramfs_config
@@ -321,7 +322,8 @@ EOF
 
 function configure_grub {
     sed -ie 's/^GRUB_HIDDEN_TIMEOUT/#GRUB_HIDDEN_TIMEOUT/g' /etc/default/grub
-    sed -ie 's/^GRUB_HIDDEN_TIMEOUT_QUIET/#GRUB_HIDDEN_TIMEOUT_QUIET/g' /etc/default/grub
+    sed -ie 's/^GRUB_HIDDEN_TIMEOUT_QUIET/#GRUB_HIDDEN_TIMEOUT_QUIET/g' \
+        /etc/default/grub
     # sed -ie 's/^GRUB_TIMEOUT=.*$/GRUB_TIMEOUT=-1/g' /etc/default/grub
     sed -ie 's/^.*GRUB_TERMINAL=.*$/GRUB_TERMINAL=console/g' /etc/default/grub
     sed -ie 's/GRUB_DEFAULT=0/GRUB_DEFAULT=saved/g' /etc/default/grub
@@ -518,7 +520,8 @@ function configure_networking {
 
     # Create vifs for the appliance
     xe vif-create vm-uuid=$VM network-uuid=$HOST_INT_NET device=0
-    xe vif-create vm-uuid=$VM network-uuid=$ORIGINAL_MGT_NET mac=$MACADDRESS device=1
+    xe vif-create vm-uuid=$VM network-uuid=$ORIGINAL_MGT_NET mac=$MACADDRESS \
+        device=1
     xe vif-create vm-uuid=$VM network-uuid=$NEW_MGT_NET device=2
 
     xe vm-start uuid=$VM
@@ -536,7 +539,8 @@ function configure_networking {
         DOMID=$(xe vm-param-get param-name=dom-id uuid=$VM)
 
         # Authenticate temporary key to appliance
-        xenstore-write /local/domain/$DOMID/authorized_keys/$DOMZERO_USER "$(cat /root/dom0key.pub)"
+        xenstore-write /local/domain/$DOMID/authorized_keys/$DOMZERO_USER \
+            "$(cat /root/dom0key.pub)"
         xenstore-chmod -u /local/domain/$DOMID/authorized_keys/$DOMZERO_USER r$DOMID
 
         while ! echo "true" | bash_on_appliance; do
