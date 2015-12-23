@@ -899,6 +899,7 @@ jobs:
         all-files-match-any:
           - ^.*\.rst$
           - ^doc/.*$
+          - ^releasenotes/.*$
   # Skip non-doc jobs for doc-only bifrost changes. Since documents
   # are checked by bifrost-pep8, that job should not be skipped.
   - name: ^.*bifrost-(python27|integration-coreosipa-cirros|integration-dibipa-debian-nv)$
@@ -2066,7 +2067,7 @@ jobs:
       - '^.*requirements.txt$'
 
   # Some projects do not have releasenotes for liberty.
-  - name: ^gate-(keystoneauth|keystonemiddleware|python-keystoneclient|python-openstackclient)-releasenotes$
+  - name: ^gate-(keystoneauth|keystonemiddleware|python-ironicclient|python-keystoneclient|python-openstackclient)-releasenotes$
     branch: ^(?!stable/(?:juno|kilo|liberty)).*$
 
   # skip gate-openstack-ansible-releasenotes jobs for juno & kilo branches
@@ -8286,6 +8287,7 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
       - name: pypy-jobs
+      - name: release-notes-jobs
     check:
       - gate-tempest-dsvm-python-ironicclient-src
       - gate-ironicclient-dsvm-functional
