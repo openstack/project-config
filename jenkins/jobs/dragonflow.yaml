@@ -73,7 +73,7 @@
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_ENABLE_DRAGONFLOW_LOCAL_CONTROLLER=True"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin rally git://git.openstack.org/openstack/rally"
 
-          export OVERRIDE_ENABLED_SERVICES=key,n-api,n-cpu,n-cond,n-sch,n-crt,n-cauth,n-obj,g-api,g-reg,c-sch,c-api,c-vol,horizon,rabbit,tempest,mysql,dstat,df-controller,df-etcd,df-etcd-server,q-svc,q-l3
+          export DEVSTACK_GATE_SETTINGS=/opt/stack/new/dragonflow/devstack/devstackgaterc
 
           function post_test_hook {{
               $BASE/new/rally/tests/ci/rally-gate.sh
@@ -112,10 +112,6 @@
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_INSTALL_TESTONLY=1
 
-          OVERRIDE_ENABLED_SERVICES=key,n-api,n-cpu,n-cond,n-sch,n-crt,n-cauth,n-obj,
-          OVERRIDE_ENABLED_SERVICES+=g-api,g-reg,c-sch,c-api,c-vol,rabbit,tempest,mysql,
-          OVERRIDE_ENABLED_SERVICES+=dstat,df-controller,df-etcd,df-etcd-server,q-svc,q-l3
-          export OVERRIDE_ENABLED_SERVICES
 
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
@@ -125,6 +121,8 @@
           export PROJECTS="openstack/dragonflow $PROJECTS"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin dragonflow git://git.openstack.org/openstack/dragonflow"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_ENABLE_DRAGONFLOW_LOCAL_CONTROLLER=True"
+
+          export DEVSTACK_GATE_SETTINGS=/opt/stack/new/dragonflow/devstack/devstackgaterc
 
           function gate_hook {{
               bash -xe $BASE/new/dragonflow/dragonflow/tests/contrib/gate_hook.sh fullstack
