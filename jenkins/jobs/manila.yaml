@@ -277,7 +277,7 @@
           # and below provided link should not be used.
           export DEVSTACK_LOCAL_CONFIG="enable_plugin manila git://git.openstack.org/openstack/manila"
 
-          # Enable devstack-plugin-hdfs plugin, to install and configure GlusterFS.
+          # Enable devstack-plugin-hdfs plugin, to install and configure HDFS.
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin devstack-plugin-hdfs git://git.openstack.org/openstack/devstack-plugin-hdfs"
 
           # Keep localrc to be able to set some vars in pre_test_hook
@@ -290,7 +290,7 @@
           export -f pre_test_hook
 
           function post_test_hook {
-              # Configure and run tempest on singlebackend manila installation
+              # Configure and run tempest on multi-backend manila installation
               source $BASE/new/devstack-plugin-hdfs/manila/post_test_hook.sh
           }
           export -f post_test_hook
