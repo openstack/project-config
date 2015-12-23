@@ -27,7 +27,8 @@ then
     # Delete everything so the first commit is truly empty:
     git rm -rf .
     # git rm -rf leaves submodule directories:
-    find -maxdepth 1 -not -regex '\./\.git\(/.*\)?' -not -name . -exec rm -fr {} \;
+    find -maxdepth 1 -not -regex '\./\.git\(/.*\)?' -not -name . \
+        -exec rm -fr {} \;
     ls -la
 else
     git branch -D release || /bin/true

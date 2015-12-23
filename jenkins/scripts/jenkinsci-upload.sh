@@ -36,11 +36,13 @@ JENKINSCI_REPO_CREDS="/home/jenkins/.jenkinsci-curl"
 curl -X PUT \
     --config ${JENKINSCI_REPO_CREDS} \
     --data-binary @${META_DATA_FILE} \
-    -i "${JENKINSCI_REPO}/${PROJECT}/${VERSION}/${META_DATA_FILE}" > /dev/null 2>&1
+    -i "${JENKINSCI_REPO}/${PROJECT}/${VERSION}/${META_DATA_FILE}" \
+    > /dev/null 2>&1
 
 curl -X PUT \
     --config ${JENKINSCI_REPO_CREDS} \
     --data-binary @${PLUGIN_FILE} \
-    -i "${JENKINSCI_REPO}/${PROJECT}/${VERSION}/${PLUGIN_FILE}" > /dev/null 2>&1
+    -i "${JENKINSCI_REPO}/${PROJECT}/${VERSION}/${PLUGIN_FILE}" \
+    > /dev/null 2>&1
 
 exit $?

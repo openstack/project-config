@@ -63,7 +63,8 @@ export DEBEMAIL="soren@openstack.org"
 
 buildno=$BUILD_NUMBER
 pkgversion="${version}-0ubuntu0~${series}${buildno}"
-dch -b --force-distribution --v "${pkgversion}" "Automated PPA build. Packaging revision: ${PACKAGING_REVNO}." -D $series
+dch -b --force-distribution --v "${pkgversion}" \
+    "Automated PPA build. Packaging revision: ${PACKAGING_REVNO}." -D $series
 dpkg-buildpackage -rfakeroot -S -sa -nc -k32EE128C
 if ! [ "$DO_UPLOAD" = "no" ]; then
     for ppa in $PPAS; do

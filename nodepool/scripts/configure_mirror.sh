@@ -20,7 +20,8 @@ source /etc/nodepool/provider
 
 NODEPOOL_PYPI_MIRROR=${NODEPOOL_PYPI_MIRROR:-http://pypi.$NODEPOOL_REGION.openstack.org/simple}
 
-sudo sed -i -e "s,^index-url = .*,index-url = $NODEPOOL_PYPI_MIRROR," /etc/pip.conf
+sudo sed -i -e "s,^index-url = .*,index-url = $NODEPOOL_PYPI_MIRROR," \
+    /etc/pip.conf
 
 cat >/home/jenkins/.pydistutils.cfg <<EOF
 [easy_install]

@@ -30,7 +30,9 @@ while ! grep -q "$END_UUID" /tmp/console.html; do
     #        fails. This allows us to retry when we have Jenkins proxy
     #        errors without polluting the output document.
     # --insecure because our Jenkins masters use self signed SSL certs.
-    curl -X POST --data "start=$(stat -c %s /tmp/console.html || echo 0)" --fail --insecure $BUILD_URL$console_log_path >> /tmp/console.html || true
+    curl -X POST --data "start=$(stat -c %s /tmp/console.html || echo 0)" \
+        --fail --insecure $BUILD_URL$console_log_path \
+        >> /tmp/console.html || true
 done
 
 # We need to add <pre> tags around the output for log-osanalyze to not escape
