@@ -26,8 +26,13 @@
     publishers:
       - console-log
 - job:
-    name: 'dib-buildimage-debian-ironic-agent'
+    name: 'dib-buildimage-debian-ironic'
     node: bare-trusty
+
+    wrappers:
+      - build-timeout:
+          timeout: 60
+      - timestamps
 
     builders:
       - link-logs
@@ -47,19 +52,31 @@
           ./openstack/diskimage-builder/tests/install_test_deps.sh
 
           DIB_RELEASE="jessie" disk-image-create \
-            -o ~/debian-jessie-ironic-agent \
+            -o $WORKSPACE/debian-jessie-ironic-agent \
             debian ironic-agent
+
+          DIB_RELEASE="jessie" disk-image-create \
+            -o $WORKSPACE/debian-jessie-simple-init \
+            debian vm simple-init enable-serial-console
+
 
     publishers:
       - scp:
           site: 'tarballs.openstack.org'
           files:
             - source: 'debian-jessie-ironic-agent.vmlinuz'
-              target: 'images/ironic-agent/debian-jessie/'
+              target: >
+                'tarballs/diskimage-builder/images/ironic-agent/debian-jessie/'
               keep-hierarchy: false
               copy-after-failure: false
             - source: 'debian-jessie-ironic-agent.initramfs'
-              target: 'images/ironic-agent/debian-jessie/debian-jessie-ironic-agent.initramfs'
+              target: >
+                'tarballs/diskimage-builder/images/ironic-agent/debian-jessie/'
+              keep-hierarchy: false
+              copy-after-failure: false
+            - source: 'debian-jessie-simple-init.qcow2'
+              target: >
+                'tarballs/diskimage-builder/images/simple-init/debian-jessie/'
               keep-hierarchy: false
               copy-after-failure: false
       - console-log
