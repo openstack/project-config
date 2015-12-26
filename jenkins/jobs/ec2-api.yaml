@@ -68,17 +68,15 @@
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TIMEOUT=180
-          export DEVSTACK_GATE_TEMPEST=1
-          export DEVSTACK_GATE_TEMPEST_NOTESTS=1
           export DEVSTACK_GATE_NEUTRON=1
 
           export PROJECTS="openstack/ec2-api $PROJECTS"
           export PROJECTS="openstack/swift3 $PROJECTS"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin ec2-api git://git.openstack.org/openstack/ec2-api"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin neutron-vpnaas git://git.openstack.org/openstack/neutron-vpnaas"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"RUN_LONG_TESTS=1"
           export ENABLED_SERVICES+=,swift3
 
-          export RUN_LONG_TESTS=1
           function post_test_hook {
               source $BASE/new/devstack/accrc/admin/admin
               cd /opt/stack/new/ec2-api/
