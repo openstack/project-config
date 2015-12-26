@@ -67,8 +67,7 @@ def check_projects_sorted():
             firstEntry = False
         if line.startswith('  - name: ') and not firstEntry:
             current = line[10:].strip()
-            if (normalize(last) > normalize(current) and
-                last != 'z/tempest'):
+            if (normalize(last) > normalize(current)):
                 print("  Wrong alphabetical order: %(last)s, %(current)s" %
                       {"last": last, "current": current})
                 errors = True
