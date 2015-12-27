@@ -16,6 +16,9 @@
 
 source /usr/local/jenkins/slave_scripts/common.sh
 
+# Topic to use for our changes
+TOPIC=zanata/translations
+
 # Used for setup.py babel commands
 QUIET="--quiet"
 
@@ -142,7 +145,7 @@ function setup_review {
     local branch=${1:-master}
     FULL_PROJECT=$(grep project .gitreview  | cut -f2 -d= |sed -e 's/\.git$//')
     set +e
-    read -d '' COMMIT_MSG <<EOF
+    read -d '' INITIAL_COMMIT_MSG <<EOF
 Imported Translations from Zanata
 
 For more information about this automatic import see:
@@ -154,21 +157,8 @@ EOF
     # See if there is an open change in the zanata/translations
     # topic. If so, get the change id for the existing change for use
     # in the commit msg.
-    change_info=$(ssh -p 29418 proposal-bot@review.openstack.org gerrit query --current-patch-set status:open project:$FULL_PROJECT branch:$branch topic:zanata/translations owner:proposal-bot)
-    previous=$(echo "$change_info" | grep "^  number:" | awk '{print $2}')
-    if [ -n "$previous" ]; then
-        change_id=$(echo "$change_info" | grep "^change" | awk '{print $2}')
-        # Read returns a non zero value when it reaches EOF. Because we use a
-        # heredoc here it will always reach EOF and return a nonzero value.
-        # Disable -e temporarily to get around the read.
-        set +e
-        read -d '' COMMIT_MSG <<EOF
-$COMMIT_MSG
+    setup_commit_message $FULL_PROJECT proposal-bot $branch $TOPIC "$INITIAL_COMMIT_MSG"
 
-Change-Id: $change_id
-EOF
-        set -e
-    fi
     # If the open change an already approved, let's not queue a new
     # patch but let's merge the other patch first.
     # This solves the problem that when the gate pipeline backup
@@ -176,9 +166,9 @@ EOF
     # update it will always get sniped out of the gate by another.
     # It also helps, when you approve close to the time this job is
     # run.
-    if [ -n "$previous" ]; then
+    if [ -n "$CHANGE_ID" ]; then
         # Use the JSON format since it is very compact and easy to grep
-        change_info=$(ssh -p 29418 proposal-bot@review.openstack.org gerrit query --current-patch-set --format=JSON $change_id)
+        change_info=$(ssh -p 29418 proposal-bot@review.openstack.org gerrit query --current-patch-set --format=JSON $CHANGE_ID)
         # Check for:
         # 1) Workflow approval (+1)
         # 2) no -1/-2 by Jenkins
@@ -215,7 +205,7 @@ EOF
         set +e
         # We cannot rely on the default branch in .gitreview being
         # correct so we are very explicit here.
-        output=$(git review -t zanata/translations $branch)
+        output=$(git review -t $TOPIC $branch)
         ret=$?
         [[ "$ret" -eq "0" || "$output" =~ "No changes between prior commit" ]]
         success=$?
