@@ -387,6 +387,10 @@ project-templates:
     gate:
       - 'gate-{name}-python34-constraints'
 
+  - name: osc-plugin-jobs
+    experimental:
+      - 'check-osc-plugins'
+
   - name: pypy-jobs
     check:
       - 'gate-{name}-pypy'
@@ -1507,6 +1511,10 @@ jobs:
 
   - name: keystone-propose-config-updates
     branch: ^(?!stable/kilo).*$
+
+  - name: check-osc-plugins
+    branch: ^(?!stable/(kilo|liberty)).*$
+    voting: false
 
   - name: gate-keystonemiddleware-tox-bandit
     branch: ^(?!stable/kilo).*$
@@ -8476,6 +8484,7 @@ projects:
       - name: translation-jobs
       - name: release-notes-jobs
       - name: lib-forward-testing
+      - name: osc-plugin-jobs
     check:
       - gate-osc-dsvm-functional
     gate:

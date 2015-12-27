@@ -39,3 +39,17 @@
       - test-results
       - devstack-logs
       - console-log
+
+- job:
+    name: check-osc-plugins
+    node: bare-trusty
+
+    builders:
+      - revoke-sudo
+      - link-logs
+      - net-info
+      - gerrit-git-prep
+      - shell: /usr/local/jenkins/slave_scripts/check-osc-plugins.sh
+
+    publishers:
+      - console-log
