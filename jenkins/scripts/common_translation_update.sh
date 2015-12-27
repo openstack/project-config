@@ -157,6 +157,8 @@ EOF
     # See if there is an open change in the zanata/translations
     # topic. If so, get the change id for the existing change for use
     # in the commit msg.
+    # Function setup_commit_message will set CHANGE_ID if a change
+    # exists and will always set COMMIT_MSG.
     setup_commit_message $FULL_PROJECT proposal-bot $branch $TOPIC "$INITIAL_COMMIT_MSG"
 
     # If the open change an already approved, let's not queue a new
