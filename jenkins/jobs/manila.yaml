@@ -31,29 +31,32 @@
           export KEEP_LOCALRC=1
 
           function pre_test_hook {{
+              # 'dhss' - acronym for 'Driver Handles Share Servers',
+              # defines mode of a share driver. Boolean-like.
+              # 'driver' - codename of a share driver to configure.
+              # 'back_end_type' - defines which installation Manila should
+              # have - either 'singlebackend' or 'multibackend'.
               source $BASE/new/manila/contrib/ci/pre_test_hook.sh \
-                  # Variable 'dhss' means 'driver handles share servers',
-                  # boolean-like.
                   {dhss} \
-                  # Driver codename for configuring specific share driver
                   {driver} \
-                  # Configure Manila for work in 'singlebackend' or
-                  # 'multibackend' mode.
                   {back_end_type}
           }}
           export -f pre_test_hook
 
           function post_test_hook {{
+              # 'back_end_type' - defines which installation Manila is
+              # configured to - either 'singlebackend' or 'multibackend'.
+              # 'driver' - codename of a share driver that is configured in
+              # Manila. It is used for enabling/disabling tests that are not
+              # supported by share driver that is used.
+              # 'test_type' - defines which set of test suites should be used,
+              # can have 'api' and 'scenario' values.
+              # 'postgres_enabled' - set of test suites depends on DB backend
+              # in some cases, so it is provided explicitely. Boolean-like.
               source $BASE/new/manila/contrib/ci/post_test_hook.sh \
-                  # Configure and run tempest on 'singlebackend' or
-                  # 'multibackend' manila installation.
                   {back_end_type} \
-                  # Set of test suites can differ based on used share driver
                   {driver} \
-                  # 'test_type' can have values as 'api' and 'scenario'
-                  # that is used for running of appropriate test suites.
                   {test_type} \
-                  # Set of test suites can differ depending of DB back-end
                   {postgres_enabled}
           }}
           export -f post_test_hook
