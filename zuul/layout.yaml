@@ -857,9 +857,19 @@ jobs:
           - ^.*\.rst$
           - ^doc/.*$
           - ^releasenotes/.*$
+  # Skip non-doc jobs for doc-only neutron-lib changes.
   - name: ^.*neutron-lib-python(27|34)(-constraints)?$
     skip-if:
       - project: ^openstack/neutron-lib$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+          - ^releasenotes/.*$
+  # Skip non-doc jobs for doc-only neutron-vpnaas changes. The dsvm
+  # tests area already skipped by another check.
+  - name: ^.*neutron-vpnaas-python(27|34)(-constraints)?$
+    skip-if:
+      - project: ^openstack/neutron-vpnaas$
         all-files-match-any:
           - ^.*\.rst$
           - ^doc/.*$
