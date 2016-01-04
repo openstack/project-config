@@ -1995,19 +1995,14 @@ jobs:
   - name: gate-networking-hyperv-python34
     branch: ^(?!stable/kilo).*$
 
-  # skip all openstack-ansible jobs except the docs job for rst/doc files
-  - name: ^gate-openstack-ansible-(?!docs).*$
+  # skip all openstack-ansible jobs except the releasenotes/docs
+  # jobs for rst/doc/releasenotes files
+  - name: ^gate-openstack-ansible-(?!(docs|releasenotes)).*$
     skip-if:
       - project: ^openstack/openstack-ansible$
         all-files-match-any:
           - ^.*\.rst$
           - ^doc/.*
-
-  # skip all openstack-ansible jobs except the releasenotes job for releasenotes
-  - name: ^gate-openstack-ansible-(?!releasenotes).*$
-    skip-if:
-      - project: ^openstack/openstack-ansible$
-        all-files-match-any:
           - ^releasenotes/.*
 
   # skip the new ubuntu-trusty based commit check for the juno
