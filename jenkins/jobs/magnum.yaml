@@ -34,6 +34,12 @@
           # Keep localrc to be able to set some vars in post_test_hook
           export KEEP_LOCALRC=1
 
+          function gate_hook {{
+               cd /opt/stack/new/magnum/
+              ./magnum/tests/contrib/gate_hook.sh {coe}
+          }}
+          export -f gate_hook
+
           function post_test_hook {{
               source $BASE/new/devstack/accrc/admin/admin
               cd /opt/stack/new/magnum/
