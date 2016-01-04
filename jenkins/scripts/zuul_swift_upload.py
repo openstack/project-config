@@ -22,6 +22,8 @@ credentials provided by zuul
 import argparse
 import logging
 import glob2
+import hashlib
+import json
 import magic
 import os
 import Queue
@@ -417,45 +419,8 @@ def expand_files(paths):
     return sorted(results, key=lambda x: x.lower())
 
 
-def grab_args():
-    """Grab and return arguments"""
-    parser = argparse.ArgumentParser(
-        description="Upload results to swift using instructions from zuul"
-    )
-    parser.add_argument('--verbose', action='store_true',
-                        help='show debug information')
-    parser.add_argument('--no-indexes', action='store_true',
-                        help='do not generate any indexes at all')
-    parser.add_argument('--no-root-index', action='store_true',
-                        help='do not generate a root index')
-    parser.add_argument('--no-dir-indexes', action='store_true',
-                        help='do not generate a indexes inside dirs')
-    parser.add_argument('--no-parent-links', action='store_true',
-                        help='do not include links back to a parent dir')
-    parser.add_argument('--append-footer', default='index_footer.html',
-                        help='when generating an index, if the given file is '
-                             'present in a folder, append it to the index '
-                             '(set to "none" to disable)')
-    parser.add_argument('-n', '--name', default="logs",
-                        help='The instruction-set to use')
-    parser.add_argument('--delete-after', default='15552000',
-                        help='Number of seconds to delete object after '
-                             'upload. Default is 6 months (15552000 seconds) '
-                             'and if set to 0 X-Delete-After will not be set',
-                        type=int)
-    parser.add_argument('files', nargs='+',
-                        help='the file(s) to upload with recursive glob '
-                        'matching when supplied as a string')
-
-    return parser.parse_args()
-
-
-if __name__ == '__main__':
-
-    # Avoid unactionable warnings
-    requestsexceptions.squelch_warnings(requestsexceptions.InsecureRequestWarning)
-
-    args = grab_args()
+def upload_from_args(args):
+    """Upload all of the files and indexes"""
     # file_list: A list of files to push to swift (in file_detail format)
     file_list = []
     # folder_links: A list of files and their links to generate an
@@ -546,5 +511,129 @@ if __name__ == '__main__':
     num_threads = min(max_file_count, items_to_upload)
     swift_form_post(queue, num_threads)
 
-    print os.path.join(logserver_prefix, swift_destination_prefix,
-                       os.path.basename(index_file))
+    logging.info(os.path.join(logserver_prefix, swift_destination_prefix,
+                              os.path.basename(index_file)))
+
+    return file_list
+
+
+def create_folder_metadata_object(folder_hash, folder_name,
+                                  destination_prefix=''):
+    """Create a temp file with the folder metadata and return a file_detail
+    dict
+    """
+    f, path = tempfile.mkstemp()
+    # Serialise metadata as a json blob
+    metadata = {'timestamp': time.time()}
+    os.write(f, json.dumps(metadata))
+    os.close(f)
+    return {
+        'filename': folder_hash,
+        'path': path,
+        'relative_name': folder_hash,
+        'url': os.path.join(destination_prefix, folder_hash),
+        'metadata': get_file_metadata(path),
+    }
+
+
+def build_metadata_object_list(file_list, destination_prefix=''):
+    """Build a separate list of file_datils to be uploaded containing metadata.
+
+    Only upload metadata for psuedo folders for now. Actual files can have
+    their metadata stored directly in swift."""
+
+    # key: hash of path, value: file_details (as above)
+    object_list = {}
+    for file_detail in file_list:
+        # Grab each possible folder
+        parts = file_detail['relative_name'].split('/')
+        folder = ''
+        for part in parts[:-1]:
+            folder = '/'.join([folder, part])
+            h = hashlib.sha1(folder).hexdigest()
+            if h not in object_list.keys():
+                object_list[h] = create_folder_metadata_object(
+                    h, folder, destination_prefix)
+
+    return object_list.values()
+
+
+def cleanup_tmp_files(file_list):
+    for f in file_list:
+        if os.path.isfile(f['path']):
+            os.unlink(f['path'])
+
+
+def upload_metadata(file_list, args):
+    try:
+        logserver_prefix = os.environ['SWIFT_%s_LOGSERVER_PREFIX' %
+                                      args.metadata]
+        swift_url = os.environ['SWIFT_%s_URL' % args.metadata]
+        swift_hmac_body = os.environ['SWIFT_%s_HMAC_BODY' % args.metadata]
+        swift_signature = os.environ['SWIFT_%s_SIGNATURE' % args.metadata]
+    except KeyError as e:
+        print 'Environment variable %s not found' % e
+        quit()
+
+    metadata_objects = build_metadata_object_list(file_list, logserver_prefix)
+
+    logging.debug("List of files prepared to upload:")
+    logging.debug(metadata_objects)
+
+    queue = swift_form_post_queue(metadata_objects, swift_url, swift_hmac_body,
+                                  swift_signature, args.delete_after)
+    max_file_count = int(swift_hmac_body.split('\n')[3])
+    # Attempt to upload at least one item
+    items_to_upload = max(queue.qsize(), 1)
+    # Cap number of threads to a reasonable number
+    num_threads = min(max_file_count, items_to_upload)
+    swift_form_post(queue, num_threads)
+
+    cleanup_tmp_files(metadata_objects)
+
+
+def grab_args():
+    """Grab and return arguments"""
+    parser = argparse.ArgumentParser(
+        description="Upload results to swift using instructions from zuul"
+    )
+    parser.add_argument('--verbose', action='store_true',
+                        help='show debug information')
+    parser.add_argument('--no-indexes', action='store_true',
+                        help='do not generate any indexes at all')
+    parser.add_argument('--no-root-index', action='store_true',
+                        help='do not generate a root index')
+    parser.add_argument('--no-dir-indexes', action='store_true',
+                        help='do not generate a indexes inside dirs')
+    parser.add_argument('--no-parent-links', action='store_true',
+                        help='do not include links back to a parent dir')
+    parser.add_argument('--append-footer', default='index_footer.html',
+                        help='when generating an index, if the given file is '
+                             'present in a folder, append it to the index '
+                             '(set to "none" to disable)')
+    parser.add_argument('-n', '--name', default="logs",
+                        help='The instruction-set to use')
+    parser.add_argument('-m', '--metadata', default=None,
+                        help='The instruction-set to use for pseudo folder '
+                             'metadata')
+    parser.add_argument('--delete-after', default='15552000',
+                        help='Number of seconds to delete object after '
+                             'upload. Default is 6 months (15552000 seconds) '
+                             'and if set to 0 X-Delete-After will not be set',
+                        type=int)
+    parser.add_argument('files', nargs='+',
+                        help='the file(s) to upload with recursive glob '
+                        'matching when supplied as a string')
+
+    return parser.parse_args()
+
+
+if __name__ == '__main__':
+    # Avoid unactionable warnings
+    requestsexceptions.squelch_warnings(requestsexceptions.InsecureRequestWarning)
+
+    args = grab_args()
+
+    uploaded_files = upload_from_args(args)
+    if args.metadata:
+        upload_metadata(uploaded_files, args)
