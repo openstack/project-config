@@ -1,0 +1,80 @@
+dashboard:
+  title: 'Nodepool: Rackspace'
+  rows:
+    - title: Description
+      height: 100px
+      panels:
+        - title: Description
+          content: |
+            **This dashboard is managed by [Grafyaml](http://docs.openstack.org/infra/system-config/grafyaml.html).**
+
+            If you would like to make changes to this dashboard, please see the grafana directory in [project-config](https://git.openstack.org/cgit/openstack-infra/project-config/tree/grafana/nodepool-rax.yaml).
+          type: text
+    - title: API Operations
+      showTitle: true
+      height: 250px
+      panels:
+        - title: Create Server
+          type: graph
+          span: 4
+          targets:
+            - target: alias(scale(stats.timers.nodepool.task.rax-dfw.CreateServerTask.mean, '0.001'), 'DFW')
+            - target: alias(scale(stats.timers.nodepool.task.rax-iad.CreateServerTask.mean, '0.001'), 'IAD')
+            - target: alias(scale(stats.timers.nodepool.task.rax-ord.CreateServerTask.mean, '0.001'), 'ORD')
+        - title: Delete Server
+          type: graph
+          span: 4
+          targets:
+            - target: alias(scale(stats.timers.nodepool.task.rax-dfw.DeleteServerTask.mean, '0.001'), 'DFW')
+            - target: alias(scale(stats.timers.nodepool.task.rax-iad.DeleteServerTask.mean, '0.001'), 'IAD')
+            - target: alias(scale(stats.timers.nodepool.task.rax-ord.DeleteServerTask.mean, '0.001'), 'ORD')
+        - title: List Servers
+          type: graph
+          span: 4
+          targets:
+            - target: alias(scale(stats.timers.nodepool.task.rax-dfw.ListServersTask.mean, '0.001'), 'DFW')
+            - target: alias(scale(stats.timers.nodepool.task.rax-iad.ListServersTask.mean, '0.001'), 'IAD')
+            - target: alias(scale(stats.timers.nodepool.task.rax-ord.ListServersTask.mean, '0.001'), 'ORD')
+    - title: Node Launches
+      showTitle: true
+      height: 250px
+      panels:
+        - title: Ready Node Launch Attempts
+          type: graph
+          span: 4
+          targets:
+            - target: alias(summarize(stats_counts.nodepool.launch.provider.rax-dfw.ready, '1h'), 'DFW')
+            - target: alias(summarize(stats_counts.nodepool.launch.provider.rax-iad.ready, '1h'), 'IAD')
+            - target: alias(summarize(stats_counts.nodepool.launch.provider.rax-ord.ready, '1h'), 'ORD')
+        - title: Error Node Launch Attempts
+          type: graph
+          span: 4
+          targets:
+            - target: alias(summarize(stats_counts.nodepool.launch.provider.rax-dfw.error, '1h'), 'DFW')
+            - target: alias(summarize(stats_counts.nodepool.launch.provider.rax-iad.error, '1h'), 'IAD')
+            - target: alias(summarize(stats_counts.nodepool.launch.provider.rax-ord.error, '1h'), 'ORD')
+        - title: Time to Ready
+          type: graph
+          span: 4
+          targets:
+            - target: alias(scale(stats.timers.nodepool.launch.provider.rax-dfw.ready.mean, '0.000016'), 'DFW')
+            - target: alias(scale(stats.timers.nodepool.launch.provider.rax-iad.ready.mean, '0.000016'), 'IAD')
+            - target: alias(scale(stats.timers.nodepool.launch.provider.rax-ord.ready.mean, '0.000016'), 'ORD')
+    - title: Job Runtimes
+      showTitle: true
+      height: 250px
+      panels:
+        - title: gate-tempest-dsvm-full
+          type: graph
+          span: 4
+          targets:
+            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-full.master.devstack-trusty.rax-dfw.runtime.mean, '0.000016'), 'DFW')
+            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-full.master.devstack-trusty.rax-iad.runtime.mean, '0.000016'), 'IAD')
+            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-full.master.devstack-trusty.rax-ord.runtime.mean, '0.000016'), 'ORD')
+        - title: gate-tempest-dsvm-neutron-full
+          type: graph
+          span: 4
+          targets:
+            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-neutron-full.master.devstack-trusty.rax-dfw.runtime.mean, '0.000016'), 'DFW')
+            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-neutron-full.master.devstack-trusty.rax-iad.runtime.mean, '0.000016'), 'IAD')
+            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-neutron-full.master.devstack-trusty.rax-ord.runtime.mean, '0.000016'), 'ORD')
