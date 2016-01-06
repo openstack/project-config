@@ -16,46 +16,49 @@ dashboard:
       panels:
         - title: Create Server
           type: graph
-          span: 3
+          span: 4
           targets:
-            - target: alias(scale(stats.timers.nodepool.task.internap-nyj01.CreateServerTask.mean, '0.001'), 'Internap NYJ01')
+            - target: alias(scale(stats.timers.nodepool.task.internap-nyj01.CreateServerTask.mean, '0.001'), 'NYJ01')
         - title: Delete Server
           type: graph
-          span: 3
+          span: 4
           targets:
-            - target: alias(scale(stats.timers.nodepool.task.internap-nyj01.DeleteServerTask.mean, '0.001'), 'Internap NYJ01')
+            - target: alias(scale(stats.timers.nodepool.task.internap-nyj01.DeleteServerTask.mean, '0.001'), 'NYJ01')
         - title: List Servers
           type: graph
-          span: 3
+          span: 4
           targets:
-            - target: alias(scale(stats.timers.nodepool.task.internap-nyj01.ListServersTask.mean, '0.001'), 'Internap NYJ01')
+            - target: alias(scale(stats.timers.nodepool.task.internap-nyj01.ListServersTask.mean, '0.001'), 'NYJ01')
     - title: Node Launches
       showTitle: true
       height: 250px
       panels:
-        - title: Node Launch Attempts
+        - title: Ready Node Launch Attempts
           type: graph
-          span: 3
-          stack: true
+          span: 4
           targets:
-            - target: alias(summarize(stats_counts.nodepool.launch.provider.internap-nyj01.ready, '1h'), 'Ready')
-            - target: alias(summarize(stats_counts.nodepool.launch.provider.internap-nyj01.error, '1h'), 'Error')
+            - target: alias(summarize(stats_counts.nodepool.launch.provider.internap-nyj01.ready, '1h'), 'NYJ01')
+        - title: Error Node Launch Attempts
+          type: graph
+          span: 4
+          targets:
+            - target: alias(summarize(stats_counts.nodepool.launch.provider.internap-nyj01.error, '1h'), 'NYJ01')
         - title: Time to Ready
           type: graph
-          span: 3
+          span: 4
           targets:
-            - target: alias(scale(stats.timers.nodepool.launch.provider.internap-nyj01.ready.mean, '0.000016'), 'Internap NYJ01')
+            - target: alias(scale(stats.timers.nodepool.launch.provider.internap-nyj01.ready.mean, '0.000016'), 'NYJ01')
     - title: Job Runtimes
       showTitle: true
       height: 250px
       panels:
         - title: gate-tempest-dsvm-full
           type: graph
-          span: 3
+          span: 4
           targets:
-            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-full.master.devstack-trusty.internap-nyj01.runtime.mean, '0.000016'), 'Internap NYJ01')
+            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-full.master.devstack-trusty.internap-nyj01.runtime.mean, '0.000016'), 'NYJ01')
         - title: gate-tempest-dsvm-neutron-full
           type: graph
-          span: 3
+          span: 4
           targets:
-            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-neutron-full.master.devstack-trusty.internap-nyj01.runtime.mean, '0.000016'), 'Internap NYJ01')
+            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-neutron-full.master.devstack-trusty.internap-nyj01.runtime.mean, '0.000016'), 'NYJ01')
