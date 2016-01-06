@@ -1,0 +1,61 @@
+dashboard:
+  title: 'Nodepool: Internap'
+  rows:
+    - title: Description
+      height: 100px
+      panels:
+        - title: Description
+          content: |
+            **This dashboard is managed by [Grafyaml](http://docs.openstack.org/infra/system-config/grafyaml.html).**
+
+            If you would like to make changes to this dashboard, please see the grafana directory in [project-config](https://git.openstack.org/cgit/openstack-infra/project-config/tree/grafana/nodepool-internap.yaml).
+          type: text
+    - title: API Operations
+      showTitle: true
+      height: 250px
+      panels:
+        - title: Create Server
+          type: graph
+          span: 3
+          targets:
+            - target: alias(scale(stats.timers.nodepool.task.internap-nyj01.CreateServerTask.mean, '0.001'), 'Internap NYJ01')
+        - title: Delete Server
+          type: graph
+          span: 3
+          targets:
+            - target: alias(scale(stats.timers.nodepool.task.internap-nyj01.DeleteServerTask.mean, '0.001'), 'Internap NYJ01')
+        - title: List Servers
+          type: graph
+          span: 3
+          targets:
+            - target: alias(scale(stats.timers.nodepool.task.internap-nyj01.ListServersTask.mean, '0.001'), 'Internap NYJ01')
+    - title: Node Launches
+      showTitle: true
+      height: 250px
+      panels:
+        - title: Node Launch Attempts
+          type: graph
+          span: 3
+          stack: true
+          targets:
+            - target: alias(summarize(stats_counts.nodepool.launch.provider.internap-nyj01.ready, '1h'), 'Ready')
+            - target: alias(summarize(stats_counts.nodepool.launch.provider.internap-nyj01.error, '1h'), 'Error')
+        - title: Time to Ready
+          type: graph
+          span: 3
+          targets:
+            - target: alias(scale(stats.timers.nodepool.launch.provider.internap-nyj01.ready.mean, '0.000016'), 'Internap NYJ01')
+    - title: Job Runtimes
+      showTitle: true
+      height: 250px
+      panels:
+        - title: gate-tempest-dsvm-full
+          type: graph
+          span: 3
+          targets:
+            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-full.master.devstack-trusty.internap-nyj01.runtime.mean, '0.000016'), 'Internap NYJ01')
+        - title: gate-tempest-dsvm-neutron-full
+          type: graph
+          span: 3
+          targets:
+            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-neutron-full.master.devstack-trusty.internap-nyj01.runtime.mean, '0.000016'), 'Internap NYJ01')
