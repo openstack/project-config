@@ -57,18 +57,30 @@ dashboard:
         - title: Create Server
           type: graph
           span: 4
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
           targets:
             - target: alias(scale(stats.timers.nodepool.task.ovh-bhs1.CreateServerTask.mean, '0.001'), 'BHS1')
             - target: alias(scale(stats.timers.nodepool.task.ovh-gra1.CreateServerTask.mean, '0.001'), 'GRA1')
         - title: Delete Server
           type: graph
           span: 4
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
           targets:
             - target: alias(scale(stats.timers.nodepool.task.ovh-bhs1.DeleteServerTask.mean, '0.001'), 'BHS1')
             - target: alias(scale(stats.timers.nodepool.task.ovh-gra1.DeleteServerTask.mean, '0.001'), 'GRA1')
         - title: List Servers
           type: graph
           span: 4
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
           targets:
             - target: alias(scale(stats.timers.nodepool.task.ovh-bhs1.ListServersTask.mean, '0.001'), 'BHS1')
             - target: alias(scale(stats.timers.nodepool.task.ovh-gra1.ListServersTask.mean, '0.001'), 'GRA1')
@@ -79,24 +91,35 @@ dashboard:
         - title: Ready Node Launch Attempts
           type: graph
           span: 4
+          nullPointMode: null as zero
+          leftYAxisLabel: "events / min"
           targets:
-            - target: alias(summarize(stats_counts.nodepool.launch.provider.ovh-bhs1.ready, '1h'), 'BHS1')
-            - target: alias(summarize(stats_counts.nodepool.launch.provider.ovh-gra1.ready, '1h'), 'GRA1')
+            - target: alias(smartSummarize(stats_counts.nodepool.launch.provider.ovh-bhs1.ready, '1m'), 'BHS1')
+            - target: alias(smartSummarize(stats_counts.nodepool.launch.provider.ovh-gra1.ready, '1m'), 'GRA1')
         - title: Error Node Launch Attempts
           type: graph
           span: 4
+          nullPointMode: null as zero
+          leftYAxisLabel: "events / min"
           targets:
-            - target: alias(summarize(sumSeries(stats_counts.nodepool.launch.provider.ovh-bhs1.error.*), '1h'), 'BHS1')
-            - target: alias(summarize(sumSeries(stats_counts.nodepool.launch.provider.ovh-gra1.error.*), '1h'), 'GRA1')
+            - target: alias(smartSummarize(sumSeries(stats_counts.nodepool.launch.provider.ovh-bhs1.error.*), '1m'), 'BHS1')
+            - target: alias(smartSummarize(sumSeries(stats_counts.nodepool.launch.provider.ovh-gra1.error.*), '1m'), 'GRA1')
         - title: Time to Ready
           type: graph
           span: 4
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
           targets:
-            - target: alias(scale(stats.timers.nodepool.launch.provider.ovh-bhs1.ready.mean, '0.000016'), 'BHS1')
-            - target: alias(scale(stats.timers.nodepool.launch.provider.ovh-gra1.ready.mean, '0.000016'), 'GRA1')
+            - target: alias(scale(stats.timers.nodepool.launch.provider.ovh-bhs1.ready.mean, '0.001'), 'BHS1')
+            - target: alias(scale(stats.timers.nodepool.launch.provider.ovh-gra1.ready.mean, '0.001'), 'GRA1')
         - title: Test Nodes (BHS1)
           type: graph
           span: 4
+          stack: true
+          tooltip:
+            value_type: individual
           targets:
             - target: alias(stats.gauges.nodepool.provider.ovh-bhs1.nodes.building, 'Building')
             - target: alias(stats.gauges.nodepool.provider.ovh-bhs1.nodes.ready, 'Available')
@@ -105,6 +128,7 @@ dashboard:
         - title: Test Nodes (GRA1)
           type: graph
           span: 4
+          leftYAxisLabel: "nodes"
           targets:
             - target: alias(stats.gauges.nodepool.provider.ovh-gra1.nodes.building, 'Building')
             - target: alias(stats.gauges.nodepool.provider.ovh-gra1.nodes.ready, 'Available')
@@ -117,12 +141,20 @@ dashboard:
         - title: gate-tempest-dsvm-full
           type: graph
           span: 4
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
           targets:
-            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-full.master.devstack-trusty.ovh-bhs1.runtime.mean, '0.000016'), 'BHS1')
-            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-full.master.devstack-trusty.ovh-gra1.runtime.mean, '0.000016'), 'GRA1')
+            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-full.master.devstack-trusty.ovh-bhs1.runtime.mean, '0.001'), 'BHS1')
+            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-full.master.devstack-trusty.ovh-gra1.runtime.mean, '0.001'), 'GRA1')
         - title: gate-tempest-dsvm-neutron-full
           type: graph
           span: 4
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
           targets:
-            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-neutron-full.master.devstack-trusty.ovh-bhs1.runtime.mean, '0.000016'), 'BHS1')
-            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-neutron-full.master.devstack-trusty.ovh-gra1.runtime.mean, '0.000016'), 'GRA1')
+            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-neutron-full.master.devstack-trusty.ovh-bhs1.runtime.mean, '0.001'), 'BHS1')
+            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-neutron-full.master.devstack-trusty.ovh-gra1.runtime.mean, '0.001'), 'GRA1')
