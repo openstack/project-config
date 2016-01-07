@@ -15,10 +15,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import yaml
 import requests
-from collections import OrderedDict
 import requestsexceptions
+import yaml
+
+
+from collections import OrderedDict
+
 
 def project_representer(dumper, data):
     return dumper.represent_mapping('tag:yaml.org,2002:map',
@@ -82,6 +85,19 @@ class IndentedDumper(IndentedEmitter, yaml.serializer.Serializer,
         yaml.resolver.Resolver.__init__(self)
 
 
+def get_hashes(hash_url):
+    hashes = {}
+    r = requests.get(hash_url, allow_redirects=True)
+    if r.status_code == 200:
+        for line in r.iter_lines():
+            try:
+                hash, file = line.split("  ")
+            except ValueError:
+                continue
+            hashes[file] = hash
+    return hashes
+
+
 def main():
     requestsexceptions.squelch_warnings()
     yaml.add_constructor(yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG,
@@ -94,14 +110,21 @@ def main():
 
     assets = []
     for a in data['assets']:
-        if not a.get('attributes', {}).get('active', True):
+        url = a.get('attributes', {}).get('url')
+        if not a.get('active', True) or not url:
             assets.append(a)
             continue
-        url = a.get('attributes', {}).get('url')
-        if url:
-            r = requests.head(url, allow_redirects=True)
-            if r.status_code != 200:
-                a['attributes']['active'] = False
+
+        r = requests.head(url, allow_redirects=True)
+        if r.status_code != 200:
+            a['active'] = False
+        else:
+            hash_url = a.get('hash_url')
+            if hash_url:
+                hashes = get_hashes(hash_url)
+                filename = url.split("/")[-1]
+                a['attributes']['hash'] = hashes.get(filename, 'unknown')
+
         assets.append(a)
 
     output = {'assets': assets}
