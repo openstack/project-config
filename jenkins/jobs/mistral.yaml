@@ -39,3 +39,35 @@
     publishers:
       - devstack-logs
       - console-log
+
+- job:
+    name: 'gate-mistral-docker-buildimage'
+    node: bare-trusty
+
+    builders:
+      - link-logs
+      - net-info
+      - gerrit-git-prep
+      - shell: |
+          #!/bin/bash -xe
+          if [ -x "/usr/bin/apt-get" ]; then
+             sudo -E apt-get update
+             sudo -E apt-get install -y docker.io
+          elif [ -x "/usr/bin/yum" ]; then
+             sudo -E yum install -y docker-io gpg
+          else
+             echo "No supported package manager installed on system. Supported: apt, yum"
+             exit 1
+          fi
+          docker build -t mistral-docker .
+          docker save mistral-docker | gzip >  mistral-docker.tar.gz
+
+    publishers:
+      - scp:
+          site: 'tarballs.openstack.org'
+          files:
+            - source: 'mistral-docker.tar.gz'
+              target: 'tarballs/mistral/images'
+              keep-hierarchy: false
+              copy-after-failure: false
+      - console-log
