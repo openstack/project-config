@@ -216,8 +216,8 @@
               esac
           else
               case "$ZUUL_BRANCH" in
-                  "stable/kilo") gnocchi_branch="stable/1.2";;
-                  "stable/liberty") gnocchi_branch="stable/1.3";;
+                  "stable/kilo") export OVERRIDE_GNOCCHI_PROJECT_BRANCH="stable/1.2";;
+                  "stable/liberty") export OVERRIDE_GNOCCHI_PROJECT_BRANCH="stable/1.3";;
               esac
           fi
 
@@ -237,7 +237,7 @@
           export PROJECTS="openstack/aodh openstack/gnocchi"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin aodh git://git.openstack.org/openstack/aodh"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin gnocchi git://git.openstack.org/openstack/gnocchi $gnocchi_branch"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin gnocchi git://git.openstack.org/openstack/gnocchi"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"GNOCCHI_ARCHIVE_POLICY=high"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"CEILOMETER_PIPELINE_INTERVAL=5"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"GNOCCHI_COORDINATOR_URL=redis://localhost:6379?timeout=5"
