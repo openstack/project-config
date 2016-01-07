@@ -8914,6 +8914,11 @@ projects:
       - gate-requirements-integration-dsvm-resolver
       - gate-requirements-tox-validate
       - gate-grenade-dsvm-multinode
+      # NOTE(mriedem): The multinode and partial-ncpu jobs should be mutually
+      # exclusive as to what branches they run on. partial-ncpu should only
+      # run on stable/liberty changes and multinode should only run on mitaka+
+      # changes.
+      - gate-grenade-dsvm-partial-ncpu
     gate:
       - gate-requirements-docs
       - gate-requirements-pep8
@@ -8921,6 +8926,7 @@ projects:
       - gate-requirements-integration-dsvm
       - gate-requirements-tox-validate
       - gate-grenade-dsvm-multinode
+      - gate-grenade-dsvm-partial-ncpu
     periodic:
       - propose-requirements-constraints-master
     post:
