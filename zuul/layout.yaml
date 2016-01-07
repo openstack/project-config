@@ -553,19 +553,10 @@ project-templates:
     release:
       - 'hook-{name}-rtfd'
 
-  - name: chef-jobs
-    check:
-      - 'gate-{name}-chef-lint'
-      - 'gate-{name}-chef-style'
-      - 'gate-{name}-chef-unit'
-    gate:
-      - 'gate-{name}-chef-lint'
-      - 'gate-{name}-chef-unit'
-
   - name: chef-rake-jobs
     check:
       - 'gate-{name}-chef-rake'
-      - 'gate-{name}-chef-rake-integration'
+      - 'gate-{name}-chef-rake-integration-nv'
     gate:
       - 'gate-{name}-chef-rake'
 
@@ -715,13 +706,6 @@ jobs:
     parameter-function: set_node_options
     swift:
       - name: logs
-  - name: ^gate-.*-chef-(lint|style|unit|repo)$
-    branch: ^stable/(icehouse|juno)$
-  - name: ^gate-.*-chef-rake-integration$
-    branch: ^(?!stable/(icehouse|juno)).*$
-    voting: false
-  - name: ^gate-.*-chef-rake.*$
-    branch: ^(?!stable/(icehouse|juno)).*$
   # -nv jobs are never voting.
   - name: ^.*-nv$
     voting: false
@@ -4259,103 +4243,86 @@ projects:
   - name: openstack/cookbook-openstack-bare-metal
     template:
       - name: merge-check
-      - name: chef-jobs
       - name: chef-rake-jobs
 
   - name: openstack/cookbook-openstack-block-storage
     template:
       - name: merge-check
-      - name: chef-jobs
       - name: chef-rake-jobs
 
   - name: openstack/cookbook-openstack-client
     template:
       - name: merge-check
-      - name: chef-jobs
       - name: chef-rake-jobs
 
   - name: openstack/cookbook-openstack-common
     template:
       - name: merge-check
-      - name: chef-jobs
       - name: chef-rake-jobs
 
   - name: openstack/cookbook-openstack-compute
     template:
       - name: merge-check
-      - name: chef-jobs
       - name: chef-rake-jobs
 
   - name: openstack/cookbook-openstack-dashboard
     template:
       - name: merge-check
-      - name: chef-jobs
       - name: chef-rake-jobs
 
   - name: openstack/cookbook-openstack-data-processing
     template:
       - name: merge-check
-      - name: chef-jobs
       - name: chef-rake-jobs
 
   - name: openstack/cookbook-openstack-database
     template:
       - name: merge-check
-      - name: chef-jobs
       - name: chef-rake-jobs
 
   - name: openstack/cookbook-openstack-identity
     template:
       - name: merge-check
-      - name: chef-jobs
       - name: chef-rake-jobs
 
   - name: openstack/cookbook-openstack-image
     template:
       - name: merge-check
-      - name: chef-jobs
       - name: chef-rake-jobs
 
   - name: openstack/cookbook-openstack-integration-test
     template:
       - name: merge-check
-      - name: chef-jobs
       - name: chef-rake-jobs
 
   - name: openstack/cookbook-openstack-network
     template:
       - name: merge-check
-      - name: chef-jobs
       - name: chef-rake-jobs
 
   - name: openstack/cookbook-openstack-object-storage
     template:
       - name: merge-check
-      - name: chef-jobs
       - name: chef-rake-jobs
 
   - name: openstack/cookbook-openstack-ops-database
     template:
       - name: merge-check
-      - name: chef-jobs
       - name: chef-rake-jobs
 
   - name: openstack/cookbook-openstack-ops-messaging
     template:
       - name: merge-check
-      - name: chef-jobs
       - name: chef-rake-jobs
 
   - name: openstack/cookbook-openstack-orchestration
     template:
       - name: merge-check
-      - name: chef-jobs
       - name: chef-rake-jobs
 
   - name: openstack/cookbook-openstack-telemetry
     template:
       - name: merge-check
-      - name: chef-jobs
       - name: chef-rake-jobs
 
   - name: openstack/coreos-image-builder
