@@ -35,6 +35,15 @@ add the gerritbot to your IRC channels for gerrit event messages.
 
 `IRC Documentation <http://docs.openstack.org/infra/system-config/irc.html>`_
 
+grafana
+=======
+
+This dir contains dashboards to display at
+http://grafana.openstack.org/. Add new files to create additional
+dashboards or edit the existing ones to enhance the dashboards.
+
+`Grafana Documentation <http://docs.openstack.org/infra/system-config/grafana.html>`_
+
 jenkins
 =======
 
