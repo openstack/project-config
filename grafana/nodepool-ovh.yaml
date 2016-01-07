@@ -10,6 +10,46 @@ dashboard:
 
             If you would like to make changes to this dashboard, please see the grafana directory in [project-config](https://git.openstack.org/cgit/openstack-infra/project-config/tree/grafana/nodepool-ovh.yaml).
           type: text
+    - title: Nodes
+      showTitle: true
+      height: 150px
+      panels:
+        - title: Building
+          span: 3
+          sparkline:
+            full: true
+            show: true
+          targets:
+            - target: sumSeries(stats.gauges.nodepool.provider.ovh-*.nodes.building)
+          type: singlestat
+          valueName: current
+        - title: Ready
+          span: 3
+          sparkline:
+            full: true
+            show: true
+          targets:
+            - target: sumSeries(stats.gauges.nodepool.provider.ovh-*.nodes.ready)
+          type: singlestat
+          valueName: current
+        - title: In Use
+          span: 3
+          sparkline:
+            full: true
+            show: true
+          targets:
+            - target: sumSeries(stats.gauges.nodepool.provider.ovh-*.nodes.used)
+          type: singlestat
+          valueName: current
+        - title: Deleting
+          span: 3
+          sparkline:
+            full: true
+            show: true
+          targets:
+              - target: sumSeries(stats.gauges.nodepool.provider.ovh-*.nodes.delete)
+          type: singlestat
+          valueName: current
     - title: API Operations
       showTitle: true
       height: 250px
