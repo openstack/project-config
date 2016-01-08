@@ -37,6 +37,9 @@ def reusable_node(item, job, params):
 
 
 def set_node_options(item, job, params):
+    # Force tox to pass through ZUUL_ variables
+    zuul_params = [x for x in params.keys() if x.startswith('ZUUL_')]
+    params['TOX_TESTENV_PASSENV'] = ','.join(zuul_params)
     # Set up log url parameter for all jobs
     set_log_url(item, job, params)
     # Default to single use node. Potentially overriden below.
