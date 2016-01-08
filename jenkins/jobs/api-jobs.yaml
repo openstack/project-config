@@ -59,25 +59,6 @@
           target: '/'
           remove-prefix: 'publish-docs/api-ref/'
 
-# in zuul/layout.yaml specified to only run against master branch.
-# this copies static files from www
-- job:
-    name: openstack-api-site
-    node: bare-trusty
-
-    builders:
-      - revoke-sudo
-      - gerrit-git-prep
-
-    publishers:
-      - ftp:
-          site: developer.openstack.org
-          source: 'www/**'
-          target: ''
-          remove-prefix: 'www/'
-          excludes: ''
-      - console-log
-
 - job:
     name: gate-compute-api-guide
     description: Build and draft the Compute API Guide from nova source.
