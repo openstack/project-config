@@ -29,8 +29,8 @@ zc='/usr/zuul-env/bin/zuul-cloner'
 
 # setup a virtual environment to install all the plugins
 venv_name='osc_plugins'
+trap "rm -rf $venv_name" EXIT
 virtualenv $venv_name
-trap "rm -rf $VENV" EXIT
 venv=$(pwd)/$venv_name
 
 # install known OpenStackClient plugins
