@@ -1,25 +1,3 @@
-- job-template:
-    name: 'gate-{name}-chef-unit'
-    node: bare-precise
-
-    wrappers:
-      - build-timeout:
-          timeout: 60
-      - timestamps
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - gerrit-git-prep
-      - ruby-191-prep
-      - chef-bundler-prep
-      - revoke-sudo
-      - chef-berkshelf-prep
-      - chef-cookbook-chefspec
-
-    publishers:
-      - console-log
-
 # this job template requires a bootstrap.sh script (which installs chefdk and other dependencies)
 # and a Rakefile with the tests that should be executed in the cookbook
 - job-template:
@@ -46,7 +24,7 @@
 # and a Rakefile with the integration tests that should be executed
 # sudo privileges for jenkins are not revoked, since they are needed during the chef run executed for integration testing
 - job-template:
-    name: 'gate-{name}-chef-rake-integration'
+    name: 'gate-{name}-chef-rake-integration-nv'
     node: '{node}'
 
     wrappers:
@@ -84,50 +62,6 @@
     publishers:
       - console-log
 
-- job-template:
-    name: 'gate-{name}-chef-lint'
-    node: bare-precise
-
-    wrappers:
-      - build-timeout:
-          timeout: 60
-      - timestamps
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - gerrit-git-prep
-      - ruby-191-prep
-      - chef-bundler-prep
-      - revoke-sudo
-      - chef-berkshelf-prep
-      - chef-cookbook-foodcritic
-
-    publishers:
-      - console-log
-
-- job-template:
-    name: 'gate-{name}-chef-style'
-    node: bare-precise
-
-    wrappers:
-      - build-timeout:
-          timeout: 60
-      - timestamps
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - gerrit-git-prep
-      - ruby-191-prep
-      - chef-bundler-prep
-      - revoke-sudo
-      - chef-berkshelf-prep
-      - chef-cookbook-rubocop
-
-    publishers:
-      - console-log
-
 - job:
     name: gate-openstack-chef-repo
     node: bare-precise
@@ -149,9 +83,6 @@
 - job-group:
     name: chef-test-jobs
     jobs:
-      - 'gate-{name}-chef-lint'
-      - 'gate-{name}-chef-style'
-      - 'gate-{name}-chef-unit'
       - 'gate-{name}-chef-rake'
-      - 'gate-{name}-chef-rake-integration'
+      - 'gate-{name}-chef-rake-integration-nv'
       - 'periodic-{name}-chef-rake-integration'
