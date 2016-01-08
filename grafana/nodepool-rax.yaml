@@ -57,6 +57,10 @@ dashboard:
         - title: Create Server
           type: graph
           span: 4
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
           targets:
             - target: alias(scale(stats.timers.nodepool.task.rax-dfw.CreateServerTask.mean, '0.001'), 'DFW')
             - target: alias(scale(stats.timers.nodepool.task.rax-iad.CreateServerTask.mean, '0.001'), 'IAD')
@@ -64,6 +68,10 @@ dashboard:
         - title: Delete Server
           type: graph
           span: 4
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
           targets:
             - target: alias(scale(stats.timers.nodepool.task.rax-dfw.DeleteServerTask.mean, '0.001'), 'DFW')
             - target: alias(scale(stats.timers.nodepool.task.rax-iad.DeleteServerTask.mean, '0.001'), 'IAD')
@@ -71,6 +79,10 @@ dashboard:
         - title: List Servers
           type: graph
           span: 4
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
           targets:
             - target: alias(scale(stats.timers.nodepool.task.rax-dfw.ListServersTask.mean, '0.001'), 'DFW')
             - target: alias(scale(stats.timers.nodepool.task.rax-iad.ListServersTask.mean, '0.001'), 'IAD')
@@ -82,27 +94,39 @@ dashboard:
         - title: Ready Node Launch Attempts
           type: graph
           span: 4
+          nullPointMode: null as zero
+          leftYAxisLabel: "events / min"
           targets:
-            - target: alias(summarize(stats_counts.nodepool.launch.provider.rax-dfw.ready, '1h'), 'DFW')
-            - target: alias(summarize(stats_counts.nodepool.launch.provider.rax-iad.ready, '1h'), 'IAD')
-            - target: alias(summarize(stats_counts.nodepool.launch.provider.rax-ord.ready, '1h'), 'ORD')
+            - target: alias(smartSummarize(stats_counts.nodepool.launch.provider.rax-dfw.ready, '1m'), 'DFW')
+            - target: alias(smartSummarize(stats_counts.nodepool.launch.provider.rax-iad.ready, '1m'), 'IAD')
+            - target: alias(smartSummarize(stats_counts.nodepool.launch.provider.rax-ord.ready, '1m'), 'ORD')
         - title: Error Node Launch Attempts
           type: graph
           span: 4
+          nullPointMode: null as zero
+          leftYAxisLabel: "events / min"
           targets:
-            - target: alias(summarize(sumSeries(stats_counts.nodepool.launch.provider.rax-dfw.error.*), '1h'), 'DFW')
-            - target: alias(summarize(sumSeries(stats_counts.nodepool.launch.provider.rax-iad.error.*), '1h'), 'IAD')
-            - target: alias(summarize(sumSeries(stats_counts.nodepool.launch.provider.rax-ord.error.*), '1h'), 'ORD')
+            - target: alias(smartSummarize(sumSeries(stats_counts.nodepool.launch.provider.rax-dfw.error.*), '1m'), 'DFW')
+            - target: alias(smartSummarize(sumSeries(stats_counts.nodepool.launch.provider.rax-iad.error.*), '1m'), 'IAD')
+            - target: alias(smartSummarize(sumSeries(stats_counts.nodepool.launch.provider.rax-ord.error.*), '1m'), 'ORD')
         - title: Time to Ready
           type: graph
           span: 4
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
           targets:
-            - target: alias(scale(stats.timers.nodepool.launch.provider.rax-dfw.ready.mean, '0.000016'), 'DFW')
-            - target: alias(scale(stats.timers.nodepool.launch.provider.rax-iad.ready.mean, '0.000016'), 'IAD')
-            - target: alias(scale(stats.timers.nodepool.launch.provider.rax-ord.ready.mean, '0.000016'), 'ORD')
+            - target: alias(scale(stats.timers.nodepool.launch.provider.rax-dfw.ready.mean, '0.001'), 'DFW')
+            - target: alias(scale(stats.timers.nodepool.launch.provider.rax-iad.ready.mean, '0.001'), 'IAD')
+            - target: alias(scale(stats.timers.nodepool.launch.provider.rax-ord.ready.mean, '0.001'), 'ORD')
         - title: Test Nodes (DFW)
           type: graph
           span: 4
+          stack: true
+          tooltip:
+            value_type: individual
+          leftYAxisLabel: "nodes"
           targets:
             - target: alias(stats.gauges.nodepool.provider.rax-dfw.nodes.building, 'Building')
             - target: alias(stats.gauges.nodepool.provider.rax-dfw.nodes.ready, 'Available')
@@ -111,6 +135,10 @@ dashboard:
         - title: Test Nodes (IAD)
           type: graph
           span: 4
+          stack: true
+          tooltip:
+            value_type: individual
+          leftYAxisLabel: "nodes"
           targets:
             - target: alias(stats.gauges.nodepool.provider.rax-iad.nodes.building, 'Building')
             - target: alias(stats.gauges.nodepool.provider.rax-iad.nodes.ready, 'Available')
@@ -119,6 +147,10 @@ dashboard:
         - title: Test Nodes (ORD)
           type: graph
           span: 4
+          stack: true
+          tooltip:
+            value_type: individual
+          leftYAxisLabel: "nodes"
           targets:
             - target: alias(stats.gauges.nodepool.provider.rax-ord.nodes.building, 'Building')
             - target: alias(stats.gauges.nodepool.provider.rax-ord.nodes.ready, 'Available')
@@ -130,15 +162,23 @@ dashboard:
       panels:
         - title: gate-tempest-dsvm-full
           type: graph
-          span: 4
+          span: 6
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
           targets:
-            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-full.master.devstack-trusty.rax-dfw.runtime.mean, '0.000016'), 'DFW')
-            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-full.master.devstack-trusty.rax-iad.runtime.mean, '0.000016'), 'IAD')
-            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-full.master.devstack-trusty.rax-ord.runtime.mean, '0.000016'), 'ORD')
+            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-full.master.devstack-trusty.rax-dfw.runtime.mean, '0.001'), 'DFW')
+            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-full.master.devstack-trusty.rax-iad.runtime.mean, '0.001'), 'IAD')
+            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-full.master.devstack-trusty.rax-ord.runtime.mean, '0.001'), 'ORD')
         - title: gate-tempest-dsvm-neutron-full
           type: graph
-          span: 4
+          span: 6
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
           targets:
-            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-neutron-full.master.devstack-trusty.rax-dfw.runtime.mean, '0.000016'), 'DFW')
-            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-neutron-full.master.devstack-trusty.rax-iad.runtime.mean, '0.000016'), 'IAD')
-            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-neutron-full.master.devstack-trusty.rax-ord.runtime.mean, '0.000016'), 'ORD')
+            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-neutron-full.master.devstack-trusty.rax-dfw.runtime.mean, '0.001'), 'DFW')
+            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-neutron-full.master.devstack-trusty.rax-iad.runtime.mean, '0.001'), 'IAD')
+            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-neutron-full.master.devstack-trusty.rax-ord.runtime.mean, '0.001'), 'ORD')
