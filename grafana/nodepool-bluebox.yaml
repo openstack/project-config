@@ -57,41 +57,73 @@ dashboard:
         - title: Create Server
           type: graph
           span: 4
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
           targets:
             - target: alias(scale(stats.timers.nodepool.task.bluebox-sjc1.CreateServerTask.mean, '0.001'), 'SJC1')
         - title: Delete Server
           type: graph
           span: 4
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
           targets:
             - target: alias(scale(stats.timers.nodepool.task.bluebox-sjc1.DeleteServerTask.mean, '0.001'), 'SJC1')
         - title: List Servers
           type: graph
           span: 4
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
           targets:
             - target: alias(scale(stats.timers.nodepool.task.bluebox-sjc1.ListServersTask.mean, '0.001'), 'SJC1')
         - title: Create Floating IP
           type: graph
           span: 4
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
           targets:
             - target: alias(scale(stats.timers.nodepool.task.bluebox-sjc1.CreateFloatingIPTask.mean, '0.001'), 'SJC1')
         - title: Get Floating IP
           type: graph
           span: 4
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
           targets:
             - target: alias(scale(stats.timers.nodepool.task.bluebox-sjc1.GetFloatingIPTask.mean, '0.001'), 'SJC1')
         - title: Add Floating IP
           type: graph
           span: 4
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
           targets:
             - target: alias(scale(stats.timers.nodepool.task.bluebox-sjc1.AddFloatingIPTask.mean, '0.001'), 'SJC1')
         - title: Delete Floating IP
           type: graph
           span: 4
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
           targets:
             - target: alias(scale(stats.timers.nodepool.task.bluebox-sjc1.DeleteFloatingIPTask.mean, '0.001'), 'SJC1')
         - title: List Floating IPs
           type: graph
           span: 4
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
           targets:
             - target: alias(scale(stats.timers.nodepool.task.bluebox-sjc1.ListFloatingIPsTask.mean, '0.001'), 'SJC1')
     - title: Node Launches
@@ -101,21 +133,33 @@ dashboard:
         - title: Ready Node Launch Attempts
           type: graph
           span: 4
+          nullPointMode: null as zero
+          leftYAxisLabel: "events / min"
           targets:
-            - target: alias(summarize(stats_counts.nodepool.launch.provider.bluebox-sjc1.ready, '1h'), 'SJC1')
+            - target: alias(smartSummarize(stats_counts.nodepool.launch.provider.bluebox-sjc1.ready, '1m'), 'SJC1')
         - title: Error Node Launch Attempts
           type: graph
           span: 4
+          nullPointMode: null as zero
+          leftYAxisLabel: "events / min"
           targets:
-            - target: alias(summarize(sumSeries(stats_counts.nodepool.launch.provider.bluebox-sjc1.error.*), '1h'), 'SJC1')
+            - target: alias(smartSummarize(sumSeries(stats_counts.nodepool.launch.provider.bluebox-sjc1.error.*), '1m'), 'SJC1')
         - title: Time to Ready
           type: graph
           span: 4
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
           targets:
-            - target: alias(scale(stats.timers.nodepool.launch.provider.bluebox-sjc1.ready.mean, '0.000016'), 'SJC1')
+            - target: alias(scale(stats.timers.nodepool.launch.provider.bluebox-sjc1.ready.mean, '0.001'), 'SJC1')
         - title: Test Nodes (SJC1)
           type: graph
           span: 4
+          stack: true
+          tooltip:
+            value_type: individual
+          leftYAxisLabel: "nodes"
           targets:
             - target: alias(stats.gauges.nodepool.provider.bluebox-sjc1.nodes.building, 'Building')
             - target: alias(stats.gauges.nodepool.provider.bluebox-sjc1.nodes.ready, 'Available')
@@ -127,11 +171,19 @@ dashboard:
       panels:
         - title: gate-tempest-dsvm-full
           type: graph
-          span: 4
+          span: 6
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
           targets:
-            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-full.master.devstack-trusty.bluebox-sjc1.runtime.mean, '0.000016'), 'SJC1')
+            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-full.master.devstack-trusty.bluebox-sjc1.runtime.mean, '0.001'), 'SJC1')
         - title: gate-tempest-dsvm-neutron-full
           type: graph
-          span: 4
+          span: 6
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
           targets:
-            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-neutron-full.master.devstack-trusty.bluebox-sjc1.runtime.mean, '0.000016'), 'SJC1')
+            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-neutron-full.master.devstack-trusty.bluebox-sjc1.runtime.mean, '0.001'), 'SJC1')
