@@ -50,7 +50,7 @@ function setup_commit_message {
         read -d '' COMMIT_MSG <<EOF
 $INITIAL_COMMIT_MSG
 
-Change-Id: $change_id
+Change-Id: $CHANGE_ID
 EOF
         set -e
     else
