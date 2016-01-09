@@ -42,7 +42,7 @@ case "$PROJECT" in
         ;;
     django_openstack_auth)
         setup_django_openstack_auth "$ZANATA_VERSION"
-        extract_messages
+        extract_messages openstack_auth
         ;;
     horizon)
         setup_horizon "$ZANATA_VERSION"
@@ -55,7 +55,7 @@ case "$PROJECT" in
     *)
         setup_project "$PROJECT" "$ZANATA_VERSION"
         setup_loglevel_vars
-        extract_messages
+        extract_messages "$PROJECT"
         extract_messages_log "$PROJECT"
         ;;
 esac

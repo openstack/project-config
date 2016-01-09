@@ -79,7 +79,7 @@ function propose_python {
     pull_from_zanata "$PROJECT"
 
     # Extract all messages from project, including log messages.
-    extract_messages
+    extract_messages "$PROJECT"
     extract_messages_log "$PROJECT"
 
     # Now add all changed files to git.
@@ -123,7 +123,7 @@ function propose_django_openstack_auth {
     pull_from_zanata "$PROJECT"
 
     # Update the .pot file
-    extract_messages
+    extract_messages "openstack_auth"
 
     # Compress downloaded po files
     compress_po_files "openstack_auth"
