@@ -81,6 +81,10 @@ dashboard:
             - target: alias(stats.gauges.nodepool.nodes.ready, 'Available')
             - target: alias(stats.gauges.nodepool.nodes.used, 'In Use')
             - target: alias(stats.gauges.nodepool.nodes.delete, 'Deleting')
+            - target: alias(sumSeries(stats.gauges.nodepool.provider.*.max_servers), 'Max')
+          seriesOverrides:
+            - alias: Max
+              stack: False
           type: graph
         - title: Zuul Jobs Launched (per Hour)
           span: 4
