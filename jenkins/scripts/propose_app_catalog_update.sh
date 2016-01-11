@@ -23,30 +23,9 @@ SUCCESS=0
 
 setup_git
 
-change_id=""
-# See if there is an open change in the detect-dead-links topic
-# If so, get the change id for the existing change for use in the
-# commit msg.
-change_info=$(ssh -p 29418 $USERNAME@review.openstack.org gerrit query --current-patch-set status:open project:$PROJECT topic:$TOPIC owner:$USERNAME)
-previous=$(echo "$change_info" | grep "^  number:" | awk '{print $2}')
-if [ -n "$previous" ]; then
-    change_id=$(echo "$change_info" | grep "^change" | awk '{print $2}')
-    # read return a non zero value when it reaches EOF. Because we use a
-    # heredoc here it will always reach EOF and return a nonzero value.
-    # Disable -e temporarily to get around the read.
-    # The reason we use read is to allow for multiline variable content
-    # and variable interpolation. Simply double quoting a string across
-    # multiple lines removes the newlines.
-    set +e
-    read -d '' COMMIT_MSG <<EOF
-$INITIAL_COMMIT_MSG
-
-Change-Id: $change_id
-EOF
-    set -e
-else
-    COMMIT_MSG=$INITIAL_COMMIT_MSG
-fi
+# Function setup_commit_message will set CHANGE_ID if a change
+# exists and will always set COMMIT_MSG.
+setup_commit_message $PROJECT $USERNAME $BRANCH $TOPIC "$INITIAL_COMMIT_MSG"
 
 git review -s
 python /usr/local/jenkins/slave_scripts/check_app_catalog_yaml.py
