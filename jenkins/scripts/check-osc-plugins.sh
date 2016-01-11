@@ -41,6 +41,7 @@ install_from_source python-cueclient
 install_from_source python-designateclient
 install_from_source python-heatclient
 install_from_source python-ironicclient
+install_from_source python-mistralclient
 install_from_source python-saharaclient
 install_from_source python-tuskarclient
 install_from_source python-zaqarclient
