@@ -165,8 +165,8 @@ cat /proc/cpuinfo > $LOG_DIR/cpuinfo.txt
 ps -eo user,pid,ppid,lwp,%cpu,%mem,size,rss,cmd > $LOG_DIR/ps.txt
 
 # Make sure jenkins can read all the logs and configs
-sudo chown -R jenkins:jenkins $LOG_DIR/
-sudo chmod a+r $LOG_DIR/ $LOG_DIR/etc
+sudo find $LOG_DIR -type d -execdir sudo chmod 755 '{}' \;
+sudo find $LOG_DIR -type f -execdir sudo chmod 644 '{}' \;
 
 # rename files to .txt; this is so that when displayed via
 # logs.openstack.org clicking results in the browser shows the
