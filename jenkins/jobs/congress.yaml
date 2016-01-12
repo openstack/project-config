@@ -39,9 +39,13 @@
               # Kilo/Liberty version uses the older 'hooks' approach to adding
               # the congress plugin
               ENABLED_SERVICES+=,congress
+              # Kilo/Liberty doesn't support tempest plugin
+              export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=0
+              export DEVSTACK_GATE_TEMPEST_REGEX="congress"
               function pre_test_hook {{
-                # Install congress-devstack
+                # Install congress-devstack and congress-tempest integration
                 cp -r $BASE/new/congress/contrib/devstack/* $BASE/new/devstack/
+                cp -r $BASE/new/congress/contrib/tempest/* $BASE/new/tempest/
               }}
               export -f pre_test_hook
           else
