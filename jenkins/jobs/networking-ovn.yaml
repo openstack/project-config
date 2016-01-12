@@ -87,7 +87,12 @@
           export DEVSTACK_LOCAL_CONFIG="enable_plugin networking-ovn git://git.openstack.org/openstack/networking-ovn"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin rally git://git.openstack.org/openstack/rally"
 
-          export OVERRIDE_ENABLED_SERVICES=key,rally,n-api,n-cpu,n-cond,n-sch,n-crt,n-cauth,n-obj,g-api,g-reg,rabbit,tempest,mysql,dstat,ovn-northd,ovn-controller,q-svc,q-dhcp,q-l3
+          export OVERRIDE_ENABLED_SERVICES=key,rally,n-api,n-cpu,n-cond,n-sch,n-crt,n-cauth,g-api,g-reg,rabbit,tempest,mysql,dstat,ovn-northd,ovn-controller,q-svc,q-dhcp,q-l3
+          # n-obj has been removed from mitaka
+          if [[ "stable/kilo stable/liberty" =~ $ZUUL_BRANCH ]]; then
+              OVERRIDE_ENABLED_SERVICES+=n-obj,
+          fi
+          export OVERRIDE_ENABLED_SERVICES
 
           function post_test_hook {{
               $BASE/new/rally/tests/ci/rally-gate.sh
