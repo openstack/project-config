@@ -52,6 +52,22 @@ case "$PROJECT" in
         setup_magnum_ui "$ZANATA_VERSION"
         ./run_tests.sh --makemessages -V
         ;;
+    # Test of translation setup improvement
+    murano-dashboard)
+        # TODO(amotoki): Honor module name in extract_*
+        # MODULENAME=$(get_modulename $PROJECT python)
+        # if [ -n "$MODULENAME" ]; then
+        #     setup_project "$PROJECT" "$ZANATA_VERSION"
+        #     setup_loglevel_vars
+        #     extract_messages
+        #     extract_messages_log "$PROJECT"
+        # fi
+        MODULENAME=$(get_modulename $PROJECT django)
+        if [ -n "$MODULENAME" ]; then
+            setup_django "$PROJECT" "$MODULENAME" "$ZANATA_VERSION"
+            extract_messages_django "$MODULENAME"
+        fi
+        ;;
     *)
         setup_project "$PROJECT" "$ZANATA_VERSION"
         setup_loglevel_vars

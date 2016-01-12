@@ -22,6 +22,15 @@ TOPIC=zanata/translations
 # Used for setup.py babel commands
 QUIET="--quiet"
 
+# Get a module name of a project
+function get_modulename {
+    local project=$1
+    local target=$2
+
+    /usr/local/jenkins/slave_scripts/get-modulename.py \
+        -p $project -t $target
+}
+
 # Setup a project for Zanata
 function setup_project {
     local project=$1
@@ -264,6 +273,59 @@ function extract_messages_log {
             git rm --ignore-unmatch $POT
         fi
     done
+}
+
+# TODO(amotoki): After we use $modulename/locale/$modulename.pot
+# for normal python projects, this function will be used both
+# by python and django projects. It should be renamed to setup_project.
+# Setup django project for Zanata
+function setup_django {
+    local project=$1
+    local modulename=$2
+    local version=${3:-master}
+
+    /usr/local/jenkins/slave_scripts/create-zanata-xml.py \
+        -p $project -v $version --srcdir $modulename/locale \
+        --txdir $modulename/locale -r '**/*.pot' \
+        '{locale_with_underscore}/LC_MESSAGES/{filename}.po' -f zanata.xml
+}
+
+# Extract messages for a django project, we need to update django.pot
+# and djangojs.pot.
+function extract_messages_django {
+    local modulename=$1
+
+    # We need to install horizon
+    VENV=$(mktemp -d)
+    trap "rm -rf $VENV" EXIT
+    virtualenv $VENV
+
+    # TODO(jaegerandi): Switch to zuul-cloner once it's safe to use
+    # zuul-cloner in post jobs and we have a persistent cache on
+    # proposal node.
+    root=$(mktemp -d)
+    trap "rm -rf $VENV $root" EXIT
+
+    git clone --depth=1 git://git.openstack.org/openstack/horizon.git $root/horizon
+    (cd ${root}/horizon && $VENV/bin/pip install .)
+
+    # Horizon has these as dependencies but let's be sure.
+    # TODO(amotoki): Pull required versions from g-r.
+    $VENV/bin/pip install Babel django-babel
+    KEYWORDS="-k gettext_noop -k gettext_lazy -k ngettext_lazy:1,2"
+    KEYWORDS+=" -k ugettext_noop -k ugettext_lazy -k ungettext_lazy:1,2"
+    KEYWORDS+=" -k npgettext:1c,2,3 -k pgettext_lazy:1c,2 -k npgettext_lazy:1c,2,3"
+
+    for DOMAIN in djangojs django ; do
+        if [ -f babel-${DOMAIN}.cfg ]; then
+            mkdir -p ${modulename}/locale
+            touch ${modulename}/locale/${DOMAIN}.pot
+            $VENV/bin/pybabel extract -F babel-${DOMAIN}.cfg \
+                -o ${modulename}/locale/${DOMAIN}.pot $KEYWORDS ${modulename}
+        fi
+    done
+    rm -rf $VENV $root
+    trap "" EXIT
 }
 
 # Setup project django_openstack_auth for Zanata

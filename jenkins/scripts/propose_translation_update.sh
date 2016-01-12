@@ -148,6 +148,23 @@ function propose_magnum_ui {
     git add magnum_ui/locale/*
 }
 
+# This function can be used for all django projects
+function propose_django {
+    local project=$1
+    local modulename=$2
+    # Pull updated translations from Zanata.
+    pull_from_zanata "$project"
+
+    # Update the .pot file
+    extract_messages_django "$modulename"
+
+    # Compress downloaded po files
+    compress_po_files "$modulename"
+
+    # Add all changed files to git
+    git add $modulename/locale/*
+}
+
 # Setup git repository for git review.
 setup_git
 
@@ -175,6 +192,21 @@ case "$PROJECT" in
     magnum-ui)
         setup_magnum_ui "$ZANATA_VERSION"
         propose_magnum_ui
+        ;;
+    # Test of translation setup improvement
+    murano-dashboard)
+        # TODO(amotoki): Honor module name in propose_*
+        # MODULENAME=$(get_modulename $PROJECT python)
+        # if [ -n "$MODULENAME" ]; then
+        #     setup_project "$PROJECT" "$ZANATA_VERSION"
+        #     setup_loglevel_vars
+        #     propose_python
+        # fi
+        MODULENAME=$(get_modulename $PROJECT django)
+        if [ -n "$MODULENAME" ]; then
+            setup_django "$PROJECT" "$MODULENAME" "$ZANATA_VERSION"
+            propose_django "$PROJECT" "$MODULENAME"
+        fi
         ;;
     *)
         # Project specific setup.
