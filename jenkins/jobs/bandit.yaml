@@ -1,0 +1,22 @@
+- job-template:
+    name: gate-bandit-integration-{target-project}
+    node: bare-trusty
+
+    builders:
+      - link-logs
+      - shell: |
+          #!/bin/bash -eux
+          cd $WORKSPACE
+
+          /usr/zuul-env/bin/zuul-cloner --cache-dir /opt/git \
+            git://git.openstack.org \
+            openstack/bandit \
+            {target-org}/{target-project}
+
+          cd $WORKSPACE/openstack/bandit
+
+          tox -e integration {target-org} {target-project} \
+            $WORKSPACE/{target-org}/{target-project}
+
+    publishers:
+      - console-log
