@@ -18,16 +18,20 @@
 
 source /etc/nodepool/provider
 
+# Generate the AFS Slug from the host system.
+source /usr/local/jenkins/slave_scripts/afs-slug.sh
+
 NODEPOOL_MIRROR_HOST=${NODEPOOL_MIRROR_HOST:-mirror.$NODEPOOL_REGION.$NODEPOOL_CLOUD.openstack.org}
 NODEPOOL_MIRROR_HOST=$(echo $NODEPOOL_MIRROR_HOST|tr '[:upper:]' '[:lower:]')
 NODEPOOL_PYPI_MIRROR=${NODEPOOL_PYPI_MIRROR:-http://$NODEPOOL_MIRROR_HOST/pypi/simple}
+NODEPOOL_WHEEL_MIRROR=${NODEPOOL_WHEEL_MIRROR:-http://$NODEPOOL_MIRROR_HOST/wheel/$AFS_SLUG}
 
 cat >/tmp/pip.conf <<EOF
 [global]
 timeout = 60
 index-url = $NODEPOOL_PYPI_MIRROR
 trusted-host = $NODEPOOL_MIRROR_HOST
-extra-index-url =
+extra-index-url = $NODEPOOL_WHEEL_MIRROR
 EOF
 sudo mv /tmp/pip.conf /etc/pip.conf
 
