@@ -1010,6 +1010,9 @@ jobs:
   - name: gate-rally-dsvm-zaqar-zaqar
     voting: false
 
+  - name: gate-kolla-python34
+    voting: false
+
   - name: gate-zaqar-tox-integration
     voting: false
 
@@ -5879,11 +5882,11 @@ projects:
   - name: openstack/kolla
     template:
       - name: merge-check
+      - name: python-jobs-linters
       - name: check-requirements
       - name: openstack-server-publish-jobs
     check:
-      - gate-kolla-bashate
-      - gate-kolla-pep8
+      - gate-kolla-python34
       - gate-kolla-tox-validate-contents
       - gate-kolla-dsvm-build-centos-binary
       - gate-kolla-dsvm-deploy-centos-binary
@@ -5892,8 +5895,6 @@ projects:
       - gate-kolla-dsvm-build-ubuntu-source
       - gate-kolla-dsvm-deploy-ubuntu-source
     gate:
-      - gate-kolla-bashate
-      - gate-kolla-pep8
       - gate-kolla-tox-validate-contents
     experimental:
       - experimental-kolla-dsvm-deploy-multinode-ubuntu-source
