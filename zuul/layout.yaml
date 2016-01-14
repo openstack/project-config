@@ -2151,16 +2151,17 @@ jobs:
   - name: neutron-branch-tarball
     branch: ^(?:stable/kilo).*$
 
-  # TODO(pcm): When voting, only run non-constraint jobs on Kilo
-  # For now, make constraints jobs non-voting
-  - name: ^gate-neutron-vpnaas-.*-constraints$
-    voting: false
+  # Only run non-constraints jobs on Kilo
+  - name: ^gate-neutron-vpnaas-(docs|pep8|python27)$
+    branch: ^(?:stable/kilo).*$
 
-  - name: ^neutron-vpnaas-docs-constraints$
-    voting: false
-
-  # Run the non-constraints coverage on Kilo
   - name: neutron-vpnaas-coverage
+    branch: ^(?:stable/kilo).*$
+
+  - name: neutron-vpnaas-tarball
+    branch: ^(?:stable/kilo).*$
+
+  - name: neutron-vpnaas-branch-tarball
     branch: ^(?:stable/kilo).*$
 
   # Don't run python34 on Kilo
@@ -6761,17 +6762,17 @@ projects:
       - name: periodic-liberty
       - name: python-jobs
       - name: python3-jobs
+      - name: python-constraints-jobs
+      - name: python3-constraints-jobs
       - name: openstack-server-release-jobs
+      - name: openstack-server-release-jobs-constraints
+      - name: openstack-server-publish-jobs-constraints
       - name: release-notes-jobs
       - name: translation-jobs
     check:
       - gate-tempest-dsvm-neutron-full
       - gate-neutron-vpnaas-dsvm-functional
       - gate-neutron-vpnaas-dsvm-functional-sswan
-      - gate-neutron-vpnaas-pep8-constraints
-      - gate-neutron-vpnaas-docs-constraints
-      - gate-neutron-vpnaas-python27-constraints
-      - gate-neutron-vpnaas-python34-constraints
     gate:
       - gate-tempest-dsvm-neutron-full
       - gate-neutron-vpnaas-dsvm-functional
@@ -6779,7 +6780,6 @@ projects:
     post:
       - neutron-vpnaas-coverage
       - neutron-vpnaas-coverage-constraints
-      - neutron-vpnaas-docs-constraints
 
   - name: openstack/nomad
     template:
