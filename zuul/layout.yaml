@@ -1850,6 +1850,14 @@ jobs:
     branch: ^(?!stable/(kilo|liberty)).*$
     voting: false
 
+  - name: gate-django_openstack_auth-tox-py27dj18
+    branch: ^(?!stable/(kilo|liberty)).*$
+
+  # TODO(robcresswell): Make voting once tests are passing reliably
+  - name: gate-django_openstack_auth-tox-py27dj19
+    branch: ^(?!stable/(kilo|liberty)).*$
+    voting: false
+
   - name: gate-tempest-dsvm-ceilometer-mongodb-full
     voting: false
 
@@ -4595,6 +4603,11 @@ projects:
       - name: lib-forward-testing
       - name: translation-jobs
       - name: translation-jobs-liberty
+    check:
+      - gate-django_openstack_auth-tox-py27dj18
+      - gate-django_openstack_auth-tox-py27dj19
+    gate:
+      - gate-django_openstack_auth-tox-py27dj18
     pre-release:
       - django_openstack_auth-tarball
     release:
