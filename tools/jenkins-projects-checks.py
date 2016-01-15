@@ -144,6 +144,7 @@ def validate_jobs():
             try:
                 schema(entry)
             except Exception as e:
+                print("Failure: %s" % e)
                 print("Failure in file %s" % job_file)
                 print("Failure parsing item:")
                 print(item)
