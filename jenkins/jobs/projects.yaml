@@ -3347,11 +3347,18 @@
           node: devstack-trusty
           job-suffix: ''
           branch-override: default
-      - '{pipeline}-neutron-dsvm-api{job-suffix}':
+      - '{pipeline}-neutron-dsvm-api{which}{job-suffix}':
           pipeline: gate
           node: devstack-trusty
           job-suffix: ''
           branch-override: default
+          which: ''
+      - '{pipeline}-neutron-dsvm-api{which}{job-suffix}':
+          pipeline: gate
+          node: devstack-trusty
+          job-suffix: ''
+          branch-override: default
+          which: '-pecan'
       - '{pipeline}-tempest-dsvm-neutron-linuxbridge{job-suffix}':
           pipeline: gate
           node: devstack-trusty
@@ -3372,6 +3379,12 @@
           node: devstack-trusty
           job-suffix: ''
           branch-override: default
+      - '{pipeline}-tempest-dsvm-neutron-{which}{job-suffix}':
+          pipeline: gate
+          node: devstack-trusty
+          job-suffix: ''
+          branch-override: default
+          which: pecan
 
 - project:
     name: neutron-classifier
