@@ -864,6 +864,8 @@
           node: devstack-trusty
           designate-driver:
             - powerdns
+      - 'gate-{name}-tox-{envlist}':
+          envlist: bandit
 
 - project:
     name: designate-dashboard
@@ -1178,6 +1180,10 @@
       - 'lib-forward-testing-{name}'
       - translation-jobs
       - translation-jobs-liberty
+      - gate-{name}-tox-{envlist}:
+          envlist:
+            - py27dj18
+            - py27dj19
 
 - project:
     name: django-openstack-auth-kerberos
@@ -2434,11 +2440,10 @@
     name: kolla
     node: bare-trusty
     doc-publisher-site: docs.openstack.org
+    tarball-site: tarballs.openstack.org
 
     jobs:
-      - gate-{name}-bashate
-      - gate-{name}-pep8
-      - 'gate-{name}-requirements'
+      - python-jobs
       - openstack-publish-jobs
       - 'gate-{name}-tox-{envlist}':
           envlist: validate-contents
@@ -3495,10 +3500,13 @@
     name: neutron-lib
     node: bare-trusty
     tarball-site: tarballs.openstack.org
+    doc-publisher-site: docs.openstack.org
 
     jobs:
       - python-jobs
       - translation-jobs
+      - openstack-publish-jobs
+      - pypi-jobs
 
 - project:
     name: neutron-specs
@@ -4798,6 +4806,15 @@
       - puppet-beaker-jobs:
           job-suffix: '-nv'
           branch-override: default
+
+- project:
+    name: puppet-ec2api
+    node: bare-trusty
+    tarball-site: tarballs.openstack.org
+
+    jobs:
+      - puppet-check-jobs
+      - puppet-module-unit
 
 - project:
     name: puppet-elastic_recheck
@@ -7058,6 +7075,7 @@
 
     jobs:
       - python-jobs
+      - hook-{name}-rtfd
 
 - project:
     name: solum

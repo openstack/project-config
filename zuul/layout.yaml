@@ -831,7 +831,7 @@ jobs:
   # Skip non-doc jobs for doc-only neutron changes.  Since
   # doc/source/conf.py is checked by neutron-(pep8|pylint), those jobs
   # should not be skipped.
-  - name: ^.*neutron-(dsvm-api|dsvm-functional|dsvm-functional-py34|python(27|34)|lbaasv[1,2]-dsvm-(api|minimal)|dsvm-fullstack)(-constraints)?$
+  - name: ^.*neutron-(dsvm-api|dsvm-functional|dsvm-functional-py34|python(27|34)|lbaasv[12]-dsvm-(api|minimal)|dsvm-fullstack)(-constraints)?$
     skip-if:
       - project: ^openstack/neutron$
         all-files-match-any:
@@ -1022,10 +1022,10 @@ jobs:
   - name: gate-rally-dsvm-zaqar-zaqar
     voting: false
 
-  - name: gate-zaqar-tox-integration
+  - name: gate-kolla-python34
     voting: false
 
-  - name: ^gate-zaqarclient-dsvm-functional
+  - name: gate-zaqar-tox-integration
     voting: false
 
   - name: gate-tempest-dsvm-neutron-nv
@@ -1474,6 +1474,10 @@ jobs:
     branch: ^(?!stable/kilo).*$
     voting: false
 
+  - name: gate-designate-tox-bandit
+    branch: master
+    voting: false
+
   - name: gate-congress-python34
     branch: ^(?!stable/(kilo|liberty)).*$
 
@@ -1850,10 +1854,15 @@ jobs:
     branch: ^(?!stable/(kilo|liberty)).*$
     voting: false
 
-  - name: gate-tempest-dsvm-ceilometer-mongodb-full
+  - name: gate-django_openstack_auth-tox-py27dj18
+    branch: ^(?!stable/(kilo|liberty)).*$
+
+  # TODO(robcresswell): Make voting once tests are passing reliably
+  - name: gate-django_openstack_auth-tox-py27dj19
+    branch: ^(?!stable/(kilo|liberty)).*$
     voting: false
 
-  - name: gate-nova-commit-message
+  - name: gate-tempest-dsvm-ceilometer-mongodb-full
     voting: false
 
   - name: gate-nova-pip-check-reqs
@@ -4424,6 +4433,7 @@ projects:
       - designate-coverage
     experimental:
       - gate-designate-dsvm-powerdns-postgres
+      - gate-designate-tox-bandit
 
   - name: openstack/designate-dashboard
     template:
@@ -4598,6 +4608,11 @@ projects:
       - name: lib-forward-testing
       - name: translation-jobs
       - name: translation-jobs-liberty
+    check:
+      - gate-django_openstack_auth-tox-py27dj18
+      - gate-django_openstack_auth-tox-py27dj19
+    gate:
+      - gate-django_openstack_auth-tox-py27dj18
     pre-release:
       - django_openstack_auth-tarball
     release:
@@ -4776,10 +4791,12 @@ projects:
       - gate-freezer-pylint
       - gate-freezer-pep8
       - gate-freezer-python27
+      - gate-freezer-devstack-dsvm
     gate:
       - gate-freezer-pylint
       - gate-freezer-pep8
       - gate-freezer-python27
+      - gate-freezer-devstack-dsvm
 
   - name: openstack/freezer-api
     template:
@@ -4789,11 +4806,11 @@ projects:
       - gate-freezer-api-pylint
       - gate-freezer-api-pep8
       - gate-freezer-api-python27
+      - gate-freezer-devstack-dsvm
     gate:
       - gate-freezer-api-pylint
       - gate-freezer-api-pep8
       - gate-freezer-api-python27
-    experimental:
       - gate-freezer-devstack-dsvm
 
   - name: openstack/freezer-web-ui
@@ -4804,10 +4821,12 @@ projects:
       - gate-freezer-web-ui-pylint
       - gate-freezer-web-ui-pep8
       - gate-freezer-web-ui-python27
+      - gate-freezer-devstack-dsvm
     gate:
       - gate-freezer-web-ui-pylint
       - gate-freezer-web-ui-pep8
       - gate-freezer-web-ui-python27
+      - gate-freezer-devstack-dsvm
 
   - name: openstack/fuel-agent
     template:
@@ -5908,11 +5927,11 @@ projects:
   - name: openstack/kolla
     template:
       - name: merge-check
+      - name: python-jobs-linters
       - name: check-requirements
       - name: openstack-server-publish-jobs
     check:
-      - gate-kolla-bashate
-      - gate-kolla-pep8
+      - gate-kolla-python34
       - gate-kolla-tox-validate-contents
       - gate-kolla-dsvm-build-centos-binary
       - gate-kolla-dsvm-deploy-centos-binary
@@ -5921,8 +5940,6 @@ projects:
       - gate-kolla-dsvm-build-ubuntu-source
       - gate-kolla-dsvm-deploy-ubuntu-source
     gate:
-      - gate-kolla-bashate
-      - gate-kolla-pep8
       - gate-kolla-tox-validate-contents
     experimental:
       - experimental-kolla-dsvm-deploy-multinode-ubuntu-source
@@ -6740,6 +6757,8 @@ projects:
     template:
       - name: check-requirements
       - name: merge-check
+      - name: openstack-server-publish-jobs
+      - name: publish-to-pypi
       - name: python-jobs
       - name: python3-jobs
       - name: translation-jobs
@@ -6816,7 +6835,6 @@ projects:
       - gate-tempest-dsvm-full-devstack-plugin-ceph-nv
       - gate-tempest-dsvm-multinode-full
       - gate-compute-api-guide
-      - gate-nova-commit-message
       - gate-nova-python27-constraints
       - gate-nova-python34-constraints
       - gate-nova-docs-constraints
@@ -7778,6 +7796,12 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
+
+  - name: openstack/puppet-ec2api
+    template:
+      - name: merge-check
+      - name: puppet-check-jobs
+      - name: puppet-module-unit-jobs
 
   - name: openstack/puppet-glance
     template:
@@ -8782,10 +8806,10 @@ projects:
     check:
       - gate-python-zaqarclient-pep8
       - gate-python-zaqarclient-python27
-      - gate-zaqarclient-dsvm-functional
     gate:
       - gate-python-zaqarclient-pep8
       - gate-python-zaqarclient-python27
+      - gate-zaqarclient-dsvm-functional
     post:
       - python-zaqarclient-branch-tarball
 
@@ -9178,6 +9202,7 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
+      - name: docs-on-rtfd
 
   - name: openstack/solum
     template:
@@ -9641,8 +9666,6 @@ projects:
       - gate-grenade-dsvm-partial-ncpu
       - gate-tempest-dsvm-layer4
       - gate-grenade-dsvm-multinode
-      # NOTE(chdent): remove when ceilometer tempest tests are in a plugin
-      - gate-tempest-dsvm-ceilometer-mysql-neutron-full
     experimental:
       - periodic-tempest-dsvm-all-master
       - periodic-tempest-dsvm-stress-master
