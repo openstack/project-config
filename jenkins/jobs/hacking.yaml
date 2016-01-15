@@ -4,11 +4,17 @@
 
     builders:
       - revoke-sudo
-      - gerrit-git-prep
       - shell: |
-          #!/bin/bash -xe
-          export REPO_ROOT=file:///opt/git
-          tox -e integration {target-org} {target-project}
+          #!/bin/bash -eux
+          cd $WORKSPACE
+
+          /usr/zuul-env/bin/zuul-cloner --cache-dir /opt/git \
+            git://git.openstack.org \
+            openstack-dev/hacking \
+            {target-org}/{target-project}
+          cd openstack-dev/hacking
+          tox -e integration {target-org} {target-project} \
+            $WORKSPACE/{target-org}/{target-project}
 
     publishers:
       - console-log
