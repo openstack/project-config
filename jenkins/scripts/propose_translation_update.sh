@@ -72,19 +72,6 @@ function propose_training_guides {
     git add doc/upstream-training/source/locale/*
 }
 
-function update_po_files {
-
-    DIRECTORY=$1
-
-    # Update existing translation files with extracted messages.
-    PO_FILES=$(find ${DIRECTORY}/locale -name "${PROJECT}.po")
-    if [ -n "$PO_FILES" ]; then
-        # Use updated .pot file to update translations
-        python setup.py  $QUIET update_catalog \
-            --no-fuzzy-matching --ignore-obsolete=true
-    fi
-}
-
 # Propose updates for python projects
 function propose_python {
 
@@ -94,27 +81,6 @@ function propose_python {
     # Extract all messages from project, including log messages.
     extract_messages
     extract_messages_log "$PROJECT"
-
-    update_po_files "$PROJECT"
-    # We cannot run update_catalog for the log files, since there is no
-    # option to specify the keyword and thus an update_catalog run would
-    # add the messages with the default keywords. Therefore use msgmerge
-    # directly.
-    for level in $LEVELS ; do
-        PO_FILES=$(find ${PROJECT}/locale -name "${PROJECT}-log-${level}.po")
-        if [ -n "$PO_FILES" ]; then
-            for f in $PO_FILES ; do
-                echo "Updating $f"
-                msgmerge --update --no-fuzzy-matching $f \
-                    --backup=none \
-                    ${PROJECT}/locale/${PROJECT}-log-${level}.pot
-                # Remove obsolete entries
-                msgattrib --no-obsolete --force-po \
-                    --output-file=${f}.tmp ${f}
-                mv ${f}.tmp ${f}
-            done
-        fi
-    done
 
     # Now add all changed files to git.
     # Note we add them here to not have to differentiate in the functions
@@ -158,8 +124,6 @@ function propose_django_openstack_auth {
 
     # Update the .pot file
     extract_messages
-
-    update_po_files "openstack_auth"
 
     # Compress downloaded po files
     compress_po_files "openstack_auth"
