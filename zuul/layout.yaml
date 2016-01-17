@@ -2226,6 +2226,11 @@ jobs:
   - name: gate-tooz-tox-py34-consul
     voting: false
 
+  # NOTE(sigmavirus24): This is presently failing but will be made voting as
+  # soon as sahara updates its configuration or fixes its issues.
+  - name: gate-bandit-integration-sahara
+    voting: false
+
     # Requirements project publishes documents from master only.
   - name: ^(?:gate-)requirements-docs$
     branch: master
@@ -3831,6 +3836,25 @@ projects:
       - name: openstack-server-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
+    check:
+      - gate-bandit-integration-barbican
+      - gate-bandit-integration-glance
+      - gate-bandit-integration-keystone
+      - gate-bandit-integration-keystonemiddleware
+      - gate-bandit-integration-magnum
+      - gate-bandit-integration-oslo.vmware
+      - gate-bandit-integration-python-keystoneclient
+      - gate-bandit-integration-python-magnumclient
+      - gate-bandit-integration-sahara
+    gate:
+      - gate-bandit-integration-barbican
+      - gate-bandit-integration-glance
+      - gate-bandit-integration-keystone
+      - gate-bandit-integration-keystonemiddleware
+      - gate-bandit-integration-magnum
+      - gate-bandit-integration-oslo.vmware
+      - gate-bandit-integration-python-keystoneclient
+      - gate-bandit-integration-python-magnumclient
 
   - name: openstack/bansho
     template:
