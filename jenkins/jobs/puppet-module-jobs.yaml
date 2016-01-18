@@ -230,6 +230,29 @@
       - devstack-logs
       - console-log
 
+- job-template:
+    name: 'gate-puppet-openstack-spec-helper-unit-dsvm-{ostype}'
+    node: 'devstack-{ostype}'
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - puppet-prepare-node
+      - zuul-clone:
+          project: openstack/puppet-openstack_spec_helper
+      - shell: |
+          #!/bin/bash -xe
+          ./run_unit_tests.sh
+
+    wrappers:
+      - build-timeout:
+          timeout: 60
+      - timestamps
+
+    publishers:
+      - console-log
+
 - job-group:
     name: 'puppet-check-jobs'
     puppet_version:
@@ -277,3 +300,10 @@
       - scenario002
     jobs:
       - 'gate-puppet-openstack-integration-{scenario}-tempest-dsvm-{ostype}'
+
+- job-group:
+    name: 'puppet-openstack-spec-helper-jobs'
+    ostype:
+      - centos7
+    jobs:
+      - 'gate-puppet-openstack-spec-helper-unit-dsvm-{ostype}'
