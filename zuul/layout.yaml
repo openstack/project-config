@@ -9443,7 +9443,13 @@ projects:
   - name: openstack/steth
     template:
       - name: merge-check
-      - name: noop-jobs
+      - name: publish-to-pypi
+    check:
+      - gate-steth-pep8
+    gate:
+      - gate-steth-pep8
+    post:
+      - steth-branch-tarball
 
 #TODO: add docs
   - name: openstack/stevedore
