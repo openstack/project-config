@@ -39,6 +39,11 @@
           source: 'publish-docs/api-ref/**'
           target: '/'
           remove-prefix: 'publish-docs/api-ref/'
+      - ftp:
+          site: developer.openstack.org
+          source: 'swagger/**'
+          target: 'draft/swagger/'
+          remove-prefix: 'swagger/'
 
 - job:
     name: openstack-api-ref-publish-lang
@@ -58,6 +63,21 @@
           source: 'publish-docs/api-ref/**'
           target: '/'
           remove-prefix: 'publish-docs/api-ref/'
+
+- job:
+    name: gate-build-swagger
+    description: Build and publish draft Swagger files from WADL migration.
+    node: bare-trusty
+
+    builders:
+      - revoke-sudo
+      - gerrit-git-prep
+      - tox:
+          envlist: 'makeswagger'
+
+    publishers:
+      - console-log
+      - upload-swagger-draft
 
 - job:
     name: gate-compute-api-guide
