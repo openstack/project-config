@@ -1,0 +1,23 @@
+- job-template:
+    name: 'gate-packstack-integration-{scenario}-tempest-dsvm-{ostype}'
+    node: 'devstack-{ostype}'
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - puppet-prepare-node
+      - gerrit-git-prep
+      - shell: |
+          #!/bin/bash -xe
+          export SCENARIO={scenario}
+          ./run_tests.sh
+
+    wrappers:
+      - build-timeout:
+          timeout: 60
+      - timestamps
+
+    publishers:
+      - devstack-logs
+      - console-log
