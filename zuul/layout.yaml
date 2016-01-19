@@ -1536,8 +1536,16 @@ jobs:
   - name: gate-kite-python34
     voting: false
 
+    # -linters is used starting with mitaka instead of pep8 and
+    # bandit (bandit is only in liberty).
+  - name: gate-keystone-linters
+    branch: ^(?!stable/(kilo|liberty)).*$
+
+  - name: gate-keystone-pep8
+    branch: ^(stable/(kilo|liberty)).*$
+
   - name: gate-keystone-tox-bandit
-    branch: ^(?!stable/kilo).*$
+    branch: ^stable/liberty$
 
   - name: gate-keystone-tox-legacy_drivers
     branch: ^(?!stable/(kilo|liberty)).*$
@@ -5864,7 +5872,7 @@ projects:
   - name: openstack/keystone
     template:
       - name: merge-check
-      - name: python-jobs
+      - name: python-jobs-linters
       - name: python3-jobs
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
@@ -5882,9 +5890,11 @@ projects:
       - gate-keystone-tox-bandit
       - gate-keystone-tox-legacy_drivers
       - gate-tempest-dsvm-keystone-eventlet-full
+      - gate-keystone-pep8
     gate:
       - gate-keystone-tox-bandit
       - gate-keystone-tox-legacy_drivers
+      - gate-keystone-pep8
     post:
       - keystone-coverage
       - keystone-propose-config-updates
