@@ -50,6 +50,13 @@ elif [ "$OWN_PROJECT" == "requirements-constraints" ] ; then
             -p /usr/bin/python3.4 -r global-requirements.txt \
             > $1/upper-constraints.txt
     }
+elif [ "$OWN_PROJECT" == "devstack-plugins-list" ] ; then
+    INITIAL_COMMIT_MSG="Updated from generate-devstack-plugins-list"
+    TOPIC="openstack/devstack/plugins"
+    PROJECTS=openstack-dev/devstack
+    function update {
+        bash -ex tools/generate-devstack-plugins-list.sh $1
+    }
 else
     echo "Unknown project $1" >2
     exit 1

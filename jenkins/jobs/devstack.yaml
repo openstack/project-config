@@ -52,3 +52,19 @@
       - upload-sphinx-draft
       - zuul-swift-upload-console-log
       # TODO(jhesketh): Add job for uploading built docs
+
+
+- job:
+    name: propose-devstack-plugins-list
+    node: proposal
+
+    builders:
+      - revoke-sudo
+      - link-logs
+      - net-info
+      - shell: |
+          /usr/local/jenkins/slave_scripts/propose_update.sh \
+              devstack-plugins-list
+
+    publishers:
+      - console-log
