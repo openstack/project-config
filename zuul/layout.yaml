@@ -612,6 +612,10 @@ project-templates:
       - gate-puppet-openstack-integration-scenario002-tempest-dsvm-trusty
       - gate-puppet-openstack-integration-scenario002-tempest-dsvm-centos7
 
+  - name: puppet-openstack-spec-helper-jobs
+    check:
+      - gate-puppet-openstack-spec-helper-unit-dsvm-centos7
+
   - name: puppet-syntax
     check:
       - gate-{name}-puppet-syntax-3-dsvm-centos7
@@ -1938,6 +1942,10 @@ jobs:
   # we need to test.
   - name: ^gate-puppet-.*-puppet-unit-latest-dsvm-.*$
     branch: ^(?!stable/(icehouse|juno|kilo)).*$
+    voting: false
+
+  # The job is still experimental and might change later, we don't want it voting now.
+  - name: ^gate-puppet-openstack-spec-helper-unit-dsvm-.*$
     voting: false
 
   - name: ^gate-puppet-((?!swift).)*-puppet-syntax-.*$
@@ -8006,7 +8014,9 @@ projects:
   - name: openstack/puppet-openstack_spec_helper
     template:
       - name: merge-check
-      - name: noop-jobs
+      - name: puppet-openstack-spec-helper-jobs
+    gate:
+      - noop
 
   - name: openstack/puppet-openstack-specs
     template:
