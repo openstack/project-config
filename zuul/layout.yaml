@@ -1479,12 +1479,6 @@ jobs:
   - name: gate-ironicclient-dsvm-functional
     voting: false
 
-  - name: ^gate-tripleo-heat-templates-puppet-.*$
-    voting: false
-
-  - name: ^gate-instack-undercloud-puppet-.*$
-    voting: false
-
   - name: gate-tripleo-ci-f22-containers
     voting: false
 
@@ -5896,6 +5890,10 @@ projects:
       - gate-instack-undercloud-puppet-lint
       - gate-instack-undercloud-puppet-syntax-3-dsvm-centos7
       - gate-instack-undercloud-puppet-syntax-4-dsvm-centos7
+    gate:
+      - gate-instack-undercloud-puppet-lint
+      - gate-instack-undercloud-puppet-syntax-3-dsvm-centos7
+      - gate-instack-undercloud-puppet-syntax-4-dsvm-centos7
 
   - name: openstack/intel-nfv-ci-tests
     template:
@@ -10225,7 +10223,9 @@ projects:
     post:
       - tripleo-heat-templates-branch-tarball
     gate:
-      - noop
+      - gate-tripleo-heat-templates-puppet-lint
+      - gate-tripleo-heat-templates-puppet-syntax-3-dsvm-centos7
+      - gate-tripleo-heat-templates-puppet-syntax-4-dsvm-centos7
 
   - name: openstack/tripleo-image-elements
     template:
