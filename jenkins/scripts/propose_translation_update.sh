@@ -132,22 +132,6 @@ function propose_django_openstack_auth {
     git add openstack_auth/locale/*
 }
 
-function propose_magnum_ui {
-
-    # Pull updated translations from Zanata.
-    pull_from_zanata "$PROJECT"
-
-    # Invoke run_tests.sh to update the po files
-    # Or else, "../manage.py makemessages" can be used.
-    ./run_tests.sh --makemessages -V
-
-    # Compress downloaded po files
-    compress_po_files "magnum_ui"
-
-    # Add all changed files to git
-    git add magnum_ui/locale/*
-}
-
 # This function can be used for all django projects
 function propose_django {
     local project=$1
@@ -182,19 +166,21 @@ case "$PROJECT" in
         propose_training_guides
         ;;
     django_openstack_auth)
+        # NOTE: Once POT file and Zanata resource name are renamed
+        # from openstack_auth(.pot) to django(.pot), the below can be used.
+        # setup_django django_openstack_auth openstack_auth "$ZANATA_VERSION"
         setup_django_openstack_auth "$ZANATA_VERSION"
+        # NOTE: Once django_openstack_auth repo has babel-django.cfg,
+        # the below can be used.
+        # propose_django django_openstack_auth openstack_auth
         propose_django_openstack_auth
         ;;
     horizon)
         setup_horizon "$ZANATA_VERSION"
         propose_horizon
         ;;
-    magnum-ui)
-        setup_magnum_ui "$ZANATA_VERSION"
-        propose_magnum_ui
-        ;;
     # Test of translation setup improvement
-    murano-dashboard)
+    murano-dashboard|magnum-ui)
         # TODO(amotoki): Honor module name in propose_*
         # MODULENAME=$(get_modulename $PROJECT python)
         # if [ -n "$MODULENAME" ]; then
