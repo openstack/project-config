@@ -1698,6 +1698,10 @@ jobs:
     branch: ^(?!stable/(?:juno|kilo|liberty)).*$
     voting: false
 
+  - name: gate-tempest-dsvm-murano-api
+    branch: ^(?!stable/(?:juno|kilo|liberty)).*$
+    voting: false
+
   - name: gate-murano-pylint
     branch: ^(?!stable/juno).*$
     voting: false
@@ -6382,13 +6386,14 @@ projects:
       - name: release-notes-jobs
       - name: translation-jobs
     check:
+      - gate-murano-python34
       - murano-coverage
       - gate-murano-pylint
       - gate-murano-devstack-dsvm
       - gate-murano-congress-devstack-dsvm
       - gate-rally-dsvm-murano-task
+      - gate-tempest-dsvm-murano-api
       - gate-tempest-dsvm-murano-cfapi
-      - gate-murano-python34
     gate:
       - gate-murano-devstack-dsvm
     post:
