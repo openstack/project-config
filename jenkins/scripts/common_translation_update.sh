@@ -252,6 +252,25 @@ function extract_messages {
     python setup.py $QUIET extract_messages --keyword "_C:1c,2 _P:1,2"
 }
 
+# TODO(amotoki): Finally this should replace current extract_messages.
+function extract_messages_new {
+    local modulename=$1
+
+    # NOTE(amotoki): POT file == $modulename/locale/$modulename.pot
+    local POT=${modulename}/locale/${modulename}.pot
+
+    # In case this is an initial run, the locale directory might not
+    # exist, so create it since extract_messages will fail if it does
+    # not exist. So, create it if needed.
+    mkdir -p ${modulename}/locale
+
+    # Update the .pot files
+    # The "_C" and "_P" prefix are for more-gettext-support blueprint,
+    # "_C" for message with context, "_P" for plural form message.
+    python setup.py $QUIET extract_messages --keyword "_C:1c,2 _P:1,2" \
+        --output-file ${POT}
+}
+
 # Run extract_messages for log messages.
 # Needs variables setup via setup_loglevel_vars.
 function extract_messages_log {
@@ -262,6 +281,29 @@ function extract_messages_log {
     # Update the .pot files
     for level in $LEVELS ; do
         POT=${project}/locale/${project}-log-${level}.pot
+        python setup.py $QUIET extract_messages --no-default-keywords \
+            --keyword ${LKEYWORD[$level]} \
+            --output-file ${POT}
+        # We don't need to add or send around empty source files.
+        trans=$(msgfmt --statistics -o /dev/null ${POT} 2>&1)
+        if [ "$trans" = "0 translated messages." ] ; then
+            rm $POT
+            # Remove file from git if it's under version control.
+            git rm --ignore-unmatch $POT
+        fi
+    done
+}
+
+# TODO(amotoki): Finally this should replace current extract_messages_log.
+function extract_messages_log_new {
+    local modulename=$1
+    local POT
+    local trans
+
+    # Update the .pot files
+    for level in $LEVELS ; do
+        # NOTE(amotoki): POT file == $modulename/locale/$modulename.pot
+        POT=${modulename}/locale/${modulename}-log-${level}.pot
         python setup.py $QUIET extract_messages --no-default-keywords \
             --keyword ${LKEYWORD[$level]} \
             --output-file ${POT}
@@ -423,9 +465,9 @@ function check_po_file {
 # Remove obsolete files. We might have added them in the past but
 # would not add them today, so let's eventually remove them.
 function cleanup_po_files {
-    local project=$1
+    local modulename=$1
 
-    for i in $(find $project/locale -name *.po) ; do
+    for i in $(find $modulename/locale -name *.po) ; do
         check_po_file "$i"
         if [ $RATIO -lt 20 ]; then
             git rm -f $i
