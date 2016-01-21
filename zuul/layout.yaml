@@ -714,6 +714,7 @@ jobs:
         all-files-match-any:
           - ^.*\.rst$
           - ^doc/.*$
+          - ^neutron/locale/.*$
           - ^neutron/tests/.*$
           - ^releasenotes/.*$
           - ^tools/.*$
@@ -746,6 +747,7 @@ jobs:
         all-files-match-any:
           - ^.*\.rst$
           - ^doc/.*$
+          - ^ironic/locale/.*$
           - ^ironic/tests/.*$
           - ^releasenotes/.*$
           - ^tools/.*$
@@ -771,13 +773,16 @@ jobs:
         all-files-match-any:
           - ^.*\.rst$
           - ^doc/.*$
+          - ^heat/locale/.*$
           - ^heat/tests/.*$
           - ^releasenotes/.*$
       - project: ^openstack/horizon$
         all-files-match-any:
           - ^.*\.rst$
           - ^doc/.*$
+          - ^horizon/locale/.*$
           - ^horizon/test/.*$
+          - ^openstack_dashboard/locale/.*$
           - ^openstack_dashboard/test/.*$
           - ^openstack_dashboard/.*/tests?\.py$
           - ^releasenotes/.*$
@@ -826,13 +831,15 @@ jobs:
           - ^tools/.*$
           - ^tox.ini$
           - ^vagrant/.*$
-  # Skip non-doc jobs for doc-only neutron changes.  Since
-  # doc/source/conf.py is checked by neutron-(pep8|pylint), those jobs
-  # should not be skipped.
+
+  # Skip non-doc jobs for doc-only or translation-only neutron
+  # changes. Since doc/source/conf.py is checked by
+  # neutron-(pep8|pylint), those jobs should not be skipped.
   - name: ^.*neutron-(dsvm-api|dsvm-functional|dsvm-functional-py34|python(27|34)|lbaasv[12]-dsvm-(api|minimal)|dsvm-fullstack)(-constraints)?$
     skip-if:
       - project: ^openstack/neutron$
         all-files-match-any:
+          - ^neutron/locale/.*$
           - ^.*\.rst$
           - ^doc/.*$
           - ^releasenotes/.*$
@@ -858,10 +865,11 @@ jobs:
     skip-if:
       - project: ^openstack/heat$
         all-files-match-any:
+          - ^heat/locale/.*$
           - ^releasenotes/.*$
-  # Skip non-doc jobs for doc-only nova changes.  Since
-  # doc/source/conf.py is checked by nova-(pep8|pylint), those jobs
-  # should not be skipped.
+  # Skip non-doc jobs for doc-only or translation-only nova changes.
+  # Since doc/source/conf.py is checked by nova-(pep8|pylint), those
+  # jobs should not be skipped.
   - name: ^.*nova-(tox-functional|python27|python34)(-constraints)?$
     skip-if:
       - project: ^openstack/nova$
@@ -871,22 +879,27 @@ jobs:
           - ^doc/.*$
           - ^nova/locale/.*$
 
-  # Skip non-doc jobs for doc-only heat changes. Since doc/source/*
-  # is checked by heat-pep8, this job should not be skipped
+  # Skip non-doc jobs for doc-only or translation-only heat changes.
+  # Since doc/source/* is checked by heat-pep8, this job should not be
+  # skipped.
   - name: ^.*heat-(python27|python34)$
     skip-if:
       - project: ^openstack/heat$
         all-files-match-any:
           - ^.*\.rst$
           - ^doc/.*$
-  # Skip non-doc jobs for doc-only horizon changes. Since doc/source/*
-  # is checked by horizon-pep8, this job should not be skipped
+          - ^heat/locale/.*$
+  # Skip non-doc jobs for doc-only or translation-only horizon
+  # changes. Since doc/source/* is checked by horizon-pep8, this job
+  # should not be skipped.
   - name: ^.*horizon-(python27|python34|tox-py27dj.*|npm-run-.*|selenium-headless|dsvm-integration)$
     skip-if:
       - project: ^openstack/horizon$
         all-files-match-any:
           - ^.*\.rst$
           - ^doc/.*$
+          - ^horizon/locale/.*$
+          - ^openstack_dashboard/locale/.*$
   # Skip non-doc jobs for doc-only ironic changes. Since documents are checked
   # by ironic-pep8 it should not be skipped.
   - name: ^.*ironic-(python27|python34)$
