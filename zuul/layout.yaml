@@ -310,8 +310,6 @@ project-templates:
       - 'gate-{name}-docs-constraints'
       - 'gate-{name}-pep8-constraints'
       - 'gate-{name}-python27-constraints'
-    post:
-      - '{name}-branch-tarball-constraints'
 
   # This is the same template as python-jobs but uses the new
   # linters target instead of pep8.
@@ -418,12 +416,6 @@ project-templates:
       - '{name}-docs'
     release:
       - '{name}-docs'
-
-  - name: openstack-server-publish-jobs-constraints
-    post:
-      - '{name}-docs-constraints'
-    release:
-      - '{name}-docs-constraints'
 
   - name: openstack-client-publish-jobs
     release:
@@ -537,13 +529,6 @@ project-templates:
       - '{name}-releasenotes'
     tag:
       - '{name}-releasenotes'
-
-  - name: openstack-server-release-jobs-constraints
-    pre-release:
-      - '{name}-tarball-constraints'
-    release:
-      - '{name}-tarball-constraints'
-      - '{name}-merge-release-tags'
 
   - name: docs-on-rtfd
     post:
@@ -6744,9 +6729,7 @@ projects:
       - name: python-constraints-jobs
       - name: python3-constraints-jobs
       - name: openstack-server-publish-jobs
-      - name: openstack-server-publish-jobs-constraints
       - name: openstack-server-release-jobs
-      - name: openstack-server-release-jobs-constraints
       - name: periodic-kilo
       - name: periodic-liberty-constraints
       - name: check-requirements
@@ -6772,7 +6755,6 @@ projects:
       - gate-tempest-dsvm-neutron-linuxbridge
     post:
       - neutron-coverage
-      - neutron-coverage-constraints
     experimental:
       - gate-tempest-dsvm-neutron-large-ops
       - gate-neutron-dsvm-functional-py34
@@ -6883,8 +6865,6 @@ projects:
       - name: python-constraints-jobs
       - name: python3-constraints-jobs
       - name: openstack-server-release-jobs
-      - name: openstack-server-release-jobs-constraints
-      - name: openstack-server-publish-jobs-constraints
       - name: release-notes-jobs
       - name: translation-jobs
     check:
@@ -6897,7 +6877,6 @@ projects:
       - gate-neutron-vpnaas-dsvm-functional-sswan
     post:
       - neutron-vpnaas-coverage
-      - neutron-vpnaas-coverage-constraints
 
   - name: openstack/nomad
     template:
@@ -6948,7 +6927,6 @@ projects:
     post:
       - nova-coverage
       - compute-api-guide
-      - nova-coverage-constraints
     experimental:
       - gate-grenade-dsvm-forward
       - gate-nova-pip-check-reqs
