@@ -1592,8 +1592,16 @@ jobs:
     branch: ^(?!stable/(kilo|liberty)).*$
     voting: false
 
+    # -linters is used starting with mitaka instead of pep8 and bandit
+    # (bandit is only available in liberty).
+  - name: gate-keystonemiddleware-linters
+    branch: ^(?!stable/(kilo|liberty)).*$
+
+  - name: gate-keystonemiddleware-pep8
+    branch: ^stable/(kilo|liberty).*$
+
   - name: gate-keystonemiddleware-tox-bandit
-    branch: ^(?!stable/kilo).*$
+    branch: ^stable/liberty$
 
   - name: gate-kuryr-requirements
     voting: false
@@ -5965,7 +5973,7 @@ projects:
   - name: openstack/keystonemiddleware
     template:
       - name: merge-check
-      - name: python-jobs
+      - name: python-jobs-linters
       - name: python3-jobs
       - name: openstack-client-publish-jobs
       - name: check-requirements
@@ -5974,8 +5982,10 @@ projects:
       - name: release-notes-jobs
     check:
       - gate-keystonemiddleware-tox-bandit
+      - gate-keystonemiddleware-pep8
     gate:
       - gate-keystonemiddleware-tox-bandit
+      - gate-keystonemiddleware-pep8
     post:
       - keystonemiddleware-coverage
 
