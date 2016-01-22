@@ -86,9 +86,10 @@
           if [[ "$ZUUL_BRANCH" == "stable/kilo" ]]; then
               services+=,ceilometer-alarm-evaluator,ceilometer-alarm-notifier
           else
-              export PROJECTS="openstack/aodh"
+              export PROJECTS="openstack/aodh openstack/zaqar"
               services+=,aodh-api,aodh-alarm-evaluator,aodh-alarm-notifier
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin aodh git://git.openstack.org/openstack/aodh"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin zaqar git://git.openstack.org/openstack/zaqar"
           fi
           export OVERRIDE_ENABLED_SERVICES=$services
 
