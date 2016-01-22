@@ -15,7 +15,7 @@
           mkdir .bundled_gems
           export GEM_HOME=`pwd`/.bundled_gems
           gem install bundler --no-rdoc --no-ri --verbose
-          $GEM_HOME/bin/bundle install
+          $GEM_HOME/bin/bundle install --retry 3
           $GEM_HOME/bin/bundle exec rake spec SPEC_OPTS='--format documentation'
 
     wrappers:
@@ -48,7 +48,7 @@
               mkdir .bundled_gems_$PUPPET_VERSION
               export GEM_HOME=`pwd`/.bundled_gems_$PUPPET_VERSION
               gem install bundler --no-rdoc --no-ri --verbose
-              $GEM_HOME/bin/bundle install
+              $GEM_HOME/bin/bundle install --retry 3
               set +e
               $GEM_HOME/bin/bundle exec rake spec SPEC_OPTS='--format documentation'
               OUT=$?
@@ -83,7 +83,7 @@
           mkdir .bundled_gems
           export GEM_HOME=`pwd`/.bundled_gems
           gem install bundler --no-rdoc --no-ri --verbose
-          $GEM_HOME/bin/bundle install
+          $GEM_HOME/bin/bundle install --retry 3
           export BEAKER_set=nodepool-{ostype}
           export BEAKER_debug=yes
           export BEAKER_color=no
@@ -167,7 +167,7 @@
           mkdir .bundled_gems
           export GEM_HOME=`pwd`/.bundled_gems
           gem install bundler --no-rdoc --no-ri --verbose
-          $GEM_HOME/bin/bundle install
+          $GEM_HOME/bin/bundle install --retry 3
           # FUTURE_PARSER=yes is only supported by Puppet 3.x
           if [ "{puppet_version}" -lt "4" ]; then
               export FUTURE_PARSER=yes
