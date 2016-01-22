@@ -187,8 +187,8 @@
       - devstack-logs
       - console-log
 
-- job:
-    name: 'gate-ceilometer-dsvm-integration'
+- job-template:
+    name: 'gate-telemetry-dsvm-integration-{name}'
     node: devstack-trusty
 
     wrappers:
@@ -234,7 +234,7 @@
           s+="gnocchi-api"
           export ENABLE_SERVICES="$s"
 
-          export PROJECTS="openstack/aodh openstack/gnocchi"
+          export PROJECTS="openstack/ceilometer openstack/aodh openstack/gnocchi"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin gnocchi git://git.openstack.org/openstack/gnocchi"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin aodh git://git.openstack.org/openstack/aodh"
@@ -244,16 +244,13 @@
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"GNOCCHI_COORDINATOR_URL=redis://localhost:6379?timeout=5"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"GNOCCHI_STORAGE_BACKEND=file"
 
-          if [ "$ZUUL_PROJECT" == "openstack/oslo.messaging" ]; then
-              export DEVSTACK_LOCAL_CONFIG+=$'\n'"LIBS_FROM_GIT=oslo.messaging"
-          elif [ "$ZUUL_PROJECT" == "openstack/python-ceilometerclient" ]; then
-              export DEVSTACK_LOCAL_CONFIG+=$'\n'"LIBS_FROM_GIT=python-ceilometerclient"
-          fi
+          export PROJECTS="openstack/{name} $PROJECTS"
+          export DEVSTACK_PROJECT_FROM_GIT={name}
 
-          function post_test_hook {
+          function post_test_hook {{
               cd /opt/stack/new/ceilometer/ceilometer/tests/integration/hooks/
               ./post_test_hook.sh
-          }
+          }}
           export -f post_test_hook
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
