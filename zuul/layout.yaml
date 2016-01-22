@@ -723,7 +723,7 @@ jobs:
   # Skip these long-running and expensive devstack jobs when the
   # change is only to documentation, release notes, unit tests or
   # similar components that won't be exercised by the job anyway.
-  - name: ^.*(devstack|tempest|grenade|rally|swift|neutron-lbaas|neutron-vpnaas|ironic-inspector|heat)-dsvm.*$
+  - name: ^.*(devstack|tempest|grenade|rally|swift|networking-ovn|neutron-lbaas|neutron-vpnaas|ironic-inspector|heat)-dsvm.*$
     skip-if:
       - project: ^openstack/neutron$
         all-files-match-any:
@@ -832,6 +832,14 @@ jobs:
       - project: ^openstack/monasca-api
         all-files-match-any:
           - ^.*\.md$
+      - project: ^openstack/networking-ovn$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+          - ^releasenotes/.*$
+          - ^tools/.*$
+          - ^tox.ini$
+          - ^vagrant/.*$
   # Skip non-doc jobs for doc-only neutron changes.  Since
   # doc/source/conf.py is checked by neutron-(pep8|pylint), those jobs
   # should not be skipped.
