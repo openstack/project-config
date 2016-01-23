@@ -350,29 +350,6 @@
       - console-log
       - zuul-swift-upload-console-log
 
-# Ceilometer 2015.1.3 was tagged while incompatible with pip 8
-# TODO(fungi): remove once tag has been retriggered and branch fix merged
-- job:
-    name: ceilometer-tarball-pin-pip
-    node: bare-trusty
-
-    builders:
-      - pin-pip
-      - revoke-sudo
-      - gerrit-git-prep
-      - tarball:
-          env: venv
-
-    publishers:
-      - tarball:
-          project: ceilometer
-          site: tarballs.openstack.org
-      - wheel:
-          project: ceilometer
-          site: tarballs.openstack.org
-      - console-log
-      - zuul-swift-upload-console-log
-
 - job-template:
     name: '{name}-tarball-constraints'
     node: bare-trusty
