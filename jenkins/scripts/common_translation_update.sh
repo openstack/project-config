@@ -230,6 +230,12 @@ function setup_loglevel_vars {
 
 # Run extract_messages for user visible messages.
 function extract_messages {
+    local project=$1
+
+    # In case this is an initial run, the locale directory might not
+    # exist, so create it since extract_messages will fail if it does
+    # not exist. So, create it if needed.
+    mkdir -p ${project}/locale
 
     # Update the .pot files
     # The "_C" and "_P" prefix are for more-gettext-support blueprint,
