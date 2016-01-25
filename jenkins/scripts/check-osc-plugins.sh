@@ -45,7 +45,6 @@ install_from_source python-ironic-inspector-client
 install_from_source python-mistralclient
 install_from_source python-saharaclient
 install_from_source python-tripleoclient
-install_from_source python-tuskarclient
 install_from_source python-zaqarclient
 
 echo "Begin freeze output from $venv virtualenv:"
