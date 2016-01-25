@@ -600,6 +600,8 @@ project-templates:
   - name: puppet-openstack-spec-helper-jobs
     check:
       - gate-puppet-openstack-spec-helper-unit-dsvm-centos7
+    gate:
+      - gate-puppet-openstack-spec-helper-unit-dsvm-centos7
 
   - name: puppet-syntax
     check:
@@ -1983,10 +1985,6 @@ jobs:
   # we need to test.
   - name: ^gate-puppet-.*-puppet-unit-latest-dsvm-.*$
     branch: ^(?!stable/(icehouse|juno|kilo)).*$
-    voting: false
-
-  # The job is still experimental and might change later, we don't want it voting now.
-  - name: ^gate-puppet-openstack-spec-helper-unit-dsvm-.*$
     voting: false
 
   - name: ^gate-puppet-((?!swift).)*-puppet-syntax-.*$
@@ -8018,8 +8016,6 @@ projects:
     template:
       - name: merge-check
       - name: puppet-openstack-spec-helper-jobs
-    gate:
-      - noop
 
   - name: openstack/puppet-openstack-specs
     template:
