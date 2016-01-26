@@ -181,13 +181,13 @@ done
 # append .txt to all config files
 # (there are some /etc/swift .builder and .ring files that get
 # caught up which aren't really text, don't worry about that)
-find $LOG_DIR/sudoers.d $LOG_DIR/etc -type f -exec mv '{}' '{}'.txt \;
+find $LOG_DIR/sudoers.d $LOG_DIR/etc -type f -exec sudo mv '{}' '{}'.txt \;
 
 # rabbitmq
 if [ -f $LOG_DIR/rabbitmq ]; then
-    find $LOG_DIR/rabbitmq -type f -exec mv '{}' '{}'.txt \;
+    find $LOG_DIR/rabbitmq -type f -exec sudo mv '{}' '{}'.txt \;
     for X in `find $LOG_DIR/rabbitmq -type f` ; do
-        mv "$X" "${X/@/_at_}"
+        sudo mv "$X" "${X/@/_at_}"
     done
 fi
 
