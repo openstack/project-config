@@ -178,6 +178,8 @@ labels:
       - name: hpcloud-b3
       - name: hpcloud-b4
       - name: hpcloud-b5
+      - name: ovh-gra1
+      - name: ovh-bhs1
   - name: devstack-centos7-dib
     image: devstack-centos7-dib
     ready-script: configure_mirror.sh
@@ -188,6 +190,8 @@ labels:
       - name: hpcloud-b3
       - name: hpcloud-b4
       - name: hpcloud-b5
+      - name: ovh-gra1
+      - name: ovh-bhs1
   - name: fedora-23
     image: fedora-23
     ready-script: configure_mirror.sh
@@ -777,6 +781,19 @@ providers:
         username: jenkins
         private-key: /home/nodepool/.ssh/id_rsa
         config-drive: true
+      - name: devstack-centos7
+        base-image: 'CentOS 7'
+        min-ram: 8000
+        setup: prepare_node_devstack.sh
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+      - name: devstack-centos7-dib
+        min-ram: 8000
+        diskimage: devstack-centos7-dib
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
   - name: ovh-bhs1
     region-name: 'BHS1'
     cloud: ovh
@@ -811,6 +828,19 @@ providers:
         min-ram: 8000
         name-filter: 'ssd-osFoundation-3'
         diskimage: ubuntu-trusty
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+      - name: devstack-centos7
+        base-image: 'CentOS 7'
+        min-ram: 8000
+        setup: prepare_node_devstack.sh
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+      - name: devstack-centos7-dib
+        min-ram: 8000
+        diskimage: devstack-centos7-dib
         username: jenkins
         private-key: /home/nodepool/.ssh/id_rsa
         config-drive: true
