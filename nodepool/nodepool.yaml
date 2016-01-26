@@ -20,23 +20,6 @@ gearman-servers:
   - host: zuul.openstack.org
 
 labels:
-  - name: devstack-precise
-    image: devstack-precise
-    ready-script: configure_mirror.sh
-    min-ready: 1
-    providers:
-      - name: rax-dfw
-      - name: rax-ord
-      - name: rax-iad
-      - name: ovh-gra1
-      - name: ovh-bhs1
-      - name: bluebox-sjc1
-      - name: internap-nyj01
-  - name: devstack-precise-check
-    image: devstack-precise-check
-    min-ready: 0
-    providers:
-      - name: rax-iad
   - name: bare-precise
     image: bare-precise
     ready-script: configure_mirror.sh
@@ -61,11 +44,6 @@ labels:
   # in new providers as we dibify them.
   - name: devstack-trusty-dib
     image: devstack-trusty-dib
-    ready-script: configure_mirror.sh
-    min-ready: 0
-    providers: []
-  - name: devstack-precise-dib
-    image: devstack-precise-dib
     ready-script: configure_mirror.sh
     min-ready: 0
     providers: []
@@ -166,13 +144,6 @@ providers:
     rate: 0.001
     image-type: vhd
     images:
-      - name: devstack-precise
-        base-image: 'Ubuntu 12.04 LTS (Precise Pangolin) (PVHVM)'
-        min-ram: 8192
-        name-filter: 'Performance'
-        setup: prepare_node_devstack.sh
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
       - name: bare-precise
         base-image: 'Ubuntu 12.04 LTS (Precise Pangolin) (PVHVM)'
         min-ram: 8192
@@ -226,13 +197,6 @@ providers:
     rate: 0.001
     image-type: vhd
     images:
-      - name: devstack-precise
-        base-image: 'Ubuntu 12.04 LTS (Precise Pangolin) (PVHVM)'
-        min-ram: 8192
-        name-filter: 'Performance'
-        setup: prepare_node_devstack.sh
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
       - name: bare-precise
         base-image: 'Ubuntu 12.04 LTS (Precise Pangolin) (PVHVM)'
         min-ram: 8192
@@ -286,13 +250,6 @@ providers:
     rate: 0.001
     image-type: vhd
     images:
-      - name: devstack-precise
-        base-image: 'Ubuntu 12.04 LTS (Precise Pangolin) (PVHVM)'
-        min-ram: 8192
-        name-filter: 'Performance'
-        setup: prepare_node_devstack.sh
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
       - name: bare-precise
         base-image: 'Ubuntu 12.04 LTS (Precise Pangolin) (PVHVM)'
         min-ram: 8192
@@ -324,13 +281,6 @@ providers:
         meta:
           vm_mode: hvm
           xenapi_use_agent: 'false'
-      - name: devstack-precise-check
-        base-image: 'Ubuntu 12.04 LTS (Precise Pangolin) (PVHVM)'
-        min-ram: 8192
-        name-filter: 'Performance'
-        setup: prepare_node_devstack.sh
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
       - name: fedora-23
         min-ram: 8192
         diskimage: fedora-23
@@ -476,13 +426,6 @@ providers:
     rate: 0.1
     image-type: raw
     images:
-      - name: devstack-precise
-        min-ram: 8000
-        name-filter: 'ssd-osFoundation-3'
-        diskimage: devstack-precise
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
       - name: devstack-trusty
         min-ram: 8000
         name-filter: 'ssd-osFoundation-3'
@@ -526,13 +469,6 @@ providers:
     rate: 0.1
     image-type: raw
     images:
-      - name: devstack-precise
-        min-ram: 8000
-        name-filter: 'ssd-osFoundation-3'
-        diskimage: devstack-precise
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
       - name: devstack-trusty
         min-ram: 8000
         name-filter: 'ssd-osFoundation-3'
@@ -576,13 +512,6 @@ providers:
     rate: 0.001
     pool: 'external'
     images:
-      - name: devstack-precise
-        min-ram: 8000
-        name-filter: 'nodepool'
-        diskimage: devstack-precise
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
       - name: devstack-trusty
         min-ram: 8000
         name-filter: 'nodepool'
@@ -615,13 +544,6 @@ providers:
       - name: inap-17304-WAN2342
         public: true
     images:
-      - name: devstack-precise
-        min-ram: 8000
-        name-filter: 'A1.8'
-        diskimage: devstack-precise
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
       - name: devstack-trusty
         min-ram: 8000
         name-filter: 'A1.8'
@@ -694,21 +616,6 @@ diskimages:
       - node-devstack
       - cache-bindep
     release: trusty
-    env-vars:
-      TMPDIR: /opt/dib_tmp
-      DIB_IMAGE_CACHE: /opt/dib_cache
-      DIB_APT_LOCAL_CACHE: '0'
-      DIB_DISABLE_APT_CLEANUP: '1'
-      QEMU_IMG_OPTIONS: compat=0.10
-  - name: devstack-precise
-    elements:
-      - ubuntu
-      - vm
-      - openstack-repos
-      - nodepool-base
-      - node-devstack
-      - cache-bindep
-    release: precise
     env-vars:
       TMPDIR: /opt/dib_tmp
       DIB_IMAGE_CACHE: /opt/dib_cache
