@@ -60,9 +60,15 @@
           clonemap:
             - name: $ZUUL_PROJECT
               dest: .
+          EOF
+          # zuul cloner works poorly if there are 2 names that are the
+          # same in here.
+          if [[ "$ZUUL_PROJECT" != "openstack/requirements" ]]; then
+          cat >> $CLONEMAP << EOF
             - name: openstack/requirements
               dest: $REQS_DIR
           EOF
+          fi
           /usr/zuul-env/bin/zuul-cloner -m $CLONEMAP --cache-dir /opt/git \
               --branch=$BRANCH \
               git://git.openstack.org $ZUUL_PROJECT openstack/requirements
