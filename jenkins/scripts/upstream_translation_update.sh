@@ -41,19 +41,21 @@ case "$PROJECT" in
         setup_training_guides "$ZANATA_VERSION"
         ;;
     django_openstack_auth)
+        # NOTE: Once POT file and Zanata resource name are renamed
+        # from openstack_auth(.pot) to django(.pot), the below can be used.
+        # setup_django django_openstack_auth openstack_auth "$ZANATA_VERSION"
         setup_django_openstack_auth "$ZANATA_VERSION"
+        # NOTE: Once django_openstack_auth repo has babel-django.cfg,
+        # the below can be used.
+        # extract_messages_django openstack_auth
         extract_messages openstack_auth
         ;;
     horizon)
         setup_horizon "$ZANATA_VERSION"
         ./run_tests.sh --makemessages -V
         ;;
-    magnum-ui)
-        setup_magnum_ui "$ZANATA_VERSION"
-        ./run_tests.sh --makemessages -V
-        ;;
     # Test of translation setup improvement
-    murano-dashboard)
+    murano-dashboard|magnum-ui)
         # TODO(amotoki): Honor module name in extract_*
         # MODULENAME=$(get_modulename $PROJECT python)
         # if [ -n "$MODULENAME" ]; then
