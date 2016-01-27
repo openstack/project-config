@@ -181,6 +181,15 @@ pipelines:
         to: openstack-qa@lists.openstack.org
         subject: 'Periodic jobs for {change.project} failed'
 
+  - name: periodic-neutron
+    description: Periodic jobs for the Networking team.
+    manager: IndependentPipelineManager
+    source: gerrit
+    precedence: low
+    trigger:
+      timer:
+        - time: '3 6 * * *'
+
   - name: check-tripleo
     description: >
       Newly uploaded patchsets enter this pipeline to receive an initial +/-1
