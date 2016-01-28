@@ -146,6 +146,20 @@ dashboard:
           seriesOverrides:
             - alias: Max
               stack: False
+    - title: Images
+      showTitle: true
+      height: 250px
+      panels:
+        - title: Image Uploads
+          type: graph
+          span: 4
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
+          targets:
+            - target: alias(scale(averageSeries(stats.timers.nodepool.image_update.*.ovh-bhs1.mean), '0.001'), 'BHS1')
+            - target: alias(scale(averageSeries(stats.timers.nodepool.image_update.*.ovh-gra1.mean), '0.001'), 'GRA1')
     - title: Job Runtimes
       showTitle: true
       height: 250px
