@@ -209,8 +209,8 @@ case "$PROJECT" in
         setup_horizon "$ZANATA_VERSION"
         propose_horizon
         ;;
-    # Test of translation setup improvement
-    murano-dashboard|magnum-ui|python-neutronclient|python-novaclient)
+    # New setup: all dashboard plugin repositories plus others
+    *-dashboard|*-ui|*-horizon|python-neutronclient|python-novaclient)
         # ---- Python projects ----
         # NOTE: At now POT file == $modulename/locale/$modulename.pot
         #       so this script works.
