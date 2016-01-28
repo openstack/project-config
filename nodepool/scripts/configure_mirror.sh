@@ -18,10 +18,16 @@
 
 source /etc/nodepool/provider
 
-NODEPOOL_PYPI_MIRROR=${NODEPOOL_PYPI_MIRROR:-http://pypi.$NODEPOOL_REGION.openstack.org/simple}
+NODEPOOL_MIRROR_HOST=${NODEPOOL_MIRROR_HOST:-pypi.$NODEPOOL_REGION.openstack.org}
+NODEPOOL_PYPI_MIRROR=${NODEPOOL_PYPI_MIRROR:-$NODEPOOL_MIRROR_HOST/simple}
 
-sudo sed -i -e "s,^index-url = .*,index-url = $NODEPOOL_PYPI_MIRROR," \
-    /etc/pip.conf
+cat >/etc/pip.conf <<EOF
+[global]
+timeout = 60
+index-url = $NODEPOOL_PYPI_MIRROR
+trusted-host = $NODEPOOL_PYPI_MIRROR
+extra-index-url =
+EOF
 
 cat >/home/jenkins/.pydistutils.cfg <<EOF
 [easy_install]
@@ -32,7 +38,7 @@ EOF
 # Double check that when the node is made ready it is able
 # to resolve names against DNS.
 host git.openstack.org
-host pypi.${NODEPOOL_REGION}.openstack.org
+host $NODEPOOL_MIRROR_HOST
 
 LSBDISTID=$(lsb_release -is)
 LSBDISTCODENAME=$(lsb_release -cs)
