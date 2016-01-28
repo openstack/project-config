@@ -21,13 +21,14 @@ source /etc/nodepool/provider
 NODEPOOL_MIRROR_HOST=${NODEPOOL_MIRROR_HOST:-mirror.$NODEPOOL_REGION.$NODEPOOL_CLOUD.openstack.org}
 NODEPOOL_PYPI_MIRROR=${NODEPOOL_PYPI_MIRROR:-$NODEPOOL_MIRROR_HOST/pypi/simple}
 
-cat >/etc/pip.conf <<EOF
+cat >/tmp/pip.conf <<EOF
 [global]
 timeout = 60
 index-url = $NODEPOOL_PYPI_MIRROR
 trusted-host = $NODEPOOL_PYPI_MIRROR
 extra-index-url =
 EOF
+sudo mv /tmp/pip.conf /etc/pip.conf
 
 cat >/home/jenkins/.pydistutils.cfg <<EOF
 [easy_install]
