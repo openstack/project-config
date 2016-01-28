@@ -70,6 +70,14 @@ case "$PROJECT" in
             extract_messages_django "$MODULENAME"
         fi
         ;;
+    python-*)
+        echo "project temporarily disabled"
+        exit 0
+        ;;
+    oslo.*)
+        echo "project temporarily disabled"
+        exit 0
+        ;;
     *)
         setup_project "$PROJECT" "$ZANATA_VERSION"
         setup_loglevel_vars

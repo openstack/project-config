@@ -194,6 +194,14 @@ case "$PROJECT" in
             propose_django "$PROJECT" "$MODULENAME"
         fi
         ;;
+    python-*)
+        echo "project temporarily disabled"
+        exit 0
+        ;;
+    oslo.*)
+        echo "project temporarily disabled"
+        exit 0
+        ;;
     *)
         # Project specific setup.
         setup_project "$PROJECT" "$ZANATA_VERSION"
