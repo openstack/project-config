@@ -25,7 +25,7 @@ cat >/tmp/pip.conf <<EOF
 [global]
 timeout = 60
 index-url = $NODEPOOL_PYPI_MIRROR
-trusted-host = $NODEPOOL_PYPI_MIRROR
+trusted-host = $NODEPOOL_MIRROR_HOST
 extra-index-url =
 EOF
 sudo mv /tmp/pip.conf /etc/pip.conf
