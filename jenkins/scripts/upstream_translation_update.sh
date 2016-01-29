@@ -78,6 +78,10 @@ case "$PROJECT" in
         echo "project temporarily disabled"
         exit 0
         ;;
+    ironic-inspector|networking-*|neutron-*|vmware-nsx)
+        echo "project temporarily disabled"
+        exit 0
+        ;;
     *)
         setup_project "$PROJECT" "$ZANATA_VERSION"
         setup_loglevel_vars
