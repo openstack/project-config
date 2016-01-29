@@ -55,15 +55,23 @@ case "$PROJECT" in
         ./run_tests.sh --makemessages -V
         ;;
     # Test of translation setup improvement
-    murano-dashboard|magnum-ui)
-        # TODO(amotoki): Honor module name in extract_*
-        # MODULENAME=$(get_modulename $PROJECT python)
-        # if [ -n "$MODULENAME" ]; then
-        #     setup_project "$PROJECT" "$ZANATA_VERSION"
-        #     setup_loglevel_vars
-        #     extract_messages
-        #     extract_messages_log "$PROJECT"
-        # fi
+    murano-dashboard|magnum-ui|python-neutronclient|python-novaclient)
+        # ---- Python projects ----
+        # NOTE: At now POT file == $modulename/locale/$modulename.pot
+        #       so this script works.
+        # TODO(amotoki):
+        # * Move POT/PO file to $modulename/locale/$modulename.pot
+        # * Update setup.cfg (babel related)
+        # * Rename Zanata resource
+        MODULENAME=$(get_modulename $PROJECT python)
+        if [ -n "$MODULENAME" ]; then
+            setup_django "$PROJECT" "$MODULENAME" "$ZANATA_VERSION"
+            setup_loglevel_vars
+            extract_messages_new "$MODULENAME"
+            extract_messages_log_new "$MODULENAME"
+        fi
+
+        # ---- Django projects ----
         MODULENAME=$(get_modulename $PROJECT django)
         if [ -n "$MODULENAME" ]; then
             setup_django "$PROJECT" "$MODULENAME" "$ZANATA_VERSION"

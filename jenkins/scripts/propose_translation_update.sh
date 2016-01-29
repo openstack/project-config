@@ -100,6 +100,36 @@ function propose_python {
     git add $PROJECT/locale/*
 }
 
+# TODO(amotoki): Finally this should replace current propose_python.
+function propose_python_new {
+    local project=$1
+    local modulename=$2
+
+    # Pull updated translations from Zanata
+    pull_from_zanata "$project"
+
+    # Extract all messages from project, including log messages.
+    extract_messages_new "$modulename"
+    extract_messages_log_new "$modulename"
+
+    # Now add all changed files to git.
+    # Note we add them here to not have to differentiate in the functions
+    # between new files and files already under git control.
+    git add $modulename/locale/*
+
+    # Remove obsolete files.
+    cleanup_po_files "$modulename"
+
+    # Compress downloaded po files, this needs to be done after
+    # cleanup_po_files since that function needs to have information the
+    # number of untranslated strings.
+    compress_po_files "$modulename"
+
+    # Some files were changed, add changed files again to git, so that we
+    # can run git diff properly.
+    git add $modulename/locale/*
+}
+
 function propose_horizon {
 
     # Pull updated translations from Zanata.
@@ -180,14 +210,21 @@ case "$PROJECT" in
         propose_horizon
         ;;
     # Test of translation setup improvement
-    murano-dashboard|magnum-ui)
-        # TODO(amotoki): Honor module name in propose_*
-        # MODULENAME=$(get_modulename $PROJECT python)
-        # if [ -n "$MODULENAME" ]; then
-        #     setup_project "$PROJECT" "$ZANATA_VERSION"
-        #     setup_loglevel_vars
-        #     propose_python
-        # fi
+    murano-dashboard|magnum-ui|python-neutronclient|python-novaclient)
+        # ---- Python projects ----
+        # NOTE: At now POT file == $modulename/locale/$modulename.pot
+        #       so this script works.
+        # TODO(amotoki):
+        # * Move POT/PO file to $modulename/locale/$modulename.pot
+        # * Update setup.cfg (babel related)
+        # * Rename Zanata resource
+        MODULENAME=$(get_modulename $PROJECT python)
+        if [ -n "$MODULENAME" ]; then
+            setup_django "$PROJECT" "$MODULENAME" "$ZANATA_VERSION"
+            propose_python_new "$PROJECT" "$MODULENAME"
+        fi
+
+        # ---- Django projects ----
         MODULENAME=$(get_modulename $PROJECT django)
         if [ -n "$MODULENAME" ]; then
             setup_django "$PROJECT" "$MODULENAME" "$ZANATA_VERSION"
