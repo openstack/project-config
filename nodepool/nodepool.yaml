@@ -106,6 +106,8 @@ labels:
     providers:
       - name: ovh-gra1
       - name: ovh-bhs1
+      - name: bluebox-sjc1
+      - name: internap-nyj01
   - name: fedora-23
     image: fedora-23
     ready-script: configure_mirror.sh
@@ -383,6 +385,13 @@ providers:
         username: jenkins
         private-key: /home/nodepool/.ssh/id_rsa
         config-drive: true
+      - name: devstack-centos7
+        min-ram: 8000
+        name-filter: 'nodepool'
+        diskimage: devstack-centos7
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
   - name: internap-nyj01
     region-name: 'nyj01'
     cloud: internap
@@ -412,6 +421,13 @@ providers:
         min-ram: 8000
         name-filter: 'A1.8'
         diskimage: ubuntu-trusty
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+      - name: devstack-centos7
+        min-ram: 8000
+        name-filter: 'A1.8'
+        diskimage: devstack-centos7
         username: jenkins
         private-key: /home/nodepool/.ssh/id_rsa
         config-drive: true
@@ -471,6 +487,18 @@ diskimages:
       DIB_IMAGE_CACHE: /opt/dib_cache
       DIB_APT_LOCAL_CACHE: '0'
       DIB_DISABLE_APT_CLEANUP: '1'
+      QEMU_IMG_OPTIONS: compat=0.10
+  - name: devstack-centos7
+    elements:
+      - centos7
+      - vm
+      - openstack-repos
+      - nodepool-base
+      - node-devstack
+      - cache-bindep
+    env-vars:
+      TMPDIR: /opt/dib_tmp
+      DIB_IMAGE_CACHE: /opt/dib_cache
       QEMU_IMG_OPTIONS: compat=0.10
   - name: devstack-centos7-dib
     elements:
