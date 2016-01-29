@@ -21,8 +21,16 @@
           export DEVSTACK_GATE_EXERCISES=0
           export DEVSTACK_GATE_INSTALL_TESTONLY=1
           export DEVSTACK_GATE_NEUTRON=1
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin sahara git://git.openstack.org/openstack/sahara"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin sahara-dashboard git://git.openstack.org/openstack/sahara-dashboard"
+          if [[ "stable/kilo" =~ $ZUUL_BRANCH ]]; then
+              # Sahara was moved out of DevStack as plugin after Kilo
+              export DEVSTACK_GATE_SAHARA=1
+          else
+              export DEVSTACK_LOCAL_CONFIG="enable_plugin sahara git://git.openstack.org/openstack/sahara"
+          fi
+          if [[ ! "stable/kilo stable/liberty" =~ $ZUUL_BRANCH ]]; then
+              # sahara-dashboard was split out from Horizon after Liberty
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin sahara-dashboard git://git.openstack.org/openstack/sahara-dashboard"
+          fi
 
           function pre_test_hook {
               cd /opt/stack/new/sahara-dashboard/tools/gate/integration
