@@ -1627,9 +1627,6 @@ jobs:
   - name: gate-kuryr-requirements
     voting: false
 
-  - name: gate-tacker-horizon-requirements
-    voting: false
-
     # -linters is used starting with mitaka instead of pep8 and bandit
     # (bandit is only available in liberty).
   - name: gate-python-keystoneclient-linters
@@ -9733,11 +9730,11 @@ projects:
   - name: openstack/tacker-horizon
     template:
       - name: merge-check
+      - name: check-requirements
       - name: publish-to-pypi
     check:
         - gate-tacker-horizon-pep8
         - gate-tacker-horizon-python27
-        - gate-tacker-horizon-requirements
     gate:
         - gate-tacker-horizon-pep8
         - gate-tacker-horizon-python27
