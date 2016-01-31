@@ -54,15 +54,17 @@ case "$PROJECT" in
         setup_horizon "$ZANATA_VERSION"
         ./run_tests.sh --makemessages -V
         ;;
-    # New setup: all dashboard plugin repositories plus others
-    *-dashboard|*-ui|*-horizon|python-neutronclient|python-novaclient|oslo*)
+    python-*)
+        echo "project temporarily disabled"
+        exit 0
+        ;;
+    networking-*|neutron-*)
+        echo "project temporarily disabled"
+        exit 0
+        ;;
+    *)
+        # Common setup for python and django repositories
         # ---- Python projects ----
-        # NOTE: At now POT file == $modulename/locale/$modulename.pot
-        #       so this script works.
-        # TODO(amotoki):
-        # * Move POT/PO file to $modulename/locale/$modulename.pot
-        # * Update setup.cfg (babel related)
-        # * Rename Zanata resource
         MODULENAME=$(get_modulename $PROJECT python)
         if [ -n "$MODULENAME" ]; then
             setup_django "$PROJECT" "$MODULENAME" "$ZANATA_VERSION"
@@ -77,20 +79,6 @@ case "$PROJECT" in
             setup_django "$PROJECT" "$MODULENAME" "$ZANATA_VERSION"
             extract_messages_django "$MODULENAME"
         fi
-        ;;
-    python-*)
-        echo "project temporarily disabled"
-        exit 0
-        ;;
-    ironic-inspector|networking-*|neutron-*|vmware-nsx)
-        echo "project temporarily disabled"
-        exit 0
-        ;;
-    *)
-        setup_project "$PROJECT" "$ZANATA_VERSION"
-        setup_loglevel_vars
-        extract_messages "$PROJECT"
-        extract_messages_log "$PROJECT"
         ;;
 esac
 

@@ -74,34 +74,6 @@ function propose_training_guides {
 
 # Propose updates for python projects
 function propose_python {
-
-    # Pull updated translations from Zanata
-    pull_from_zanata "$PROJECT"
-
-    # Extract all messages from project, including log messages.
-    extract_messages "$PROJECT"
-    extract_messages_log "$PROJECT"
-
-    # Now add all changed files to git.
-    # Note we add them here to not have to differentiate in the functions
-    # between new files and files already under git control.
-    git add $PROJECT/locale/*
-
-    # Remove obsolete files.
-    cleanup_po_files "$PROJECT"
-
-    # Compress downloaded po files, this needs to be done after
-    # cleanup_po_files since that function needs to have information the
-    # number of untranslated strings.
-    compress_po_files "$PROJECT"
-
-    # Some files were changed, add changed files again to git, so that we
-    # can run git diff properly.
-    git add $PROJECT/locale/*
-}
-
-# TODO(amotoki): Finally this should replace current propose_python.
-function propose_python_new {
     local project=$1
     local modulename=$2
 
@@ -209,20 +181,22 @@ case "$PROJECT" in
         setup_horizon "$ZANATA_VERSION"
         propose_horizon
         ;;
-    # New setup: all dashboard plugin repositories plus others
-    *-dashboard|*-ui|*-horizon|python-neutronclient|python-novaclient|oslo*)
+    python-*)
+        echo "project temporarily disabled"
+        exit 0
+        ;;
+    networking-*|neutron-*)
+        echo "project temporarily disabled"
+        exit 0
+        ;;
+    *)
+        # Common setup for python and django repositories
         # ---- Python projects ----
-        # NOTE: At now POT file == $modulename/locale/$modulename.pot
-        #       so this script works.
-        # TODO(amotoki):
-        # * Move POT/PO file to $modulename/locale/$modulename.pot
-        # * Update setup.cfg (babel related)
-        # * Rename Zanata resource
         MODULENAME=$(get_modulename $PROJECT python)
         if [ -n "$MODULENAME" ]; then
             setup_django "$PROJECT" "$MODULENAME" "$ZANATA_VERSION"
             setup_loglevel_vars
-            propose_python_new "$PROJECT" "$MODULENAME"
+            propose_python "$PROJECT" "$MODULENAME"
         fi
 
         # ---- Django projects ----
@@ -231,22 +205,6 @@ case "$PROJECT" in
             setup_django "$PROJECT" "$MODULENAME" "$ZANATA_VERSION"
             propose_django "$PROJECT" "$MODULENAME"
         fi
-        ;;
-    python-*)
-        echo "project temporarily disabled"
-        exit 0
-        ;;
-    ironic-inspector|networking-*|neutron-*|vmware-nsx)
-        echo "project temporarily disabled"
-        exit 0
-        ;;
-    *)
-        # Project specific setup.
-        setup_project "$PROJECT" "$ZANATA_VERSION"
-        # Setup some global vars which will be used in the rest of the
-        # script.
-        setup_loglevel_vars
-        propose_python
         ;;
 esac
 
