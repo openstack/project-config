@@ -119,21 +119,6 @@ function propose_horizon {
     git add horizon/locale/* openstack_dashboard/locale/*
 }
 
-function propose_django_openstack_auth {
-
-    # Pull updated translations from Zanata.
-    pull_from_zanata "$PROJECT"
-
-    # Update the .pot file
-    extract_messages "openstack_auth"
-
-    # Compress downloaded po files
-    compress_po_files "openstack_auth"
-
-    # Add all changed files to git
-    git add openstack_auth/locale/*
-}
-
 # This function can be used for all django projects
 function propose_django {
     local project=$1
@@ -166,16 +151,6 @@ case "$PROJECT" in
     training-guides)
         setup_training_guides "$ZANATA_VERSION"
         propose_training_guides
-        ;;
-    django_openstack_auth|designate-dashboard)
-        echo "project temporarily disabled"
-        exit 0
-        # NOTE: Once POT file and Zanata resource name are renamed
-        # from openstack_auth(.pot) to django(.pot), the below can be used.
-        # setup_django django_openstack_auth openstack_auth "$ZANATA_VERSION"
-        # NOTE: Once django_openstack_auth repo has babel-django.cfg,
-        # the below can be used.
-        # propose_django django_openstack_auth openstack_auth
         ;;
     horizon)
         setup_horizon "$ZANATA_VERSION"
