@@ -210,7 +210,7 @@ case "$PROJECT" in
         propose_horizon
         ;;
     # New setup: all dashboard plugin repositories plus others
-    *-dashboard|*-ui|*-horizon|python-neutronclient|python-novaclient)
+    *-dashboard|*-ui|*-horizon|python-neutronclient|python-novaclient|oslo*)
         # ---- Python projects ----
         # NOTE: At now POT file == $modulename/locale/$modulename.pot
         #       so this script works.
@@ -221,6 +221,7 @@ case "$PROJECT" in
         MODULENAME=$(get_modulename $PROJECT python)
         if [ -n "$MODULENAME" ]; then
             setup_django "$PROJECT" "$MODULENAME" "$ZANATA_VERSION"
+            setup_loglevel_vars
             propose_python_new "$PROJECT" "$MODULENAME"
         fi
 
@@ -232,10 +233,6 @@ case "$PROJECT" in
         fi
         ;;
     python-*)
-        echo "project temporarily disabled"
-        exit 0
-        ;;
-    oslo.*)
         echo "project temporarily disabled"
         exit 0
         ;;
