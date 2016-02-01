@@ -1,0 +1,16 @@
+
+- job-template:
+    name: 'gate-{name}-salt-lint'
+    node: '{node}'
+
+    builders:
+      - gerrit-git-prep
+      - salt-formula-test
+
+    publishers:
+      - console-log
+
+- job-group:
+    name: 'salt-formula-jobs'
+    jobs:
+      - 'gate-{name}-salt-lint'
