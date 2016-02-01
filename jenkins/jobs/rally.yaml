@@ -59,6 +59,13 @@
           export DEVSTACK_GATE_EXERCISES=0
           export DEVSTACK_GATE_TIMEOUT=120
           export RALLY_SCENARIO={scenario}
+          export DEVSTACK_GATE_USE_KEYSTONE_V2API={keystone_use_v2api}
+
+          if [ $DEVSTACK_GATE_USE_KEYSTONE_V2API -eq 1 ]; then
+              export IDENTITY_API_VERSION=2.0
+          else
+              export IDENTITY_API_VERSION=3
+          fi
 
           DEVSTACK_LOCAL_CONFIG="enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
           DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin aodh git://git.openstack.org/openstack/aodh"
@@ -120,6 +127,8 @@
           export DEVSTACK_GATE_TIMEOUT=120
           export RALLY_SCENARIO={scenario}
 
+          export IDENTITY_API_VERSION=3
+
           ENABLED_SERVICES=ceilometer-acompute,ceilometer-acentral,ceilometer-api,
           ENABLED_SERVICES+=ceilometer-anotification,ceilometer-collector,
           ENABLED_SERVICES+=aodh-api,aodh-alarm-evaluator,aodh-alarm-notifier,
@@ -180,6 +189,8 @@
       - shell: |
           #!/bin/bash -xe
           export PROJECTS="openstack/python-manilaclient openstack/rally $PROJECTS"
+
+          export IDENTITY_API_VERSION=3
 
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_TIMEOUT=60
@@ -268,6 +279,8 @@
           export DEVSTACK_GATE_TIMEOUT=120
           export RALLY_SCENARIO={scenario}
 
+          export IDENTITY_API_VERSION=3
+
           ENABLED_SERVICES=h-api,h-api-cfn,h-api-cw,h-eng,heat,
           export DEVSTACK_LOCAL_CONFIG="enable_plugin rally git://git.openstack.org/openstack/rally"
 
@@ -319,6 +332,8 @@
           export DEVSTACK_GATE_TIMEOUT=120
           export RALLY_SCENARIO={scenario}
 
+          export IDENTITY_API_VERSION=3
+
           export ENABLED_SERVICES=h-api,h-api-cfn,h-api-cw,h-eng,heat,
           export DEVSTACK_LOCAL_CONFIG="enable_plugin rally git://git.openstack.org/openstack/rally"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin mistral https://git.openstack.org/openstack/mistral"
@@ -348,6 +363,7 @@
             ironic: '1'
             zaqar: '0'
             large_ops: '0'
+            keystone_use_v2api: '0'
 
     publishers:
       - devstack-logs
@@ -371,6 +387,8 @@
           export DEVSTACK_GATE_EXERCISES=0
           export RALLY_SCENARIO={scenario}
           export DEVSTACK_LOCAL_CONFIG="enable_plugin rally git://git.openstack.org/openstack/rally"
+
+          export IDENTITY_API_VERSION=3
 
           function pre_test_hook {{
               # Install cue-devstack integration
@@ -491,6 +509,7 @@
           neutron: '0'
           zaqar: '0'
           large_ops: '0'
+          keystone_use_v2api: '0'
 
     publishers:
       - devstack-logs
@@ -514,6 +533,7 @@
           neutron: '1'
           zaqar: '0'
           large_ops: '0'
+          keystone_use_v2api: '0'
 
     publishers:
       - devstack-logs
@@ -537,6 +557,7 @@
           neutron: '0'
           zaqar: '0'
           large_ops: '10'
+          keystone_use_v2api: '0'
 
     publishers:
       - devstack-logs
@@ -560,6 +581,7 @@
           neutron: '0'
           zaqar: '1'
           large_ops: '0'
+          keystone_use_v2api: '0'
 
     publishers:
       - devstack-logs
@@ -582,6 +604,7 @@
           neutron: '{neutron}'
           zaqar: '0'
           large_ops: '0'
+          keystone_use_v2api: '0'
 
     publishers:
       - devstack-logs
@@ -691,6 +714,8 @@
           export DEVSTACK_GATE_TIMEOUT=120
           export RALLY_DO_COMPARE={compare}
 
+          export IDENTITY_API_VERSION=3
+
           DEVSTACK_LOCAL_CONFIG=$"enable_plugin rally git://git.openstack.org/openstack/rally"
           DEVSTACK_LOCAL_CONFIG+=$'\n'"CINDER_ENABLE_V1_API=True"
 
@@ -767,6 +792,8 @@
           export PROJECTS="openstack/monasca-api $PROJECTS"
           export PROJECTS="openstack/python-monascaclient $PROJECTS"
 
+          export IDENTITY_API_VERSION=3
+
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_EXERCISES=0
           export DEVSTACK_GATE_TIMEOUT=120
@@ -801,6 +828,29 @@
     builders:
         - devstack-monasca-rally-gate:
             scenario: '{name}-monasca'
+
+    publishers:
+      - devstack-logs
+      - console-log
+      - rally-plot
+
+- job:
+    name: 'gate-rally-dsvm-keystone-v2api-rally'
+    node: devstack-trusty
+
+    wrappers:
+      - build-timeout:
+          timeout: 60
+      - timestamps
+
+    builders:
+        - devstack-rally-gate:
+            scenario: 'rally-keystone-api-v2'
+            ironic: '0'
+            neutron: '0'
+            zaqar: '0'
+            large_ops: '0'
+            keystone_use_v2api: '1'
 
     publishers:
       - devstack-logs
