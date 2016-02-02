@@ -44,14 +44,6 @@ case "$PROJECT" in
         setup_horizon "$ZANATA_VERSION"
         ./run_tests.sh --makemessages -V
         ;;
-    python-*)
-        echo "project temporarily disabled"
-        exit 0
-        ;;
-    networking-*|neutron-*)
-        echo "project temporarily disabled"
-        exit 0
-        ;;
     *)
         # Common setup for python and django repositories
         # ---- Python projects ----

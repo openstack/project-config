@@ -156,14 +156,6 @@ case "$PROJECT" in
         setup_horizon "$ZANATA_VERSION"
         propose_horizon
         ;;
-    python-*)
-        echo "project temporarily disabled"
-        exit 0
-        ;;
-    networking-*|neutron-*)
-        echo "project temporarily disabled"
-        exit 0
-        ;;
     *)
         # Common setup for python and django repositories
         # ---- Python projects ----
