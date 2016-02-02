@@ -49,16 +49,16 @@ case "$PROJECT" in
         # ---- Python projects ----
         MODULENAME=$(get_modulename $PROJECT python)
         if [ -n "$MODULENAME" ]; then
-            setup_django "$PROJECT" "$MODULENAME" "$ZANATA_VERSION"
+            setup_project "$PROJECT" "$MODULENAME" "$ZANATA_VERSION"
             setup_loglevel_vars
-            extract_messages_new "$MODULENAME"
-            extract_messages_log_new "$MODULENAME"
+            extract_messages "$MODULENAME"
+            extract_messages_log "$MODULENAME"
         fi
 
         # ---- Django projects ----
         MODULENAME=$(get_modulename $PROJECT django)
         if [ -n "$MODULENAME" ]; then
-            setup_django "$PROJECT" "$MODULENAME" "$ZANATA_VERSION"
+            setup_project "$PROJECT" "$MODULENAME" "$ZANATA_VERSION"
             extract_messages_django "$MODULENAME"
         fi
         ;;

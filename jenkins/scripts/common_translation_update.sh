@@ -34,15 +34,19 @@ function get_modulename {
         -p $project -t $target
 }
 
-# Setup a project for Zanata
+# Setup a project for Zanata. This is used by both Python and Django
+# projects.
 function setup_project {
     local project=$1
-    local version=${2:-master}
+    local modulename=$2
+    local version=${3:-master}
 
-    /usr/local/jenkins/slave_scripts/create-zanata-xml.py -p $project \
-        -v $version --srcdir ${project}/locale --txdir ${project}/locale \
-        -f zanata.xml
+    /usr/local/jenkins/slave_scripts/create-zanata-xml.py \
+        -p $project -v $version --srcdir $modulename/locale \
+        --txdir $modulename/locale -r '**/*.pot' \
+        '{locale_with_underscore}/LC_MESSAGES/{filename}.po' -f zanata.xml
 }
+
 
 # Setup project horizon for Zanata
 function setup_horizon {
@@ -221,7 +225,7 @@ EOF
         # correct so we are very explicit here.
         output=$(git review -t $TOPIC $branch)
         ret=$?
-        [[ "$ret" -eq "0" || "$output" =~ "No changes between prior commit" ]]
+        [[ "$ret" -eq 0 || "$output" =~ "No changes between prior commit" ]]
         success=$?
         set -e
     fi
@@ -242,24 +246,8 @@ function setup_loglevel_vars {
 
 # Run extract_messages for user visible messages.
 function extract_messages {
-    local project=$1
-
-    # In case this is an initial run, the locale directory might not
-    # exist, so create it since extract_messages will fail if it does
-    # not exist. So, create it if needed.
-    mkdir -p ${project}/locale
-
-    # Update the .pot files
-    # The "_C" and "_P" prefix are for more-gettext-support blueprint,
-    # "_C" for message with context, "_P" for plural form message.
-    python setup.py $QUIET extract_messages --keyword "_C:1c,2 _P:1,2"
-}
-
-# TODO(amotoki): Finally this should replace current extract_messages.
-function extract_messages_new {
     local modulename=$1
 
-    # NOTE(amotoki): POT file == $modulename/locale/$modulename.pot
     local POT=${modulename}/locale/${modulename}.pot
 
     # In case this is an initial run, the locale directory might not
@@ -277,35 +265,12 @@ function extract_messages_new {
 # Run extract_messages for log messages.
 # Needs variables setup via setup_loglevel_vars.
 function extract_messages_log {
-    local project=$1
-    local POT
-    local trans
-
-    # Update the .pot files
-    for level in $LEVELS ; do
-        POT=${project}/locale/${project}-log-${level}.pot
-        python setup.py $QUIET extract_messages --no-default-keywords \
-            --keyword ${LKEYWORD[$level]} \
-            --output-file ${POT}
-        # We don't need to add or send around empty source files.
-        trans=$(msgfmt --statistics -o /dev/null ${POT} 2>&1)
-        if [ "$trans" = "0 translated messages." ] ; then
-            rm $POT
-            # Remove file from git if it's under version control.
-            git rm --ignore-unmatch $POT
-        fi
-    done
-}
-
-# TODO(amotoki): Finally this should replace current extract_messages_log.
-function extract_messages_log_new {
     local modulename=$1
     local POT
     local trans
 
     # Update the .pot files
     for level in $LEVELS ; do
-        # NOTE(amotoki): POT file == $modulename/locale/$modulename.pot
         POT=${modulename}/locale/${modulename}-log-${level}.pot
         python setup.py $QUIET extract_messages --no-default-keywords \
             --keyword ${LKEYWORD[$level]} \
@@ -318,21 +283,6 @@ function extract_messages_log_new {
             git rm --ignore-unmatch $POT
         fi
     done
-}
-
-# TODO(amotoki): After we use $modulename/locale/$modulename.pot
-# for normal python projects, this function will be used both
-# by python and django projects. It should be renamed to setup_project.
-# Setup django project for Zanata
-function setup_django {
-    local project=$1
-    local modulename=$2
-    local version=${3:-master}
-
-    /usr/local/jenkins/slave_scripts/create-zanata-xml.py \
-        -p $project -v $version --srcdir $modulename/locale \
-        --txdir $modulename/locale -r '**/*.pot' \
-        '{locale_with_underscore}/LC_MESSAGES/{filename}.po' -f zanata.xml
 }
 
 # Extract messages for a django project, we need to update django.pot
@@ -420,7 +370,7 @@ function filter_commits {
             msgfmt --check-format -o /dev/null $f
             ret=$?
             set -e
-            if [ $ret -ne "0" ] ; then
+            if [ $ret -ne 0 ] ; then
                 # Set change to zero so that next expression reverts
                 # change of this file.
                 changed=0
@@ -519,7 +469,7 @@ function compress_manual_po_files {
     local directory=$1
     local glossary=$2
     for i in $(find $directory -name *.po) ; do
-        if [ "$glossary" -eq "0" ] ; then
+        if [ "$glossary" -eq 0 ] ; then
             if [[ $i =~ "/glossary/" ]] ; then
                 continue
             fi
