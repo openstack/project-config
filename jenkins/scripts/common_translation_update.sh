@@ -361,9 +361,17 @@ function extract_messages_django {
     for DOMAIN in djangojs django ; do
         if [ -f babel-${DOMAIN}.cfg ]; then
             mkdir -p ${modulename}/locale
-            touch ${modulename}/locale/${DOMAIN}.pot
+            POT=${modulename}/locale/${DOMAIN}.pot
+            touch ${POT}
             $VENV/bin/pybabel extract -F babel-${DOMAIN}.cfg \
-                -o ${modulename}/locale/${DOMAIN}.pot $KEYWORDS ${modulename}
+                -o ${POT} $KEYWORDS ${modulename}
+            # We don't need to add or send around empty source files.
+            trans=$(msgfmt --statistics -o /dev/null ${POT} 2>&1)
+            if [ "$trans" = "0 translated messages." ] ; then
+                rm $POT
+                # Remove file from git if it's under version control.
+                git rm --ignore-unmatch $POT
+            fi
         fi
     done
     rm -rf $VENV $root
