@@ -213,3 +213,9 @@ filter_commits
 
 # Propose patch to gerrit if there are changes.
 send_patch "$BRANCH"
+
+if [ $INVALID_PO_FILE -eq 1 ] ; then
+    echo "At least one po file in invalid. Fix all invalid files on the"
+    echo "translation server."
+    exit 1
+fi

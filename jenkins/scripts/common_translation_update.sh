@@ -22,6 +22,9 @@ TOPIC=zanata/translations
 # Used for setup.py babel commands
 QUIET="--quiet"
 
+# Have invalid files been found?
+INVALID_PO_FILE=0
+
 # Get a module name of a project
 function get_modulename {
     local project=$1
@@ -389,8 +392,12 @@ function setup_django_openstack_auth {
         '{locale_with_underscore}/LC_MESSAGES/django.po' -f zanata.xml
 }
 
-# Filter out files that we do not want to commit
+# Filter out files that we do not want to commit.
+# Sets global variable INVALID_PO_FILE to 1 if any invalid files are
+# found.
 function filter_commits {
+    local ret
+
     # Don't add new empty files.
     for f in $(git diff --cached --name-only --diff-filter=A); do
         # Files should have at least one non-empty msgid string.
@@ -417,6 +424,21 @@ function filter_commits {
             | egrep -v "$REGEX" \
             | egrep -c "^([+][^+#])")
         set -e
+        # Check that imported po files are valid
+        if [[ $f =~ .po$ ]] ; then
+            set +e
+            msgfmt --check-format -o /dev/null $f
+            ret=$?
+            set -e
+            if [ $ret -ne "0" ] ; then
+                # Set change to zero so that next expression reverts
+                # change of this file.
+                changed=0
+                echo "ERROR: File $f is an invalid po file."
+                echo "ERROR: The file has not been imported and needs fixing!"
+                INVALID_PO_FILE=1
+            fi
+        fi
         if [ $changed -eq 0 ]; then
             git reset -q "$f"
             git checkout -- "$f"
