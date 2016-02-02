@@ -33,4 +33,7 @@ curl --fail -o $FILENAME http://$TARBALL_SITE/$PROJECT/$FILENAME
 # Make sure we actually got a gzipped file
 file -b $FILENAME | grep gzip
 
-twine upload -r pypi $FILENAME
+# Uploads may claim to fail but actually succeed so we check if we
+# can download after upload to determine success.
+twine upload -r pypi $FILENAME || true
+curl --head --silent --fail "https://pypi.python.org/simple/$PROJECT/$FILENAME" >/dev/null 2>&1
