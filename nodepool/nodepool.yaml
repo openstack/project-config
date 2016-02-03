@@ -57,6 +57,7 @@ labels:
       - name: ovh-bhs1
       - name: bluebox-sjc1
       - name: internap-nyj01
+      - name: infracloud-west
   - name: ubuntu-trusty-2-node
     image: ubuntu-trusty
     ready-script: multinode_setup.sh
@@ -431,6 +432,23 @@ providers:
         setup: prepare_node_tripleo.sh
         username: jenkins
         private-key: /home/nodepool/.ssh/id_rsa
+  - name: infracloud-west
+    region-name: 'RegionOne'
+    cloud: infracloud-west
+    api-timeout: 60
+    boot-timeout: 120
+    max-servers: 1
+    rate: 0.25
+    image-type: 'qcow2'
+    images:
+      - name: ubuntu-trusty
+        min-ram: 8000
+        name-filter: 'nodepool'
+        diskimage: ubuntu-trusty
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+
 targets:
   - name: jenkins01
   - name: jenkins02
