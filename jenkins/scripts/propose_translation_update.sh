@@ -81,8 +81,8 @@ function propose_python {
     pull_from_zanata "$project"
 
     # Extract all messages from project, including log messages.
-    extract_messages_new "$modulename"
-    extract_messages_log_new "$modulename"
+    extract_messages "$modulename"
+    extract_messages_log "$modulename"
 
     # Now add all changed files to git.
     # Note we add them here to not have to differentiate in the functions
@@ -161,7 +161,7 @@ case "$PROJECT" in
         # ---- Python projects ----
         MODULENAME=$(get_modulename $PROJECT python)
         if [ -n "$MODULENAME" ]; then
-            setup_django "$PROJECT" "$MODULENAME" "$ZANATA_VERSION"
+            setup_project "$PROJECT" "$MODULENAME" "$ZANATA_VERSION"
             setup_loglevel_vars
             propose_python "$PROJECT" "$MODULENAME"
         fi
@@ -169,7 +169,7 @@ case "$PROJECT" in
         # ---- Django projects ----
         MODULENAME=$(get_modulename $PROJECT django)
         if [ -n "$MODULENAME" ]; then
-            setup_django "$PROJECT" "$MODULENAME" "$ZANATA_VERSION"
+            setup_project "$PROJECT" "$MODULENAME" "$ZANATA_VERSION"
             propose_django "$PROJECT" "$MODULENAME"
         fi
         ;;
