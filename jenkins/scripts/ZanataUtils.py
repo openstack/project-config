@@ -86,7 +86,7 @@ class ZanataRestService:
             raise ValueError('Got status code %s for %s' %
                              (r.status_code, request_url))
         if raise_errors and not r.content:
-            raise ValueError('Did not recieve any data from %s' % request_url)
+            raise ValueError('Did not receive any data from %s' % request_url)
         return r
 
     def push(self, url_fragment, data):
