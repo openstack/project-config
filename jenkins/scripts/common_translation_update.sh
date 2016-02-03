@@ -381,16 +381,6 @@ function extract_messages_django {
     trap "" EXIT
 }
 
-# Setup project django_openstack_auth for Zanata
-function setup_django_openstack_auth {
-    local project=django_openstack_auth
-    local version=${1:-master}
-
-    /usr/local/jenkins/slave_scripts/create-zanata-xml.py \
-        -p $project -v $version --srcdir openstack_auth/locale \
-        --txdir openstack_auth/locale -r '**/*.pot' \
-        '{locale_with_underscore}/LC_MESSAGES/django.po' -f zanata.xml
-}
 
 # Filter out files that we do not want to commit.
 # Sets global variable INVALID_PO_FILE to 1 if any invalid files are
