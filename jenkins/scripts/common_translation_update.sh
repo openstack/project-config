@@ -442,7 +442,7 @@ function filter_commits {
         if [ $changed -eq 0 ]; then
             git reset -q "$f"
             git checkout -- "$f"
-        # Check for all files endig with ".po".
+        # Check for all files ending with ".po".
         # We will take this import if at least one change adds new content,
         # thus adding a new translation.
         # If only lines are removed, we do not need this.

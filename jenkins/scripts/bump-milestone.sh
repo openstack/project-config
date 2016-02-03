@@ -4,7 +4,7 @@
 # a project.  It does so on an isolated, hidden branch called
 # refs/meta/openstack/release.  Because it's not under refs/heads, a
 # standard clone won't retrieve it or cause it to show up in the list
-# of remote branches.  The branch shares no history witht the project
+# of remote branches.  The branch shares no history with the project
 # itself; it starts with its own root commit.  Jenkins is permitted to
 # push directly to refs/meta/openstack/*.
 
