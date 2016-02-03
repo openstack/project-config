@@ -12,9 +12,12 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
+from __future__ import print_function
+
 import argparse
 import ConfigParser as configparser
 import os
+import sys
 
 
 DJANGO_PROJECT_SUFFIXES = ('-dashboard',
@@ -58,6 +61,8 @@ def get_option(config, section, option, multiline=False):
     if section not in config:
         return
     value = config[section].get(option)
+    if not value:
+        return
     if multiline:
         value = split_multiline(value)
     return value
@@ -78,8 +83,15 @@ def get_valid_modules(config, project, target):
     if is_django != (target == 'django'):
         return []
 
-    return get_option(config, 'files', 'packages',
-                      multiline=True)
+    modules = get_option(config, 'files', 'packages', multiline=True)
+    # If setup.cfg does not contain [files] packages entry,
+    # let's assume the project name as a module name.
+    if not modules:
+        print('[files] packages entry not found in setup.cfg. '
+              'Use project name "%s" as a module name.' % project,
+              file=sys.stderr)
+        modules = [project]
+    return modules
 
 
 def main():
@@ -92,7 +104,6 @@ def main():
 
     modules = get_valid_modules(config, args.project, args.target)
 
-    # print(' '.join(modules))
     # A shortest module name is selected now.
     if modules:
         print(sorted(modules, key=len)[0])
