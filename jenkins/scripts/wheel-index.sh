@@ -17,4 +17,4 @@ for f in $FILES; do
     fi
 done
 
-echo -e "    </ul>\n  </body>\n</html>" >> $INDEX_FILEFILE
+echo -e "    </ul>\n  </body>\n</html>" >> $INDEX_FILE
