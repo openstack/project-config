@@ -48,7 +48,11 @@ def set_node_options(item, job, params):
     proposal_re = r'^.*(merge-release-tags|(propose|upstream)-(.*?)-(constraints-.*|updates?|update-liberty))$'  # noqa
     release_re = r'^.*-(forge|jenkinsci|mavencentral|pypi-(both|wheel)|npm)-upload$'
     hook_re = r'^hook-(.*?)-(rtfd)$'
-    # jobs run on the persistent proposal and release workers
-    if (re.match(proposal_re, job.name) or re.match(release_re, job.name) or
-            re.match(hook_re, job.name)):
+    wheel_re = r'^wheel-build-.*$'
+    # jobs run on the persistent proposal, release, and wheel build
+    # workers
+    if (re.match(proposal_re, job.name) or
+        re.match(release_re, job.name) or
+        re.match(hook_re, job.name) or
+        re.match(wheel_re, job.name)):
         reusable_node(item, job, params)
