@@ -476,9 +476,12 @@
 
           set -x
 
+          # Report on the ZUUL settings.
+          env | grep '^ZUUL_'
+
           # Save the version that was just tagged by parsing
           # ref/tags/VALUE to get VALUE.
-          VERSION=$(echo $ZUUL_REF | cut -f2 -d/)
+          VERSION=$(echo $ZUUL_REF | cut -f3 -d/)
 
           # Check out the release-tools, ignoring any other ZUUL
           # variables that might confuse the cloner and cause it to
