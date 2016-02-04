@@ -524,13 +524,15 @@ project-templates:
         - '{name}-pypi-both-upload':
             - wheel-build-ubuntu-trusty-amd64:
               - wheel-release-trustyx64
+            - '{name}-announce-release'
 
   # Release OpenStack Server packages.
   - name: openstack-server-release-jobs
     pre-release:
       - '{name}-tarball'
     release:
-      - '{name}-tarball'
+      - '{name}-tarball':
+        - '{name}-announce-release'
       - '{name}-merge-release-tags'
 
   - name: release-notes-jobs

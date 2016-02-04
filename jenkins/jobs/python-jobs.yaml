@@ -461,6 +461,44 @@
 
     node: '{node}'
 
+# Announce the release of a new package.
+- job-template:
+    name: '{name}-announce-release'
+    node: bare-trusty
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - revoke-sudo
+      - gerrit-git-prep
+      - shell: |
+          #!/bin/bash
+
+          # Save the version that was just tagged by parsing
+          # ref/tags/VALUE to get VALUE.
+          VERSION=$(echo $ZUUL_REF | cut -f2 -d/)
+
+          # Check out the release-tools, ignoring any other ZUUL
+          # variables that might confuse the cloner and cause it to
+          # try to check out anything like the commit that was just
+          # tagged or to look for a branch (we always want the master
+          # version of the tools).
+          for v in $(env | grep '^ZUUL_' | cut -f1 -d=); do
+              unset $v
+          done
+          TOOLS_TMP=$(mktemp -d)
+          /usr/zuul-env/bin/zuul-cloner \
+              --cache-dir /opt/git \
+              --workspace $TOOLS_TMP \
+              git://git.openstack.org
+              openstack-infra/release-tools
+          TOOLS_DIR=$TOOLS_TMP/openstack-infra/release-tools
+
+          # Run the announce script.
+          $TOOLS_DIR/announce.sh $WORKSPACE $VERSION
+
+    publishers:
+        - console-log
 
 - job-group:
     name: python-jobs
@@ -475,6 +513,7 @@
       - 'gate-{name}-requirements'
       - '{name}-tarball'
       - '{name}-branch-tarball'
+      - '{name}-announce-release'
       # pylint isn't standard
       # pip-check-reqs isn't standard
       # gate-{name}-tox-{envlist} also isn't standard, but is reserved for
