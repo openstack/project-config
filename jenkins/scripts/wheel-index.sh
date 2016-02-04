@@ -25,8 +25,12 @@ done
 
 echo -e "    </ul>\n  </body>\n</html>" >> $TMP_INDEX_FILE
 
-# Atomically replace the index file
-mv $TMP_INDEX_FILE $INDEX_FILE
+if ! cmp $TMP_INDEX_FILE $INDEX_FILE >/dev/null 2>&1; then
+    # Atomically replace the index file
+    mv $TMP_INDEX_FILE $INDEX_FILE
+else
+    rm $TMP_INDEX_FILE
+fi
 
 # The tempfile is gone so we don't need the trap
 trap - EXIT
