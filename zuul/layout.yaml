@@ -317,6 +317,14 @@ project-templates:
       - 'gate-{name}-pep8-constraints'
       - 'gate-{name}-python27-constraints'
 
+  - name: periodic-jobs-with-oslo-master
+    periodic:
+      - 'periodic-{name}-py27-with-oslo-master'
+      - 'periodic-{name}-py34-with-oslo-master'
+    experimental:
+      - 'periodic-{name}-py27-with-oslo-master'
+      - 'periodic-{name}-py34-with-oslo-master'
+
   # This is the same template as python-jobs but uses the new
   # linters target instead of pep8.
   - name: python-jobs-linters
@@ -1129,6 +1137,12 @@ jobs:
     # BUG #1290562 pypy does not work with new setuptools, so is breaking
     # all jobs. Disable until there is resolution.
   - name: ^gate-.*-pypy$
+    voting: false
+
+    # This job is only for testing master of the project
+    # against master of all oslo projects
+  - name: ^periodic-.*-with-oslo-master$
+    branch: master
     voting: false
 
   - name: ^gate-tempest-dsvm-cells$
@@ -6995,6 +7009,7 @@ projects:
       - name: merge-check
       - name: python-jobs
       - name: python3-jobs
+      - name: periodic-jobs-with-oslo-master
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
       - name: periodic-kilo
