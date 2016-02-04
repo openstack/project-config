@@ -474,6 +474,8 @@
       - shell: |
           #!/bin/bash
 
+          set -x
+
           # Save the version that was just tagged by parsing
           # ref/tags/VALUE to get VALUE.
           VERSION=$(echo $ZUUL_REF | cut -f2 -d/)
@@ -490,7 +492,7 @@
           /usr/zuul-env/bin/zuul-cloner \
               --cache-dir /opt/git \
               --workspace $TOOLS_TMP \
-              git://git.openstack.org
+              git://git.openstack.org \
               openstack-infra/release-tools
           TOOLS_DIR=$TOOLS_TMP/openstack-infra/release-tools
 
