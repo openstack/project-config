@@ -62,24 +62,6 @@
     publishers:
       - console-log
 
-- job:
-    name: gate-openstack-chef-repo
-    node: bare-precise
-
-    builders:
-      - gerrit-git-prep
-      - ruby-191-prep
-      - chef-bundler-prep
-      - revoke-sudo
-      - chef-berkshelf-prep
-      - shell: |
-          #!/bin/bash -xe
-          # Validates roles
-          bundle exec spiceweasel infrastructure.yml --debug
-
-    publishers:
-      - console-log
-
 - job-group:
     name: chef-test-jobs
     jobs:
