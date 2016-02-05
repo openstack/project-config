@@ -48,7 +48,7 @@ def set_node_options(item, job, params):
     proposal_re = r'^.*(merge-release-tags|(propose|upstream)-(.*?)-(constraints-.*|updates?|update-liberty))$'  # noqa
     release_re = r'^.*-(forge|jenkinsci|mavencentral|pypi-(both|wheel)|npm)-upload$'
     hook_re = r'^hook-(.*?)-(rtfd)$'
-    wheel_re = r'^wheel-build-.*$'
+    wheel_re = r'^wheel-(build|release)-.*$'
     # jobs run on the persistent proposal, release, and wheel build
     # workers
     if (re.match(proposal_re, job.name) or
