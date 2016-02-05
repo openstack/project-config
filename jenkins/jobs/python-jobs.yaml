@@ -130,6 +130,29 @@
     node: '{node}'
 
 - job-template:
+    name: 'periodic-{name}-{python}-with-oslo-master'
+
+    wrappers:
+      - build-timeout:
+          timeout: 50
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - revoke-sudo
+      - gerrit-git-prep
+      - shell: "/usr/local/jenkins/slave_scripts/run-tox-with-oslo-master.sh {python}"
+      - assert-no-extra-files
+
+    publishers:
+      - test-results
+      - console-log
+      - zuul-swift-test-results-with-console
+
+    node: '{node}'
+
+- job-template:
     name: 'gate-{name}-python27-constraints'
 
     wrappers:
@@ -504,6 +527,14 @@
 
     publishers:
         - console-log
+
+- job-group:
+    name: periodic-python-jobs-with-oslo-master
+    jobs:
+      - 'periodic-{name}-{python}-with-oslo-master':
+          python:
+            - py27
+            - py34
 
 - job-group:
     name: python-jobs
