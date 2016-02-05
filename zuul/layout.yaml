@@ -2210,7 +2210,7 @@ jobs:
 
   # lint compliance was only introduced in kilo
   # this applies to all openstack-ansible repositories
-  - name: ^gate-openstack-ansible.*-pep8$
+  - name: ^gate-openstack-ansible.*-linters$
     branch: ^(?!juno).*$
 
   # Ignore requirements on the keystoneclient/keystoneauth integration branch
@@ -7142,7 +7142,7 @@ projects:
       - name: release-notes-jobs
     check:
       - gate-openstack-ansible-docs
-      - gate-openstack-ansible-pep8
+      - gate-openstack-ansible-linters
       # This check uses the newer 'ubuntu-trusty' image which
       # is consistent between cloud providers. It is in the
       # final stage of testing.
@@ -7154,7 +7154,7 @@ projects:
       - gate-openstack-ansible-dsvm-commit
     gate:
       - gate-openstack-ansible-docs
-      - gate-openstack-ansible-pep8
+      - gate-openstack-ansible-linters
       - gate-openstack-ansible-dsvm-commit
 
   - name: openstack/openstack-ansible-apt_package_pinning
@@ -7225,11 +7225,11 @@ projects:
       - name: merge-check
       - name: openstack-server-publish-jobs
     check:
-      - gate-openstack-ansible-docs
-      - gate-openstack-ansible-pep8
+      - gate-openstack-ansible-plugins-docs
+      - gate-openstack-ansible-plugins-linters
     gate:
-      - gate-openstack-ansible-docs
-      - gate-openstack-ansible-pep8
+      - gate-openstack-ansible-plugins-docs
+      - gate-openstack-ansible-plugins-linters
 
   - name: openstack/openstack-ansible-py_from_git
     template:
