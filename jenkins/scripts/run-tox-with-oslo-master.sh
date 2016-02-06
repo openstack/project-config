@@ -71,10 +71,16 @@ EOF
 sed -ri 's/\{posargs\}//g' tox.ini
 
 cat << EOF >> tox.ini
+
 [testenv:py27-oslo-master]
 commands =
     bash oslo-from-master.sh
     {[testenv]commands}
+EOF
+
+if grep "^\[testenv:py34\]" tox.ini
+then
+cat << EOF >> tox.ini
 
 [testenv:py34-oslo-master]
 posargs =
@@ -82,5 +88,15 @@ commands =
     bash oslo-from-master.sh
     {[testenv:py34]commands}
 EOF
+else
+cat << EOF >> tox.ini
+
+[testenv:py34-oslo-master]
+posargs =
+commands =
+    bash oslo-from-master.sh
+    {[testenv]commands}
+EOF
+fi
 
 $script_path/run-tox.sh $venv-oslo-master
