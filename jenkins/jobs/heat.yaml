@@ -4,7 +4,7 @@
 
     wrappers:
       - build-timeout:
-          timeout: 120
+          timeout: 125
       - timestamps
 
     builders:
@@ -15,7 +15,6 @@
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export OVERRIDE_ENABLED_SERVICES=key,mysql,rabbit,h-api,h-api-cfn,h-api-cw,h-eng,heat
-          export DEVSTACK_GATE_TIMEOUT=120
           export DEVSTACK_GATE_TEMPEST=0
           export DEVSTACK_GATE_EXERCISES=0
 
@@ -60,7 +59,7 @@
 
     wrappers:
       - build-timeout:
-          timeout: 75
+          timeout: 80
       - timestamps
 
     builders:
@@ -76,7 +75,6 @@
               services+=,n-obj,
           fi
           export HEAT_BUILD_PIP_MIRROR=True
-          export DEVSTACK_GATE_TIMEOUT=70
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_TEMPEST=0
           export DEVSTACK_GATE_EXERCISES=0
@@ -134,7 +132,7 @@
 
     wrappers:
       - build-timeout:
-          timeout: 125
+          timeout: 130
       - timestamps
 
     builders:
@@ -144,7 +142,6 @@
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_TIMEOUT=120
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_TEMPEST_REGEX="orchestration"
           export DEVSTACK_GATE_HEAT=1
@@ -166,7 +163,7 @@
 
    wrappers:
      - build-timeout:
-         timeout: 65
+         timeout: 70
      - timestamps
 
    builders:
@@ -176,7 +173,6 @@
      - shell: |
          #!/bin/bash -xe
          export PYTHONUNBUFFERED=true
-         export DEVSTACK_GATE_TIMEOUT=60
          export BRANCH_OVERRIDE={branch-override}
          export PROJECTS="openstack/python-heatclient $PROJECTS"
          export DEVSTACK_PROJECT_FROM_GIT=python-heatclient
@@ -225,7 +221,6 @@
           fi
           export OVERRIDE_ENABLED_SERVICES
 
-          export DEVSTACK_GATE_TIMEOUT=120
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_TEMPEST=0
           export DEVSTACK_GATE_GRENADE=pullup
@@ -261,7 +256,7 @@
 
     wrappers:
       - build-timeout:
-          timeout: 125
+          timeout: 130
       - timestamps
 
     builders:
@@ -271,7 +266,6 @@
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_TIMEOUT=120
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_TEMPEST_REGEX="orchestration"
           export DEVSTACK_GATE_HEAT=1
