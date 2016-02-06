@@ -4,7 +4,7 @@
 
     wrappers:
       - build-timeout:
-          timeout: 95
+          timeout: 100
       - timestamps
 
     builders:
@@ -16,7 +16,6 @@
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_TIMEOUT=95
           export PROJECTS="{injectedrepo} $PROJECTS"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
@@ -52,7 +51,7 @@
 
     wrappers:
       - build-timeout:
-          timeout: 95
+          timeout: 100
       - timestamps
 
     builders:
@@ -64,7 +63,6 @@
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_TIMEOUT=90
 
           function post_test_hook {{
               cd /opt/stack/new/oslo.messaging/oslo_messaging/tests/functional/gate
