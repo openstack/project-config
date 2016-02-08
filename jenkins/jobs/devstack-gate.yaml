@@ -71,6 +71,61 @@
       - devstack-logs
       - console-log
 
+# tempest-dsvm-full-head-{name} - run a devstack tempest job, but use
+# the zuul git refs for projects-from-git (whitespace separated list)
+# instead of the released library version(s).
+#
+# Purpose: this allows libraries to test their proposed commits to
+# ensure they don't break OpenStack on their next release. It is
+# expected to eventually be part of all library jobs in OpenStack, as
+# the main tempest-dsvm jobs will be using only released versions of
+# libraries.
+- job-template:
+    name: '{pipeline}-tempest-dsvm-full-head-{name}{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_TEMPEST_FULL=1
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          for prj in {projects-from-git}; do
+              # Worst-named variable ever.  This is really
+              # LIBS_FROM_GIT (a comma-separated list).
+              export DEVSTACK_PROJECT_FROM_GIT="$prj,$DEVSTACK_PROJECT_FROM_GIT"
+              # Even if the branch is overridden, make sure we use
+              # the correct branch using the OVERRIDE_*_PROJECT_BRANCH
+              # variable.
+              uc_prj=$(echo $prj | tr a-z- A-Z_ | tr -cd A-Z_)
+              export OVERRIDE_${{uc_prj}}_PROJECT_BRANCH=$ZUUL_BRANCH
+              case "$prj" in
+                pbr)
+                   export PROJECTS="openstack-dev/$prj $PROJECTS" ;;
+                *) export PROJECTS="openstack/$prj $PROJECTS" ;;
+              esac
+          done
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
 # tempest-dsvm-src-{name} - run a devstack tempest job, but use the
 # zuul git ref for name instead of the released library version.
 #
