@@ -4,7 +4,7 @@
 
     wrappers:
       - build-timeout:
-          timeout: 125
+          timeout: 130
       - timestamps
 
     builders:
@@ -14,7 +14,6 @@
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_TIMEOUT=120
           export DEVSTACK_GATE_TEMPEST=1
           export TEMPEST_CONCURRENCY=2
           export BRANCH_OVERRIDE={branch-override}
@@ -57,7 +56,7 @@
 
     wrappers:
       - build-timeout:
-          timeout: 185
+          timeout: 190
       - timestamps
 
     builders:
@@ -67,7 +66,6 @@
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_TIMEOUT=180
           export DEVSTACK_GATE_NEUTRON=1
 
           export PROJECTS="openstack/ec2-api $PROJECTS"
@@ -97,7 +95,7 @@
 
     wrappers:
       - build-timeout:
-          timeout: 125
+          timeout: 130
       - timestamps
 
     builders:
@@ -113,7 +111,6 @@
           export DEVSTACK_GATE_VIRT_DRIVER=fake
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_TEMPEST_NOTESTS=1
-          export DEVSTACK_GATE_TIMEOUT=120
 
           # Switch on tempest because m1.nano is created only for tempest...
           export DEVSTACK_GATE_TEMPEST=1
@@ -144,4 +141,3 @@
       - devstack-logs
       - console-log
       - rally-plot
-
