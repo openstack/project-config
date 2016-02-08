@@ -8,7 +8,12 @@ MIRROR_ROOT=$2
 for f in $WHEELHOUSE_DIR/*; do
     BASENAME=$(basename $f)
     IFS='-' read -a parts <<< $BASENAME
-    DEST_DIR="${parts[0]:0:1}/${parts[0]}"
+
+    # Normalize based on PEP503
+    PACKAGENAME=`echo "${parts[0]}" | perl -pe 's/[-_.]+/-/g' | \
+        tr '[:upper:]' '[:lower:]'`
+
+    DEST_DIR="${PACKAGENAME:0:1}/$PACKAGENAME"
 
     # Create the mirror directories in AFS /s/split style. This
     # depends on the existence of a mod_rewrite script which unmunges
