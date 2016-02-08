@@ -461,31 +461,6 @@
 
 
 - job-template:
-    name: 'gate-{name}-pip-check-reqs'
-
-    wrappers:
-      - build-timeout:
-          timeout: 40
-      - timestamps
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - revoke-sudo
-      - gerrit-git-prep
-      - tox:
-          envlist: 'pip-check-reqs'
-      - assert-no-extra-files
-
-    publishers:
-      - test-results
-      - console-log
-      - zuul-swift-test-results-with-console
-
-    node: '{node}'
-
-# Announce the release of a new package.
-- job-template:
     name: '{name}-announce-release'
     node: bare-trusty
 
@@ -551,7 +526,6 @@
       - '{name}-branch-tarball'
       - '{name}-announce-release'
       # pylint isn't standard
-      # pip-check-reqs isn't standard
       # gate-{name}-tox-{envlist} also isn't standard, but is reserved for
       # projects that want to run specific jobs via tox
 
