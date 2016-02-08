@@ -563,9 +563,10 @@ project-templates:
     gate:
       - 'gate-{name}-chef-rake'
 
-  # Note that we only publish integrated and incubated
-  # projects/programs on specs.o.o - the publish-specs job should not
-  # be used for stackforge projects, use stackforge-specs-jobs instead.
+  # Note that we only publish specs by official
+  # teams on specs.o.o - the publish-specs job should not
+  # be used for projects not mentioned in governance repository.
+  # build-only-specs-jobs instead.
   - name: openstack-specs-jobs
     check:
       - 'gate-{name}-docs'
@@ -577,7 +578,7 @@ project-templates:
 
   # Same job as openstack-specs-job but does not publish to
   # specs.openstack.org.
-  - name: stackforge-specs-jobs
+  - name: build-only-specs-jobs
     check:
       - 'gate-{name}-docs'
     gate:
@@ -4074,7 +4075,7 @@ projects:
     template:
       - name: docs-on-rtfd
       - name: merge-check
-      - name: stackforge-specs-jobs
+      - name: build-only-specs-jobs
 
   - name: openstack/bifrost
     template:
@@ -4427,7 +4428,7 @@ projects:
   - name: openstack/compass-specs
     template:
       - name: merge-check
-      - name: stackforge-specs-jobs
+      - name: build-only-specs-jobs
 
   - name: openstack/compass-web
     template:
@@ -5718,7 +5719,7 @@ projects:
   - name: openstack/group-based-policy-specs
     template:
       - name: merge-check
-      - name: stackforge-specs-jobs
+      - name: build-only-specs-jobs
     check:
       - gate-group-based-policy-specs-python27
     gate:
@@ -6175,7 +6176,7 @@ projects:
   - name: openstack/kosmos-specs
     template:
       - name: merge-check
-      - name: stackforge-specs-jobs
+      - name: build-only-specs-jobs
     check:
       - gate-kosmos-specs-python27
     gate:
@@ -7408,7 +7409,7 @@ projects:
   - name: openstack/openstack-salt-specs
     template:
       - name: merge-check
-      - name: stackforge-specs-jobs
+      - name: build-only-specs-jobs
 
   - name: openstack/openstack-specs
     template:
@@ -9951,7 +9952,7 @@ projects:
   - name: openstack/tacker-specs
     template:
       - name: merge-check
-      - name: stackforge-specs-jobs
+      - name: build-only-specs-jobs
     check:
       - gate-tacker-specs-python27
     gate:
@@ -9984,7 +9985,7 @@ projects:
   - name: openstack/telcowg-usecases
     template:
       - name: merge-check
-      - name: stackforge-specs-jobs
+      - name: build-only-specs-jobs
     check:
       - gate-telcowg-usecases-python27
     gate:
@@ -10363,7 +10364,7 @@ projects:
   - name: openstack/vitrage-specs
     template:
       - name: merge-check
-      - name: stackforge-specs-jobs
+      - name: build-only-specs-jobs
 
   - name: openstack/vmtp
     template:
@@ -10400,7 +10401,7 @@ projects:
   - name: openstack/watcher-specs
     template:
       - name: merge-check
-      - name: stackforge-specs-jobs
+      - name: build-only-specs-jobs
     check:
       - gate-watcher-specs-python27
     gate:
