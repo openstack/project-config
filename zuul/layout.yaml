@@ -167,15 +167,6 @@ pipelines:
         to: openstack-stable-maint@lists.openstack.org
         subject: 'Stable check of {change.project} failed'
 
-  - name: periodic-qa
-    description: Periodic jobs for the QA team.
-    manager: IndependentPipelineManager
-    source: gerrit
-    precedence: low
-    trigger:
-      timer:
-        - time: '2 6 * * *'
-
   - name: check-tripleo
     description: >
       Newly uploaded patchsets enter this pipeline to receive an initial +/-1
@@ -10078,7 +10069,7 @@ projects:
       - periodic-tempest-dsvm-full-liberty
       - periodic-tempest-dsvm-neutron-full-liberty
       - periodic-tempest-dsvm-postgres-full-liberty
-    periodic-qa:
+    periodic:
       - periodic-tempest-dsvm-full-test-accounts-master
       - periodic-tempest-dsvm-neutron-full-test-accounts-master
       - periodic-tempest-dsvm-neutron-full-non-admin-master
