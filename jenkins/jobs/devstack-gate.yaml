@@ -125,47 +125,6 @@
       - devstack-logs
       - console-log
 
-# tempest-dsvm-src-{name} - run a devstack tempest job, but use the
-# zuul git ref for name instead of the released library version.
-#
-# Purpose: this allows libraries to test their proposed commits to
-# ensure they don't break OpenStack on their next release. It is
-# expected to eventually be part of all library jobs in OpenStack, as
-# the main tempest-dsvm jobs will be using only released versions of
-# libraries.
-- job-template:
-    name: '{pipeline}-tempest-dsvm-src-{name}{job-suffix}'
-    node: '{node}'
-
-    wrappers:
-      - build-timeout:
-          timeout: 130
-      - timestamps
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - shell: |
-          #!/bin/bash -xe
-          export PROJECTS="openstack/{name} $PROJECTS"
-          export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_TEMPEST=1
-          export DEVSTACK_GATE_TEMPEST_FULL=1
-          export BRANCH_OVERRIDE={branch-override}
-          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
-              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
-          fi
-          export DEVSTACK_PROJECT_FROM_GIT={name}
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
-
-    publishers:
-      - devstack-logs
-      - console-log
-
 # tempest-dsvm-test-accounts-src-{name} - run a devstack tempest job, but use
 # the zuul git ref for name instead of the released library version. This uses
 # preprovisioned test accounts instead of dynamically provisioned ones.
@@ -1261,7 +1220,6 @@
       - devstack-logs
       - console-log
 
-
 - job-template:
     name: '{pipeline}-tempest-dsvm-postgres-full{job-suffix}'
     node: '{node}'
@@ -1796,38 +1754,6 @@
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_TEMPEST_ALL=1
           export DEVSTACK_GATE_NEUTRON=1
-          export BRANCH_OVERRIDE={branch-override}
-          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
-              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
-          fi
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
-
-    publishers:
-      - devstack-logs
-      - console-log
-
-
-- job-template:
-    name: '{pipeline}-tempest-dsvm-coverage{job-suffix}'
-    node: '{node}'
-
-    wrappers:
-      - build-timeout:
-          timeout: 130
-      - timestamps
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - shell: |
-          #!/bin/bash -xe
-          export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_TEMPEST=1
-          export DEVSTACK_GATE_TEMPEST_COVERAGE=1
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -2741,7 +2667,6 @@
       - '{pipeline}-tempest-dsvm-cells{job-suffix}'
       - '{pipeline}-tempest-dsvm-lxc{job-suffix}'
       - '{pipeline}-tempest-dsvm-postgres-full{job-suffix}'
-      - '{pipeline}-tempest-dsvm-postgres-zeromq-full{job-suffix}'
       - '{pipeline}-grenade-dsvm{job-suffix}'
       - '{pipeline}-grenade-dsvm-forward{job-suffix}'
       - '{pipeline}-grenade-dsvm-neutron{job-suffix}'
@@ -2760,7 +2685,6 @@
       - '{pipeline}-tempest-dsvm-ironic-pxe_ipa-ipxe{job-suffix}'
       - '{pipeline}-tempest-dsvm-ironic-parallel{job-suffix}'
       - '{pipeline}-tempest-dsvm-all{job-suffix}'
-      - '{pipeline}-tempest-dsvm-coverage{job-suffix}'
       - '{pipeline}-tempest-dsvm-stress{job-suffix}'
       - '{pipeline}-tempest-dsvm-stress-keystonev3{job-suffix}'
       - '{pipeline}-tempest-dsvm-full-test-accounts{job-suffix}'
