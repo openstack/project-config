@@ -13,20 +13,10 @@
       - devstack-checkout
       - shell: |
           #!/bin/bash -xe
-          ENABLED_SERVICES=tempest,
-          ENABLED_SERVICES+=key,g-api,g-reg,
-          ENABLED_SERVICES+=n-api,n-crt,n-cpu,n-sch,n-cauth,
-          # n-obj has been removed from mitaka
-          if [[ "stable/kilo stable/liberty" =~ $ZUUL_BRANCH ]]; then
-              ENABLED_SERVICES+=n-obj,
-          fi
-          ENABLED_SERVICES+=horizon,mysql,rabbit,sysstat,
-          ENABLED_SERVICES+=cinder,c-api,c-vol,c-sch,n-cond,
-          ENABLED_SERVICES+=neutron,q-svc,q-agt,q-dhcp,q-l3,q-meta
-
           DEVSTACK_LOCAL_CONFIG="enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
+          # Enable watcher devstack plugin.
+          DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin watcher git://git.openstack.org/openstack/watcher"
 
-          export ENABLED_SERVICES
           export DEVSTACK_LOCAL_CONFIG
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
@@ -35,12 +25,8 @@
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_TOPOLOGY="multinode"
           export PROJECTS="openstack/watcher $PROJECTS"
-          export PROJECTS="openstack/watcher-dashboard $PROJECTS"
           export PROJECTS="openstack/python-watcherclient $PROJECTS"
           export DEVSTACK_PROJECT_FROM_GIT=python-watcherclient
-
-          # Enable watcher devstack plugin.
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin watcher git://git.openstack.org/openstack/watcher"
 
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
