@@ -2721,6 +2721,30 @@
       - 'gate-dg-hooks-dsvm'
 
 
+# Jobs will get defined for master branch in the periodic pipeline.
+- job-group:
+    name: devstack-periodic-master-jobs
+    jobs:
+      - '{pipeline}-tempest-dsvm-all{job-suffix}'
+      - '{pipeline}-tempest-dsvm-full-test-accounts{job-suffix}'
+      - '{pipeline}-tempest-dsvm-neutron-dvr-ovs-native{job-suffix}'
+      - '{pipeline}-tempest-dsvm-neutron-full-non-admin{job-suffix}'
+      - '{pipeline}-tempest-dsvm-neutron-full-test-accounts{job-suffix}'
+      - '{pipeline}-tempest-dsvm-neutron-identity-v3-only-full{job-suffix}'
+      - '{pipeline}-tempest-dsvm-neutron-ovs-native{job-suffix}'
+      - '{pipeline}-tempest-dsvm-oslo-latest-full{job-suffix}'
+      - '{pipeline}-tempest-dsvm-stress{job-suffix}'
+
+# Jobs will get defined for stable branches in the periodic pipeline, and
+# for stable branches gate jobs.
+- job-group:
+    name: devstack-stable-jobs
+    jobs:
+      - '{pipeline}-tempest-dsvm-full{job-suffix}'
+      - '{pipeline}-tempest-dsvm-neutron-full{job-suffix}'
+      - '{pipeline}-tempest-dsvm-postgres-full{job-suffix}'
+
+# Jobs will get defined for gate queue.
 - job-group:
     name: devstack-jobs
     jobs:
