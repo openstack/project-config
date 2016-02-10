@@ -1,5 +1,5 @@
-- job:
-    name: bindep-nova-python27
+- job-template:
+    name: gate-{name}-python27-bindep
 
     wrappers:
       - build-timeout:
@@ -7,7 +7,9 @@
       - timestamps
 
     builders:
-      - zuul-git-prep-upper-constraints
+      - print-template-name:
+          template-name: "{template-name}"
+      - gerrit-git-prep
       - install-distro-packages
       - mysql-prep
       - pgsql-prep
@@ -22,5 +24,11 @@
     publishers:
       - test-results
       - console-log
+      - zuul-swift-test-results-with-console
 
     node: ubuntu-trusty
+
+- job-group:
+    name: experimental-bindep-jobs
+    jobs:
+      - gate-{name}-python27-bindep
