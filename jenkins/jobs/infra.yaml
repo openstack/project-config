@@ -250,6 +250,11 @@
                 if test -f output/index.html; then
                     mv output/index.html output/site-index.html
                 fi
+          # These flags really mean only if on * when
+          # checked. When both set to false the post script
+          # should run on every job regardless of status.
+          onfailure: False
+          onsuccess: False
       - zuul-swift-upload-logs-with-console:
           upload_source: 'output/*'
 
