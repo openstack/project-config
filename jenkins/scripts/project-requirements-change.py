@@ -228,7 +228,7 @@ def main():
                 if reqs == global_reqs[name]:
                     continue
                 for req in reqs:
-                    if hasattr(req, 'extras') and req.extras:
+                    if req.extras:
                         for extra in req.extras:
                             counts[extra] = counts.get(extra, 0) + 1
                     else:
