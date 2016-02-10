@@ -1618,14 +1618,6 @@ jobs:
   - name: gate-kite-python34
     voting: false
 
-    # -linters is used starting with mitaka instead of pep8 and
-    # bandit (bandit is only in liberty).
-  - name: gate-keystone-linters
-    branch: ^(?!stable/(kilo|liberty)).*$
-
-  - name: gate-keystone-pep8
-    branch: ^(stable/(kilo|liberty)).*$
-
   - name: gate-keystone-tox-bandit
     branch: ^stable/liberty$
 
@@ -1642,24 +1634,8 @@ jobs:
     branch: ^(?!stable/(kilo|liberty)).*$
     voting: false
 
-    # -linters is used starting with mitaka instead of pep8 and bandit
-    # (bandit is only available in liberty).
-  - name: gate-keystonemiddleware-linters
-    branch: ^(?!stable/(kilo|liberty)).*$
-
-  - name: gate-keystonemiddleware-pep8
-    branch: ^stable/(kilo|liberty).*$
-
   - name: gate-keystonemiddleware-tox-bandit
     branch: ^stable/liberty$
-
-    # -linters is used starting with mitaka instead of pep8 and bandit
-    # (bandit is only available in liberty).
-  - name: gate-python-keystoneclient-linters
-    branch: ^(?!stable/(kilo|liberty)).*$
-
-  - name: gate-python-keystoneclient-pep8
-    branch: ^stable/(kilo|liberty).*$
 
   - name: gate-python-keystoneclient-tox-bandit
     branch: ^stable/liberty$
@@ -6031,7 +6007,7 @@ projects:
   - name: openstack/keystone
     template:
       - name: merge-check
-      - name: python-jobs-linters
+      - name: python-jobs
       - name: python3-jobs
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
@@ -6049,11 +6025,9 @@ projects:
       - gate-keystone-tox-bandit
       - gate-keystone-tox-legacy_drivers
       - gate-tempest-dsvm-keystone-eventlet-full
-      - gate-keystone-pep8
     gate:
       - gate-keystone-tox-bandit
       - gate-keystone-tox-legacy_drivers
-      - gate-keystone-pep8
     post:
       - keystone-coverage
       - keystone-propose-config-updates
@@ -6084,7 +6058,7 @@ projects:
   - name: openstack/keystonemiddleware
     template:
       - name: merge-check
-      - name: python-jobs-linters
+      - name: python-jobs
       - name: python3-jobs
       - name: openstack-client-publish-jobs
       - name: check-requirements
@@ -6093,10 +6067,8 @@ projects:
       - name: release-notes-jobs
     check:
       - gate-keystonemiddleware-tox-bandit
-      - gate-keystonemiddleware-pep8
     gate:
       - gate-keystonemiddleware-tox-bandit
-      - gate-keystonemiddleware-pep8
     post:
       - keystonemiddleware-coverage
 
@@ -8715,7 +8687,7 @@ projects:
   - name: openstack/python-keystoneclient
     template:
       - name: merge-check
-      - name: python-jobs-linters
+      - name: python-jobs
       - name: python3-jobs
       - name: openstack-client-publish-jobs
       - name: check-requirements
@@ -8726,11 +8698,9 @@ projects:
     check:
       - gate-keystoneclient-dsvm-functional
       - gate-python-keystoneclient-tox-bandit
-      - gate-python-keystoneclient-pep8
     gate:
       - gate-keystoneclient-dsvm-functional
       - gate-python-keystoneclient-tox-bandit
-      - gate-python-keystoneclient-pep8
     post:
       - python-keystoneclient-coverage
     experimental:
