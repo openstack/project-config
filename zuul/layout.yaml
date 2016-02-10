@@ -1494,6 +1494,9 @@ jobs:
   - name: ^gate-.*-js-draft
     success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/dist/
 
+  - name: ^.*-npm-publish-draft$
+    success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/dist/
+
   - name: infra-publications-publish
     branch: ^(?!master).*$
 
@@ -6018,6 +6021,8 @@ projects:
     template:
       - name: merge-check
       - name: javascript-jobs
+    check:
+      - ironic-webclient-npm-publish-draft
     post:
       - ironic-webclient-npm-publish-tarball
     release:
