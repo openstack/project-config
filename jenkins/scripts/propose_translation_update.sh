@@ -99,7 +99,7 @@ function propose_python {
 
     # Some files were changed, add changed files again to git, so that we
     # can run git diff properly.
-    git add $modulename/locale/*
+    git add $modulename/locale/
 }
 
 function propose_horizon {
@@ -116,7 +116,7 @@ function propose_horizon {
     compress_po_files "openstack_dashboard"
 
     # Add all changed files to git
-    git add horizon/locale/* openstack_dashboard/locale/*
+    git add horizon/locale/ openstack_dashboard/locale/
 }
 
 # This function can be used for all django projects
@@ -133,7 +133,7 @@ function propose_django {
     compress_po_files "$modulename"
 
     # Add all changed files to git
-    git add $modulename/locale/*
+    git add $modulename/locale/
 }
 
 # Setup git repository for git review.
