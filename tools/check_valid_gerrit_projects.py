@@ -100,7 +100,8 @@ def main():
         badwords = (
             # (words), what_words_should_be
             (('openstack', 'Openstack', 'Open Stack'), 'OpenStack'),
-            (('Devstack', 'devstack'), 'DevStack')
+            (('Devstack', 'devstack'), 'DevStack'),
+            (('astor', 'Astor', 'astra', 'Astra', 'astara'), 'Astara')
         )
         if description:
             for words, should_be in badwords:
