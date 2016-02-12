@@ -56,8 +56,10 @@ deb $NODEPOOL_UBUNTU_MIRROR $LSBDISTCODENAME-updates main universe
 deb $NODEPOOL_UBUNTU_MIRROR $LSBDISTCODENAME-backports main universe
 deb $NODEPOOL_UBUNTU_MIRROR $LSBDISTCODENAME-security main universe
 EOF
-    # Turn off multi-arch
-    sudo dpkg --remove-architecture i386
+    if [ "$LSBDISTCODENAME" != 'precise' ] ; then
+        # Turn off multi-arch
+        sudo dpkg --remove-architecture i386
+    fi
     # Turn off checking of GPG signatures
     sudo dd of=/etc/apt/apt.conf.d/99unauthenticated <<EOF
 APT::Get::AllowUnauthenticated "true";
