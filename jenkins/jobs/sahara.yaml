@@ -281,7 +281,7 @@
           export DEVSTACK_GATE_EXERCISES=0
           export DEVSTACK_GATE_INSTALL_TESTONLY=1
           export KEEP_LOCALRC=1
-          export PROJECTS="openstack/sahara-scenario $PROJECTS"
+          export PROJECTS="openstack/sahara-tests $PROJECTS"
 
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
@@ -297,13 +297,13 @@
           fi
 
           function pre_test_hook {{
-              cd /opt/stack/new/sahara-scenario/tools/gate/scenario
+              cd /opt/stack/new/sahara-tests/tools/gate/scenario
               ./pre_test_hook.sh {network} {engine}
           }}
           export -f pre_test_hook
 
           function post_test_hook {{
-              cd /opt/stack/new/sahara-scenario/tools/gate/scenario
+              cd /opt/stack/new/sahara-tests/tools/gate/scenario
               ./post_test_hook.sh {network} {engine}
           }}
           export -f post_test_hook
