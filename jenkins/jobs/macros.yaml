@@ -94,13 +94,23 @@
           clonemap:
             - name: $ZUUL_PROJECT
               dest: .
+          EOF
+          # zuul cloner works poorly if there are 2 names that are the
+          # same in here.
+          if [[ "$ZUUL_PROJECT" != "openstack/requirements" ]]; then
+          cat >> $CLONEMAP << EOF
             - name: openstack/requirements
               dest: $REQS_DIR
           EOF
+          fi
           /usr/zuul-env/bin/zuul-cloner -m $CLONEMAP --cache-dir /opt/git \
               --branch=$BRANCH \
               git://git.openstack.org $ZUUL_PROJECT openstack/requirements
-          cp $REQS_DIR/upper-constraints.txt ./
+          # REQS_DIR is not set for openstack/requirements and there's also
+          # no need to copy in this case.
+          if [[ "$ZUUL_PROJECT" != "openstack/requirements" ]]; then
+              cp $REQS_DIR/upper-constraints.txt ./
+          fi
 
 - builder:
     name: zuul-git-branch-prep
