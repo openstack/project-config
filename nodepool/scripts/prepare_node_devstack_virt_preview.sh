@@ -24,5 +24,3 @@ export THIN='true'
 ./prepare_node.sh "$HOSTNAME"
 sudo -u jenkins -i /opt/nodepool-scripts/prepare_devstack_virt_preview.sh \
     "$HOSTNAME"
-
-./restrict_memory.sh
