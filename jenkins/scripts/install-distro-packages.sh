@@ -3,6 +3,15 @@
 # set a default path to the preinstalled bindep entrypoint
 export BINDEP=${BINDEP:-/usr/bindep-env/bin/bindep}
 
+function is_fedora {
+    [ -f /usr/bin/yum ] && cat /etc/*release | grep -q -e "Fedora"
+}
+
+YUM=yum
+if is_fedora; then
+    YUM=dnf
+fi
+
 # figure out which bindep list to use
 if [ -n "$PACKAGES" ] ; then
     # already set in the calling environment
@@ -34,7 +43,7 @@ until $BINDEP -b -f $PACKAGES ; do
             apt-get --option "Dpkg::Options::=--force-confold" \
             --assume-yes install `$BINDEP -b -f $PACKAGES`
     else
-        sudo PATH=/usr/sbin:/sbin:$PATH yum install -y \
+        sudo PATH=/usr/sbin:/sbin:$PATH $YUM install -y \
             `$BINDEP -b -f $PACKAGES`
     fi
     set -e
