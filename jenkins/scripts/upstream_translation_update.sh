@@ -40,26 +40,26 @@ case "$PROJECT" in
     training-guides)
         setup_training_guides "$ZANATA_VERSION"
         ;;
-    horizon)
-        setup_horizon "$ZANATA_VERSION"
-        ./run_tests.sh --makemessages -V
-        ;;
     *)
         # Common setup for python and django repositories
         # ---- Python projects ----
-        MODULENAME=$(get_modulename $PROJECT python)
-        if [ -n "$MODULENAME" ]; then
-            setup_project "$PROJECT" "$MODULENAME" "$ZANATA_VERSION"
+        module_names=$(get_modulename $PROJECT python)
+        if [ -n "$module_names" ]; then
+            setup_project "$PROJECT" "$ZANATA_VERSION" $module_names
             setup_loglevel_vars
-            extract_messages "$MODULENAME"
-            extract_messages_log "$MODULENAME"
+            for modulename in $module_names; do
+                extract_messages "$modulename"
+                extract_messages_log "$modulename"
+            done
         fi
 
         # ---- Django projects ----
-        MODULENAME=$(get_modulename $PROJECT django)
-        if [ -n "$MODULENAME" ]; then
-            setup_project "$PROJECT" "$MODULENAME" "$ZANATA_VERSION"
-            extract_messages_django "$MODULENAME"
+        module_names=$(get_modulename $PROJECT django)
+        if [ -n "$module_names" ]; then
+            setup_project "$PROJECT" "$ZANATA_VERSION" $module_names
+            for modulename in $module_names; do
+                extract_messages_django "$modulename"
+            done
         fi
         ;;
 esac

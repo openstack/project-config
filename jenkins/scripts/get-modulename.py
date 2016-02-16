@@ -20,10 +20,11 @@ import os
 import sys
 
 
-DJANGO_PROJECT_SUFFIXES = ('-dashboard',
-                           '-horizon',
-                           '-ui',
-                           'django_openstack_auth',
+DJANGO_PROJECT_SUFFIXES = (
+    '-dashboard',
+    'horizon',  # to match horizon and *-horizon
+    '-ui',
+    'django_openstack_auth',
 )
 
 
@@ -100,13 +101,13 @@ def main():
 
     if 'openstack_translations' in config:
         translate_options = get_translate_options(config, args.target)
-        return translate_options
+        print(' '.join(translate_options))
+        return
 
     modules = get_valid_modules(config, args.project, args.target)
 
-    # A shortest module name is selected now.
     if modules:
-        print(sorted(modules, key=len)[0])
+        print(' '.join(modules))
 
 if __name__ == '__main__':
     main()
