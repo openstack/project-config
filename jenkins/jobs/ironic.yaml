@@ -18,11 +18,17 @@
           export DEVSTACK_GATE_IRONIC=1
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_VIRT_DRIVER=ironic
-          export DEVSTACK_GATE_TEMPEST_REGEX="baremetal"
           export TEMPEST_CONCURRENCY=2
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          # tempest-lib support was added in Mitaka. Fall back to tempest for other stable branches.
+          if [ "$BRANCH_OVERRIDE" == "stable/kilo" -o "$BRANCH_OVERRIDE" == "stable/liberty" ] ; then
+              export DEVSTACK_GATE_TEMPEST_REGEX='baremetal'
+          else
+              export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
+              export DEVSTACK_GATE_TEMPEST_REGEX='ironic'
           fi
           export DEVSTACK_LOCAL_CONFIG="enable_plugin ironic git://git.openstack.org/openstack/ironic"
 
