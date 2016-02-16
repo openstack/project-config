@@ -23,5 +23,3 @@ export THIN='false'
 export ALL_MYSQL_PRIVS='true'
 
 ./prepare_node.sh "$HOSTNAME"
-
-./restrict_memory.sh
