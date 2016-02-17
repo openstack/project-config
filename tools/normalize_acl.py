@@ -13,6 +13,7 @@
 # 6 - replace openstack-ci-admins and openstack-ci-core with infra-core
 # 7 - add at least one core team, if no team is defined with special suffixes
 #     like core, admins, milestone or Users
+# 8 - fix All-Projects inheritance shadowed by exclusiveGroupPermissions
 
 import re
 import sys
@@ -22,7 +23,7 @@ aclfile = sys.argv[1]
 try:
     transformations = sys.argv[2:]
     if transformations and transformations[0] == 'all':
-        transformations = [str(x) for x in range(0, 8)]
+        transformations = [str(x) for x in range(0, 9)]
 except KeyError:
     transformations = []
 
@@ -135,6 +136,30 @@ if '7' in transformations:
                     and not any(x in aclfile for x in special_projects)):
                 option = '%s%s' % (option, '-core')
             newsection.append(option)
+        acl[section] = newsection
+
+if '8' in transformations:
+    for section in acl.keys():
+        newsection = []
+        for option in acl[section]:
+            newsection.append(option)
+            key, value = [x.strip() for x in option.split('=')]
+            if key == 'exclusiveGroupPermissions':
+                exclusives = value.split()
+                # It's safe for these to be duplicates since we de-dup later
+                if 'abandon' in exclusives:
+                    newsection.append('abandon = group Change Owner')
+                    newsection.append('abandon = group Project Bootstrappers')
+                if 'label-Code-Review' in exclusives:
+                    newsection.append('label-Code-Review = -2..+2 '
+                                      'group Project Bootstrappers')
+                    newsection.append('label-Code-Review = -1..+1 '
+                                      'group Registered Users')
+                if 'label-Workflow' in exclusives:
+                    newsection.append('label-Workflow = -1..+1 '
+                                      'group Project Bootstrappers')
+                    newsection.append('label-Workflow = -1..+0 '
+                                      'group Change Owner')
         acl[section] = newsection
 
 for section in sorted(acl.keys()):
