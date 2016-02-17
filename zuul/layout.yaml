@@ -7450,10 +7450,15 @@ projects:
   - name: openstack/openstack-manuals
     template:
       - name: merge-check
-      - name: openstack-doc-gate
+      - name: openstack-doc-rst-gate
       - name: openstack-doc-translation
       - name: translation-jobs-liberty
       - name: experimental-docu-bindep-jobs
+    check:
+      - gate-openstack-manuals-tox-checklinks
+      - gate-openstack-manuals-tox-checksyntax
+    gate:
+      - gate-openstack-manuals-tox-checksyntax
     post:
       - openstack-manuals-tox-doc-publishdocs
       - propose-openstack-manuals-updates
