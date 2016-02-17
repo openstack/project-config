@@ -2357,6 +2357,40 @@
       - devstack-logs
       - console-log
 
+# {pipeline}-tempest-dsvm-full-{plugin}-src-{srcname}{job-suffix} - run a devstack
+# plugin tempest job, but use the zuul git ref for srcname instead of the
+# released library version.
+- job-template:
+    name: '{pipeline}-tempest-dsvm-full-{plugin}-src-{srcname}{job-suffix}'
+    node: devstack-trusty
+
+    wrappers:
+      - build-timeout:
+          timeout: 130
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_TEMPEST_FULL=1
+          export PROJECTS="{plugin-repo} $PROJECTS"
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin devstack-plugin-{plugin} git://git.openstack.org/{plugin-repo}"
+          export DEVSTACK_PROJECT_FROM_GIT={srcname}
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
 
 # A template for any project with a devstack-plugin to run the full
 # tempest suite with their project/plugin enabled.
