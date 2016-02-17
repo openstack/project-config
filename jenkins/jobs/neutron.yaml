@@ -440,3 +440,40 @@
     publishers:
       - devstack-logs
       - console-log
+
+# run tempest with:
+# 1) neutron enabled
+# 2) oslo.messaging from git
+# 3) specific oslo.messaging driver enabled
+- job-template:
+    name: 'gate-tempest-neutron-dsvm-src-oslo.messaging-{plugin}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 130
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_TEMPEST_FULL=1
+          export DEVSTACK_GATE_NEUTRON=1
+
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin devstack-plugin-{plugin} git://git.openstack.org/openstack/devstack-plugin-{plugin}"
+
+          export DEVSTACK_PROJECT_FROM_GIT="oslo.messaging"
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
