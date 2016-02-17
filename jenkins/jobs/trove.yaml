@@ -48,7 +48,12 @@
           export ENABLED_SERVICES
 
           export PYTHONUNBUFFERED=true
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin trove git://git.openstack.org/openstack/trove"
+          if [[ "stable/kilo" =~ $ZUUL_BRANCH ]]; then
+              # Trove was moved out of DevStack as plugin after Kilo
+              export DEVSTACK_GATE_TROVE=1
+          else
+              export DEVSTACK_LOCAL_CONFIG="enable_plugin trove git://git.openstack.org/openstack/trove"
+          fi
           export PROJECTS="openstack/python-troveclient $PROJECTS"
           export DEVSTACK_PROJECT_FROM_GIT=python-troveclient
           export PROJECTS="openstack/tripleo-image-elements $PROJECTS"
@@ -138,7 +143,12 @@
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin trove git://git.openstack.org/openstack/trove"
+          if [[ "stable/kilo" =~ $ZUUL_BRANCH ]]; then
+              # Trove was moved out of DevStack as plugin after Kilo
+              export DEVSTACK_GATE_TROVE=1
+          else
+              export DEVSTACK_LOCAL_CONFIG="enable_plugin trove git://git.openstack.org/openstack/trove"
+          fi
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_TEMPEST_FULL=1
           export DEVSTACK_GATE_NEUTRON=1
