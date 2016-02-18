@@ -140,8 +140,11 @@ if '7' in transformations:
 for section in sorted(acl.keys()):
     if acl[section]:
         out += '\n[%s]\n' % section
+        lastoption = ''
         for option in sorted(acl[section], key=tokens):
-            out += '%s\n' % option
+            if option != lastoption:
+                out += '%s\n' % option
+            lastoption = option
 
 if dry_run:
     print(out[1:-1])
