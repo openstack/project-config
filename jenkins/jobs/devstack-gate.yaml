@@ -877,7 +877,7 @@
           deploy-with-ipa: 1
           client-from-source: 0
           ironic-lib-from-source: 0
-          ipxe-enabled: 0
+          ipxe-enabled: 1
           branch-override: '{branch-override}'
           ramdisk-type: 'coreos'
           gate-tempest-full: 1
@@ -908,7 +908,7 @@
           deploy-with-ipa: 1
           client-from-source: 0
           ironic-lib-from-source: 0
-          ipxe-enabled: 0
+          ipxe-enabled: 1
           branch-override: '{branch-override}'
           ramdisk-type: 'coreos'
           gate-tempest-full: 0
@@ -984,7 +984,7 @@
           deploy-with-ipa: 1
           client-from-source: 0
           ironic-lib-from-source: 0
-          ipxe-enabled: 0
+          ipxe-enabled: 1
           branch-override: '{branch-override}'
           ramdisk-type: 'coreos'
           gate-tempest-full: 0
@@ -1011,37 +1011,6 @@
       - devstack-virtual-ironic:
           postgres: 0
           build-ramdisk: 1
-          deploy_driver: pxe_ssh
-          deploy-with-ipa: 1
-          client-from-source: 0
-          ironic-lib-from-source: 0
-          ipxe-enabled: 0
-          branch-override: '{branch-override}'
-          ramdisk-type: 'coreos'
-          gate-tempest-full: 0
-
-    publishers:
-      - devstack-logs
-      - console-log
-
-- job-template:
-    name: '{pipeline}-tempest-dsvm-ironic-pxe_ipa-ipxe{job-suffix}'
-    node: '{node}'
-
-    wrappers:
-      - build-timeout:
-          timeout: 130
-      - timestamps
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - devstack-virtual-ironic:
-          postgres: 0
-          build-ramdisk: 0
           deploy_driver: pxe_ssh
           deploy-with-ipa: 1
           client-from-source: 0
@@ -1139,7 +1108,7 @@
           deploy-with-ipa: 1
           client-from-source: 1
           ironic-lib-from-source: 0
-          ipxe-enabled: 0
+          ipxe-enabled: 1
           branch-override: '{branch-override}'
           ramdisk-type: 'coreos'
           gate-tempest-full: 0
@@ -1170,7 +1139,7 @@
           deploy-with-ipa: 1
           client-from-source: 0
           ironic-lib-from-source: 1
-          ipxe-enabled: 0
+          ipxe-enabled: 1
           branch-override: '{branch-override}'
           ramdisk-type: 'coreos'
           gate-tempest-full: 0
@@ -2757,7 +2726,6 @@
       - '{pipeline}-tempest-dsvm-ironic-agent_ssh-src{job-suffix}'
       - '{pipeline}-tempest-dsvm-ironic-agent_ssh{job-suffix}'
       - '{pipeline}-tempest-dsvm-ironic-parallel{job-suffix}'
-      - '{pipeline}-tempest-dsvm-ironic-pxe_ipa-ipxe{job-suffix}'
       - '{pipeline}-tempest-dsvm-ironic-pxe_ipa-src{job-suffix}'
       - '{pipeline}-tempest-dsvm-ironic-pxe_ipa-tinyipa{job-suffix}'
       - '{pipeline}-tempest-dsvm-ironic-pxe_ipa{job-suffix}'
