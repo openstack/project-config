@@ -1,0 +1,34 @@
+- job:
+    name: 'training-labs-scripts'
+    node: bare-trusty
+
+    builders:
+      - revoke-sudo
+      - gerrit-git-prep
+      - shell:
+          #!/bin/bash -xe
+          ./tools/generate-labs $ZUUL_REFNAME
+
+    publishers:
+      - scp:
+          site: 'tarballs.openstack.org'
+          files:
+            - source: 'build/dist/*'
+              target: 'tarballs/training-labs/dist/'
+              keep-hierarchy: false
+              copy-after-failure: false
+      - console-log
+
+- job:
+    name: 'gate-training-labs-scripts'
+    node: devstack-trusty
+
+    builders:
+      - revoke-sudo
+      - gerrit-git-prep
+      - shell:
+          #!/bin/bash -xe
+          ./tools/generate-labs $ZUUL_REFNAME
+
+    publishers:
+      - console-log
