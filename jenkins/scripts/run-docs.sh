@@ -8,6 +8,7 @@
 #
 
 venv=${1:-venv}
+tags_handling=${2:both}
 
 mkdir -p doc/build
 export HUDSON_PUBLISH_DOCS=1
@@ -41,9 +42,10 @@ elif echo $ZUUL_REFNAME | grep refs/tags/ >/dev/null ; then
         # versions. The date versions will sort higher even though they
         # should not so we just special case it here.
         LATEST=$(git tag | sed -n -e '/^20[0-9]\{2\}\..*$/d' -e '/^[0-9]\+\(\.[0-9]\+\)*$/p' | sort -V | tail -1)
-        # Now publish to / and /$TAG if this is the latest version or
-        # just /$TAG if this is not the latest version.
-        if [ "$TAG" = "$LATEST" ] ; then
+        # Now publish to / and /$TAG if this is the latest version for projects
+        # and we are only publishing from the release pipeline,
+        # or just /$TAG otherwise.
+        if [ "$tags_handling" = "tags-only" -a "$TAG" = "$LATEST" ] ; then
             # Copy the docs into a subdir if this is a tagged build
             mkdir doc/build/$TAG
             cp -R doc/build/html/* doc/build/$TAG
