@@ -1071,11 +1071,18 @@
           node: ubuntu-trusty-2-node
           job-suffix: '-dibtest'
           branch-override: default
-      # fedora jobs
-      - '{pipeline}-tempest-dsvm-f{fedora-release}':
-          fedora-release: 23
+      - '{pipeline}-tempest-dsvm-platform-{name}{job-suffix}':
+          name: centos7
+          pipeline: gate
+          node: devstack-centos7
+          run-smoke-serially: 1
+          job-suffix: '-nv'
+      - '{pipeline}-tempest-dsvm-platform-{name}{job-suffix}':
+          name: fedora23
           pipeline: gate
           node: fedora-23
+          run-smoke-serially: 0
+          job-suffix: '-nv'
 
 - project:
     name: devstack-plugin-amqp1
