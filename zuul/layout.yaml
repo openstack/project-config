@@ -1913,6 +1913,18 @@ jobs:
     branch: ^(?!stable/kilo).*$
     voting: false
 
+  - name: gate-tacker-python34
+    branch: ^(?!stable/(kilo|liberty)).*$
+    voting: false
+
+  - name: gate-tacker-horizon-python34
+    branch: ^(?!stable/(kilo|liberty)).*$
+    voting: false
+
+  - name: gate-python-tackerclient-python34
+    branch: ^(?!stable/(kilo|liberty)).*$
+    voting: false
+
   - name: gate-tempest-dsvm-neutron-ipv6only
     branch: ^master$
     voting: false
@@ -9126,6 +9138,8 @@ projects:
       - name: python-jobs
       - name: check-requirements
       - name: publish-to-pypi
+    check:
+      - gate-python-tackerclient-python34
 
   - name: openstack/python-tripleoclient
     template:
@@ -10054,6 +10068,7 @@ projects:
       - name: docs-on-rtfd
     check:
       - gate-tacker-dsvm-functional
+      - gate-tacker-python34
 
   - name: openstack/tacker-horizon
     template:
@@ -10063,6 +10078,7 @@ projects:
     check:
         - gate-tacker-horizon-pep8
         - gate-tacker-horizon-python27
+        - gate-tacker-horizon-python34
     gate:
         - gate-tacker-horizon-pep8
         - gate-tacker-horizon-python27
