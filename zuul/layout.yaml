@@ -302,9 +302,6 @@ project-templates:
     periodic:
       - 'periodic-{name}-py27-with-oslo-master'
       - 'periodic-{name}-py34-with-oslo-master'
-    experimental:
-      - 'periodic-{name}-py27-with-oslo-master'
-      - 'periodic-{name}-py34-with-oslo-master'
 
   # This is the same template as python-jobs but uses the new
   # linters target instead of pep8.
@@ -1126,11 +1123,6 @@ jobs:
     # BUG #1290562 pypy does not work with new setuptools, so is breaking
     # all jobs. Disable until there is resolution.
   - name: ^gate-.*-pypy$
-    voting: false
-
-    # This job is only for testing master of the project
-    # against master of all oslo projects
-  - name: ^periodic-.*-with-oslo-master$
     voting: false
 
   - name: ^gate-tempest-dsvm-cells$
