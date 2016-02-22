@@ -879,6 +879,15 @@ jobs:
           - ^tools/.*$
           - ^tox.ini$
           - ^vagrant/.*$
+      - project: ^openstack/rally
+        all-files-match-any:
+          - ^doc/.*$
+          - ^etc/.*$
+          - ^tests/hacking/.*$
+          - ^tests/unit/.*$
+          - ^tox.ini$
+          - ^.*\.rst$
+          - ^Dockerfile$
 
   # Skip non-doc jobs for doc-only or translation-only neutron
   # changes. Since doc/source/conf.py is checked by
@@ -1045,19 +1054,6 @@ jobs:
 
   - name: gate-tempest-dsvm-full
     queue-name: integrated
-
-  - name: ^.*rally-dsvm-(?!cli).*$
-    skip-if:
-      - project: ^openstack/rally
-        all-files-match-any:
-          - ^doc/.*$
-          - ^etc/.*$
-          - ^samples/.*$
-          - ^tests/hacking/.*$
-          - ^tests/unit/.*$
-          - ^tox.ini$
-          - ^.*\.rst$
-          - ^Dockerfile$
 
   - name: ^gate-rally-dsvm-rally-.*$
     voting: false
