@@ -1,0 +1,148 @@
+dashboard:
+  title: 'Nodepool: Infra Cloud'
+  rows:
+    - title: Description
+      height: 100px
+      panels:
+        - title: Description
+          content: |
+            **This dashboard is managed by [Grafyaml](http://docs.openstack.org/infra/system-config/grafyaml.html).**
+
+            If you would like to make changes to this dashboard, please see the grafana directory in [project-config](https://git.openstack.org/cgit/openstack-infra/project-config/tree/grafana/nodepool-infracloud.yaml).
+          type: text
+    - title: Nodes
+      showTitle: true
+      height: 150px
+      panels:
+        - title: Building
+          span: 3
+          sparkline:
+            full: true
+            show: true
+          targets:
+            - target: sumSeries(stats.gauges.nodepool.provider.infracloud-*.nodes.building)
+          type: singlestat
+          valueName: current
+        - title: Ready
+          span: 3
+          sparkline:
+            full: true
+            show: true
+          targets:
+            - target: sumSeries(stats.gauges.nodepool.provider.infracloud-*.nodes.ready)
+          type: singlestat
+          valueName: current
+        - title: In Use
+          span: 3
+          sparkline:
+            full: true
+            show: true
+          targets:
+            - target: sumSeries(stats.gauges.nodepool.provider.infracloud-*.nodes.used)
+          type: singlestat
+          valueName: current
+        - title: Deleting
+          span: 3
+          sparkline:
+            full: true
+            show: true
+          targets:
+              - target: sumSeries(stats.gauges.nodepool.provider.infracloud-*.nodes.delete)
+          type: singlestat
+          valueName: current
+    - title: API Operations
+      showTitle: true
+      height: 250px
+      panels:
+        - title: Create Server
+          type: graph
+          span: 4
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
+          targets:
+            - target: alias(scale(stats.timers.nodepool.task.infracloud-west.CreateServerTask.mean, '0.001'), 'WEST')
+        - title: Delete Server
+          type: graph
+          span: 4
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
+          targets:
+            - target: alias(scale(stats.timers.nodepool.task.infracloud-west.DeleteServerTask.mean, '0.001'), 'WEST')
+        - title: List Servers
+          type: graph
+          span: 4
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
+          targets:
+            - target: alias(scale(stats.timers.nodepool.task.infracloud-west.ListServersTask.mean, '0.001'), 'WEST')
+    - title: Node Launches
+      showTitle: true
+      height: 250px
+      panels:
+        - title: Ready Node Launch Attempts
+          type: graph
+          span: 4
+          nullPointMode: null as zero
+          leftYAxisLabel: "events / min"
+          targets:
+            - target: alias(smartSummarize(stats_counts.nodepool.launch.provider.infracloud-west.ready, '1m'), 'WEST')
+        - title: Error Node Launch Attempts
+          type: graph
+          span: 4
+          nullPointMode: null as zero
+          leftYAxisLabel: "events / min"
+          targets:
+            - target: alias(smartSummarize(sumSeries(stats_counts.nodepool.launch.provider.infracloud-west.error.*), '1m'), 'WEST')
+        - title: Time to Ready
+          type: graph
+          span: 4
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
+          targets:
+            - target: alias(scale(stats.timers.nodepool.launch.provider.infracloud-west.ready.mean, '0.001'), 'WEST')
+        - title: Test Nodes (WEST)
+          type: graph
+          span: 4
+          stack: true
+          tooltip:
+            value_type: individual
+          leftYAxisLabel: "nodes"
+          targets:
+            - target: alias(stats.gauges.nodepool.provider.infracloud-west.nodes.building, 'Building')
+            - target: alias(stats.gauges.nodepool.provider.infracloud-west.nodes.ready, 'Available')
+            - target: alias(stats.gauges.nodepool.provider.infracloud-west.nodes.used, 'In Use')
+            - target: alias(stats.gauges.nodepool.provider.infracloud-west.nodes.delete, 'Deleting')
+            - target: alias(stats.gauges.nodepool.provider.infracloud-west.max_servers, 'Max')
+          seriesOverrides:
+            - alias: Max
+              stack: False
+    - title: Job Runtimes
+      showTitle: true
+      height: 250px
+      panels:
+        - title: gate-tempest-dsvm-full
+          type: graph
+          span: 6
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
+          targets:
+            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-full.master.devstack-trusty.infracloud-west.runtime.mean, '0.001'), 'WEST')
+        - title: gate-tempest-dsvm-neutron-full
+          type: graph
+          span: 6
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
+          targets:
+            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-neutron-full.master.devstack-trusty.infracloud-west.runtime.mean, '0.001'), 'WEST')
