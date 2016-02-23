@@ -74,11 +74,7 @@ function propose_training_guides {
 
 # Propose updates for python projects
 function propose_python {
-    local project=$1
-    local modulename=$2
-
-    # Pull updated translations from Zanata
-    pull_from_zanata "$project"
+    local modulename=$1
 
     # Extract all messages from project, including log messages.
     extract_messages "$modulename"
@@ -102,29 +98,9 @@ function propose_python {
     git add $modulename/locale/
 }
 
-function propose_horizon {
-
-    # Pull updated translations from Zanata.
-    pull_from_zanata "$PROJECT"
-
-    # Invoke run_tests.sh to update the po files
-    # Or else, "../manage.py makemessages" can be used.
-    ./run_tests.sh --makemessages -V
-
-    # Compress downloaded po files
-    compress_po_files "horizon"
-    compress_po_files "openstack_dashboard"
-
-    # Add all changed files to git
-    git add horizon/locale/ openstack_dashboard/locale/
-}
-
 # This function can be used for all django projects
 function propose_django {
-    local project=$1
-    local modulename=$2
-    # Pull updated translations from Zanata.
-    pull_from_zanata "$project"
+    local modulename=$1
 
     # Update the .pot file
     extract_messages_django "$modulename"
@@ -152,25 +128,29 @@ case "$PROJECT" in
         setup_training_guides "$ZANATA_VERSION"
         propose_training_guides
         ;;
-    horizon)
-        setup_horizon "$ZANATA_VERSION"
-        propose_horizon
-        ;;
     *)
         # Common setup for python and django repositories
         # ---- Python projects ----
-        MODULENAME=$(get_modulename $PROJECT python)
-        if [ -n "$MODULENAME" ]; then
-            setup_project "$PROJECT" "$MODULENAME" "$ZANATA_VERSION"
+        module_names=$(get_modulename $PROJECT python)
+        if [ -n "$module_names" ]; then
+            setup_project "$PROJECT" "$ZANATA_VERSION" $module_names
             setup_loglevel_vars
-            propose_python "$PROJECT" "$MODULENAME"
+            # Pull updated translations from Zanata
+            pull_from_zanata "$PROJECT"
+            for modulename in $module_names; do
+                propose_python "$modulename"
+            done
         fi
 
         # ---- Django projects ----
-        MODULENAME=$(get_modulename $PROJECT django)
-        if [ -n "$MODULENAME" ]; then
-            setup_project "$PROJECT" "$MODULENAME" "$ZANATA_VERSION"
-            propose_django "$PROJECT" "$MODULENAME"
+        module_names=$(get_modulename $PROJECT django)
+        if [ -n "$module_names" ]; then
+            setup_project "$PROJECT" "$ZANATA_VERSION" $module_names
+            # Pull updated translations from Zanata.
+            pull_from_zanata "$PROJECT"
+            for modulename in $module_names; do
+                propose_django "$modulename"
+            done
         fi
         ;;
 esac

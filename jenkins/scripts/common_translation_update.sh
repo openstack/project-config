@@ -34,32 +34,28 @@ function get_modulename {
         -p $project -t $target
 }
 
-# Setup a project for Zanata. This is used by both Python and Django
-# projects.
+# Setup a project for Zanata. This is used by both Python and Django projects.
+# syntax: setup_project <project> <zanata_version> <modulename> [<modulename> ...]
 function setup_project {
     local project=$1
-    local modulename=$2
-    local version=${3:-master}
-
-    /usr/local/jenkins/slave_scripts/create-zanata-xml.py \
-        -p $project -v $version --srcdir $modulename/locale \
-        --txdir $modulename/locale -r '**/*.pot' \
-        '{locale_with_underscore}/LC_MESSAGES/{filename}.po' -f zanata.xml
+    local version=$2
+    shift 2
+    # All argument(s) contain module names now.
+    if [ $# -eq 1 ]; then
+        local modulename=$1
+        /usr/local/jenkins/slave_scripts/create-zanata-xml.py \
+            -p $project -v $version --srcdir $modulename/locale \
+            --txdir $modulename/locale \
+            -r '**/*.pot' '{locale_with_underscore}/LC_MESSAGES/{filename}.po' \
+            -f zanata.xml
+    else
+        /usr/local/jenkins/slave_scripts/create-zanata-xml.py \
+            -p $project -v $version --srcdir . --txdir . \
+            -r '**/*.pot' '{path}/{locale_with_underscore}/LC_MESSAGES/{filename}.po' \
+            -f zanata.xml
+    fi
 }
 
-
-# Setup project horizon for Zanata
-function setup_horizon {
-    local project=horizon
-    local version=${1:-master}
-
-    /usr/local/jenkins/slave_scripts/create-zanata-xml.py -p $project \
-        -v $version --srcdir . --txdir . -r './horizon/locale/*.pot' \
-        'horizon/locale/{locale_with_underscore}/LC_MESSAGES/{filename}.po' \
-        -r './openstack_dashboard/locale/*.pot' \
-        'openstack_dashboard/locale/{locale_with_underscore}/LC_MESSAGES/{filename}.po' \
-        -e '.*/**' -f zanata.xml
-}
 
 # Set global variable DocFolder for manuals projects
 function init_manuals {
