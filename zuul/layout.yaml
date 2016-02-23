@@ -436,25 +436,25 @@ project-templates:
   # DocBook XML and RST files.
   - name: openstack-doc-gate
     check:
-      - gate-{name}-tox-checklinks
-      - gate-{name}-tox-checkniceness
-      - gate-{name}-tox-checksyntax
-      - gate-{name}-tox-checkdeletions
+      - gate-{name}-tox-nodb-checklinks
+      - gate-{name}-tox-nodb-checkniceness
+      - gate-{name}-tox-nodb-checksyntax
+      - gate-{name}-tox-nodb-checkdeletions
       - gate-{name}-tox-doc-publish-checkbuild
     gate:
-      - gate-{name}-tox-checkniceness
-      - gate-{name}-tox-checksyntax
-      - gate-{name}-tox-checkdeletions
+      - gate-{name}-tox-nodb-checkniceness
+      - gate-{name}-tox-nodb-checksyntax
+      - gate-{name}-tox-nodb-checkdeletions
       - gate-{name}-tox-doc-publish-checkbuild
 
   # Used for building documentation projects that contain
   # only RST files.
   - name: openstack-doc-rst-gate
     check:
-      - gate-{name}-tox-checkniceness
+      - gate-{name}-tox-nodb-checkniceness
       - gate-{name}-tox-doc-publish-checkbuild
     gate:
-      - gate-{name}-tox-checkniceness
+      - gate-{name}-tox-nodb-checkniceness
       - gate-{name}-tox-doc-publish-checkbuild
 
   - name: openstack-doc-translation
@@ -683,14 +683,6 @@ project-templates:
       - gate-{name}-pypy-bindep
       - gate-{name}-docs-bindep
       - gate-{name}-requirements-bindep
-
-  - name: experimental-docu-bindep-jobs
-    experimental:
-      - gate-{name}-tox-checklinks-bindep
-      - gate-{name}-tox-checkniceness-bindep
-      - gate-{name}-tox-checksyntax-bindep
-      - gate-{name}-tox-checkdeletions-bindep
-      - gate-{name}-tox-doc-publish-checkbuild-bindep
 
   - name: experimental-tripleo-jobs
     experimental-tripleo:
@@ -1478,13 +1470,13 @@ jobs:
       - '^.*\.po$'
       - '^.*\.pot$'
 
-  - name: ^gate-.*-tox-checklinks$
+  - name: ^gate-.*-tox-nodb-checklinks$
     branch: master
     voting: false
     files:
       - '^.*\.xml$'
 
-  - name: ^gate-.*-tox-checksyntax$
+  - name: ^gate-.*-tox-nodb-checksyntax$
     files:
       - '^.*\.ent$'
       - '^.*\.po$'
@@ -1961,7 +1953,7 @@ jobs:
     files:
       - '^apidocs/.*$'
 
-  - name: gate-trove-tox-checklinks
+  - name: gate-trove-tox-nodb-checklinks
     files:
       - '^apidocs/.*$'
 
@@ -3928,7 +3920,6 @@ projects:
       - name: merge-check
       - name: openstack-doc-gate
       - name: openstack-doc-translation
-      - name: experimental-docu-bindep-jobs
     check:
       - gate-api-site-tox-checklang
       - gate-build-swagger
@@ -5805,7 +5796,6 @@ projects:
       - name: merge-check
       - name: openstack-doc-rst-gate
       - name: openstack-doc-translation
-      - name: experimental-docu-bindep-jobs
     post:
       - ha-guide-tox-doc-publishdocs
 
@@ -7475,12 +7465,11 @@ projects:
       - name: openstack-doc-rst-gate
       - name: openstack-doc-translation
       - name: translation-jobs-liberty
-      - name: experimental-docu-bindep-jobs
     check:
-      - gate-openstack-manuals-tox-checklinks
-      - gate-openstack-manuals-tox-checksyntax
+      - gate-openstack-manuals-tox-nodb-checklinks
+      - gate-openstack-manuals-tox-nodb-checksyntax
     gate:
-      - gate-openstack-manuals-tox-checksyntax
+      - gate-openstack-manuals-tox-nodb-checksyntax
     post:
       - openstack-manuals-tox-doc-publishdocs
       - propose-openstack-manuals-updates
@@ -7543,7 +7532,6 @@ projects:
       - name: merge-check
       - name: openstack-doc-gate
       - name: openstack-doc-translation
-      - name: experimental-docu-bindep-jobs
     post:
       - operations-guide-tox-doc-publishdocs
 
@@ -9643,7 +9631,6 @@ projects:
       - name: merge-check
       - name: openstack-doc-rst-gate
       - name: openstack-doc-translation
-      - name: experimental-docu-bindep-jobs
     post:
       - security-doc-tox-doc-publishdocs
 
@@ -10456,7 +10443,7 @@ projects:
       - name: translation-jobs
       - name: release-notes-jobs
     check:
-      - gate-trove-tox-checklinks
+      - gate-trove-tox-nodb-checklinks
       - gate-trove-tox-doc-publish-checkbuild
       - gate-trove-functional-dsvm-mysql
       - gate-tempest-dsvm-trove

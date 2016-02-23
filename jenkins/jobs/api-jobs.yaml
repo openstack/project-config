@@ -1,26 +1,3 @@
-- job-template:
-    name: '{name}-tox-doc-{envlist}'
-
-    wrappers:
-      - build-timeout:
-          timeout: 40
-      - timestamps
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - revoke-sudo
-      - gerrit-git-prep
-      - tox:
-          envlist: '{envlist}'
-
-    publishers:
-      - console-log
-      - upload-to-docs-site
-      - upload-doc-build-results
-
-    node: '{node}'
-
 - job:
     name: openstack-api-ref
     node: bare-trusty
