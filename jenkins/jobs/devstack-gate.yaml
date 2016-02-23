@@ -1005,6 +1005,39 @@
       - console-log
 
 - job-template:
+    name: '{pipeline}-tempest-dsvm-ironic-pxe_ipmitool{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 130
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - devstack-virtual-ironic:
+          postgres: 0
+          build-ramdisk: 0
+          deploy_driver: pxe_ipmitool
+          deploy-with-ipa: 1
+          client-from-source: 0
+          ironic-lib-from-source: 0
+          ipxe-enabled: 1
+          branch-override: '{branch-override}'
+          ramdisk-type: 'coreos'
+          gate-tempest-full: 0
+          bm-vm-ram: 1024
+          bm-vm-count: 1
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
     name: '{pipeline}-tempest-dsvm-ironic-pxe_ipa-src{job-suffix}'
     node: '{node}'
 
@@ -1056,6 +1089,39 @@
           postgres: 0
           build-ramdisk: 0
           deploy_driver: agent_ssh
+          deploy-with-ipa: 0
+          client-from-source: 0
+          ironic-lib-from-source: 0
+          ipxe-enabled: 0
+          branch-override: '{branch-override}'
+          ramdisk-type: 'coreos'
+          gate-tempest-full: 0
+          bm-vm-ram: 1024
+          bm-vm-count: 1
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-tempest-dsvm-ironic-agent_ipmitool{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 130
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - devstack-virtual-ironic:
+          postgres: 0
+          build-ramdisk: 0
+          deploy_driver: agent_ipmitool
           deploy-with-ipa: 0
           client-from-source: 0
           ironic-lib-from-source: 0
@@ -2755,11 +2821,13 @@
       - '{pipeline}-tempest-dsvm-full{job-suffix}'
       - '{pipeline}-tempest-dsvm-ironic-agent_ssh-src{job-suffix}'
       - '{pipeline}-tempest-dsvm-ironic-agent_ssh{job-suffix}'
+      - '{pipeline}-tempest-dsvm-ironic-agent_ipmitool{job-suffix}'
       - '{pipeline}-tempest-dsvm-ironic-parallel{job-suffix}'
       - '{pipeline}-tempest-dsvm-ironic-pxe_ipa-src{job-suffix}'
       - '{pipeline}-tempest-dsvm-ironic-pxe_ipa-tinyipa{job-suffix}'
       - '{pipeline}-tempest-dsvm-ironic-pxe_ipa{job-suffix}'
       - '{pipeline}-tempest-dsvm-ironic-pxe_ipa-postgres{job-suffix}'
+      - '{pipeline}-tempest-dsvm-ironic-pxe_ipmitool{job-suffix}'
       - '{pipeline}-tempest-dsvm-ironic-pxe_ssh{job-suffix}'
       - '{pipeline}-tempest-dsvm-layer4{job-suffix}'
       - '{pipeline}-tempest-dsvm-lxc{job-suffix}'
