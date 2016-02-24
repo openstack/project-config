@@ -593,6 +593,8 @@ project-templates:
       - gate-puppet-openstack-integration-scenario001-tempest-dsvm-centos7
       - gate-puppet-openstack-integration-scenario002-tempest-dsvm-trusty
       - gate-puppet-openstack-integration-scenario002-tempest-dsvm-centos7
+      - gate-puppet-openstack-integration-scenario003-tempest-dsvm-trusty
+      - gate-puppet-openstack-integration-scenario003-tempest-dsvm-centos7
     gate:
       - gate-puppet-openstack-integration-scenario001-tempest-dsvm-trusty
       - gate-puppet-openstack-integration-scenario001-tempest-dsvm-centos7
@@ -1039,6 +1041,12 @@ jobs:
     branch: master
 
   - name: ^gate-puppet-openstackci-puppet-beaker-rspec-dsvm-.*$
+    voting: false
+
+  # First implementation of scenario003 integration job should be non-voting
+  # and only on the master branch (now).
+  - name: ^gate-puppet-openstack-integration-scenario003-tempest-dsvm-.*$
+    branch: master
     voting: false
 
   # puppet-integration scenario jobs non-voting and run after stable/kilo
@@ -10242,6 +10250,7 @@ projects:
       - gate-tempest-dsvm-test-accounts-src-tempest-lib
       - gate-puppet-openstack-integration-scenario001-tempest-dsvm-centos7
       - gate-puppet-openstack-integration-scenario002-tempest-dsvm-centos7
+      - gate-puppet-openstack-integration-scenario003-tempest-dsvm-centos7
     post:
       - tempest-docs
       - tempest-coverage
