@@ -753,6 +753,16 @@ jobs:
   # similar components that won't be exercised by the job anyway.
   - name: ^.*(devstack|tempest|grenade|rally|swift|networking-ovn|neutron-lbaas|neutron-vpnaas|ironic-inspector|heat)-dsvm.*$
     skip-if:
+      - project: ^openstack/cinder$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+          - ^cinder/hacking/.*$
+          - ^cinder/locale/.*$
+          - ^cinder/tests/.*$
+          - ^releasenotes/.*$
+          - ^tools/.*$
+          - ^tox.ini$
       - project: ^openstack/neutron$
         all-files-match-any:
           - ^.*\.rst$
