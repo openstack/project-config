@@ -597,7 +597,9 @@ project-templates:
       - gate-puppet-openstack-integration-scenario003-tempest-dsvm-centos7
     gate:
       - gate-puppet-openstack-integration-scenario001-tempest-dsvm-centos7
+      - gate-puppet-openstack-integration-scenario001-tempest-dsvm-trusty
       - gate-puppet-openstack-integration-scenario002-tempest-dsvm-centos7
+      - gate-puppet-openstack-integration-scenario002-tempest-dsvm-trusty
 
   - name: puppet-openstack-spec-helper-jobs
     check:
@@ -1042,8 +1044,9 @@ jobs:
     voting: false
 
   # Ubuntu packaging for Mitaka became unstable for our CI.
+  # Scenario003 is not passing CI, probably because they didn't update Heat yet.
   # Disabling voting until we sort this out.
-  - name: ^gate-puppet-openstack-integration-scenario00(1|2|3)-tempest-dsvm-trusty$
+  - name: ^gate-puppet-openstack-integration-scenario003-tempest-dsvm-trusty$
     voting: false
 
   # scenario003 was added during Mitaka cycle
@@ -8325,9 +8328,13 @@ projects:
       - name: merge-check
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
-      - name: puppet-beaker-jobs
       - name: puppet-openstack-integration-jobs
       - name: release-notes-jobs
+    check:
+      - gate-puppet-keystone-puppet-beaker-rspec-dsvm-trusty-nv
+      - gate-puppet-keystone-puppet-beaker-rspec-dsvm-centos7
+    gate:
+      - gate-puppet-keystone-puppet-beaker-rspec-dsvm-centos7
     check-tripleo:
       - gate-tripleo-ci-f22-nonha
 
