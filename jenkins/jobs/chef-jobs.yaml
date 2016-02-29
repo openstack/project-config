@@ -1,7 +1,7 @@
 # this job template requires a bootstrap.sh script (which installs chefdk and other dependencies)
 # and a Rakefile with the tests that should be executed in the cookbook
 - job-template:
-    name: 'gate-{name}-chef-rake'
+    name: gate-{name}-chef-rake
     node: '{node}'
 
     wrappers:
@@ -11,7 +11,7 @@
 
     builders:
       - print-template-name:
-          template-name: "{template-name}"
+          template-name: '{template-name}'
       - gerrit-git-prep
       - chef-bootstrap
       - revoke-sudo
@@ -24,7 +24,7 @@
 # and a Rakefile with the integration tests that should be executed
 # sudo privileges for jenkins are not revoked, since they are needed during the chef run executed for integration testing
 - job-template:
-    name: 'gate-{name}-chef-rake-integration-nv'
+    name: gate-{node}-{name}-chef-rake-integration-nv
     node: '{node}'
 
     wrappers:
@@ -34,7 +34,7 @@
 
     builders:
       - print-template-name:
-          template-name: "{template-name}"
+          template-name: '{template-name}'
       - gerrit-git-prep
       - chef-bootstrap
       - chef-rake-integration
@@ -43,7 +43,7 @@
       - console-log
 
 - job-template:
-    name: 'periodic-{name}-chef-rake-integration'
+    name: periodic-{node}-{name}-chef-rake-integration
     node: '{node}'
 
     wrappers:
@@ -53,7 +53,7 @@
 
     builders:
       - print-template-name:
-          template-name: "{template-name}"
+          template-name: '{template-name}'
       - branch-git-prep:
           branch: master
       - chef-bootstrap
@@ -65,6 +65,12 @@
 - job-group:
     name: chef-test-jobs
     jobs:
-      - 'gate-{name}-chef-rake'
-      - 'gate-{name}-chef-rake-integration-nv'
-      - 'periodic-{name}-chef-rake-integration'
+      - gate-{name}-chef-rake
+      - gate-{node}-{name}-chef-rake-integration-nv:
+          node:
+            - devstack-centos7
+            - ubuntu-trusty
+      - periodic-{node}-{name}-chef-rake-integration:
+          node:
+            - devstack-centos7
+            - ubuntu-trusty
