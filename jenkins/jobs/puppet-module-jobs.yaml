@@ -126,13 +126,14 @@
 
 - job-template:
     name: 'gate-{name}-puppet-lint'
-    node: '{node}'
+    node: ubuntu-trusty
 
     builders:
       - print-template-name:
           template-name: "{template-name}"
-      - revoke-sudo
       - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
       - puppet-lint
 
     publishers:
