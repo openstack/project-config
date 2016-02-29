@@ -2229,11 +2229,6 @@ jobs:
           - ^doc/.*
           - ^releasenotes/.*
 
-  # skip the new ubuntu-trusty based commit check for the juno
-  # branch as it will never work
-  - name: ^gate-openstack-ansible-commit.*$
-    branch: ^(?!juno).*$
-
   # skip openstack-ansible-docs gate jobs for the juno branch
   # documentation was only introduced in kilo
   - name: ^gate-openstack-ansible-docs.*$
@@ -7301,14 +7296,6 @@ projects:
     check:
       - gate-openstack-ansible-docs
       - gate-openstack-ansible-linters
-      # This check uses the newer 'ubuntu-trusty' image which
-      # is consistent between cloud providers. It is in the
-      # final stage of testing.
-      - gate-openstack-ansible-commit-nv
-      # This check uses the 'devstack-trusty' image which is
-      # inconsistent between cloud providers. This will be
-      # removed once gate-openstack-ansible-commit is converted
-      # to a voting check.
       - gate-openstack-ansible-dsvm-commit
     gate:
       - gate-openstack-ansible-docs
