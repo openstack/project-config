@@ -783,47 +783,25 @@ jobs:
           - ^releasenotes/.*$
           - ^tools/.*$
           - ^tox.ini$
-      - project: ^openstack/manila$
+      # In heat, ^tox.ini and some scripts in ^tools/ are used
+      # in heat-dsvm-functional gates, so not skipping on those changes
+      - project: ^openstack/heat$
         all-files-match-any:
           - ^.*\.rst$
           - ^doc/.*$
-          - ^manila/hacking/.*$
-          - ^manila/tests/.*$
+          - ^heat/locale/.*$
+          - ^heat/tests/.*$
           - ^releasenotes/.*$
-          - ^run_tests.sh$
-          - ^tools/.*$
-          - ^tox.ini$
-      - project: ^openstack/neutron$
+      - project: ^openstack/horizon$
         all-files-match-any:
           - ^.*\.rst$
           - ^doc/.*$
-          - ^neutron/locale/.*$
-          - ^neutron/tests/.*$
+          - ^horizon/locale/.*$
+          - ^horizon/test/.*$
+          - ^openstack_dashboard/locale/.*$
+          - ^openstack_dashboard/test/.*$
+          - ^openstack_dashboard/.*/tests?\.py$
           - ^releasenotes/.*$
-          - ^tools/.*$
-          - ^tox.ini$
-      - project: ^openstack/neutron-lbaas$
-        all-files-match-any:
-          - ^.*\.rst$
-          - ^doc/.*$
-          - ^neutron-lbaas/tests/unit/.*$
-          - ^tools/.*$
-          - ^tox.ini$
-      - project: ^openstack/neutron-vpnaas$
-        all-files-match-any:
-          - ^.*\.rst$
-          - ^doc/.*$
-          - ^neutron-vpnaas/tests/unit/.*$
-      - project: ^openstack/nova$
-        all-files-match-any:
-          - ^.*\.rst$
-          - ^doc/.*$
-          - ^api-guide/.*$
-          - ^nova/hacking/.*$
-          - ^nova/locale/.*$
-          - ^nova/tests/.*$
-          - ^releasenotes/.*$
-          - ^tests-py3.txt$
           - ^tools/.*$
           - ^tox.ini$
       - project: ^openstack/ironic$
@@ -850,27 +828,81 @@ jobs:
           - ^ironic_inspector/test/.*$
           - ^releasenotes/.*$
           - ^tox.ini$
-      # In heat, ^tox.ini and some scripts in ^tools/ are used
-      # in heat-dsvm-functional gates, so not skipping on those changes
-      - project: ^openstack/heat$
+      - project: ^openstack/manila$
         all-files-match-any:
           - ^.*\.rst$
           - ^doc/.*$
-          - ^heat/locale/.*$
-          - ^heat/tests/.*$
+          - ^manila/hacking/.*$
+          - ^manila/tests/.*$
           - ^releasenotes/.*$
-      - project: ^openstack/horizon$
+          - ^run_tests.sh$
+          - ^tools/.*$
+          - ^tox.ini$
+      - project: ^openstack/monasca-api
+        all-files-match-any:
+          - ^.*\.md$
+      - project: ^openstack/neutron$
         all-files-match-any:
           - ^.*\.rst$
           - ^doc/.*$
-          - ^horizon/locale/.*$
-          - ^horizon/test/.*$
-          - ^openstack_dashboard/locale/.*$
-          - ^openstack_dashboard/test/.*$
-          - ^openstack_dashboard/.*/tests?\.py$
+          - ^neutron/locale/.*$
+          - ^neutron/tests/.*$
           - ^releasenotes/.*$
           - ^tools/.*$
           - ^tox.ini$
+      - project: ^openstack/neutron-lbaas$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+          - ^neutron-lbaas/tests/unit/.*$
+          - ^tools/.*$
+          - ^tox.ini$
+      - project: ^openstack/neutron-vpnaas$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+          - ^neutron-vpnaas/tests/unit/.*$
+      - project: ^openstack/networking-midonet$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+          - ^specs/.*$
+          - ^midonet/neutron/tests/.*$
+      - project: ^openstack/networking-ovn$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+          - ^releasenotes/.*$
+          - ^tools/.*$
+          - ^tox.ini$
+          - ^vagrant/.*$
+      - project: ^openstack/nova$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+          - ^api-guide/.*$
+          - ^nova/hacking/.*$
+          - ^nova/locale/.*$
+          - ^nova/tests/.*$
+          - ^releasenotes/.*$
+          - ^tests-py3.txt$
+          - ^tools/.*$
+          - ^tox.ini$
+      - project: ^openstack/rally
+        all-files-match-any:
+          - ^doc/.*$
+          - ^etc/.*$
+          - ^tests/hacking/.*$
+          - ^tests/unit/.*$
+          - ^tox.ini$
+          - ^.*\.rst$
+          - ^Dockerfile$
+      - project: ^openstack/tap-as-a-service
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+          - ^specs/.*$
+          - ^neutron_taas/tests/unit/.*$
       - project: ^openstack/tempest$
         all-files-match-any:
           - ^.*\.rst$
@@ -893,38 +925,6 @@ jobs:
         all-files-match-any:
           - ^.*\.rst$
           - ^doc/.*$
-      - project: ^openstack/networking-midonet$
-        all-files-match-any:
-          - ^.*\.rst$
-          - ^doc/.*$
-          - ^specs/.*$
-          - ^midonet/neutron/tests/.*$
-      - project: ^openstack/tap-as-a-service
-        all-files-match-any:
-          - ^.*\.rst$
-          - ^doc/.*$
-          - ^specs/.*$
-          - ^neutron_taas/tests/unit/.*$
-      - project: ^openstack/monasca-api
-        all-files-match-any:
-          - ^.*\.md$
-      - project: ^openstack/networking-ovn$
-        all-files-match-any:
-          - ^.*\.rst$
-          - ^doc/.*$
-          - ^releasenotes/.*$
-          - ^tools/.*$
-          - ^tox.ini$
-          - ^vagrant/.*$
-      - project: ^openstack/rally
-        all-files-match-any:
-          - ^doc/.*$
-          - ^etc/.*$
-          - ^tests/hacking/.*$
-          - ^tests/unit/.*$
-          - ^tox.ini$
-          - ^.*\.rst$
-          - ^Dockerfile$
 
   # Skip non-doc jobs for doc-only or translation-only neutron
   # changes. Since doc/source/conf.py is checked by
