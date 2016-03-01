@@ -301,16 +301,6 @@ project-templates:
     post:
       - '{name}-branch-tarball'
 
-  - name: python-constraints-jobs
-    check:
-      - 'gate-{name}-pep8-constraints'
-      - 'gate-{name}-docs-constraints'
-      - 'gate-{name}-python27-constraints'
-    gate:
-      - 'gate-{name}-docs-constraints'
-      - 'gate-{name}-pep8-constraints'
-      - 'gate-{name}-python27-constraints'
-
   - name: periodic-jobs-with-oslo-master
     periodic:
       - 'periodic-{name}-py27-with-oslo-master'
@@ -384,12 +374,6 @@ project-templates:
     gate:
       - 'gate-{name}-python34'
 
-  - name: python3-constraints-jobs
-    check:
-      - 'gate-{name}-python34-constraints'
-    gate:
-      - 'gate-{name}-python34-constraints'
-
   - name: osc-plugin-jobs
     check:
       - 'check-osc-plugins'
@@ -401,12 +385,6 @@ project-templates:
     # Readd it once the job is voting again.
     # gate:
     #  - 'gate-{name}-pypy'
-
-  - name: pypy-constraints-jobs
-    check:
-      - 'gate-{name}-pypy-constraints'
-    gate:
-      - 'gate-{name}-pypy-constraints'
 
   - name: openstack-server-publish-jobs
     post:
@@ -438,11 +416,6 @@ project-templates:
     periodic-stable:
       - 'periodic-{name}-docs-liberty'
       - 'periodic-{name}-python27-liberty'
-
-  - name: periodic-liberty-constraints
-    periodic-stable:
-      - 'periodic-{name}-docs-constraints-liberty'
-      - 'periodic-{name}-python27-constraints-liberty'
 
 
   # Used for building documentation projects that contain
@@ -2372,31 +2345,6 @@ jobs:
   # Constraints Jobs
   - name: ^.*-constraints$
     branch: ^(?!stable/kilo).*$
-
-  # neutron: run -constraints jobs for Liberty only
-  - name: gate-neutron-python27
-    branch: ^(?!stable/liberty).*$
-
-  - name: gate-neutron-python34
-    branch: ^(?!stable/liberty).*$
-
-  - name: gate-neutron-pep8
-    branch: ^(?!stable/liberty).*$
-
-  - name: gate-neutron-docs
-    branch: ^(?!stable/liberty).*$
-
-  - name: gate-neutron-python27-constraints
-    branch: ^(?:stable/liberty).*$
-
-  - name: gate-neutron-python34-constraints
-    branch: ^(?:stable/liberty).*$
-
-  - name: gate-neutron-pep8-constraints
-    branch: ^(?:stable/liberty).*$
-
-  - name: gate-neutron-docs-constraints
-    branch: ^(?:stable/liberty).*$
 
   # Don't run python34 on Kilo
   - name: ^gate-neutron-vpnaas-python34$
@@ -7192,12 +7140,10 @@ projects:
       - name: merge-check
       - name: python-jobs
       - name: python3-jobs
-      - name: python-constraints-jobs
-      - name: python3-constraints-jobs
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
       - name: periodic-kilo
-      - name: periodic-liberty-constraints
+      - name: periodic-liberty
       - name: periodic-jobs-with-oslo-master
       - name: check-requirements
       - name: integrated-gate-neutron
