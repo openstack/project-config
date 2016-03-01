@@ -593,14 +593,23 @@
       - shell: |
           #!/bin/sh
           export PATH=$PATH:/sbin
+          if [ -f /etc/dib-builddate.txt ]; then
+              echo "Image build date"
+              echo "================"
+              cat /etc/dib-builddate.txt
+          fi
           echo "Host & kernel"
+          echo "============="
           uname -a
           echo "Network interface addresses..."
+          echo "=============================="
           ip address show
           echo "Network routing tables..."
+          echo "========================="
           ip route show
           ip -6 route show
           echo "Network neighbors..."
+          echo "===================="
           ip neighbor show
 
 - builder:
