@@ -39,6 +39,27 @@
     jobs:
       - 'gate-{name}-ansible-lint'
 
+- job-template:
+    name: '{pipeline}-{name}-ansible-functional-{ostype}{job-suffix}'
+    node: '{ostype}'
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - zuul-git-prep
+      - install-distro-packages
+      - shell: |
+          # Allow Jenkins user to ssh into localhost
+          ssh-keygen -f ~/.ssh/id_rsa -N ""
+          cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+          ssh-keyscan localhost >> ~/.ssh/known_hosts
+          ssh-keyscan 127.0.0.1 >> ~/.ssh/known_hosts
+      - tox:
+          envlist: functional
+
+    publishers:
+      - zuul-swift-upload-console-log
+
 - job-group:
     name: 'ansible-role-jobs'
     jobs:
@@ -55,4 +76,14 @@
           ostype:
             - centos7
             - trusty
+          pipeline: gate
+      - '{pipeline}-{name}-ansible-functional-{ostype}{job-suffix}':
+          job-suffix: '-nv'
+          ostype:
+            - ubuntu-trusty
+          pipeline: gate
+      - '{pipeline}-{name}-ansible-functional-{ostype}{job-suffix}':
+          job-suffix: ''
+          ostype:
+            - ubuntu-trusty
           pipeline: gate
