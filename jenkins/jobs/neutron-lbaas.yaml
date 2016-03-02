@@ -44,3 +44,45 @@
     publishers:
       - devstack-logs
       - console-log
+
+- job:
+    name: gate-neutron-lbaas-dashboard-dsvm-integration
+    node: devstack-trusty
+
+    wrappers:
+      - build-timeout:
+          timeout: 60
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - firefox-install
+      - xvfb-install
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TEMPEST=0
+          export DEVSTACK_GATE_EXERCISES=0
+          export DEVSTACK_GATE_INSTALL_TESTONLY=1
+          export DEVSTACK_GATE_NEUTRON=1
+
+          function pre_test_hook {
+              $BASE/new/neutron-lbaas-dashboard/tools/gate/integration/pre_test_hook.sh
+          }
+          export -f pre_test_hook
+
+          function post_test_hook {
+              $BASE/new/neutron-lbaas-dashboard/tools/gate/integration/post_test_hook.sh
+          }
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - test-results
+      - devstack-logs
+      - console-log
+      - publish-screenshots
