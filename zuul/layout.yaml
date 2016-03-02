@@ -2457,6 +2457,7 @@ projects:
     check:
       - gate-devstack-bashate
       - gate-devstack-unit-tests
+      - gate-grenade-dsvm-forward
       - gate-grenade-dsvm-partial-ncpu
       - gate-tempest-dsvm-ironic-agent_ssh-nv
       - gate-devstack-dsvm-updown
@@ -2471,7 +2472,6 @@ projects:
       - gate-tempest-dsvm-platform-fedora23-nv
     gate:
       - gate-devstack-bashate
-      - gate-grenade-dsvm-forward
       - gate-grenade-dsvm-partial-ncpu
       - gate-grenade-dsvm-multinode
     post:
@@ -2510,7 +2510,6 @@ projects:
       - gate-grenade-publish-docs
     gate:
       - gate-grenade-dsvm
-      - gate-grenade-dsvm-forward
       - gate-grenade-dsvm-neutron
       - gate-grenade-dsvm-partial-ncpu
       - gate-grenade-dsvm-multinode
@@ -3357,8 +3356,10 @@ projects:
       - name: merge-check
       - name: infra-puppet-check-jobs
       - name: infra-puppet-apply-jobs
-      - name: puppet-beaker-jobs
       - name: infra-publish-jobs
+    check:
+      - gate-puppet-openstackci-puppet-beaker-rspec-dsvm-trusty
+      - gate-puppet-openstackci-puppet-beaker-rspec-dsvm-centos7
 
   - name: openstack-infra/puppet-openstackid
     template:
@@ -4504,8 +4505,6 @@ projects:
       - gate-tempest-dsvm-full-drbd-devstack-nv
       - gate-tempest-dsvm-full-lio
       - gate-tempest-dsvm-full-bdd-nv
-    gate:
-      - gate-tempest-dsvm-full-ceph
     experimental:
       - gate-grenade-dsvm-forward
       - gate-tempest-dsvm-full-sheepdog-src-os-brick-nv
@@ -5880,8 +5879,6 @@ projects:
       - gate-tempest-dsvm-full-ceph
       - gate-tempest-dsvm-full-devstack-plugin-ceph-nv
       - gate-rally-dsvm-glance
-    gate:
-      - gate-tempest-dsvm-full-ceph
     experimental:
       - gate-grenade-dsvm-forward
 
@@ -7357,7 +7354,6 @@ projects:
       - gate-nova-tox-functional
       - gate-grenade-dsvm-partial-ncpu
       - gate-grenade-dsvm-multinode
-      - gate-tempest-dsvm-full-ceph
       - gate-tempest-dsvm-cells
     post:
       - nova-coverage
@@ -7880,7 +7876,6 @@ projects:
       - gate-tempest-dsvm-full-ceph-src-os-brick
       - gate-tempest-dsvm-full-lio-src-os-brick
     gate:
-      - gate-tempest-dsvm-full-ceph-src-os-brick
       - gate-tempest-dsvm-full-lio-src-os-brick
     experimental:
       - gate-tempest-dsvm-full-head-os-brick
@@ -8563,7 +8558,6 @@ projects:
       - gate-puppet-openstack-integration-scenario003-tempest-dsvm-trusty
       - gate-puppet-openstack-integration-scenario003-tempest-dsvm-centos7
     gate:
-      - gate-puppet-openstack-integration-scenario003-tempest-dsvm-trusty
       - gate-puppet-openstack-integration-scenario003-tempest-dsvm-centos7
     check-tripleo:
       - gate-tripleo-ci-f22-nonha
@@ -8580,7 +8574,6 @@ projects:
       - gate-puppet-openstack-integration-scenario003-tempest-dsvm-trusty
       - gate-puppet-openstack-integration-scenario003-tempest-dsvm-centos7
     gate:
-      - gate-puppet-openstack-integration-scenario003-tempest-dsvm-trusty
       - gate-puppet-openstack-integration-scenario003-tempest-dsvm-centos7
     check-tripleo:
       - gate-tripleo-ci-f22-nonha
@@ -8781,7 +8774,6 @@ projects:
       - gate-puppet-openstack-integration-scenario003-tempest-dsvm-trusty
       - gate-puppet-openstack-integration-scenario003-tempest-dsvm-centos7
     gate:
-      - gate-puppet-openstack-integration-scenario003-tempest-dsvm-trusty
       - gate-puppet-openstack-integration-scenario003-tempest-dsvm-centos7
 
   - name: openstack/puppet-setproxy
@@ -8838,7 +8830,6 @@ projects:
       - gate-puppet-openstack-integration-scenario003-tempest-dsvm-trusty
       - gate-puppet-openstack-integration-scenario003-tempest-dsvm-centos7
     gate:
-      - gate-puppet-openstack-integration-scenario003-tempest-dsvm-trusty
       - gate-puppet-openstack-integration-scenario003-tempest-dsvm-centos7
 
   - name: openstack/puppet-tuskar
@@ -10118,13 +10109,13 @@ projects:
       - name: merge-check
       - name: python-jobs
       - name: python3-jobs
-      - name: check-requirements
       - name: openstack-server-publish-jobs
       - name: pypy-jobs
       - name: release-notes-jobs
     check:
       - gate-solum-devstack-dsvm
       - gate-solum-devstack-dsvm-centos7
+      - gate-solum-requirements
     gate:
       - gate-solum-devstack-dsvm
     post:
