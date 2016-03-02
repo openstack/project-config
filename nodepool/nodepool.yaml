@@ -40,6 +40,7 @@ labels:
       - name: ovh-bhs1
       - name: bluebox-sjc1
       - name: internap-nyj01
+      - name: vexxhost-ca-ymq-1
   - name: bare-trusty
     image: bare-trusty
     ready-script: configure_mirror.sh
@@ -57,6 +58,7 @@ labels:
       - name: ovh-bhs1
       - name: bluebox-sjc1
       - name: internap-nyj01
+      - name: vexxhost-ca-ymq-1
   - name: ubuntu-trusty-2-node
     image: ubuntu-trusty
     ready-script: multinode_setup.sh
@@ -67,6 +69,7 @@ labels:
       - name: ovh-bhs1
       - name: bluebox-sjc1
       - name: internap-nyj01
+      - name: vexxhost-ca-ymq-1
   - name: devstack-trusty-2-node
     image: devstack-trusty
     ready-script: multinode_setup.sh
@@ -79,6 +82,7 @@ labels:
       - name: ovh-bhs1
       - name: bluebox-sjc1
       - name: internap-nyj01
+      - name: vexxhost-ca-ymq-1
   - name: devstack-centos7
     image: devstack-centos7
     ready-script: configure_mirror.sh
@@ -88,6 +92,7 @@ labels:
       - name: ovh-bhs1
       - name: bluebox-sjc1
       - name: internap-nyj01
+      - name: vexxhost-ca-ymq-1
   - name: fedora-23
     image: fedora-23
     ready-script: configure_mirror.sh
@@ -100,6 +105,7 @@ labels:
       - name: ovh-bhs1
       - name: bluebox-sjc1
       - name: internap-nyj01
+      - name: vexxhost-ca-ymq-1
   - name: tripleo-f22
     image: tripleo-f22
     min-ready: 18
@@ -411,6 +417,38 @@ providers:
       - name: fedora-23
         min-ram: 8000
         name-filter: 'A1.8'
+        diskimage: fedora-23
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+  - name: vexxhost-ca-ymq-1
+    region-name: 'ca-ymq-1'
+    cloud: vexxhost
+    api-timeout: 60
+    boot-timeout: 120
+    max-servers: 1
+    rate: 0.001
+    images:
+      - name: devstack-trusty
+        min-ram: 8000
+        diskimage: devstack-trusty
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+      - name: ubuntu-trusty
+        min-ram: 8000
+        diskimage: ubuntu-trusty
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+      - name: devstack-centos7
+        min-ram: 8000
+        diskimage: devstack-centos7
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+      - name: fedora-23
+        min-ram: 8000
         diskimage: fedora-23
         username: jenkins
         private-key: /home/nodepool/.ssh/id_rsa
