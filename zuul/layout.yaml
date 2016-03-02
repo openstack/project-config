@@ -935,6 +935,15 @@ jobs:
           - ^.*\.rst$
           - ^doc/.*$
           - ^releasenotes/.*$
+  # Skip non docs jobs for doc-only neutronclient changes
+  - name: ^gate-(python-neutronclient-(python27|python34|pypy)|neutronclient-test-dsvm-functional|neutronclient-test-dsvm-functional-adv-svcs|tempest-dsvm-neutron-src-python-neutronclient)$
+    skip-if:
+      - project: ^openstack/python-neutronclient$
+        all-files-match-any:
+          - ^neutron/locale/.*$
+          - ^.*\.rst$
+          - ^doc/.*$
+          - ^releasenotes/.*$
   # Skip non-doc jobs for doc-only neutron-lib changes.
   - name: ^.*neutron-lib-python(27|34)(-constraints)?$
     skip-if:
