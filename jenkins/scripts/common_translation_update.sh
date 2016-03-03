@@ -173,30 +173,9 @@ EOF
     # exists and will always set COMMIT_MSG.
     setup_commit_message $FULL_PROJECT proposal-bot $branch $TOPIC "$INITIAL_COMMIT_MSG"
 
-    # If the open change an already approved, let's not queue a new
-    # patch but let's merge the other patch first.
-    # This solves the problem that when the gate pipeline backup
-    # reaches roughly a day, no matter how quickly you approve the new
-    # update it will always get sniped out of the gate by another.
-    # It also helps, when you approve close to the time this job is
-    # run.
-    if [ -n "$CHANGE_ID" ]; then
-        # Use the JSON format since it is very compact and easy to grep
-        change_info=$(ssh -p 29418 proposal-bot@review.openstack.org gerrit query --current-patch-set --format=JSON $CHANGE_ID)
-        # Check for:
-        # 1) Workflow approval (+1)
-        # 2) no -1/-2 by Jenkins
-        # 3) no -2 by reviewers
-        # 4) no Workflow -1 (WIP)
-        #
-        if echo $change_info|grep -q '{"type":"Workflow","description":"Workflow","value":"1"' \
-            && ! echo $change_info|grep -q '{"type":"Verified","description":"Verified","value":"-[12]","grantedOn":[0-9]*,"by":{"name":"Jenkins","username":"jenkins"}}'  \
-            && ! echo $change_info|grep -q '{"type":"Code-Review","description":"Code-Review","value":"-2"' \
-            && ! echo $change_info|grep -q '{"type":"Workflow","description":"Workflow","value":"-1"' ; then
-            echo "Job already approved, exiting"
-            exit 0
-        fi
-    fi
+    # Function check_already_approved will quit the proposal process if there
+    # is already an approved job with the same CHANGE_ID
+    check_already_approved $CHANGE_ID
 }
 
 # Propose patch using COMMIT_MSG
