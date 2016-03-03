@@ -1280,13 +1280,23 @@
           pipeline: gate
           node: devstack-centos7
           run-smoke-serially: 1
+          neutron: 0
           job-suffix: '-nv'
       - '{pipeline}-tempest-dsvm-platform-{name}{job-suffix}':
           name: fedora23
           pipeline: gate
           node: fedora-23
           run-smoke-serially: 0
+          neutron: 0
           job-suffix: '-nv'
+      # Experimental job for testing neutron
+      - '{pipeline}-tempest-dsvm-platform-{name}{job-suffix}':
+          pipeline: gate
+          name: centos7-neutron
+          node: devstack-centos7
+          run-smoke-serially: 1
+          neutron: 1
+          job-suffix: ''
 
 - project:
     name: devstack-plugin-amqp1
