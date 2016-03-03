@@ -589,6 +589,10 @@ project-templates:
       - gate-packstack-integration-scenario001-tempest-dsvm-centos7
       - gate-packstack-integration-scenario002-tempest-dsvm-centos7
       - gate-packstack-integration-scenario003-tempest-dsvm-centos7
+    gate:
+      - gate-packstack-integration-scenario001-tempest-dsvm-centos7
+      - gate-packstack-integration-scenario002-tempest-dsvm-centos7
+      - gate-packstack-integration-scenario003-tempest-dsvm-centos7
 
   - name: puppet-beaker-jobs
     check:
@@ -1081,10 +1085,10 @@ jobs:
   - name: propose-openstack-manuals-updates
     branch: master
 
-  # First implementation of packstack integration jobs should be non-voting
-  # and only on the master branch
+  # Packstack integration jobs should only be on the master branch for the
+  # time being. It will be updated to run on stable releases as well from
+  # Mitaka onwards when it is cut.
   - name: ^gate-packstack-integration-scenario00(1|2|3)-tempest-dsvm-centos7$
-    voting: false
     branch: master
 
   - name: ^gate-puppet-openstackci-puppet-beaker-rspec-dsvm-.*$
