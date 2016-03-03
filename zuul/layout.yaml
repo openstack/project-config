@@ -1697,6 +1697,12 @@ jobs:
   - name: ^gate-sahara-dsvm-scenario.*-nv$
     branch: ^stable/liberty$
 
+  - name: gate-sahara-tests-python34
+    voting: false
+
+  - name: gate-sahara-tests-pylint
+    voting: false
+
   - name: gate-kite-python34
     voting: false
 
@@ -9952,8 +9958,12 @@ projects:
       - name: python-jobs
       - name: check-requirements
     check:
+      - gate-sahara-tests-pylint
+      - gate-sahara-tests-python34
       - gate-sahara-tests-dsvm-scenario-neutron-heat-nv
       - gate-sahara-tests-dsvm-scenario-nova-heat-nv
+    post:
+      - sahara-tests-coverage
 
   - name: openstack/salt-formula-ceilometer
     template:
