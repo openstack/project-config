@@ -93,11 +93,38 @@ def find_duplicates():
         print(failed_cmds)
         return True
 
+    overlap_cmds = _check_command_overlap(valid_cmds)
+    if overlap_cmds:
+        print("Some commands overlap...")
+        print(overlap_cmds)
+        return True
+
     # Safely return False here with the full set of commands
     print("Final set of commands...")
     print(valid_cmds)
     print("Found no duplicate commands, OK to merge!")
     return False
+
+
+def _check_command_overlap(valid_cmds):
+    """Determine if the entry point overlaps with another command.
+
+    For example, if one plugin creates the command "object1 action",
+    and another plugin creates the command "object1 action object2",
+    the object2 command is unreachable since it overlaps the
+    namespace.
+    """
+    overlap_cmds = {}
+    for ep_name, ep_mods in valid_cmds.iteritems():
+        # Skip openstack.cli.base client entry points
+        for ep_mod in ep_mods:
+            if ep_mod.endswith('.client'):
+                break
+        else:
+            for ep_name_search in valid_cmds.keys():
+                if ep_name_search.startswith(ep_name + "_"):
+                    overlap_cmds.setdefault(ep_name, []).append(ep_name_search)
+    return overlap_cmds
 
 
 def _is_valid_command(ep_name, ep_module_name, valid_cmds):
