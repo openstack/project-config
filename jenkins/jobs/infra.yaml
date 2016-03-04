@@ -209,11 +209,12 @@
 
 - job:
     name: irc-meetings-publish
-    node: bare-trusty
+    node: ubuntu-trusty
 
     builders:
-      - revoke-sudo
       - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
       - tox:
           envlist: 'ical'
 
@@ -241,11 +242,12 @@
 
 - job:
     name: gate-irc-meetings-tox-ical
-    node: bare-trusty
+    node: ubuntu-trusty
 
     builders:
-      - revoke-sudo
       - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
       - tox:
           envlist: 'ical,check'
 
@@ -268,11 +270,12 @@
 
 - job:
     name: gate-infra-ansible
-    node: bare-trusty
+    node: ubuntu-trusty
 
     builders:
-      - revoke-sudo
       - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
       - tox:
           envlist: 'ansible-syntax-check'
 

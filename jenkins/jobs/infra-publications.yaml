@@ -1,11 +1,12 @@
 # simply copy the contents of the repository to the server, no building needed
 - job:
     name: infra-publications-publish
-    node: bare-trusty
+    node: ubuntu-trusty
 
     builders:
-      - revoke-sudo
       - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
       - shell: |
           #!/bin/bash -x
           # NAME will either be the branch name or the tag name
@@ -28,11 +29,12 @@
 
 - job:
     name: infra-publications-publish-index
-    node: bare-trusty
+    node: ubuntu-trusty
 
     builders:
-      - revoke-sudo
       - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
       - shell: |
           #!/bin/bash -xe
           git reset --hard remotes/origin/master
