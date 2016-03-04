@@ -1,10 +1,11 @@
 - job:
     name: 'training-labs-scripts'
-    node: bare-trusty
+    node: ubuntu-trusty
 
     builders:
-      - revoke-sudo
       - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
       - shell:
           #!/bin/bash -xe
           ./tools/generate-labs $ZUUL_REFNAME
@@ -21,11 +22,12 @@
 
 - job:
     name: 'gate-training-labs-scripts'
-    node: devstack-trusty
+    node: ubuntu-trusty
 
     builders:
-      - revoke-sudo
       - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
       - shell:
           #!/bin/bash -xe
           ./tools/generate-labs $ZUUL_REFNAME
