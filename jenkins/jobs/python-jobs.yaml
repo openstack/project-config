@@ -9,8 +9,15 @@
     builders:
       - print-template-name:
           template-name: "{template-name}"
-      - revoke-sudo
       - gerrit-git-prep
+      - install-distro-packages
+      - mysql-prep
+      - pgsql-prep
+      - mysql-db:
+          db_name: openstack_citest
+      - pgsql-db:
+          db_name: openstack_citest
+      - revoke-sudo
       - coverage:
           env: cover
 
@@ -18,7 +25,7 @@
       - zuul-swift-upload-logs-with-console:
           upload_source: 'cover/'
 
-    node: '{node}'
+    node: ubuntu-trusty
 
 - job-template:
     name: '{name}-coverage-constraints'
@@ -48,15 +55,16 @@
     builders:
       - print-template-name:
           template-name: "{template-name}"
-      - revoke-sudo
       - zuul-git-prep-upper-constraints
+      - install-distro-packages
+      - revoke-sudo
       - pep8:
           env: pep8
 
     publishers:
       - zuul-swift-upload-console-log
 
-    node: '{node}'
+    node: ubuntu-trusty
 
 - job-template:
     name: 'gate-{name}-pep8-constraints'
@@ -117,8 +125,15 @@
     builders:
       - print-template-name:
           template-name: "{template-name}"
-      - revoke-sudo
       - zuul-git-prep-upper-constraints
+      - install-distro-packages
+      - mysql-prep
+      - pgsql-prep
+      - mysql-db:
+          db_name: openstack_citest
+      - pgsql-db:
+          db_name: openstack_citest
+      - revoke-sudo
       - python27
       - assert-no-extra-files
 
@@ -127,7 +142,7 @@
       - console-log
       - zuul-swift-test-results-with-console
 
-    node: '{node}'
+    node: ubuntu-trusty
 
 - job-template:
     name: 'periodic-{name}-{python}-with-oslo-master'
@@ -188,8 +203,15 @@
     builders:
       - print-template-name:
           template-name: "{template-name}"
-      - revoke-sudo
       - zuul-git-prep-upper-constraints
+      - install-distro-packages
+      - mysql-prep
+      - pgsql-prep
+      - mysql-db:
+          db_name: openstack_citest
+      - pgsql-db:
+          db_name: openstack_citest
+      - revoke-sudo
       - python34
       - assert-no-extra-files
 
@@ -198,7 +220,7 @@
       - console-log
       - zuul-swift-test-results-with-console
 
-    node: '{node}'
+    node: ubuntu-trusty
 
 - job-template:
     name: 'gate-{name}-python34-constraints'
@@ -235,8 +257,15 @@
     builders:
       - print-template-name:
           template-name: "{template-name}"
-      - revoke-sudo
       - zuul-git-prep-upper-constraints
+      - install-distro-packages
+      - mysql-prep
+      - pgsql-prep
+      - mysql-db:
+          db_name: openstack_citest
+      - pgsql-db:
+          db_name: openstack_citest
+      - revoke-sudo
       - pypy
       - assert-no-extra-files
 
@@ -245,7 +274,7 @@
       - console-log
       - zuul-swift-test-results-with-console
 
-    node: '{node}'
+    node: ubuntu-trusty
 
 - job-template:
     name: 'gate-{name}-pypy-constraints'
@@ -277,15 +306,16 @@
     builders:
       - print-template-name:
           template-name: "{template-name}"
-      - revoke-sudo
       - zuul-git-prep-upper-constraints
+      - install-distro-packages
+      - revoke-sudo
       - docs
 
     publishers:
       - zuul-swift-upload-console-log
       - upload-sphinx-draft
 
-    node: '{node}'
+    node: ubuntu-trusty
 
 - job-template:
     name: 'gate-{name}-docs-constraints'
@@ -471,13 +501,14 @@
 
 - job-template:
     name: 'gate-{name}-requirements'
-    node: bare-trusty
+    node: ubuntu-trusty
 
     builders:
       - print-template-name:
           template-name: "{template-name}"
-      - revoke-sudo
       - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
       - shell: |
           #!/bin/bash -xe
           /usr/local/jenkins/slave_scripts/project-requirements-change.py $ZUUL_BRANCH
