@@ -1592,6 +1592,9 @@ jobs:
   - name: gate-app-catalog-python34
     voting: false
 
+  - name: gate-app-catalog-ui-npm-run-lint
+    voting: false
+
   - name: barbican-coverage
     voting: false
 
@@ -4048,7 +4051,11 @@ projects:
   - name: openstack/app-catalog-ui
     template:
       - name: merge-check
-      - name: noop-jobs
+    check:
+      - gate-app-catalog-ui-pep8
+      - gate-app-catalog-ui-npm-run-lint
+    gate:
+      - gate-app-catalog-ui-pep8
 
   - name: openstack/astara
     template:
