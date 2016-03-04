@@ -27,6 +27,11 @@ setup_git
 # exists and will always set COMMIT_MSG.
 setup_commit_message $PROJECT $USERNAME $BRANCH $TOPIC "$INITIAL_COMMIT_MSG"
 
+# Function check_already_approved will quit the proposal process if there
+# is already an approved job with the same CHANGE_ID
+check_already_approved $CHANGE_ID
+
+
 tox -e genconfig
 RET=$?
 if [ "$RET" -ne "0" ] ; then
