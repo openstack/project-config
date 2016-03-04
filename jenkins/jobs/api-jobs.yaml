@@ -1,10 +1,11 @@
 - job:
     name: openstack-api-ref
-    node: bare-trusty
+    node: ubuntu-trusty
 
     builders:
-      - revoke-sudo
       - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
       - tox:
           envlist: 'publishdocs-api'
 
@@ -24,11 +25,12 @@
 
 - job:
     name: openstack-api-ref-publish-lang
-    node: bare-trusty
+    node: ubuntu-trusty
 
     builders:
-      - revoke-sudo
       - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
       - tox:
           envlist: 'publishlang-api'
 
@@ -44,11 +46,12 @@
 - job:
     name: gate-build-swagger
     description: Build and publish draft Swagger files from WADL migration.
-    node: bare-trusty
+    node: ubuntu-trusty
 
     builders:
-      - revoke-sudo
       - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
       - tox:
           envlist: 'makeswagger'
 
@@ -59,11 +62,12 @@
 - job:
     name: gate-compute-api-guide
     description: Build and draft the Compute API Guide from nova source.
-    node: bare-trusty
+    node: ubuntu-trusty
 
     builders:
-      - revoke-sudo
       - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
       - tox:
           envlist: 'api-guide'
 
@@ -74,11 +78,12 @@
 - job:
     name: compute-api-guide
     description: Build and publish the Compute API Guide from nova source.
-    node: bare-trusty
+    node: ubuntu-trusty
 
     builders:
-      - revoke-sudo
       - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
       - tox:
           envlist: 'api-guide'
 
@@ -92,11 +97,12 @@
 - job:
     name: python-openstacksdk-docs
     description: Build and publish the Python SDK docs from source.
-    node: bare-trusty
+    node: ubuntu-trusty
 
     builders:
-      - revoke-sudo
       - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
       - docs
 
     publishers:
