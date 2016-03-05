@@ -41,6 +41,7 @@ labels:
       - name: bluebox-sjc1
       - name: internap-nyj01
       - name: vexxhost-ca-ymq-1
+      - name: osic-cloud1
   - name: bare-trusty
     image: bare-trusty
     ready-script: configure_mirror.sh
@@ -59,6 +60,7 @@ labels:
       - name: bluebox-sjc1
       - name: internap-nyj01
       - name: vexxhost-ca-ymq-1
+      - name: osic-cloud1
   - name: ubuntu-trusty-2-node
     image: ubuntu-trusty
     ready-script: multinode_setup.sh
@@ -70,6 +72,7 @@ labels:
       - name: bluebox-sjc1
       - name: internap-nyj01
       - name: vexxhost-ca-ymq-1
+      - name: osic-cloud1
   - name: devstack-trusty-2-node
     image: devstack-trusty
     ready-script: multinode_setup.sh
@@ -93,6 +96,7 @@ labels:
       - name: bluebox-sjc1
       - name: internap-nyj01
       - name: vexxhost-ca-ymq-1
+      - name: osic-cloud1
   - name: fedora-23
     image: fedora-23
     ready-script: configure_mirror.sh
@@ -106,6 +110,7 @@ labels:
       - name: bluebox-sjc1
       - name: internap-nyj01
       - name: vexxhost-ca-ymq-1
+      - name: osic-cloud1
   - name: tripleo-f22
     image: tripleo-f22
     min-ready: 18
@@ -449,6 +454,43 @@ providers:
         config-drive: true
       - name: fedora-23
         min-ram: 8000
+        diskimage: fedora-23
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+  - name: osic-cloud1
+    region-name: 'RegionOne'
+    cloud: osic-cloud1
+    api-timeout: 60
+    boot-timeout: 120
+    max-servers: 1
+    rate: 0.001
+    pool: 'GATEWAY_NET'
+    images:
+      - name: devstack-trusty
+        min-ram: 8000
+        name-filter: 'm2.medium'
+        diskimage: devstack-trusty
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+      - name: ubuntu-trusty
+        min-ram: 8000
+        name-filter: 'm2.medium'
+        diskimage: ubuntu-trusty
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+      - name: devstack-centos7
+        min-ram: 8000
+        name-filter: 'm2.medium'
+        diskimage: devstack-centos7
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+      - name: fedora-23
+        min-ram: 8000
+        name-filter: 'm2.medium'
         diskimage: fedora-23
         username: jenkins
         private-key: /home/nodepool/.ssh/id_rsa
