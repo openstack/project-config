@@ -1,11 +1,12 @@
 # This is a non-standard docs job because it uses SCP instead of FTP
 - job:
     name: python-storyboardclient-infra-docs
-    node: bare-trusty
+    node: ubuntu-trusty
 
     builders:
-      - revoke-sudo
       - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
       - docs
 
     publishers:
