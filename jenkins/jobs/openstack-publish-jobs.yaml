@@ -1,12 +1,13 @@
 - job-template:
     name: '{name}-docs'
-    node: bare-trusty
+    node: ubuntu-trusty
 
     builders:
       - print-template-name:
           template-name: "{template-name}"
-      - revoke-sudo
       - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
       - docs
 
     publishers:
@@ -22,13 +23,14 @@
 - job-template:
     name: '{name}-docs-tags-only'
     description: Publish documents only to tag location
-    node: bare-trusty
+    node: ubuntu-trusty
 
     builders:
       - print-template-name:
           template-name: "{template-name}"
-      - revoke-sudo
       - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
       - docs-tags-only-env:
           env: venv
 
