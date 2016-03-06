@@ -242,13 +242,14 @@
 
 - job-template:
     name: '{name}-tarball'
-    node: bare-trusty
+    node: ubuntu-trusty
 
     builders:
       - print-template-name:
           template-name: "{template-name}"
-      - revoke-sudo
       - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
       - tarball:
           env: venv
 
@@ -264,13 +265,14 @@
 
 - job-template:
     name: '{name}-branch-tarball'
-    node: bare-trusty
+    node: ubuntu-trusty
 
     builders:
       - print-template-name:
           template-name: "{template-name}"
-      - revoke-sudo
       - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
       - tarball:
           env: venv
       - shell: |
