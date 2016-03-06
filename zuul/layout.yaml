@@ -900,7 +900,7 @@ jobs:
   # Skip non-doc jobs for doc-only or translation-only neutron
   # changes. Since doc/source/conf.py is checked by
   # neutron-(pep8|pylint), those jobs should not be skipped.
-  - name: ^.*neutron-(dsvm-api|dsvm-functional|dsvm-functional-py34|python(27|34)|lbaasv[12]-dsvm-(api|minimal)|dsvm-fullstack)(-constraints)?$
+  - name: ^.*neutron-(dsvm-api|dsvm-functional|dsvm-functional-py34|python(27|34)|lbaasv[12]-dsvm-(api|minimal)|dsvm-fullstack)$
     skip-if:
       - project: ^openstack/neutron$
         all-files-match-any:
@@ -918,7 +918,7 @@ jobs:
           - ^doc/.*$
           - ^releasenotes/.*$
   # Skip non-doc jobs for doc-only neutron-lib changes.
-  - name: ^.*neutron-lib-python(27|34)(-constraints)?$
+  - name: ^.*neutron-lib-python(27|34)$
     skip-if:
       - project: ^openstack/neutron-lib$
         all-files-match-any:
@@ -927,7 +927,7 @@ jobs:
           - ^releasenotes/.*$
   # Skip non-doc jobs for doc-only neutron-vpnaas changes. The dsvm
   # tests area already skipped by another check.
-  - name: ^.*neutron-vpnaas-python(27|34)(-constraints)?$
+  - name: ^.*neutron-vpnaas-python(27|34)$
     skip-if:
       - project: ^openstack/neutron-vpnaas$
         all-files-match-any:
@@ -944,7 +944,7 @@ jobs:
   # Skip non-doc jobs for doc-only or translation-only nova changes.
   # Since doc/source/conf.py is checked by nova-(pep8|pylint), those
   # jobs should not be skipped.
-  - name: ^.*nova-(tox-functional|python27|python34)(-constraints)?$
+  - name: ^.*nova-(tox-functional|python27|python34)$
     skip-if:
       - project: ^openstack/nova$
         all-files-match-any:
@@ -1520,7 +1520,7 @@ jobs:
       - '^.*\.wadl'
       - '^.*\.xml$'
 
-  - name: ^gate-.*-docs(-constraints)?$
+  - name: ^gate-.*-docs$
     success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/doc/build/html/
 
   - name: gate-compute-api-guide
@@ -2342,14 +2342,9 @@ jobs:
   - name: ^openstack-ansible-releasenotes$
     branch: ^(?!juno|kilo).*$
 
-  # Constraints Jobs
-  - name: ^.*-constraints$
-    branch: ^(?!stable/kilo).*$
-
   # Don't run python34 on Kilo
   - name: ^gate-neutron-vpnaas-python34$
     branch: ^(?!stable/kilo).*$
-  # End Constraints Jobs
 
   - name: gate-python-fuelclient-python34
     branch: ^(?!stable/(?:6\.1|7.0)).*$
