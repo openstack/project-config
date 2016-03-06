@@ -1103,7 +1103,7 @@ jobs:
   - name: gate-requirements-integration-dsvm-resolver
     voting: false
 
-  - name: gate-requirements-tox-validate
+  - name: gate-requirements-tox-nodb-validate
     branch: ^(?!stable/kilo).*$
 
   - name: gate-tempest-dsvm-full
@@ -1618,7 +1618,7 @@ jobs:
   - name: gate-designate-python34
     branch: ^(?!stable/(?:kilo|liberty)).*$
 
-  - name: gate-designate-tox-bandit
+  - name: gate-designate-tox-nodb-bandit
     branch: master
     voting: false
 
@@ -1665,7 +1665,7 @@ jobs:
   - name: sahara-coverage
     voting: false
 
-  - name: gate-sahara-tox-bandit
+  - name: gate-sahara-tox-nodb-bandit
     branch: ^(?!stable/kilo).*$
     voting: false
 
@@ -1697,7 +1697,7 @@ jobs:
   - name: gate-app-catalog-ui-dsvm-integration
     voting: false
 
-  - name: gate-keystone-tox-bandit
+  - name: gate-keystone-tox-nodb-bandit
     branch: ^stable/liberty$
 
   - name: gate-keystone-tox-legacy_drivers
@@ -1716,10 +1716,10 @@ jobs:
     branch: ^(?!stable/(kilo|liberty)).*$
     voting: false
 
-  - name: gate-keystonemiddleware-tox-bandit
+  - name: gate-keystonemiddleware-tox-nodb-bandit
     branch: ^stable/liberty$
 
-  - name: gate-python-keystoneclient-tox-bandit
+  - name: gate-python-keystoneclient-tox-nodb-bandit
     branch: ^stable/liberty$
 
   - name: gate-rally-dsvm-keystone
@@ -2012,7 +2012,7 @@ jobs:
   - name: gate-trove-scenario-functional-dsvm-redis
     voting: false
 
-  - name: gate-anchor-tox-bandit
+  - name: gate-anchor-tox-nodb-bandit
     branch: master
     voting: false
 
@@ -3851,7 +3851,7 @@ projects:
       - name: openstack-server-publish-jobs
       - name: check-requirements
     experimental:
-      - gate-anchor-tox-bandit
+      - gate-anchor-tox-nodb-bandit
 
   - name: openstack/ansible-role-diskimage-builder
     template:
@@ -4848,10 +4848,10 @@ projects:
     template:
       - name: merge-check
     check:
-      - gate-defcore-tox-doc8
+      - gate-defcore-tox-nodb-doc8
       - gate-defcore-docs
     gate:
-      - gate-defcore-tox-doc8
+      - gate-defcore-tox-nodb-doc8
       - gate-defcore-docs
 
   - name: openstack/designate
@@ -4876,7 +4876,7 @@ projects:
       - designate-coverage
     experimental:
       - gate-designate-dsvm-powerdns-postgres
-      - gate-designate-tox-bandit
+      - gate-designate-tox-nodb-bandit
 
   - name: openstack/designate-dashboard
     template:
@@ -6345,12 +6345,12 @@ projects:
       - name: release-notes-jobs
       - name: experimental-bindep-jobs
     check:
-      - gate-keystone-tox-bandit
+      - gate-keystone-tox-nodb-bandit
       - gate-keystone-tox-legacy_drivers
       - gate-tempest-dsvm-keystone-eventlet-full
       - gate-tempest-dsvm-keystone-uwsgi-full-nv
     gate:
-      - gate-keystone-tox-bandit
+      - gate-keystone-tox-nodb-bandit
       - gate-keystone-tox-legacy_drivers
     post:
       - keystone-coverage
@@ -6390,9 +6390,9 @@ projects:
       - name: publish-to-pypi
       - name: release-notes-jobs
     check:
-      - gate-keystonemiddleware-tox-bandit
+      - gate-keystonemiddleware-tox-nodb-bandit
     gate:
-      - gate-keystonemiddleware-tox-bandit
+      - gate-keystonemiddleware-tox-nodb-bandit
     post:
       - keystonemiddleware-coverage
 
@@ -9250,10 +9250,10 @@ projects:
       - name: experimental-bindep-jobs
     check:
       - gate-keystoneclient-dsvm-functional
-      - gate-python-keystoneclient-tox-bandit
+      - gate-python-keystoneclient-tox-nodb-bandit
     gate:
       - gate-keystoneclient-dsvm-functional
-      - gate-python-keystoneclient-tox-bandit
+      - gate-python-keystoneclient-tox-nodb-bandit
     post:
       - python-keystoneclient-coverage
     experimental:
@@ -9824,7 +9824,7 @@ projects:
       - gate-requirements-python27
       - gate-requirements-integration-dsvm
       - gate-requirements-integration-dsvm-resolver
-      - gate-requirements-tox-validate
+      - gate-requirements-tox-nodb-validate
       - gate-grenade-dsvm-multinode
       # NOTE(mriedem): The multinode and partial-ncpu jobs should be mutually
       # exclusive as to what branches they run on. partial-ncpu should only
@@ -9836,7 +9836,7 @@ projects:
       - gate-requirements-pep8
       - gate-requirements-python27
       - gate-requirements-integration-dsvm
-      - gate-requirements-tox-validate
+      - gate-requirements-tox-nodb-validate
       - gate-grenade-dsvm-multinode
       - gate-grenade-dsvm-partial-ncpu
     periodic:
@@ -9850,9 +9850,9 @@ projects:
     template:
       - name: merge-check
     check:
-      - gate-rpm-packaging-tox-lint
+      - gate-rpm-packaging-tox-nodb-lint
     gate:
-      - gate-rpm-packaging-tox-lint
+      - gate-rpm-packaging-tox-nodb-lint
 
   - name: openstack/rpm-packaging-tools
     template:
@@ -9876,7 +9876,7 @@ projects:
       - gate-sahara-pylint
       - gate-tempest-dsvm-sahara
       - sahara-coverage
-      - gate-sahara-tox-bandit
+      - gate-sahara-tox-nodb-bandit
       - gate-grenade-dsvm-sahara
       - gate-sahara-dsvm-scenario-neutron-heat
       - gate-sahara-dsvm-scenario-nova-heat
