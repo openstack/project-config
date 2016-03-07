@@ -2544,10 +2544,8 @@
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"CONFIGURE_GLUSTERFS_NOVA=True"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"CONFIGURE_GLUSTERFS_CINDER=True"
 
-          # Skip test_volume_boot_pattern test cases for GlusterFS until bug 1444806 is fixed.
-          # Below regex also exclude the slow tag.
-          # '557cd2c2-4eb8-4dce-98be-f86765ff311' is the idempotent id of 'test_volume_boot_pattern' test case.
-          r="^(?!(.*\[.*slow.*\])|(.*\[.*557cd2c2-4eb8-4dce-98be-f86765ff311.*\])).*$"
+          # Below regex exclude the slow tag.
+          r="^(?!(.*\[.*slow.*\])).*$"
           export DEVSTACK_GATE_TEMPEST_REGEX="$r"
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
