@@ -74,14 +74,18 @@ def main():
         # YAML module which is not in the stdlib.
         m = PROJECT_RE.match(line)
         if m:
-            (status, out) = clone_repo(m.group(1))
-            print out
-            if status != 0:
-                print 'Retrying to clone %s' % m.group(1)
-                (status, out) = clone_repo(m.group(1))
+            project = m.group(1)
+            dirname = os.path.dirname(project)
+            # Skip repos that are inactive
+            if not ('attic' in dirname or dirname == 'stackforge'):
+                (status, out) = clone_repo(project)
                 print out
                 if status != 0:
-                    raise Exception('Failed to clone %s' % m.group(1))
+                    print 'Retrying to clone %s' % m.group(1)
+                    (status, out) = clone_repo(m.group(1))
+                    print out
+                    if status != 0:
+                        raise Exception('Failed to clone %s' % m.group(1))
 
 
 if __name__ == '__main__':
