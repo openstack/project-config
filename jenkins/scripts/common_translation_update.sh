@@ -234,6 +234,7 @@ function extract_messages {
     # The "_C" and "_P" prefix are for more-gettext-support blueprint,
     # "_C" for message with context, "_P" for plural form message.
     python setup.py $QUIET extract_messages --keyword "_C:1c,2 _P:1,2" \
+        --add-comments Translators: \
         --output-file ${POT}
 }
 
@@ -249,6 +250,7 @@ function extract_messages_log {
         POT=${modulename}/locale/${modulename}-log-${level}.pot
         python setup.py $QUIET extract_messages --no-default-keywords \
             --keyword ${LKEYWORD[$level]} \
+            --add-comments Translators: \
             --output-file ${POT}
         # We don't need to add or send around empty source files.
         trans=$(msgfmt --statistics -o /dev/null ${POT} 2>&1)
@@ -292,6 +294,7 @@ function extract_messages_django {
             POT=${modulename}/locale/${DOMAIN}.pot
             touch ${POT}
             $VENV/bin/pybabel extract -F babel-${DOMAIN}.cfg \
+                --add-comments Translators: \
                 -o ${POT} $KEYWORDS ${modulename}
             # We don't need to add or send around empty source files.
             trans=$(msgfmt --statistics -o /dev/null ${POT} 2>&1)
