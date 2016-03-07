@@ -18,12 +18,13 @@
 
 - job-template:
     name: '{pipeline}-windmill-{scenario}-{ostype}{job-suffix}'
-    node: 'devstack-{ostype}'
+    node: '{ostype}'
 
     builders:
       - print-template-name:
           template-name: "{template-name}"
       - windmill-checkout
+      - install-distro-packages
       - shell: |
           # Allow Jenkins user to ssh into localhost
           ssh-keygen -f ~/.ssh/id_rsa -N ""
@@ -42,16 +43,16 @@
       - '{pipeline}-windmill-{scenario}-{ostype}{job-suffix}':
           job-suffix: '-nv'
           ostype:
-            - centos7
-            - trusty
+            - devstack-centos7
+            - ubuntu-trusty
           pipeline: gate
           scenario:
             - deploy
       - '{pipeline}-windmill-{scenario}-{ostype}{job-suffix}':
           job-suffix: ''
           ostype:
-            - centos7
-            - trusty
+            - devstack-centos7
+            - ubuntu-trusty
           pipeline: gate
           scenario:
             - deploy
