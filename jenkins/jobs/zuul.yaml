@@ -1,10 +1,11 @@
 - job:
     name: 'dev-zuul-coverage'
-    node: bare-trusty
+    node: ubuntu-trusty
 
     builders:
-      - revoke-sudo
       - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
       - coverage:
           env: cover
 
@@ -14,6 +15,7 @@
 
 - job:
     name: 'periodic-test'
+    node: ubuntu-trusty
 
     wrappers:
       - build-timeout:
@@ -21,6 +23,8 @@
       - timestamps
 
     builders:
+      - gerrit-git-prep
+      - install-distro-packages
       - revoke-sudo
       - branch-git-prep:
           branch: master
@@ -29,5 +33,3 @@
     publishers:
       - test-results
       - console-log
-
-    node: bare-trusty

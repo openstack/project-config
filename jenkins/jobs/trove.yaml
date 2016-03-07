@@ -1,11 +1,13 @@
 - job-template:
     name: 'gate-trove-buildimage-{datastore}'
-    node: bare-trusty
+    node: ubuntu-trusty
 
     builders:
       - link-logs
       - net-info
       - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
       - shell: |
           #!/bin/bash -xe
           sudo mkdir -p /opt/trove-image-build
