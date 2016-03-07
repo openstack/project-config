@@ -598,6 +598,43 @@
       - console-log
 
 - job-template:
+    name: '{pipeline}-tempest-dsvm-nova-libvirt-kvm-apr{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 180
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_TEMPEST_FULL=1
+          export PROJECTS="openstack/devstack-plugin-additional-pkg-repos $PROJECTS"
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin apr git://git.openstack.org/openstack/devstack-plugin-additional-pkg-repos"
+          # We want to test the latest libvirt with kvm version with that plugin
+          # TODO: (markus_z) rename that in the apr repo to "libvirt-kvm"
+          #       to make the chosen virtualization technology explicit.
+          export LATEST_CODEBASES=libvirt
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
     name: '{pipeline}-tempest-dsvm-lxc-f23{job-suffix}'
     node: 'fedora-23'
 
