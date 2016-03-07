@@ -2,7 +2,7 @@
 
 - job-template:
     name: '{name}-publish-specs'
-    node: bare-trusty
+    node: ubuntu-trusty
 
     # We want to publish to org/name but the scp publisher cannot remove paths,
     # so use a shell builder to move the content in the right place and publish
@@ -10,8 +10,9 @@
     builders:
       - print-template-name:
           template-name: "{template-name}"
-      - revoke-sudo
       - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
       - docs:
           project: '{name}'
       - shell: |
@@ -40,15 +41,16 @@
     name: generate-specs-site
 
     builders:
-      - revoke-sudo
       - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
       - tox:
           envlist: specs
 
 - job:
     name: gate-generate-specs-site
     description: Render the specs sites templates without publishing them.
-    node: bare-trusty
+    node: ubuntu-trusty
 
     builders:
       - generate-specs-site
@@ -56,7 +58,7 @@
 - job:
     name: publish-specs-site
     description: Render the specs sites templates and publish them.
-    node: bare-trusty
+    node: ubuntu-trusty
 
     builders:
       - generate-specs-site
