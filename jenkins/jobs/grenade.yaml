@@ -2,11 +2,12 @@
 # we cannot use the normal docs jobs.
 - job:
     name: grenade-publish-docs
-    node: bare-trusty
+    node: ubuntu-trusty
 
     builders:
-      - revoke-sudo
       - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
       - tox:
           envlist: 'docs'
 
@@ -22,11 +23,12 @@
 
 - job:
     name: gate-grenade-publish-docs
-    node: bare-trusty
+    node: ubuntu-trusty
 
     builders:
-      - revoke-sudo
       - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
       - tox:
           envlist: 'docs'
 
