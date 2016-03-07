@@ -21,27 +21,28 @@ if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
 fi
 set -e
 
-if [[ ${YUM:-yum} == "dnf" ]]; then
-    echo "*** caching disabled for dnf"
-    echo "*** see https://etherpad.openstack.org/p/infra-f22"
-    exit 0
-fi
-
 # Build up a list of packages to install by concatenating bindep lists
 FALLBACKREPO=/opt/git/openstack-infra/project-config
 FALLBACKFILE=jenkins/data/bindep-fallback.txt
 PACKAGES=`git --git-dir=$FALLBACKREPO/.git show master:$FALLBACKFILE`
-REQSFILE=other-requirements.txt
-for REPO in /opt/git/*/* ; do
-    BRANCHES=`git --git-dir=$REPO/.git branch -r | grep '^  origin/[^H]'`
-    for BRANCH in $BRANCHES ; do
-        REQS=`git --git-dir=$REPO/.git show $BRANCH:$REQSFILE 2>/dev/null \
-            || true`
-        if [ -n "$REQS" ] ; then
-            PACKAGES=`echo -e "$PACKAGES\n$REQS" | sort -u`
-        fi
+
+# NOTE(pabelanger): We currently don't gate on other-requirements.txt
+# for centos and fedora nodes. As such, we have no way to ensure this will
+# not break DIB process. So we only run this for ubuntu-trusty.
+if [ -f /usr/bin/apt-get ] ; then
+    REQSFILE=other-requirements.txt
+    for REPO in /opt/git/*/* ; do
+        BRANCHES=`git --git-dir=$REPO/.git branch -r | grep '^  origin/[^H]'`
+        for BRANCH in $BRANCHES ; do
+            REQS=`git --git-dir=$REPO/.git show $BRANCH:$REQSFILE 2>/dev/null \
+                || true`
+            if [ -n "$REQS" ] ; then
+                PACKAGES=`echo -e "$PACKAGES\n$REQS" | sort -u`
+            fi
+        done
     done
-done
+fi
+
 # TODO(fungi) once https://review.openstack.org/195201 appears in a bindep
 # release, replace the next four lines with:
 # PACKAGELIST=`echo "$PACKAGES" | /usr/bindep-env/bin/bindep -b -f - || true`
@@ -54,5 +55,5 @@ if [ -f /usr/bin/apt-get ] ; then
     # --ignore-missing conflicts with set -e, so force it to be ok
     apt-get -y --ignore-missing -d install $PACKAGELIST || true
 else
-    yum install -y --downloadonly $PACKAGELIST
+    ${YUM} install -y --downloadonly $PACKAGELIST
 fi
