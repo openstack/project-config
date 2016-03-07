@@ -41,52 +41,6 @@
           excludes: ''
       - console-log
 
-
-- job-template:
-    name: '{name}-docs-constraints'
-    node: bare-trusty
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - revoke-sudo
-      - zuul-git-prep-upper-constraints
-      - docs-env:
-          env: venv-constraints
-
-    publishers:
-      - ftp:
-          site: '{doc-publisher-site}'
-          source: 'doc/build/html/**'
-          target: 'developer/{name}'
-          remove-prefix: 'doc/build/html'
-          excludes: ''
-      - console-log
-
-
-- job-template:
-    name: '{name}-docs-tags-only-constraints'
-    description: Publish documents only to tag location, uses constraints
-    node: bare-trusty
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - revoke-sudo
-      - zuul-git-prep-upper-constraints
-      - docs-tags-only-env:
-          env: venv-constraints
-
-    publishers:
-      - ftp:
-          site: '{doc-publisher-site}'
-          source: 'doc/build/html/**'
-          target: 'developer/{name}'
-          remove-prefix: 'doc/build/html'
-          excludes: ''
-      - console-log
-
-
 - job-template:
     name: '{name}-merge-release-tags'
 
@@ -153,8 +107,6 @@
     jobs:
       - '{name}-docs'
       - '{name}-docs-tags-only'
-      - '{name}-docs-constraints'
-      - '{name}-docs-tags-only-constraints'
       - '{name}-merge-release-tags'
 
 
