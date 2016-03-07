@@ -2,11 +2,12 @@
 # run_tests.sh entry point
 - job:
     name: gate-devstack-unit-tests
-    node: bare-trusty
+    node: ubuntu-trusty
 
     builders:
-      - revoke-sudo
       - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
       - shell: |
           #!/bin/bash -xe
           ./run_tests.sh
@@ -19,11 +20,12 @@
 # we cannot use the normal docs jobs.
 - job:
     name: devstack-publish-docs
-    node: bare-trusty
+    node: ubuntu-trusty
 
     builders:
-      - revoke-sudo
       - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
       - tox:
           envlist: 'docs'
 
@@ -39,11 +41,12 @@
 
 - job:
     name: gate-devstack-publish-docs
-    node: bare-trusty
+    node: ubuntu-trusty
 
     builders:
-      - revoke-sudo
       - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
       - tox:
           envlist: 'docs'
 
