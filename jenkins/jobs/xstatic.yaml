@@ -1,0 +1,19 @@
+- job:
+    name: 'xstatic-check-version'
+    node: ubuntu-trusty
+
+    builders:
+      - revoke-sudo
+      - gerrit-git-prep
+      - shell: |
+          virtualenv .venv
+          source .venv/bin/activate
+          pip --version
+          # Install setuptools_scm pre-requisite
+          pip install setuptools_scm
+          # Check version match
+          /usr/local/jenkins/slave_scripts/xstatic_check_version.py
+          deactivate
+
+    publishers:
+      - console-log
