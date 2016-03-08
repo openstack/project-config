@@ -41,12 +41,13 @@
 
 - job:
     name: 'gate-mistral-docker-buildimage'
-    node: bare-trusty
+    node: ubuntu-trusty
 
     builders:
       - link-logs
       - net-info
       - gerrit-git-prep
+      - install-distro-packages
       - shell: |
           #!/bin/bash -xe
           if [ -x "/usr/bin/apt-get" ]; then
