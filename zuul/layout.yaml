@@ -1084,7 +1084,7 @@ jobs:
   - name: gate-rally-dsvm-fakevirt-heat
     voting: false
 
-  - name: gate-rally-tox-self
+  - name: gate-rally-tox-nodb-self
     voting: false
 
   - name: gate-rally-dsvm-designate-designate
@@ -1101,7 +1101,7 @@ jobs:
   - name: gate-rally-dsvm-zaqar-zaqar
     voting: false
 
-  - name: gate-zaqar-tox-integration
+  - name: gate-zaqar-tox-nodb-integration
     voting: false
 
   - name: gate-tempest-dsvm-neutron-nv
@@ -1399,7 +1399,7 @@ jobs:
     failure-message: WARNING XML output has changed.
     success-message: XML output is unchanged.
 
-  - name: gate-jenkins-job-builder-tox-docs-linkcheck
+  - name: gate-jenkins-job-builder-tox-nodb-docs-linkcheck
     voting: false
     failure-message: WARNING broken links in docs
 
@@ -1608,7 +1608,7 @@ jobs:
   - name: gate-hacking-integration-nova
     voting: false
 
-  - name: gate-elastic-recheck-tox-queries
+  - name: gate-elastic-recheck-tox-nodb-queries
     voting: false
 
   - name: gate-ironic-python34
@@ -2007,19 +2007,19 @@ jobs:
   - name: ^gate-telemetry-dsvm-integration-.*$
     branch: ^(?!stable/kilo).*$
 
-  - name: gate-horizon-tox-py27dj18
+  - name: gate-horizon-tox-nodb-py27dj18
     branch: ^(?!stable/kilo).*$
 
   # TODO(robcresswell): Make voting once tests are passing reliably
-  - name: gate-horizon-tox-py27dj19
+  - name: gate-horizon-tox-nodb-py27dj19
     branch: ^(?!stable/(kilo|liberty)).*$
     voting: false
 
-  - name: gate-django_openstack_auth-tox-py27dj18
+  - name: gate-django_openstack_auth-tox-nodb-py27dj18
     branch: ^(?!stable/(kilo|liberty)).*$
 
   # TODO(robcresswell): Make voting once tests are passing reliably
-  - name: gate-django_openstack_auth-tox-py27dj19
+  - name: gate-django_openstack_auth-tox-nodb-py27dj19
     branch: ^(?!stable/(kilo|liberty)).*$
     voting: false
 
@@ -2211,7 +2211,7 @@ jobs:
   - name: gate-swift-python34
     branch: ^(?!stable/(?:kilo|liberty)).*$
 
-  - name: gate-swift-tox-func-in-process-fast-post
+  - name: gate-swift-tox-nodb-func-in-process-fast-post
     voting: false
 
   - name: gate-nova-python34
@@ -2279,7 +2279,7 @@ jobs:
     branch: ^(?!stable/kilo).*$
 
   # Only run the unit cross tests for cliff against master.
-  - name: ^gate-cliff-tox-(openstackclient|neutronclient)-tip$
+  - name: ^gate-cliff-tox-nodb-(openstackclient|neutronclient)-tip$
     branch: ^master$
 
   # Skip Kilo and Liberty for
@@ -2522,9 +2522,9 @@ projects:
     template:
       - name: merge-check
     check:
-      - gate-oslo-cookiecutter-tox-cookiecutter
+      - gate-oslo-cookiecutter-tox-nodb-cookiecutter
     gate:
-      - gate-oslo-cookiecutter-tox-cookiecutter
+      - gate-oslo-cookiecutter-tox-nodb-cookiecutter
 
   - name: openstack-dev/pbr
     template:
@@ -2665,7 +2665,7 @@ projects:
       - gate-elastic-recheck-pep8
       - gate-elastic-recheck-docs
       - gate-elastic-recheck-python27
-      - gate-elastic-recheck-tox-queries
+      - gate-elastic-recheck-tox-nodb-queries
     gate:
       - gate-elastic-recheck-pep8
       - gate-elastic-recheck-docs
@@ -2841,7 +2841,7 @@ projects:
     check:
       - jenkins-job-builder-compare-xml
       - jenkins-job-builder-coverage
-      - gate-jenkins-job-builder-tox-docs-linkcheck
+      - gate-jenkins-job-builder-tox-nodb-docs-linkcheck
     post:
       - jenkins-job-builder-coverage
 
@@ -4500,12 +4500,12 @@ projects:
       - name: openstack-server-publish-jobs
       - name: check-requirements
     check:
-      - gate-cliff-tox-neutronclient-tip
-      - gate-cliff-tox-openstackclient-tip
+      - gate-cliff-tox-nodb-neutronclient-tip
+      - gate-cliff-tox-nodb-openstackclient-tip
       - gate-tempest-dsvm-neutron-src-cliff
     gate:
-      - gate-cliff-tox-neutronclient-tip
-      - gate-cliff-tox-openstackclient-tip
+      - gate-cliff-tox-nodb-neutronclient-tip
+      - gate-cliff-tox-nodb-openstackclient-tip
       - gate-tempest-dsvm-neutron-src-cliff
 
   - name: openstack/cloud-init
@@ -4514,11 +4514,11 @@ projects:
       - name: python-jobs
       - name: python3-jobs
     check:
-      - gate-cloud-init-tox-py27-coverage
-      - gate-cloud-init-tox-py34-coverage
+      - gate-cloud-init-tox-nodb-py27-coverage
+      - gate-cloud-init-tox-nodb-py34-coverage
     gate:
-      - gate-cloud-init-tox-py27-coverage
-      - gate-cloud-init-tox-py34-coverage
+      - gate-cloud-init-tox-nodb-py27-coverage
+      - gate-cloud-init-tox-nodb-py34-coverage
 
   - name: openstack/cloudbase-init
     template:
@@ -5008,10 +5008,10 @@ projects:
       - name: translation-jobs
       - name: publish-to-pypi
     check:
-      - gate-django_openstack_auth-tox-py27dj18
-      - gate-django_openstack_auth-tox-py27dj19
+      - gate-django_openstack_auth-tox-nodb-py27dj18
+      - gate-django_openstack_auth-tox-nodb-py27dj19
     gate:
-      - gate-django_openstack_auth-tox-py27dj18
+      - gate-django_openstack_auth-tox-nodb-py27dj18
 
   - name: openstack/django-openstack-auth-kerberos
     template:
@@ -6067,14 +6067,14 @@ projects:
       - name: javascript-jobs
     check:
       - gate-horizon-jshint
-      - gate-horizon-tox-py27dj18
-      - gate-horizon-tox-py27dj19
+      - gate-horizon-tox-nodb-py27dj18
+      - gate-horizon-tox-nodb-py27dj19
       - gate-horizon-dsvm-integration
       - gate-horizon-selenium-headless
       - gate-tempest-dsvm-full
       - gate-grenade-dsvm
     gate:
-      - gate-horizon-tox-py27dj18
+      - gate-horizon-tox-nodb-py27dj18
       - gate-tempest-dsvm-full
       - gate-horizon-dsvm-integration
       - gate-horizon-selenium-headless
@@ -6181,12 +6181,12 @@ projects:
       - name: translation-jobs
       - name: release-notes-jobs
     check:
-      - gate-ironic-inspector-tox-func
+      - gate-ironic-inspector-tox-nodb-func
       - gate-ironic-inspector-dsvm-dib
       - gate-ironic-inspector-dsvm-ipa
       - gate-ironic-inspector-dsvm-discovery-nv
     gate:
-      - gate-ironic-inspector-tox-func
+      - gate-ironic-inspector-tox-nodb-func
       - gate-ironic-inspector-dsvm-ipa
 
   - name: openstack/ironic-inspector-specs
@@ -6483,7 +6483,7 @@ projects:
       - name: release-notes-jobs
     check:
       - manila-coverage
-      - gate-manila-tox-genconfig
+      - gate-manila-tox-nodb-genconfig
       - gate-manila-pylint
       - gate-manila-tempest-dsvm-neutron
       - gate-manila-tempest-dsvm-neutron-multibackend
@@ -6497,7 +6497,7 @@ projects:
       - gate-manila-tempest-dsvm-glusterfs-native
       - gate-manila-tempest-dsvm-hdfs
     gate:
-      - gate-manila-tox-genconfig
+      - gate-manila-tox-nodb-genconfig
       - gate-manila-tempest-dsvm-neutron-multibackend
     post:
       - manila-coverage
@@ -9130,12 +9130,12 @@ projects:
     check:
         - gate-python-ironic-inspector-client-pep8
         - gate-python-ironic-inspector-client-python27
-        - gate-python-ironic-inspector-client-tox-func
+        - gate-python-ironic-inspector-client-tox-nodb-func
         - gate-python-ironic-inspector-client-dsvm
     gate:
         - gate-python-ironic-inspector-client-pep8
         - gate-python-ironic-inspector-client-python27
-        - gate-python-ironic-inspector-client-tox-func
+        - gate-python-ironic-inspector-client-tox-nodb-func
         - gate-python-ironic-inspector-client-dsvm
 
   - name: openstack/python-ironicclient
@@ -9626,7 +9626,7 @@ projects:
       - gate-rally-dsvm-cli
       - gate-rally-dsvm-verify-light
       - gate-rally-dsvm-verify-full
-      - gate-rally-tox-self
+      - gate-rally-tox-nodb-self
     gate:
       - gate-rally-install-bare-precise
       - gate-rally-install-devstack-centos7
@@ -9696,12 +9696,12 @@ projects:
     template:
       - name: merge-check
     check:
-      - gate-releases-tox-validate
-      - gate-releases-tox-list-changes
+      - gate-releases-tox-nodb-validate
+      - gate-releases-tox-nodb-list-changes
       - gate-releases-pep8
       - gate-releases-docs
     gate:
-      - gate-releases-tox-validate
+      - gate-releases-tox-nodb-validate
       - gate-releases-docs
     release-post:
       - static-releases-publish
@@ -9730,11 +9730,11 @@ projects:
       - name: publish-to-pypi
       - name: docs-on-rtfd
     check:
-      - gate-requests-mock-tox-keystoneclient-tip
-      - gate-requests-mock-tox-novaclient-tip
+      - gate-requests-mock-tox-nodb-keystoneclient-tip
+      - gate-requests-mock-tox-nodb-novaclient-tip
     gate:
-      - gate-requests-mock-tox-keystoneclient-tip
-      - gate-requests-mock-tox-novaclient-tip
+      - gate-requests-mock-tox-nodb-keystoneclient-tip
+      - gate-requests-mock-tox-nodb-novaclient-tip
 
   - name: openstack/requirements
     template:
@@ -10355,13 +10355,13 @@ projects:
       - name: check-requirements
       - name: translation-jobs
     check:
-      - gate-swift-tox-func
-      - gate-swift-tox-func-in-process-fast-post
+      - gate-swift-tox-nodb-func
+      - gate-swift-tox-nodb-func-in-process-fast-post
       - gate-tempest-dsvm-full
       - gate-grenade-dsvm
       - gate-swift-dsvm-functional
     gate:
-      - gate-swift-tox-func
+      - gate-swift-tox-nodb-func
       - gate-tempest-dsvm-full
       - gate-grenade-dsvm
       - gate-swift-dsvm-functional
@@ -10415,14 +10415,14 @@ projects:
       - name: python-jobs
     check:
       - gate-swift3-pylint
-      - gate-swift3-tox-tempauth
-      - gate-swift3-tox-keystone
-      - gate-swift3-tox-s3acl
+      - gate-swift3-tox-nodb-tempauth
+      - gate-swift3-tox-nodb-keystone
+      - gate-swift3-tox-nodb-s3acl
     gate:
       - gate-swift3-pylint
-      - gate-swift3-tox-tempauth
-      - gate-swift3-tox-keystone
-      - gate-swift3-tox-s3acl
+      - gate-swift3-tox-nodb-tempauth
+      - gate-swift3-tox-nodb-keystone
+      - gate-swift3-tox-nodb-s3acl
     post:
       - swift3-coverage
 
@@ -11157,7 +11157,7 @@ projects:
       - name: openstack-server-release-jobs
       - name: release-notes-jobs
     check:
-      - gate-zaqar-tox-integration
+      - gate-zaqar-tox-nodb-integration
       - gate-dsvm-mongodb-zaqar
       - gate-dsvm-redis-zaqar
       - gate-rally-dsvm-zaqar-zaqar
