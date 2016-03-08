@@ -1667,7 +1667,7 @@ jobs:
   - name: gate-keystone-tox-nodb-bandit
     branch: ^stable/liberty$
 
-  - name: gate-keystone-tox-legacy_drivers
+  - name: gate-keystone-tox-db-legacy_drivers
     branch: ^(?!stable/(kilo|liberty)).*$
 
   - name: gate-tempest-dsvm-keystone-uwsgi-full-nv
@@ -2361,18 +2361,18 @@ jobs:
   - name: python-watcherclient-coverage
     voting: false
 
-  - name: gate-tooz-tox-py27-consul
+  - name: gate-tooz-tox-db-py27-consul
     voting: false
     branch: ^(?!stable/(?:kilo|liberty)).*$
 
-  - name: gate-tooz-tox-py34-consul
+  - name: gate-tooz-tox-db-py34-consul
     voting: false
     branch: ^(?!stable/(?:kilo|liberty)).*$
 
-  - name: gate-tooz-tox-py34-etcd
+  - name: gate-tooz-tox-db-py34-etcd
     branch: ^(?!stable/(?:kilo|liberty)).*$
 
-  - name: gate-tooz-tox-py27-etcd
+  - name: gate-tooz-tox-db-py27-etcd
     branch: ^(?!stable/(?:kilo|liberty)).*$
 
   # NOTE(sigmavirus24): This is presently failing but will be made voting as
@@ -5888,10 +5888,10 @@ projects:
     check:
       - gate-gnocchi-pep8
       - gate-gnocchi-docs
-      - gate-gnocchi-tox-py27-mysql
-      - gate-gnocchi-tox-py27-postgresql
-      - gate-gnocchi-tox-py34-mysql
-      - gate-gnocchi-tox-py34-postgresql
+      - gate-gnocchi-tox-db-py27-mysql
+      - gate-gnocchi-tox-db-py27-postgresql
+      - gate-gnocchi-tox-db-py34-mysql
+      - gate-gnocchi-tox-db-py34-postgresql
       - gate-gnocchi-bashate
       - gate-gnocchi-dsvm-functional-file-mysql
       - gate-gnocchi-dsvm-functional-swift-postgresql
@@ -5900,10 +5900,10 @@ projects:
     gate:
       - gate-gnocchi-pep8
       - gate-gnocchi-docs
-      - gate-gnocchi-tox-py27-mysql
-      - gate-gnocchi-tox-py27-postgresql
-      - gate-gnocchi-tox-py34-mysql
-      - gate-gnocchi-tox-py34-postgresql
+      - gate-gnocchi-tox-db-py27-mysql
+      - gate-gnocchi-tox-db-py27-postgresql
+      - gate-gnocchi-tox-db-py34-mysql
+      - gate-gnocchi-tox-db-py34-postgresql
       - gate-gnocchi-bashate
       - gate-gnocchi-dsvm-functional-file-mysql
       - gate-gnocchi-dsvm-functional-swift-postgresql
@@ -6293,12 +6293,12 @@ projects:
       - name: release-notes-jobs
     check:
       - gate-keystone-tox-nodb-bandit
-      - gate-keystone-tox-legacy_drivers
+      - gate-keystone-tox-db-legacy_drivers
       - gate-tempest-dsvm-keystone-eventlet-full
       - gate-tempest-dsvm-keystone-uwsgi-full-nv
     gate:
       - gate-keystone-tox-nodb-bandit
-      - gate-keystone-tox-legacy_drivers
+      - gate-keystone-tox-db-legacy_drivers
     post:
       - keystone-coverage
       - keystone-propose-config-updates
@@ -7306,7 +7306,7 @@ projects:
       - name: experimental-tripleo-jobs
       - name: release-notes-jobs
     check:
-      - gate-nova-tox-functional
+      - gate-nova-tox-db-functional
       - gate-grenade-dsvm-partial-ncpu
       - gate-grenade-dsvm-multinode
       - gate-tempest-dsvm-ironic-pxe_ipa-nv
@@ -7316,7 +7316,7 @@ projects:
       - gate-tempest-dsvm-multinode-full
       - gate-compute-api-guide
     gate:
-      - gate-nova-tox-functional
+      - gate-nova-tox-db-functional
       - gate-grenade-dsvm-partial-ncpu
       - gate-grenade-dsvm-multinode
       - gate-tempest-dsvm-cells
@@ -9673,11 +9673,11 @@ projects:
       - gate-refstack-pep8
       - gate-refstack-python27
       - gate-refstack-python34
-      - gate-refstack-tox-py27-func-mysql
+      - gate-refstack-tox-db-py27-func-mysql
     gate:
       - gate-refstack-pep8
       - gate-refstack-python27
-      - gate-refstack-tox-py27-func-mysql
+      - gate-refstack-tox-db-py27-func-mysql
 
   - name: openstack/refstack-client
     template:
@@ -10146,11 +10146,11 @@ projects:
     check:
       - gate-sqlalchemy-migrate-pep8
       - gate-sqlalchemy-migrate-python27
-      - gate-sqlalchemy-migrate-tox-py27sa07
+      - gate-sqlalchemy-migrate-tox-db-py27sa07
       - gate-sqlalchemy-migrate-devstack-dsvm
     gate:
       - gate-sqlalchemy-migrate-python27
-      - gate-sqlalchemy-migrate-tox-py27sa07
+      - gate-sqlalchemy-migrate-tox-db-py27sa07
     post:
       - sqlalchemy-migrate-branch-tarball
 
@@ -10655,37 +10655,37 @@ projects:
       - name: publish-to-pypi
       - name: lib-forward-testing
     check:
-      - gate-tooz-tox-py27-etcd
-      - gate-tooz-tox-py34-etcd
-      - gate-tooz-tox-py27-zookeeper
-      - gate-tooz-tox-py34-zookeeper
-      - gate-tooz-tox-py27-redis
-      - gate-tooz-tox-py34-redis
-      - gate-tooz-tox-py27-sentinel
-      - gate-tooz-tox-py34-sentinel
-      - gate-tooz-tox-py27-memcached
-      - gate-tooz-tox-py34-memcached
-      - gate-tooz-tox-py27-postgresql
-      - gate-tooz-tox-py34-postgresql
-      - gate-tooz-tox-py27-mysql
-      - gate-tooz-tox-py34-mysql
-      - gate-tooz-tox-py27-consul
-      - gate-tooz-tox-py34-consul
+      - gate-tooz-tox-db-py27-etcd
+      - gate-tooz-tox-db-py34-etcd
+      - gate-tooz-tox-db-py27-zookeeper
+      - gate-tooz-tox-db-py34-zookeeper
+      - gate-tooz-tox-db-py27-redis
+      - gate-tooz-tox-db-py34-redis
+      - gate-tooz-tox-db-py27-sentinel
+      - gate-tooz-tox-db-py34-sentinel
+      - gate-tooz-tox-db-py27-memcached
+      - gate-tooz-tox-db-py34-memcached
+      - gate-tooz-tox-db-py27-postgresql
+      - gate-tooz-tox-db-py34-postgresql
+      - gate-tooz-tox-db-py27-mysql
+      - gate-tooz-tox-db-py34-mysql
+      - gate-tooz-tox-db-py27-consul
+      - gate-tooz-tox-db-py34-consul
     gate:
-      - gate-tooz-tox-py27-etcd
-      - gate-tooz-tox-py34-etcd
-      - gate-tooz-tox-py27-zookeeper
-      - gate-tooz-tox-py34-zookeeper
-      - gate-tooz-tox-py27-redis
-      - gate-tooz-tox-py34-redis
-      - gate-tooz-tox-py27-sentinel
-      - gate-tooz-tox-py34-sentinel
-      - gate-tooz-tox-py27-memcached
-      - gate-tooz-tox-py34-memcached
-      - gate-tooz-tox-py27-postgresql
-      - gate-tooz-tox-py34-postgresql
-      - gate-tooz-tox-py27-mysql
-      - gate-tooz-tox-py34-mysql
+      - gate-tooz-tox-db-py27-etcd
+      - gate-tooz-tox-db-py34-etcd
+      - gate-tooz-tox-db-py27-zookeeper
+      - gate-tooz-tox-db-py34-zookeeper
+      - gate-tooz-tox-db-py27-redis
+      - gate-tooz-tox-db-py34-redis
+      - gate-tooz-tox-db-py27-sentinel
+      - gate-tooz-tox-db-py34-sentinel
+      - gate-tooz-tox-db-py27-memcached
+      - gate-tooz-tox-db-py34-memcached
+      - gate-tooz-tox-db-py27-postgresql
+      - gate-tooz-tox-db-py34-postgresql
+      - gate-tooz-tox-db-py27-mysql
+      - gate-tooz-tox-db-py34-mysql
     post:
       - tooz-coverage
 
