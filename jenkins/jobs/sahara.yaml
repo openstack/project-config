@@ -63,7 +63,7 @@
 
 - job-template:
     name: 'gate-sahara-buildimages-{plugin}'
-    node: bare-trusty
+    node: ubuntu-trusty
 
     wrappers:
       - build-timeout:
@@ -73,6 +73,7 @@
     builders:
       - link-logs
       - net-info
+      - install-distro-packages
       - gerrit-git-prep
       - shell: |
           #!/bin/bash -xe
@@ -108,7 +109,7 @@
 
 - job:
     name: 'gate-sahara-extra-artifacts'
-    node: bare-trusty
+    node: ubuntu-trusty
 
     wrappers:
       - build-timeout:
@@ -119,6 +120,7 @@
       - link-logs
       - net-info
       - gerrit-git-prep
+      - install-distro-packages
       - sahara-extra-build
 
     publishers:
