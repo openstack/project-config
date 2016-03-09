@@ -66,14 +66,15 @@
 # always published from master branch.
 - job-template:
     name: '{name}-releasenotes'
-    node: bare-trusty
+    node: ubuntu-trusty
 
     builders:
       - print-template-name:
           template-name: "{template-name}"
-      - revoke-sudo
       - branch-git-prep:
           branch: master
+      - install-distro-packages
+      - revoke-sudo
       - shell: |
           #!/bin/bash -xe
           #
@@ -104,13 +105,14 @@
 
 - job-template:
     name: 'gate-{name}-releasenotes'
-    node: bare-trusty
+    node: ubuntu-trusty
 
     builders:
       - print-template-name:
           template-name: "{template-name}"
-      - revoke-sudo
       - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
       - tox:
           envlist: 'releasenotes'
 
