@@ -7,9 +7,16 @@
       - timestamps
 
     builders:
-      - revoke-sudo
       - zuul-git-branch-prep-upper-constraints:
           branch: '{branch}'
+      - install-distro-packages
+      - mysql-prep
+      - pgsql-prep
+      - mysql-db:
+          db_name: openstack_citest
+      - pgsql-db:
+          db_name: openstack_citest
+      - revoke-sudo
       - python27
       - assert-no-extra-files
 
@@ -29,9 +36,10 @@
       - timestamps
 
     builders:
-      - revoke-sudo
       - zuul-git-branch-prep-upper-constraints:
           branch: '{branch}'
+      - install-distro-packages
+      - revoke-sudo
       - docs
 
     publishers:
@@ -44,7 +52,7 @@
     name: python-kilo-bitrot-jobs
     branch: 'stable/kilo'
     branch-name: '-kilo'
-    node: bare-trusty
+    node: ubuntu-trusty
     jobs:
       - 'periodic-{name}-python27{branch-name}'
       - 'periodic-{name}-docs{branch-name}'
@@ -54,7 +62,7 @@
     name: python-liberty-bitrot-jobs
     branch: 'stable/liberty'
     branch-name: '-liberty'
-    node: bare-trusty
+    node: ubuntu-trusty
     jobs:
       - 'periodic-{name}-python27{branch-name}'
       - 'periodic-{name}-docs{branch-name}'
