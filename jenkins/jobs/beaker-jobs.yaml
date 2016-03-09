@@ -1,12 +1,13 @@
 - job-template:
     name: 'gate-{name}-rake'
-    node: '{node}'
+    node: ubuntu-trusty
 
     builders:
       - print-template-name:
           template-name: "{template-name}"
-      - revoke-sudo
       - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
       - bundle-install
       - exec-rake
 
