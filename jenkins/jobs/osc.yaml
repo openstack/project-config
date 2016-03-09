@@ -41,13 +41,14 @@
 
 - job:
     name: check-osc-plugins
-    node: bare-trusty
+    node: ubuntu-trusty
 
     builders:
+      - gerrit-git-prep
+      - install-distro-packages
       - revoke-sudo
       - link-logs
       - net-info
-      - gerrit-git-prep
       - shell: /usr/local/jenkins/slave_scripts/check-osc-plugins.sh
 
     publishers:
