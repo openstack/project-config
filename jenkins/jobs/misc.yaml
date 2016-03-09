@@ -27,33 +27,33 @@
 - job-template:
     name: 'gate-{name}-linters'
     description: General target to run all lint like jobs
+    node: 'ubuntu-trusty'
 
     builders:
       - print-template-name:
           template-name: "{template-name}"
-      - revoke-sudo
       - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
       - linters
 
     publishers:
       - console-log
 
-    node: '{node}'
-
 - job-template:
     name: 'gate-{name}-bashate'
+    node: 'ubuntu-trusty'
 
     builders:
       - print-template-name:
           template-name: "{template-name}"
-      - revoke-sudo
       - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
       - bashate
 
     publishers:
       - console-log
-
-    node: '{node}'
 
 - job:
     name: 'sandbox-tag'
