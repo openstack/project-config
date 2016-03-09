@@ -50,15 +50,16 @@
     builders:
       - print-template-name:
           template-name: "{template-name}"
-      - revoke-sudo
       - zuul-git-prep-upper-constraints
+      - install-distro-packages
+      - revoke-sudo
       - pylint:
           env: pylint
 
     publishers:
       - zuul-swift-upload-console-log
 
-    node: '{node}'
+    node: ubuntu-trusty
 
 - job-template:
     name: 'gate-{name}-python27'
