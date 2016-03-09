@@ -6,6 +6,7 @@
 # gerrit).
 - job-template:
     name: 'gate-{name}-npm-run-{command}'
+    node: ubuntu-trusty
 
     wrappers:
       - build-timeout:
@@ -15,13 +16,14 @@
     builders:
       - print-template-name:
           template-name: "{template-name}"
+      - gerrit-git-prep
+      - install-distro-packages
       - npm-install
       - xvfb-install
       - chrome-install
       - firefox-install
       - revoke-sudo
       - xvfb-start
-      - gerrit-git-prep
       - npm-run:
           command: '{command}'
       - assert-no-extra-files
@@ -35,7 +37,6 @@
               source: 'reports/**'
               keep-hierarchy: true
               copy-after-failure: true
-    node: '{node}'
 
 # Builds and uploads a tarball using NPM.
 - job-template:
