@@ -1,11 +1,12 @@
 - job:
     name: 'gate-ironic-python-agent-buildimage-coreos'
-    node: bare-trusty
+    node: ubuntu-trusty
 
     builders:
       - link-logs
       - net-info
       - gerrit-git-prep
+      - install-distro-packages
       - shell: |
           imagebuild/coreos/full_trusty_build.sh
 
@@ -14,12 +15,13 @@
 
 - job:
     name: 'ironic-python-agent-buildimage-coreos'
-    node: bare-trusty
+    node: ubuntu-trusty
 
     builders:
       - link-logs
       - net-info
       - gerrit-git-prep
+      - install-distro-packages
       - shell: |
           imagebuild/coreos/full_trusty_build.sh
 
