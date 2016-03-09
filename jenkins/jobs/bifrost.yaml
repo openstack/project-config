@@ -1,12 +1,13 @@
 - job:
     name: 'gate-bifrost-integration-coreosipa-cirros'
-    node: bare-trusty
+    node: ubuntu-trusty
 
     wrappers:
       - build-timeout:
           timeout: 60
 
     builders:
+      - install-distro-packages
       - link-logs
       - net-info
       - shell: |
@@ -29,13 +30,14 @@
 
 - job:
     name: 'gate-bifrost-integration-dibipa-debian-nv'
-    node: bare-trusty
+    node: ubuntu-trusty
 
     wrappers:
       - build-timeout:
           timeout: 120
 
     builders:
+      - install-distro-packages
       - link-logs
       - net-info
       - shell: |
