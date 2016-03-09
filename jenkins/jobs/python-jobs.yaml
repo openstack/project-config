@@ -92,6 +92,7 @@
 
 - job-template:
     name: 'periodic-{name}-{python}-with-oslo-master'
+    node: ubuntu-trusty
 
     wrappers:
       - build-timeout:
@@ -101,9 +102,10 @@
     builders:
       - print-template-name:
           template-name: "{template-name}"
-      - revoke-sudo
       - branch-git-prep:
           branch: master
+      - install-distro-packages
+      - revoke-sudo
       - shell: "/usr/local/jenkins/slave_scripts/run-tox-with-oslo-master.sh {python}"
       - assert-no-extra-files
 
@@ -111,8 +113,6 @@
       - test-results
       - console-log
       - zuul-swift-test-results-with-console
-
-    node: '{node}'
 
 - job-template:
     name: 'gate-{name}-python34'
