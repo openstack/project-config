@@ -3,7 +3,7 @@
 
 - job-template:
     name: '{name}-localrepo-upload'
-    node: '{node}'
+    node: ubuntu-trusty
 
     wrappers:
       - build-timeout:
@@ -11,8 +11,9 @@
       - timestamps
 
     builders:
-      - revoke-sudo
       - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
       - shell: |
           #!/bin/bash -xe
           /usr/local/jenkins/slave_scripts/version-properties.sh
