@@ -342,6 +342,7 @@
     name: puppet-syntax
     builders:
       - shell: |
+          export LANG=en_US.utf8
           find . -iname *.pp | xargs puppet parser validate --modulepath=`pwd`/modules
           for f in `find . -iname *.erb` ; do
             erb -x -T '-' $f | ruby -c
