@@ -1,13 +1,14 @@
 - job-template:
     name: '{pipeline}-gitdm'
 
-    node: '{node}'
+    node: ubuntu-trusty
 
     builders:
+      - gerrit-git-prep
+      - install-distro-packages
       - revoke-sudo
       - link-logs
       - net-info
-      - gerrit-git-prep
       - shell: |
           #!/bin/bash -xe
           export TEMPDIR=${{TEMPDIR:-$(mktemp -d $(pwd)/dmtmp-XXXXXX)}}
