@@ -40,13 +40,15 @@
 # Builds and uploads a tarball using NPM.
 - job-template:
     name: '{name}-npm-publish-tarball'
+    node: ubuntu-trusty
 
     builders:
       - print-template-name:
           template-name: "{template-name}"
       - npm-install
-      - revoke-sudo
       - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
 
       # This will build ./{name}-{version}.tgz, where {version} is read from
       # package.json.
@@ -66,18 +68,19 @@
           project: '{name}'
           site: '{tarball-site}'
       - console-log
-    node: '{node}'
 
 # Builds and uploads a draft version of the project to docs-draft.
 - job-template:
     name: '{name}-npm-publish-draft'
+    node: ubuntu-trusty
 
     builders:
       - print-template-name:
           template-name: "{template-name}"
       - npm-install
-      - revoke-sudo
       - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
       # This will build ./{name}-{version}.tgz, where {version} is read from
       # package.json.
       - npm-run:
@@ -110,12 +113,11 @@
               keep-hierarchy: true
               copy-after-failure: false
 
-    node: '{node}'
-
 # Builds a draft application and uploads it to docs-draft. To use this build,
 # your Gruntfile must declare a target named "build:draft"
 - job-template:
     name: 'gate-{name}-js-draft'
+    node: ubuntu-trusty
 
     wrappers:
       - build-timeout:
@@ -126,8 +128,9 @@
       - print-template-name:
           template-name: "{template-name}"
       - npm-install
-      - revoke-sudo
       - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
       - js-build:
           command: 'build:draft'
           envlist: 'grunt'
@@ -151,18 +154,19 @@
               source: 'dist/**'
               keep-hierarchy: true
               copy-after-failure: false
-    node: '{node}'
 
 # Builds a release tarball
 - job-template:
     name: '{name}-js-release-{job-suffix}'
+    node: ubuntu-trusty
 
     builders:
       - print-template-name:
           template-name: "{template-name}"
       - npm-install
-      - revoke-sudo
       - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
       - js-build:
           command: 'build'
           envlist: 'grunt'
