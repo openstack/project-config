@@ -1,10 +1,11 @@
 - job:
     name: gate-horizon-jshint
-    node: bare-trusty
+    node: ubuntu-trusty
 
     builders:
-      - revoke-sudo
       - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
       - tox:
           envlist: jshint
 
@@ -68,11 +69,12 @@
 
 - job:
     name: gate-horizon-selenium-headless
-    node: bare-trusty
+    node: ubuntu-trusty
 
     builders:
-      - revoke-sudo
       - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
       - shell: |
           #!/bin/bash -xe
           NOSE_WITH_XUNIT=1 tox -evenv -- /bin/bash run_tests.sh -N --only-selenium --selenium-headless
