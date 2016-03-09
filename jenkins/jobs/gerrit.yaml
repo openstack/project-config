@@ -1,6 +1,6 @@
 - job:
     name: gate-gerrit-buck
-    node: bare-trusty
+    node: ubuntu-trusty
 
     wrappers:
       - build-timeout:
@@ -8,6 +8,7 @@
       - timestamps
 
     builders:
+      - install-distro-packages
       - revoke-sudo
       - install-buck
       - shell: |
@@ -33,7 +34,7 @@
 
 - job:
     name: gerrit-package-buck
-    node: bare-trusty
+    node: ubuntu-trusty
 
     wrappers:
       - build-timeout:
@@ -41,6 +42,7 @@
       - timestamps
 
     builders:
+      - install-distro-packages
       - revoke-sudo
       - install-buck
       - shell: |
