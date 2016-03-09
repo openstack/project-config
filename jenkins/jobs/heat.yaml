@@ -33,12 +33,13 @@
 
 - job:
     name: 'heat-templates-buildimages'
-    node: bare-trusty
+    node: ubuntu-trusty
 
     builders:
       - link-logs
       - net-info
       - gerrit-git-prep
+      - install-distro-packages
       - diskimage-builder-install
       - shell: |
           hot/software-config/test-image/build-heat-test-image.sh
