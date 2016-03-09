@@ -1,7 +1,7 @@
 - job:
     # run bashate changes over devstack
     name: 'gate-bashate-devstack'
-    node: bare-trusty
+    node: ubuntu-trusty
 
     wrappers:
       - build-timeout:
@@ -9,6 +9,7 @@
 
     builders:
       - link-logs
+      - install-distro-packages
       - shell: |
           #!/bin/bash -eux
           cd $WORKSPACE
