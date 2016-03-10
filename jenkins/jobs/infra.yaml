@@ -296,3 +296,65 @@
 
     publishers:
       - zuul-swift-upload-console-log
+
+- job:
+    name: periodic-package-afs-centos7
+    node: 'devstack-centos7'
+
+    builders:
+      - revoke-sudo
+      - shell: |
+          #!/bin/bash
+          set -eux
+
+          # There are no official builds for AFS on Centos 7, hence
+          # we build our own and publish them to tarballs.openstack.org
+          # for our centos hosts that need access to the mirror to
+          # consume.
+
+          # TODO: fedora
+          YUM=${YUM:-yum}
+
+          VERSION=1.6.16
+          SRC_VERSION=${VERSION}-1
+          SRC_RPM=openafs-${SRC_VERSION}.src.rpm
+          SRC_URL=https://www.openafs.org/dl/openafs/${VERSION}/${SRC_RPM}
+
+          UPSTREAM_BASE=https://tarballs.openstack.org/package-afs-centos7
+          UPSTREAM_CHECK=${UPSTREAM_BASE}/openafs-client-${SRC_VERSION}.el7.centos.x86_64.rpm
+          if wget -O/dev/null -q $UPSTREAM_CHECK; then
+              echo "Found existing upstream RPM build, nothing to do"
+              # make a dummy blank-directory for the scp publishers; we rely on
+              # it not overwriting.
+              mkdir -p rpmbuild/RPMS/x86_64
+              exit 0
+          fi
+
+          # some common prereqs
+          sudo yum -y groupinstall "Development Tools" "Development Libraries"
+          sudo yum -y install rpm-build kernel-devel createrepo
+
+          wget $SRC_URL
+          # install the build dependencies for the package
+          sudo yum-builddep -y ./${SRC_RPM}
+
+          # install source-rpm
+          rpm -i ./${SRC_RPM}
+
+          # build everything
+          pushd rpmbuild/SPECS/
+          rpmbuild -ba ./openafs.spec
+          popd
+
+          # create final repo for copying
+          createrepo rpmbuild/RPMS/x86_64
+
+    publishers:
+      - console-log
+      - scp:
+          site: 'tarballs.openstack.org'
+          files:
+            - target: 'tarballs/package-afs-centos7'
+              source: 'rpmbuild/RPMS/x86_64/**'
+              keep-hierarchy: true
+              copy-after-failure: false
