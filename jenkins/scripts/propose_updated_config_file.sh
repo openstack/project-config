@@ -15,7 +15,6 @@
 source /usr/local/jenkins/slave_scripts/common.sh
 
 PROJECT=$1
-BRANCH=$2
 INITIAL_COMMIT_MSG="Updating sample configuration file"
 USERNAME="proposal-bot"
 TOPIC="$PROJECT/genconf"
@@ -25,7 +24,9 @@ setup_git
 
 # Function setup_commit_message will set CHANGE_ID if a change
 # exists and will always set COMMIT_MSG.
-setup_commit_message $PROJECT $USERNAME $BRANCH $TOPIC "$INITIAL_COMMIT_MSG"
+# Note, ZUUL_REFNAME always exists and is the branch name, for example, it
+# may be master or stable/liberty
+setup_commit_message $PROJECT $USERNAME $ZUUL_REFNAME $TOPIC "$INITIAL_COMMIT_MSG"
 
 # Function check_already_approved will quit the proposal process if there
 # is already an approved job with the same CHANGE_ID
@@ -47,7 +48,7 @@ if ! git diff --stat --exit-code HEAD ; then
     git commit $git_args <<EOF
 $COMMIT_MSG
 EOF
-    OUTPUT=$(git review -t $TOPIC $BRANCH)
+    OUTPUT=$(git review -t $TOPIC $ZUUL_REFNAME)
     RET=$?
     [[ "$RET" -eq "0" || "$OUTPUT" =~ "no new changes" || "$OUTPUT" =~ "no changes made" ]]
     SUCCESS=$?
