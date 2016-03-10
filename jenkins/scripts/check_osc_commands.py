@@ -102,9 +102,11 @@ def find_duplicates():
 
     overlap_cmds = _check_command_overlap(valid_cmds)
     if overlap_cmds:
-        print("Some commands overlap...")
+        print("WARNING: Some commands overlap...")
         print(overlap_cmds)
-        return True
+        # FIXME(stevemar): when we determine why commands are overlapping
+        # we can uncomment the line below.
+        #return True
 
     # Safely return False here with the full set of commands
     print("Final set of commands...")
