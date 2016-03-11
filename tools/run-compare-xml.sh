@@ -43,8 +43,15 @@ cd .test/jenkins-job-builder
 tox -e compare-xml-old
 tox -e compare-xml-new
 
+set +e
 diff -r -N -u .test/old/out .test/new/out
 CHANGED=$?  # 0 == same ; 1 == different ; 2 == error
+
+echo "======================="
+echo "Number of changed jobs:"
+diff -r -N -u .test/old/out .test/new/out |grep -c '^diff -r'
+echo "======================="
+set -e
 
 echo
 echo "You are in detached HEAD mode. If you are a developer"
