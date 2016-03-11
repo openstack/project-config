@@ -338,15 +338,16 @@
           sudo yum-builddep -y ./${SRC_RPM}
 
           # install source-rpm
+          # (this installs to ~/rpmbuild)
           rpm -i ./${SRC_RPM}
 
           # build everything
-          pushd rpmbuild/SPECS/
+          pushd ~/rpmbuild/SPECS/
           rpmbuild -ba ./openafs.spec
           popd
 
           # create final repo for copying
-          createrepo rpmbuild/RPMS/x86_64
+          createrepo ~/rpmbuild/RPMS/x86_64
 
     publishers:
       - console-log
