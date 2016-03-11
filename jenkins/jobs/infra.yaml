@@ -349,12 +349,15 @@
           # create final repo for copying
           createrepo ~/rpmbuild/RPMS/x86_64
 
+          # move into $WORKSPACE for copy
+          mv ~/rpmbuild/RPMS/x86_64 $WORKSPACE/package-afs-centos7
+
     publishers:
       - console-log
       - scp:
           site: 'tarballs.openstack.org'
           files:
             - target: 'tarballs/package-afs-centos7'
-              source: 'rpmbuild/RPMS/x86_64/**'
+              source: 'package-afs-centos7/**'
               keep-hierarchy: true
               copy-after-failure: false
