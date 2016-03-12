@@ -323,9 +323,8 @@
           UPSTREAM_CHECK=${UPSTREAM_BASE}/openafs-client-${SRC_VERSION}.el7.centos.x86_64.rpm
           if wget -O/dev/null -q $UPSTREAM_CHECK; then
               echo "Found existing upstream RPM build, nothing to do"
-              # make a dummy blank-directory for the scp publishers; we rely on
-              # it not overwriting.
-              mkdir -p rpmbuild/RPMS/x86_64
+              # $WORKSPACE will just be blank, scp should just
+              # publish nothing
               exit 0
           fi
 
@@ -357,7 +356,7 @@
       - scp:
           site: 'tarballs.openstack.org'
           files:
-            - target: 'tarballs/package-afs-centos7'
+            - target: 'tarballs/'
               source: 'package-afs-centos7/**'
               keep-hierarchy: true
               copy-after-failure: false
