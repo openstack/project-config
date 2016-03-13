@@ -1847,25 +1847,21 @@ jobs:
   - name: gate-manila-buildimage-lxd
     voting: false
 
-  - name: gate-manila-tempest-dsvm-neutron-postgres
+  - name: gate-manila-tempest-dsvm-postgres-generic-singlebackend
     voting: false
 
-  - name: gate-manila-tempest-dsvm-neutron-no-share-servers-multibackend
+  - name: gate-manila-tempest-dsvm-generic-no-share-servers
     voting: false
 
-  - name: gate-manila-tempest-dsvm-postgres-zfsonlinux-multibackend
+  - name: gate-manila-tempest-dsvm-postgres-zfsonlinux
     branch: ^(?!stable/(?:kilo|liberty)).*$
     voting: false
 
-  - name: gate-manila-tempest-dsvm-neutron-postgres-lvm-multibackend
+  - name: gate-manila-tempest-dsvm-postgres-lxd
     branch: ^(?!stable/(?:kilo|liberty)).*$
     voting: false
 
-  - name: gate-manila-tempest-dsvm-neutron-postgres-lxd-multibackend
-    branch: ^(?!stable/(?:kilo|liberty)).*$
-    voting: false
-
-  - name: gate-manila-tempest-dsvm-neutron-scenario-multibackend
+  - name: gate-manila-tempest-dsvm-scenario
     voting: false
 
   - name: gate-manila-tempest-dsvm-glusterfs
@@ -6549,26 +6545,25 @@ projects:
       - manila-coverage
       - gate-manila-tox-genconfig
       - gate-manila-pylint
-      - gate-manila-tempest-dsvm-neutron-multibackend
-      - gate-manila-tempest-dsvm-neutron-no-share-servers-multibackend
-      - gate-manila-tempest-dsvm-postgres-zfsonlinux-multibackend
-      - gate-manila-tempest-dsvm-neutron-postgres-lvm-multibackend
-      - gate-manila-tempest-dsvm-neutron-postgres
-      - gate-manila-tempest-dsvm-neutron-scenario-multibackend
-      - gate-manila-tempest-dsvm-neutron-postgres-lxd-multibackend
+      - gate-manila-tempest-dsvm-mysql-generic
+      - gate-manila-tempest-dsvm-postgres-zfsonlinux
+      - gate-manila-tempest-dsvm-postgres-generic-singlebackend
+      - gate-manila-tempest-dsvm-generic-no-share-servers
+      - gate-manila-tempest-dsvm-scenario
+      - gate-manila-tempest-dsvm-postgres-lxd
       - gate-manila-tempest-dsvm-cephfs-native
       - gate-manila-tempest-dsvm-glusterfs
       - gate-manila-tempest-dsvm-glusterfs-native
       - gate-manila-tempest-dsvm-hdfs
+      - gate-manila-tempest-minimal-dsvm-lvm
     gate:
       - gate-manila-tox-genconfig
-      - gate-manila-tempest-dsvm-neutron-multibackend
+      - gate-manila-tempest-dsvm-mysql-generic
     post:
       - manila-coverage
     experimental:
       - gate-rally-dsvm-manila-multibackend
       - gate-rally-dsvm-manila-multibackend-no-ss
-      - gate-manila-tempest-minimal-dsvm-lvm
 
   - name: openstack/manila-image-elements
     template:
