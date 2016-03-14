@@ -66,3 +66,38 @@
     publishers:
       - console-log
       - devstack-logs
+
+- job:
+    name: 'gate-bifrost-integration-dhcp-nv'
+    node: ubuntu-trusty
+
+    wrappers:
+      - build-timeout:
+          timeout: 120
+
+    builders:
+      - install-distro-packages
+      # Job only needs MySQL
+      - mysql-prep
+      - mysql-db:
+          db_name: openstack_citest
+      - link-logs
+      - net-info
+      - shell: |
+          #!/bin/bash -eux
+          cd $WORKSPACE
+
+          /usr/zuul-env/bin/zuul-cloner --cache-dir /opt/git \
+            git://git.openstack.org \
+            openstack/bifrost \
+            openstack/diskimage-builder \
+            openstack/ironic \
+            openstack/python-ironicclient \
+            openstack-infra/shade
+          export GIT_BASE=$(pwd)
+          cd openstack/bifrost
+          scripts/test-bifrost-inventory-dhcp.sh
+
+    publishers:
+      - console-log
+      - devstack-logs
