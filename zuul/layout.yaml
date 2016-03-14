@@ -281,13 +281,28 @@ project-templates:
 
   - name: python-jobs
     check:
-      - 'gate-{name}-pep8'
       - 'gate-{name}-docs'
+      - 'gate-{name}-pep8'
       - 'gate-{name}-python27'
     gate:
       - 'gate-{name}-docs'
       - 'gate-{name}-pep8'
       - 'gate-{name}-python27'
+    post:
+      - '{name}-branch-tarball'
+
+  # Invokes the same targets as python-jobs with one change:
+  # python27-db is used instead of python27. The job
+  # python27-db sets up databases.
+  - name: python-db-jobs
+    check:
+      - 'gate-{name}-docs'
+      - 'gate-{name}-pep8'
+      - 'gate-{name}-python27-db'
+    gate:
+      - 'gate-{name}-docs'
+      - 'gate-{name}-pep8'
+      - 'gate-{name}-python27-db'
     post:
       - '{name}-branch-tarball'
 
@@ -374,6 +389,13 @@ project-templates:
     gate:
       - 'gate-{name}-python34'
 
+  # Invokes the same targets as python3-jobs, but sets up databases.
+  - name: python3-db-jobs
+    check:
+      - 'gate-{name}-python34-db'
+    gate:
+      - 'gate-{name}-python34-db'
+
   - name: osc-plugin-jobs
     check:
       - 'check-osc-plugins'
@@ -385,6 +407,15 @@ project-templates:
     # Readd it once the job is voting again.
     # gate:
     #  - 'gate-{name}-pypy'
+
+  # Invokes the same targets as pypy-jobs, but sets up databases.
+  - name: pypy-db-jobs
+    check:
+      - 'gate-{name}-pypy-db'
+    # gate-.*-pypy is non-voting, therefore not added to any gate.
+    # Readd it once the job is voting again.
+    # gate:
+    #  - 'gate-{name}-pypy-db'
 
   - name: openstack-server-publish-jobs
     post:
@@ -417,6 +448,18 @@ project-templates:
       - 'periodic-{name}-docs-liberty'
       - 'periodic-{name}-python27-liberty'
 
+  # Invokes the same targets as periodic-db with one change:
+  # periodic-python27-db-kilo is used instead of
+  # periodic-python27-kilo. The python27-db sets up databases.
+  - name: periodic-db-kilo
+    periodic-stable:
+      - 'periodic-{name}-docs-kilo'
+      - 'periodic-{name}-python27-db-kilo'
+
+  - name: periodic-db-liberty
+    periodic-stable:
+      - 'periodic-{name}-docs-liberty'
+      - 'periodic-{name}-python27-db-liberty'
 
   # Used for building documentation projects that contain
   # DocBook XML and RST files.
@@ -2287,7 +2330,7 @@ jobs:
   - name: gate-swift-tox-func-in-process-fast-post
     voting: false
 
-  - name: gate-nova-python34
+  - name: gate-nova-python34-db
     branch: ^(?!stable/kilo).*$
 
   - name: ^gate-glance-python34$
@@ -7418,8 +7461,8 @@ projects:
       - name: periodic-jobs-with-oslo-master
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
-      - name: periodic-kilo
-      - name: periodic-liberty
+      - name: periodic-db-kilo
+      - name: periodic-db-liberty
       - name: check-requirements
       - name: integrated-gate
       - name: grenade
@@ -7442,7 +7485,7 @@ projects:
       - gate-grenade-dsvm-multinode
       - gate-tempest-dsvm-cells
     post:
-      - nova-coverage
+      - nova-coverage-db
       - nova-api-guide
     experimental:
       - gate-tempest-dsvm-nova-v20-api

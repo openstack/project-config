@@ -11,6 +11,38 @@
           template-name: "{template-name}"
       - gerrit-git-prep
       - install-distro-packages
+      # TODO(jaegerandi): Remove database job once all repos needing
+      # database setup are moved over to the corresponding -db job.
+      - mysql-prep
+      - pgsql-prep
+      - mysql-db:
+          db_name: openstack_citest
+      - pgsql-db:
+          db_name: openstack_citest
+      - revoke-sudo
+      - coverage:
+          env: cover
+
+    publishers:
+      - zuul-swift-upload-logs-with-console:
+          upload_source: 'cover/'
+
+    node: ubuntu-trusty
+
+- job-template:
+    name: '{name}-coverage-db'
+    description: 'Same job as {name}-coverage but sets up databases.'
+
+    wrappers:
+      - build-timeout:
+          timeout: 40
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - gerrit-git-prep
+      - install-distro-packages
       - mysql-prep
       - pgsql-prep
       - mysql-db:
@@ -63,6 +95,39 @@
 
 - job-template:
     name: 'gate-{name}-python27'
+
+    wrappers:
+      - build-timeout:
+          timeout: 50
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - zuul-git-prep-upper-constraints
+      - install-distro-packages
+      # TODO(jaegerandi): Remove database job once all repos needing
+      # database setup are moved over to the corresponding -db job.
+      - mysql-prep
+      - pgsql-prep
+      - mysql-db:
+          db_name: openstack_citest
+      - pgsql-db:
+          db_name: openstack_citest
+      - revoke-sudo
+      - python27
+      - assert-no-extra-files
+
+    publishers:
+      - test-results
+      - console-log
+      - zuul-swift-test-results-with-console
+
+    node: ubuntu-trusty
+
+- job-template:
+    name: 'gate-{name}-python27-db'
+    description: 'Same job as gate-{name}-python27 but sets up databases.'
 
     wrappers:
       - build-timeout:
@@ -128,6 +193,39 @@
           template-name: "{template-name}"
       - zuul-git-prep-upper-constraints
       - install-distro-packages
+      # TODO(jaegerandi): Remove database job once all repos needing
+      # database setup are moved over to the corresponding -db job.
+      - mysql-prep
+      - pgsql-prep
+      - mysql-db:
+          db_name: openstack_citest
+      - pgsql-db:
+          db_name: openstack_citest
+      - revoke-sudo
+      - python34
+      - assert-no-extra-files
+
+    publishers:
+      - test-results
+      - console-log
+      - zuul-swift-test-results-with-console
+
+    node: ubuntu-trusty
+
+- job-template:
+    name: 'gate-{name}-python34-db'
+    description: 'Same job as gate-{name}-python34 but sets up databases.'
+
+    wrappers:
+      - build-timeout:
+          timeout: 40
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - zuul-git-prep-upper-constraints
+      - install-distro-packages
       - mysql-prep
       - pgsql-prep
       - mysql-db:
@@ -147,6 +245,40 @@
 
 - job-template:
     name: 'gate-{name}-pypy'
+
+    wrappers:
+      - build-timeout:
+          timeout: 40
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - zuul-git-prep-upper-constraints
+      - install-distro-packages
+      # TODO(jaegerandi): Remove database job once all repos needing
+      # database setup are moved over to the corresponding -db job.
+      - mysql-prep
+      - pgsql-prep
+      - mysql-db:
+          db_name: openstack_citest
+      - pgsql-db:
+          db_name: openstack_citest
+      - revoke-sudo
+      - pypy
+      - assert-no-extra-files
+
+    publishers:
+      - test-results
+      - console-log
+      - zuul-swift-test-results-with-console
+
+    node: ubuntu-trusty
+
+
+- job-template:
+    name: 'gate-{name}-pypy-db'
+    description: 'Same job as gate-{name}-pypy but sets up databases.'
 
     wrappers:
       - build-timeout:
@@ -375,6 +507,23 @@
       - 'gate-{name}-python27'
       - 'gate-{name}-python34'
       - 'gate-{name}-pypy'
+      - 'gate-{name}-docs'
+      - 'gate-{name}-requirements'
+      - '{name}-tarball'
+      - '{name}-branch-tarball'
+      - '{name}-announce-release'
+      # pylint isn't standard
+      # gate-{name}-tox-{envlist} also isn't standard, but is reserved for
+      # projects that want to run specific jobs via tox
+
+- job-group:
+    name: python-db-jobs
+    jobs:
+      - '{name}-coverage-db'
+      - 'gate-{name}-pep8'
+      - 'gate-{name}-python27-db'
+      - 'gate-{name}-python34-db'
+      - 'gate-{name}-pypy-db'
       - 'gate-{name}-docs'
       - 'gate-{name}-requirements'
       - '{name}-tarball'
