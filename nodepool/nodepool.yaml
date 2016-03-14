@@ -102,6 +102,14 @@ labels:
       - name: internap-nyj01
       - name: vexxhost-ca-ymq-1
       - name: osic-cloud1
+  - name: centos-7
+    image: centos-7
+    ready-script: configure_mirror.sh
+    min-ready: 1
+    providers:
+      - name: rax-dfw
+      - name: rax-ord
+      - name: rax-iad
   - name: fedora-23
     image: fedora-23
     ready-script: configure_mirror.sh
@@ -168,6 +176,12 @@ providers:
         username: jenkins
         private-key: /home/nodepool/.ssh/id_rsa
         config-drive: true
+      - name: centos-7
+        min-ram: 8192
+        diskimage: centos-7
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
       - name: devstack-centos7
         base-image: 'CentOS 7 (PVHVM)'
         min-ram: 8192
@@ -221,6 +235,12 @@ providers:
         username: jenkins
         private-key: /home/nodepool/.ssh/id_rsa
         config-drive: true
+      - name: centos-7
+        min-ram: 8192
+        diskimage: centos-7
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
       - name: devstack-centos7
         base-image: 'CentOS 7 (PVHVM)'
         min-ram: 8192
@@ -271,6 +291,12 @@ providers:
       - name: fedora-23
         min-ram: 8192
         diskimage: fedora-23
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+      - name: centos-7
+        min-ram: 8192
+        diskimage: centos-7
         username: jenkins
         private-key: /home/nodepool/.ssh/id_rsa
         config-drive: true
@@ -566,6 +592,21 @@ diskimages:
       - nodepool-base
       - node-devstack
       - cache-bindep
+    env-vars:
+      TMPDIR: /opt/dib_tmp
+      DIB_IMAGE_CACHE: /opt/dib_cache
+      QEMU_IMG_OPTIONS: compat=0.10
+  - name: centos-7
+    elements:
+      - centos-minimal
+      - vm
+      - simple-init
+      - openstack-repos
+      - nodepool-base
+      - node-devstack
+      - puppet
+      - cache-bindep
+      - growroot
     env-vars:
       TMPDIR: /opt/dib_tmp
       DIB_IMAGE_CACHE: /opt/dib_cache
