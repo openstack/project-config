@@ -576,7 +576,7 @@ project-templates:
       - gate-{name}-puppet-beaker-rspec-dsvm-trusty-nv
       - gate-{name}-puppet-beaker-rspec-dsvm-centos7-nv
 
-  - name: puppet-openstack-integration-jobs
+  - name: puppet-openstack-integration-jobs-all
     check:
       - gate-puppet-openstack-integration-scenario001-tempest-dsvm-trusty
       - gate-puppet-openstack-integration-scenario001-tempest-dsvm-centos7
@@ -589,6 +589,32 @@ project-templates:
       - gate-puppet-openstack-integration-scenario001-tempest-dsvm-trusty
       - gate-puppet-openstack-integration-scenario002-tempest-dsvm-centos7
       - gate-puppet-openstack-integration-scenario002-tempest-dsvm-trusty
+      - gate-puppet-openstack-integration-scenario003-tempest-dsvm-centos7
+      - gate-puppet-openstack-integration-scenario003-tempest-dsvm-trusty
+
+  - name: puppet-openstack-integration-jobs-scenario001
+    check:
+      - gate-puppet-openstack-integration-scenario001-tempest-dsvm-trusty
+      - gate-puppet-openstack-integration-scenario001-tempest-dsvm-centos7
+    gate:
+      - gate-puppet-openstack-integration-scenario001-tempest-dsvm-centos7
+      - gate-puppet-openstack-integration-scenario001-tempest-dsvm-trusty
+
+  - name: puppet-openstack-integration-jobs-scenario002
+    check:
+      - gate-puppet-openstack-integration-scenario002-tempest-dsvm-trusty
+      - gate-puppet-openstack-integration-scenario002-tempest-dsvm-centos7
+    gate:
+      - gate-puppet-openstack-integration-scenario002-tempest-dsvm-centos7
+      - gate-puppet-openstack-integration-scenario002-tempest-dsvm-trusty
+
+  - name: puppet-openstack-integration-jobs-scenario003
+    check:
+      - gate-puppet-openstack-integration-scenario003-tempest-dsvm-trusty
+      - gate-puppet-openstack-integration-scenario003-tempest-dsvm-centos7
+    gate:
+      - gate-puppet-openstack-integration-scenario003-tempest-dsvm-centos7
+      - gate-puppet-openstack-integration-scenario003-tempest-dsvm-trusty
 
   - name: puppet-openstack-spec-helper-jobs
     check:
@@ -1045,17 +1071,11 @@ jobs:
   - name: ^gate-puppet-openstackci-puppet-beaker-rspec-dsvm-.*$
     voting: false
 
-  # Ubuntu packaging for Mitaka became unstable for our CI.
-  # Scenario003 is not passing CI, probably because they didn't update Heat yet.
-  # Disabling voting until we sort this out.
-  - name: ^gate-puppet-openstack-integration-scenario003-tempest-dsvm-trusty$
-    voting: false
-
   # scenario003 was added during Mitaka cycle
   - name: ^gate-puppet-openstack-integration-scenario003-tempest-dsvm-.*$
     branch: ^(?!stable/(kilo|liberty)).*$
 
-  # puppet-integration scenario jobs non-voting and run after stable/kilo
+  # puppet-integration scenario jobs run after stable/kilo
   - name: ^gate-puppet-openstack-integration-scenario00(1|2)-tempest-dsvm-.*$
     branch: ^(?!stable/kilo).*$
 
@@ -8463,14 +8483,9 @@ projects:
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
       - name: release-notes-jobs
-    # aodh is only deployed on scenario001
-    # https://git.openstack.org/cgit/openstack/puppet-openstack-integration/tree/README.md
-    check:
-      - gate-puppet-openstack-integration-scenario001-tempest-dsvm-trusty
-      - gate-puppet-openstack-integration-scenario001-tempest-dsvm-centos7
-    gate:
-      - gate-puppet-openstack-integration-scenario001-tempest-dsvm-trusty
-      - gate-puppet-openstack-integration-scenario001-tempest-dsvm-centos7
+      # aodh is only deployed on scenario001
+      # https://git.openstack.org/cgit/openstack/puppet-openstack-integration/tree/README.md
+      - name: puppet-openstack-integration-jobs-scenario001
     check-tripleo:
       - gate-tripleo-ci-f22-nonha
 
@@ -8493,14 +8508,9 @@ projects:
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
       - name: release-notes-jobs
-    # ceilometer is only deployed on scenario001
-    # https://git.openstack.org/cgit/openstack/puppet-openstack-integration/tree/README.md
-    check:
-      - gate-puppet-openstack-integration-scenario001-tempest-dsvm-trusty
-      - gate-puppet-openstack-integration-scenario001-tempest-dsvm-centos7
-    gate:
-      - gate-puppet-openstack-integration-scenario001-tempest-dsvm-trusty
-      - gate-puppet-openstack-integration-scenario001-tempest-dsvm-centos7
+      # ceilometer is only deployed on scenario001
+      # https://git.openstack.org/cgit/openstack/puppet-openstack-integration/tree/README.md
+      - name: puppet-openstack-integration-jobs-scenario001
     check-tripleo:
       - gate-tripleo-ci-f22-nonha
 
@@ -8510,13 +8520,9 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-    # ceph is only deployed on scenario001
-    # https://git.openstack.org/cgit/openstack/puppet-openstack-integration/tree/README.md
-    check:
-      - gate-puppet-openstack-integration-scenario001-tempest-dsvm-trusty
-      - gate-puppet-openstack-integration-scenario001-tempest-dsvm-centos7
-    gate:
-      - gate-puppet-openstack-integration-scenario001-tempest-dsvm-centos7
+      # ceph is only deployed on scenario001
+      # https://git.openstack.org/cgit/openstack/puppet-openstack-integration/tree/README.md
+      - name: puppet-openstack-integration-jobs-scenario001
     check-tripleo:
       - gate-tripleo-ci-f22-nonha
 
@@ -8527,18 +8533,10 @@ projects:
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
       - name: release-notes-jobs
-    # cinder is only deployed on scenario001 and scenario002
-    # https://git.openstack.org/cgit/openstack/puppet-openstack-integration/tree/README.md
-    check:
-      - gate-puppet-openstack-integration-scenario001-tempest-dsvm-trusty
-      - gate-puppet-openstack-integration-scenario001-tempest-dsvm-centos7
-      - gate-puppet-openstack-integration-scenario002-tempest-dsvm-trusty
-      - gate-puppet-openstack-integration-scenario002-tempest-dsvm-centos7
-    gate:
-      - gate-puppet-openstack-integration-scenario001-tempest-dsvm-trusty
-      - gate-puppet-openstack-integration-scenario001-tempest-dsvm-centos7
-      - gate-puppet-openstack-integration-scenario002-tempest-dsvm-trusty
-      - gate-puppet-openstack-integration-scenario002-tempest-dsvm-centos7
+      # cinder is only deployed on scenario001 and scenario002
+      # https://git.openstack.org/cgit/openstack/puppet-openstack-integration/tree/README.md
+      - name: puppet-openstack-integration-jobs-scenario001
+      - name: puppet-openstack-integration-jobs-scenario002
     check-tripleo:
       - gate-tripleo-ci-f22-nonha
 
@@ -8562,7 +8560,7 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-openstack-integration-jobs
+      - name: puppet-openstack-integration-jobs-all
       - name: release-notes-jobs
     check-tripleo:
       - gate-tripleo-ci-f22-nonha
@@ -8574,14 +8572,9 @@ projects:
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
       - name: release-notes-jobs
-    # gnocchi is only deployed on scenario001
-    # https://git.openstack.org/cgit/openstack/puppet-openstack-integration/tree/README.md
-    check:
-      - gate-puppet-openstack-integration-scenario001-tempest-dsvm-trusty
-      - gate-puppet-openstack-integration-scenario001-tempest-dsvm-centos7
-    gate:
-      - gate-puppet-openstack-integration-scenario001-tempest-dsvm-trusty
-      - gate-puppet-openstack-integration-scenario001-tempest-dsvm-centos7
+      # gnocchi is only deployed on scenario001
+      # https://git.openstack.org/cgit/openstack/puppet-openstack-integration/tree/README.md
+      - name: puppet-openstack-integration-jobs-scenario001
     check-tripleo:
       - gate-tripleo-ci-f22-nonha
 
@@ -8592,13 +8585,9 @@ projects:
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
       - name: release-notes-jobs
-    # heat is only deployed on scenario003
-    # https://git.openstack.org/cgit/openstack/puppet-openstack-integration/tree/README.md
-    check:
-      - gate-puppet-openstack-integration-scenario003-tempest-dsvm-trusty
-      - gate-puppet-openstack-integration-scenario003-tempest-dsvm-centos7
-    gate:
-      - gate-puppet-openstack-integration-scenario003-tempest-dsvm-centos7
+      # heat is only deployed on scenario003
+      # https://git.openstack.org/cgit/openstack/puppet-openstack-integration/tree/README.md
+      - name: puppet-openstack-integration-jobs-scenario003
     check-tripleo:
       - gate-tripleo-ci-f22-nonha
 
@@ -8609,13 +8598,9 @@ projects:
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
       - name: release-notes-jobs
-    # horizon is only deployed on scenario003
-    # https://git.openstack.org/cgit/openstack/puppet-openstack-integration/tree/README.md
-    check:
-      - gate-puppet-openstack-integration-scenario003-tempest-dsvm-trusty
-      - gate-puppet-openstack-integration-scenario003-tempest-dsvm-centos7
-    gate:
-      - gate-puppet-openstack-integration-scenario003-tempest-dsvm-centos7
+      # horizon is only deployed on scenario003
+      # https://git.openstack.org/cgit/openstack/puppet-openstack-integration/tree/README.md
+      - name: puppet-openstack-integration-jobs-scenario003
     check-tripleo:
       - gate-tripleo-ci-f22-nonha
 
@@ -8626,29 +8611,20 @@ projects:
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
       - name: release-notes-jobs
-    # ironic is only deployed on scenario002
-    # https://git.openstack.org/cgit/openstack/puppet-openstack-integration/tree/README.md
-    check:
-      - gate-puppet-openstack-integration-scenario002-tempest-dsvm-trusty
-      - gate-puppet-openstack-integration-scenario002-tempest-dsvm-centos7
-    gate:
-      - gate-puppet-openstack-integration-scenario002-tempest-dsvm-trusty
-      - gate-puppet-openstack-integration-scenario002-tempest-dsvm-centos7
+      # ironic is only deployed on scenario002
+      # https://git.openstack.org/cgit/openstack/puppet-openstack-integration/tree/README.md
+      - name: puppet-openstack-integration-jobs-scenario002
     check-tripleo:
       - gate-tripleo-ci-f22-nonha
 
   - name: openstack/puppet-keystone
     template:
       - name: merge-check
+      - name: puppet-beaker-jobs
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
-      - name: puppet-openstack-integration-jobs
+      - name: puppet-openstack-integration-jobs-all
       - name: release-notes-jobs
-    check:
-      - gate-puppet-keystone-puppet-beaker-rspec-dsvm-trusty-nv
-      - gate-puppet-keystone-puppet-beaker-rspec-dsvm-centos7
-    gate:
-      - gate-puppet-keystone-puppet-beaker-rspec-dsvm-centos7
     check-tripleo:
       - gate-tripleo-ci-f22-nonha
 
@@ -8713,7 +8689,7 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-openstack-integration-jobs
+      - name: puppet-openstack-integration-jobs-all
       - name: release-notes-jobs
     check-tripleo:
       - gate-tripleo-ci-f22-nonha
@@ -8724,7 +8700,7 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-openstack-integration-jobs
+      - name: puppet-openstack-integration-jobs-all
       - name: release-notes-jobs
     check-tripleo:
       - gate-tripleo-ci-f22-nonha
@@ -8750,7 +8726,7 @@ projects:
       - name: merge-check
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
-      - name: puppet-openstack-integration-jobs
+      - name: puppet-openstack-integration-jobs-all
       - name: release-notes-jobs
     check:
       - gate-puppet-openstack_extras-puppet-beaker-rspec-dsvm-trusty
@@ -8760,7 +8736,7 @@ projects:
     template:
       - name: merge-check
       - name: puppet-check-jobs
-      - name: puppet-openstack-integration-jobs
+      - name: puppet-openstack-integration-jobs-all
     experimental:
       - 'gate-puppet-openstack-integration-dsvm-multinode-nv'
 
@@ -8790,7 +8766,7 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-openstack-integration-jobs
+      - name: puppet-openstack-integration-jobs-all
       - name: release-notes-jobs
     check-tripleo:
       - gate-tripleo-ci-f22-nonha
@@ -8801,7 +8777,7 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-openstack-integration-jobs
+      - name: puppet-openstack-integration-jobs-all
 
   - name: openstack/puppet-ovn
     template:
@@ -8832,13 +8808,9 @@ projects:
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
       - name: release-notes-jobs
-    # sahara is only deployed on scenario003
-    # https://git.openstack.org/cgit/openstack/puppet-openstack-integration/tree/README.md
-    check:
-      - gate-puppet-openstack-integration-scenario003-tempest-dsvm-trusty
-      - gate-puppet-openstack-integration-scenario003-tempest-dsvm-centos7
-    gate:
-      - gate-puppet-openstack-integration-scenario003-tempest-dsvm-centos7
+      # sahara is only deployed on scenario003
+      # https://git.openstack.org/cgit/openstack/puppet-openstack-integration/tree/README.md
+      - name: puppet-openstack-integration-jobs-scenario003
 
   - name: openstack/puppet-setproxy
     template:
@@ -8857,14 +8829,9 @@ projects:
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
       - name: release-notes-jobs
-    # swift is only deployed on scenario002
-    # https://git.openstack.org/cgit/openstack/puppet-openstack-integration/tree/README.md
-    check:
-      - gate-puppet-openstack-integration-scenario002-tempest-dsvm-trusty
-      - gate-puppet-openstack-integration-scenario002-tempest-dsvm-centos7
-    gate:
-      - gate-puppet-openstack-integration-scenario002-tempest-dsvm-trusty
-      - gate-puppet-openstack-integration-scenario002-tempest-dsvm-centos7
+      # swift is only deployed on scenario002
+      # https://git.openstack.org/cgit/openstack/puppet-openstack-integration/tree/README.md
+      - name: puppet-openstack-integration-jobs-scenario002
     check-tripleo:
       - gate-tripleo-ci-f22-nonha
 
@@ -8874,7 +8841,7 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-openstack-integration-jobs
+      - name: puppet-openstack-integration-jobs-all
       - name: release-notes-jobs
 
   - name: openstack/puppet-tripleo
@@ -8891,13 +8858,9 @@ projects:
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
       - name: release-notes-jobs
-    # trove is only deployed on scenario003
-    # https://git.openstack.org/cgit/openstack/puppet-openstack-integration/tree/README.md
-    check:
-      - gate-puppet-openstack-integration-scenario003-tempest-dsvm-trusty
-      - gate-puppet-openstack-integration-scenario003-tempest-dsvm-centos7
-    gate:
-      - gate-puppet-openstack-integration-scenario003-tempest-dsvm-centos7
+      # trove is only deployed on scenario003
+      # https://git.openstack.org/cgit/openstack/puppet-openstack-integration/tree/README.md
+      - name: puppet-openstack-integration-jobs-scenario003
 
   - name: openstack/puppet-tuskar
     template:
@@ -8917,7 +8880,7 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
-      - name: puppet-openstack-integration-jobs
+      - name: puppet-openstack-integration-jobs-all
       - name: release-notes-jobs
 
   - name: openstack/puppet-zaqar
