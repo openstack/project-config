@@ -1522,10 +1522,14 @@ jobs:
   - name: ^gate-.*-api-guide$
     success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/api-guide/build/html/
     voting: false
-    branch: ^(?!stable/(kilo|liberty)).*$
+    branch: master
     files:
       - '^tox.ini$'
       - '^api-guide/.*'
+
+  - name: ^(?!gate-).*-api-guide$
+    # Only publish from master
+    branch: master
 
   - name: ^gate-.*-js-draft
     success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/dist/
