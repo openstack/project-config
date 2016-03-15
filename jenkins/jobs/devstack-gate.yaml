@@ -2801,6 +2801,39 @@
       - devstack-logs
       - console-log
 
+- job-template:
+    name: '{pipeline}-tempest-dsvm-smoke-tlsproxy{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 180
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - print-node-uuid
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_TLSPROXY=1
+          export DEVSTACK_LOCAL_CONFIG="KEYSTONE_DEPLOY=mod_wsgi"
+
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+
 
 - job:
     name: gate-devstack-gate-unittests
@@ -2896,6 +2929,7 @@
       - '{pipeline}-tempest-dsvm-nova-wsgi-full{job-suffix}'
       - '{pipeline}-tempest-dsvm-oslo-latest-full{job-suffix}'
       - '{pipeline}-tempest-dsvm-postgres-full{job-suffix}'
+      - '{pipeline}-tempest-dsvm-smoke-tlsproxy{job-suffix}'
       - '{pipeline}-tempest-dsvm-stress-keystonev3{job-suffix}'
       - '{pipeline}-tempest-dsvm-stress{job-suffix}'
       - '{pipeline}-tempest-dsvm-trove{job-suffix}'
