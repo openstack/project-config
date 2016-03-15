@@ -1004,7 +1004,15 @@ jobs:
         all-files-match-any:
           - ^.*\.rst$
           - ^doc/.*$
-
+  # Skip non-doc jobs for doc-only magnum changes.  Since
+  # doc/source/conf.py is checked by gate-magnum-pep8, that job
+  # should not be skipped.
+  - name: ^gate-magnum-python(27|34)$
+    skip-if:
+      - project: ^openstack/magnum$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
   # skip expensive dib jobs for docs changes; readme's are rst files,
   # and doc/*
   - name: ^.*dib-dsvm-functests-.*$
@@ -1226,16 +1234,36 @@ jobs:
 
   - name: gate-functional-dsvm-magnum-api
     branch: ^(?!stable/kilo).*$
+    skip-if:
+      - project: ^openstack/magnum$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
 
   - name: gate-functional-dsvm-magnum-k8s
     branch: ^(?!stable/kilo).*$
+    skip-if:
+      - project: ^openstack/magnum$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
 
   - name: gate-functional-dsvm-magnum-swarm
     branch: ^(?!stable/kilo).*$
     voting: false
+    skip-if:
+      - project: ^openstack/magnum$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
 
   - name: gate-functional-dsvm-magnum-mesos
     branch: ^(?!stable/(kilo|liberty)).*$
+    skip-if:
+      - project: ^openstack/magnum$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
 
   - name: gate-tempest-dsvm-multinode-full
     voting: false
@@ -1560,6 +1588,11 @@ jobs:
 
   - name: magnum-coverage
     voting: false
+    skip-if:
+      - project: ^openstack/magnum$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
 
   - name: gate-python-barbicanclient-devstack-dsvm
     branch: ^(?!stable/kilo).*$
