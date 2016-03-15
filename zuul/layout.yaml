@@ -2100,8 +2100,8 @@ jobs:
     # NOTE(flaper87): Disable job in Kilo until we fix the gate.
     branch: ^(?!stable/kilo).*$
 
-  # NOTE(mriedem): Make the ceph jobs voting again after bug 1551305 is fixed.
-  - name: ^gate-tempest-dsvm-full-ceph.*$
+  # NOTE(mriedem): Replace this with a src job using the ceph dsvm plugin
+  - name: ^gate-tempest-dsvm-full-ceph-src-.*$
     voting: false
 
   - name: gate-kolla-dsvm-build-centos-binary
@@ -2515,7 +2515,6 @@ projects:
       - gate-grenade-dsvm-forward
       - gate-tempest-dsvm-platform-centos7-neutron
       - gate-tempest-dsvm-platform-centos7-minimal
-      - gate-tempest-dsvm-full-ceph
     periodic:
       - propose-devstack-plugins-list
       - periodic-tempest-dsvm-oslo-latest-full-master
@@ -4534,7 +4533,6 @@ projects:
     check:
       - gate-cinder-pylint
       - gate-rally-dsvm-cinder
-      - gate-tempest-dsvm-full-ceph
       - gate-tempest-dsvm-full-devstack-plugin-ceph-nv
       - gate-cinder-dsvm-apache
       - gate-cinder-tox-db-functional
@@ -5924,7 +5922,6 @@ projects:
       - name: translation-jobs
       - name: release-notes-jobs
     check:
-      - gate-tempest-dsvm-full-ceph
       - gate-tempest-dsvm-full-devstack-plugin-ceph-nv
       - gate-rally-dsvm-glance
     experimental:
@@ -5950,8 +5947,10 @@ projects:
       - name: publish-to-pypi
       - name: lib-forward-testing
     check:
+      # TODO(mriedem): Switch to gate-tempest-dsvm-full-devstack-plugin-ceph
       - gate-tempest-dsvm-full-ceph-src-glance_store
     gate:
+      # TODO(mriedem): Switch to gate-tempest-dsvm-full-devstack-plugin-ceph
       - gate-tempest-dsvm-full-ceph-src-glance_store
     experimental:
       - gate-glance_store-dsvm-functional-filesystem
@@ -7409,7 +7408,6 @@ projects:
       - gate-grenade-dsvm-multinode
       - gate-tempest-dsvm-ironic-pxe_ipa-nv
       - gate-tempest-dsvm-cells
-      - gate-tempest-dsvm-full-ceph
       - gate-tempest-dsvm-full-devstack-plugin-ceph-nv
       - gate-tempest-dsvm-multinode-full
       - gate-compute-api-guide
@@ -7946,6 +7944,7 @@ projects:
       - name: lib-forward-testing
       - name: release-notes-jobs
     check:
+      # TODO(mriedem): Switch to gate-tempest-dsvm-full-devstack-plugin-ceph
       - gate-tempest-dsvm-full-ceph-src-os-brick
       - gate-tempest-dsvm-full-lio-src-os-brick
     gate:
