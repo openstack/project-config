@@ -205,7 +205,7 @@
       - console-log
 
 - job-template:
-    name: 'gate-puppet-openstack-integration-{scenario}-tempest-dsvm-{ostype}'
+    name: 'gate-puppet-openstack-integration-{puppet_version}-{scenario}-tempest-dsvm-{ostype}'
     node: 'devstack-{ostype}'
 
     builders:
@@ -217,6 +217,7 @@
           project: openstack/puppet-openstack-integration
       - shell: |
           #!/bin/bash -xe
+          export PUPPET_VERSION={puppet_version}
           export SCENARIO={scenario}
           cd openstack/puppet-openstack-integration
           mkdir .bundled_gems
@@ -359,6 +360,9 @@
 
 - job-group:
     name: 'puppet-openstack-integration-jobs'
+    puppet_version:
+      - 3
+      - 4
     ostype:
       - trusty
       - centos7
@@ -367,7 +371,7 @@
       - scenario002
       - scenario003
     jobs:
-      - 'gate-puppet-openstack-integration-{scenario}-tempest-dsvm-{ostype}'
+      - 'gate-puppet-openstack-integration-{puppet_version}-{scenario}-tempest-dsvm-{ostype}'
 
 - job-group:
     name: 'puppet-openstack-spec-helper-jobs'
