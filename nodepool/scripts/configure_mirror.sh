@@ -64,4 +64,18 @@ EOF
     sudo dd of=/etc/apt/apt.conf.d/99unauthenticated <<EOF
 APT::Get::AllowUnauthenticated "true";
 EOF
+elif [ "$LSBDISTID" == "Debian" ] ; then
+sudo dd of=/etc/apt/sources.list <<EOF
+deb http://httpredir.debian.org/debian $LSBDISTCODENAME main
+deb-src http://httpredir.debian.org/debian $LSBDISTCODENAME main
+
+deb http://httpredir.debian.org/debian $LSBDISTCODENAME-updates main
+deb-src http://httpredir.debian.org/debian $LSBDISTCODENAME-updates main
+
+deb http://security.debian.org/ $LSBDISTCODENAME/updates main
+deb-src http://security.debian.org/ $LSBDISTCODENAME/updates main
+
+deb http://httpredir.debian.org/debian $LSBDISTCODENAME-backports main
+deb-src http://httpredir.debian.org/debian $LSBDISTCODENAME-backports main
+EOF
 fi
