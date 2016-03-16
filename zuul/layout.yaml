@@ -1003,7 +1003,7 @@ jobs:
   # Skip non-doc jobs for doc-only or translation-only nova changes.
   # Since doc/source/conf.py is checked by nova-(pep8|pylint), those
   # jobs should not be skipped.
-  - name: ^.*nova-(tox-(db-)?functional|python27|python34)
+  - name: ^.*nova-(tox-(db-)?functional|python27-db|python34-db)
     skip-if:
       - project: ^openstack/nova$
         all-files-match-any:
@@ -7456,8 +7456,8 @@ projects:
   - name: openstack/nova
     template:
       - name: merge-check
-      - name: python-jobs
-      - name: python3-jobs
+      - name: python-db-jobs
+      - name: python3-db-jobs
       - name: periodic-jobs-with-oslo-master
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
