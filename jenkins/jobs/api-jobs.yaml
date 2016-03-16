@@ -60,9 +60,9 @@
       - console-log
       - upload-swagger-draft
 
-- job:
-    name: gate-compute-api-guide
-    description: Build and draft the Compute API Guide from nova source.
+- job-template:
+    name: gate-{name}-api-guide
+    description: Build and draft the API Guide from source.
     node: ubuntu-trusty
 
     builders:
@@ -76,9 +76,9 @@
       - console-log
       - upload-api-guide-draft
 
-- job:
-    name: compute-api-guide
-    description: Build and publish the Compute API Guide from nova source.
+- job-template:
+    name: '{name}-api-guide'
+    description: Build and publish the API Guide from source.
     node: ubuntu-trusty
 
     builders:
@@ -92,7 +92,7 @@
       - ftp:
           site: developer.openstack.org
           source: 'api-guide/build/html/**'
-          target: 'api-guide/compute'
+          target: 'api-guide/{service}'
           remove-prefix: 'api-guide/build/html/'
 
 - job:
