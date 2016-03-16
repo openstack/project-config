@@ -1359,10 +1359,22 @@
       - python-jobs
       - openstack-publish-jobs
       - pypi-jobs
-      - gate-dib-dsvm-functests-{node}:
+      - gate-dib-dsvm-functests-{node}{job-suffix}:
           node: ubuntu-trusty
-      - gate-dib-dsvm-functests-{node}:
+          job-suffix: '-extras-nv'
+          tests: 'gentoo/build-succeeds'
+      - gate-dib-dsvm-functests-{node}{job-suffix}:
           node: devstack-centos7
+          job-suffix: '-extras-nv'
+          tests: 'gentoo/build-succeeds'
+      - gate-dib-dsvm-functests-{node}{job-suffix}:
+          node: ubuntu-trusty
+          job-suffix: ''
+          tests: ''
+      - gate-dib-dsvm-functests-{node}{job-suffix}:
+          node: devstack-centos7
+          job-suffix: ''
+          tests: ''
       - '{pipeline}-tempest-dsvm-ironic-pxe_ssh{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
