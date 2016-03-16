@@ -582,43 +582,50 @@ project-templates:
 
   - name: puppet-openstack-integration-jobs-all
     check:
-      - gate-puppet-openstack-integration-scenario001-tempest-dsvm-trusty
-      - gate-puppet-openstack-integration-scenario001-tempest-dsvm-centos7
-      - gate-puppet-openstack-integration-scenario002-tempest-dsvm-trusty
-      - gate-puppet-openstack-integration-scenario002-tempest-dsvm-centos7
-      - gate-puppet-openstack-integration-scenario003-tempest-dsvm-trusty
-      - gate-puppet-openstack-integration-scenario003-tempest-dsvm-centos7
+      - gate-puppet-openstack-integration-3-scenario001-tempest-dsvm-trusty
+      - gate-puppet-openstack-integration-3-scenario001-tempest-dsvm-centos7
+      - gate-puppet-openstack-integration-3-scenario002-tempest-dsvm-trusty
+      - gate-puppet-openstack-integration-3-scenario002-tempest-dsvm-centos7
+      - gate-puppet-openstack-integration-3-scenario003-tempest-dsvm-trusty
+      - gate-puppet-openstack-integration-3-scenario003-tempest-dsvm-centos7
     gate:
-      - gate-puppet-openstack-integration-scenario001-tempest-dsvm-centos7
-      - gate-puppet-openstack-integration-scenario001-tempest-dsvm-trusty
-      - gate-puppet-openstack-integration-scenario002-tempest-dsvm-centos7
-      - gate-puppet-openstack-integration-scenario002-tempest-dsvm-trusty
-      - gate-puppet-openstack-integration-scenario003-tempest-dsvm-centos7
-      - gate-puppet-openstack-integration-scenario003-tempest-dsvm-trusty
+      - gate-puppet-openstack-integration-3-scenario001-tempest-dsvm-centos7
+      - gate-puppet-openstack-integration-3-scenario001-tempest-dsvm-trusty
+      - gate-puppet-openstack-integration-3-scenario002-tempest-dsvm-centos7
+      - gate-puppet-openstack-integration-3-scenario002-tempest-dsvm-trusty
+      - gate-puppet-openstack-integration-3-scenario003-tempest-dsvm-centos7
+      - gate-puppet-openstack-integration-3-scenario003-tempest-dsvm-trusty
+    experimental:
+      - gate-puppet-openstack-integration-4-scenario001-tempest-dsvm-centos7
+      - gate-puppet-openstack-integration-4-scenario001-tempest-dsvm-trusty
+      - gate-puppet-openstack-integration-4-scenario002-tempest-dsvm-centos7
+      - gate-puppet-openstack-integration-4-scenario002-tempest-dsvm-trusty
+      - gate-puppet-openstack-integration-4-scenario003-tempest-dsvm-centos7
+      - gate-puppet-openstack-integration-4-scenario003-tempest-dsvm-trusty
 
   - name: puppet-openstack-integration-jobs-scenario001
     check:
-      - gate-puppet-openstack-integration-scenario001-tempest-dsvm-trusty
-      - gate-puppet-openstack-integration-scenario001-tempest-dsvm-centos7
+      - gate-puppet-openstack-integration-3-scenario001-tempest-dsvm-trusty
+      - gate-puppet-openstack-integration-3-scenario001-tempest-dsvm-centos7
     gate:
-      - gate-puppet-openstack-integration-scenario001-tempest-dsvm-centos7
-      - gate-puppet-openstack-integration-scenario001-tempest-dsvm-trusty
+      - gate-puppet-openstack-integration-3-scenario001-tempest-dsvm-centos7
+      - gate-puppet-openstack-integration-3-scenario001-tempest-dsvm-trusty
 
   - name: puppet-openstack-integration-jobs-scenario002
     check:
-      - gate-puppet-openstack-integration-scenario002-tempest-dsvm-trusty
-      - gate-puppet-openstack-integration-scenario002-tempest-dsvm-centos7
+      - gate-puppet-openstack-integration-3-scenario002-tempest-dsvm-trusty
+      - gate-puppet-openstack-integration-3-scenario002-tempest-dsvm-centos7
     gate:
-      - gate-puppet-openstack-integration-scenario002-tempest-dsvm-centos7
-      - gate-puppet-openstack-integration-scenario002-tempest-dsvm-trusty
+      - gate-puppet-openstack-integration-3-scenario002-tempest-dsvm-centos7
+      - gate-puppet-openstack-integration-3-scenario002-tempest-dsvm-trusty
 
   - name: puppet-openstack-integration-jobs-scenario003
     check:
-      - gate-puppet-openstack-integration-scenario003-tempest-dsvm-trusty
-      - gate-puppet-openstack-integration-scenario003-tempest-dsvm-centos7
+      - gate-puppet-openstack-integration-3-scenario003-tempest-dsvm-trusty
+      - gate-puppet-openstack-integration-3-scenario003-tempest-dsvm-centos7
     gate:
-      - gate-puppet-openstack-integration-scenario003-tempest-dsvm-centos7
-      - gate-puppet-openstack-integration-scenario003-tempest-dsvm-trusty
+      - gate-puppet-openstack-integration-3-scenario003-tempest-dsvm-centos7
+      - gate-puppet-openstack-integration-3-scenario003-tempest-dsvm-trusty
 
   - name: puppet-openstack-spec-helper-jobs
     check:
@@ -1084,11 +1091,11 @@ jobs:
     voting: false
 
   # scenario003 was added during Mitaka cycle
-  - name: ^gate-puppet-openstack-integration-scenario003-tempest-dsvm-.*$
+  - name: ^gate-puppet-openstack-integration-(3|4)-scenario003-tempest-dsvm-.*$
     branch: ^(?!stable/(kilo|liberty)).*$
 
   # puppet-integration scenario jobs run after stable/kilo
-  - name: ^gate-puppet-openstack-integration-scenario00(1|2)-tempest-dsvm-.*$
+  - name: ^gate-puppet-openstack-integration-(3|4)-scenario00(1|2)-tempest-dsvm-.*$
     branch: ^(?!stable/kilo).*$
 
   # puppet-integration lint/syntax jobs run only after stable/kilo
@@ -10716,9 +10723,9 @@ projects:
       - gate-tempest-dsvm-ironic-parallel-nv
       - gate-tempest-dsvm-nova-v20-api
       - gate-tempest-dsvm-nova-v20-api-legacy
-      - gate-puppet-openstack-integration-scenario001-tempest-dsvm-centos7
-      - gate-puppet-openstack-integration-scenario002-tempest-dsvm-centos7
-      - gate-puppet-openstack-integration-scenario003-tempest-dsvm-centos7
+      - gate-puppet-openstack-integration-3-scenario001-tempest-dsvm-centos7
+      - gate-puppet-openstack-integration-3-scenario002-tempest-dsvm-centos7
+      - gate-puppet-openstack-integration-3-scenario003-tempest-dsvm-centos7
     post:
       - tempest-docs
       - tempest-coverage
