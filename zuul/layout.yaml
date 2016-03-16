@@ -2214,6 +2214,10 @@ jobs:
   - name: ^gate-fuel-devops-python.*$
     branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
 
+  - name: ^gate-fuel-qa-pylint
+    branch: ^(?!stable/(?:4\.0|4\.1|5\.0|5\.1|6\.0|6\.1|7\.0|8\.0)).*$
+    voting: false
+
   - name: ^gate-fuel-library-puppet-syntax.*$
     branch: ^(?!stable/(?:4\.0|4\.1|5\.0|5\.1|6\.0|6\.1|7\.0)).*$
 
@@ -5808,8 +5812,11 @@ projects:
     template:
       - name: merge-check
     check:
+      - gate-fuel-qa-python27
       - gate-fuel-qa-pep8
+      - gate-fuel-qa-pylint
     gate:
+      - gate-fuel-qa-python27
       - gate-fuel-qa-pep8
 
   - name: openstack/fuel-specs
