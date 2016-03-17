@@ -2224,39 +2224,8 @@
       - console-log
 
 
-- job-template:
-    name: '{pipeline}-tempest-dsvm-full-ceph{job-suffix}'
-    node: '{node}'
-
-    wrappers:
-      - build-timeout:
-          timeout: 180
-      - timestamps
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - shell: |
-          #!/bin/bash -xe
-          export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_TEMPEST=1
-          export DEVSTACK_GATE_CEPH=1
-
-          export BRANCH_OVERRIDE={branch-override}
-          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
-              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
-          fi
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
-
-    publishers:
-      - devstack-logs
-      - console-log
-
-
+# TODO(mriedem): Add a -src- variant of this job to replace
+# tempest-dsvm-full-ceph-src below.
 - job-template:
     name: '{pipeline}-tempest-dsvm-full-devstack-plugin-ceph{job-suffix}'
     node: '{node}'
@@ -2793,7 +2762,6 @@
       - '{pipeline}-grenade-dsvm{job-suffix}'
       - '{pipeline}-tempest-dsvm-all{job-suffix}'
       - '{pipeline}-tempest-dsvm-cells{job-suffix}'
-      - '{pipeline}-tempest-dsvm-full-ceph{job-suffix}'
       - '{pipeline}-tempest-dsvm-full-lio{job-suffix}'
       - '{pipeline}-tempest-dsvm-full-test-accounts{job-suffix}'
       - '{pipeline}-tempest-dsvm-full{job-suffix}'
