@@ -134,8 +134,8 @@
           ./tools/apply-test.sh
 
 - job-template:
-    name: 'gate-infra-puppet-apply-{ostype}'
-    node: '{ostype}'
+    name: 'gate-infra-puppet-apply-{node}'
+    node: '{node}'
 
     builders:
       - print-template-name:
@@ -145,19 +145,6 @@
     publishers:
       - zuul-swift-upload-logs-with-console:
           upload_source: 'openstack-infra/system-config/applytest/*'
-
-- job-template:
-    name: 'gate-infra-puppet-apply-dsvm-{ostype}'
-    node: 'devstack-{ostype}'
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - infra-puppet-apply
-
-    publishers:
-      - zuul-swift-upload-logs-with-console:
-          upload_source: 'applytest/*'
 
 - job-template:
     name: 'experimental-openstackci-beaker-{node}'
@@ -194,8 +181,8 @@
       - zuul-swift-upload-console-log
 
 - job-template:
-    name: 'gate-openstackci-beaker-{ostype}-dsvm'
-    node: 'devstack-{ostype}'
+    name: 'gate-openstackci-beaker-{node}'
+    node: '{node}'
 
     builders:
       - print-template-name:
