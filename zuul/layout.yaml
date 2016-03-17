@@ -1270,6 +1270,14 @@ jobs:
           - ^.*\.rst$
           - ^doc/.*$
 
+  - name: gate-functional-dsvm-magnum-k8s-dib-nv
+    branch: ^(?!stable/kilo).*$
+    skip-if:
+      - project: ^openstack/magnum$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+
   - name: gate-functional-dsvm-magnum-k8s
     branch: ^(?!stable/kilo).*$
     skip-if:
@@ -6598,6 +6606,7 @@ projects:
       - name: translation-jobs
     check:
       - gate-functional-dsvm-magnum-api
+      - gate-functional-dsvm-magnum-k8s-dib-nv
       - gate-functional-dsvm-magnum-k8s
       - gate-functional-dsvm-magnum-swarm
       - gate-functional-dsvm-magnum-mesos
