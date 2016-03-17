@@ -1,6 +1,6 @@
 - job-template:
-    name: 'gate-{name}-puppet-unit-{puppet_version}-dsvm-{ostype}'
-    node: 'devstack-{ostype}'
+    name: 'gate-{name}-puppet-unit-{puppet_version}-{node}'
+    node: '{node}'
 
     builders:
       - print-template-name:
@@ -28,8 +28,8 @@
 
 
 - job-template:
-    name: 'gate-{name}-puppet-unit-dsvm-{ostype}'
-    node: 'devstack-{ostype}'
+    name: 'gate-{name}-puppet-unit-{node}'
+    node: '{node}'
 
     builders:
       - print-template-name:
@@ -69,8 +69,8 @@
 
 
 - job-template:
-    name: 'gate-{name}-puppet-beaker-rspec-dsvm-{ostype}{job-suffix}'
-    node: 'devstack-{ostype}'
+    name: 'gate-{name}-puppet-beaker-rspec-{node}{job-suffix}'
+    node: '{node}'
 
     builders:
       - print-template-name:
@@ -155,8 +155,8 @@
       - console-log
 
 - job-template:
-    name: 'gate-{name}-puppet-syntax-{puppet_version}-dsvm-{ostype}'
-    node: 'devstack-{ostype}'
+    name: 'gate-{name}-puppet-syntax-{puppet_version}-{node}'
+    node: '{node}'
 
     builders:
       - print-template-name:
@@ -205,8 +205,8 @@
       - console-log
 
 - job-template:
-    name: 'gate-puppet-openstack-integration-{puppet_version}-{scenario}-tempest-dsvm-{ostype}'
-    node: 'devstack-{ostype}'
+    name: 'gate-puppet-openstack-integration-{puppet_version}-{scenario}-tempest-{node}'
+    node: '{node}'
 
     builders:
       - print-template-name:
@@ -236,8 +236,8 @@
       - console-log
 
 - job-template:
-    name: 'gate-puppet-openstack-spec-helper-unit-dsvm-{ostype}'
-    node: 'devstack-{ostype}'
+    name: 'gate-puppet-openstack-spec-helper-unit-{node}'
+    node: '{node}'
 
     builders:
       - print-template-name:
@@ -260,8 +260,8 @@
       - console-log
 
 - job-template:
-    name: 'gate-puppet-openstack-spec-helper-beaker-rspec-dsvm-{ostype}'
-    node: 'devstack-{ostype}'
+    name: 'gate-puppet-openstack-spec-helper-beaker-rspec-{node}'
+    node: '{node}'
 
     builders:
       - print-template-name:
@@ -319,12 +319,12 @@
     puppet_version:
       - 3
       - 4
-    ostype:
-      - centos7
+    node:
+      - devstack-centos7
     jobs:
       - 'gate-{name}-puppet-lint'
       - 'gate-{name}-puppet-syntax'
-      - 'gate-{name}-puppet-syntax-{puppet_version}-dsvm-{ostype}'
+      - 'gate-{name}-puppet-syntax-{puppet_version}-{node}'
 
 - job-group:
     name: 'puppet-module-unit'
@@ -337,19 +337,29 @@
       - 4.0
       - 'latest'
     puppet_unit_version: '3.3 3.4 3.6 3.7 3.8 4.0 latest'
-    ostype:
-      - centos7
+    node:
+      - devstack-centos7
     jobs:
-      - 'gate-{name}-puppet-unit-{puppet_version}-dsvm-{ostype}'
-      - 'gate-{name}-puppet-unit-dsvm-{ostype}'
+      - 'gate-{name}-puppet-unit-{puppet_version}-{node}'
+      - 'gate-{name}-puppet-unit-{node}'
 
 - job-group:
-    name: 'puppet-beaker-jobs'
+    name: 'puppet-beaker-jobs-trusty'
     ostype:
       - trusty
-      - centos7
+    node:
+      - ubuntu-trusty
     jobs:
-      - 'gate-{name}-puppet-beaker-rspec-dsvm-{ostype}{job-suffix}'
+      - 'gate-{name}-puppet-beaker-rspec-{node}{job-suffix}'
+
+- job-group:
+    name: 'puppet-beaker-jobs-centos7'
+    ostype:
+      - centos7
+    node:
+      - devstack-centos7
+    jobs:
+      - 'gate-{name}-puppet-beaker-rspec-{node}{job-suffix}'
 
 - job-group:
     name: 'puppet-openstack-cookiecutter-check-jobs'
@@ -364,20 +374,20 @@
     puppet_version:
       - 3
       - 4
-    ostype:
-      - trusty
-      - centos7
+    node:
+      - ubuntu-trusty
+      - devstack-centos7
     scenario:
       - scenario001
       - scenario002
       - scenario003
     jobs:
-      - 'gate-puppet-openstack-integration-{puppet_version}-{scenario}-tempest-dsvm-{ostype}'
+      - 'gate-puppet-openstack-integration-{puppet_version}-{scenario}-tempest-{node}'
 
 - job-group:
     name: 'puppet-openstack-spec-helper-jobs'
-    ostype:
-      - centos7
+    node:
+      - devstack-centos7
     jobs:
-      - 'gate-puppet-openstack-spec-helper-unit-dsvm-{ostype}'
-      - 'gate-puppet-openstack-spec-helper-beaker-rspec-dsvm-{ostype}'
+      - 'gate-puppet-openstack-spec-helper-unit-{node}'
+      - 'gate-puppet-openstack-spec-helper-beaker-rspec-{node}'
