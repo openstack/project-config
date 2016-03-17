@@ -1,0 +1,24 @@
+- job-template:
+    name: 'gate-{name}-python27-searchlight'
+
+    wrappers:
+      - build-timeout:
+          timeout: 50
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - zuul-git-prep-upper-constraints
+      - elasticsearch-install
+      - install-distro-packages
+      - revoke-sudo
+      - python27
+      - assert-no-extra-files
+
+    publishers:
+      - test-results
+      - console-log
+      - zuul-swift-test-results-with-console
+
+    node: ubuntu-trusty
