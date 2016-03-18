@@ -168,6 +168,10 @@ ps -eo user,pid,ppid,lwp,%cpu,%mem,size,rss,cmd > $LOG_DIR/ps.txt
 sudo find $LOG_DIR -type d -execdir sudo chmod 755 '{}' \;
 sudo find $LOG_DIR -type f -execdir sudo chmod 644 '{}' \;
 
+# do not try to save symlinks because source files might not have
+# the right permissions to let jenkins user to upload them on log servers.
+sudo find $LOG_DIR -type l -execdir sudo rm -f '{}' \;
+
 # rename files to .txt; this is so that when displayed via
 # logs.openstack.org clicking results in the browser shows the
 # files, rather than trying to send it to another app or make you
