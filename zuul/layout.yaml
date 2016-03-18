@@ -2479,8 +2479,8 @@ jobs:
       - '^tox.ini'
       - '^.*requirements.txt$'
 
-  # Some projects do not have releasenotes for liberty.
-  - name: ^gate-(keystoneauth|keystonemiddleware|python-ironicclient|python-keystoneclient|python-openstackclient|os-client-config|puppet-.*)-releasenotes$
+  # Some projects do not have releasenotes until the Mitaka cycle
+  - name: ^gate-(keystoneauth|keystonemiddleware|python-ironicclient|python-keystoneclient|python-openstackclient|os-client-config|packstack|puppet-.*)-releasenotes$
     branch: ^(?!stable/(?:juno|kilo|liberty)).*$
 
   # skip gate-openstack-ansible-releasenotes jobs for juno & kilo branches
@@ -8584,9 +8584,11 @@ projects:
     check:
       - gate-packstack-pep8
       - gate-packstack-python27
+      - gate-packstack-releasenotes
     gate:
       - gate-packstack-pep8
       - gate-packstack-python27
+      - gate-packstack-releasenotes
 
   - name: openstack/pandaman
     template:
