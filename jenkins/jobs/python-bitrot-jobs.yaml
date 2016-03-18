@@ -10,6 +10,8 @@
       - zuul-git-branch-prep-upper-constraints:
           branch: '{branch}'
       - install-distro-packages
+      # TODO(jaegerandi): Remove database job once all repos needing
+      # database setup are moved over to the corresponding -db job.
       - mysql-prep
       - pgsql-prep
       - mysql-db:
@@ -26,6 +28,34 @@
 
     node: '{node}'
 
+- job-template:
+    name: 'periodic-{name}-python27-db{branch-name}'
+    description: 'Same job as periodic-{name}-python27 but sets up databases.'
+
+    wrappers:
+      - build-timeout:
+          timeout: 40
+      - timestamps
+
+    builders:
+      - zuul-git-branch-prep-upper-constraints:
+          branch: '{branch}'
+      - install-distro-packages
+      - mysql-prep
+      - pgsql-prep
+      - mysql-db:
+          db_name: openstack_citest
+      - pgsql-db:
+          db_name: openstack_citest
+      - revoke-sudo
+      - python27
+      - assert-no-extra-files
+
+    publishers:
+      - test-results
+      - console-log
+
+    node: '{node}'
 
 - job-template:
     name: 'periodic-{name}-docs{branch-name}'
@@ -65,4 +95,23 @@
     node: ubuntu-trusty
     jobs:
       - 'periodic-{name}-python27{branch-name}'
+      - 'periodic-{name}-docs{branch-name}'
+
+- job-group:
+    name: python-kilo-bitrot-db-jobs
+    branch: 'stable/kilo'
+    branch-name: '-kilo'
+    node: ubuntu-trusty
+    jobs:
+      - 'periodic-{name}-python27-db{branch-name}'
+      - 'periodic-{name}-docs{branch-name}'
+
+
+- job-group:
+    name: python-liberty-bitrot-db-jobs
+    branch: 'stable/liberty'
+    branch-name: '-liberty'
+    node: ubuntu-trusty
+    jobs:
+      - 'periodic-{name}-python27-db{branch-name}'
       - 'periodic-{name}-docs{branch-name}'

@@ -3843,9 +3843,13 @@
     doc-publisher-site: docs.openstack.org
 
     jobs:
-      - python-jobs
-      - python-kilo-bitrot-jobs
-      - python-liberty-bitrot-jobs
+      # TODO(jaegerandi): remove these jobs once db jobs are deployed.
+      - '{name}-coverage'
+      - 'gate-{name}-python27'
+      - 'gate-{name}-python34'
+      - python-db-jobs
+      - python-kilo-bitrot-db-jobs
+      - python-liberty-bitrot-db-jobs
       - openstack-publish-jobs
       - 'gate-{name}-tox-db-{envlist}':
           envlist:
