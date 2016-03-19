@@ -171,6 +171,14 @@
       - zuul-git-branch-prep-upper-constraints:
           branch: master
       - install-distro-packages
+      # The job runs with different repositories and invokes unittests, some
+      # of these repositories need a database set up.
+      - mysql-prep
+      - pgsql-prep
+      - mysql-db:
+          db_name: openstack_citest
+      - pgsql-db:
+          db_name: openstack_citest
       - revoke-sudo
       - shell: "/usr/local/jenkins/slave_scripts/run-tox-with-oslo-master.sh {python}"
       - assert-no-extra-files
