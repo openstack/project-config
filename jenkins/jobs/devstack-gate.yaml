@@ -708,6 +708,27 @@
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ironic git://git.openstack.org/openstack/ironic"
           fi
 
+          export IRONIC_MULTITENANT_NETWORK={multitenant-network}
+          if [ "$IRONIC_MULTITENANT_NETWORK" == "1" ]; then
+              export PROJECTS="openstack/networking-generic-switch $PROJECTS"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin networking-generic-switch git://git.openstack.org/openstack/networking-generic-switch"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_PLUGIN_EXTRA_CONF_PATH=etc/neutron/plugins/ml2"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_PLUGIN_EXTRA_CONF_FILES['networking-generic-switch']=ml2_conf_genericswitch.ini"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_USE_LINK_LOCAL=True"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"OVS_PHYSICAL_BRIDGE=brbm"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"PHYSICAL_NETWORK=mynetwork"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_PROVISION_NETWORK_NAME=ironic-provision"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_PROVISION_SUBNET_PREFIX=10.0.5.0/24"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_PROVISION_SUBNET_GATEWAY=10.0.5.1"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_PLUGIN=ml2"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"ENABLE_TENANT_VLANS=True"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_ML2_TENANT_NETWORK_TYPE=vlan"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"TENANT_VLAN_RANGE=100:150"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_ENABLED_NETWORK_DRIVERS=flat,neutron"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_NETWORK_DRIVER=neutron"
+              export DEVSTACK_GATE_TEMPEST_REGEX=baremetal_multitenancy
+          fi
+
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
 
@@ -775,6 +796,7 @@
           gate-tempest-full: 0
           bm-vm-ram: 1024
           bm-vm-count: 1
+          multitenant-network: 0
 
     publishers:
       - devstack-logs
@@ -808,6 +830,7 @@
           gate-tempest-full: 0
           bm-vm-ram: 512
           bm-vm-count: 1
+          multitenant-network: 0
 
     publishers:
       - devstack-logs
@@ -841,6 +864,7 @@
           gate-tempest-full: 1
           bm-vm-ram: 1024
           bm-vm-count: 1
+          multitenant-network: 0
 
     publishers:
       - devstack-logs
@@ -874,6 +898,7 @@
           gate-tempest-full: 0
           bm-vm-ram: 1024
           bm-vm-count: 1
+          multitenant-network: 0
 
     publishers:
       - devstack-logs
@@ -952,6 +977,7 @@
           gate-tempest-full: 0
           bm-vm-ram: 1024
           bm-vm-count: 1
+          multitenant-network: 0
 
     publishers:
       - devstack-logs
@@ -985,6 +1011,7 @@
           gate-tempest-full: 0
           bm-vm-ram: 1024
           bm-vm-count: 1
+          multitenant-network: 0
 
     publishers:
       - devstack-logs
@@ -1018,6 +1045,7 @@
           gate-tempest-full: 0
           bm-vm-ram: 1024
           bm-vm-count: 1
+          multitenant-network: 0
 
     publishers:
       - devstack-logs
@@ -1051,6 +1079,7 @@
           gate-tempest-full: 0
           bm-vm-ram: 1024
           bm-vm-count: 1
+          multitenant-network: 0
 
     publishers:
       - devstack-logs
@@ -1084,6 +1113,7 @@
           gate-tempest-full: 0
           bm-vm-ram: 1024
           bm-vm-count: 1
+          multitenant-network: 0
 
     publishers:
       - devstack-logs
@@ -1117,6 +1147,7 @@
           gate-tempest-full: 0
           bm-vm-ram: 1024
           bm-vm-count: 1
+          multitenant-network: 0
 
     publishers:
       - devstack-logs
@@ -1150,6 +1181,7 @@
           gate-tempest-full: 0
           bm-vm-ram: 1024
           bm-vm-count: 1
+          multitenant-network: 0
 
     publishers:
       - devstack-logs
@@ -1183,6 +1215,41 @@
           gate-tempest-full: 0
           bm-vm-ram: 1024
           bm-vm-count: 1
+          multitenant-network: 0
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-tempest-dsvm-ironic-multitenant-network{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 180
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - devstack-virtual-ironic:
+          postgres: 0
+          build-ramdisk: 0
+          deploy_driver: agent_ssh
+          deploy-with-ipa: 0
+          client-from-source: 0
+          ironic-lib-from-source: 0
+          ipxe-enabled: 1
+          branch-override: '{branch-override}'
+          ramdisk-type: 'coreos'
+          gate-tempest-full: 0
+          bm-vm-ram: 1024
+          bm-vm-count: 3
+          multitenant-network: 1
 
     publishers:
       - devstack-logs
@@ -1216,6 +1283,7 @@
           gate-tempest-full: 0
           bm-vm-ram: 1024
           bm-vm-count: 1
+          multitenant-network: 0
 
     publishers:
       - devstack-logs
