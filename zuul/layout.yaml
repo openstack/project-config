@@ -1029,7 +1029,7 @@ jobs:
   # Skip non-doc jobs for doc-only or translation-only heat changes.
   # Since doc/source/* is checked by heat-pep8, this job should not be
   # skipped.
-  - name: ^.*heat-(python27|python34)$
+  - name: ^.*heat-(python27|python34)-db$
     skip-if:
       - project: ^openstack/heat$
         all-files-match-any:
@@ -1910,7 +1910,7 @@ jobs:
   - name: gate-networking-cisco-python34
     branch: ^(?!stable/(?:juno|kilo)).*$
 
-  - name: gate-heat-python34
+  - name: gate-heat-python34-db
     branch: ^(?!stable/kilo).*$
 
   - name: gate-horizon-python34
@@ -2346,7 +2346,7 @@ jobs:
     branch: ^(?!stable/kilo).*$
 
   # Python 3.4 jobs
-  - name: ^gate-cinder-python34$
+  - name: ^gate-cinder-python34-db$
     branch: ^(?!stable/kilo).*$
 
   - name: gate-compute-hyperv-python34
@@ -2364,7 +2364,7 @@ jobs:
   - name: gate-nova-python34-db
     branch: ^(?!stable/kilo).*$
 
-  - name: ^gate-glance-python34$
+  - name: ^gate-glance-python34-db$
     branch: ^(?!stable/(?:kilo|liberty)).*$
 
   - name: gate-murano-python34-db
@@ -4620,12 +4620,12 @@ projects:
   - name: openstack/cinder
     template:
       - name: merge-check
-      - name: python-jobs
-      - name: python3-jobs
+      - name: python-db-jobs
+      - name: python3-db-jobs
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
-      - name: periodic-kilo
-      - name: periodic-liberty
+      - name: periodic-db-kilo
+      - name: periodic-db-liberty
       - name: periodic-jobs-with-oslo-master
       - name: check-requirements
       - name: integrated-gate
@@ -6032,12 +6032,12 @@ projects:
   - name: openstack/glance
     template:
       - name: merge-check
-      - name: python3-jobs
-      - name: python-jobs
+      - name: python3-db-jobs
+      - name: python-db-jobs
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
-      - name: periodic-kilo
-      - name: periodic-liberty
+      - name: periodic-db-kilo
+      - name: periodic-db-liberty
       - name: periodic-jobs-with-oslo-master
       - name: check-requirements
       - name: integrated-gate
@@ -6171,12 +6171,12 @@ projects:
   - name: openstack/heat
     template:
       - name: merge-check
-      - name: python-jobs
-      - name: python3-jobs
+      - name: python-db-jobs
+      - name: python3-db-jobs
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
-      - name: periodic-kilo
-      - name: periodic-liberty
+      - name: periodic-db-kilo
+      - name: periodic-db-liberty
       - name: periodic-jobs-with-oslo-master
       - name: check-requirements
       - name: translation-jobs
@@ -6196,7 +6196,7 @@ projects:
       - gate-tempest-dsvm-heat-apache
       - gate-grenade-dsvm-heat
     post:
-      - heat-coverage
+      - heat-coverage-db
     experimental:
       - gate-heat-dsvm-functional-orig-mysql-lbaasv2
       - gate-heat-dsvm-functional-convg-mysql-lbaasv2
