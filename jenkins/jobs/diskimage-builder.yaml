@@ -1,5 +1,5 @@
 - job-template:
-    name: 'gate-dib-dsvm-functests-{node}'
+    name: 'gate-dib-dsvm-functests-{node}{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -29,7 +29,7 @@
           set +u
           source ./env/bin/activate
           set -u
-          ./openstack/diskimage-builder/tests/run_functests.sh
+          ./openstack/diskimage-builder/tests/run_functests.sh {tests}
           set +u
           deactivate
           set -u
