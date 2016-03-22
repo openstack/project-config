@@ -1049,13 +1049,13 @@ jobs:
           - ^openstack_dashboard/locale/.*$
   # Skip non-doc jobs for doc-only ironic changes. Since documents are checked
   # by ironic-pep8 it should not be skipped.
-  - name: ^.*ironic-(python27|python34)$
+  - name: ^.*ironic-(python27|python34)-db$
     skip-if:
       - project: ^openstack/ironic$
         all-files-match-any:
           - ^.*\.rst$
           - ^doc/.*$
-  - name: ^.*ironic-inspector-(python27|python34|tox-func)$
+  - name: ^.*ironic-inspector-(python27-db|python34-db|tox-func)$
     skip-if:
       - project: ^openstack/ironic-inspector$
         all-files-match-any:
@@ -1749,7 +1749,7 @@ jobs:
   - name: gate-elastic-recheck-tox-queries
     voting: false
 
-  - name: gate-ironic-python34
+  - name: gate-ironic-python34-db
     branch: ^(?!stable/kilo).*$
 
   - name: gate-sahara-pylint
@@ -6348,12 +6348,12 @@ projects:
   - name: openstack/ironic
     template:
       - name: merge-check
-      - name: python-jobs
-      - name: python3-jobs
+      - name: python-db-jobs
+      - name: python3-db-jobs
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
-      - name: periodic-kilo
-      - name: periodic-liberty
+      - name: periodic-db-kilo
+      - name: periodic-db-liberty
       - name: periodic-jobs-with-oslo-master
       - name: check-requirements
       - name: translation-jobs
@@ -6372,7 +6372,7 @@ projects:
       - gate-tempest-dsvm-ironic-agent_ssh
       - gate-tempest-dsvm-ironic-pxe_ipa
     post:
-      - ironic-coverage
+      - ironic-coverage-db
     experimental:
       - gate-grenade-dsvm-ironic
       - gate-grenade-dsvm-partial-ironic
@@ -6383,8 +6383,8 @@ projects:
   - name: openstack/ironic-inspector
     template:
       - name: merge-check
-      - name: python-jobs
-      - name: python3-jobs
+      - name: python-db-jobs
+      - name: python3-db-jobs
       - name: openstack-server-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
