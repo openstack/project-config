@@ -1137,7 +1137,12 @@ jobs:
 
   # Packstack integration jobs should only run on master and stable/mitaka
   # onwards
-  - name: ^gate-packstack-integration-scenario00(1|2|3)-tempest-dsvm-centos7$
+  - name: ^gate-packstack-integration-.*-tempest-dsvm-centos7$
+    skip-if:
+      - project: openstack/packstack
+        all-files-match-any:
+          - ^releasenotes/.*$
+          - ^docs/.*$
     branch: ^(?!stable/(kilo|liberty)).*$
 
   - name: ^gate-puppet-openstackci-puppet-beaker-rspec-dsvm-.*$
