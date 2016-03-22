@@ -84,7 +84,6 @@
           export PROJECTS="openstack/barbican $PROJECTS"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin magnum git://git.openstack.org/openstack/magnum"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
-          export MAGNUM_IMAGE_NAME="fedora-atomic-f23-dib"
 
           # Keep localrc to be able to set some vars in post_test_hook
           export KEEP_LOCALRC=1
@@ -92,6 +91,7 @@
           function gate_hook {
                cd /opt/stack/new/magnum/
                echo "MAGNUM_GUEST_IMAGE_URL='https://fedorapeople.org/groups/magnum/fedora-atomic-f23-dib.qcow2'" >> $BASE/new/devstack/localrc
+               echo "MAGNUM_IMAGE_NAME='fedora-atomic-f23-dib'" >> $BASE/new/devstack/localrc
               ./magnum/tests/contrib/gate_hook.sh k8s
           }
           export -f gate_hook
