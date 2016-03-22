@@ -20,14 +20,15 @@
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
           export DEVSTACK_GATE_TEMPEST_REGEX="freezer_tempest_plugin"
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin freezer https://git.openstack.org/openstack/freezer"
 
           function gate_hook {
-              $BASE/new/freezer-api/devstack/gate_hook.sh
+              source $BASE/new/freezer/devstack/gate_hook.sh
           }
           export -f gate_hook
 
           function post_test_hook {
-              cd /opt/stack/new/freezer-api/freezer_api/tests/
+              cd /opt/stack/new/freezer/tests/integration/
               ./post_test_hook.sh
           }
           export -f post_test_hook
@@ -94,20 +95,23 @@
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export PROJECTS="openstack/freezer-api $PROJECTS"
-          export PROJECTS="openstack/freezer-web-ui $PROJECTS"
-          export PROJECTS="openstack/freezer $PROJECTS"
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
           export DEVSTACK_GATE_TEMPEST_REGEX="freezer_api_tempest_plugin"
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin freezer-api https://git.openstack.org/openstack/freezer-api"
+
+          function pre_test_hook {
+              source $BASE/new/freezer-api/freezer_api/tests/pre_test_hook.sh
+          }
+          export -f pre_test_hook
 
           function gate_hook {
-              $BASE/new/freezer-api/devstack/gate_hook.sh
+              source $BASE/new/freezer-api/devstack/gate_hook.sh
           }
           export -f gate_hook
 
           function post_test_hook {
-              cd /opt/stack/new/freezer-api/freezer_api/tests/
-              ./post_test_hook.sh
+              source $BASE/new/freezer-api/freezer_api/tests/post_test_hook.sh
           }
           export -f post_test_hook
 
