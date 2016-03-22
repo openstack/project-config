@@ -2352,7 +2352,7 @@ jobs:
   - name: gate-compute-hyperv-python34
     branch: ^(?!stable/kilo).*$
 
-  - name: gate-keystone-python34
+  - name: gate-keystone-python34-db
     branch: ^(?!stable/(?:kilo|liberty)).*$
 
   - name: gate-swift-python34
@@ -6489,12 +6489,12 @@ projects:
   - name: openstack/keystone
     template:
       - name: merge-check
-      - name: python-jobs
-      - name: python3-jobs
+      - name: python-db-jobs
+      - name: python3-db-jobs
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
-      - name: periodic-kilo
-      - name: periodic-liberty
+      - name: periodic-db-kilo
+      - name: periodic-db-liberty
       - name: periodic-jobs-with-oslo-master
       - name: check-requirements
       - name: integrated-gate
@@ -6511,7 +6511,7 @@ projects:
       - gate-keystone-tox-bandit
       - gate-keystone-tox-db-legacy_drivers
     post:
-      - keystone-coverage
+      - keystone-coverage-db
       - keystone-propose-config-updates
     experimental:
       - gate-grenade-dsvm-forward
