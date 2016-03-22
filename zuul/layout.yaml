@@ -1678,7 +1678,7 @@ jobs:
   - name: designate-coverage
     voting: false
 
-  - name: manila-coverage
+  - name: manila-coverage-db
     voting: false
 
   - name: magnum-coverage
@@ -1904,7 +1904,7 @@ jobs:
     # disable job in kilo/juno because of requirements doesn't match global.
     branch: ^(?!stable/(?:juno|kilo)).*$
 
-  - name: murano-coverage
+  - name: murano-coverage-db
     voting: false
 
   - name: gate-networking-cisco-python34
@@ -1969,7 +1969,7 @@ jobs:
   - name: gate-manila-pylint
     voting: false
 
-  - name: gate-manila-python34
+  - name: gate-manila-python34-db
     branch: ^(?!stable/kilo).*$
 
   - name: gate-manila-tempest-dsvm-postgres-generic-singlebackend
@@ -2367,7 +2367,7 @@ jobs:
   - name: ^gate-glance-python34$
     branch: ^(?!stable/(?:kilo|liberty)).*$
 
-  - name: gate-murano-python34
+  - name: gate-murano-python34-db
     branch: ^(?!stable/(?:juno|kilo|liberty)).*$
     voting: false
 
@@ -6699,13 +6699,13 @@ projects:
       - name: merge-check
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
-      - name: python-jobs
-      - name: python3-jobs
+      - name: python-db-jobs
+      - name: python3-db-jobs
       - name: check-requirements
       - name: translation-jobs
       - name: release-notes-jobs
     check:
-      - manila-coverage
+      - manila-coverage-db
       - gate-manila-tox-genconfig
       - gate-manila-pylint
       - gate-manila-tempest-dsvm-mysql-generic
@@ -6722,7 +6722,7 @@ projects:
       - gate-manila-tox-genconfig
       - gate-manila-tempest-dsvm-mysql-generic
     post:
-      - manila-coverage
+      - manila-coverage-db
     experimental:
       - gate-rally-dsvm-manila-multibackend
       - gate-rally-dsvm-manila-multibackend-no-ss
@@ -6965,17 +6965,17 @@ projects:
   - name: openstack/murano
     template:
       - name: merge-check
-      - name: python-jobs
+      - name: python-db-jobs
       - name: publish-to-pypi
       - name: openstack-server-publish-jobs
       - name: check-requirements
-      - name: periodic-kilo
-      - name: periodic-liberty
+      - name: periodic-db-kilo
+      - name: periodic-db-liberty
       - name: release-notes-jobs
       - name: translation-jobs
     check:
-      - gate-murano-python34
-      - murano-coverage
+      - gate-murano-python34-db
+      - murano-coverage-db
       - gate-murano-pylint
       - gate-murano-devstack-dsvm
       - gate-murano-congress-devstack-dsvm
@@ -6986,7 +6986,7 @@ projects:
       - gate-tempest-dsvm-murano-api
       - gate-murano-devstack-dsvm
     post:
-      - murano-coverage
+      - murano-coverage-db
 
   - name: openstack/murano-agent
     template:
