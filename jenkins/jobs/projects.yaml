@@ -1320,6 +1320,18 @@
           job-suffix: ''
 
 - project:
+    name: devstack-plugin-nfs
+    jobs:
+      - gate-{name}-bashate
+      - '{pipeline}-tempest-dsvm-full-devstack-plugin-nfs{job-suffix}':
+          node: ubuntu-trusty
+          pipeline: gate
+          plugin: nfs
+          plugin-repo: openstack/devstack-plugin-nfs
+          job-suffix: ''
+          branch-override: default
+
+- project:
     name: devstack-plugin-pika
     jobs:
       - gate-{name}-bashate
