@@ -1773,14 +1773,14 @@ jobs:
     branch: ^(?!stable/kilo).*$
     voting: false
 
-  - name: sahara-coverage
+  - name: sahara-coverage-db
     voting: false
 
   - name: gate-sahara-tox-bandit
     branch: ^(?!stable/kilo).*$
     voting: false
 
-  - name: gate-sahara-python34
+  - name: gate-sahara-python34-db
     branch: ^(?!stable/kilo).*$
 
   - name: gate-sahara-dashboard-dsvm-integration
@@ -2080,7 +2080,7 @@ jobs:
     branch: ^(?!stable/kilo).*$
     voting: false
 
-  - name: gate-tacker-python34
+  - name: gate-tacker-python34-db
     branch: ^(?!stable/(kilo|liberty)).*$
     voting: false
 
@@ -9878,12 +9878,12 @@ projects:
     template:
       - name: merge-check
     check:
-      - rack-coverage
+      - rack-coverage-db
       - gate-rack-pep8
-      - gate-rack-python27
+      - gate-rack-python27-db
     gate:
       - gate-rack-pep8
-      - gate-rack-python27
+      - gate-rack-python27-db
 
   - name: openstack/radar
     template:
@@ -10078,10 +10078,10 @@ projects:
   - name: openstack/sahara
     template:
       - name: merge-check
-      - name: python-jobs
-      - name: python3-jobs
-      - name: periodic-kilo
-      - name: periodic-liberty
+      - name: python-db-jobs
+      - name: python3-db-jobs
+      - name: periodic-db-kilo
+      - name: periodic-db-liberty
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
       - name: check-requirements
@@ -10090,7 +10090,7 @@ projects:
     check:
       - gate-sahara-pylint
       - gate-tempest-dsvm-sahara
-      - sahara-coverage
+      - sahara-coverage-db
       - gate-sahara-tox-bandit
       - gate-grenade-dsvm-sahara
       - gate-sahara-dsvm-scenario-neutron-heat
@@ -10105,7 +10105,7 @@ projects:
       - gate-sahara-dsvm-scenario-nova-heat
       - gate-tempest-dsvm-sahara
     post:
-      - sahara-coverage
+      - sahara-coverage-db
 
   - name: openstack/sahara-ci-config
     template:
@@ -10746,13 +10746,13 @@ projects:
     template:
       - name: merge-check
       - name: check-requirements
-      - name: python-jobs
+      - name: python-db-jobs
       - name: publish-to-pypi
       - name: docs-on-rtfd
       - name: translation-jobs
     check:
       - gate-tacker-dsvm-functional
-      - gate-tacker-python34
+      - gate-tacker-python34-db
 
   - name: openstack/tacker-horizon
     template:
