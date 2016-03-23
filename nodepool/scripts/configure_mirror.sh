@@ -16,6 +16,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Ensure that we can talk to ourselves over any of our known IPs
+# and that our related nodes can talk to use from all of their
+# known IPs
+for ip in $(cat /etc/nodepool/primary_node /etc/nodepool/sub_nodes /etc/nodepool/primary_node_private /etc/nodepool/sub_nodes_private | sort -u); do
+    sudo iptables -I openstack-INPUT 1 -s $ip -j ACCEPT
+done
+
 source /etc/nodepool/provider
 
 # Generate the AFS Slug from the host system.

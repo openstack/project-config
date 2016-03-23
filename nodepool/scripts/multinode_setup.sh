@@ -18,10 +18,6 @@
 
 export PATH=$PATH:/usr/local/sbin:/usr/sbin
 
-for ip in $(cat /etc/nodepool/primary_node /etc/nodepool/sub_nodes /etc/nodepool/primary_node_private /etc/nodepool/sub_nodes_private | sort -u); do
-    sudo iptables -I openstack-INPUT 1 -s $ip -j ACCEPT
-done
-
 echo "" >> /home/jenkins/.ssh/authorized_keys
 cat /etc/nodepool/id_rsa.pub >> /home/jenkins/.ssh/authorized_keys
 echo "" >> /home/jenkins/.ssh/authorized_keys
