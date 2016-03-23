@@ -4,7 +4,7 @@
 MIRROR_ROOT=$1
 
 # A temporary file to which to write the new index
-TMP_INDEX_FILE=$(tempfile)
+TMP_INDEX_FILE=$(mktemp)
 trap "rm -f -- '$TMP_INDEX_FILE'" EXIT
 
 # And the final location
