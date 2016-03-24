@@ -130,6 +130,14 @@ function setup_manuals {
             fi
         fi
     done
+
+    # Project setup and updating POT files for release notes.
+    # As first step, execute for openstack-manuals only.
+    if [[ $project == "openstack-manuals" ]] && [[ $version == "master" ]]; then
+        extract_messages_releasenotes
+        ZANATA_RULES="$ZANATA_RULES -r ${ZanataDocFolder}/releasenotes/source/locale/releasenotes.pot ${DocFolder}/releasenotes/source/locale/{locale_with_underscore}.po"
+    fi
+
     /usr/local/jenkins/slave_scripts/create-zanata-xml.py -p $project \
         -v $version --srcdir . --txdir . $ZANATA_RULES -e "$EXCLUDE" \
         -f zanata.xml
@@ -309,6 +317,19 @@ function extract_messages_django {
     trap "" EXIT
 }
 
+# Extract releasenotes messages
+function extract_messages_releasenotes {
+    # Extract messages
+    sphinx-build -b gettext -d releasenotes/build/doctrees \
+        releasenotes/source releasenotes/work
+    rm -rf releasenotes/build
+    # Concatenate messages into one POT file
+    mkdir -p releasenotes/source/locale/
+    msgcat --sort-by-file releasenotes/work/*.pot \
+        > releasenotes/source/locale/releasenotes.pot
+    rm -rf releasenotes/work
+    git add releasenotes/source/locale/releasenotes.pot
+}
 
 # Filter out files that we do not want to commit.
 # Sets global variable INVALID_PO_FILE to 1 if any invalid files are
