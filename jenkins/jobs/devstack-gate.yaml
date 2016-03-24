@@ -675,6 +675,8 @@
 
           export IRONIC_MULTITENANT_NETWORK={multitenant-network}
           if [ "$IRONIC_MULTITENANT_NETWORK" == "1" ]; then
+              # networking-generic-switch requires sudo to execute ovs-vsctl commands
+              export DEVSTACK_GATE_REMOVE_STACK_SUDO=0
               export PROJECTS="openstack/networking-generic-switch $PROJECTS"
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin networking-generic-switch git://git.openstack.org/openstack/networking-generic-switch"
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_PLUGIN_EXTRA_CONF_PATH=etc/neutron/plugins/ml2"
