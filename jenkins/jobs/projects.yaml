@@ -365,6 +365,7 @@
     doc-publisher-folder: bindep
 
     jobs:
+      - bindep-fallback-tests
       - infra-publish-jobs
       - python-jobs
       - pypi-jobs
@@ -5029,15 +5030,9 @@
     name: project-config
 
     jobs:
+      - bindep-fallback-tests
       - gate-{name}-linters
       - generate-specs-site-jobs
-      - gate-bindep-fallback-{node}{job-suffix}:
-          job-suffix: ''
-          node:
-            - debian-jessie
-            - devstack-centos7
-            - fedora-23
-            - ubuntu-trusty
 
 - project:
     name: project-config-example

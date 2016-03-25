@@ -109,7 +109,7 @@
       - zuul-swift-upload-console-log
 
 - job-template:
-    name: gate-bindep-fallback-{node}{job-suffix}
+    name: gate-{name}-bindep-fallback-{node}{job-suffix}
 
     wrappers:
       - timestamps
@@ -123,6 +123,19 @@
       - console-log
 
     node: '{node}'
+
+- job-group:
+    name: bindep-fallback-tests
+
+    job-suffix: ''
+    node:
+      - debian-jessie
+      - devstack-centos7
+      - fedora-23
+      - ubuntu-trusty
+
+    jobs:
+      - gate-{name}-bindep-fallback-{node}{job-suffix}
 
 - builder:
     name: infra-puppet-apply
