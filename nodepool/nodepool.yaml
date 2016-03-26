@@ -42,20 +42,6 @@ labels:
       - name: internap-nyj01
       - name: vexxhost-ca-ymq-1
       - name: osic-cloud1
-  - name: devstack-trusty
-    image: devstack-trusty
-    ready-script: configure_mirror.sh
-    min-ready: -1
-    providers:
-      - name: rax-dfw
-      - name: rax-ord
-      - name: rax-iad
-      - name: ovh-gra1
-      - name: ovh-bhs1
-      - name: bluebox-sjc1
-      - name: internap-nyj01
-      - name: vexxhost-ca-ymq-1
-      - name: osic-cloud1
   - name: ubuntu-trusty
     image: ubuntu-trusty
     ready-script: configure_mirror.sh
@@ -99,17 +85,6 @@ labels:
       - name: internap-nyj01
       - name: vexxhost-ca-ymq-1
       - name: osic-cloud1
-  - name: devstack-trusty-2-node
-    image: devstack-trusty
-    ready-script: multinode_setup.sh
-    subnodes: 1
-    min-ready: -1
-    providers:
-      - name: ovh-gra1
-      - name: ovh-bhs1
-      - name: bluebox-sjc1
-      - name: internap-nyj01
-      - name: vexxhost-ca-ymq-1
   - name: devstack-centos7
     image: devstack-centos7
     ready-script: configure_mirror.sh
@@ -169,13 +144,6 @@ providers:
         min-ram: 8192
         name-filter: 'Performance'
         setup: prepare_node_bare.sh
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-      - name: devstack-trusty
-        base-image: 'Ubuntu 14.04 LTS (Trusty Tahr) (PVHVM)'
-        min-ram: 8192
-        name-filter: 'Performance'
-        setup: prepare_node_devstack.sh
         username: jenkins
         private-key: /home/nodepool/.ssh/id_rsa
       - name: ubuntu-trusty
@@ -251,13 +219,6 @@ providers:
         setup: prepare_node_bare.sh
         username: jenkins
         private-key: /home/nodepool/.ssh/id_rsa
-      - name: devstack-trusty
-        base-image: 'Ubuntu 14.04 LTS (Trusty Tahr) (PVHVM)'
-        min-ram: 8192
-        name-filter: 'Performance'
-        setup: prepare_node_devstack.sh
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
       - name: ubuntu-trusty
         min-ram: 8192
         diskimage: ubuntu-trusty
@@ -331,13 +292,6 @@ providers:
         setup: prepare_node_bare.sh
         username: jenkins
         private-key: /home/nodepool/.ssh/id_rsa
-      - name: devstack-trusty
-        base-image: 'Ubuntu 14.04 LTS (Trusty Tahr) (PVHVM)'
-        min-ram: 8192
-        name-filter: 'Performance'
-        setup: prepare_node_devstack.sh
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
       - name: ubuntu-trusty
         min-ram: 8192
         diskimage: ubuntu-trusty
@@ -404,13 +358,6 @@ providers:
     rate: 0.1
     image-type: raw
     images:
-      - name: devstack-trusty
-        min-ram: 8000
-        name-filter: 'ssd-osFoundation-3'
-        diskimage: devstack-trusty
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
       - name: ubuntu-trusty
         min-ram: 8000
         name-filter: 'ssd-osFoundation-3'
@@ -462,13 +409,6 @@ providers:
     rate: 0.1
     image-type: raw
     images:
-      - name: devstack-trusty
-        min-ram: 8000
-        name-filter: 'ssd-osFoundation-3'
-        diskimage: devstack-trusty
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
       - name: ubuntu-trusty
         min-ram: 8000
         name-filter: 'ssd-osFoundation-3'
@@ -520,13 +460,6 @@ providers:
     rate: 0.001
     pool: 'external'
     images:
-      - name: devstack-trusty
-        min-ram: 8000
-        name-filter: 'nodepool'
-        diskimage: devstack-trusty
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
       - name: ubuntu-trusty
         min-ram: 8000
         name-filter: 'nodepool'
@@ -580,13 +513,6 @@ providers:
       - name: inap-17304-WAN2342
         public: true
     images:
-      - name: devstack-trusty
-        min-ram: 8000
-        name-filter: 'A1.8'
-        diskimage: devstack-trusty
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
       - name: ubuntu-trusty
         min-ram: 8000
         name-filter: 'A1.8'
@@ -637,12 +563,6 @@ providers:
     max-servers: 25
     rate: 0.001
     images:
-      - name: devstack-trusty
-        min-ram: 8000
-        diskimage: devstack-trusty
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
       - name: ubuntu-trusty
         min-ram: 8000
         diskimage: ubuntu-trusty
@@ -688,13 +608,6 @@ providers:
     rate: 0.001
     pool: 'GATEWAY_NET'
     images:
-      - name: devstack-trusty
-        min-ram: 8000
-        name-filter: 'm2.medium'
-        diskimage: devstack-trusty
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
       - name: ubuntu-trusty
         min-ram: 8000
         name-filter: 'm2.medium'
@@ -815,22 +728,6 @@ diskimages:
       DIB_IMAGE_CACHE: /opt/dib_cache
       DIB_APT_LOCAL_CACHE: '0'
       DIB_DISABLE_APT_CLEANUP: '1'
-  - name: devstack-trusty
-    elements:
-      - ubuntu
-      - vm
-      - openstack-repos
-      - nodepool-base
-      - node-devstack
-      - cache-bindep
-      - infra-package-needs
-    release: trusty
-    env-vars:
-      TMPDIR: /opt/dib_tmp
-      DIB_IMAGE_CACHE: /opt/dib_cache
-      DIB_APT_LOCAL_CACHE: '0'
-      DIB_DISABLE_APT_CLEANUP: '1'
-      QEMU_IMG_OPTIONS: compat=0.10
   - name: devstack-centos7
     elements:
       - centos7
