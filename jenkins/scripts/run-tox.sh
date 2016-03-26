@@ -103,10 +103,6 @@ function check_nose_html {
             echo
             exit 1
         fi
-    else
-        echo
-        echo "WARNING: Unable to find $NOSE_HTML_OUT_FILE to confirm results!"
-        echo
     fi
 }
 
