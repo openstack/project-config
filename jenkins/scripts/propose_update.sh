@@ -64,8 +64,8 @@ fi
 USERNAME="proposal-bot"
 ALL_SUCCESS=0
 
-if [ -z "$ZUUL_REF" ] ; then
-    echo "No ZUUL_REF set, exiting."
+if [ -z "$ZUUL_REFNAME" ] ; then
+    echo "No ZUUL_REFNAME set, exiting."
     exit 1
 fi
 
@@ -93,10 +93,10 @@ for PROJECT in $PROJECTS; do
 
     # check whether the project has this branch or a suitable fallback
     BRANCH=""
-    if git branch -a | grep -q "^  remotes/origin/$ZUUL_REF$" ; then
-        BRANCH=$ZUUL_REF
-    elif echo $ZUUL_REF | grep -q "^stable/" ; then
-        FALLBACK=$(echo $ZUUL_REF | sed s,^stable/,proposed/,)
+    if git branch -a | grep -q "^  remotes/origin/$ZUUL_REFNAME$" ; then
+        BRANCH=$ZUUL_REFNAME
+    elif echo $ZUUL_REFNAME | grep -q "^stable/" ; then
+        FALLBACK=$(echo $ZUUL_REFNAME | sed s,^stable/,proposed/,)
         if git branch -a | grep -q "^  remotes/origin/$FALLBACK$" ; then
             BRANCH=$FALLBACK
         fi
