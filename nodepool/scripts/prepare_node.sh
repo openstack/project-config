@@ -232,7 +232,7 @@ sudo rm -fr /tmp/zuul
 # https://bugs.launchpad.net/ubuntu/+source/python2.7/+bug/839588
 sudo -H virtualenv /usr/zuul-swift-logs-env
 sudo -H /usr/zuul-swift-logs-env/bin/pip install python-magic argparse \
-    requests glob2
+    requests glob2 requestsexceptions
 
 # Create a virtualenv for os-testr (which contains subunit2html)
 # this is in /usr instead of /usr/loca/ due to this bug on precise:
