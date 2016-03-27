@@ -2361,6 +2361,10 @@ jobs:
     branch: ^(?!stable/(kilo|liberty)).*$
 
   # TODO(yamamoto): Revisit when Neutron driver API become more stable.
+  # OFAgent will be removed in the Newton cycle.
+  - name: ^gate-networking-ofagent-.*$
+    branch: ^(?!master)$
+
   - name: gate-networking-ofagent-python27
     voting: false
 
@@ -2372,6 +2376,7 @@ jobs:
     tags: neutron
 
   - name: gate-tempest-dsvm-networking-ofagent
+    branch: ^(?!master)$
     voting: false
 
   - name: ^gate-tempest-dsvm-neutron.*-ovs.*$
@@ -7501,7 +7506,6 @@ projects:
       - gate-networking-ofagent-docs
       - gate-networking-ofagent-pep8
     periodic:
-      - periodic-tempest-dsvm-networking-ofagent-master
       - periodic-tempest-dsvm-networking-ofagent-mitaka
       - periodic-tempest-dsvm-networking-ofagent-liberty
       - periodic-tempest-dsvm-networking-ofagent-kilo
