@@ -37,10 +37,10 @@ until $BINDEP -b -f $PACKAGES ; do
 
     # don't abort inside the loop, we check for the desired outcome
     set +e
-    if apt-get -v >/dev/null ; then
-        sudo apt-get update
+    if apt-get -v >/dev/null 2>&1 ; then
+        sudo apt-get -qq update
         sudo PATH=/usr/sbin:/sbin:$PATH DEBIAN_FRONTEND=noninteractive \
-            apt-get --option "Dpkg::Options::=--force-confold" \
+            apt-get -q --option "Dpkg::Options::=--force-confold" \
             --assume-yes install `$BINDEP -b -f $PACKAGES`
     else
         sudo PATH=/usr/sbin:/sbin:$PATH $YUM install -y \
