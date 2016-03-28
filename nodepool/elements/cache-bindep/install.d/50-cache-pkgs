@@ -43,13 +43,7 @@ if [ -f /usr/bin/apt-get ] ; then
     done
 fi
 
-# TODO(fungi) once https://review.openstack.org/195201 appears in a bindep
-# release, replace the next four lines with:
-# PACKAGELIST=`echo "$PACKAGES" | /usr/bindep-env/bin/bindep -b -f - || true`
-PACKAGESFILE=`mktemp`
-echo "$PACKAGES" > $PACKAGESFILE
-PACKAGELIST=`/usr/bindep-env/bin/bindep -b -f $PACKAGESFILE || true`
-rm $PACKAGESFILE
+PACKAGELIST=`echo "$PACKAGES" | /usr/bindep-env/bin/bindep -b -f - || true`
 
 if [ -f /usr/bin/apt-get ] ; then
     # --ignore-missing conflicts with set -e, so force it to be ok
