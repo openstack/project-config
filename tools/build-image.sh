@@ -14,14 +14,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# To run on Ubuntu 14.04, this depends on:
+# diskimage-builder
+# qemu-utils
+# debootstrap
+
 set -e
 
 export ELEMENTS_PATH=${ELEMENTS_PATH:-nodepool/elements}
-export DISTRO=${DISTRO:-ubuntu}
+export DISTRO=${DISTRO:-ubuntu-minimal}
 export IMAGE_NAME=${IMAGE_NAME:-devstack-gate}
 export NODEPOOL_SCRIPTDIR=${NODEPOOL_SCRIPTDIR:-nodepool/scripts}
 export CONFIG_SOURCE=${CONFIG_SOURCE:-https://git.openstack.org/openstack-infra/system-config}
 export CONFIG_REF=${CONFIG_REF:-master}
+export EXTRA_ELEMENTS=${EXTRA_ELEMENTS:-}
 
 disk-image-create -x --no-tmpfs -o $IMAGE_NAME $DISTRO \
-    vm openstack-repos puppet nodepool-base node-devstack
+    vm openstack-repos puppet nodepool-base node-devstack simple-init $EXTRA_ELEMENTS
