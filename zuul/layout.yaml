@@ -309,20 +309,16 @@ project-templates:
       - '{name}-branch-tarball'
 
   # Invokes the same targets as python-jobs with one change:
-  # python27-searchlight is used instead of python27. The job
-  # python27-searchlight installs extra packages
+  # python27-searchlight is used instead of python27.
+  # The job python27-searchlight installs extra packages
   - name: python-jobs-searchlight
     check:
       - 'gate-{name}-docs'
       - 'gate-{name}-pep8'
-      # TODO(jaegerandi): Enable once experimental job works.
-      # - 'gate-{name}-python27-searchlight'
+      - 'gate-{name}-python27-searchlight'
     gate:
       - 'gate-{name}-docs'
       - 'gate-{name}-pep8'
-      # TODO(jaegerandi): Enable once experimental job works.
-      # - 'gate-{name}-python27-searchlight'
-    experimental:
       - 'gate-{name}-python27-searchlight'
     post:
       - '{name}-branch-tarball'
@@ -409,6 +405,13 @@ project-templates:
       - 'gate-{name}-python34'
     gate:
       - 'gate-{name}-python34'
+
+  # Invokes the same targets as python3-jobs, but sets up extra packages.
+  - name: python3-jobs-searchlight
+    check:
+      - 'gate-{name}-python34-searchlight'
+    gate:
+      - 'gate-{name}-python34-searchlight'
 
   # Invokes the same targets as python3-jobs, but sets up databases.
   - name: python3-db-jobs
@@ -9835,7 +9838,7 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs-searchlight
-      - name: python3-jobs
+      - name: python3-jobs-searchlight
       - name: openstack-client-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
@@ -10374,7 +10377,7 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs-searchlight
-      - name: python3-jobs
+      - name: python3-jobs-searchlight
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
       - name: check-requirements
