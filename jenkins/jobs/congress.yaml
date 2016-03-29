@@ -28,8 +28,6 @@
 
           DEVSTACK_LOCAL_CONFIG="enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
 
-          export ENABLED_SERVICES
-          export DEVSTACK_LOCAL_CONFIG
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
@@ -38,6 +36,10 @@
           export PROJECTS="openstack/congress $PROJECTS"
           export PROJECTS="openstack/python-congressclient $PROJECTS"
           export DEVSTACK_PROJECT_FROM_GIT=python-congressclient
+          export PROJECTS="openstack/murano $PROJECTS"
+          export PROJECTS="openstack/murano-dashboard $PROJECTS"
+          export PROJECTS="openstack/python-muranoclient $PROJECTS"
+
           if [[ "stable/kilo stable/liberty" =~ $ZUUL_BRANCH ]]; then
               # Kilo/Liberty version uses the older 'hooks' approach to adding
               # the congress plugin
@@ -54,8 +56,12 @@
           else
               # Enable congress devstack plugin.
               DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin congress git://git.openstack.org/openstack/congress"
+              # To be enabled for Mitaka and later
+              DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin murano git://git.openstack.org/openstack/murano"
           fi
 
+          export ENABLED_SERVICES
+          export DEVSTACK_LOCAL_CONFIG
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
