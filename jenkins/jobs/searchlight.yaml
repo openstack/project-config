@@ -22,3 +22,28 @@
       - zuul-swift-test-results-with-console
 
     node: ubuntu-trusty
+
+- job-template:
+    name: 'gate-{name}-python34-searchlight'
+
+    wrappers:
+      - build-timeout:
+          timeout: 40
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - zuul-git-prep-upper-constraints
+      - elasticsearch-install
+      - install-distro-packages
+      - revoke-sudo
+      - python34
+      - assert-no-extra-files
+
+    publishers:
+      - test-results
+      - console-log
+      - zuul-swift-test-results-with-console
+
+    node: ubuntu-trusty
