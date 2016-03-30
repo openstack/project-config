@@ -271,15 +271,15 @@ project-templates:
 
   - name: bindep-fallback
     check:
-      - gate-bindep-fallback-debian-jessie
-      - gate-bindep-fallback-devstack-centos7
-      - gate-bindep-fallback-fedora-23
-      - gate-bindep-fallback-ubuntu-trusty
+      - gate-{name}-bindep-fallback-debian-jessie
+      - gate-{name}-bindep-fallback-devstack-centos7
+      - gate-{name}-bindep-fallback-fedora-23
+      - gate-{name}-bindep-fallback-ubuntu-trusty
     gate:
-      - gate-bindep-fallback-debian-jessie
-      - gate-bindep-fallback-devstack-centos7
-      - gate-bindep-fallback-fedora-23
-      - gate-bindep-fallback-ubuntu-trusty
+      - gate-{name}-bindep-fallback-debian-jessie
+      - gate-{name}-bindep-fallback-devstack-centos7
+      - gate-{name}-bindep-fallback-fedora-23
+      - gate-{name}-bindep-fallback-ubuntu-trusty
 
   - name: python-jobs
     check:
@@ -1664,6 +1664,10 @@ jobs:
       - 'gerrit/projects.yaml'
       - 'tools/check_projects_yaml_alphabetized.sh'
       - 'tox.ini'
+
+  - name: ^gate-project-config-bindep-fallback.*$
+    files:
+      - 'jenkins/data/bindep-fallback.txt'
 
   - name: gate-ironicclient-dsvm-functional
     voting: false
