@@ -23,3 +23,5 @@ export THIN='false'
 export ALL_MYSQL_PRIVS='true'
 
 ./prepare_node.sh "$HOSTNAME"
+
+./fix_grub_timeout.sh
