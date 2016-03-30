@@ -96,6 +96,42 @@
           remove-prefix: 'api-guide/build/html/'
       - console-log
 
+- job-template:
+    name: gate-{name}-api-ref
+    description: Build and draft the API Reference from source.
+    node: ubuntu-trusty
+
+    builders:
+      - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
+      - tox:
+          envlist: 'api-ref'
+
+    publishers:
+      - console-log
+      - upload-api-ref-draft
+
+- job-template:
+    name: '{name}-api-ref'
+    description: Build and publish the API Reference from source.
+    node: ubuntu-trusty
+
+    builders:
+      - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
+      - tox:
+          envlist: 'api-ref'
+
+    publishers:
+      - ftp:
+          site: developer.openstack.org
+          source: 'api-ref/build/html/**'
+          target: 'api-ref/{service}'
+          remove-prefix: 'api-ref/build/html/'
+      - console-log
+
 - job:
     name: python-openstacksdk-docs
     description: Build and publish the Python SDK docs from source.

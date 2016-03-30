@@ -960,7 +960,7 @@ jobs:
         all-files-match-any:
           - ^.*\.rst$
           - ^doc/.*$
-          - ^api-guide/.*$
+          - ^api-.*$
           - ^nova/hacking/.*$
           - ^nova/locale/.*$
           - ^nova/tests/.*$
@@ -1058,7 +1058,7 @@ jobs:
       - project: ^openstack/nova$
         all-files-match-any:
           - ^.*\.rst$
-          - ^api-guide/.*$
+          - ^api-.*$
           - ^doc/.*$
           - ^nova/locale/.*$
 
@@ -1412,7 +1412,7 @@ jobs:
         all-files-match-any:
           - ^.*\.rst$
           - ^doc/.*$
-          - ^api-guide/.*$
+          - ^api-.*$
           - ^nova/tests/unit/.*$
           - ^nova/tests/functional/.*$
           - ^nova/tests/.*\.py$
@@ -1705,7 +1705,19 @@ jobs:
       - '^tox.ini$'
       - '^api-guide/.*'
 
+  - name: ^gate-.*-api-ref$
+    success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/api-ref/build/html/
+    voting: false
+    branch: master
+    files:
+      - '^tox.ini$'
+      - '^api-ref/.*'
+
   - name: ^(?!gate-).*-api-guide$
+    # Only publish from master
+    branch: master
+
+  - name: ^(?!gate-).*-api-ref$
     # Only publish from master
     branch: master
 
@@ -7655,6 +7667,7 @@ projects:
       - gate-tempest-dsvm-full-devstack-plugin-ceph-nv
       - gate-tempest-dsvm-multinode-full
       - gate-nova-api-guide
+      - gate-nova-api-ref
     gate:
       - gate-nova-tox-db-functional
       - gate-grenade-dsvm-partial-ncpu
