@@ -85,6 +85,20 @@ labels:
       - name: internap-nyj01
       - name: vexxhost-ca-ymq-1
       - name: osic-cloud1
+  - name: ubuntu-xenial
+    image: ubuntu-xenial
+    ready-script: configure_mirror.sh
+    min-ready: 0
+    providers:
+      - name: rax-dfw
+      - name: rax-ord
+      - name: rax-iad
+      - name: ovh-gra1
+      - name: ovh-bhs1
+      - name: bluebox-sjc1
+      - name: internap-nyj01
+      - name: vexxhost-ca-ymq-1
+      - name: osic-cloud1
   - name: devstack-trusty-2-node
     image: devstack-trusty
     ready-script: multinode_setup.sh
@@ -174,6 +188,16 @@ providers:
         meta:
           vm_mode: hvm
           xenapi_use_agent: 'false'
+      - name: ubuntu-xenial
+        min-ram: 8192
+        diskimage: ubuntu-xenial
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        name-filter: 'Performance'
+        config-drive: true
+        meta:
+          vm_mode: hvm
+          xenapi_use_agent: 'false'
       - name: debian-jessie
         min-ram: 8192
         diskimage: debian-jessie
@@ -237,6 +261,16 @@ providers:
       - name: ubuntu-trusty
         min-ram: 8192
         diskimage: ubuntu-trusty
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        name-filter: 'Performance'
+        config-drive: true
+        meta:
+          vm_mode: hvm
+          xenapi_use_agent: 'false'
+      - name: ubuntu-xenial
+        min-ram: 8192
+        diskimage: ubuntu-xenial
         username: jenkins
         private-key: /home/nodepool/.ssh/id_rsa
         name-filter: 'Performance'
@@ -314,6 +348,16 @@ providers:
         meta:
           vm_mode: hvm
           xenapi_use_agent: 'false'
+      - name: ubuntu-xenial
+        min-ram: 8192
+        diskimage: ubuntu-xenial
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        name-filter: 'Performance'
+        config-drive: true
+        meta:
+          vm_mode: hvm
+          xenapi_use_agent: 'false'
       - name: debian-jessie
         min-ram: 8192
         diskimage: debian-jessie
@@ -374,6 +418,13 @@ providers:
         username: jenkins
         private-key: /home/nodepool/.ssh/id_rsa
         config-drive: true
+      - name: ubuntu-xenial
+        min-ram: 8000
+        name-filter: 'ssd-osFoundation-3'
+        diskimage: ubuntu-xenial
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
       - name: debian-jessie
         min-ram: 8000
         name-filter: 'ssd-osFoundation-3'
@@ -425,6 +476,13 @@ providers:
         username: jenkins
         private-key: /home/nodepool/.ssh/id_rsa
         config-drive: true
+      - name: ubuntu-xenial
+        min-ram: 8000
+        name-filter: 'ssd-osFoundation-3'
+        diskimage: ubuntu-xenial
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
       - name: debian-jessie
         min-ram: 8000
         name-filter: 'ssd-osFoundation-3'
@@ -473,6 +531,13 @@ providers:
         min-ram: 8000
         name-filter: 'nodepool'
         diskimage: ubuntu-trusty
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+      - name: ubuntu-xenial
+        min-ram: 8000
+        name-filter: 'nodepool'
+        diskimage: ubuntu-xenial
         username: jenkins
         private-key: /home/nodepool/.ssh/id_rsa
         config-drive: true
@@ -529,6 +594,13 @@ providers:
         username: jenkins
         private-key: /home/nodepool/.ssh/id_rsa
         config-drive: true
+      - name: ubuntu-xenial
+        min-ram: 8000
+        name-filter: 'A1.8'
+        diskimage: ubuntu-xenial
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
       - name: debian-jessie
         min-ram: 8000
         name-filter: 'A1.8'
@@ -577,6 +649,12 @@ providers:
         username: jenkins
         private-key: /home/nodepool/.ssh/id_rsa
         config-drive: true
+      - name: ubuntu-xenial
+        min-ram: 8000
+        diskimage: ubuntu-xenial
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
       - name: debian-jessie
         min-ram: 8000
         diskimage: debian-jessie
@@ -621,6 +699,13 @@ providers:
         min-ram: 8000
         name-filter: 'm2.medium'
         diskimage: ubuntu-trusty
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+      - name: ubuntu-xenial
+        min-ram: 8000
+        name-filter: 'm2.medium'
+        diskimage: ubuntu-xenial
         username: jenkins
         private-key: /home/nodepool/.ssh/id_rsa
         config-drive: true
@@ -708,6 +793,23 @@ diskimages:
       - growroot
       - infra-package-needs
     release: trusty
+    env-vars:
+      TMPDIR: /opt/dib_tmp
+      DIB_IMAGE_CACHE: /opt/dib_cache
+      DIB_APT_LOCAL_CACHE: '0'
+      DIB_DISABLE_APT_CLEANUP: '1'
+  - name: ubuntu-xenial
+    elements:
+      - ubuntu-minimal
+      - vm
+      - simple-init
+      - openstack-repos
+      - nodepool-base
+      - node-devstack
+      - cache-bindep
+      - growroot
+      - infra-package-needs
+    release: xenial
     env-vars:
       TMPDIR: /opt/dib_tmp
       DIB_IMAGE_CACHE: /opt/dib_cache
