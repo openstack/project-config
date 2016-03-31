@@ -320,7 +320,7 @@ function extract_messages_django {
 # Extract releasenotes messages
 function extract_messages_releasenotes {
     # Extract messages
-    sphinx-build -b gettext -d releasenotes/build/doctrees \
+    tox -e venv -- sphinx-build -b gettext -d releasenotes/build/doctrees \
         releasenotes/source releasenotes/work
     rm -rf releasenotes/build
     # Concatenate messages into one POT file
