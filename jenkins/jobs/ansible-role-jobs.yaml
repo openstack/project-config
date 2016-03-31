@@ -14,26 +14,6 @@
     publishers:
       - console-log
 
-- job-template:
-    name: '{pipeline}-{name}-dsvm-ansible-functional-{ostype}{job-suffix}'
-    node: 'devstack-{ostype}'
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - zuul-git-prep
-      - shell: |
-          # Allow Jenkins user to ssh into localhost
-          ssh-keygen -f ~/.ssh/id_rsa -N ""
-          cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
-          ssh-keyscan localhost >> ~/.ssh/known_hosts
-          ssh-keyscan 127.0.0.1 >> ~/.ssh/known_hosts
-      - tox:
-          envlist: functional
-
-    publishers:
-      - console-log
-
 - job-group:
     # TODO(pabelanger): Remove in favor of ansible-role-jobs
     name: 'ansible-lint-jobs'
@@ -66,11 +46,6 @@
     jobs:
       - 'gate-{name}-docs'
       - 'gate-{name}-linters'
-      - '{pipeline}-{name}-dsvm-ansible-functional-{ostype}{job-suffix}':
-          job-suffix: ''
-          ostype:
-            - centos7
-          pipeline: gate
       - '{pipeline}-{name}-ansible-func-{ostype}{job-suffix}':
           job-suffix: '-nv'
           ostype:
@@ -80,5 +55,6 @@
       - '{pipeline}-{name}-ansible-func-{ostype}{job-suffix}':
           job-suffix: ''
           ostype:
+            - centos-7
             - ubuntu-trusty
           pipeline: gate
