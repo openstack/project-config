@@ -729,13 +729,12 @@
           if [ "{gate-tempest-full}" == "1" ] ; then
               export DEVSTACK_GATE_TEMPEST_FULL=1
           else
-              # The plugin name, and thus the regex we use, changed during the move to tempest-lib
+              # The plugin name, and thus the regex we use, changed during the move to tempest-lib,
+              # for tempest-lib, tests should be prefixed with "ironic"
               # Remove this section when we drop support for liberty
               if [ "$DEVSTACK_GATE_TEMPEST_ALL_PLUGINS" == "1" ] ; then
-                  # for tempest-lib, tests are prefixed with "ironic"
-                  export DEVSTACK_GATE_TEMPEST_REGEX=ironic
+                  export DEVSTACK_GATE_TEMPEST_REGEX={tempest-regex}
               else
-                  # for tempest itself, tests are prefixed with "baremetal"
                   export DEVSTACK_GATE_TEMPEST_REGEX=baremetal
               fi
           fi
@@ -766,6 +765,10 @@
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_ENABLED_NETWORK_DRIVERS=flat,neutron"
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_NETWORK_DRIVER=neutron"
               export DEVSTACK_GATE_TEMPEST_REGEX=baremetal_multitenancy
+
+          if [ "{inspector-enabled}" == "1" ] ; then
+              export PROJECTS="openstack/ironic-inspector $PROJECTS"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ironic-inspector git://git.openstack.org/openstack/ironic-inspector"
           fi
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
@@ -830,6 +833,8 @@
           client-from-source: 0
           ironic-lib-from-source: 0
           ipxe-enabled: 0
+          inspector-enabled: 0
+          tempest-regex: ironic
           branch-override: '{branch-override}'
           ramdisk-type: 'coreos'
           gate-tempest-full: 0
@@ -864,6 +869,8 @@
           client-from-source: 0
           ironic-lib-from-source: 0
           ipxe-enabled: 0
+          inspector-enabled: 0
+          tempest-regex: ironic
           branch-override: '{branch-override}'
           ramdisk-type: 'tinyipa'
           gate-tempest-full: 0
@@ -898,6 +905,8 @@
           client-from-source: 0
           ironic-lib-from-source: 0
           ipxe-enabled: 1
+          inspector-enabled: 0
+          tempest-regex: ironic
           branch-override: '{branch-override}'
           ramdisk-type: 'tinyipa'
           gate-tempest-full: 1
@@ -932,6 +941,8 @@
           client-from-source: 0
           ironic-lib-from-source: 0
           ipxe-enabled: 1
+          inspector-enabled: 0
+          tempest-regex: ironic
           branch-override: '{branch-override}'
           ramdisk-type: 'coreos'
           gate-tempest-full: 0
@@ -1011,6 +1022,8 @@
           client-from-source: 0
           ironic-lib-from-source: 0
           ipxe-enabled: 1
+          inspector-enabled: 0
+          tempest-regex: ironic
           branch-override: '{branch-override}'
           ramdisk-type: 'coreos'
           gate-tempest-full: 0
@@ -1045,6 +1058,8 @@
           client-from-source: 0
           ironic-lib-from-source: 0
           ipxe-enabled: 1
+          inspector-enabled: 0
+          tempest-regex: ironic
           branch-override: '{branch-override}'
           ramdisk-type: 'coreos'
           gate-tempest-full: 0
@@ -1079,6 +1094,8 @@
           client-from-source: 0
           ironic-lib-from-source: 0
           ipxe-enabled: 1
+          inspector-enabled: 0
+          tempest-regex: ironic
           branch-override: '{branch-override}'
           ramdisk-type: 'coreos'
           gate-tempest-full: 0
@@ -1113,6 +1130,8 @@
           client-from-source: 0
           ironic-lib-from-source: 0
           ipxe-enabled: 0
+          inspector-enabled: 0
+          tempest-regex: ironic
           branch-override: '{branch-override}'
           ramdisk-type: 'coreos'
           gate-tempest-full: 0
@@ -1147,6 +1166,8 @@
           client-from-source: 0
           ironic-lib-from-source: 0
           ipxe-enabled: 0
+          inspector-enabled: 0
+          tempest-regex: ironic
           branch-override: '{branch-override}'
           ramdisk-type: 'coreos'
           gate-tempest-full: 0
@@ -1181,6 +1202,8 @@
           client-from-source: 0
           ironic-lib-from-source: 0
           ipxe-enabled: 0
+          inspector-enabled: 0
+          tempest-regex: ironic
           branch-override: '{branch-override}'
           ramdisk-type: 'coreos'
           gate-tempest-full: 0
@@ -1215,6 +1238,8 @@
           client-from-source: 1
           ironic-lib-from-source: 0
           ipxe-enabled: 1
+          inspector-enabled: 0
+          tempest-regex: ironic
           branch-override: '{branch-override}'
           ramdisk-type: 'coreos'
           gate-tempest-full: 0
@@ -1249,6 +1274,8 @@
           client-from-source: 0
           ironic-lib-from-source: 1
           ipxe-enabled: 1
+          inspector-enabled: 0
+          tempest-regex: ironic
           branch-override: '{branch-override}'
           ramdisk-type: 'coreos'
           gate-tempest-full: 0
@@ -1283,6 +1310,8 @@
           client-from-source: 0
           ironic-lib-from-source: 0
           ipxe-enabled: 1
+          inspector-enabled: 0
+          tempest-regex: ironic
           branch-override: '{branch-override}'
           ramdisk-type: 'coreos'
           gate-tempest-full: 0
@@ -1317,6 +1346,44 @@
           client-from-source: 0
           ironic-lib-from-source: 0
           ipxe-enabled: 0
+          inspector-enabled: 0
+          tempest-regex: ironic
+          branch-override: '{branch-override}'
+          ramdisk-type: 'coreos'
+          gate-tempest-full: 0
+          bm-vm-ram: 1024
+          bm-vm-count: 1
+          multitenant-network: 0
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-tempest-dsvm-ironic-inspector{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 180
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - devstack-virtual-ironic:
+          postgres: 0
+          build-ramdisk: 0
+          deploy_driver: agent_ssh
+          deploy-with-ipa: 1
+          client-from-source: 0
+          ironic-lib-from-source: 0
+          ipxe-enabled: 1
+          inspector-enabled: 1
+          tempest-regex: InspectorBasicOps
           branch-override: '{branch-override}'
           ramdisk-type: 'coreos'
           gate-tempest-full: 0
@@ -2950,6 +3017,7 @@
       - '{pipeline}-tempest-dsvm-ironic-pxe_ipa-postgres{job-suffix}'
       - '{pipeline}-tempest-dsvm-ironic-pxe_ipmitool{job-suffix}'
       - '{pipeline}-tempest-dsvm-ironic-pxe_ssh{job-suffix}'
+      - '{pipeline}-tempest-dsvm-ironic-inspector{job-suffix}'
       - '{pipeline}-tempest-dsvm-layer4{job-suffix}'
       - '{pipeline}-tempest-dsvm-lxc-f23{job-suffix}'
       - '{pipeline}-tempest-dsvm-neutron-dvr-ovs-native{job-suffix}'
