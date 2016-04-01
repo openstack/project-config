@@ -1756,7 +1756,7 @@ jobs:
   - name: barbican-coverage
     voting: false
 
-  - name: designate-coverage
+  - name: designate-coverage-db
     voting: false
 
   - name: manila-coverage-db
@@ -1793,7 +1793,7 @@ jobs:
     voting: false
     branch: ^stable/kilo$
 
-  - name: gate-designate-python34
+  - name: gate-designate-python34-db
     branch: ^(?!stable/(?:kilo|liberty)).*$
 
   - name: gate-designate-tox-bandit
@@ -5084,13 +5084,13 @@ projects:
   - name: openstack/designate
     template:
       - name: merge-check
-      - name: python-jobs
-      - name: python3-jobs
+      - name: python-db-jobs
+      - name: python3-db-jobs
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
-      - name: periodic-kilo
-      - name: periodic-liberty
-      - name: periodic-mitaka
+      - name: periodic-db-kilo
+      - name: periodic-db-liberty
+      - name: periodic-db-mitaka
       - name: check-requirements
       - name: translation-jobs
       - name: release-notes-jobs
@@ -5098,12 +5098,12 @@ projects:
       - gate-designate-dsvm-powerdns
       - gate-designate-dsvm-bind9
       - gate-rally-dsvm-designate-designate
-      - designate-coverage
+      - designate-coverage-db
     gate:
       - gate-designate-dsvm-powerdns
       - gate-designate-dsvm-bind9
     post:
-      - designate-coverage
+      - designate-coverage-db
     experimental:
       - gate-designate-dsvm-powerdns-postgres
       - gate-designate-tox-bandit
