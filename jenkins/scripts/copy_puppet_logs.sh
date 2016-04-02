@@ -197,6 +197,6 @@ fi
 
 
 # Compress all text logs
-sudo find $LOG_DIR -iname '*.txt' -execdir gzip -9 {} \+
-sudo find $LOG_DIR -iname '*.dat' -execdir gzip -9 {} \+
-sudo find $LOG_DIR -iname '*.conf' -execdir gzip -9 {} \+
+sudo find $LOG_DIR -iname '*.txt' -type f -execdir gzip -9 {} \+
+sudo find $LOG_DIR -iname '*.dat' -type f -execdir gzip -9 {} \+
+sudo find $LOG_DIR -iname '*.conf' -type f -execdir gzip -9 {} \+
