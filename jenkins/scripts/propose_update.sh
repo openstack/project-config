@@ -57,6 +57,13 @@ elif [ "$OWN_PROJECT" == "devstack-plugins-list" ] ; then
     function update {
         bash -ex tools/generate-devstack-plugins-list.sh $1
     }
+elif [ "$OWN_PROJECT" == "puppet-openstack-constraints" ] ; then
+    INITIAL_COMMIT_MSG="Updated from Puppet OpenStack modules constraints"
+    TOPIC="openstack/puppet/constraints"
+    PROJECTS=openstack/puppet-openstack-integration
+    function update {
+        bash /usr/local/jenkins/slave_scripts/generate_puppetfile.sh
+    }
 else
     echo "Unknown project $1" >2
     exit 1
