@@ -109,3 +109,47 @@
     publishers:
       - devstack-logs
       - console-log
+
+- job:
+    name: 'dib-buildimage-atomic-f23'
+    node: ubuntu-trusty
+
+    wrappers:
+      - build-timeout:
+          timeout: 60
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - install-distro-packages
+      - shell: |
+          #!/bin/bash -eux
+          cd ~
+
+          /usr/zuul-env/bin/zuul-cloner --cache-dir /opt/git \
+            git://git.openstack.org \
+            openstack/diskimage-builder \
+            openstack/dib-utils \
+            openstack/magnum
+
+          export PATH=$PATH:$(pwd)/openstack/dib-utils/bin
+          export PATH=$PATH:$(pwd)/openstack/diskimage-builder/bin
+          export ELEMENTS_PATH=.:/$WORKSPACE/magnum/elements
+
+          ./openstack/diskimage-builder/tests/install_test_deps.sh
+
+          DIB_RELEASE="23" disk-image-create \
+            -o $WORKSPACE/fedora-atomic-f23-dib fedora-atomic
+
+
+    publishers:
+      - scp:
+          site: 'tarballs.openstack.org'
+          files:
+            - source: 'fedora-atomic-f23-dib.qcow2'
+              target: >
+                'tarballs/magnum/images/'
+              keep-hierarchy: false
+              copy-after-failure: false
+      - console-log
