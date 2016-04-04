@@ -615,6 +615,11 @@
           echo "Network neighbors..."
           echo "===================="
           ip neighbor show
+          echo "Route to Git mirror..."
+          echo "======================"
+          traceroute6 -n git.openstack.org \
+              || traceroute -n git.openstack.org \
+              || true
 
 - builder:
     name: install-distro-packages
