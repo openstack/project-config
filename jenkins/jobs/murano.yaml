@@ -213,6 +213,10 @@
               export DEVSTACK_GATE_TEMPEST_REGEX="service_broker"
           elif [ "{mode}" = "api" ]; then
               export DEVSTACK_GATE_TEMPEST_REGEX="application_catalog"
+          elif [ "{mode}" = "glare-backend" ]; then
+              export DEVSTACK_GATE_TEMPEST_REGEX="application_catalog"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_service g-glare"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"MURANO_USE_GLARE=True"
           fi
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
