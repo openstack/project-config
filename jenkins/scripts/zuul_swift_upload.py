@@ -27,6 +27,7 @@ import os
 import Queue
 import requests
 import requests.exceptions
+import requestsexceptions
 import stat
 import sys
 import tempfile
@@ -450,6 +451,10 @@ def grab_args():
 
 
 if __name__ == '__main__':
+
+    # Avoid unactionable warnings
+    requestsexceptions.squelch_warnings(requestsexceptions.InsecureRequestWarning)
+
     args = grab_args()
     # file_list: A list of files to push to swift (in file_detail format)
     file_list = []
