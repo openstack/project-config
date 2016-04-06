@@ -13,8 +13,8 @@
     publishers:
       - console-log
 
-- job:
-    name: 'ironic-python-agent-buildimage-coreos'
+- job-template:
+    name: 'ironic-python-agent-buildimage-{image-type}'
     node: ubuntu-trusty
 
     builders:
@@ -26,19 +26,36 @@
           #!/bin/bash -xe
           BRANCH=$ZUUL_REFNAME
           export BRANCH_PATH=`echo $BRANCH | tr / -`
-          imagebuild/coreos/full_trusty_build.sh
+
+          mkdir UPLOAD_RAW
+          mkdir UPLOAD_TAR
+
+          type="{image-type}"
+          case $type in
+              tinyipa)
+                  export BUILD_AND_INSTALL_TINYIPA=true
+                  (cd imagebuild/tinyipa && make)
+                  mv imagebuild/tinyipa/tinyipa*.tar.gz UPLOAD_TAR
+                  mv imagebuild/tinyipa/tinyipa*.* UPLOAD_RAW
+              ;;
+              coreos)
+                  imagebuild/coreos/full_trusty_build.sh
+                  mv imagebuild/coreos/UPLOAD/coreos_production_pxe* UPLOAD_RAW
+                  mv ipa-coreos*.tar.gz UPLOAD_TAR
+              ;;
+          esac
 
 
     publishers:
       - scp:
           site: 'tarballs.openstack.org'
           files:
-            - source: 'imagebuild/coreos/UPLOAD/coreos_production_pxe*'
-              target: 'tarballs/ironic-python-agent/coreos/files/'
+            - source: 'UPLOAD_RAW/*'
+              target: 'tarballs/ironic-python-agent/{image-type}/files/'
               keep-hierarchy: false
               copy-after-failure: false
-            - source: 'ipa-coreos*.tar.gz'
-              target: 'tarballs/ironic-python-agent/coreos'
+            - source: 'UPLOAD_TAR/*'
+              target: 'tarballs/ironic-python-agent/{image-type}/'
               keep-hierarchy: false
               copy-after-failure: false
       - console-log
