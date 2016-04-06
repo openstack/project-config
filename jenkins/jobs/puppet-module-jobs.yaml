@@ -163,6 +163,7 @@
           template-name: "{template-name}"
       - puppet-prepare-node
       - gerrit-git-prep
+      - install-distro-packages
       - revoke-sudo
       - shell: |
           export PUPPET_GEM_VERSION='~> {puppet_version}'
@@ -288,11 +289,12 @@
 
 - job-template:
     name: 'gate-{name}-puppet-{puppet_version}-cookiecutter-check{job-suffix}'
-    node: devstack-centos7
+    node: centos-7
 
     builders:
       - puppet-prepare-node
       - gerrit-git-prep
+      - install-distro-packages
       - shell: |
           #!/bin/bash -xe
           mkdir .bundled_gems
@@ -320,7 +322,7 @@
       - 3
       - 4
     node:
-      - devstack-centos7
+      - centos-7
     jobs:
       - 'gate-{name}-puppet-lint'
       - 'gate-{name}-puppet-syntax'
@@ -338,7 +340,7 @@
       - 'latest'
     puppet_unit_version: '3.3 3.4 3.6 3.7 3.8 4.0 latest'
     node:
-      - devstack-centos7
+      - centos-7
     jobs:
       - 'gate-{name}-puppet-unit-{puppet_version}-{node}'
       - 'gate-{name}-puppet-unit-{node}'
@@ -355,7 +357,7 @@
     name: 'puppet-beaker-jobs-centos7'
     ostype: centos7
     node:
-      - devstack-centos7
+      - centos-7
     jobs:
       - 'gate-{name}-puppet-beaker-rspec-{node}{job-suffix}'
 
@@ -374,7 +376,7 @@
       - 4
     node:
       - ubuntu-trusty
-      - devstack-centos7
+      - centos-7
     scenario:
       - scenario001
       - scenario002
@@ -385,7 +387,7 @@
 - job-group:
     name: 'puppet-openstack-spec-helper-jobs'
     node:
-      - devstack-centos7
+      - centos-7
     jobs:
       - 'gate-puppet-openstack-spec-helper-unit-{node}'
       - 'gate-puppet-openstack-spec-helper-beaker-rspec-{node}'
