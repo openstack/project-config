@@ -1293,10 +1293,10 @@ jobs:
   - name: gate-tempest-dsvm-neutron-nv
     branch: ^feature/pecan
 
-  # NOTE(markvan) Make these non-voting until resources
-  # and lbaasv2 environment stablizes
+  # NOTE(markvan) (heat) functional lbaas v2 testing was introduced in the mitaka
+  # cycle as experimental, so testing it there and earlier branches doesn't make sense.
   - name: ^gate-heat-dsvm-functional-.*-lbaasv2$
-    voting: false
+    branch: ^(?!stable/(kilo|liberty|mitaka)).*$
 
   # NOTE(tonyb) (heat) functional testing was introduced in the liberty
   # cycle so testing the kilo branch doesn't make sense.
@@ -6470,20 +6470,22 @@ projects:
     check:
       - gate-heat-dsvm-functional-orig-mysql-lbaasv1
       - gate-heat-dsvm-functional-convg-mysql-lbaasv1
+      - gate-heat-dsvm-functional-orig-mysql-lbaasv2
+      - gate-heat-dsvm-functional-convg-mysql-lbaasv2
       - gate-tempest-dsvm-heat
       - gate-tempest-dsvm-heat-apache
       - gate-grenade-dsvm-heat
     gate:
       - gate-heat-dsvm-functional-orig-mysql-lbaasv1
       - gate-heat-dsvm-functional-convg-mysql-lbaasv1
+      - gate-heat-dsvm-functional-orig-mysql-lbaasv2
+      - gate-heat-dsvm-functional-convg-mysql-lbaasv2
       - gate-tempest-dsvm-heat
       - gate-tempest-dsvm-heat-apache
       - gate-grenade-dsvm-heat
     post:
       - heat-coverage-db
     experimental:
-      - gate-heat-dsvm-functional-orig-mysql-lbaasv2
-      - gate-heat-dsvm-functional-convg-mysql-lbaasv2
       - gate-rally-dsvm-fakevirt-heat
       - gate-heat-dsvm-functional-orig-postgres-lbaasv1
 
