@@ -88,3 +88,37 @@
       - test-results
       - devstack-logs
       - console-log
+
+- job:
+    name: gate-tempest-dsvm-zaqar
+    node: ubuntu-trusty
+
+    wrappers:
+      - build-timeout:
+          timeout: 130
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PROJECTS="openstack/python-zaqarclient $PROJECTS"
+          export PYTHONUNBUFFERED=true
+          export ENABLED_SERVICES=tempest
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin zaqar git://git.openstack.org/openstack/zaqar"
+
+          function gate_hook {
+              cd /opt/stack/new/zaqar/devstack/gate
+              ./gate_hook.sh tempest
+          }
+          export -f gate_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - test-results
+      - devstack-logs
+      - console-log
