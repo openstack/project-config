@@ -260,10 +260,6 @@
           export DISPLAY=:99
           npm install
 
-          # Execute shrinkwrap, and output the dependencies actually in use.
-          npm shrinkwrap
-          cat ./npm-shrinkwrap.json
-
           # Try running as a standard lifecycle script, otherwise try custom.
           npm_lifecycle_phases="publish install version test stop start restart pack"
 
@@ -272,6 +268,11 @@
           else
               npm run {command} --silent
           fi
+
+          # Execute shrinkwrap, and output the dependencies that were used.
+          npm prune # https://github.com/npm/npm/issues/6298
+          npm shrinkwrap
+          cat ./npm-shrinkwrap.json
 
 - builder:
     name: xvfb-start
