@@ -19,3 +19,26 @@
     publishers:
       - console-log
       - devstack-logs
+
+- job-template:
+    name: '{pipeline}-kolla-bindep-{action}-{distro}-{type}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 90
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - gerrit-git-prep
+      - install-distro-packages
+      - shell: |
+          #!/bin/bash -xe
+          tools/setup_gate.sh
+          tox -e {action}-{distro}-{type}
+
+    publishers:
+      - console-log
+      - devstack-logs
