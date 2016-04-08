@@ -1,13 +1,14 @@
 - job-template:
-    name: 'gate-packstack-integration-{scenario}-tempest-dsvm-{ostype}'
-    node: 'devstack-{ostype}'
+    name: 'gate-packstack-integration-{scenario}-tempest-{ostype}'
+    node: '{ostype}'
 
     builders:
       - print-template-name:
           template-name: "{template-name}"
       - link-logs
-      - puppet-prepare-node
       - gerrit-git-prep
+      - install-distro-packages
+      - puppet-prepare-node
       - shell: |
           #!/bin/bash -xe
           export SCENARIO={scenario}
