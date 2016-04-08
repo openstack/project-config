@@ -5,8 +5,9 @@
     builders:
       - print-template-name:
           template-name: "{template-name}"
-      - puppet-prepare-node
       - gerrit-git-prep
+      - install-distro-packages
+      - puppet-prepare-node
       - revoke-sudo
       - shell: |
           if [ "{puppet_version}" != "latest" ]; then
@@ -34,8 +35,9 @@
     builders:
       - print-template-name:
           template-name: "{template-name}"
-      - puppet-prepare-node
       - gerrit-git-prep
+      - install-distro-packages
+      - puppet-prepare-node
       - revoke-sudo
       - shell: |
           #!/bin/bash -xe
@@ -76,8 +78,9 @@
       - print-template-name:
           template-name: "{template-name}"
       - link-logs
-      - puppet-prepare-node
       - gerrit-git-prep
+      - install-distro-packages
+      - puppet-prepare-node
       - allow-local-ssh-root
       - shell: |
           mkdir .bundled_gems
@@ -213,9 +216,10 @@
       - print-template-name:
           template-name: "{template-name}"
       - link-logs
-      - puppet-prepare-node
       - zuul-clone:
           project: openstack/puppet-openstack-integration
+      - install-distro-packages
+      - puppet-prepare-node
       - shell: |
           #!/bin/bash -xe
           export PUPPET_VERSION={puppet_version}
@@ -244,9 +248,10 @@
       - print-template-name:
           template-name: "{template-name}"
       - link-logs
-      - puppet-prepare-node
       - zuul-clone:
           project: openstack/puppet-openstack_spec_helper
+      - install-distro-packages
+      - puppet-prepare-node
       - shell: |
           #!/bin/bash -xe
           cd openstack/puppet-openstack_spec_helper
@@ -268,9 +273,10 @@
       - print-template-name:
           template-name: "{template-name}"
       - link-logs
-      - puppet-prepare-node
       - zuul-clone:
           project: openstack/puppet-openstack_spec_helper
+      - install-distro-packages
+      - puppet-prepare-node
       - allow-local-ssh-root
       - shell: |
           #!/bin/bash -xe
