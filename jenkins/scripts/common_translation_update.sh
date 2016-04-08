@@ -135,7 +135,7 @@ function setup_manuals {
     # As first step, execute for openstack-manuals only.
     if [[ $project == "openstack-manuals" ]] && [[ $version == "master" ]]; then
         extract_messages_releasenotes
-        ZANATA_RULES="$ZANATA_RULES -r releasenotes/source/locale/releasenotes.pot releasenotes/source/locale/{locale_with_underscore}.po"
+        ZANATA_RULES="$ZANATA_RULES -r releasenotes/source/locale/releasenotes.pot releasenotes/source/locale/{locale_with_underscore}/LC_MESSAGES/releasenotes.po"
     fi
 
     /usr/local/jenkins/slave_scripts/create-zanata-xml.py -p $project \
