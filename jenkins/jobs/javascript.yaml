@@ -37,6 +37,10 @@
               source: 'reports/**'
               keep-hierarchy: true
               copy-after-failure: true
+            - target: 'logs/$LOG_PATH'
+              source: 'npm-shrinkwrap.json'
+              keep-hierarchy: false
+              copy-after-failure: false
 
 # Builds and uploads a tarball using NPM.
 - job-template:
@@ -69,6 +73,13 @@
           project: '{name}'
           site: '{tarball-site}'
       - console-log
+      - scp:
+          site: 'static.openstack.org'
+          files:
+            - target: 'logs/$LOG_PATH'
+              source: 'npm-shrinkwrap.json'
+              keep-hierarchy: false
+              copy-after-failure: false
 
 # Builds and uploads a draft version of the project to docs-draft.
 - job-template:
@@ -112,6 +123,10 @@
             - target: 'docs-draft/$LOG_PATH'
               source: 'dist/**'
               keep-hierarchy: true
+              copy-after-failure: false
+            - target: 'logs/$LOG_PATH'
+              source: 'npm-shrinkwrap.json'
+              keep-hierarchy: false
               copy-after-failure: false
 
 # Builds a draft application and uploads it to docs-draft. To use this build,
