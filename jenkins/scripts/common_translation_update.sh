@@ -39,22 +39,30 @@ function get_modulename {
 function setup_project {
     local project=$1
     local version=$2
-    local reno_resource=""
-    # Add release notes translation if exists.
-    if [ "$version" == "master" ] && [ -f releasenotes/source/conf.py ]; then
-        extract_messages_releasenotes
-        reno_resource="-r releasenotes/source/locale/releasenotes.pot releasenotes/source/locale/{locale_with_underscore}/LC_MESSAGES/releasenotes.po"
-    fi
     shift 2
     # All argument(s) contain module names now.
     if [ $# -eq 1 ]; then
         local modulename=$1
+        local reno_resource=""
+        # Add release notes translation if exists.
+        if [ "$version" == "master" ] && [ -f releasenotes/source/conf.py ]; then
+            extract_messages_releasenotes
+            # Add ../../ prefix, because the below create-zanata-xml.py uses
+            # "--srcdir $modulename/locale" and "--txdir $modulename/locale".
+            reno_resource="-r ../../releasenotes/source/locale/releasenotes.pot ../../releasenotes/source/locale/{locale_with_underscore}/LC_MESSAGES/releasenotes.po"
+        fi
         /usr/local/jenkins/slave_scripts/create-zanata-xml.py \
             -p $project -v $version --srcdir $modulename/locale \
             --txdir $modulename/locale \
             -r '**/*.pot' '{locale_with_underscore}/LC_MESSAGES/{filename}.po' \
             $reno_resource -f zanata.xml
     else
+        local reno_resource=""
+        # Add release notes translation if exists.
+        if [ "$version" == "master" ] && [ -f releasenotes/source/conf.py ]; then
+            extract_messages_releasenotes
+            reno_resource="-r releasenotes/source/locale/releasenotes.pot releasenotes/source/locale/{locale_with_underscore}/LC_MESSAGES/releasenotes.po"
+        fi
         /usr/local/jenkins/slave_scripts/create-zanata-xml.py \
             -p $project -v $version --srcdir . --txdir . \
             -r '**/*.pot' '{path}/{locale_with_underscore}/LC_MESSAGES/{filename}.po' \
