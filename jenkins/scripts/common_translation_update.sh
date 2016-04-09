@@ -40,13 +40,18 @@ function setup_project {
     local project=$1
     local version=$2
     shift 2
+    local translate_reno=0
+    local reno_resource=""
+    local EXCLUDE='.tox/**'
+    if [ "$version" == "master" ] && [ -f releasenotes/source/conf.py ]; then
+        translate_reno=1
+        extract_messages_releasenotes
+    fi
     # All argument(s) contain module names now.
     if [ $# -eq 1 ]; then
         local modulename=$1
-        local reno_resource=""
         # Add release notes translation if exists.
-        if [ "$version" == "master" ] && [ -f releasenotes/source/conf.py ]; then
-            extract_messages_releasenotes
+        if [ "$translate_reno" == "1" ]; then
             # Add ../../ prefix, because the below create-zanata-xml.py uses
             # "--srcdir $modulename/locale" and "--txdir $modulename/locale".
             reno_resource="-r ../../releasenotes/source/locale/releasenotes.pot ../../releasenotes/source/locale/{locale_with_underscore}/LC_MESSAGES/releasenotes.po"
@@ -55,18 +60,17 @@ function setup_project {
             -p $project -v $version --srcdir $modulename/locale \
             --txdir $modulename/locale \
             -r '**/*.pot' '{locale_with_underscore}/LC_MESSAGES/{filename}.po' \
-            $reno_resource -f zanata.xml
+            $reno_resource -e "$EXCLUDE" -f zanata.xml
     else
         local reno_resource=""
         # Add release notes translation if exists.
-        if [ "$version" == "master" ] && [ -f releasenotes/source/conf.py ]; then
-            extract_messages_releasenotes
+        if [ "$translate_reno" == "1" ]; then
             reno_resource="-r releasenotes/source/locale/releasenotes.pot releasenotes/source/locale/{locale_with_underscore}/LC_MESSAGES/releasenotes.po"
         fi
         /usr/local/jenkins/slave_scripts/create-zanata-xml.py \
             -p $project -v $version --srcdir . --txdir . \
             -r '**/*.pot' '{path}/{locale_with_underscore}/LC_MESSAGES/{filename}.po' \
-            $reno_resource -f zanata.xml
+            $reno_resource -e "$EXCLUDE" -f zanata.xml
     fi
 }
 
