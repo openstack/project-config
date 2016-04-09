@@ -261,6 +261,7 @@ function extract_messages {
     # "_C" for message with context, "_P" for plural form message.
     python setup.py $QUIET extract_messages --keyword "_C:1c,2 _P:1,2" \
         --add-comments Translators: \
+        --input-dirs ${modulename} \
         --output-file ${POT}
 }
 
@@ -277,6 +278,7 @@ function extract_messages_log {
         python setup.py $QUIET extract_messages --no-default-keywords \
             --keyword ${LKEYWORD[$level]} \
             --add-comments Translators: \
+            --input-dirs ${modulename} \
             --output-file ${POT}
         # We don't need to add or send around empty source files.
         trans=$(msgfmt --statistics -o /dev/null ${POT} 2>&1)
