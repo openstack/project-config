@@ -311,7 +311,10 @@ function extract_messages_django {
 
     # Horizon has these as dependencies but let's be sure.
     # TODO(amotoki): Pull required versions from g-r.
-    $VENV/bin/pip install Babel django-babel
+
+    # TODO(jagerandi): Install Babel 2.2.0 for now since 2.3.2 does
+    # not extract all strings.
+    $VENV/bin/pip install Babel==2.2.0 django-babel
     KEYWORDS="-k gettext_noop -k gettext_lazy -k ngettext_lazy:1,2"
     KEYWORDS+=" -k ugettext_noop -k ugettext_lazy -k ungettext_lazy:1,2"
     KEYWORDS+=" -k npgettext:1c,2,3 -k pgettext_lazy:1c,2 -k npgettext_lazy:1c,2,3"
