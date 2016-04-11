@@ -269,9 +269,11 @@
               npm run {command} --silent
           fi
 
-          # Execute shrinkwrap, and output the dependencies that were used.
-          npm prune # https://github.com/npm/npm/issues/6298
-          npm shrinkwrap
+          # If no shrinkwrap exists, generate it.
+          if [ ! -f ./npm-shrinkwrap.json ]; then
+              npm prune # https://github.com/npm/npm/issues/6298
+              npm shrinkwrap
+          fi
 
 - builder:
     name: xvfb-start
