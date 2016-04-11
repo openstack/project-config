@@ -99,6 +99,45 @@
       - console-log
 
 - job-template:
+    name: 'gate-ceilometer-dsvm-tempest-plugin-{backend}{network}'
+    node: ubuntu-trusty
+
+    wrappers:
+      - build-timeout:
+          timeout: 130
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_TEMPEST_REGEX="^ceilometer\."
+          export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
+          export DEVSTACK_GATE_CEILOMETER_BACKEND={backend}
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          if [ "{backend}" = "postgresql" ] ; then
+              export DEVSTACK_GATE_POSTGRES=1
+          fi
+          if [ "x{network}" = "x-neutron" ] ; then
+              export DEVSTACK_GATE_NEUTRON=1
+          fi
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - test-results
+      - devstack-logs
+      - console-log
+
+- job-template:
     name: '{pipeline}-ceilometer-dsvm-functional-{backend}{job-suffix}'
     node: '{node}'
 
