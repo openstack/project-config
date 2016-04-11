@@ -2620,7 +2620,11 @@ jobs:
       - '^.*requirements.txt$'
 
   # Some projects do not have releasenotes until the Mitaka cycle
-  - name: ^gate-(keystoneauth|keystonemiddleware|python-saharaclient|python-ironicclient|python-keystoneclient|python-neutronclient|python-openstackclient|os-client-config|packstack|puppet-.*)-releasenotes$
+  - name: ^gate-(keystoneauth|keystonemiddleware|os-client-config|packstack|puppet-.*)-releasenotes$
+    branch: ^(?!stable/(?:juno|kilo|liberty)).*$
+
+  # Some python client projects do not have releasenotes until the Mitaka cycle
+  - name: ^gate-python-(saharaclient|ironicclient|keystoneclient|neutronclient|openstackclient)-releasenotes$
     branch: ^(?!stable/(?:juno|kilo|liberty)).*$
 
   # skip gate-openstack-ansible-releasenotes jobs for juno & kilo branches
