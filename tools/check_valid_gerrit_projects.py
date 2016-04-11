@@ -17,6 +17,7 @@
 import argparse
 import contextlib
 import git
+import os
 import re
 import shutil
 import sys
@@ -71,6 +72,10 @@ def main():
     parser.add_argument(
         'infile',
         help='Path to gerrit/projects.yaml',
+    )
+    parser.add_argument(
+        'acldir',
+        help='Path to gerrit/acl',
     )
     args = parser.parse_args()
 
@@ -150,6 +155,30 @@ def main():
                 found_errors += 1
                 print("Error: Unknown option '%s' in project %s" %
                       (option, name))
+        # Check redundant acl-config
+        acl_config = p.get('acl-config')
+        if acl_config:
+            if acl_config.endswith(name + '.config'):
+                found_errors += 1
+                print("Error: Project %s has redundant acl_config line, "
+                      "remove it." % name)
+            if not acl_config.startswith('/home/gerrit2/acls/'):
+                found_errors += 1
+                print("Error: Project %s has wrong acl_config line, "
+                      "fix the path." % name)
+            acl_file = os.path.join(args.acldir,
+                                    acl_config[len('/home/gerrit2/acls/'):])
+            if not os.path.isfile(acl_file):
+                found_errors += 1
+                print("Error: Project %s has non existing acl_config line" %
+                      name)
+        else:
+            # Check that default file exists
+            acl_file = os.path.join(args.acldir, name + ".config")
+            if not os.path.isfile(acl_file):
+                found_errors += 1
+                print("Error: Project %s has no default acl-config file" %
+                      name)
 
     if found_errors:
         print("Found %d error(s) in %s" % (found_errors, args.infile))
