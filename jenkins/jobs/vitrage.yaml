@@ -1,0 +1,48 @@
+- job-template:
+    name: '{pipeline}-vitrage-dsvm{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 130
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export PROJECTS="openstack/python-vitrageclient $PROJECTS"
+          export PROJECTS="openstack/vitrage $PROJECTS"
+          export PROJECTS="openstack/vitrage-dashboard $PROJECTS"
+          export ENABLED_SERVICES=tempest
+
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin vitrage git://git.openstack.org/openstack/vitrage"
+
+          function pre_test_hook {{
+              cd $BASE/new/vitrage/devstack
+              ./pre_test_hook.sh
+          }}
+          export -f pre_test_hook
+
+          function gate_hook {{
+              cd $BASE/new/vitrage/devstack
+              ./gate_hook.sh
+          }}
+          export -f gate_hook
+
+          function post_test_hook {{
+              cd $BASE/new/vitrage/devstack
+              ./post_test_hook.sh
+          }}
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - test-results
+      - devstack-logs
+      - console-log
