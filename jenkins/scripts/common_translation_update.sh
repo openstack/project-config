@@ -40,31 +40,35 @@ function setup_project {
     local project=$1
     local version=$2
     shift 2
-    local translate_reno=0
-    local reno_resource=""
-    local EXCLUDE='.tox/**'
-    if [ "$version" == "master" ] && [ -f releasenotes/source/conf.py ]; then
-        translate_reno=1
-        extract_messages_releasenotes
-    fi
     # All argument(s) contain module names now.
-    if [ $# -eq 1 ]; then
+
+    local EXCLUDE='.tox/**'
+
+    # TODO(jaegerandi): Remove once everything is renamed.
+    # This is temporary disablement to allow renaming of resources.
+    if [ $# -eq 1 ] && [ "$version" == "master" ] ; then
+        exit 0
+    fi
+    # End of temporary disablement.
+
+
+    # For projects with one module on stable/mitaka, we use "old" setup.
+    # Note that stable/mitaka is only stable translated branch for
+    # projects.
+    # TODO(jaegerandi): Remove once mitaka translation ends.
+    if [ $# -eq 1 ] && [ "$version" == "stable-mitaka" ] ; then
         local modulename=$1
-        # Add release notes translation if exists.
-        if [ "$translate_reno" == "1" ]; then
-            # Add ../../ prefix, because the below create-zanata-xml.py uses
-            # "--srcdir $modulename/locale" and "--txdir $modulename/locale".
-            reno_resource="-r ../../releasenotes/source/locale/releasenotes.pot ../../releasenotes/source/locale/{locale_with_underscore}/LC_MESSAGES/releasenotes.po"
-        fi
         /usr/local/jenkins/slave_scripts/create-zanata-xml.py \
             -p $project -v $version --srcdir $modulename/locale \
             --txdir $modulename/locale \
             -r '**/*.pot' '{locale_with_underscore}/LC_MESSAGES/{filename}.po' \
-            $reno_resource -e "$EXCLUDE" -f zanata.xml
+            -f zanata.xml
     else
         local reno_resource=""
-        # Add release notes translation if exists.
-        if [ "$translate_reno" == "1" ]; then
+
+        if [ "$version" == "master" ] && [ -f releasenotes/source/conf.py ]; then
+            translate_reno=1
+            extract_messages_releasenotes
             reno_resource="-r releasenotes/source/locale/releasenotes.pot releasenotes/source/locale/{locale_with_underscore}/LC_MESSAGES/releasenotes.po"
         fi
         /usr/local/jenkins/slave_scripts/create-zanata-xml.py \
