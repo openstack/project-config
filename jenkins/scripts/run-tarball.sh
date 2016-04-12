@@ -14,12 +14,25 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-venv=${1:-venv}
+# this is a puppet module
+if [ -r metadata.json ]; then
+    MODULE_NAME=$(basename `git rev-parse --show-toplevel`)
+    puppet module build .
+    # so we can re-use "tarball" publisher
+    mv pkg dist
+    if [ -z "$ZUUL_REFNAME" ] || [ "$ZUUL_REFNAME" == "master" ]; then
+        mv dist/*.tar.gz dist/$MODULE_NAME-master.tar.gz
+    # need to figure how to deal with stable branches
+    fi
+else
+# this a python project
+    venv=${1:-venv}
 
-export UPPER_CONSTRAINTS_FILE=$(pwd)/upper-constraints.txt
+    export UPPER_CONSTRAINTS_FILE=$(pwd)/upper-constraints.txt
 
-rm -f dist/*.tar.gz
-tox -e$venv python setup.py sdist
+    rm -f dist/*.tar.gz
+    tox -e$venv python setup.py sdist
+fi
 
 FILES=dist/*.tar.gz
 for f in $FILES; do
