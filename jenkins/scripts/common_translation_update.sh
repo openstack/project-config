@@ -44,14 +44,6 @@ function setup_project {
 
     local EXCLUDE='.tox/**'
 
-    # TODO(jaegerandi): Remove once everything is renamed.
-    # This is temporary disablement to allow renaming of resources.
-    if [ $# -eq 1 ] && [ "$version" == "master" ] ; then
-        exit 0
-    fi
-    # End of temporary disablement.
-
-
     # For projects with one module on stable/mitaka, we use "old" setup.
     # Note that stable/mitaka is only stable translated branch for
     # projects.
