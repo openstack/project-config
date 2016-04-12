@@ -139,6 +139,10 @@ if [ -d ${apache_logs} ]; then
     sudo cp -r ${apache_logs} $LOG_DIR/apache
 fi
 
+if [ -f /var/log/audit/audit.log ]; then
+    sudo cp /var/log/audit/audit.log $LOG_DIR/audit.log.txt
+fi
+
 if [ -d /tmp/openstack/tempest ]; then
     sudo cp /tmp/openstack/tempest/etc/tempest.conf $LOG_DIR/tempest.conf.txt
 fi
