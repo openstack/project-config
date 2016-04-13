@@ -3818,6 +3818,26 @@
       - openstack-publish-jobs
 
 - project:
+    name: neutron-dynamic-routing
+    tarball-site: tarballs.openstack.org
+    doc-publisher-site: docs.openstack.org
+
+    jobs:
+      - python-jobs
+      - openstack-publish-jobs
+      - openstack-releasenotes-jobs
+      - '{pipeline}-neutron-dynamic-routing-dsvm-functional{job-suffix}':
+          pipeline: gate
+          node: ubuntu-trusty
+          job-suffix: '-nv'
+          branch-override: default
+      - '{pipeline}-neutron-dynamic-routing-dsvm-tempest{job-suffix}':
+          pipeline: gate
+          node: ubuntu-trusty
+          job-suffix: '-nv'
+          branch-override: default
+
+- project:
     name: neutron-fwaas
     tarball-site: tarballs.openstack.org
     doc-publisher-site: docs.openstack.org
