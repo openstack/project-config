@@ -34,6 +34,17 @@ function get_modulename {
         -p $project -t $target
 }
 
+
+# Setup venv with Babel in it.
+function setup_venv {
+    VENV=$(mktemp -d -p .)
+    trap "rm -rf $VENV" EXIT
+    virtualenv $VENV
+
+    # Babel version 2.3.0 to 2.3.2 are broken
+    $VENV/bin/pip install Babel==2.2.0
+}
+
 # Setup a project for Zanata. This is used by both Python and Django projects.
 # syntax: setup_project <project> <zanata_version> <modulename> [<modulename> ...]
 function setup_project {
@@ -268,10 +279,10 @@ function extract_messages {
     # Update the .pot files
     # The "_C" and "_P" prefix are for more-gettext-support blueprint,
     # "_C" for message with context, "_P" for plural form message.
-    python setup.py $QUIET extract_messages --keyword "_C:1c,2 _P:1,2" \
+    $VENV/bin/pybabel ${QUIET} extract \
         --add-comments Translators: \
-        --input-dirs ${modulename} \
-        --output-file ${POT}
+        -k "_C:1c,2" -k "_P:1,2" \
+        -o ${POT} ${modulename}
     check_empty_pot ${POT}
 }
 
@@ -285,29 +296,24 @@ function extract_messages_log {
     # Update the .pot files
     for level in $LEVELS ; do
         POT=${modulename}/locale/${modulename}-log-${level}.pot
-        python setup.py $QUIET extract_messages --no-default-keywords \
-            --keyword ${LKEYWORD[$level]} \
+        $VENV/bin/pybabel ${QUIET} extract --no-default-keywords \
             --add-comments Translators: \
-            --input-dirs ${modulename} \
-            --output-file ${POT}
+            -k ${LKEYWORD[$level]} \
+            -o ${POT} ${modulename}
         check_empty_pot ${POT}
     done
 }
 
-# Extract messages for a django project, we need to update django.pot
-# and djangojs.pot.
-function extract_messages_django {
-    local modulename=$1
-
-    # We need to install horizon
-    VENV=$(mktemp -d)
-    trap "rm -rf $VENV" EXIT
-    virtualenv $VENV
+# Django projects need horizon installed for extraction, install it in
+# our venv. The function setup_venv needs to be called first.
+function install_horizon {
 
     # TODO(jaegerandi): Switch to zuul-cloner once it's safe to use
     # zuul-cloner in post jobs and we have a persistent cache on
     # proposal node.
     root=$(mktemp -d)
+    # Note this trap handler overrides the trap handler from
+    # setup_venv for $VENV.
     trap "rm -rf $VENV $root" EXIT
 
     git clone --depth=1 git://git.openstack.org/openstack/horizon.git $root/horizon
@@ -319,6 +325,14 @@ function extract_messages_django {
     # TODO(jagerandi): Install Babel 2.2.0 for now since 2.3.2 does
     # not extract all strings.
     $VENV/bin/pip install Babel==2.2.0 django-babel
+}
+
+
+# Extract messages for a django project, we need to update django.pot
+# and djangojs.pot.
+function extract_messages_django {
+    local modulename=$1
+
     KEYWORDS="-k gettext_noop -k gettext_lazy -k ngettext_lazy:1,2"
     KEYWORDS+=" -k ugettext_noop -k ugettext_lazy -k ungettext_lazy:1,2"
     KEYWORDS+=" -k npgettext:1c,2,3 -k pgettext_lazy:1c,2 -k npgettext_lazy:1c,2,3"
@@ -328,14 +342,13 @@ function extract_messages_django {
             mkdir -p ${modulename}/locale
             POT=${modulename}/locale/${DOMAIN}.pot
             touch ${POT}
-            $VENV/bin/pybabel extract -F babel-${DOMAIN}.cfg \
+            $VENV/bin/pybabel ${QUIET} extract -F babel-${DOMAIN}.cfg \
                 --add-comments Translators: \
-                -o ${POT} $KEYWORDS ${modulename}
+                $KEYWORDS \
+                -o ${POT} ${modulename}
             check_empty_pot ${POT}
         fi
     done
-    rm -rf $VENV $root
-    trap "" EXIT
 }
 
 # Extract releasenotes messages
