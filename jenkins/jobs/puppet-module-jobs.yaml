@@ -209,7 +209,7 @@
       - console-log
 
 - job-template:
-    name: 'gate-puppet-openstack-integration-{puppet_version}-{scenario}-tempest-{node}'
+    name: '{pipeline}-puppet-openstack-integration-{puppet_version}-{scenario}-tempest-{node}'
     node: '{node}'
 
     builders:
@@ -387,8 +387,11 @@
       - scenario001
       - scenario002
       - scenario003
+    pipeline:
+      - gate
+      - periodic
     jobs:
-      - 'gate-puppet-openstack-integration-{puppet_version}-{scenario}-tempest-{node}'
+      - '{pipeline}-puppet-openstack-integration-{puppet_version}-{scenario}-tempest-{node}'
 
 - job-group:
     name: 'puppet-openstack-spec-helper-jobs'
