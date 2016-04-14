@@ -50,12 +50,21 @@ host $NODEPOOL_MIRROR_HOST
 LSBDISTID=$(lsb_release -is)
 LSBDISTCODENAME=$(lsb_release -cs)
 if [ "$LSBDISTID" == "Ubuntu" ] ; then
-    sudo dd of=/etc/apt/sources.list <<EOF
+    # NOTE(pabelanger): We only have a xenial mirror ATM because reprepro cannot
+    # mirror repositories with 0 packages. Once our reprepro mirrors is 100% we
+    # can remove this logic check.
+    if [ "$LSBDISTCODENAME" == "xenial" ] ; then
+        sudo dd of=/etc/apt/sources.list <<EOF
+deb $NODEPOOL_UBUNTU_MIRROR $LSBDISTCODENAME main universe
+EOF
+    else
+        sudo dd of=/etc/apt/sources.list <<EOF
 deb $NODEPOOL_UBUNTU_MIRROR $LSBDISTCODENAME main universe
 deb $NODEPOOL_UBUNTU_MIRROR $LSBDISTCODENAME-updates main universe
 deb $NODEPOOL_UBUNTU_MIRROR $LSBDISTCODENAME-backports main universe
 deb $NODEPOOL_UBUNTU_MIRROR $LSBDISTCODENAME-security main universe
 EOF
+    fi
     if [ "$LSBDISTCODENAME" != 'precise' ] ; then
         # Turn off multi-arch
         sudo dpkg --remove-architecture i386
