@@ -241,6 +241,19 @@ function setup_loglevel_vars {
     LKEYWORD['critical']='_LC'
 }
 
+# Delete empty pot files
+function check_empty_pot {
+    locale POT=$1
+
+    # We don't need to add or send around empty source files.
+    trans=$(msgfmt --statistics -o /dev/null ${POT} 2>&1)
+    if [ "$trans" = "0 translated messages." ] ; then
+        rm $POT
+        # Remove file from git if it's under version control.
+        git rm --ignore-unmatch $POT
+    fi
+}
+
 # Run extract_messages for user visible messages.
 function extract_messages {
     local modulename=$1
@@ -259,6 +272,7 @@ function extract_messages {
         --add-comments Translators: \
         --input-dirs ${modulename} \
         --output-file ${POT}
+    check_empty_pot ${POT}
 }
 
 # Run extract_messages for log messages.
@@ -276,13 +290,7 @@ function extract_messages_log {
             --add-comments Translators: \
             --input-dirs ${modulename} \
             --output-file ${POT}
-        # We don't need to add or send around empty source files.
-        trans=$(msgfmt --statistics -o /dev/null ${POT} 2>&1)
-        if [ "$trans" = "0 translated messages." ] ; then
-            rm $POT
-            # Remove file from git if it's under version control.
-            git rm --ignore-unmatch $POT
-        fi
+        check_empty_pot ${POT}
     done
 }
 
@@ -323,13 +331,7 @@ function extract_messages_django {
             $VENV/bin/pybabel extract -F babel-${DOMAIN}.cfg \
                 --add-comments Translators: \
                 -o ${POT} $KEYWORDS ${modulename}
-            # We don't need to add or send around empty source files.
-            trans=$(msgfmt --statistics -o /dev/null ${POT} 2>&1)
-            if [ "$trans" = "0 translated messages." ] ; then
-                rm $POT
-                # Remove file from git if it's under version control.
-                git rm --ignore-unmatch $POT
-            fi
+            check_empty_pot ${POT}
         fi
     done
     rm -rf $VENV $root
