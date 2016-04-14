@@ -87,6 +87,9 @@
           ENABLED_SERVICES+=aodh-api,aodh-evaluator,aodh-notifier,
           if [ $DEVSTACK_GATE_NEUTRON -ne 1 ]; then
               ENABLED_SERVICES+=n-net,n-api-meta,
+          else
+              export PROJECTS="openstack/neutron-lbaas $PROJECTS"
+              DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin neutron-lbaas git://git.openstack.org/openstack/neutron-lbaas"
           fi
           if [ $DEVSTACK_GATE_IRONIC -ne 0 ]; then
               export PROJECTS="openstack/ironic $PROJECTS"
@@ -777,7 +780,7 @@
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
-          services=key,mysql,rabbit,n-api,n-cond,n-cpu,n-crt,n-sch,g-api,g-reg,q-agt,q-dhcp,q-l3,q-lbaas,q-meta,q-svc
+          services=key,mysql,rabbit,n-api,n-cond,n-cpu,n-crt,n-sch,g-api,g-reg,q-agt,q-dhcp,q-l3,q-meta,q-svc
           # n-obj has been removed from mitaka
           if [[ "stable/kilo stable/liberty" =~ $ZUUL_BRANCH ]]; then
               services+=,n-obj,
