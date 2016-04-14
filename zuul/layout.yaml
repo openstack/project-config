@@ -813,6 +813,23 @@ project-templates:
     gate:
       - 'gate-{name}-salt-lint'
 
+  - name: designate-dsvm-jobs
+    check:
+      # Remove the two jobs below when Mitaka is EOL
+      - gate-designate-dsvm-powerdns
+      - gate-designate-dsvm-bind9
+      - gate-tempest-dsvm-designate-powerdns
+      - gate-tempest-dsvm-designate-bind9
+      - gate-rally-dsvm-designate-designate
+    gate:
+      # Remove the two jobs below when Mitaka is EOL
+      - gate-designate-dsvm-powerdns
+      - gate-designate-dsvm-bind9
+      - gate-tempest-dsvm-designate-powerdns
+      - gate-tempest-dsvm-designate-bind9
+    experimental:
+      - gate-designate-dsvm-powerdns-postgres
+
   - name: javascript-jobs
     check:
       - gate-{name}-npm-run-lint
@@ -1826,6 +1843,9 @@ jobs:
   - name: gate-designate-tox-bandit
     branch: master
     voting: false
+
+  - name: ^gate-tempest-dsvm-designate-.*$
+    branch: ^(?!stable/(?:kilo|liberty|mitaka)).*$
 
   - name: gate-octavia-tox-bandit
     branch: master
@@ -5195,21 +5215,12 @@ projects:
       - name: check-requirements
       - name: translation-jobs
       - name: release-notes-jobs
+      - name: designate-dsvm-jobs
     check:
-      - gate-designate-dsvm-powerdns
-      - gate-designate-dsvm-bind9
-      - gate-rally-dsvm-designate-designate
       - designate-coverage-db
       - gate-designate-tox-bandit
-    gate:
-      - gate-designate-dsvm-powerdns
-      - gate-designate-dsvm-bind9
     post:
       - designate-coverage-db
-    experimental:
-      - gate-tempest-dsvm-designate-powerdns
-      - gate-tempest-dsvm-designate-bind9
-      - gate-designate-dsvm-powerdns-postgres
 
   - name: openstack/designate-dashboard
     template:
@@ -5220,11 +5231,9 @@ projects:
       - name: check-requirements
       - name: translation-jobs
       - name: translation-jobs-mitaka
+      - name: designate-dsvm-jobs
     check:
-      - gate-designate-dsvm-powerdns
       - designate-dashboard-coverage
-    gate:
-      - gate-designate-dsvm-powerdns
     post:
       - designate-dashboard-coverage
 
@@ -5248,17 +5257,11 @@ projects:
       - name: openstack-server-release-jobs
       - name: check-requirements
       - name: publish-to-pypi
+      - name: designate-dsvm-jobs
     check:
       - gate-designate-tempest-plugin-pep8
-      - gate-designate-dsvm-powerdns
-      - gate-designate-dsvm-bind9
     gate:
       - gate-designate-tempest-plugin-pep8
-      - gate-designate-dsvm-powerdns
-      - gate-designate-dsvm-bind9
-    experimental:
-      - gate-tempest-dsvm-designate-powerdns
-      - gate-tempest-dsvm-designate-bind9
 
   - name: openstack/devstack-plugin-additional-pkg-repos
     template:
@@ -9636,11 +9639,9 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
       - name: osc-plugin-jobs
+      - name: designate-dsvm-jobs
     check:
-      - gate-designate-dsvm-powerdns
       - gate-python-designateclient-python34
-    gate:
-      - gate-designate-dsvm-powerdns
     post:
       - python-designateclient-coverage
 
