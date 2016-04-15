@@ -12,10 +12,6 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-# TODO(jaegerandi): Remove once babel works again
-# See https://github.com/python-babel/babel/issues/388
-exit 0
-
 PROJECT=$1
 
 # Replace /'s in branch names with -'s because Zanata doesn't
@@ -46,6 +42,7 @@ case "$PROJECT" in
         ;;
     *)
         # Common setup for python and django repositories
+        setup_venv
         # ---- Python projects ----
         module_names=$(get_modulename $PROJECT python)
         if [ -n "$module_names" ]; then
@@ -61,6 +58,7 @@ case "$PROJECT" in
         module_names=$(get_modulename $PROJECT django)
         if [ -n "$module_names" ]; then
             setup_project "$PROJECT" "$ZANATA_VERSION" $module_names
+            install_horizon
             for modulename in $module_names; do
                 extract_messages_django "$modulename"
             done
