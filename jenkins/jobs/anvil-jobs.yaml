@@ -69,8 +69,14 @@
           echo ":)"
 
     publishers:
-      - zuul-swift-upload-logs-with-console:
-          upload_source: 'openstack/deps/output/'
+      - console-log
+      - scp:
+          site: 'static.openstack.org'
+          files:
+            - target: 'logs/$LOG_PATH'
+              source: 'openstack/deps/output/**'
+              keep-hierarchy: false
+              copy-after-failure: true
 
 - job-template:
     name: 'gate-anvil-venv-{node}'
@@ -115,5 +121,11 @@
           echo ":)"
 
     publishers:
-      - zuul-swift-upload-logs-with-console:
-          upload_source: 'openstack/deps/output/'
+      - console-log
+      - scp:
+          site: 'static.openstack.org'
+          files:
+            - target: 'logs/$LOG_PATH'
+              source: 'openstack/deps/output/**'
+              keep-hierarchy: false
+              copy-after-failure: true
