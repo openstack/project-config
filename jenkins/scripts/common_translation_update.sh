@@ -254,14 +254,14 @@ function setup_loglevel_vars {
 
 # Delete empty pot files
 function check_empty_pot {
-    locale POT=$1
+    local pot=$1
 
     # We don't need to add or send around empty source files.
-    trans=$(msgfmt --statistics -o /dev/null ${POT} 2>&1)
+    trans=$(msgfmt --statistics -o /dev/null ${pot} 2>&1)
     if [ "$trans" = "0 translated messages." ] ; then
-        rm $POT
+        rm $pot
         # Remove file from git if it's under version control.
-        git rm --ignore-unmatch $POT
+        git rm --ignore-unmatch $pot
     fi
 }
 
@@ -269,7 +269,7 @@ function check_empty_pot {
 function extract_messages {
     local modulename=$1
 
-    local POT=${modulename}/locale/${modulename}.pot
+    local pot=${modulename}/locale/${modulename}.pot
 
     # In case this is an initial run, the locale directory might not
     # exist, so create it since extract_messages will fail if it does
@@ -282,25 +282,25 @@ function extract_messages {
     $VENV/bin/pybabel ${QUIET} extract \
         --add-comments Translators: \
         -k "_C:1c,2" -k "_P:1,2" \
-        -o ${POT} ${modulename}
-    check_empty_pot ${POT}
+        -o ${pot} ${modulename}
+    check_empty_pot ${pot}
 }
 
 # Run extract_messages for log messages.
 # Needs variables setup via setup_loglevel_vars.
 function extract_messages_log {
     local modulename=$1
-    local POT
+    local pot
     local trans
 
     # Update the .pot files
     for level in $LEVELS ; do
-        POT=${modulename}/locale/${modulename}-log-${level}.pot
+        pot=${modulename}/locale/${modulename}-log-${level}.pot
         $VENV/bin/pybabel ${QUIET} extract --no-default-keywords \
             --add-comments Translators: \
             -k ${LKEYWORD[$level]} \
-            -o ${POT} ${modulename}
-        check_empty_pot ${POT}
+            -o ${pot} ${modulename}
+        check_empty_pot ${pot}
     done
 }
 
@@ -332,6 +332,7 @@ function install_horizon {
 # and djangojs.pot.
 function extract_messages_django {
     local modulename=$1
+    local pot
 
     KEYWORDS="-k gettext_noop -k gettext_lazy -k ngettext_lazy:1,2"
     KEYWORDS+=" -k ugettext_noop -k ugettext_lazy -k ungettext_lazy:1,2"
@@ -340,13 +341,13 @@ function extract_messages_django {
     for DOMAIN in djangojs django ; do
         if [ -f babel-${DOMAIN}.cfg ]; then
             mkdir -p ${modulename}/locale
-            POT=${modulename}/locale/${DOMAIN}.pot
-            touch ${POT}
+            pot=${modulename}/locale/${DOMAIN}.pot
+            touch ${pot}
             $VENV/bin/pybabel ${QUIET} extract -F babel-${DOMAIN}.cfg \
                 --add-comments Translators: \
                 $KEYWORDS \
-                -o ${POT} ${modulename}
-            check_empty_pot ${POT}
+                -o ${pot} ${modulename}
+            check_empty_pot ${pot}
         fi
     done
 }
