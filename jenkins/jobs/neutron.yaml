@@ -17,13 +17,22 @@
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
-          export DEVSTACK_GATE_TEMPEST_NOTESTS=1
-          export DEVSTACK_GATE_EXERCISES=0
           export DEVSTACK_GATE_NEUTRON=1
-          export DEVSTACK_GATE_INSTALL_TESTONLY=1
+          export DEVSTACK_GATE_EXERCISES=0
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          # NOTE(armax): this condition should be revised every time each of the
+          # branches below are dropped. Prior to Newton, the API Tempest tests are
+          # invoked explicitly and thus we need the following variables set. From
+          # Newton onward, everything is taken care of by the Tempest plugin framework
+          if [ "$ZUUL_BRANCH" == "stable/kilo" -o "$ZUUL_BRANCH" == "stable/liberty" -o "$ZUUL_BRANCH" == "stable/mitaka" ] ; then
+              export DEVSTACK_GATE_TEMPEST_NOTESTS=1
+              export DEVSTACK_GATE_INSTALL_TESTONLY=1
+          else
+              export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
+              export DEVSTACK_GATE_TEMPEST_REGEX="^neutron.tests.tempest.api\."
           fi
 
           function gate_hook {{
