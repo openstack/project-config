@@ -2354,7 +2354,7 @@ jobs:
   - name: gate-kolla-dsvm-deploy-ubuntu-source
     voting: false
 
-  - name: ^(gate-)?devstack-publish-docs
+  - name: ^(gate-)?devstack-docs
     branch: ^master
 
   # beaker tests have been introduced after Juno release
@@ -2741,7 +2741,9 @@ projects:
       - name: merge-check
       - name: integrated-gate
       - name: grenade
+      - name: openstack-server-publish-jobs
     check:
+      - gate-devstack-docs
       - gate-devstack-bashate
       - gate-devstack-unit-tests
       - gate-grenade-dsvm-forward
@@ -2749,7 +2751,6 @@ projects:
       - gate-tempest-dsvm-ironic-agent_ssh-nv
       - gate-devstack-dsvm-updown
       - gate-tempest-dsvm-neutron-identity-v3-only-full-nv
-      - gate-devstack-publish-docs
       - gate-swift-dsvm-functional-nv
       - gate-grenade-dsvm-neutron
       - gate-tempest-dsvm-multinode-full
@@ -2758,12 +2759,11 @@ projects:
       - gate-tempest-dsvm-platform-centos7-nv
       - gate-tempest-dsvm-platform-fedora23-nv
     gate:
+      - gate-devstack-docs
       - gate-devstack-bashate
       - gate-grenade-dsvm-partial-ncpu
       - gate-grenade-dsvm-multinode
       - gate-tempest-dsvm-neutron-identity-v3-only-full
-    post:
-      - devstack-publish-docs
     experimental:
       - gate-neutron-dsvm-functional
       - gate-tempest-dsvm-neutron-dvr-multinode-full
