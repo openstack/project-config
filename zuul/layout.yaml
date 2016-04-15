@@ -2627,8 +2627,9 @@ jobs:
   - name: gate-tempest-dsvm-neutron-full-ssh
     voting: false
 
-  - name: gate-tempest-dsvm-neutron-scenarios
-    branch: ^(?!stable/(?:kilo|liberty)).*$
+  - name: gate-tempest-dsvm-neutron-scenario
+    branch: ^(?!stable/(?:kilo|liberty|mitaka)).*$
+    voting: false
 
   - name: ^gate-.*-releasenotes$
     success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/releasenotes/build/html/
@@ -7696,7 +7697,7 @@ projects:
       - neutron-coverage
     experimental:
       - gate-neutron-dsvm-functional-py34
-      - gate-tempest-dsvm-neutron-scenarios
+      - gate-tempest-dsvm-neutron-scenario
       - gate-grenade-dsvm-neutron-forward
       - gate-grenade-dsvm-neutron-dvr-multinode
       - gate-neutron-vpnaas-dsvm-functional
