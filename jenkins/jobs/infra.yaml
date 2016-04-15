@@ -9,7 +9,7 @@
       - shell: ./tools/run-compare-xml.sh
 
     publishers:
-      - zuul-swift-upload-console-log
+      - console-log
 
 - job:
     name: gate-project-config-gerrit
@@ -23,7 +23,7 @@
           envlist: 'gerrit'
 
     publishers:
-      - zuul-swift-upload-console-log
+      - console-log
 
 - job:
     name: gate-project-config-irc-access
@@ -37,7 +37,7 @@
           envlist: 'irc'
 
     publishers:
-      - zuul-swift-upload-console-log
+      - console-log
 
 - job:
     name: gate-project-config-grafyaml
@@ -51,7 +51,7 @@
           envlist: 'grafyaml'
 
     publishers:
-      - zuul-swift-upload-console-log
+      - console-log
 
 - job:
     name: gate-project-config-layout
@@ -64,7 +64,7 @@
           envlist: 'zuul'
 
     publishers:
-      - zuul-swift-upload-console-log
+      - console-log
 
 - job:
     name: gate-project-config-jenkins-project
@@ -78,7 +78,7 @@
           envlist: 'jenkins-project'
 
     publishers:
-      - zuul-swift-upload-console-log
+      - console-log
 
 - job:
     name: gate-project-config-nodepool
@@ -92,7 +92,7 @@
           envlist: 'nodepool'
 
     publishers:
-      - zuul-swift-upload-console-log
+      - console-log
 
 - job:
     name: gate-project-config-projects-yaml
@@ -106,7 +106,7 @@
           envlist: projects
 
     publishers:
-      - zuul-swift-upload-console-log
+      - console-log
 
 - job-template:
     name: gate-{name}-bindep-fallback-{node}{job-suffix}
@@ -158,8 +158,14 @@
       - infra-puppet-apply
 
     publishers:
-      - zuul-swift-upload-logs-with-console:
-          upload_source: 'openstack-infra/system-config/applytest/*'
+      - console-log
+      - scp:
+          site: 'static.openstack.org'
+          files:
+            - target: 'logs/$LOG_PATH'
+              source: 'openstack-infra/system-config/applytest/**'
+              keep-hierarchy: false
+              copy-after-failure: true
 
 - job-template:
     name: 'gate-openstackci-beaker-{node}'
@@ -193,7 +199,7 @@
       - timestamps
 
     publishers:
-      - zuul-swift-upload-console-log
+      - console-log
 
 - job:
     name: propose-project-config-update
@@ -220,8 +226,14 @@
           envlist: 'ical'
 
     publishers:
-      - zuul-swift-upload-logs-with-console:
-          upload_source: 'output/*'
+      - console-log
+      - scp:
+          site: 'static.openstack.org'
+          files:
+            - target: 'logs/$LOG_PATH'
+              source: 'output/**'
+              keep-hierarchy: false
+              copy-after-failure: true
       - scp:
           site: 'eavesdrop.openstack.org'
           files:
@@ -266,8 +278,14 @@
           # should run on every job regardless of status.
           onfailure: False
           onsuccess: False
-      - zuul-swift-upload-logs-with-console:
-          upload_source: 'output/*'
+      - console-log
+      - scp:
+          site: 'static.openstack.org'
+          files:
+            - target: 'logs/$LOG_PATH'
+              source: 'output/**'
+              keep-hierarchy: false
+              copy-after-failure: true
 
 - job:
     name: gate-infra-ansible
@@ -281,7 +299,7 @@
           envlist: 'ansible-syntax-check'
 
     publishers:
-      - zuul-swift-upload-console-log
+      - console-log
 
 
 - job:
@@ -296,7 +314,7 @@
           envlist: 'dib'
 
     publishers:
-      - zuul-swift-upload-console-log
+      - console-log
 
 - job:
     name: periodic-package-afs-centos7

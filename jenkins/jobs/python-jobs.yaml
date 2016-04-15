@@ -16,8 +16,14 @@
           env: cover
 
     publishers:
-      - zuul-swift-upload-logs-with-console:
-          upload_source: 'cover/'
+      - console-log
+      - scp:
+          site: 'static.openstack.org'
+          files:
+            - target: 'logs/$LOG_PATH'
+              source: 'cover/**'
+              keep-hierarchy: true
+              copy-after-failure: true
 
     node: ubuntu-trusty
 
@@ -46,8 +52,14 @@
           env: cover
 
     publishers:
-      - zuul-swift-upload-logs-with-console:
-          upload_source: 'cover/'
+      - console-log
+      - scp:
+          site: 'static.openstack.org'
+          files:
+            - target: 'logs/$LOG_PATH'
+              source: 'cover/**'
+              keep-hierarchy: true
+              copy-after-failure: true
 
     node: ubuntu-trusty
 
@@ -64,7 +76,7 @@
           env: pep8
 
     publishers:
-      - zuul-swift-upload-console-log
+      - console-log
 
     node: ubuntu-trusty
 
@@ -81,7 +93,7 @@
           env: pylint
 
     publishers:
-      - zuul-swift-upload-console-log
+      - console-log
 
     node: ubuntu-trusty
 
@@ -105,7 +117,6 @@
     publishers:
       - test-results
       - console-log
-      - zuul-swift-test-results-with-console
 
     node: ubuntu-trusty
 
@@ -136,7 +147,6 @@
     publishers:
       - test-results
       - console-log
-      - zuul-swift-test-results-with-console
 
     node: ubuntu-trusty
 
@@ -170,7 +180,6 @@
     publishers:
       - test-results
       - console-log
-      - zuul-swift-test-results-with-console
 
 - job-template:
     name: 'gate-{name}-python34'
@@ -192,7 +201,6 @@
     publishers:
       - test-results
       - console-log
-      - zuul-swift-test-results-with-console
 
     node: ubuntu-trusty
 
@@ -223,7 +231,6 @@
     publishers:
       - test-results
       - console-log
-      - zuul-swift-test-results-with-console
 
     node: ubuntu-trusty
 
@@ -247,7 +254,6 @@
     publishers:
       - test-results
       - console-log
-      - zuul-swift-test-results-with-console
 
     node: ubuntu-trusty
 
@@ -279,7 +285,6 @@
     publishers:
       - test-results
       - console-log
-      - zuul-swift-test-results-with-console
 
     node: ubuntu-trusty
 
@@ -295,7 +300,7 @@
       - docs
 
     publishers:
-      - zuul-swift-upload-console-log
+      - console-log
       - upload-sphinx-draft
 
     node: ubuntu-trusty
@@ -323,7 +328,6 @@
     publishers:
       - test-results
       - console-log
-      - zuul-swift-test-results-with-console
 
 
 - job-template:
@@ -355,7 +359,6 @@
     publishers:
       - test-results
       - console-log
-      - zuul-swift-test-results-with-console
 
 - job-template:
     name: '{name}-tarball'
@@ -378,7 +381,6 @@
           project: '{name}'
           site: '{tarball-site}'
       - console-log
-      - zuul-swift-upload-console-log
 
 - job-template:
     name: '{name}-branch-tarball'
@@ -403,7 +405,6 @@
           project: '{name}'
           site: '{tarball-site}'
       - console-log
-      - zuul-swift-upload-console-log
 
 - job-template:
     name: 'gate-{name}-requirements'
@@ -420,7 +421,7 @@
           /usr/local/jenkins/slave_scripts/project-requirements-change.py $ZUUL_BRANCH
 
     publishers:
-      - zuul-swift-upload-console-log
+      - console-log
 
 
 - job-template:
