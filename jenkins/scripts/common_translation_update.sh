@@ -38,6 +38,8 @@ function get_modulename {
 # Setup venv with Babel in it.
 function setup_venv {
     VENV=$(mktemp -d -p .)
+    # Create absolute path here, we might change directories later.
+    VENV="$(pwd)/$VENV"
     trap "rm -rf $VENV" EXIT
     virtualenv $VENV
 
