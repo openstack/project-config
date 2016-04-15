@@ -15,10 +15,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import yaml
+import copy
 import os
 import re
 import sys
+
+import yaml
 
 layout = yaml.load(open('zuul/layout.yaml'))
 
@@ -129,10 +131,87 @@ def check_jobs():
 
     return errors
 
+
+def collect_pipeline_jobs(project, pipeline):
+    jobs = []
+    if pipeline in project:
+        # We need to copy the object here to prevent the loop
+        # below from modifying the project object.
+        jobs = copy.deepcopy(project[pipeline])
+
+    if 'template' in project:
+        for template in project['template']:
+            # The template dict has a key for each pipeline and a key for the
+            # name. We want to filter on the name to make sure it matches the
+            # one listed in the project's template list, then collect the
+            # specific pipeline we are currently looking at.
+            t_jobs = [ _template[pipeline]
+                        for _template in layout['project-templates']
+                        if _template['name'] == template['name']
+                        and pipeline in _template ]
+            if t_jobs:
+                jobs.append(t_jobs)
+
+    return jobs
+
+
+def check_empty_check():
+    '''Check that each project has at least one check job'''
+
+    print("\nChecking for projects with no check jobs")
+    print("====================================")
+
+    for project in layout['projects']:
+        # z/tempest is a fake project with no check queue
+        if project['name'] == 'z/tempest':
+            continue
+        check_jobs = collect_pipeline_jobs(project, 'check')
+        if not check_jobs:
+            print("Project %s has no check jobs" % project['name'])
+            return True
+
+    return False
+
+
+def check_empty_gate():
+    '''Check that each project has at least one gate job'''
+
+    print("\nChecking for projects with no gate jobs")
+    print("====================================")
+
+    for project in layout['projects']:
+        gate_jobs = collect_pipeline_jobs(project, 'gate')
+        if not gate_jobs:
+            print("Project %s has no gate jobs" % project['name'])
+            return True
+
+    return False
+
+
+def check_mixed_noops():
+    '''Check that no project is mixing both noop and non-noop jobs'''
+
+    print("\nChecking for mixed noop and non-noop jobs")
+    print("====================================")
+
+    for project in layout['projects']:
+        for pipeline in ['gate', 'check']:
+            jobs = collect_pipeline_jobs(project, pipeline)
+            if 'noop' in jobs and len(jobs) > 1:
+                print("Project %s has both noop and non-noop jobs "
+                      "in '%s' pipeline" % (project['name'], pipeline))
+                return True
+
+    return False
+
+
 def check_all():
     errors = check_projects_sorted()
     errors = check_merge_template() or errors
     errors = check_formatting() or errors
+    errors = check_empty_check() or errors
+    errors = check_empty_gate() or errors
+    errors = check_mixed_noops() or errors
     errors = check_jobs() or errors
 
     if errors:
