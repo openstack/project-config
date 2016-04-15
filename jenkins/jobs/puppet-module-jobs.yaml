@@ -191,11 +191,11 @@
       - print-template-name:
           template-name: "{template-name}"
       - link-logs
-      - gerrit-git-prep
-      - install-distro-packages
-      - puppet-prepare-node
+      - zuul-clone:
+          project: openstack/puppet-openstack-integration
       - shell: |
           #!/bin/bash -xe
+          cd openstack/puppet-openstack-integration
           ./run_multinode.sh
 
     wrappers:
@@ -216,13 +216,15 @@
       - print-template-name:
           template-name: "{template-name}"
       - link-logs
-      - gerrit-git-prep
+      - zuul-clone:
+          project: openstack/puppet-openstack-integration
       - install-distro-packages
       - puppet-prepare-node
       - shell: |
           #!/bin/bash -xe
           export PUPPET_VERSION={puppet_version}
           export SCENARIO={scenario}
+          cd openstack/puppet-openstack-integration
           mkdir .bundled_gems
           export GEM_HOME=`pwd`/.bundled_gems
           gem install bundler --no-rdoc --no-ri --verbose
@@ -246,11 +248,13 @@
       - print-template-name:
           template-name: "{template-name}"
       - link-logs
-      - gerrit-git-prep
+      - zuul-clone:
+          project: openstack/puppet-openstack_spec_helper
       - install-distro-packages
       - puppet-prepare-node
       - shell: |
           #!/bin/bash -xe
+          cd openstack/puppet-openstack_spec_helper
           ./run_unit_tests.sh
 
     wrappers:
@@ -269,12 +273,14 @@
       - print-template-name:
           template-name: "{template-name}"
       - link-logs
-      - gerrit-git-prep
+      - zuul-clone:
+          project: openstack/puppet-openstack_spec_helper
       - install-distro-packages
       - puppet-prepare-node
       - allow-local-ssh-root
       - shell: |
           #!/bin/bash -xe
+          cd openstack/puppet-openstack_spec_helper
           ./run_beaker_tests.sh
 
     wrappers:
