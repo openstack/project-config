@@ -36,7 +36,9 @@ function get_modulename {
 
 
 # Setup venv with Babel in it.
+# Also extract version of project.
 function setup_venv {
+
     VENV=$(mktemp -d -p .)
     # Create absolute path here, we might change directories later.
     VENV="$(pwd)/$VENV"
@@ -45,6 +47,11 @@ function setup_venv {
 
     # Babel version 2.3.0 to 2.3.2 are broken
     $VENV/bin/pip install Babel==2.2.0
+
+    # Get version, run this twice - the first one will install pbr
+    # and get extra output.
+    $VENV/bin/python setup.py --version
+    VERSION=$($VENV/bin/python setup.py --version)
 }
 
 # Setup a project for Zanata. This is used by both Python and Django projects.
@@ -283,6 +290,8 @@ function extract_messages {
     # "_C" for message with context, "_P" for plural form message.
     $VENV/bin/pybabel ${QUIET} extract \
         --add-comments Translators: \
+        --msgid-bugs-address="https://bugs.launchpad.net/openstack-i18n/" \
+        --project=${PROJECT} --version=${VERSION} \
         -k "_C:1c,2" -k "_P:1,2" \
         -o ${pot} ${modulename}
     check_empty_pot ${pot}
@@ -300,6 +309,8 @@ function extract_messages_log {
         pot=${modulename}/locale/${modulename}-log-${level}.pot
         $VENV/bin/pybabel ${QUIET} extract --no-default-keywords \
             --add-comments Translators: \
+            --msgid-bugs-address="https://bugs.launchpad.net/openstack-i18n/" \
+            --project=${PROJECT} --version=${VERSION} \
             -k ${LKEYWORD[$level]} \
             -o ${pot} ${modulename}
         check_empty_pot ${pot}
@@ -347,6 +358,8 @@ function extract_messages_django {
             touch ${pot}
             $VENV/bin/pybabel ${QUIET} extract -F babel-${DOMAIN}.cfg \
                 --add-comments Translators: \
+                --msgid-bugs-address="https://bugs.launchpad.net/openstack-i18n/" \
+                --project=${PROJECT} --version=${VERSION} \
                 $KEYWORDS \
                 -o ${pot} ${modulename}
             check_empty_pot ${pot}
