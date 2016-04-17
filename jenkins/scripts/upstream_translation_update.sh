@@ -36,6 +36,9 @@ case "$PROJECT" in
         init_manuals "$PROJECT"
         # POT file extraction is done in setup_manuals.
         setup_manuals "$PROJECT" "$ZANATA_VERSION"
+        if [[ "$ZANATA_VERSION" == "master" && -f releasenotes/source/conf.py ]]; then
+            extract_messages_releasenotes
+        fi
         ;;
     training-guides)
         setup_training_guides "$ZANATA_VERSION"
@@ -48,6 +51,7 @@ case "$PROJECT" in
         if [ -n "$module_names" ]; then
             setup_project "$PROJECT" "$ZANATA_VERSION" $module_names
             setup_loglevel_vars
+            extract_messages_releasenotes
             for modulename in $module_names; do
                 extract_messages "$modulename"
                 extract_messages_log "$modulename"
@@ -59,6 +63,7 @@ case "$PROJECT" in
         if [ -n "$module_names" ]; then
             setup_project "$PROJECT" "$ZANATA_VERSION" $module_names
             install_horizon
+            extract_messages_releasenotes
             for modulename in $module_names; do
                 extract_messages_django "$modulename"
             done
@@ -72,11 +77,16 @@ esac
 if [[ ! $PROJECT =~ api-site|ha-guide|openstack-manuals|operations-guide|security-doc ]]; then
     git add */locale/*
 fi
+if [ -d releasenotes/source/locale ] ; then
+    git add releasenotes/source/locale
+fi
 
 if [ $(git diff --cached | egrep -v "(POT-Creation-Date|^[\+\-]#|^\+{3}|^\-{3})" | egrep -c "^[\-\+]") -gt 0 ]; then
     # First, delete our VENV, otherwise the Zanata client might push some
     # extra files.
-    rm -rf $VENV
+    if [ "$VENV" != "" ] ; then
+        rm -rf $VENV
+    fi
     # The Zanata client works out what to send based on the zanata.xml file.
     # Do not copy translations from other files for this change.
     zanata-cli -B -e push --copy-trans False
