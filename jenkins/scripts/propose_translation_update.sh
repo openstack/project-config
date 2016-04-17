@@ -106,10 +106,20 @@ function propose_django {
     # Update the .pot file
     extract_messages_django "$modulename"
 
+    # Now add all changed files to git.
+    # Note we add them here to not have to differentiate in the functions
+    # between new files and files already under git control.
+    git add $modulename/locale/*
+
+    # Remove obsolete files.
+    cleanup_po_files "$modulename"
+    cleanup_pot_files "$modulename"
+
     # Compress downloaded po files
     compress_po_files "$modulename"
 
-    # Add all changed files to git
+    # Some files were changed, add changed files again to git, so that we
+    # can run git diff properly.
     git add $modulename/locale/
 }
 
