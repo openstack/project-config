@@ -26,6 +26,7 @@ NODEPOOL_MIRROR_HOST=$(echo $NODEPOOL_MIRROR_HOST|tr '[:upper:]' '[:lower:]')
 NODEPOOL_PYPI_MIRROR=${NODEPOOL_PYPI_MIRROR:-http://$NODEPOOL_MIRROR_HOST/pypi/simple}
 NODEPOOL_WHEEL_MIRROR=${NODEPOOL_WHEEL_MIRROR:-http://$NODEPOOL_MIRROR_HOST/wheel/$AFS_SLUG}
 NODEPOOL_UBUNTU_MIRROR=${NODEPOOL_UBUNTU_MIRROR:-http://$NODEPOOL_MIRROR_HOST/ubuntu}
+NODEPOOL_CEPH_MIRROR=${NODEPOOL_CEPH_MIRROR:-http://$NODEPOOL_MIRROR_HOST/ceph-deb-hammer}
 
 cat >/tmp/pip.conf <<EOF
 [global]
@@ -63,6 +64,10 @@ deb $NODEPOOL_UBUNTU_MIRROR $LSBDISTCODENAME main universe
 deb $NODEPOOL_UBUNTU_MIRROR $LSBDISTCODENAME-updates main universe
 deb $NODEPOOL_UBUNTU_MIRROR $LSBDISTCODENAME-backports main universe
 deb $NODEPOOL_UBUNTU_MIRROR $LSBDISTCODENAME-security main universe
+EOF
+        # We currently only mirror ceph-deb-hammer support for trusty.
+        sudo dd of=/etc/apt/sources.list.d/ceph-deb-hammer.list <<EOF
+deb $NODEPOOL_CEPH_MIRROR $LSBDISTCODENAME main
 EOF
     fi
     if [ "$LSBDISTCODENAME" != 'precise' ] ; then
