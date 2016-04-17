@@ -2246,9 +2246,11 @@ jobs:
     voting: false
 
   - name: gate-trove-scenario-functional-dsvm-mysql
+    branch: ^(?!stable/(?:kilo|liberty|mitaka)).*$
     voting: false
 
   - name: gate-trove-scenario-functional-dsvm-redis
+    branch: ^(?!stable/(?:kilo|liberty|mitaka)).*$
     voting: false
 
   - name: gate-trove-python34-db
@@ -11587,10 +11589,12 @@ projects:
       - name: translation-jobs
       - name: release-notes-jobs
     check:
-      - gate-trove-tox-checklinks
       - gate-trove-tox-doc-publish-checkbuild
       - gate-trove-functional-dsvm-mysql
       - gate-tempest-dsvm-trove
+      - gate-trove-tox-checklinks
+      - gate-trove-scenario-functional-dsvm-redis
+      - gate-trove-scenario-functional-dsvm-mysql
     gate:
       - gate-trove-tox-doc-publish-checkbuild
       - gate-trove-functional-dsvm-mysql
@@ -11599,8 +11603,6 @@ projects:
       - trove-tox-doc-publishdocs
       - trove-coverage-db
     experimental:
-      - gate-trove-scenario-functional-dsvm-redis
-      - gate-trove-scenario-functional-dsvm-mysql
       - gate-grenade-dsvm-trove
 
   - name: openstack/trove-dashboard
