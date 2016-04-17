@@ -87,6 +87,7 @@ function propose_python {
 
     # Remove obsolete files.
     cleanup_po_files "$modulename"
+    cleanup_pot_files "$modulename"
 
     # Compress downloaded po files, this needs to be done after
     # cleanup_po_files since that function needs to have information the

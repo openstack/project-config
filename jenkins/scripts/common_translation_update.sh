@@ -489,7 +489,29 @@ function cleanup_po_files {
     for i in $(find $modulename/locale -name *.po) ; do
         check_po_file "$i"
         if [ $RATIO -lt 20 ]; then
-            git rm -f $i
+            git rm -f --ignore-unmatch $i
+        fi
+    done
+}
+
+
+# Remove obsolete files pot files, let's not store a pot file if it
+# has no translations at all.
+function cleanup_pot_files {
+    local modulename=$1
+
+    for i in $(find $modulename/locale -name *.pot) ; do
+        local bi
+        local bi_po
+        local count_po
+
+        bi=$(basename $i)
+        bi_po="${bi%.pot}.po"
+        count_po=$(find $modulename/locale -name "${bi_po}"|wc -l)
+        if [ $count_po -eq 0 ] ; then
+            # Remove file, it might be a new file unknown to git.
+            rm $i
+            git rm -f --ignore-unmatch $i
         fi
     done
 }
