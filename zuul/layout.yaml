@@ -1191,6 +1191,8 @@ jobs:
           - ^.*\.rst$
           - ^doc/.*$
   - name: ^.*tempest-dsvm-ironic-pxe_ssh-dib$
+    # until LP#1571492 fixed
+    voting: false
     skip-if:
       - project: ^openstack/diskimage-builder$
         all-files-match-any:
@@ -5406,7 +5408,6 @@ projects:
     gate:
       - gate-dib-dsvm-functests-ubuntu-trusty
       - gate-dib-dsvm-functests-centos-7
-      - gate-tempest-dsvm-ironic-pxe_ssh-dib
     post:
       - dib-utils-branch-tarball
       - dib-buildimage-debian-ironic
@@ -5430,7 +5431,6 @@ projects:
     gate:
       - gate-dib-dsvm-functests-ubuntu-trusty
       - gate-dib-dsvm-functests-centos-7
-      - gate-tempest-dsvm-ironic-pxe_ssh-dib
     post:
       - dib-buildimage-debian-ironic
 
