@@ -53,8 +53,7 @@ case "$PROJECT" in
             setup_loglevel_vars
             extract_messages_releasenotes
             for modulename in $module_names; do
-                extract_messages "$modulename"
-                extract_messages_log "$modulename"
+                extract_messages_python "$modulename"
             done
         fi
 

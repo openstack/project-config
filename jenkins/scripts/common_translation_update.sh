@@ -267,8 +267,9 @@ function check_empty_pot {
     fi
 }
 
-# Run extract_messages for user visible messages.
-function extract_messages {
+# Run extract_messages for python projects.
+# Needs variables setup via setup_loglevel_vars.
+function extract_messages_python {
     local modulename=$1
 
     local pot=${modulename}/locale/${modulename}.pot
@@ -288,16 +289,8 @@ function extract_messages {
         -k "_C:1c,2" -k "_P:1,2" \
         -o ${pot} ${modulename}
     check_empty_pot ${pot}
-}
 
-# Run extract_messages for log messages.
-# Needs variables setup via setup_loglevel_vars.
-function extract_messages_log {
-    local modulename=$1
-    local pot
-    local trans
-
-    # Update the .pot files
+    # Update the log level .pot files
     for level in $LEVELS ; do
         pot=${modulename}/locale/${modulename}-log-${level}.pot
         $VENV/bin/pybabel ${QUIET} extract --no-default-keywords \
