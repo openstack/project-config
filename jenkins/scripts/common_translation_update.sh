@@ -62,7 +62,7 @@ function setup_project {
     shift 2
     # All argument(s) contain module names now.
 
-    local EXCLUDE='.tox/**'
+    local exclude='.tox/**'
 
     # For projects with one module on stable/mitaka, we use "old" setup.
     # Note that stable/mitaka is only stable translated branch for
@@ -76,17 +76,10 @@ function setup_project {
             -r '**/*.pot' '{locale_with_underscore}/LC_MESSAGES/{filename}.po' \
             -f zanata.xml
     else
-        local reno_resource=""
-
-        if [ "$version" == "master" ] && [ -f releasenotes/source/conf.py ]; then
-            translate_reno=1
-            extract_messages_releasenotes
-            reno_resource="-r releasenotes/source/locale/releasenotes.pot releasenotes/source/locale/{locale_with_underscore}/LC_MESSAGES/releasenotes.po"
-        fi
         /usr/local/jenkins/slave_scripts/create-zanata-xml.py \
             -p $project -v $version --srcdir . --txdir . \
             -r '**/*.pot' '{path}/{locale_with_underscore}/LC_MESSAGES/{filename}.po' \
-            $reno_resource -e "$EXCLUDE" -f zanata.xml
+            -e "$exclude" -f zanata.xml
     fi
 }
 
@@ -166,14 +159,13 @@ function setup_manuals {
     done
 
     # Project setup and updating POT files for release notes.
-    # As first step, execute for openstack-manuals only.
     if [[ $project == "openstack-manuals" ]] && [[ $version == "master" ]]; then
-        extract_messages_releasenotes
-        ZANATA_RULES="$ZANATA_RULES -r releasenotes/source/locale/releasenotes.pot releasenotes/source/locale/{locale_with_underscore}/LC_MESSAGES/releasenotes.po"
+        ZANATA_RULES="$ZANATA_RULES -r ./releasenotes/source/locale/releasenotes.pot releasenotes/source/locale/{locale_with_underscore}/LC_MESSAGES/releasenotes.po"
     fi
 
-    /usr/local/jenkins/slave_scripts/create-zanata-xml.py -p $project \
-        -v $version --srcdir . --txdir . $ZANATA_RULES -e "$EXCLUDE" \
+    /usr/local/jenkins/slave_scripts/create-zanata-xml.py \
+        -p $project -v $version --srcdir . --txdir . \
+        $ZANATA_RULES -e "$EXCLUDE" \
         -f zanata.xml
 }
 
@@ -185,8 +177,9 @@ function setup_training_guides {
     # Update the .pot file
     tox -e generatepot-training
 
-    /usr/local/jenkins/slave_scripts/create-zanata-xml.py -p $project \
-        -v $version --srcdir doc/upstream-training/source/locale \
+    /usr/local/jenkins/slave_scripts/create-zanata-xml.py \
+        -p $project -v $version \
+        --srcdir doc/upstream-training/source/locale \
         --txdir doc/upstream-training/source/locale \
         -f zanata.xml
 }
@@ -378,7 +371,6 @@ function extract_messages_releasenotes {
     msgcat --sort-by-file releasenotes/work/*.pot \
         > releasenotes/source/locale/releasenotes.pot
     rm -rf releasenotes/work
-    git add releasenotes/source/locale/releasenotes.pot
 }
 
 # Filter out files that we do not want to commit.
@@ -486,7 +478,7 @@ function check_po_file {
 function cleanup_po_files {
     local modulename=$1
 
-    for i in $(find $modulename/locale -name *.po) ; do
+    for i in $(find $modulename -name *.po) ; do
         check_po_file "$i"
         if [ $RATIO -lt 20 ]; then
             git rm -f --ignore-unmatch $i
@@ -500,14 +492,15 @@ function cleanup_po_files {
 function cleanup_pot_files {
     local modulename=$1
 
-    for i in $(find $modulename/locale -name *.pot) ; do
+    for i in $(find $modulename -name *.pot) ; do
         local bi
         local bi_po
         local count_po
 
-        bi=$(basename $i)
-        bi_po="${bi%.pot}.po"
-        count_po=$(find $modulename/locale -name "${bi_po}"|wc -l)
+        # Get basename and remove .pot suffix from file name
+        bi=$(basename $i .pot)
+        bi_po="${bi}.po"
+        count_po=$(find $modulename -name "${bi_po}" | wc -l)
         if [ $count_po -eq 0 ] ; then
             # Remove file, it might be a new file unknown to git.
             rm $i
@@ -559,7 +552,6 @@ function pull_from_zanata {
     # files, we download everything, and then remove new files that are not
     # translated enough.
     zanata-cli -B -e pull
-
 
     for i in $(find . -name '*.po' ! -path './.*' -prune | cut -b3-); do
         check_po_file "$i"

@@ -119,6 +119,33 @@ function propose_django {
     git add $modulename/locale/
 }
 
+
+function propose_releasenotes {
+    local version=$1
+
+    # This function does not check whether releasenote publishing and
+    # testing are set up in zuul/layout.yaml. If releasenotes exist,
+    # they get pushed to the translation server.
+
+    if [[ "$version" == "master" && -f releasenotes/source/conf.py ]]; then
+        extract_messages_releasenotes
+
+        # Remove obsolete files.
+        cleanup_po_files "releasenotes"
+        cleanup_pot_files "releasenotes"
+
+        # Compress downloaded po files
+        compress_po_files "releasenotes"
+
+        # Add all changed files to git - if there are
+        # translated files at all.
+        if [ -d releasenotes/source/locale/ ] ; then
+            git add releasenotes/source/locale/
+        fi
+    fi
+}
+
+
 # Setup git repository for git review.
 setup_git
 
@@ -130,6 +157,7 @@ case "$PROJECT" in
         init_manuals "$PROJECT"
         setup_manuals "$PROJECT" "$ZANATA_VERSION"
         propose_manuals
+        propose_releasenotes "$ZANATA_VERSION"
         ;;
     training-guides)
         setup_training_guides "$ZANATA_VERSION"
@@ -145,6 +173,7 @@ case "$PROJECT" in
             setup_loglevel_vars
             # Pull updated translations from Zanata
             pull_from_zanata "$PROJECT"
+            propose_releasenotes "$ZANATA_VERSION"
             for modulename in $module_names; do
                 propose_python "$modulename"
             done
@@ -157,6 +186,7 @@ case "$PROJECT" in
             install_horizon
             # Pull updated translations from Zanata.
             pull_from_zanata "$PROJECT"
+            propose_releasenotes "$ZANATA_VERSION"
             for modulename in $module_names; do
                 propose_django "$modulename"
             done
