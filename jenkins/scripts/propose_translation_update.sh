@@ -80,6 +80,12 @@ function propose_python {
     extract_messages "$modulename"
     extract_messages_log "$modulename"
 
+    # Check for empty directory and exit early
+    local content=$(ls -A $modulename/locale/)
+    if [[ "$content" == "" ]] ; then
+        return
+    fi
+
     # Now add all changed files to git.
     # Note we add them here to not have to differentiate in the functions
     # between new files and files already under git control.
