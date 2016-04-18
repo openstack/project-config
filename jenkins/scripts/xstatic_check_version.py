@@ -18,6 +18,10 @@ import sys
 
 from setuptools_scm import get_version
 
+# add the xstatic repos checkout to the PYTHONPATH so we can
+# import its contents
+sys.path.append(os.getcwd())
+
 xs = None
 for name in os.listdir('xstatic/pkg'):
     if os.path.isdir('xstatic/pkg/' + name):
