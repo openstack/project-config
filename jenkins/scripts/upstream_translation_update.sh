@@ -51,7 +51,9 @@ case "$PROJECT" in
         if [ -n "$module_names" ]; then
             setup_project "$PROJECT" "$ZANATA_VERSION" $module_names
             setup_loglevel_vars
-            extract_messages_releasenotes
+            if [[ "$ZANATA_VERSION" == "master" && -f releasenotes/source/conf.py ]]; then
+                extract_messages_releasenotes
+            fi
             for modulename in $module_names; do
                 extract_messages "$modulename"
                 extract_messages_log "$modulename"
@@ -63,7 +65,9 @@ case "$PROJECT" in
         if [ -n "$module_names" ]; then
             setup_project "$PROJECT" "$ZANATA_VERSION" $module_names
             install_horizon
-            extract_messages_releasenotes
+            if [[ "$ZANATA_VERSION" == "master" && -f releasenotes/source/conf.py ]]; then
+                extract_messages_releasenotes
+            fi
             for modulename in $module_names; do
                 extract_messages_django "$modulename"
             done
