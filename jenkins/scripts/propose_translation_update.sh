@@ -72,16 +72,14 @@ function propose_training_guides {
     git add doc/upstream-training/source/locale/*
 }
 
-# Propose updates for python projects
-function propose_python {
-    local modulename=$1
 
-    # Extract all messages from project, including log messages.
-    extract_messages "$modulename"
-    extract_messages_log "$modulename"
+# Propose updates for python and django projects
+function propose_python_django {
+    local modulename=$1
 
     # Check for empty directory and exit early
     local content=$(ls -A $modulename/locale/)
+
     if [[ "$content" == "" ]] ; then
         return
     fi
@@ -105,28 +103,37 @@ function propose_python {
     git add $modulename/locale/
 }
 
-# This function can be used for all django projects
-function propose_django {
-    local modulename=$1
 
-    # Update the .pot file
-    extract_messages_django "$modulename"
+# Handle either python or django proposals
+function handle_python_django {
+    local $project=$1
+    # kind can be "python" or "django"
+    local $kind=$2
+    local module_names
 
-    # Now add all changed files to git.
-    # Note we add them here to not have to differentiate in the functions
-    # between new files and files already under git control.
-    git add $modulename/locale/*
-
-    # Remove obsolete files.
-    cleanup_po_files "$modulename"
-    cleanup_pot_files "$modulename"
-
-    # Compress downloaded po files
-    compress_po_files "$modulename"
-
-    # Some files were changed, add changed files again to git, so that we
-    # can run git diff properly.
-    git add $modulename/locale/
+    module_names=$(get_modulename $project $kind)
+    if [ -n "$module_names" ]; then
+        setup_project "$project" "$ZANATA_VERSION" $module_names
+        if [[ "$kind" == "django" ]] ; then
+            install_horizon
+        fi
+        # Pull updated translations from Zanata
+        pull_from_zanata "$project"
+        propose_releasenotes "$ZANATA_VERSION"
+        for modulename in $module_names; do
+            case "$kind" in
+                django)
+                    # Update the .pot file
+                    extract_messages_django "$modulename"
+                    ;;
+                python)
+                    # Extract all messages from project, including log messages.
+                    extract_messages_python "$modulename"
+                    ;;
+            esac
+            propose_python_django "$modulename"
+        done
+    fi
 }
 
 
@@ -176,31 +183,9 @@ case "$PROJECT" in
     *)
         # Common setup for python and django repositories
         setup_venv
-        # ---- Python projects ----
-        module_names=$(get_modulename $PROJECT python)
-        if [ -n "$module_names" ]; then
-            setup_project "$PROJECT" "$ZANATA_VERSION" $module_names
-            setup_loglevel_vars
-            # Pull updated translations from Zanata
-            pull_from_zanata "$PROJECT"
-            propose_releasenotes "$ZANATA_VERSION"
-            for modulename in $module_names; do
-                propose_python "$modulename"
-            done
-        fi
-
-        # ---- Django projects ----
-        module_names=$(get_modulename $PROJECT django)
-        if [ -n "$module_names" ]; then
-            setup_project "$PROJECT" "$ZANATA_VERSION" $module_names
-            install_horizon
-            # Pull updated translations from Zanata.
-            pull_from_zanata "$PROJECT"
-            propose_releasenotes "$ZANATA_VERSION"
-            for modulename in $module_names; do
-                propose_django "$modulename"
-            done
-        fi
+        setup_loglevel_vars
+        handle_python_django $PROJECT python
+        handle_python_django $PROJECT django
         ;;
 esac
 

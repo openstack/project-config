@@ -55,8 +55,7 @@ case "$PROJECT" in
                 extract_messages_releasenotes
             fi
             for modulename in $module_names; do
-                extract_messages "$modulename"
-                extract_messages_log "$modulename"
+                extract_messages_python "$modulename"
             done
         fi
 
