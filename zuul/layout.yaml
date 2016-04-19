@@ -1927,19 +1927,23 @@ jobs:
   - name: gate-barbican-python34
     branch: ^(?!stable/kilo).*$
 
-  - name: gate-barbican-devstack-dsvm
+  - name: gate-barbican-simple-crypto-devstack-dsvm
     branch: ^(?!stable/kilo).*$
 
   - name: gate-barbican-devstack-dsvm-oldstable
     branch: ^stable/kilo$
 
-  - name: gate-barbican-dogtag-devstack-dsvm-f23
+  - name: gate-barbican-dogtag-devstack-dsvm
     voting: false
     branch: ^(?!stable/kilo).*$
 
   - name: gate-barbican-dogtag-devstack-dsvm-f23-oldstable
     voting: false
     branch: ^stable/kilo$
+
+  - name: gate-barbican-kmip-devstack-dsvm
+    voting: false
+    branch: ^(?!stable/(?:kilo|liberty|mitaka)).*$
 
   - name: gate-designate-python34-db
     branch: ^(?!stable/(?:kilo|liberty)).*$
@@ -4667,13 +4671,15 @@ projects:
       - name: check-requirements
       - name: api-guide-jobs
     check:
-      - gate-barbican-devstack-dsvm
+      - gate-barbican-simple-crypto-devstack-dsvm
       - gate-barbican-devstack-dsvm-oldstable
       - barbican-coverage
-      - gate-barbican-dogtag-devstack-dsvm-f23
+      - gate-barbican-dogtag-devstack-dsvm
       - gate-barbican-dogtag-devstack-dsvm-f23-oldstable
+    experimental:
+      - gate-barbican-kmip-devstack-dsvm
     gate:
-      - gate-barbican-devstack-dsvm
+      - gate-barbican-simple-crypto-devstack-dsvm
       - gate-barbican-devstack-dsvm-oldstable
 
   - name: openstack/barbican-specs

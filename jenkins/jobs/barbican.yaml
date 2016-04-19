@@ -78,9 +78,9 @@
       - devstack-logs
       - console-log
 
-- job:
-    name: gate-barbican-devstack-dsvm
-    node: ubuntu-trusty
+- job-template:
+    name: 'gate-barbican-{plugin}-devstack-dsvm'
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -94,59 +94,20 @@
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
-          export ENABLED_SERVICES=tempest,keystone
+          export ENABLED_SERVICES='{services}'
           export PROJECTS="openstack/barbican $PROJECTS"
           export PROJECTS="openstack/python-barbicanclient $PROJECTS"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin barbican git://git.openstack.org/openstack/barbican"
 
-          function gate_hook {
+          function gate_hook {{
               $BASE/new/barbican/devstack/gate_hook.sh
-          }
+          }}
           export -f gate_hook
 
-          function post_test_hook {
+          function post_test_hook {{
               cd /opt/stack/new/barbican/functionaltests
               ./post_test_hook.sh
-          }
-          export -f post_test_hook
-
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
-
-    publishers:
-      - devstack-logs
-      - console-log
-
-- job:
-    name: gate-barbican-dogtag-devstack-dsvm-f23
-    node: 'fedora-23'
-
-    wrappers:
-      - build-timeout:
-          timeout: 70
-      - timestamps
-
-    builders:
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - shell: |
-          #!/bin/bash -xe
-          export PYTHONUNBUFFERED=true
-          export ENABLED_SERVICES=barbican-dogtag,tempest,keystone
-          export PROJECTS="openstack/barbican $PROJECTS"
-          export PROJECTS="openstack/python-barbicanclient $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin barbican git://git.openstack.org/openstack/barbican"
-
-          function gate_hook {
-              $BASE/new/barbican/devstack/gate_hook.sh
-          }
-          export -f gate_hook
-
-          function post_test_hook {
-              cd /opt/stack/new/barbican/functionaltests
-              ./post_test_hook.sh
-          }
+          }}
           export -f post_test_hook
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh

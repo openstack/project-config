@@ -284,6 +284,18 @@
       - translation-jobs
       - openstack-publish-jobs
       - openstack-releasenotes-jobs
+      - 'gate-barbican-{plugin}-devstack-dsvm':
+          plugin: simple-crypto
+          node: ubuntu-trusty
+          services: tempest,keystone
+      - 'gate-barbican-{plugin}-devstack-dsvm':
+          plugin: dogtag
+          node: fedora-23
+          services: barbican-dogtag,tempest,keystone
+      - 'gate-barbican-{plugin}-devstack-dsvm':
+          plugin: kmip
+          node: ubuntu-trusty
+          services: barbican-pykmip,pykmip-server,tempest,keystone
       - api-guide-jobs:
           service: key-manager
 
