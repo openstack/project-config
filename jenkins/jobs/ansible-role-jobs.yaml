@@ -24,6 +24,11 @@
     name: '{pipeline}-{name}-ansible-func-{ostype}{job-suffix}'
     node: '{ostype}'
 
+    wrappers:
+      - build-timeout:
+          timeout: 60
+      - timestamps
+
     builders:
       - print-template-name:
           template-name: "{template-name}"
