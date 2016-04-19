@@ -1,0 +1,52 @@
+- job:
+    name: pkgdeb-build-pkg
+    node: debian-jessie
+
+    wrappers:
+      - build-timeout:
+          timeout: 30
+      - timestamps
+
+    builders:
+    - gerrit-git-prep
+    - shell: |
+          #!/bin/bash -xe
+
+          # Install the build env...
+          sudo apt-get update
+          sudo apt-get install -y openstack-pkg-tools
+          sudo pkgos-infra-install-sbuild
+          # ...and build
+          pkgos-infra-build-pkg
+
+    publishers:
+      - console-log
+
+- job:
+    name: pkgdeb-publish-pkg
+    node: debian-jessie
+
+    wrappers:
+      - build-timeout:
+          timeout: 30
+      - timestamps
+
+    builders:
+    - gerrit-git-prep
+    - shell: |
+          #!/bin/bash
+
+          set -x
+          set -e
+
+          # Install the build env...
+          sudo apt-get update
+          sudo apt-get install -y openstack-pkg-tools
+          sudo pkgos-infra-install-sbuild
+          # ...and build
+          pkgos-infra-build-pkg
+
+    publishers:
+      - deb-pkgs:
+          project: deb-pkg
+      - console-log
