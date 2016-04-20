@@ -1291,7 +1291,9 @@ jobs:
   - name: gate-zaqar-tox-integration
     voting: false
 
-  - name: gate-tempest-dsvm-zaqar
+  # NOTE(flwang) Make tempest jobs non-voting until Zaqar's tempest
+  # environment stablizes
+  - name: ^gate-tempest-dsvm-.*-zaqar$
     voting: false
 
   - name: gate-tempest-dsvm-neutron-nv
@@ -12084,7 +12086,8 @@ projects:
       - gate-dsvm-mongodb-zaqar
       - gate-dsvm-redis-zaqar
       - gate-rally-dsvm-zaqar-zaqar
-      - gate-tempest-dsvm-zaqar
+      - gate-tempest-dsvm-mongodb-zaqar
+      - gate-tempest-dsvm-redis-zaqar
     gate:
       - gate-dsvm-mongodb-zaqar
       - gate-dsvm-redis-zaqar
