@@ -16,14 +16,12 @@
 
 # this is a puppet module
 if [ -r metadata.json ]; then
-    MODULE_NAME=$(basename `git rev-parse --show-toplevel`)
+    # try to find the modulename, ex: puppet-aodh
+    # we have to use sed because workspace is puppet-aodh-tarball and not puppet-aodh.
+    MODULE_NAME=$(basename `git rev-parse --show-toplevel` | sed "s/-tarball$//")
     puppet module build .
-    # so we can re-use "tarball" publisher
-    mv pkg dist
-    if [ -z "$ZUUL_REFNAME" ] || [ "$ZUUL_REFNAME" == "master" ]; then
-        mv dist/*.tar.gz dist/$MODULE_NAME-master.tar.gz
-    # need to figure how to deal with stable branches
-    fi
+    mkdir -p dist
+    mv pkg/*.tar.gz dist/$MODULE_NAME.tar.gz
 else
 # this a python project
     venv=${1:-venv}
