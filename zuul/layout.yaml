@@ -658,6 +658,10 @@ project-templates:
       - gate-packstack-integration-scenario002-tempest-centos-7
       - gate-packstack-integration-scenario003-tempest-centos-7
 
+  - name: puppet-tarball-jobs
+    post:
+      - '{name}-branch-tarball'
+
   - name: puppet-beaker-jobs
     check:
       - gate-{name}-puppet-beaker-rspec-ubuntu-trusty
@@ -9166,10 +9170,9 @@ projects:
       # aodh is only deployed on scenario001
       # https://git.openstack.org/cgit/openstack/puppet-openstack-integration/tree/README.md
       - name: puppet-openstack-integration-jobs-scenario001
+      - name: puppet-tarball-jobs
     check-tripleo:
       - gate-tripleo-ci-f22-nonha
-    post:
-      - puppet-aodh-tarball
 
   - name: openstack/puppet-autossh
     template:
@@ -9182,6 +9185,7 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
+      - name: puppet-tarball-jobs
 
   - name: openstack/puppet-ceilometer
     template:
@@ -9193,6 +9197,7 @@ projects:
       # ceilometer is only deployed on scenario001
       # https://git.openstack.org/cgit/openstack/puppet-openstack-integration/tree/README.md
       - name: puppet-openstack-integration-jobs-scenario001
+      - name: puppet-tarball-jobs
     check-tripleo:
       - gate-tripleo-ci-f22-nonha
 
@@ -9219,6 +9224,7 @@ projects:
       # https://git.openstack.org/cgit/openstack/puppet-openstack-integration/tree/README.md
       - name: puppet-openstack-integration-jobs-scenario001
       - name: puppet-openstack-integration-jobs-scenario002
+      - name: puppet-tarball-jobs
     check-tripleo:
       - gate-tripleo-ci-f22-nonha
 
@@ -9229,6 +9235,7 @@ projects:
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
       - name: release-notes-jobs
+      - name: puppet-tarball-jobs
 
   - name: openstack/puppet-ec2api
     template:
@@ -9237,6 +9244,7 @@ projects:
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
       - name: release-notes-jobs
+      - name: puppet-tarball-jobs
 
   - name: openstack/puppet-glance
     template:
@@ -9246,6 +9254,7 @@ projects:
       - name: puppet-beaker-jobs
       - name: puppet-openstack-integration-jobs-all
       - name: release-notes-jobs
+      - name: puppet-tarball-jobs
     check-tripleo:
       - gate-tripleo-ci-f22-nonha
 
@@ -9259,6 +9268,7 @@ projects:
       # gnocchi is only deployed on scenario001
       # https://git.openstack.org/cgit/openstack/puppet-openstack-integration/tree/README.md
       - name: puppet-openstack-integration-jobs-scenario001
+      - name: puppet-tarball-jobs
     check-tripleo:
       - gate-tripleo-ci-f22-nonha
 
@@ -9272,6 +9282,7 @@ projects:
       # heat is only deployed on scenario003
       # https://git.openstack.org/cgit/openstack/puppet-openstack-integration/tree/README.md
       - name: puppet-openstack-integration-jobs-scenario003
+      - name: puppet-tarball-jobs
     check-tripleo:
       - gate-tripleo-ci-f22-nonha
 
@@ -9285,6 +9296,7 @@ projects:
       # horizon is only deployed on scenario003
       # https://git.openstack.org/cgit/openstack/puppet-openstack-integration/tree/README.md
       - name: puppet-openstack-integration-jobs-scenario003
+      - name: puppet-tarball-jobs
     check-tripleo:
       - gate-tripleo-ci-f22-nonha
 
@@ -9298,6 +9310,7 @@ projects:
       # ironic is only deployed on scenario002
       # https://git.openstack.org/cgit/openstack/puppet-openstack-integration/tree/README.md
       - name: puppet-openstack-integration-jobs-scenario002
+      - name: puppet-tarball-jobs
     check-tripleo:
       - gate-tripleo-ci-f22-nonha
 
@@ -9309,6 +9322,7 @@ projects:
       - name: puppet-module-unit-jobs
       - name: puppet-openstack-integration-jobs-all
       - name: release-notes-jobs
+      - name: puppet-tarball-jobs
     check-tripleo:
       - gate-tripleo-ci-f22-nonha
 
@@ -9318,6 +9332,7 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
+      - name: puppet-tarball-jobs
 
   - name: openstack/puppet-manila
     template:
@@ -9326,6 +9341,7 @@ projects:
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
       - name: release-notes-jobs
+      - name: puppet-tarball-jobs
 
   - name: openstack/puppet-midonet
     template:
@@ -9344,6 +9360,7 @@ projects:
       # mistral is only deployed on scenario003
       # https://git.openstack.org/cgit/openstack/puppet-openstack-integration/tree/README.md
       - name: puppet-openstack-integration-jobs-scenario003
+      - name: puppet-tarball-jobs
 
   - name: openstack/puppet-modulesync-configs
     template:
@@ -9363,6 +9380,7 @@ projects:
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
       - name: release-notes-jobs
+      - name: puppet-tarball-jobs
 
   - name: openstack/puppet-n1k-vsm
     template:
@@ -9378,6 +9396,7 @@ projects:
       - name: puppet-beaker-jobs
       - name: puppet-openstack-integration-jobs-all
       - name: release-notes-jobs
+      - name: puppet-tarball-jobs
     check-tripleo:
       - gate-tripleo-ci-f22-nonha
 
@@ -9389,6 +9408,7 @@ projects:
       - name: puppet-beaker-jobs
       - name: puppet-openstack-integration-jobs-all
       - name: release-notes-jobs
+      - name: puppet-tarball-jobs
     check-tripleo:
       - gate-tripleo-ci-f22-nonha
 
@@ -9398,6 +9418,7 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
+      - name: puppet-tarball-jobs
 
   - name: openstack/puppet-openstack-cookiecutter
     template:
@@ -9416,6 +9437,7 @@ projects:
       - name: puppet-module-unit-jobs
       - name: puppet-openstack-integration-jobs-all
       - name: release-notes-jobs
+      - name: puppet-tarball-jobs
     check:
       - gate-puppet-openstack_extras-puppet-beaker-rspec-ubuntu-trusty
       - gate-puppet-openstack_extras-puppet-beaker-rspec-centos-7
@@ -9466,6 +9488,7 @@ projects:
       - name: puppet-beaker-jobs
       - name: puppet-openstack-integration-jobs-all
       - name: release-notes-jobs
+      - name: puppet-tarball-jobs
     check-tripleo:
       - gate-tripleo-ci-f22-nonha
 
@@ -9477,6 +9500,7 @@ projects:
       - name: puppet-beaker-jobs
       - name: puppet-openstack-integration-jobs-all
       - name: release-notes-jobs
+      - name: puppet-tarball-jobs
     check-tripleo:
       - gate-tripleo-ci-f22-nonha
 
@@ -9487,6 +9511,7 @@ projects:
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
       - name: release-notes-jobs
+      - name: puppet-tarball-jobs
 
   - name: openstack/puppet-pacemaker
     template:
@@ -9503,6 +9528,7 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
+      - name: puppet-tarball-jobs
 
   - name: openstack/puppet-sahara
     template:
@@ -9514,6 +9540,7 @@ projects:
       # sahara is only deployed on scenario003
       # https://git.openstack.org/cgit/openstack/puppet-openstack-integration/tree/README.md
       - name: puppet-openstack-integration-jobs-scenario003
+      - name: puppet-tarball-jobs
 
   - name: openstack/puppet-setproxy
     template:
@@ -9535,6 +9562,7 @@ projects:
       # swift is only deployed on scenario002
       # https://git.openstack.org/cgit/openstack/puppet-openstack-integration/tree/README.md
       - name: puppet-openstack-integration-jobs-scenario002
+      - name: puppet-tarball-jobs
     check-tripleo:
       - gate-tripleo-ci-f22-nonha
 
@@ -9546,6 +9574,7 @@ projects:
       - name: puppet-beaker-jobs
       - name: puppet-openstack-integration-jobs-all
       - name: release-notes-jobs
+      - name: puppet-tarball-jobs
 
   - name: openstack/puppet-tripleo
     template:
@@ -9564,6 +9593,7 @@ projects:
       # trove is only deployed on scenario003
       # https://git.openstack.org/cgit/openstack/puppet-openstack-integration/tree/README.md
       - name: puppet-openstack-integration-jobs-scenario003
+      - name: puppet-tarball-jobs
 
   - name: openstack/puppet-tuskar
     template:
@@ -9576,6 +9606,7 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
+      - name: puppet-tarball-jobs
 
   - name: openstack/puppet-vswitch
     template:
@@ -9585,6 +9616,7 @@ projects:
       - name: puppet-beaker-jobs
       - name: puppet-openstack-integration-jobs-all
       - name: release-notes-jobs
+      - name: puppet-tarball-jobs
     check-tripleo:
       - gate-tripleo-ci-f22-nonha
 
@@ -9598,6 +9630,7 @@ projects:
       # zaqar is only deployed on scenario002
       # https://git.openstack.org/cgit/openstack/puppet-openstack-integration/tree/README.md
       - name: puppet-openstack-integration-jobs-scenario002
+      - name: puppet-tarball-jobs
 
   - name: openstack/pycadf
     template:
