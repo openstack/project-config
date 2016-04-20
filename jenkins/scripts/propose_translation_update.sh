@@ -106,9 +106,9 @@ function propose_python_django {
 
 # Handle either python or django proposals
 function handle_python_django {
-    local $project=$1
+    local project=$1
     # kind can be "python" or "django"
-    local $kind=$2
+    local kind=$2
     local module_names
 
     module_names=$(get_modulename $project $kind)
