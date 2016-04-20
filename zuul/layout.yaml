@@ -2336,12 +2336,11 @@ jobs:
   - name: gate-glance_store-python34
     branch: ^(?!stable/kilo).*$
 
-  - name: gate-tempest-dsvm-full-ceph-src-glance_store
+  - name: gate-tempest-dsvm-full-ceph-plugin-src-glance_store
     # NOTE(flaper87): Disable job in Kilo until we fix the gate.
     branch: ^(?!stable/kilo).*$
 
-  # NOTE(mriedem): Replace this with a src job using the ceph dsvm plugin
-  - name: ^gate-tempest-dsvm-full-ceph-src-.*$
+  - name: ^gate-tempest-dsvm-full-ceph-plugin-src-.*$
     voting: false
 
   - name: ^gate-tempest-dsvm-smoke-tlsproxy.*$
@@ -6354,11 +6353,7 @@ projects:
       - name: publish-to-pypi
       - name: lib-forward-testing
     check:
-      # TODO(mriedem): Switch to gate-tempest-dsvm-full-devstack-plugin-ceph
-      - gate-tempest-dsvm-full-ceph-src-glance_store
-    gate:
-      # TODO(mriedem): Switch to gate-tempest-dsvm-full-devstack-plugin-ceph
-      - gate-tempest-dsvm-full-ceph-src-glance_store
+      - gate-tempest-dsvm-full-ceph-plugin-src-glance_store
     experimental:
       - gate-glance_store-dsvm-functional-filesystem
 
@@ -8581,8 +8576,7 @@ projects:
       - name: lib-forward-testing
       - name: release-notes-jobs
     check:
-      # TODO(mriedem): Switch to gate-tempest-dsvm-full-devstack-plugin-ceph
-      - gate-tempest-dsvm-full-ceph-src-os-brick
+      - gate-tempest-dsvm-full-ceph-plugin-src-os-brick
       - gate-tempest-dsvm-full-lio-src-os-brick
     gate:
       - gate-tempest-dsvm-full-lio-src-os-brick
