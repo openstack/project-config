@@ -46,7 +46,7 @@ def tokenize(fn, tokens, distribution, comment=None):
         if 'qpid' in line:
             continue  # TODO: explain why this is here
         if comment and comment in line:
-            line = line[:line.rfind(comment)]
+            line = line[:line.find(comment)]
         line = line.strip()
         if line and line not in tokens:
             tokens.append(line)
@@ -59,7 +59,7 @@ def _legacy_find_images(basedir):
         line = line.strip()
         if line.startswith('IMAGE_URLS'):
             if '#' in line:
-                line = line[:line.rfind('#')]
+                line = line[:line.find('#')]
             if line.endswith(';;'):
                 line = line[:-2]
             line = line.split('=', 1)[1].strip()
