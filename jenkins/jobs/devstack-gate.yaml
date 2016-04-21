@@ -2439,8 +2439,6 @@
       - console-log
 
 
-# TODO(mriedem): Add a -src- variant of this job to replace
-# tempest-dsvm-full-ceph-src below.
 - job-template:
     name: '{pipeline}-tempest-dsvm-full-devstack-plugin-ceph{job-suffix}'
     node: '{node}'
@@ -2475,11 +2473,8 @@
       - console-log
 
 
-# tempest-dsvm-full-ceph-src-{name} - run a devstack ceph tempest job,
-# but use the zuul git ref for name instead of the released library
-# version.
 - job-template:
-    name: '{pipeline}-tempest-dsvm-full-ceph-src-{name}{job-suffix}'
+    name: '{pipeline}-tempest-dsvm-full-ceph-plugin-src-{name}{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -2495,10 +2490,12 @@
       - devstack-checkout
       - shell: |
           #!/bin/bash -xe
-          export PROJECTS="openstack/{name} $PROJECTS"
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
-          export DEVSTACK_GATE_CEPH=1
+          export DEVSTACK_GATE_TEMPEST_FULL=1
+
+          export PROJECTS="{plugin-repo} $PROJECTS"
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin devstack-plugin-{plugin} git://git.openstack.org/{plugin-repo}"
 
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
