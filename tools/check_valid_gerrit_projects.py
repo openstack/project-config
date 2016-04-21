@@ -50,6 +50,16 @@ def check_repo(repo_path):
         else:
             found_errors += 1
             print("  Error: No master branch exists")
+        if 'origin/stable' in branches:
+            found_errors += 1
+            print("  A branch named 'stable' exists, this will break future\n")
+            print("  creation of stable/RELEASE branches.\n")
+            print("  Delete the branch on your upstream project.")
+        if 'origin/feature' in branches:
+            found_errors += 1
+            print("  A branch named 'feature' exists, this will break future\n")
+            print("  creation of feature/NAME branches.\n")
+            print("  Delete the branch on your upstream project.")
         if repo.tags:
             print("  Found the following tags:")
             for tag in repo.tags:
