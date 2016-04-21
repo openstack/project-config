@@ -208,7 +208,9 @@
           function pre_test_hook {{
               # Install manila-devstack integration
               # 'dhss' means 'drivers handle share servers'
-              source $BASE/new/manila/contrib/ci/pre_test_hook.sh {dhss}
+              # 'driver' is codename of shar driver in manila
+              # that is used for proper configuration of storage backend.
+              source $BASE/new/manila/contrib/ci/pre_test_hook.sh {dhss} {driver} 'multibackend'
           }}
           export -f pre_test_hook
 
@@ -236,6 +238,7 @@
       - devstack-manila-rally-gate-multibackend:
           scenario: 'rally-manila'
           dhss: '1'
+          driver: 'generic'
 
     publishers:
       - devstack-logs
@@ -256,6 +259,7 @@
       - devstack-manila-rally-gate-multibackend:
           scenario: 'rally-manila-no-ss'
           dhss: '0'
+          driver: 'zfsonlinux'
 
     publishers:
       - devstack-logs
