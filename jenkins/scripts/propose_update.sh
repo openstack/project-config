@@ -95,11 +95,6 @@ for PROJECT in $PROJECTS; do
     BRANCH=""
     if git branch -a | grep -q "^  remotes/origin/$ZUUL_REFNAME$" ; then
         BRANCH=$ZUUL_REFNAME
-    elif echo $ZUUL_REFNAME | grep -q "^stable/" ; then
-        FALLBACK=$(echo $ZUUL_REFNAME | sed s,^stable/,proposed/,)
-        if git branch -a | grep -q "^  remotes/origin/$FALLBACK$" ; then
-            BRANCH=$FALLBACK
-        fi
     fi
 
     # don't bother with this project if there's not a usable branch
