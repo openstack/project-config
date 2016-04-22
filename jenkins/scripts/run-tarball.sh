@@ -17,8 +17,9 @@
 # this is a puppet module
 if [ -r metadata.json ]; then
     # try to find the modulename, ex: puppet-aodh
-    # we have to use sed because workspace is puppet-aodh-branch-tarball and not puppet-aodh.
-    MODULE_NAME=$(basename `git rev-parse --show-toplevel` | sed "s/-branch-tarball$//")
+    # we have to use sed because workspace is puppet-aodh-branch-tarball
+    # or puppet-aodh-tarball and not puppet-aodh.
+    MODULE_NAME=$(basename `git rev-parse --show-toplevel` | sed "s/\(-branch\)\?-tarball$//")
     puppet module build .
     mkdir -p dist
     mv pkg/*.tar.gz dist/$MODULE_NAME.tar.gz
