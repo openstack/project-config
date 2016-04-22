@@ -46,6 +46,7 @@ install_from_source python-ironicclient
 install_from_source python-ironic-inspector-client
 install_from_source python-mistralclient
 install_from_source python-muranoclient
+install_from_source python-neutronclient
 install_from_source python-saharaclient
 install_from_source python-searchlightclient
 install_from_source python-senlinclient
