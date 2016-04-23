@@ -142,7 +142,23 @@
           node: ubuntu-trusty
           pipeline: gate
           backend: mongodb
+      - 'gate-aodh-dsvm-tempest-plugin-{backend}{network}':
+          backend: hbase
+          network: ''
+      - 'gate-aodh-dsvm-tempest-plugin-{backend}{network}':
+          backend: mongodb
+          network: ''
+      - 'gate-aodh-dsvm-tempest-plugin-{backend}{network}':
+          backend: mysql
+          network: ''
+      - 'gate-aodh-dsvm-tempest-plugin-{backend}{network}':
+          backend: mysql
+          network: '-neutron'
+      - 'gate-aodh-dsvm-tempest-plugin-{backend}{network}':
+          backend: postgresql
+          network: ''
       - 'gate-telemetry-dsvm-integration-{name}'
+
 
 - project:
     name: api-site
@@ -457,8 +473,27 @@
           branch-override: default
       - 'gate-tempest-dsvm-ceilometer-{backend}-neutron-full{job-suffix}':
           backend: 'mysql'
-          node: ubuntu-trusty
           job-suffix: ''
+          branch-override: default
+      - 'gate-ceilometer-dsvm-tempest-plugin-{backend}{network}':
+          backend: 'mongodb'
+          network: ''
+          branch-override: default
+      - 'gate-ceilometer-dsvm-tempest-plugin-{backend}{network}':
+          backend: 'mysql'
+          network: ''
+          branch-override: default
+      - 'gate-ceilometer-dsvm-tempest-plugin-{backend}{network}':
+          backend: 'mysql'
+          network: '-neutron'
+          branch-override: default
+      - 'gate-ceilometer-dsvm-tempest-plugin-{backend}{network}':
+          backend: 'postgresql'
+          network: ''
+          branch-override: default
+      - 'gate-ceilometer-dsvm-tempest-plugin-{backend}{network}':
+          backend: 'es'
+          network: ''
           branch-override: default
       - '{pipeline}-ceilometer-dsvm-functional-{backend}{job-suffix}':
           pipeline: 'gate'
