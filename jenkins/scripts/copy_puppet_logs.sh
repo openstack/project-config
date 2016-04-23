@@ -111,6 +111,11 @@ if [ -d /var/log/libvirt ] ; then
     sudo cp -r /var/log/libvirt $LOG_DIR/
 fi
 
+# openvswitch
+if [ -d /var/log/openvswitch ] ; then
+    sudo cp -r /var/log/openvswitch $LOG_DIR/
+fi
+
 # sudo config
 sudo cp -r /etc/sudoers.d $LOG_DIR/
 sudo cp /etc/sudoers $LOG_DIR/sudoers.txt
