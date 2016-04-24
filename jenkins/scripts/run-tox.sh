@@ -25,7 +25,7 @@ function freeze_venv {
 
     echo "Begin $freezecmd freeze output from test virtualenv:"
     echo "======================================================================"
-    ${bin_path}/${freezecmd} freeze
+    ${bin_path}/${freezecmd} freeze | sort -f
     echo "======================================================================"
 }
 
