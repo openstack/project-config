@@ -55,18 +55,7 @@
       - test-results
       - devstack-logs
       - console-log
-      - publish-screenshots
       - publish-test-reports
-
-- publisher:
-    name: publish-screenshots
-    publishers:
-      - scp:
-          site: 'static.openstack.org'
-          files:
-            - target: 'logs/$LOG_PATH/screenshots'
-              source: 'integration_tests_screenshots/**'
-              copy-after-failure: true
 
 - publisher:
     name: publish-test-reports
@@ -74,7 +63,7 @@
       - scp:
           site: 'static.openstack.org'
           files:
-            - target: 'logs/$LOG_PATH/test_reports'
+            - target: 'logs/$LOG_PATH'
               source: 'test_reports/**'
               keep-hierarchy: true
               copy-after-failure: true
