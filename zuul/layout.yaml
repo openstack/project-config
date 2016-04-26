@@ -1333,13 +1333,25 @@ jobs:
   - name: gate-rally-dsvm-senlin
     voting: false
 
-  - name: gate-rally-dsvm-verify-full
+  - name: gate-rally-dsvm-verify-full-discover-resources
     files:
       - ^rally/cli/commands/verify.py$
       - ^rally/common/io/subunit_v2.py$
       - ^rally/ui/templates/verification.*$
       - ^rally/verification.*$
       - ^tests/ci/.*verify.*$
+
+  - name: gate-rally-dsvm-verify-full-create-resources
+    voting: false
+    files:
+      - ^rally/cli/commands/verify.py$
+      - ^rally/common/io/subunit_v2.py$
+      - ^rally/ui/templates/verification.*$
+      - ^rally/verification.*$
+      - ^tests/ci/.*verify.*$
+
+  - name: gate-rally-dsvm-verify-light-create-resources
+    voting: false
 
   - name: gate-rally-dsvm-zaqar-zaqar
     voting: false
@@ -10580,8 +10592,10 @@ projects:
       - gate-rally-dsvm-neutron-rally
       - gate-rally-dsvm-neutron-unstable
       - gate-rally-dsvm-cli
-      - gate-rally-dsvm-verify-light
-      - gate-rally-dsvm-verify-full
+      - gate-rally-dsvm-verify-light-discover-resources
+      - gate-rally-dsvm-verify-full-discover-resources
+      - gate-rally-dsvm-verify-light-create-resources
+      - gate-rally-dsvm-verify-full-create-resources
       - gate-rally-tox-self
     gate:
       - gate-rally-install-centos-7
@@ -10590,8 +10604,8 @@ projects:
       - gate-rally-dsvm-keystone-v2api-rally
       - gate-rally-dsvm-neutron-rally
       - gate-rally-dsvm-cli
-      - gate-rally-dsvm-verify-light
-      - gate-rally-dsvm-verify-full
+      - gate-rally-dsvm-verify-light-discover-resources
+      - gate-rally-dsvm-verify-full-discover-resources
     post:
       - rally-coverage
     experimental:

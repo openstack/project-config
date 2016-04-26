@@ -679,7 +679,7 @@
 
 
 - job-template:
-    name: 'gate-rally-dsvm-verify-{mode}'
+    name: 'gate-rally-dsvm-verify-{job-mode}-{ctx-mode}'
     node: ubuntu-trusty
 
     wrappers:
@@ -688,7 +688,8 @@
 
     builders:
       - devstack-rally-verify:
-          mode: '{mode}'
+          job-mode: '{job-mode}'
+          ctx-mode: '{ctx-mode}'
           compare: '{compare}'
           ceilometer: '{ceilometer}'
           heat: '{heat}'
@@ -714,6 +715,9 @@
           export DEVSTACK_GATE_NEUTRON={neutron}
           export DEVSTACK_GATE_SAHARA={sahara}
           export DEVSTACK_GATE_EXERCISES=0
+
+          export RALLY_VERIFY_JOB_MODE={job-mode}
+          export RALLY_VERIFY_CTX_MODE={ctx-mode}
           export RALLY_DO_COMPARE={compare}
 
           export IDENTITY_API_VERSION=3
@@ -759,11 +763,14 @@
           export DEVSTACK_LOCAL_CONFIG
 
           function post_test_hook {{
-              if [ $RALLY_DO_COMPARE -ne 0 ]; then
-                  $BASE/new/rally/tests/ci/rally_verify.py --mode '{mode}' --compare
-              else
-                  $BASE/new/rally/tests/ci/rally_verify.py --mode '{mode}'
+              local cmd="$BASE/new/rally/tests/ci/rally_verify.py --mode $RALLY_VERIFY_JOB_MODE"
+              if [ $RALLY_VERIFY_CTX_MODE = "create-resources" ]; then
+                  cmd+=" --ctx-create-resources"
               fi
+              if [ $RALLY_DO_COMPARE -ne 0 ]; then
+                  cmd+=" --compare"
+              fi
+              $cmd
           }}
           export -f post_test_hook
 
