@@ -53,10 +53,12 @@ LSBDISTCODENAME=$(lsb_release -cs)
 if [ "$LSBDISTID" == "Ubuntu" ] ; then
     # NOTE(pabelanger): We only have a xenial mirror ATM because reprepro cannot
     # mirror repositories with 0 packages. Once our reprepro mirrors is 100% we
-    # can remove this logic check.
+    # can remove this logic check. We are only missing -backports on the mirrors
     if [ "$LSBDISTCODENAME" == "xenial" ] ; then
         sudo dd of=/etc/apt/sources.list <<EOF
 deb $NODEPOOL_UBUNTU_MIRROR $LSBDISTCODENAME main universe
+deb $NODEPOOL_UBUNTU_MIRROR $LSBDISTCODENAME-updates main universe
+deb $NODEPOOL_UBUNTU_MIRROR $LSBDISTCODENAME-security main universe
 EOF
     else
         sudo dd of=/etc/apt/sources.list <<EOF
