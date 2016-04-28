@@ -46,6 +46,10 @@ until $BINDEP -b -f $PACKAGES test; do
         sudo PATH=/usr/sbin:/sbin:$PATH DEBIAN_FRONTEND=noninteractive \
             apt-get -q --option "Dpkg::Options::=--force-confold" \
             --assume-yes install `$BINDEP -b -f $PACKAGES test`
+    elif emerge --version >/dev/null 2>&1 ; then
+        sudo emerge -uDNq --jobs=4 @world
+        sudo PATH=/usr/sbin:/sbin:$PATH emerge -q --jobs=4 \
+            `$BINDEP -b -f $PACKAGES`
     else
         sudo PATH=/usr/sbin:/sbin:$PATH $YUM install -y \
             `$BINDEP -b -f $PACKAGES test`
