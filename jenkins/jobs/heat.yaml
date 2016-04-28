@@ -238,10 +238,19 @@
           export PROJECTS="openstack-dev/grenade $PROJECTS"
           export PYTHONUNBUFFERED=true
 
-          OVERRIDE_ENABLED_SERVICES=c-api,c-bak,c-sch,c-vol,cinder,dstat,g-api,g-reg,h-api,h-api-cfn,h-api-cw,h-eng,heat,key,mysql,n-api,n-cond,n-cpu,n-crt,n-sch,q-agt,q-dhcp,q-l3,q-meta,q-metering,q-svc,q-vpn,rabbit,s-account,s-container,s-object,s-proxy,q-lbaas,ceilometer-acompute,ceilometer-acentral,ceilometer-collector,ceilometer-api
+          OVERRIDE_ENABLED_SERVICES=c-api,c-bak,c-sch,c-vol,cinder,dstat,g-api,g-reg,h-api,h-api-cfn,h-api-cw,h-eng,heat,key,mysql,n-api,n-cond,n-cpu,n-crt,n-sch,q-agt,q-dhcp,q-l3,q-meta,q-metering,q-svc,rabbit,s-account,s-container,s-object,s-proxy,q-lbaas,ceilometer-acompute,ceilometer-acentral,ceilometer-collector,ceilometer-api
+
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
+
           # n-obj has been removed from mitaka
           if [[ "stable/kilo stable/liberty" =~ $ZUUL_BRANCH ]]; then
-              OVERRIDE_ENABLED_SERVICES+=,n-obj,
+              OVERRIDE_ENABLED_SERVICES+=,n-obj
+          fi
+          # in liberty, vpnaas switched to devstack plugin
+          if [[ $ZUUL_BRANCH == "stable/kilo" ]]; then
+              OVERRIDE_ENABLED_SERVICES+=,q-vpn
+          else
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin neutron-vpnaas https://git.openstack.org/openstack/neutron-vpnaas"
           fi
           export OVERRIDE_ENABLED_SERVICES
 
@@ -252,7 +261,6 @@
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
           export GRENADE_PLUGINRC="enable_grenade_plugin heat https://git.openstack.org/openstack/heat"
 
           function pre_test_hook {{
