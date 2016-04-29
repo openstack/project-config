@@ -13,6 +13,7 @@
 # under the License.
 
 PROJECT=$1
+JOBNAME=$2
 
 # Replace /'s in branch names with -'s because Zanata doesn't
 # allow /'s in version names.
@@ -30,6 +31,9 @@ if ! /usr/local/jenkins/slave_scripts/query-zanata-project-version.py \
     # Exit successfully so that lack of a version doesn't cause the jenkins
     # jobs to fail. This is necessary because not all branches of a project
     # will be translated.
+
+    # Tell finish function that everything is fine.
+    ERROR_ABORT=0
     exit 0
 fi
 
@@ -115,3 +119,6 @@ if [ $(git diff --cached | egrep -v "(POT-Creation-Date|^[\+\-]#|^\+{3}|^\-{3})"
 
     mv .translation-source translation-source
 fi
+
+# Tell finish function that everything is fine.
+ERROR_ABORT=0

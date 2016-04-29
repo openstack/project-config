@@ -14,6 +14,8 @@
 
 PROJECT=$1
 BRANCH=$2
+JOBNAME=$3
+
 # Replace /'s in the branch name with -'s because Zanata does not
 # allow /'s in version names.
 ZANATA_VERSION=${BRANCH//\//-}
@@ -216,3 +218,5 @@ if [ $INVALID_PO_FILE -eq 1 ] ; then
     echo "translation server."
     exit 1
 fi
+# Tell finish function that everything is fine.
+ERROR_ABORT=0

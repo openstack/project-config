@@ -16,6 +16,10 @@
 
 source /usr/local/jenkins/slave_scripts/common.sh
 
+# Set start of timestamp for subunit
+TRANS_START_TIME=$(date +%s)
+SUBUNIT_OUTPUT=testrepository.subunit
+
 # Topic to use for our changes
 TOPIC=zanata/translations
 
@@ -24,6 +28,12 @@ QUIET="--quiet"
 
 # Have invalid files been found?
 INVALID_PO_FILE=0
+
+# ERROR_ABORT signals whether the script aborts with failure, will be
+# set to 0 on successfull run.
+ERROR_ABORT=1
+
+trap "finish" EXIT
 
 # Set up some branch dependent variables
 function init_branch {
@@ -46,6 +56,27 @@ function get_modulename {
         -p $project -t $target
 }
 
+function finish {
+
+    if [[ "$ERRORS" -eq 1 ]] ; then
+        $VENV/bin/generate-subunit $TRANS_START_TIME $SECONDS 'fail' $JOBNAME >> $SUBUNIT_OUTPUT
+
+    else
+        $VENV/bin/generate-subunit $TRANS_START_TIME $SECONDS 'success' $JOBNAME >> $SUBUNIT_OUTPUT
+    fi
+
+    gzip -9 $SUBUNIT_OUTPUT
+
+    # Delete temporary directories
+    if [ "$VENV" != "" ] ; then
+        rm -rf $VENV
+        VENV=""
+    fi
+    if [ "$HORIZON_ROOT" != "" ] ; then
+        rm -rf $HORIZON_ROOT
+        HORIZON_ROOT=""
+    fi
+}
 
 # Setup venv with Babel in it.
 # Also extract version of project.
@@ -54,7 +85,6 @@ function setup_venv {
     # Note that this directory needs to be outside of the source tree,
     # some other functions will fail if it's inside.
     VENV=$(mktemp -d)
-    trap "rm -rf $VENV" EXIT
     virtualenv $VENV
 
     # Install babel using global upper constraints.
@@ -69,6 +99,10 @@ function setup_venv {
     VERSION=$($VENV/bin/python setup.py --version)
     set -e
     VERSION=${VERSION:-unknown}
+
+    # Install subunit for the subunit output stream for
+    # healthcheck.openstack.org.
+    $VENV/bin/pip install -U os-testr
 }
 
 # Setup a project for Zanata. This is used by both Python and Django projects.
@@ -327,16 +361,15 @@ function install_horizon {
     # TODO(jaegerandi): Switch to zuul-cloner once it's safe to use
     # zuul-cloner in post jobs and we have a persistent cache on
     # proposal node.
-    root=$(mktemp -d)
-    # Note this trap handler overrides the trap handler from
-    # setup_venv for $VENV.
-    trap "rm -rf $VENV $root" EXIT
+    HORIZON_ROOT=$(mktemp -d)
 
     # Checkout same branch of horizon as the project - including
     # same constraints.
     git clone --depth=1 --branch $GIT_BRANCH \
-        git://git.openstack.org/openstack/horizon.git $root/horizon
-    (cd ${root}/horizon && $VENV/bin/pip install -c $UPPER_CONSTRAINTS .)
+        git://git.openstack.org/openstack/horizon.git $HORIZON_ROOT/horizon
+    (cd ${HORIZON_ROOT}/horizon && $VENV/bin/pip install -c $UPPER_CONSTRAINTS .)
+    rm -rf HORIZON_ROOT
+    HORIZON_ROOT=""
 }
 
 
