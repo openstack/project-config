@@ -113,6 +113,12 @@ labels:
       - name: internap-nyj01
       - name: vexxhost-ca-ymq-1
       - name: osic-cloud1
+  - name: tripleo-centos-7
+    image: centos-7
+    ready-script: configure_mirror.sh
+    min-ready: 1
+    providers:
+      - name: tripleo-test-cloud-rh1
   - name: tripleo-f22
     image: tripleo-f22
     min-ready: 18
@@ -585,6 +591,12 @@ providers:
       - net-label: default-net
       - net-label: tripleo-bm-test
     images:
+      - name: centos-7
+        min-ram: 8192
+        name-filter: h1
+        diskimage: centos-7
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
       - name: tripleo-f22
         base-image: 'Fedora 22 64-bit'
         min-ram: 8192
