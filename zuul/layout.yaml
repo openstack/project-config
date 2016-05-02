@@ -1229,6 +1229,9 @@ jobs:
   - name: propose-openstack-manuals-updates
     branch: master
 
+  - name: gate-openstack-manuals-tox-checksyntax
+    branch: ^(stable/(kilo|liberty)).*$
+
   # Packstack integration jobs should only run on master and stable/mitaka
   # onwards
   - name: ^gate-packstack-integration-.*-tempest-centos-7$
@@ -8532,7 +8535,6 @@ projects:
       - name: translation-jobs-liberty
       - name: release-notes-jobs
     check:
-      - gate-openstack-manuals-tox-checklinks
       - gate-openstack-manuals-tox-checksyntax
     gate:
       - gate-openstack-manuals-tox-checksyntax
