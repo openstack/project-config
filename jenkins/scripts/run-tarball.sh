@@ -21,8 +21,17 @@ if [ -r metadata.json ]; then
     # or puppet-aodh-tarball and not puppet-aodh.
     MODULE_NAME=$(basename `git rev-parse --show-toplevel` | sed "s/\(-branch\)\?-tarball$//")
     puppet module build .
+    # NOTE(pabelanger): Here we are converting openstack-neutron-8.0.0.tar.gz to
+    # puppet-neutron-8.0.0.tar.gz.
+    find . -name openstack-*.tar.gz | sed -e "p;s/openstack-/puppet-/" | xargs -n2 mv
     mkdir -p dist
-    mv pkg/*.tar.gz dist/$MODULE_NAME.tar.gz
+    if echo $ZUUL_REFNAME | grep refs/tags/ >/dev/null ; then
+        # NOTE(pabelanger) We don't need to rename tagged tarballs as `puppet
+        # module build` does the right thing.
+        mv pkg/*.tar.gz dist/
+    else
+        mv pkg/*.tar.gz dist/$MODULE_NAME.tar.gz
+    fi
 else
 # this a python project
     venv=${1:-venv}
