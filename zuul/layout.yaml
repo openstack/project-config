@@ -6351,9 +6351,16 @@ projects:
   - name: openstack/giftwrap
     template:
       - name: merge-check
-      - name: python-jobs
       - name: publish-to-pypi
       - name: python3-jobs
+    check:
+      - gate-giftwrap-pep8
+      - gate-giftwrap-python27
+    gate:
+      - gate-giftwrap-pep8
+      - gate-giftwrap-python27
+    post:
+      - giftwrap-branch-tarball
 
   - name: openstack/git-repo-manifests
     template:
