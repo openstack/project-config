@@ -2344,6 +2344,10 @@ jobs:
   - name: gate-horizon-tox-py27dj19
     branch: ^(?!stable/(kilo|liberty|mitaka)).*$
 
+  - name: gate-horizon-dsvm-tempest-plugin
+    branch: ^(?!stable/(kilo|liberty|mitaka)).*$
+    voting: false
+
   - name: gate-django_openstack_auth-tox-py27dj18
     branch: ^(?!stable/(kilo|liberty)).*$
 
@@ -6644,6 +6648,7 @@ projects:
       - gate-horizon-selenium-headless
       - gate-tempest-dsvm-full
       - gate-grenade-dsvm
+      - gate-horizon-dsvm-tempest-plugin
     gate:
       - gate-horizon-tox-py27dj18
       - gate-horizon-tox-py27dj19
@@ -11560,6 +11565,16 @@ projects:
       - periodic-tempest-dsvm-all-master
       - periodic-tempest-dsvm-stress-master
       - periodic-tempest-dsvm-neutron-identity-v3-only-full-master
+
+  - name: openstack/tempest-horizon
+    template:
+      - name: merge-check
+      - name: check-requirements
+      - name: publish-to-pypi
+    check:
+      - gate-horizon-dsvm-tempest-plugin
+    gate:
+      - gate-horizon-dsvm-tempest-plugin
 
   - name: openstack/tempest-lib
     template:
