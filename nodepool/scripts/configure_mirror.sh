@@ -67,11 +67,11 @@ deb $NODEPOOL_UBUNTU_MIRROR $LSBDISTCODENAME-updates main universe
 deb $NODEPOOL_UBUNTU_MIRROR $LSBDISTCODENAME-backports main universe
 deb $NODEPOOL_UBUNTU_MIRROR $LSBDISTCODENAME-security main universe
 EOF
-        # We currently only mirror ceph-deb-hammer support for trusty.
-        sudo dd of=/etc/apt/sources.list.d/ceph-deb-hammer.list <<EOF
+    fi
+    sudo dd of=/etc/apt/sources.list.d/ceph-deb-hammer.list <<EOF
 deb $NODEPOOL_CEPH_MIRROR $LSBDISTCODENAME main
 EOF
-    fi
+
     if [ "$LSBDISTCODENAME" != 'precise' ] ; then
         # Turn off multi-arch
         sudo dpkg --remove-architecture i386
