@@ -658,14 +658,21 @@
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
 
+          export DEVSTACK_PROJECT_FROM_GIT=""
+
           export IRONICCLIENT_FROM_SOURCE={client-from-source}
           if [ "$IRONICCLIENT_FROM_SOURCE" == "1" ]; then
-              export DEVSTACK_PROJECT_FROM_GIT="python-ironicclient"
+              export DEVSTACK_PROJECT_FROM_GIT="python-ironicclient,$DEVSTACK_PROJECT_FROM_GIT"
           fi
 
           export IRONIC_LIB_FROM_SOURCE={ironic-lib-from-source}
           if [ "$IRONIC_LIB_FROM_SOURCE" == "1" ]; then
-              export DEVSTACK_PROJECT_FROM_GIT="ironic-lib"
+              export DEVSTACK_PROJECT_FROM_GIT="ironic-lib,$DEVSTACK_PROJECT_FROM_GIT"
+          fi
+
+          export PYGHMI_FROM_SOURCE={pyghmi-from-source}
+          if [ "$PYGHMI_FROM_SOURCE" == "1" ]; then
+             export DEVSTACK_PROJECT_FROM_GIT="pyghmi,$DEVSTACK_PROJECT_FROM_GIT"
           fi
 
           # The IPA ramdisk needs at least 1GB of RAM to run
@@ -798,6 +805,7 @@
           deploy-with-ipa: 0
           client-from-source: 0
           ironic-lib-from-source: 0
+          pyghmi-from-source: 0
           ipxe-enabled: 0
           inspector-enabled: 0
           tempest-regex: ironic
@@ -834,6 +842,7 @@
           deploy-with-ipa: 1
           client-from-source: 0
           ironic-lib-from-source: 0
+          pyghmi-from-source: 0
           ipxe-enabled: 0
           inspector-enabled: 0
           tempest-regex: ironic
@@ -870,6 +879,7 @@
           deploy-with-ipa: 1
           client-from-source: 0
           ironic-lib-from-source: 0
+          pyghmi-from-source: 0
           ipxe-enabled: 0
           inspector-enabled: 0
           tempest-regex: ironic
@@ -906,6 +916,7 @@
           deploy-with-ipa: 1
           client-from-source: 0
           ironic-lib-from-source: 0
+          pyghmi-from-source: 0
           ipxe-enabled: 1
           inspector-enabled: 0
           tempest-regex: ironic
@@ -942,6 +953,7 @@
           deploy-with-ipa: 1
           client-from-source: 0
           ironic-lib-from-source: 0
+          pyghmi-from-source: 0
           ipxe-enabled: 1
           inspector-enabled: 0
           tempest-regex: ironic
@@ -1023,6 +1035,7 @@
           deploy-with-ipa: 1
           client-from-source: 0
           ironic-lib-from-source: 0
+          pyghmi-from-source: 0
           ipxe-enabled: 1
           inspector-enabled: 0
           tempest-regex: ironic
@@ -1059,6 +1072,44 @@
           deploy-with-ipa: 1
           client-from-source: 0
           ironic-lib-from-source: 0
+          pyghmi-from-source: 0
+          ipxe-enabled: 1
+          inspector-enabled: 0
+          tempest-regex: ironic
+          branch-override: '{branch-override}'
+          ramdisk-type: 'coreos'
+          gate-tempest-full: 0
+          bm-vm-ram: 1024
+          bm-vm-count: 1
+          multitenant-network: 0
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-tempest-dsvm-ironic-pxe_ipmitool-pyghmi-src{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 180
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - devstack-virtual-ironic:
+          postgres: 0
+          build-ramdisk: 0
+          deploy_driver: pxe_ipmitool
+          deploy-with-ipa: 1
+          client-from-source: 0
+          ironic-lib-from-source: 0
+          pyghmi-from-source: 1
           ipxe-enabled: 1
           inspector-enabled: 0
           tempest-regex: ironic
@@ -1095,6 +1146,7 @@
           deploy-with-ipa: 1
           client-from-source: 0
           ironic-lib-from-source: 0
+          pyghmi-from-source: 0
           ipxe-enabled: 1
           inspector-enabled: 0
           tempest-regex: ironic
@@ -1131,6 +1183,7 @@
           deploy-with-ipa: 0
           client-from-source: 0
           ironic-lib-from-source: 0
+          pyghmi-from-source: 0
           ipxe-enabled: 0
           inspector-enabled: 0
           tempest-regex: ironic
@@ -1167,6 +1220,7 @@
           deploy-with-ipa: 0
           client-from-source: 0
           ironic-lib-from-source: 0
+          pyghmi-from-source: 0
           ipxe-enabled: 0
           inspector-enabled: 0
           tempest-regex: ironic
@@ -1203,6 +1257,7 @@
           deploy-with-ipa: 1
           client-from-source: 0
           ironic-lib-from-source: 0
+          pyghmi-from-source: 0
           ipxe-enabled: 0
           inspector-enabled: 0
           tempest-regex: ironic
@@ -1239,6 +1294,7 @@
           deploy-with-ipa: 1
           client-from-source: 1
           ironic-lib-from-source: 0
+          pyghmi-from-source: 0
           ipxe-enabled: 1
           inspector-enabled: 0
           tempest-regex: ironic
@@ -1275,6 +1331,7 @@
           deploy-with-ipa: 1
           client-from-source: 0
           ironic-lib-from-source: 1
+          pyghmi-from-source: 0
           ipxe-enabled: 1
           inspector-enabled: 0
           tempest-regex: ironic
@@ -1311,6 +1368,7 @@
           deploy-with-ipa: 0
           client-from-source: 0
           ironic-lib-from-source: 0
+          pyghmi-from-source: 0
           ipxe-enabled: 1
           inspector-enabled: 0
           tempest-regex: ironic
@@ -1347,6 +1405,7 @@
           deploy-with-ipa: 0
           client-from-source: 0
           ironic-lib-from-source: 0
+          pyghmi-from-source: 0
           ipxe-enabled: 0
           inspector-enabled: 0
           tempest-regex: ironic
@@ -1383,6 +1442,7 @@
           deploy-with-ipa: 1
           client-from-source: 0
           ironic-lib-from-source: 0
+          pyghmi-from-source: 0
           ipxe-enabled: 1
           inspector-enabled: 1
           tempest-regex: InspectorBasicTest
@@ -3017,6 +3077,7 @@
       - '{pipeline}-tempest-dsvm-ironic-pxe_ipa{job-suffix}'
       - '{pipeline}-tempest-dsvm-ironic-pxe_ipa-postgres{job-suffix}'
       - '{pipeline}-tempest-dsvm-ironic-pxe_ipmitool{job-suffix}'
+      - '{pipeline}-tempest-dsvm-ironic-pxe_ipmitool-pyghmi-src{job-suffix}'
       - '{pipeline}-tempest-dsvm-ironic-pxe_ssh{job-suffix}'
       - '{pipeline}-tempest-dsvm-ironic-inspector{job-suffix}'
       - '{pipeline}-tempest-dsvm-layer4{job-suffix}'
