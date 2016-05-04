@@ -20,6 +20,8 @@ ZANATA_VERSION=${BRANCH//\//-}
 
 source /usr/local/jenkins/slave_scripts/common_translation_update.sh
 
+init_branch $BRANCH
+
 # Propose updates for manuals
 function propose_manuals {
 

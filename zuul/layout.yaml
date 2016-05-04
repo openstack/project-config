@@ -1275,6 +1275,13 @@ jobs:
   - name: gate-requirements-tox-validate
     branch: ^(?!stable/kilo).*$
 
+  - name: gate-requirements-tox-babel
+    branch: ^(?!stable/(?:kilo|liberty|mitaka)).*$
+    files:
+      - '^babel-test/.*'
+      - '^tox.ini'
+      - '^upper-constraints.txt'
+
   - name: gate-tempest-dsvm-full
     queue-name: integrated
 
@@ -10660,6 +10667,7 @@ projects:
       - gate-requirements-python27
       - gate-requirements-integration-dsvm
       - gate-requirements-integration-dsvm-resolver
+      - gate-requirements-tox-babel
       - gate-requirements-tox-validate
       - gate-grenade-dsvm-multinode
       # NOTE(mriedem): The multinode and partial-ncpu jobs should be mutually
@@ -10672,6 +10680,7 @@ projects:
       - gate-requirements-pep8
       - gate-requirements-python27
       - gate-requirements-integration-dsvm
+      - gate-requirements-tox-babel
       - gate-requirements-tox-validate
       - gate-grenade-dsvm-multinode
       - gate-grenade-dsvm-partial-ncpu

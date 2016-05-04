@@ -20,6 +20,8 @@ ZANATA_VERSION=${ZUUL_REFNAME//\//-}
 
 source /usr/local/jenkins/slave_scripts/common_translation_update.sh
 
+init_branch $ZUUL_REFNAME
+
 if ! /usr/local/jenkins/slave_scripts/query-zanata-project-version.py \
     -p $PROJECT -v $ZANATA_VERSION; then
     # Exit successfully so that lack of a version doesn't cause the jenkins

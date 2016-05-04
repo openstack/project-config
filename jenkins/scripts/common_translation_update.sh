@@ -25,6 +25,18 @@ QUIET="--quiet"
 # Have invalid files been found?
 INVALID_PO_FILE=0
 
+# Set up some branch dependent variables
+function init_branch {
+    local branch=$1
+
+    UPPER_CONSTRAINTS=https://git.openstack.org/cgit/openstack/requirements/plain/upper-constraints.txt
+    if [[ "$branch" != "master" ]] ; then
+        UPPER_CONSTRAINTS="${UPPER_CONSTRAINTS}?h=$branch"
+    fi
+    GIT_BRANCH=$branch
+}
+
+
 # Get a module name of a project
 function get_modulename {
     local project=$1
@@ -45,8 +57,8 @@ function setup_venv {
     trap "rm -rf $VENV" EXIT
     virtualenv $VENV
 
-    # Babel version 2.3.0 to 2.3.2 are broken
-    $VENV/bin/pip install Babel==2.2.0
+    # Install babel using global upper constraints.
+    $VENV/bin/pip install 'Babel' -c $UPPER_CONSTRAINTS
 
     # Get version, run this twice - the first one will install pbr
     # and get extra output.
@@ -315,15 +327,11 @@ function install_horizon {
     # setup_venv for $VENV.
     trap "rm -rf $VENV $root" EXIT
 
-    git clone --depth=1 git://git.openstack.org/openstack/horizon.git $root/horizon
-    (cd ${root}/horizon && $VENV/bin/pip install .)
-
-    # Horizon has these as dependencies but let's be sure.
-    # TODO(amotoki): Pull required versions from g-r.
-
-    # TODO(jagerandi): Install Babel 2.2.0 for now since 2.3.2 does
-    # not extract all strings.
-    $VENV/bin/pip install Babel==2.2.0 django-babel
+    # Checkout same branch of horizon as the project - including
+    # same constraints.
+    git clone --depth=1 --branch $GIT_BRANCH \
+        git://git.openstack.org/openstack/horizon.git $root/horizon
+    (cd ${root}/horizon && $VENV/bin/pip install -c $UPPER_CONSTRAINTS .)
 }
 
 
