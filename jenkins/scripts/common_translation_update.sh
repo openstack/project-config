@@ -62,8 +62,13 @@ function setup_venv {
 
     # Get version, run this twice - the first one will install pbr
     # and get extra output.
+    # Note this might fail in some projects if the setup hook includes
+    # additional hooks like in tacker repository. Use
+    set +e
     $VENV/bin/python setup.py --version
     VERSION=$($VENV/bin/python setup.py --version)
+    set -e
+    VERSION=${VERSION:-unknown}
 }
 
 # Setup a project for Zanata. This is used by both Python and Django projects.
