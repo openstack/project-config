@@ -230,14 +230,19 @@
           sudo apt-get update
           sudo apt-get install -y apt-transport-https lsb-release curl
 
-          # Install the APT Key
-          curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | sudo apt-key add -
+          DISTRO=$(lsb_release -c -s)
+          if [[ ${DISTRO} == "trusty" ]]; then
+                # Install via nodesource
+                curl -s https://deb.nodesource.com/gpgkey/nodesource.gpg.key | sudo apt-key add -
 
-          echo 'deb https://deb.nodesource.com/node_4.x trusty main' | sudo tee /etc/apt/sources.list.d/nodesource.list
-          echo 'deb-src https://deb.nodesource.com/node_4.x trusty main' | sudo tee -a /etc/apt/sources.list.d/nodesource.list
+                echo 'deb https://deb.nodesource.com/node_4.x trusty main' | sudo tee /etc/apt/sources.list.d/nodesource.list
+                echo 'deb-src https://deb.nodesource.com/node_4.x trusty main' | sudo tee -a /etc/apt/sources.list.d/nodesource.list
 
-          sudo apt-get update
-          sudo apt-get install -y nodejs
+                sudo apt-get update
+                sudo apt-get install -y nodejs
+          elif [[ ${DISTRO} == "xenial" ]]; then
+                sudo apt-get install -y nodejs nodejs-legacy npm
+          fi
 
           # Output to the log for debugging's sake.
           node --version
