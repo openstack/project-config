@@ -95,9 +95,11 @@ if [ $(git diff --cached | egrep -v "(POT-Creation-Date|^[\+\-]#|^\+{3}|^\-{3})"
     # The Zanata client works out what to send based on the zanata.xml file.
     # Do not copy translations from other files for this change.
     zanata-cli -B -e push --copy-trans False
-    # Copy all *.pot files to pot-files directory
-    mkdir -p .pot-files/$ZANATA_VERSION/
+    # Copy all *.pot files to translation-source directory
+    TARGET_PATH=.translation-source/$PROJECT/$ZANATA_VERSION/
+    mkdir -p $TARGET_PATH
     # Exclude . directories
-    find . -path "./.*" -prune -o -name "*.pot" -exec cp -v {} .pot-files \;
-    mv .pot-files pot-files
+    find . -path "./.*" -prune -o -name "*.pot" \
+        -exec cp -v {} $TARGET_PATH \;
+    mv .translation-source translation-source
 fi
