@@ -50,7 +50,9 @@ host $NODEPOOL_MIRROR_HOST
 
 LSBDISTID=$(lsb_release -is)
 LSBDISTCODENAME=$(lsb_release -cs)
-if [ "$LSBDISTID" == "Ubuntu" ] ; then
+# NOTE(pabelanger): We don't actually have mirrors for ubuntu-precise, so skip
+# them.
+if [ "$LSBDISTID" == "Ubuntu" ] && [ "$LSBDISTCODENAME" != 'precise' ]; then
     # NOTE(pabelanger): We only have a xenial mirror ATM because reprepro cannot
     # mirror repositories with 0 packages. Once our reprepro mirrors is 100% we
     # can remove this logic check. We are only missing -backports on the mirrors
