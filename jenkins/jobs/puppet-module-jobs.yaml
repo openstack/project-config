@@ -48,48 +48,6 @@
 
 
 - job-template:
-    name: 'gate-{name}-puppet-unit-{node}'
-    node: '{node}'
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - gerrit-git-prep
-      - install-distro-packages
-      - puppet-prepare-node
-      - revoke-sudo
-      - shell: |
-          #!/bin/bash -xe
-          RESULT=0
-          for PUPPET_VERSION in {puppet_unit_version}; do
-              if [ "$PUPPET_VERSION" != "latest" ]; then
-                export PUPPET_GEM_VERSION="~> $PUPPET_VERSION.0"
-              fi
-              rm -f Gemfile.lock
-              mkdir .bundled_gems_$PUPPET_VERSION
-              export GEM_HOME=`pwd`/.bundled_gems_$PUPPET_VERSION
-              gem install bundler --no-rdoc --no-ri --verbose
-              $GEM_HOME/bin/bundle install --retry 3
-              set +e
-              $GEM_HOME/bin/bundle exec rake spec SPEC_OPTS='--format documentation'
-              OUT=$?
-              set -e
-              if [ "$OUT" -gt "0" ]; then
-                RESULT=1
-              fi
-          done
-          exit $RESULT
-
-    wrappers:
-      - build-timeout:
-          timeout: 60
-      - timestamps
-
-    publishers:
-      - console-log
-
-
-- job-template:
     name: 'gate-{name}-puppet-beaker-rspec-{node}{job-suffix}'
     node: '{node}'
 
@@ -366,7 +324,6 @@
       - centos-7
     jobs:
       - 'gate-{name}-puppet-unit-{puppet_version}-{node}'
-      - 'gate-{name}-puppet-unit-{node}'
 
 - job-group:
     name: 'puppet-beaker-jobs-trusty'
