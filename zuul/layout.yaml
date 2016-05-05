@@ -461,6 +461,22 @@ project-templates:
     release:
       - '{name}-docs-tags-only'
 
+  - name: api-ref-jobs
+    check:
+      - gate-{name}-api-ref
+    gate:
+      - gate-{name}-api-ref
+    post:
+      - '{name}-api-ref'
+
+  - name: api-guide-jobs
+    check:
+      - gate-{name}-api-guide
+    gate:
+      - gate-{name}-api-guide
+    post:
+      - '{name}-api-guide'
+
   # This job needs to run on all repositories that are part of the
   # global requirements syncing which is setup in the requirements
   # repository. If a repository is in requirements/projects.txt, it
@@ -4568,19 +4584,16 @@ projects:
       - name: openstack-server-release-jobs
       - name: release-notes-jobs
       - name: check-requirements
+      - name: api-guide-jobs
     check:
       - gate-barbican-devstack-dsvm
       - gate-barbican-devstack-dsvm-oldstable
       - barbican-coverage
       - gate-barbican-dogtag-devstack-dsvm-f23
       - gate-barbican-dogtag-devstack-dsvm-f23-oldstable
-      - gate-barbican-api-guide
     gate:
       - gate-barbican-devstack-dsvm
       - gate-barbican-devstack-dsvm-oldstable
-      - gate-barbican-api-guide
-    post:
-      - barbican-api-guide
 
   - name: openstack/barbican-specs
     template:
@@ -6750,6 +6763,7 @@ projects:
       - name: translation-jobs
       - name: experimental-tripleo-jobs
       - name: release-notes-jobs
+      - name: api-ref-jobs
     check:
       - gate-tempest-dsvm-ironic-pxe_ssh
       - gate-tempest-dsvm-ironic-pxe_ipa-postgres-nv
@@ -6760,14 +6774,11 @@ projects:
       - gate-ironic-inspector-dsvm-ipa-nv
       - gate-tempest-dsvm-ironic-pxe_ipmitool-nv
       - gate-tempest-dsvm-ironic-agent_ipmitool-nv
-      - gate-ironic-api-ref
     gate:
       - gate-tempest-dsvm-ironic-agent_ssh
       - gate-tempest-dsvm-ironic-pxe_ipa
-      - gate-ironic-api-ref
     post:
       - ironic-coverage-db
-      - ironic-api-ref
     experimental:
       - gate-grenade-dsvm-ironic
       - gate-grenade-dsvm-partial-ironic
@@ -7996,6 +8007,8 @@ projects:
       - name: translation-jobs-mitaka
       - name: experimental-tripleo-jobs
       - name: release-notes-jobs
+      - name: api-guide-jobs
+      - name: api-ref-jobs
     check:
       - gate-nova-tox-db-functional
       - gate-grenade-dsvm-partial-ncpu
@@ -8005,20 +8018,14 @@ projects:
       - gate-tempest-dsvm-full-devstack-plugin-ceph
       - gate-tempest-dsvm-multinode-full
       - gate-tempest-dsvm-neutron-identity-v3-only-full-nv
-      - gate-nova-api-guide
-      - gate-nova-api-ref
     gate:
       - gate-nova-tox-db-functional
       - gate-grenade-dsvm-partial-ncpu
       - gate-grenade-dsvm-multinode
       - gate-tempest-dsvm-cells
-      - gate-nova-api-guide
-      - gate-nova-api-ref
       - gate-tempest-dsvm-full-devstack-plugin-ceph
     post:
       - nova-coverage-db
-      - nova-api-guide
-      - nova-api-ref
     experimental:
       - gate-tempest-dsvm-nova-v20-api
       - gate-grenade-dsvm-forward
