@@ -480,25 +480,16 @@ function cleanup_po_files {
 }
 
 
-# Remove obsolete files pot files, let's not store a pot file if it
-# has no translations at all.
+# Remove all pot files, we publish them to
+# http://tarballs.openstack.org/translation-source/{name}/VERSION ,
+# let's not store them in git at all.
 function cleanup_pot_files {
     local modulename=$1
 
     for i in $(find $modulename -name *.pot) ; do
-        local bi
-        local bi_po
-        local count_po
-
-        # Get basename and remove .pot suffix from file name
-        bi=$(basename $i .pot)
-        bi_po="${bi}.po"
-        count_po=$(find $modulename -name "${bi_po}" | wc -l)
-        if [ $count_po -eq 0 ] ; then
-            # Remove file, it might be a new file unknown to git.
-            rm $i
-            git rm -f --ignore-unmatch $i
-        fi
+        # Remove file, it might be a new file unknown to git.
+        rm $i
+        git rm -f --ignore-unmatch $i
     done
 }
 

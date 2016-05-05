@@ -31,18 +31,25 @@ function propose_manuals {
     # repository.
     case "$PROJECT" in
         openstack-manuals)
+            cleanup_pot_files "doc"
             compress_manual_po_files "doc" 1
             ;;
         api-site)
+            cleanup_pot_files "api-ref-guides"
             compress_manual_po_files "api-ref-guides" 0
+            cleanup_pot_files "api-quick-start"
             compress_manual_po_files "api-quick-start" 0
+            cleanup_pot_files "api-ref"
             compress_manual_po_files "api-ref" 0
+            cleanup_pot_files "openstack-firstapp"
             compress_manual_po_files "openstack-firstapp" 0
             ;;
         ha-guide|operations-guide)
+            cleanup_pot_files "doc"
             compress_manual_po_files "doc" 0
             ;;
         security-doc)
+            cleanup_pot_files "security-guide"
             compress_manual_po_files "security-guide" 0
             ;;
     esac
@@ -65,6 +72,8 @@ function propose_training_guides {
     # Pull updated translations from Zanata.
     pull_from_zanata "$PROJECT"
 
+    # Remove pot files
+    cleanup_pot_files "doc/upstream-training"
     # Compress downloaded po files
     compress_po_files "doc/upstream-training"
 
@@ -121,6 +130,8 @@ function handle_python_django {
         pull_from_zanata "$project"
         propose_releasenotes "$ZANATA_VERSION"
         for modulename in $module_names; do
+            # Note that we need to generate the pot files so that we
+            # can calculate how many strings are translated.
             case "$kind" in
                 django)
                     # Update the .pot file
@@ -145,6 +156,9 @@ function propose_releasenotes {
     # they get pushed to the translation server.
 
     if [[ "$version" == "master" && -f releasenotes/source/conf.py ]]; then
+
+        # Note that we need to generate these so that we can calculate
+        # how many strings are translated.
         extract_messages_releasenotes
 
         # Remove obsolete files.
