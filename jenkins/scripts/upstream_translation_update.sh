@@ -22,6 +22,9 @@ source /usr/local/jenkins/slave_scripts/common_translation_update.sh
 
 init_branch $ZUUL_REFNAME
 
+# List of all modules to copy POT files from
+ALL_MODULES=""
+
 if ! /usr/local/jenkins/slave_scripts/query-zanata-project-version.py \
     -p $PROJECT -v $ZANATA_VERSION; then
     # Exit successfully so that lack of a version doesn't cause the jenkins
@@ -40,26 +43,23 @@ case "$PROJECT" in
         setup_manuals "$PROJECT" "$ZANATA_VERSION"
         case "$PROJECT" in
             api-site)
-                copy_pot "api-quick-start"
-                copy_pot "api-ref-guides"
-                copy_pot "api-ref"
-                copy_pot "firstapp"
+                ALL_MODULES="api-quick-start api-ref-guides api-ref firstapp"
                 ;;
             security-doc)
-                copy_pot "security-guide"
+                ALL_MODULES="security-guide"
                 ;;
             *)
-                copy_pot "doc"
+                ALL_MODULES="doc"
                 ;;
         esac
         if [[ "$ZANATA_VERSION" == "master" && -f releasenotes/source/conf.py ]]; then
             extract_messages_releasenotes
-            copy_pot "releasenotes"
+            ALL_MODULES="releasenotes $ALL_MODULES"
         fi
         ;;
     training-guides)
         setup_training_guides "$ZANATA_VERSION"
-        copy_pot "doc"
+        ALL_MODULES="doc"
         ;;
     *)
         # Common setup for python and django repositories
@@ -71,11 +71,11 @@ case "$PROJECT" in
             setup_loglevel_vars
             if [[ "$ZANATA_VERSION" == "master" && -f releasenotes/source/conf.py ]]; then
                 extract_messages_releasenotes
-                copy_pot "releasenotes"
+                ALL_MODULES="releasenotes $ALL_MODULES"
             fi
             for modulename in $module_names; do
                 extract_messages_python "$modulename"
-                copy_pot "$modulename"
+                ALL_MODULES="$modulename $ALL_MODULES"
             done
         fi
 
@@ -86,11 +86,11 @@ case "$PROJECT" in
             install_horizon
             if [[ "$ZANATA_VERSION" == "master" && -f releasenotes/source/conf.py ]]; then
                 extract_messages_releasenotes
-                copy_pot "releasenotes"
+                ALL_MODULES="releasenotes $ALL_MODULES"
             fi
             for modulename in $module_names; do
                 extract_messages_django "$modulename"
-                copy_pot "$modulename"
+                ALL_MODULES="$modulename $ALL_MODULES"
             done
         fi
         ;;
@@ -116,5 +116,7 @@ if [ $(git diff --cached | egrep -v "(POT-Creation-Date|^[\+\-]#|^\+{3}|^\-{3})"
     # Do not copy translations from other files for this change.
     zanata-cli -B -e push --copy-trans False
     # Move pot files to translation-source directory for publishing
+    copy_pot "$ALL_MODULES"
+
     mv .translation-source translation-source
 fi
