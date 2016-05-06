@@ -676,21 +676,34 @@
              export DEVSTACK_PROJECT_FROM_GIT="pyghmi,$DEVSTACK_PROJECT_FROM_GIT"
           fi
 
-          # The IPA ramdisk needs at least 1GB of RAM to run
-          export DEVSTACK_LOCAL_CONFIG="IRONIC_VM_SPECS_RAM={bm-vm-ram}"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_VM_COUNT={bm-vm-count}"
 
-          export DEPLOY_WITH_IPA={deploy-with-ipa}
-          if [ "$DEPLOY_WITH_IPA" == "1" ] ; then
+          if [ "{deploy-with-ipa}" == "1" ] ; then
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_DEPLOY_DRIVER_ISCSI_WITH_IPA=True"
-              export IRONIC_RAMDISK_TYPE={ramdisk-type}
-              export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_RAMDISK_TYPE=$IRONIC_RAMDISK_TYPE"
+              # Support for non-CoreOS IPA ramdisks was added in Mitaka
+              if [ "$ZUUL_BRANCH" != "stable/kilo" -a "$ZUUL_BRANCH" != "stable/liberty" ] ; then
+                  export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_RAMDISK_TYPE={ramdisk-type}"
+                  # Standardize VM size for each supported ramdisk
+                  case "{ramdisk-type}" in
+                      'tinyipa')
+                          export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_VM_SPECS_RAM=384"
+                          ;;
+                      'coreos')
+                          export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_VM_SPECS_RAM=1024"
+                          ;;
+                  # if using a ramdisk without a known good value, use the devstack
+                  # default by not exporting any value for IRONIC_VM_SPECS_RAM
+                  esac
+              else
+                  # For kilo and liberty, we still need 1024mb or ram as
+                  # we only have the CoreOS ramdisk.
+                  export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_VM_SPECS_RAM=1024"
+              fi
           fi
 
-          export IPXE_ENABLED={ipxe-enabled}
-          if [ "$IPXE_ENABLED" == "1" ] ; then
+          if [ "{ipxe-enabled}" == "1" ] ; then
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_IPXE_ENABLED=True"
-          elif [ "$IPXE_ENABLED" == "0" ] ; then
+          elif [ "{ipxe-enabled}" == "0" ] ; then
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_IPXE_ENABLED=False"
           fi
 
@@ -815,44 +828,6 @@
           branch-override: '{branch-override}'
           ramdisk-type: 'coreos'
           gate-tempest-full: 0
-          bm-vm-ram: 1024
-          bm-vm-count: 1
-          multitenant-network: 0
-
-    publishers:
-      - devstack-logs
-      - console-log
-
-- job-template:
-    name: '{pipeline}-tempest-dsvm-ironic-pxe_ipa-tinyipa{job-suffix}'
-    node: '{node}'
-
-    wrappers:
-      - build-timeout:
-          timeout: 75
-      - timestamps
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - devstack-virtual-ironic:
-          postgres: 0
-          build-ramdisk: 0
-          deploy_driver: pxe_ssh
-          deploy-with-ipa: 1
-          client-from-source: 0
-          ironic-lib-from-source: 0
-          pyghmi-from-source: 0
-          ipxe-enabled: 0
-          inspector-enabled: 0
-          tempest-regex: ironic
-          branch-override: '{branch-override}'
-          ramdisk-type: 'tinyipa'
-          gate-tempest-full: 0
-          bm-vm-ram: 512
           bm-vm-count: 1
           multitenant-network: 0
 
@@ -883,13 +858,12 @@
           client-from-source: 0
           ironic-lib-from-source: 0
           pyghmi-from-source: 0
-          ipxe-enabled: 0
+          ipxe-enabled: 1
           inspector-enabled: 0
           tempest-regex: ironic
           branch-override: '{branch-override}'
           ramdisk-type: 'tinyipa'
           gate-tempest-full: 0
-          bm-vm-ram: 512
           bm-vm-count: 1
           multitenant-network: 0
 
@@ -926,7 +900,6 @@
           branch-override: '{branch-override}'
           ramdisk-type: 'tinyipa'
           gate-tempest-full: 1
-          bm-vm-ram: 384
           bm-vm-count: 7
           multitenant-network: 0
 
@@ -961,9 +934,8 @@
           inspector-enabled: 0
           tempest-regex: ironic
           branch-override: '{branch-override}'
-          ramdisk-type: 'coreos'
+          ramdisk-type: 'tinyipa'
           gate-tempest-full: 0
-          bm-vm-ram: 1024
           bm-vm-count: 1
           multitenant-network: 0
 
@@ -1043,9 +1015,8 @@
           inspector-enabled: 0
           tempest-regex: ironic
           branch-override: '{branch-override}'
-          ramdisk-type: 'coreos'
+          ramdisk-type: 'tinyipa'
           gate-tempest-full: 0
-          bm-vm-ram: 1024
           bm-vm-count: 1
           multitenant-network: 0
 
@@ -1080,9 +1051,8 @@
           inspector-enabled: 0
           tempest-regex: ironic
           branch-override: '{branch-override}'
-          ramdisk-type: 'coreos'
+          ramdisk-type: 'tinyipa'
           gate-tempest-full: 0
-          bm-vm-ram: 1024
           bm-vm-count: 1
           multitenant-network: 0
 
@@ -1117,9 +1087,8 @@
           inspector-enabled: 0
           tempest-regex: ironic
           branch-override: '{branch-override}'
-          ramdisk-type: 'coreos'
+          ramdisk-type: 'tinyipa'
           gate-tempest-full: 0
-          bm-vm-ram: 1024
           bm-vm-count: 1
           multitenant-network: 0
 
@@ -1128,7 +1097,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-tempest-dsvm-ironic-pxe_ipa-src{job-suffix}'
+    name: '{pipeline}-tempest-dsvm-ironic-pxe_ipa-coreos-src{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -1156,7 +1125,6 @@
           branch-override: '{branch-override}'
           ramdisk-type: 'coreos'
           gate-tempest-full: 0
-          bm-vm-ram: 1024
           bm-vm-count: 1
           multitenant-network: 0
 
@@ -1187,13 +1155,12 @@
           client-from-source: 0
           ironic-lib-from-source: 0
           pyghmi-from-source: 0
-          ipxe-enabled: 0
+          ipxe-enabled: 1
           inspector-enabled: 0
           tempest-regex: ironic
           branch-override: '{branch-override}'
-          ramdisk-type: 'coreos'
+          ramdisk-type: 'tinyipa'
           gate-tempest-full: 0
-          bm-vm-ram: 1024
           bm-vm-count: 1
           multitenant-network: 0
 
@@ -1224,13 +1191,12 @@
           client-from-source: 0
           ironic-lib-from-source: 0
           pyghmi-from-source: 0
-          ipxe-enabled: 0
+          ipxe-enabled: 1
           inspector-enabled: 0
           tempest-regex: ironic
           branch-override: '{branch-override}'
-          ramdisk-type: 'coreos'
+          ramdisk-type: 'tinyipa'
           gate-tempest-full: 0
-          bm-vm-ram: 1024
           bm-vm-count: 1
           multitenant-network: 0
 
@@ -1239,7 +1205,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-tempest-dsvm-ironic-agent_ssh-src{job-suffix}'
+    name: '{pipeline}-tempest-dsvm-ironic-agent_ssh-tinyipa-src{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -1261,13 +1227,48 @@
           client-from-source: 0
           ironic-lib-from-source: 0
           pyghmi-from-source: 0
-          ipxe-enabled: 0
+          ipxe-enabled: 1
+          inspector-enabled: 0
+          tempest-regex: ironic
+          branch-override: '{branch-override}'
+          ramdisk-type: 'tinyipa'
+          gate-tempest-full: 0
+          bm-vm-count: 1
+          multitenant-network: 0
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-tempest-dsvm-ironic-agent_ssh-coreos-src{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 180
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - devstack-virtual-ironic:
+          postgres: 0
+          build-ramdisk: 1
+          deploy_driver: agent_ssh
+          deploy-with-ipa: 1
+          client-from-source: 0
+          ironic-lib-from-source: 0
+          pyghmi-from-source: 0
+          ipxe-enabled: 1
           inspector-enabled: 0
           tempest-regex: ironic
           branch-override: '{branch-override}'
           ramdisk-type: 'coreos'
           gate-tempest-full: 0
-          bm-vm-ram: 1024
           bm-vm-count: 1
           multitenant-network: 0
 
@@ -1302,9 +1303,8 @@
           inspector-enabled: 0
           tempest-regex: ironic
           branch-override: '{branch-override}'
-          ramdisk-type: 'coreos'
+          ramdisk-type: 'tinyipa'
           gate-tempest-full: 0
-          bm-vm-ram: 1024
           bm-vm-count: 1
           multitenant-network: 0
 
@@ -1339,9 +1339,8 @@
           inspector-enabled: 0
           tempest-regex: ironic
           branch-override: '{branch-override}'
-          ramdisk-type: 'coreos'
+          ramdisk-type: 'tinyipa'
           gate-tempest-full: 0
-          bm-vm-ram: 1024
           bm-vm-count: 1
           multitenant-network: 0
 
@@ -1376,9 +1375,8 @@
           inspector-enabled: 0
           tempest-regex: ironic
           branch-override: '{branch-override}'
-          ramdisk-type: 'coreos'
+          ramdisk-type: 'tinyipa'
           gate-tempest-full: 0
-          bm-vm-ram: 1024
           bm-vm-count: 3
           multitenant-network: 1
 
@@ -1415,7 +1413,6 @@
           branch-override: '{branch-override}'
           ramdisk-type: 'coreos'
           gate-tempest-full: 0
-          bm-vm-ram: 1024
           bm-vm-count: 1
           multitenant-network: 0
 
