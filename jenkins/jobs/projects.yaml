@@ -7893,10 +7893,17 @@
       - translation-jobs
       - openstack-releasenotes-jobs
       - 'lib-forward-testing-{name}'
-      - '{pipeline}-novaclient-dsvm-functional{job-suffix}':
+      - '{pipeline}-novaclient-dsvm-functional{special}{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
+          special: ''
           job-suffix: ''
+          branch-override: default
+      - '{pipeline}-novaclient-dsvm-functional{special}{job-suffix}':
+          pipeline: gate
+          node: ubuntu-trusty
+          special: '-identity-v3-only'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
