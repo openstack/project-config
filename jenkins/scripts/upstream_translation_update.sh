@@ -38,12 +38,28 @@ case "$PROJECT" in
         init_manuals "$PROJECT"
         # POT file extraction is done in setup_manuals.
         setup_manuals "$PROJECT" "$ZANATA_VERSION"
+        case "$PROJECT" in
+            api-site)
+                copy_pot "api-quick-start"
+                copy_pot "api-ref-guides"
+                copy_pot "api-ref"
+                copy_pot "firstapp"
+                ;;
+            security-doc)
+                copy_pot "security-guide"
+                ;;
+            *)
+                copy_pot "doc"
+                ;;
+        esac
         if [[ "$ZANATA_VERSION" == "master" && -f releasenotes/source/conf.py ]]; then
             extract_messages_releasenotes
+            copy_pot "releasenotes"
         fi
         ;;
     training-guides)
         setup_training_guides "$ZANATA_VERSION"
+        copy_pot "doc"
         ;;
     *)
         # Common setup for python and django repositories
@@ -55,9 +71,11 @@ case "$PROJECT" in
             setup_loglevel_vars
             if [[ "$ZANATA_VERSION" == "master" && -f releasenotes/source/conf.py ]]; then
                 extract_messages_releasenotes
+                copy_pot "releasenotes"
             fi
             for modulename in $module_names; do
                 extract_messages_python "$modulename"
+                copy_pot "$modulename"
             done
         fi
 
@@ -68,9 +86,11 @@ case "$PROJECT" in
             install_horizon
             if [[ "$ZANATA_VERSION" == "master" && -f releasenotes/source/conf.py ]]; then
                 extract_messages_releasenotes
+                copy_pot "releasenotes"
             fi
             for modulename in $module_names; do
                 extract_messages_django "$modulename"
+                copy_pot "$modulename"
             done
         fi
         ;;
@@ -95,11 +115,6 @@ if [ $(git diff --cached | egrep -v "(POT-Creation-Date|^[\+\-]#|^\+{3}|^\-{3})"
     # The Zanata client works out what to send based on the zanata.xml file.
     # Do not copy translations from other files for this change.
     zanata-cli -B -e push --copy-trans False
-    # Copy all *.pot files to translation-source directory
-    TARGET_PATH=.translation-source/$PROJECT/$ZANATA_VERSION/
-    mkdir -p $TARGET_PATH
-    # Exclude . directories
-    find . -path "./.*" -prune -o -name "*.pot" \
-        -exec cp -v {} $TARGET_PATH \;
+    # Move pot files to translation-source directory for publishing
     mv .translation-source translation-source
 fi

@@ -574,3 +574,17 @@ function pull_from_zanata {
         fi
     done
 }
+
+# Copy all pot files in modulename directory to temporary path for
+# publishing. This uses the exact same path.
+function copy_pot {
+    local modulename=$1
+    local target=.translation-source/$PROJECT/$ZANATA_VERSION/
+
+    for f in `find $modulename -name "*.pot" ` ; do
+        local fd=$(dirname $f)
+        mkdir -p $target/$fd
+        cp $f $target/$f
+    done
+
+}
