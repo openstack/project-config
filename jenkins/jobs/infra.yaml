@@ -67,6 +67,20 @@
       - console-log
 
 - job:
+    name: experimental-project-config-layout
+    node: ubuntu-precise
+
+    builders:
+      - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
+      - tox:
+          envlist: 'zuul'
+
+    publishers:
+      - console-log
+
+- job:
     name: gate-project-config-jenkins-project
     node: ubuntu-trusty
 
