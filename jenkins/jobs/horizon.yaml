@@ -82,3 +82,33 @@
 
     publishers:
       - console-log
+
+- job:
+    name: gate-horizon-dsvm-tempest-plugin
+    node: ubuntu-trusty
+
+    wrappers:
+      - build-timeout:
+          timeout: 100
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - firefox-install
+      - xvfb-install
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_INSTALL_TESTONLY=1
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_TEMPEST_NOTESTS=1
+          export PROJECTS="openstack/tempest-horizon $PROJECTS"
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
