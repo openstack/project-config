@@ -55,7 +55,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-heat-dsvm-functional-{engine}-{datastore}-{lbaasversion}{job-suffix}'
+    name: '{pipeline}-heat-dsvm-functional-{engine}-{datastore}-{lbaasversion}{special}{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -129,7 +129,9 @@
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
-
+          if [ "{special}" == "-identity-v3-only" ] ; then
+              export DEVSTACK_LOCAL_CONFIG="ENABLE_IDENTITY_V2=False"
+          fi
           function pre_test_hook {{
               cd /opt/stack/new/heat/heat_integrationtests
               ./pre_test_hook.sh
