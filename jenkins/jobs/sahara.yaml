@@ -225,11 +225,14 @@
           if [[ "stable/kilo stable/liberty" =~ $ZUUL_BRANCH ]]; then
               OVERRIDE_ENABLED_SERVICES+=,n-obj,
           fi
+          export GRENADE_PLUGINRC="enable_grenade_plugin sahara https://git.openstack.org/openstack/sahara"
+          export GRENADE_PLUGINRC+=$'\n'"enable_grenade_plugin heat https://git.openstack.org/openstack/heat"
           # in liberty, vpnaas switched to a new service name
           if [[ $ZUUL_BRANCH == "stable/kilo" ]]; then
               OVERRIDE_ENABLED_SERVICES+=,q-vpn,
           else
               export DEVSTACK_LOCAL_CONFIG="enable_plugin neutron-vpnaas https://git.openstack.org/openstack/neutron-vpnaas"
+              export GRENADE_PLUGINRC+=$'\n'"enable_grenade_plugin neutron-vpnaas https://git.openstack.org/openstack/neutron-vpnaas"
           fi
           export OVERRIDE_ENABLED_SERVICES
           export DEVSTACK_GATE_NEUTRON=1
@@ -239,8 +242,6 @@
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
-          export GRENADE_PLUGINRC="enable_grenade_plugin sahara https://git.openstack.org/openstack/sahara"
-          export GRENADE_PLUGINRC+=$'\n'"enable_grenade_plugin heat https://git.openstack.org/openstack/heat"
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
