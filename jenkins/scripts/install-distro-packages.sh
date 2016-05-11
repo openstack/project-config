@@ -26,11 +26,12 @@ fi
 
 # an install loop, retrying to check that all requested packages are obtained
 try=0
-until $BINDEP -b -f $PACKAGES ; do
+# Install test profile using bindep
+until $BINDEP -b -f $PACKAGES test; do
     if [ $try -gt 2 ] ; then
         set +x
         echo -e "\nERROR: These requested packages were not installed:\n" \
-            "\n`$BINDEP -b -f $PACKAGES`\n" 1>&2
+            "\n`$BINDEP -b -f $PACKAGES test`\n" 1>&2
         set -x
         exit 1
     fi
@@ -41,10 +42,10 @@ until $BINDEP -b -f $PACKAGES ; do
         sudo apt-get -qq update
         sudo PATH=/usr/sbin:/sbin:$PATH DEBIAN_FRONTEND=noninteractive \
             apt-get -q --option "Dpkg::Options::=--force-confold" \
-            --assume-yes install `$BINDEP -b -f $PACKAGES`
+            --assume-yes install `$BINDEP -b -f $PACKAGES test`
     else
         sudo PATH=/usr/sbin:/sbin:$PATH $YUM install -y \
-            `$BINDEP -b -f $PACKAGES`
+            `$BINDEP -b -f $PACKAGES test`
     fi
     set -e
 
