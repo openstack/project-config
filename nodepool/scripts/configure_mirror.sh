@@ -27,6 +27,7 @@ NODEPOOL_PYPI_MIRROR=${NODEPOOL_PYPI_MIRROR:-http://$NODEPOOL_MIRROR_HOST/pypi/s
 NODEPOOL_WHEEL_MIRROR=${NODEPOOL_WHEEL_MIRROR:-http://$NODEPOOL_MIRROR_HOST/wheel/$AFS_SLUG}
 NODEPOOL_UBUNTU_MIRROR=${NODEPOOL_UBUNTU_MIRROR:-http://$NODEPOOL_MIRROR_HOST/ubuntu}
 NODEPOOL_CEPH_MIRROR=${NODEPOOL_CEPH_MIRROR:-http://$NODEPOOL_MIRROR_HOST/ceph-deb-hammer}
+NODEPOOL_NPM_MIRROR=${NODEPOOL_NPM_MIRROR:-http://$NODEPOOL_MIRROR_HOST/npm/}
 
 cat >/tmp/pip.conf <<EOF
 [global]
@@ -42,6 +43,11 @@ cat >/home/jenkins/.pydistutils.cfg <<EOF
 index_url = $NODEPOOL_PYPI_MIRROR
 allow_hosts = *.openstack.org
 EOF
+
+cat >/home/jenkins/.npmrc <<EOF
+registry = $NODEPOOL_NPM_MIRROR
+EOF
+
 
 # Double check that when the node is made ready it is able
 # to resolve names against DNS.
