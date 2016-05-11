@@ -96,4 +96,26 @@ deb-src http://security.debian.org/ $LSBDISTCODENAME/updates main
 deb http://httpredir.debian.org/debian $LSBDISTCODENAME-backports main
 deb-src http://httpredir.debian.org/debian $LSBDISTCODENAME-backports main
 EOF
+elif [ "$LSBDISTID" == "CentOS" ]; then
+    sudo dd of=/etc/yum.repos.d/CentOS-Base.repo <<EOF
+[base]
+name=CentOS-\$releasever - Base
+baseurl=http://$NODEPOOL_MIRROR_HOST/centos/\$releasever/os/\$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+
+#released updates
+[updates]
+name=CentOS-\$releasever - Updates
+baseurl=http://$NODEPOOL_MIRROR_HOST/centos/\$releasever/updates/\$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+
+#additional packages that may be useful
+[extras]
+name=CentOS-\$releasever - Extras
+baseurl=http://$NODEPOOL_MIRROR_HOST/centos/\$releasever/extras/\$basearch/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+EOF
 fi
