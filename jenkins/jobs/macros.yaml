@@ -864,6 +864,18 @@
               source: 'dist/*.tar.gz'
 
 - publisher:
+    name: deb-pkgs
+    publishers:
+      - archive:
+          artifacts: 'build-area/*'
+      - scp:
+          site: '{site}'
+          files:
+            - target: 'tarballs/{project}/'
+              source: 'uploads/*'
+              keep-hierarchy: true
+
+- publisher:
     name: wheel
     publishers:
       - archive:
