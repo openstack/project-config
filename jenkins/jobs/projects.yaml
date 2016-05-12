@@ -7706,17 +7706,35 @@
           node: ubuntu-trusty
       - gate-rally-install-{node}:
           node: centos-7
-      - gate-rally-dsvm-verify-{mode}:
-          mode: light
+      - gate-rally-dsvm-verify-{job-mode}-{ctx-mode}:
+          job-mode: light
+          ctx-mode: discover-resources
           compare: 1
           ceilometer: 0
           heat: 0
           neutron: 0
           sahara: 0
-      - gate-rally-dsvm-verify-{mode}:
-          mode: full
+      - gate-rally-dsvm-verify-{job-mode}-{ctx-mode}:
+          job-mode: full
+          ctx-mode: discover-resources
           compare: 0
           ceilometer: 0
+          heat: 1
+          neutron: 1
+          sahara: 1
+      - gate-rally-dsvm-verify-{job-mode}-{ctx-mode}:
+          job-mode: light
+          ctx-mode: create-resources
+          compare: 1
+          ceilometer: 1
+          heat: 1
+          neutron: 1
+          sahara: 1
+      - gate-rally-dsvm-verify-{job-mode}-{ctx-mode}:
+          job-mode: full
+          ctx-mode: create-resources
+          compare: 0
+          ceilometer: 1
           heat: 1
           neutron: 1
           sahara: 1
