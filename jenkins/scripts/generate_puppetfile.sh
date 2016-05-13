@@ -3,15 +3,13 @@
 # Build a Puppetfile with latest dependencies
 #
 
-# cleanup
-rm -rf modules Puppetfile
-mkdir modules
+DIR='puppet-openstack-integration'
 
 # header
-echo -e "# Auto-generated Puppetfile for Puppet OpenStack project\n" > Puppetfile
+echo -e "# Auto-generated Puppetfile for Puppet OpenStack project\n" > $DIR/Puppetfile
 
 # OpenStack Modules
-echo "## OpenStack modules" >> Puppetfile
+echo "## OpenStack modules" >> $DIR/Puppetfile
 for p in $(cat openstack_modules.txt); do
     # hack for puppet-openstack-integration
     # where namespace is openstack_integration
@@ -26,7 +24,7 @@ EOF
 done
 
 # External Modules
-echo -e "## External modules" >> Puppetfile
+echo -e "## External modules" >> $DIR/Puppetfile
 for e in $(cat external_modules.txt); do
     namespace=$(echo $e | awk -F'/' '{print $1}' | cut -d "," -f 1)
     module=$(echo $e | awk -F'/' '{print $2}' | cut -d "," -f 1)
@@ -45,7 +43,7 @@ for e in $(cat external_modules.txt); do
         tag=$(cd modules/$module; git describe --tags $(git rev-list --tags --max-count=1))
         rm -rf modules/$module
     fi
-    cat >> Puppetfile <<EOF
+    cat >> $DIR/Puppetfile <<EOF
 mod '$title',
   :git => 'https://github.com/$namespace/$module',
   :ref => '$tag'
@@ -54,4 +52,4 @@ EOF
 done
 
 # for debug
-cat Puppetfile
+cat $DIR/Puppetfile
