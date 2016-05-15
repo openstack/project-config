@@ -757,7 +757,12 @@
               ENABLED_SERVICES+=heat,h-api,h-api-cfn,h-api-cw,h-eng,
           fi
           if [ $DEVSTACK_GATE_SAHARA -ne 0 ]; then
-              ENABLED_SERVICES+=sahara,
+              if [[ "stable/kilo" =~ $ZUUL_BRANCH ]]; then
+                  ENABLED_SERVICES+=sahara,
+              else
+                  # Sahara was moved out of DevStack as plugin after Kilo
+                  DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin sahara git://git.openstack.org/openstack/sahara"
+            fi
           fi
           export ENABLED_SERVICES
           export DEVSTACK_LOCAL_CONFIG
