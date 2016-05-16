@@ -11,4 +11,5 @@ for BRANCH in $BRANCHES; do
     git --git-dir=$WORKING_DIR/.git show $BRANCH:upper-constraints.txt \
         2>/dev/null > /tmp/upper-constraints.txt  || true
     pip --verbose wheel -r /tmp/upper-constraints.txt -w $WHEELHOUSE_DIR || true
+    pip3 --verbose wheel -r /tmp/upper-constraints.txt -w $WHEELHOUSE_DIR || true
 done
