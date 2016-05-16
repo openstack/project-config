@@ -42,3 +42,57 @@
       - test-results
       - devstack-logs
       - console-log
+
+- job-template:
+    name: '{pipeline}-senlin-dsvm-tempest-{test_type}{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 130
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export BRANCH_OVERRIDE={branch-override}
+          export PROJECTS="openstack/senlin $PROJECTS"
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
+          export DEVSTACK_GATE_TEMPEST_REGEX="senlin.tests.tempest.{test_type}"
+
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin senlin https://git.openstack.org/openstack/senlin"
+
+          if [ "{test_type}" == "api" ];then
+            export SENLIN_BACKEND="openstack_test"
+          else
+            export SENLIN_BACKEND="openstack"
+          fi
+
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+
+          function pre_test_hook {{
+              cd /opt/stack/new/senlin/senlin/tests/tempest/
+              ./pre_test_hook.sh
+          }}
+          export -f pre_test_hook
+
+          function post_test_hook {{
+              cd /opt/stack/new/senlin/senlin/tests/tempest/
+              ./post_test_hook.sh
+          }}
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - test-results
+      - devstack-logs
+      - console-log
