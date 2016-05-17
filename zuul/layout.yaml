@@ -1936,7 +1936,12 @@ jobs:
     branch: ^(?!stable/(?:kilo|liberty)).*$
 
   - name: ^gate-tempest-dsvm-designate-.*$
-    branch: ^(?!stable/(?:kilo|liberty|mitaka)).*$
+    branch: ^(?!stable/(?:kilo|liberty)).*$
+
+  # This overrides the above "looser" match above
+  - name: ^gate-tempest-dsvm-designate-.*-mitaka$
+    branch: ^master$
+    voting: false
 
   - name: gate-octavia-tox-bandit
     branch: master
@@ -5451,6 +5456,9 @@ projects:
       - name: designate-dsvm-jobs
     check:
       - gate-designate-tempest-plugin-pep8
+      # Stable Compat Jobs
+      - gate-tempest-dsvm-designate-powerdns-mitaka
+      - gate-tempest-dsvm-designate-bind9-mitaka
     gate:
       - gate-designate-tempest-plugin-pep8
 
