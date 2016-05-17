@@ -124,4 +124,14 @@ baseurl=http://$NODEPOOL_MIRROR_HOST/centos/\$releasever/extras/\$basearch/
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
 EOF
+
+    sudo dd of=/etc/yum.repos.d/epel.repo <<EOF
+[epel]
+name=Extra Packages for Enterprise Linux 7 - \$basearch
+baseurl=http://$NODEPOOL_MIRROR_HOST/epel/7/\$basearch
+failovermethod=priority
+enabled=1
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+EOF
 fi
