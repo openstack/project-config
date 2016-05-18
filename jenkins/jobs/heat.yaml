@@ -17,7 +17,7 @@
           export OVERRIDE_ENABLED_SERVICES=key,mysql,rabbit,h-api,h-api-cfn,h-api-cw,h-eng,heat
           export DEVSTACK_GATE_TEMPEST=0
           export DEVSTACK_GATE_EXERCISES=0
-
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
           function post_test_hook {
               cd $BASE/new/heat-templates/tools
               ./post_test_hook.sh
@@ -98,6 +98,8 @@
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin zaqar git://git.openstack.org/openstack/zaqar"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin neutron-vpnaas git://git.openstack.org/openstack/neutron-vpnaas"
 
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
+
           if [ "{lbaasversion}" = "lbaasv2" ]; then
               # Enable LBaaS V2 plugin
               export PROJECTS="openstack/neutron-lbaas $PROJECTS"
@@ -168,6 +170,7 @@
           export DEVSTACK_GATE_TEMPEST_REGEX="orchestration"
           export DEVSTACK_GATE_HEAT=1
           export BRANCH_OVERRIDE={branch-override}
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
@@ -202,6 +205,9 @@
          export PROJECTS="openstack/python-heatclient $PROJECTS"
          export DEVSTACK_PROJECT_FROM_GIT=python-heatclient
          export OVERRIDE_ENABLED_SERVICES=key,mysql,rabbit,h-api,h-api-cfn,h-api-cw,h-eng,heat
+
+         export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
+
          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
          fi
@@ -241,6 +247,9 @@
 
           OVERRIDE_ENABLED_SERVICES=c-api,c-bak,c-sch,c-vol,cinder,dstat,g-api,g-reg,h-api,h-api-cfn,h-api-cw,h-eng,heat,key,mysql,n-api,n-cond,n-cpu,n-crt,n-sch,q-agt,q-dhcp,q-l3,q-meta,q-metering,q-svc,rabbit,s-account,s-container,s-object,s-proxy
           export GRENADE_PLUGINRC="enable_grenade_plugin heat https://git.openstack.org/openstack/heat"
+
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
+
           # n-obj has been removed from mitaka
           if [[ "$ZUUL_BRANCH" == "stable/liberty" ]]; then
               OVERRIDE_ENABLED_SERVICES+=,n-obj
@@ -295,38 +304,6 @@
           export DEVSTACK_GATE_TEMPEST_REGEX="orchestration"
           export DEVSTACK_GATE_HEAT=1
           export HEAT_USE_MOD_WSGI=True
-          export BRANCH_OVERRIDE={branch-override}
-          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
-              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
-          fi
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
-
-    publishers:
-      - devstack-logs
-      - console-log
-
-- job-template:
-    name: '{pipeline}-heat-dsvm-dsplugin{job-suffix}'
-    node: '{node}'
-
-    wrappers:
-      - build-timeout:
-          timeout: 130
-      - timestamps
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - shell : |
-          #!/bin/bash -xe
-          export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_TEMPEST=1
-          export DEVSTACK_GATE_TEMPEST_REGEX="orchestration"
-          export DEVSTACK_GATE_HEAT=1
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
