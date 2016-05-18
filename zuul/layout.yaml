@@ -1461,6 +1461,13 @@ jobs:
   - name: ^gate-tempest-dsvm-ironic-agent_ipmitool-nv$
     branch: ^(?!stable/(kilo|liberty)).*$
 
+  # NOTE(dtantsur): the old ironic ramdisk is not supported in newton
+  - name: ^gate-tempest-dsvm-ironic-pxe_ssh$
+    branch: ^stable/(liberty|mitaka).*$
+
+  - name: ^gate-ironic-inspector-dsvm-dib$
+    branch: ^stable/(liberty|mitaka).*$
+
     # only here until stable is votable, then merge
     # back to a single job
   - name: ^gate-grenade-dsvm-forward$
@@ -5616,7 +5623,6 @@ projects:
       - gate-dib-dsvm-functests-centos-7
       - gate-dib-dsvm-functests-ubuntu-trusty-extras-nv
       - gate-dib-dsvm-functests-centos-7-extras-nv
-      - gate-tempest-dsvm-ironic-pxe_ssh-dib
     check-tripleo:
       - gate-tripleo-ci-f22-nonha
     gate:
