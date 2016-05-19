@@ -46,6 +46,11 @@ EOF
 
 cat >/home/jenkins/.npmrc <<EOF
 registry = $NODEPOOL_NPM_MIRROR
+
+# Retry settings
+fetch-retries=10              # The number of times to retry getting a package.
+fetch-retry-mintimeout=60000  # Minimum fetch timeout: 1 minute (default 10 seconds)
+fetch-retry-maxtimeout=300000 # Maximum fetch timeout: 5 minute (default 1 minute)
 EOF
 
 
