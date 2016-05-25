@@ -1,0 +1,17 @@
+- job-template:
+    name: 'gate-ara-integration-{scenario}-{ostype}'
+    node: '{ostype}'
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - gerrit-git-prep
+      - install-distro-packages
+      - tox:
+          envlist: "integration-{scenario}"
+    wrappers:
+      - build-timeout:
+          timeout: 20
+      - timestamps
+    publishers:
+      - console-log
