@@ -141,24 +141,15 @@
       - gate-{name}-bindep-fallback-{node}{job-suffix}
 
 - builder:
-    name: infra-puppet-apply
+    name: infra-puppet-apply-prep
     builders:
       - shell: |
           #!/bin/bash -xe
           /usr/zuul-env/bin/zuul-cloner --cache-dir /opt/git git://git.openstack.org openstack-infra/system-config
           cd openstack-infra/system-config
-          ./tools/apply-test.sh
 
-- job-template:
-    name: 'gate-infra-puppet-apply-{node}'
-    node: '{node}'
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - net-info
-      - infra-puppet-apply
-
+- publisher:
+    name: infra-puppet-apply-logs
     publishers:
       - scp:
           site: 'static.openstack.org'
@@ -168,6 +159,38 @@
               keep-hierarchy: false
               copy-after-failure: true
       - console-log
+
+- job-template:
+    name: 'gate-infra-puppet-apply-{node}'
+    node: '{node}'
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - net-info
+      - infra-puppet-apply-prep
+      - shell: |
+          #!/bin/bash -xe
+          ./tools/apply-test.sh
+
+    publishers:
+      - infra-puppet-apply-logs
+
+- job-template:
+    name: 'gate-logstash-filters-{node}'
+    node: '{node}'
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - net-info
+      - infra-puppet-apply-prep
+      - shell: |
+          #!/bin/bash -xe
+          ./tools/logstash-filter-test.sh
+
+    publishers:
+      - infra-puppet-apply-logs
 
 - job-template:
     name: 'gate-openstackci-beaker-{node}'
