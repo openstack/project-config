@@ -2519,12 +2519,16 @@ jobs:
   # break due to Puppet new major release, we will see which branch
   # we need to test.
   - name: ^gate-puppet-.*-puppet-unit-latest-.*$
-    branch: ^(?!stable/(icehouse|juno|kilo)).*$
+    branch: ^master
     voting: false
 
-  # Starting from Newton, Puppet OpenStack stop testing on Puppet 3.3 and 3.4.
-  - name: ^gate-puppet-.*-puppet-unit-3.(3|4)-.*$
+  # Starting from Newton, Puppet OpenStack stops testing on Puppet 3.3, 3.4, 3.7 and 4.0.
+  - name: ^gate-puppet-.*-puppet-unit-(3.(3|4|7)|4.0)-.*$
     branch: ^stable/(icehouse|juno|kilo|liberty|mitaka).*$
+
+  # Starting from Mitaka, Puppet OpenStack starts voting on Puppet 4.5.
+  - name: ^gate-puppet-.*-puppet-unit-4.5-.*$
+    branch: ^(master|stable/mitaka).*$
 
   # no need to run tripleo jobs for doc / releasenotes patches on puppet modules
   - name: ^gate-tripleo-ci-f22.*
