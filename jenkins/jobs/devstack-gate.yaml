@@ -1387,43 +1387,6 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-tempest-dsvm-ironic-pxe_libvirt{job-suffix}'
-    node: '{node}'
-
-    wrappers:
-      - build-timeout:
-          timeout: 65
-      - timestamps
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - devstack-virtual-ironic:
-          postgres: 0
-          build-ramdisk: 1
-          deploy_driver: pxe_libvirt
-          deploy-with-ipa: 0
-          client-from-source: 0
-          ironic-lib-from-source: 0
-          pyghmi-from-source: 0
-          ipxe-enabled: 0
-          inspector-enabled: 0
-          tempest-regex: ironic
-          branch-override: '{branch-override}'
-          ramdisk-type: 'coreos'
-          gate-tempest-full: 0
-          bm-vm-ram: 1024
-          bm-vm-count: 1
-          multitenant-network: 0
-
-    publishers:
-      - devstack-logs
-      - console-log
-
-- job-template:
     name: '{pipeline}-tempest-dsvm-ironic-inspector{job-suffix}'
     node: '{node}'
 
