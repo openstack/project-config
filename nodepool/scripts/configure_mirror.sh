@@ -64,23 +64,12 @@ LSBDISTCODENAME=$(lsb_release -cs)
 # NOTE(pabelanger): We don't actually have mirrors for ubuntu-precise, so skip
 # them.
 if [ "$LSBDISTID" == "Ubuntu" ] && [ "$LSBDISTCODENAME" != 'precise' ]; then
-    # NOTE(pabelanger): We only have a xenial mirror ATM because reprepro cannot
-    # mirror repositories with 0 packages. Once our reprepro mirrors is 100% we
-    # can remove this logic check. We are only missing -backports on the mirrors
-    if [ "$LSBDISTCODENAME" == "xenial" ] ; then
-        sudo dd of=/etc/apt/sources.list <<EOF
-deb $NODEPOOL_UBUNTU_MIRROR $LSBDISTCODENAME main universe
-deb $NODEPOOL_UBUNTU_MIRROR $LSBDISTCODENAME-updates main universe
-deb $NODEPOOL_UBUNTU_MIRROR $LSBDISTCODENAME-security main universe
-EOF
-    else
         sudo dd of=/etc/apt/sources.list <<EOF
 deb $NODEPOOL_UBUNTU_MIRROR $LSBDISTCODENAME main universe
 deb $NODEPOOL_UBUNTU_MIRROR $LSBDISTCODENAME-updates main universe
 deb $NODEPOOL_UBUNTU_MIRROR $LSBDISTCODENAME-backports main universe
 deb $NODEPOOL_UBUNTU_MIRROR $LSBDISTCODENAME-security main universe
 EOF
-    fi
     sudo dd of=/etc/apt/sources.list.d/ceph-deb-hammer.list <<EOF
 deb $NODEPOOL_CEPH_MIRROR $LSBDISTCODENAME main
 EOF
