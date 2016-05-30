@@ -703,6 +703,9 @@ project-templates:
       - gate-puppet-openstack-integration-3-scenario002-tempest-centos-7
       - gate-puppet-openstack-integration-3-scenario003-tempest-ubuntu-trusty
       - gate-puppet-openstack-integration-3-scenario003-tempest-centos-7
+      - gate-puppet-openstack-integration-3-scenario001-tempest-ubuntu-xenial
+      - gate-puppet-openstack-integration-3-scenario002-tempest-ubuntu-xenial
+      - gate-puppet-openstack-integration-3-scenario003-tempest-ubuntu-xenial
     gate:
       - gate-puppet-openstack-integration-3-scenario001-tempest-ubuntu-trusty
       - gate-puppet-openstack-integration-3-scenario001-tempest-centos-7
@@ -710,10 +713,10 @@ project-templates:
       - gate-puppet-openstack-integration-3-scenario002-tempest-centos-7
       - gate-puppet-openstack-integration-3-scenario003-tempest-ubuntu-trusty
       - gate-puppet-openstack-integration-3-scenario003-tempest-centos-7
-    experimental:
       - gate-puppet-openstack-integration-3-scenario001-tempest-ubuntu-xenial
       - gate-puppet-openstack-integration-3-scenario002-tempest-ubuntu-xenial
       - gate-puppet-openstack-integration-3-scenario003-tempest-ubuntu-xenial
+    experimental:
       - gate-puppet-openstack-integration-4-scenario001-tempest-ubuntu-xenial
       - gate-puppet-openstack-integration-4-scenario002-tempest-ubuntu-xenial
       - gate-puppet-openstack-integration-4-scenario003-tempest-ubuntu-xenial
@@ -721,56 +724,65 @@ project-templates:
   - name: puppet-openstack-integration-jobs-puppet4-check-nv
     check:
       - gate-puppet-openstack-integration-4-scenario001-tempest-ubuntu-trusty-nv
+      - gate-puppet-openstack-integration-4-scenario001-tempest-ubuntu-xenial-nv
       - gate-puppet-openstack-integration-4-scenario001-tempest-centos-7-nv
       - gate-puppet-openstack-integration-4-scenario002-tempest-ubuntu-trusty-nv
+      - gate-puppet-openstack-integration-4-scenario002-tempest-ubuntu-xenial-nv
       - gate-puppet-openstack-integration-4-scenario002-tempest-centos-7-nv
       - gate-puppet-openstack-integration-4-scenario003-tempest-ubuntu-trusty-nv
       - gate-puppet-openstack-integration-4-scenario003-tempest-centos-7-nv
+      - gate-puppet-openstack-integration-4-scenario003-tempest-ubuntu-xenial-nv
 
   - name: puppet-openstack-integration-jobs-puppet4-experimental
     experimental:
       - gate-puppet-openstack-integration-4-scenario001-tempest-ubuntu-trusty
+      - gate-puppet-openstack-integration-4-scenario001-tempest-ubuntu-xenial
       - gate-puppet-openstack-integration-4-scenario001-tempest-centos-7
       - gate-puppet-openstack-integration-4-scenario002-tempest-ubuntu-trusty
+      - gate-puppet-openstack-integration-4-scenario002-tempest-ubuntu-xenial
       - gate-puppet-openstack-integration-4-scenario002-tempest-centos-7
       - gate-puppet-openstack-integration-4-scenario003-tempest-ubuntu-trusty
+      - gate-puppet-openstack-integration-4-scenario003-tempest-ubuntu-xenial
       - gate-puppet-openstack-integration-4-scenario003-tempest-centos-7
 
   - name: puppet-openstack-integration-jobs-scenario001
     check:
       - gate-puppet-openstack-integration-3-scenario001-tempest-ubuntu-trusty
+      - gate-puppet-openstack-integration-3-scenario001-tempest-ubuntu-xenial
       - gate-puppet-openstack-integration-3-scenario001-tempest-centos-7
     gate:
       - gate-puppet-openstack-integration-3-scenario001-tempest-ubuntu-trusty
+      - gate-puppet-openstack-integration-3-scenario001-tempest-ubuntu-xenial
       - gate-puppet-openstack-integration-3-scenario001-tempest-centos-7
     experimental:
       - gate-puppet-openstack-integration-4-scenario001-tempest-ubuntu-trusty
       - gate-puppet-openstack-integration-4-scenario001-tempest-centos-7
-      - gate-puppet-openstack-integration-3-scenario001-tempest-ubuntu-xenial
 
   - name: puppet-openstack-integration-jobs-scenario002
     check:
       - gate-puppet-openstack-integration-3-scenario002-tempest-ubuntu-trusty
+      - gate-puppet-openstack-integration-3-scenario002-tempest-ubuntu-xenial
       - gate-puppet-openstack-integration-3-scenario002-tempest-centos-7
     gate:
       - gate-puppet-openstack-integration-3-scenario002-tempest-ubuntu-trusty
+      - gate-puppet-openstack-integration-3-scenario002-tempest-ubuntu-xenial
       - gate-puppet-openstack-integration-3-scenario002-tempest-centos-7
     experimental:
       - gate-puppet-openstack-integration-4-scenario002-tempest-ubuntu-trusty
       - gate-puppet-openstack-integration-4-scenario002-tempest-centos-7
-      - gate-puppet-openstack-integration-3-scenario002-tempest-ubuntu-xenial
 
   - name: puppet-openstack-integration-jobs-scenario003
     check:
       - gate-puppet-openstack-integration-3-scenario003-tempest-ubuntu-trusty
+      - gate-puppet-openstack-integration-3-scenario003-tempest-ubuntu-xenial
       - gate-puppet-openstack-integration-3-scenario003-tempest-centos-7
     gate:
       - gate-puppet-openstack-integration-3-scenario003-tempest-ubuntu-trusty
+      - gate-puppet-openstack-integration-3-scenario003-tempest-ubuntu-xenial
       - gate-puppet-openstack-integration-3-scenario003-tempest-centos-7
     experimental:
       - gate-puppet-openstack-integration-4-scenario003-tempest-ubuntu-trusty
       - gate-puppet-openstack-integration-4-scenario003-tempest-centos-7
-      - gate-puppet-openstack-integration-3-scenario003-tempest-ubuntu-xenial
 
   - name: puppet-openstack-spec-helper-jobs
     check:
@@ -1297,6 +1309,14 @@ jobs:
 
   - name: ^gate-puppet-openstackci-puppet-beaker-rspec-.*$
     voting: false
+
+  # puppet-integration scenario jobs run on Ubuntu Trusty before Newton and Hammer (Ceph)
+  - name: ^gate-puppet-openstack-integration-.*-tempest-ubuntu-trusty$
+    branch: ^(stable/(kilo|liberty|mitaka|hammer)).*$
+
+  # puppet-integration scenario jobs run on Ubuntu Xenial from Newton and Jewel (Ceph)
+  - name: ^gate-puppet-openstack-integration-.*-tempest-ubuntu-xenial$
+    branch: ^(?!stable/(kilo|liberty|mitaka|hammer)).*$
 
   # scenario003 was added during Mitaka cycle
   - name: ^gate-puppet-openstack-integration-(3|4)-scenario003-tempest-.*$
