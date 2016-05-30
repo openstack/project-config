@@ -711,12 +711,6 @@ project-templates:
       - gate-puppet-openstack-integration-3-scenario003-tempest-ubuntu-trusty
       - gate-puppet-openstack-integration-3-scenario003-tempest-centos-7
     experimental:
-      - gate-puppet-openstack-integration-4-scenario001-tempest-ubuntu-trusty
-      - gate-puppet-openstack-integration-4-scenario001-tempest-centos-7
-      - gate-puppet-openstack-integration-4-scenario002-tempest-ubuntu-trusty
-      - gate-puppet-openstack-integration-4-scenario002-tempest-centos-7
-      - gate-puppet-openstack-integration-4-scenario003-tempest-ubuntu-trusty
-      - gate-puppet-openstack-integration-4-scenario003-tempest-centos-7
       - gate-puppet-openstack-integration-3-scenario001-tempest-ubuntu-xenial
       - gate-puppet-openstack-integration-3-scenario002-tempest-ubuntu-xenial
       - gate-puppet-openstack-integration-3-scenario003-tempest-ubuntu-xenial
@@ -724,14 +718,23 @@ project-templates:
       - gate-puppet-openstack-integration-4-scenario002-tempest-ubuntu-xenial
       - gate-puppet-openstack-integration-4-scenario003-tempest-ubuntu-xenial
 
-  - name: periodic-jobs-with-puppet-4-openstack-integration-jobs-all
-    periodic:
-      - 'periodic-puppet-openstack-integration-4-scenario001-tempest-ubuntu-trusty'
-      - 'periodic-puppet-openstack-integration-4-scenario001-tempest-centos-7'
-      - 'periodic-puppet-openstack-integration-4-scenario002-tempest-ubuntu-trusty'
-      - 'periodic-puppet-openstack-integration-4-scenario002-tempest-centos-7'
-      - 'periodic-puppet-openstack-integration-4-scenario003-tempest-ubuntu-trusty'
-      - 'periodic-puppet-openstack-integration-4-scenario003-tempest-centos-7'
+  - name: puppet-openstack-integration-jobs-puppet4-check-nv
+    check:
+      - gate-puppet-openstack-integration-4-scenario001-tempest-ubuntu-trusty-nv
+      - gate-puppet-openstack-integration-4-scenario001-tempest-centos-7-nv
+      - gate-puppet-openstack-integration-4-scenario002-tempest-ubuntu-trusty-nv
+      - gate-puppet-openstack-integration-4-scenario002-tempest-centos-7-nv
+      - gate-puppet-openstack-integration-4-scenario003-tempest-ubuntu-trusty-nv
+      - gate-puppet-openstack-integration-4-scenario003-tempest-centos-7-nv
+
+  - name: puppet-openstack-integration-jobs-puppet4-experimental
+    experimental:
+      - gate-puppet-openstack-integration-4-scenario001-tempest-ubuntu-trusty
+      - gate-puppet-openstack-integration-4-scenario001-tempest-centos-7
+      - gate-puppet-openstack-integration-4-scenario002-tempest-ubuntu-trusty
+      - gate-puppet-openstack-integration-4-scenario002-tempest-centos-7
+      - gate-puppet-openstack-integration-4-scenario003-tempest-ubuntu-trusty
+      - gate-puppet-openstack-integration-4-scenario003-tempest-centos-7
 
   - name: puppet-openstack-integration-jobs-scenario001
     check:
@@ -1306,6 +1309,10 @@ jobs:
   # puppet-integration lint/syntax jobs run only after stable/kilo
   - name: ^gate-puppet-openstack-integration-puppet-.*$
     branch: ^(?!stable/kilo).*$
+
+  # do not run puppet4-check-nv check jobs before Newton / Jewel
+  - name: ^gate-puppet-openstack-integration-4-.*-nv$
+    branch: ^(?!stable/(kilo|liberty|mitaka|hammer)).*$
 
   - name: gate-requirements-integration-dsvm-resolver
     voting: false
@@ -9591,6 +9598,7 @@ projects:
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
       - name: puppet-openstack-integration-jobs-all
+      - name: puppet-openstack-integration-jobs-puppet4-experimental
       - name: release-notes-jobs
       - name: puppet-tarball-jobs
     check-tripleo:
@@ -9660,6 +9668,7 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-openstack-integration-jobs-all
+      - name: puppet-openstack-integration-jobs-puppet4-experimental
       - name: release-notes-jobs
       - name: puppet-tarball-jobs
     check-tripleo:
@@ -9735,6 +9744,7 @@ projects:
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
       - name: puppet-openstack-integration-jobs-all
+      - name: puppet-openstack-integration-jobs-puppet4-experimental
       - name: release-notes-jobs
       - name: puppet-tarball-jobs
     check-tripleo:
@@ -9747,6 +9757,7 @@ projects:
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
       - name: puppet-openstack-integration-jobs-all
+      - name: puppet-openstack-integration-jobs-puppet4-experimental
       - name: release-notes-jobs
       - name: puppet-tarball-jobs
     check-tripleo:
@@ -9777,6 +9788,7 @@ projects:
       - name: puppet-check-jobs
       - name: puppet-module-unit-jobs
       - name: puppet-openstack-integration-jobs-all
+      - name: puppet-openstack-integration-jobs-puppet4-experimental
       - name: release-notes-jobs
       - name: puppet-tarball-jobs
     check:
@@ -9797,7 +9809,7 @@ projects:
       - name: merge-check
       - name: puppet-check-jobs
       - name: puppet-openstack-integration-jobs-all
-      - name: periodic-jobs-with-puppet-4-openstack-integration-jobs-all
+      - name: puppet-openstack-integration-jobs-puppet4-check-nv
     periodic:
       - propose-puppet-openstack-constraints
     experimental:
@@ -9830,6 +9842,7 @@ projects:
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
       - name: puppet-openstack-integration-jobs-all
+      - name: puppet-openstack-integration-jobs-puppet4-experimental
       - name: release-notes-jobs
       - name: puppet-tarball-jobs
     check-tripleo:
@@ -9842,6 +9855,7 @@ projects:
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
       - name: puppet-openstack-integration-jobs-all
+      - name: puppet-openstack-integration-jobs-puppet4-experimental
       - name: release-notes-jobs
       - name: puppet-tarball-jobs
     check-tripleo:
@@ -9918,6 +9932,7 @@ projects:
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
       - name: puppet-openstack-integration-jobs-all
+      - name: puppet-openstack-integration-jobs-puppet4-experimental
       - name: release-notes-jobs
       - name: puppet-tarball-jobs
 
@@ -9962,6 +9977,7 @@ projects:
       - name: puppet-module-unit-jobs
       - name: puppet-beaker-jobs
       - name: puppet-openstack-integration-jobs-all
+      - name: puppet-openstack-integration-jobs-puppet4-experimental
       - name: release-notes-jobs
       - name: puppet-tarball-jobs
     check-tripleo:
