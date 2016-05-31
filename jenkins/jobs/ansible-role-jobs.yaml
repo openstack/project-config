@@ -21,6 +21,46 @@
       - 'gate-{name}-ansible-lint'
 
 - job-template:
+    name: '{pipeline}-{name}-dsvm-ansible-func-{ostype}{job-suffix}'
+    node: '{ostype}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 60
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - zuul-git-prep
+      - install-distro-packages
+      - devstack-checkout
+      - shell: |
+          # Allow Jenkins user to ssh into localhost
+          ssh-keygen -f ~/.ssh/id_rsa -N ""
+          cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+          ssh-keyscan localhost >> ~/.ssh/known_hosts
+          ssh-keyscan 127.0.0.1 >> ~/.ssh/known_hosts
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_NEUTRON=1
+
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+      - tox:
+          envlist: functional
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
     name: '{pipeline}-{name}-ansible-func-{ostype}{job-suffix}'
     node: '{ostype}'
 
@@ -59,6 +99,27 @@
             - ubuntu-xenial
           pipeline: gate
       - '{pipeline}-{name}-ansible-func-{ostype}{job-suffix}':
+          job-suffix: ''
+          ostype:
+            - centos-7
+            - ubuntu-trusty
+            - ubuntu-xenial
+          pipeline: gate
+      - '{name}-announce-release'
+
+- job-group:
+    name: 'ansible-role-dsvm-jobs'
+    jobs:
+      - 'gate-{name}-docs'
+      - 'gate-{name}-linters'
+      - '{pipeline}-{name}-dsvm-ansible-func-{ostype}{job-suffix}':
+          job-suffix: '-nv'
+          ostype:
+            - centos-7
+            - ubuntu-trusty
+            - ubuntu-xenial
+          pipeline: gate
+      - '{pipeline}-{name}-dsvm-ansible-func-{ostype}{job-suffix}':
           job-suffix: ''
           ostype:
             - centos-7
