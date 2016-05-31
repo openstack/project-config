@@ -1326,13 +1326,14 @@ jobs:
   - name: ^gate-puppet-openstack-integration-.*-tempest-ubuntu-xenial$
     branch: ^(?!stable/(kilo|liberty|mitaka|hammer)).*$
 
-  # puppet-integration lint/syntax jobs run only after stable/kilo
-  - name: ^gate-puppet-openstack-integration-puppet-.*$
-    branch: ^(?!stable/kilo).*$
-
   # do not run puppet4-check-nv check jobs before Newton / Jewel
   - name: ^gate-puppet-openstack-integration-4-.*-nv$
     branch: ^(?!stable/(kilo|liberty|mitaka|hammer)).*$
+
+  # This rule must be the last one for puppet-openstack-integration.
+  # puppet-integration lint/syntax jobs run only after stable/kilo
+  - name: ^gate-puppet-openstack-integration-puppet-.*$
+    branch: ^(?!stable/kilo).*$
 
   - name: gate-requirements-integration-dsvm-resolver
     voting: false
