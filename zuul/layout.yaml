@@ -2778,6 +2778,16 @@ jobs:
   - name: ^gate-openstack-ansible.*-linters$
     branch: ^(?!juno).*$
 
+  # Skip OpenStack-Ansible Xenial role jobs for liberty and stable/mitaka
+  # Xenial support was only introduced in Newton
+  - name: ^gate-openstack-ansible-.*-func-ubuntu-xenial.*$
+    branch: ^(?!(liberty|stable/mitaka)).*$
+
+  # Skip OpenStack-Ansible CentOS role jobs for liberty and stable/mitaka
+  # CentOS support was only introduced in Newton
+  - name: ^gate-openstack-ansible-.*-func-centos-7.*$
+    branch: ^(?!(liberty|stable/mitaka)).*$
+
   # Ignore requirements on the keystoneclient/keystoneauth integration branch
   - name: gate-python-keystoneclient-requirements
     branch: ^(?!feature/keystoneauth_integration).*$
