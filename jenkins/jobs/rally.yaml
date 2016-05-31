@@ -57,6 +57,7 @@
           export DEVSTACK_GATE_IRONIC={ironic}
           export DEVSTACK_GATE_ZAQAR={zaqar}
           export DEVSTACK_GATE_SENLIN={senlin}
+          export DEVSTACK_GATE_MAGNUM={magnum}
           export DEVSTACK_GATE_TEMPEST_LARGE_OPS={large_ops}
           export DEVSTACK_GATE_EXERCISES=0
           export RALLY_SCENARIO={scenario}
@@ -104,6 +105,11 @@
               export PROJECTS="openstack/python-senlinclient $PROJECTS"
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin senlin git://git.openstack.org/openstack/senlin"
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_service sl-api sl-eng"
+          fi
+          if [ $DEVSTACK_GATE_MAGNUM -ne 0 ]||[ $RALLY_SCENARIO = "magnum" ]; then
+              export PROJECTS="openstack/python-senlinclient $PROJECTS"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin magnum https://git.openstack.org/openstack/magnum"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin barbican https://git.openstack.org/openstack/barbican"
           fi
           export ENABLED_SERVICES
           export DEVSTACK_LOCAL_CONFIG
@@ -375,6 +381,7 @@
             large_ops: '0'
             keystone_use_v2api: '0'
             senlin: '0'
+            magnum: '0'
 
     publishers:
       - devstack-logs
@@ -521,6 +528,7 @@
           large_ops: '0'
           keystone_use_v2api: '0'
           senlin: '0'
+          magnum: '0'
 
     publishers:
       - devstack-logs
@@ -546,6 +554,7 @@
           large_ops: '0'
           keystone_use_v2api: '0'
           senlin: '0'
+          magnum: '0'
 
     publishers:
       - devstack-logs
@@ -571,6 +580,7 @@
           large_ops: '10'
           keystone_use_v2api: '0'
           senlin: '0'
+          magnum: '0'
 
     publishers:
       - devstack-logs
@@ -596,6 +606,7 @@
           large_ops: '0'
           keystone_use_v2api: '0'
           senlin: '0'
+          magnum: '0'
 
     publishers:
       - devstack-logs
@@ -620,6 +631,7 @@
           large_ops: '0'
           keystone_use_v2api: '0'
           senlin: '0'
+          magnum: '0'
 
     publishers:
       - devstack-logs
@@ -877,6 +889,7 @@
             large_ops: '0'
             keystone_use_v2api: '1'
             senlin: '0'
+            magnum: '0'
 
     publishers:
       - devstack-logs
@@ -901,6 +914,33 @@
           large_ops: '0'
           keystone_use_v2api: '0'
           senlin: '1'
+          magnum: '0'
+
+    publishers:
+      - devstack-logs
+      - console-log
+      - rally-plot
+
+
+- job-template:
+    name: 'gate-rally-dsvm-magnum-{name}{job-suffix}'
+    node: ubuntu-trusty
+
+    wrappers:
+      - build-timeout:
+          timeout: 130
+      - timestamps
+
+    builders:
+      - devstack-rally-gate:
+          scenario: '{name}-magnum'
+          ironic: '0'
+          neutron: '0'
+          zaqar: '0'
+          large_ops: '0'
+          keystone_use_v2api: '0'
+          senlin: '0'
+          magnum: '1'
 
     publishers:
       - devstack-logs
