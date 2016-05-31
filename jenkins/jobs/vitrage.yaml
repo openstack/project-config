@@ -1,5 +1,5 @@
 - job-template:
-    name: '{pipeline}-vitrage-dsvm{job-suffix}'
+    name: '{pipeline}-vitrage-dsvm-{suite}{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -33,7 +33,7 @@
           export -f gate_hook
 
           function post_test_hook {{
-              source $BASE/new/vitrage/devstack/post_test_hook.sh
+              source $BASE/new/vitrage/devstack/post_test_hook.sh '{suite}'
           }}
           export -f post_test_hook
 

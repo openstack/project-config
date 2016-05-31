@@ -9335,10 +9335,17 @@
     jobs:
       - python-jobs
       - pypi-jobs
-      - '{pipeline}-vitrage-dsvm{job-suffix}':
+      - '{pipeline}-vitrage-dsvm-{suite}{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
+          suite: 'api'
           job-suffix: ''
+          branch-override: default
+      - '{pipeline}-vitrage-dsvm-{suite}{job-suffix}':
+          pipeline: gate
+          node: ubuntu-trusty
+          suite: 'datasources'
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
