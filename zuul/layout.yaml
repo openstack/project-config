@@ -1712,6 +1712,12 @@ jobs:
   - name: ^gate-functional-dsvm-astara.*$
     branch: ^(?!stable/(?:juno|kilo)).*$
 
+  - name: ^gate-functional-dsvm-networking-sfc-nv$
+    branch: ^(?!stable/(?:kilo|liberty)).*$
+
+  - name: ^gate-tempest-dsvm-networking-sfc-nv$
+    branch: ^(?!stable/(?:kilo|liberty)).*$
+
 # For Gerrit ver 2.8.x and later (using buck)
   - name: ^.*gerrit.*buck$
     branch: ^openstack/(?!2\.4).*$
@@ -8030,6 +8036,9 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
       - name: python3-jobs
+    check:
+      - gate-tempest-dsvm-networking-sfc-nv
+      - gate-functional-dsvm-networking-sfc-nv
 
   - name: openstack/networking-vpp
     template:
