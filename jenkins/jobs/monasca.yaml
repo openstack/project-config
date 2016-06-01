@@ -1,5 +1,6 @@
-- job:
-    name: gate-monasca-api-tempest-dsvm
+- job-template:
+    name: 'gate-tempest-dsvm-monasca-python-full{job-suffix}'
+
     node: ubuntu-trusty
 
     wrappers:
@@ -18,16 +19,22 @@
           export ENABLED_SERVICES=tempest
           export DEVSTACK_LOCAL_CONFIG="enable_plugin monasca-api git://git.openstack.org/openstack/monasca-api"
           export PROJECTS="openstack/monasca-api $PROJECTS"
+          export PROJECTS="openstack/monasca-persister $PROJECTS"
+          export PROJECTS="openstack/monasca-common $PROJECTS"
+          export PROJECTS="openstack/monasca-agent $PROJECTS"
+          export PROJECTS="openstack/monasca-notification $PROJECTS"
+          export PROJECTS="openstack/monasca-thresh $PROJECTS"
+          export PROJECTS="openstack/monasca-statsd $PROJECTS"
 
-          function pre_test_hook {
+          function pre_test_hook {{
               source $BASE/new/monasca-api/devstack/pre_test_hook.sh
-          }
+          }}
           export -f pre_test_hook
 
-          function post_test_hook {
+          function post_test_hook {{
               # Configure and run tempest on monasca-api installation
               source $BASE/new/monasca-api/devstack/post_test_hook.sh
-          }
+          }}
           export -f post_test_hook
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
@@ -37,8 +44,8 @@
       - devstack-logs
       - console-log
 
-- job:
-    name: gate-monasca-api-java-tempest-dsvm
+- job-template:
+    name: 'gate-tempest-dsvm-monasca-java-full{job-suffix}'
     node: ubuntu-trusty
 
     wrappers:
@@ -57,19 +64,25 @@
           export ENABLED_SERVICES=tempest
           export DEVSTACK_LOCAL_CONFIG="enable_plugin monasca-api git://git.openstack.org/openstack/monasca-api"
           export PROJECTS="openstack/monasca-api $PROJECTS"
+          export PROJECTS="openstack/monasca-persister $PROJECTS"
+          export PROJECTS="openstack/monasca-common $PROJECTS"
+          export PROJECTS="openstack/monasca-agent $PROJECTS"
+          export PROJECTS="openstack/monasca-notification $PROJECTS"
+          export PROJECTS="openstack/monasca-thresh $PROJECTS"
+          export PROJECTS="openstack/monasca-statsd $PROJECTS"
 
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"MONASCA_API_IMPLEMENTATION_LANG=java"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"MONASCA_PERSISTER_IMPLEMENTATION_LANG=java"
 
-          function pre_test_hook {
+          function pre_test_hook {{
               source $BASE/new/monasca-api/devstack/pre_test_hook.sh
-          }
+          }}
           export -f pre_test_hook
 
-          function post_test_hook {
+          function post_test_hook {{
               # Configure and run tempest on monasca-api installation
               source $BASE/new/monasca-api/devstack/post_test_hook.sh
-          }
+          }}
           export -f post_test_hook
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
@@ -79,82 +92,12 @@
       - devstack-logs
       - console-log
 
-- job:
-    name: gate-monasca-persister-tempest-dsvm
-    node: ubuntu-trusty
-
-    wrappers:
-      - build-timeout:
-          timeout: 130
-      - timestamps
-
-    builders:
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - shell: |
-            export PYTHONUNBUFFERED=true
-            export DEVSTACK_GATE_NEUTRON=1
-            export ENABLED_SERVICES=tempest
-            export DEVSTACK_LOCAL_CONFIG="enable_plugin monasca-api git://git.openstack.org/openstack/monasca-api"
-            export PROJECTS="openstack/monasca-api openstack/monasca-persister $PROJECTS"
-
-            function pre_test_hook {
-                source $BASE/new/monasca-api/devstack/pre_test_hook.sh
-            }
-            export -f pre_test_hook
-
-            function post_test_hook {
-                # Configure and run tempest on monasca-api installation
-                source $BASE/new/monasca-api/devstack/post_test_hook.sh
-            }
-            export -f post_test_hook
-
-            cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-            ./safe-devstack-vm-gate-wrap.sh
-
-    publishers:
-      - devstack-logs
-      - console-log
-
-- job:
-    name: gate-monasca-persister-java-tempest-dsvm
-    node: ubuntu-trusty
-
-    wrappers:
-      - build-timeout:
-          timeout: 130
-      - timestamps
-
-    builders:
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - shell: |
-          #!/bin/bash -xe
-          export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_NEUTRON=1
-          export ENABLED_SERVICES=tempest
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin monasca-api git://git.openstack.org/openstack/monasca-api"
-          export PROJECTS="openstack/monasca-api openstack/monasca-persister $PROJECTS"
-
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"MONASCA_API_IMPLEMENTATION_LANG=java"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"MONASCA_PERSISTER_IMPLEMENTATION_LANG=java"
-
-          function pre_test_hook {
-              source $BASE/new/monasca-api/devstack/pre_test_hook.sh
-          }
-          export -f pre_test_hook
-
-          function post_test_hook {
-              # Configure and run tempest on monasca-api installation
-              source $BASE/new/monasca-api/devstack/post_test_hook.sh
-          }
-          export -f post_test_hook
-
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
-
-    publishers:
-      - devstack-logs
-      - console-log
+- job-group:
+    name: 'tempest-monasca-full-jobs'
+    jobs:
+      - 'gate-tempest-dsvm-monasca-python-full{job-suffix}':
+          job-suffix: ''
+      - 'gate-tempest-dsvm-monasca-python-full{job-suffix}':
+          job-suffix: '-nv'
+      - 'gate-tempest-dsvm-monasca-java-full{job-suffix}':
+          job-suffix: '-nv'
