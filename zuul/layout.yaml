@@ -1477,9 +1477,6 @@ jobs:
   - name: ^gate-tempest-dsvm-ironic-parallel-nv$
     branch: ^(?!stable)
 
-  - name: ^gate-tempest-dsvm-ironic-pxe_ipa-tinyipa.*$
-    branch: ^(?!stable/(kilo|liberty)).*$
-
   # NOTE(mriedem): gate-tempest-dsvm-ironic-pxe_ipa does not run reliably in
   # kilo and is meant as a replacement for the pxe_ssh job starting in
   # liberty.
@@ -6947,8 +6944,6 @@ projects:
     check:
       - gate-tempest-dsvm-ironic-pxe_ssh
       - gate-tempest-dsvm-ironic-pxe_ipa-postgres-nv
-      - gate-tempest-dsvm-ironic-pxe_ipa-tinyipa-nv
-      - gate-tempest-dsvm-ironic-pxe_ipa-tinyipa-src-nv
       - gate-tempest-dsvm-ironic-agent_ssh
       - gate-tempest-dsvm-ironic-pxe_ipa
       - gate-ironic-inspector-dsvm-ipa-nv
@@ -7026,13 +7021,16 @@ projects:
       - name: publish-to-pypi
       - name: release-notes-jobs
     check:
-      - gate-tempest-dsvm-ironic-agent_ssh-src
-      - gate-tempest-dsvm-ironic-pxe_ipa-src
+      - gate-tempest-dsvm-ironic-agent_ssh-coreos-src
+      - gate-tempest-dsvm-ironic-agent_ssh-tinyipa-src
+      - gate-tempest-dsvm-ironic-pxe_ipa-coreos-src
+      - gate-tempest-dsvm-ironic-pxe_ipa-tinyipa-src
       - gate-ironic-inspector-dsvm-ipa-src-nv
-      - gate-tempest-dsvm-ironic-pxe_ipa-tinyipa-src-nv
     gate:
-      - gate-tempest-dsvm-ironic-agent_ssh-src
-      - gate-tempest-dsvm-ironic-pxe_ipa-src
+      - gate-tempest-dsvm-ironic-agent_ssh-coreos-src
+      - gate-tempest-dsvm-ironic-agent_ssh-tinyipa-src
+      - gate-tempest-dsvm-ironic-pxe_ipa-coreos-src
+      - gate-tempest-dsvm-ironic-pxe_ipa-tinyipa-src
     post:
       - ironic-python-agent-buildimage-coreos
       - ironic-python-agent-buildimage-tinyipa
