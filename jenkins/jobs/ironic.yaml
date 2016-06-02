@@ -251,3 +251,37 @@
     publishers:
       - devstack-logs
       - console-log
+
+- job-template:
+    name: '{pipeline}-ironic-staging-drivers-dsvm{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 80
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_IRONIC=1
+          export DEVSTACK_GATE_NEUTRON=1
+          export DEVSTACK_GATE_VIRT_DRIVER=ironic
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin ironic git://git.openstack.org/openstack/ironic"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ironic-staging-drivers git://git.openstack.org/openstack/ironic-staging-drivers"
+
+          # No post_test_hook is needed while tests live in tempest
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
