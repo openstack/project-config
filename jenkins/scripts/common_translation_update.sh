@@ -51,7 +51,9 @@ function get_modulename {
 # Also extract version of project.
 function setup_venv {
 
-    VENV=$(mktemp -d -p .)
+    # Note that this directory needs to be outside of the source tree,
+    # some other functions will fail if it's inside.
+    VENV=$(mktemp -d)
     # Create absolute path here, we might change directories later.
     VENV="$(pwd)/$VENV"
     trap "rm -rf $VENV" EXIT
