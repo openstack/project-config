@@ -43,8 +43,8 @@ function propose_manuals {
             compress_manual_po_files "api-quick-start" 0
             cleanup_pot_files "api-ref"
             compress_manual_po_files "api-ref" 0
-            cleanup_pot_files "openstack-firstapp"
-            compress_manual_po_files "openstack-firstapp" 0
+            cleanup_pot_files "firstapp"
+            compress_manual_po_files "firstapp" 0
             ;;
         ha-guide|operations-guide)
             cleanup_pot_files "doc"
