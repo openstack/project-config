@@ -54,8 +54,6 @@ function setup_venv {
     # Note that this directory needs to be outside of the source tree,
     # some other functions will fail if it's inside.
     VENV=$(mktemp -d)
-    # Create absolute path here, we might change directories later.
-    VENV="$(pwd)/$VENV"
     trap "rm -rf $VENV" EXIT
     virtualenv $VENV
 
