@@ -100,25 +100,13 @@ case "$PROJECT" in
         ;;
 esac
 
-# Add all changed files to git.
-# Note that setup_manuals did the git add already, so we can skip it
-# here.
-if [[ ! $PROJECT =~ api-site|ha-guide|openstack-manuals|operations-guide|security-doc ]]; then
-    git add */locale/*
-fi
-if [ -d releasenotes/source/locale ] ; then
-    git add releasenotes/source/locale
-fi
+# The Zanata client works out what to send based on the zanata.xml file.
+# Do not copy translations from other files for this change.
+zanata-cli -B -e push --copy-trans False
+# Move pot files to translation-source directory for publishing
+copy_pot "$ALL_MODULES"
 
-if [ $(git diff --cached | egrep -v "(POT-Creation-Date|^[\+\-]#|^\+{3}|^\-{3})" | egrep -c "^[\-\+]") -gt 0 ]; then
-    # The Zanata client works out what to send based on the zanata.xml file.
-    # Do not copy translations from other files for this change.
-    zanata-cli -B -e push --copy-trans False
-    # Move pot files to translation-source directory for publishing
-    copy_pot "$ALL_MODULES"
-
-    mv .translation-source translation-source
-fi
+mv .translation-source translation-source
 
 # Tell finish function that everything is fine.
 ERROR_ABORT=0

@@ -196,14 +196,11 @@ function setup_manuals {
         fi
         if [ ${IS_RST} -eq 1 ] ; then
             tox -e generatepot-rst -- ${DOCNAME}
-            git add ${DocFolder}/${DOCNAME}/source/locale/${DOCNAME}.pot
             ZANATA_RULES="$ZANATA_RULES -r ${ZanataDocFolder}/${DOCNAME}/source/locale/${DOCNAME}.pot ${DocFolder}/${DOCNAME}/source/locale/{locale_with_underscore}/LC_MESSAGES/${DOCNAME}.po"
         else
             # Update the .pot file
             ./tools/generatepot ${DOCNAME}
             if [ -f ${DocFolder}/${DOCNAME}/locale/${DOCNAME}.pot ]; then
-                # Add all changed files to git
-                git add ${DocFolder}/${DOCNAME}/locale/${DOCNAME}.pot
                 ZANATA_RULES="$ZANATA_RULES -r ${ZanataDocFolder}/${DOCNAME}/locale/${DOCNAME}.pot ${DocFolder}/${DOCNAME}/locale/{locale_with_underscore}.po"
             fi
         fi
