@@ -109,9 +109,14 @@ function propose_python_django {
     # number of untranslated strings.
     compress_po_files "$modulename"
 
-    # Some files were changed, add changed files again to git, so that we
-    # can run git diff properly.
-    git add $modulename/locale/
+    # Check first whether directory exists, it might be missing if
+    # there are no translations.
+    if [[ -d "$modulename/locale/" ]] ; then
+
+        # Some files were changed, add changed files again to git, so
+        # that we can run git diff properly.
+        git add $modulename/locale/
+    fi
 }
 
 
