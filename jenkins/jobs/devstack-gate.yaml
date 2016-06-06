@@ -713,23 +713,13 @@
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_IPXE_ENABLED=False"
           fi
 
-          # tempest plugin support was added in Mitaka.
-          if [ "$ZUUL_BRANCH" != "stable/kilo" -a "$ZUUL_BRANCH" != "stable/liberty" ] ; then
-              export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
-          fi
-
+          # use tempest plugin
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"TEMPEST_PLUGINS=/opt/stack/new/ironic"
           # Allow switching between full tempest and baremetal-only
           if [ "{gate-tempest-full}" == "1" ] ; then
               export DEVSTACK_GATE_TEMPEST_FULL=1
           else
-              # The plugin name, and thus the regex we use, changed during the move to tempest-lib,
-              # for tempest-lib, tests should be prefixed with "ironic"
-              # Remove this section when we drop support for liberty
-              if [ "$DEVSTACK_GATE_TEMPEST_ALL_PLUGINS" == "1" ] ; then
-                  export DEVSTACK_GATE_TEMPEST_REGEX={tempest-regex}
-              else
-                  export DEVSTACK_GATE_TEMPEST_REGEX=baremetal
-              fi
+              export DEVSTACK_GATE_TEMPEST_REGEX=ironic
           fi
 
           # devstack plugin didn't exist until mitaka
