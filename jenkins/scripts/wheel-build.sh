@@ -13,7 +13,4 @@ for BRANCH in $BRANCHES; do
     rm -rf build_env
     virtualenv build_env
     build_env/bin/pip --verbose wheel -r /tmp/upper-constraints.txt -w $WHEELHOUSE_DIR || true
-    rm -rf build_env
-    virtualenv -p python3 build_env
-    build_env/bin/pip --verbose wheel -r /tmp/upper-constraints.txt -w $WHEELHOUSE_DIR || true
 done
