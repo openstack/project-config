@@ -645,6 +645,7 @@
           export PROJECTS="openstack/ironic-python-agent $PROJECTS"
           export PROJECTS="openstack/python-ironicclient $PROJECTS"
           export PROJECTS="openstack/pyghmi $PROJECTS"
+          export PROJECTS="openstack/virtualbmc $PROJECTS"
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_POSTGRES={postgres}
@@ -674,6 +675,11 @@
           export PYGHMI_FROM_SOURCE={pyghmi-from-source}
           if [ "$PYGHMI_FROM_SOURCE" == "1" ]; then
              export DEVSTACK_PROJECT_FROM_GIT="pyghmi,$DEVSTACK_PROJECT_FROM_GIT"
+          fi
+
+          export VIRTUALBMC_FROM_SOURCE={virtualbmc-from-source}
+          if [ "$VIRTUALBMC_FROM_SOURCE" == "1" ]; then
+             export DEVSTACK_PROJECT_FROM_GIT="virtualbmc,$DEVSTACK_PROJECT_FROM_GIT"
           fi
 
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_VM_COUNT={bm-vm-count}"
@@ -822,6 +828,7 @@
           client-from-source: 0
           ironic-lib-from-source: 0
           pyghmi-from-source: 0
+          virtualbmc-from-source: 0
           ipxe-enabled: 0
           inspector-enabled: 0
           tempest-regex: ironic
@@ -858,6 +865,7 @@
           client-from-source: 0
           ironic-lib-from-source: 0
           pyghmi-from-source: 0
+          virtualbmc-from-source: 0
           ipxe-enabled: 1
           inspector-enabled: 0
           tempest-regex: ironic
@@ -894,6 +902,7 @@
           client-from-source: 0
           ironic-lib-from-source: 0
           pyghmi-from-source: 0
+          virtualbmc-from-source: 0
           ipxe-enabled: 1
           inspector-enabled: 0
           tempest-regex: ironic
@@ -930,6 +939,7 @@
           client-from-source: 0
           ironic-lib-from-source: 0
           pyghmi-from-source: 0
+          virtualbmc-from-source: 0
           ipxe-enabled: 1
           inspector-enabled: 0
           tempest-regex: ironic
@@ -1011,6 +1021,7 @@
           client-from-source: 0
           ironic-lib-from-source: 0
           pyghmi-from-source: 0
+          virtualbmc-from-source: 0
           ipxe-enabled: 1
           inspector-enabled: 0
           tempest-regex: ironic
@@ -1047,6 +1058,7 @@
           client-from-source: 0
           ironic-lib-from-source: 0
           pyghmi-from-source: 0
+          virtualbmc-from-source: 0
           ipxe-enabled: 1
           inspector-enabled: 0
           tempest-regex: ironic
@@ -1083,6 +1095,45 @@
           client-from-source: 0
           ironic-lib-from-source: 0
           pyghmi-from-source: 1
+          virtualbmc-from-source: 0
+          ipxe-enabled: 1
+          inspector-enabled: 0
+          tempest-regex: ironic
+          branch-override: '{branch-override}'
+          ramdisk-type: 'coreos'
+          gate-tempest-full: 0
+          bm-vm-ram: 1024
+          bm-vm-count: 1
+          multitenant-network: 0
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-tempest-dsvm-ironic-pxe_ipmitool-virtualbmc-src{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 180
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - devstack-virtual-ironic:
+          postgres: 0
+          build-ramdisk: 0
+          deploy_driver: pxe_ipmitool
+          deploy-with-ipa: 1
+          client-from-source: 0
+          ironic-lib-from-source: 0
+          pyghmi-from-source: 1
+          virtualbmc-from-source: 1
           ipxe-enabled: 1
           inspector-enabled: 0
           tempest-regex: ironic
@@ -1119,6 +1170,7 @@
           client-from-source: 0
           ironic-lib-from-source: 0
           pyghmi-from-source: 0
+          virtualbmc-from-source: 0
           ipxe-enabled: 1
           inspector-enabled: 0
           tempest-regex: ironic
@@ -1155,6 +1207,7 @@
           client-from-source: 0
           ironic-lib-from-source: 0
           pyghmi-from-source: 0
+          virtualbmc-from-source: 0
           ipxe-enabled: 1
           inspector-enabled: 0
           tempest-regex: ironic
@@ -1191,6 +1244,7 @@
           client-from-source: 0
           ironic-lib-from-source: 0
           pyghmi-from-source: 0
+          virtualbmc-from-source: 0
           ipxe-enabled: 1
           inspector-enabled: 0
           tempest-regex: ironic
@@ -1227,6 +1281,7 @@
           client-from-source: 0
           ironic-lib-from-source: 0
           pyghmi-from-source: 0
+          virtualbmc-from-source: 0
           ipxe-enabled: 1
           inspector-enabled: 0
           tempest-regex: ironic
@@ -1263,6 +1318,7 @@
           client-from-source: 0
           ironic-lib-from-source: 0
           pyghmi-from-source: 0
+          virtualbmc-from-source: 0
           ipxe-enabled: 1
           inspector-enabled: 0
           tempest-regex: ironic
@@ -1299,6 +1355,7 @@
           client-from-source: 1
           ironic-lib-from-source: 0
           pyghmi-from-source: 0
+          virtualbmc-from-source: 0
           ipxe-enabled: 1
           inspector-enabled: 0
           tempest-regex: ironic
@@ -1335,6 +1392,7 @@
           client-from-source: 0
           ironic-lib-from-source: 1
           pyghmi-from-source: 0
+          virtualbmc-from-source: 0
           ipxe-enabled: 1
           inspector-enabled: 0
           tempest-regex: ironic
@@ -1371,6 +1429,7 @@
           client-from-source: 0
           ironic-lib-from-source: 0
           pyghmi-from-source: 0
+          virtualbmc-from-source: 0
           ipxe-enabled: 1
           inspector-enabled: 0
           tempest-regex: ironic
@@ -1407,6 +1466,7 @@
           client-from-source: 0
           ironic-lib-from-source: 0
           pyghmi-from-source: 0
+          virtualbmc-from-source: 0
           ipxe-enabled: 1
           inspector-enabled: 1
           tempest-regex: InspectorBasicTest
