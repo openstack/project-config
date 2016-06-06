@@ -719,7 +719,7 @@
           if [ "{gate-tempest-full}" == "1" ] ; then
               export DEVSTACK_GATE_TEMPEST_FULL=1
           else
-              export DEVSTACK_GATE_TEMPEST_REGEX=ironic
+              export DEVSTACK_GATE_TEMPEST_REGEX="{tempest-regex}"
           fi
 
           # devstack plugin didn't exist until mitaka
@@ -754,13 +754,13 @@
           if [ "{inspector-enabled}" == "1" ] ; then
               export PROJECTS="openstack/ironic-inspector $PROJECTS"
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ironic-inspector git://git.openstack.org/openstack/ironic-inspector"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"TEMPEST_PLUGINS+=' /opt/stack/new/ironic-inspector'"
 
               export IRONIC_INSPECTOR_AUTO_DISCOVERY={inspector-auto-discovery}
               if [ "IRONIC_INSPECTOR_AUTO_DISCOVERY" == "1" ]; then
                    # enable enroll hook
                    export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_INSPECTOR_NODE_NOT_FOUND_HOOK=enroll"
               fi
-
           fi
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
