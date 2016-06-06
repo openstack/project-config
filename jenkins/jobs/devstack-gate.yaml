@@ -754,6 +754,13 @@
           if [ "{inspector-enabled}" == "1" ] ; then
               export PROJECTS="openstack/ironic-inspector $PROJECTS"
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ironic-inspector git://git.openstack.org/openstack/ironic-inspector"
+
+              export IRONIC_INSPECTOR_AUTO_DISCOVERY={inspector-auto-discovery}
+              if [ "IRONIC_INSPECTOR_AUTO_DISCOVERY" == "1" ]; then
+                   # enable enroll hook
+                   export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_INSPECTOR_NODE_NOT_FOUND_HOOK=enroll"
+              fi
+
           fi
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
@@ -821,6 +828,7 @@
           virtualbmc-from-source: 0
           ipxe-enabled: 0
           inspector-enabled: 0
+          inspector-auto-discovery: 0
           tempest-regex: ironic
           branch-override: '{branch-override}'
           ramdisk-type: 'coreos'
@@ -858,6 +866,7 @@
           virtualbmc-from-source: 0
           ipxe-enabled: 1
           inspector-enabled: 0
+          inspector-auto-discovery: 0
           tempest-regex: ironic
           branch-override: '{branch-override}'
           ramdisk-type: 'tinyipa'
@@ -895,6 +904,7 @@
           virtualbmc-from-source: 0
           ipxe-enabled: 1
           inspector-enabled: 0
+          inspector-auto-discovery: 0
           tempest-regex: ironic
           branch-override: '{branch-override}'
           ramdisk-type: 'tinyipa'
@@ -932,6 +942,7 @@
           virtualbmc-from-source: 0
           ipxe-enabled: 1
           inspector-enabled: 0
+          inspector-auto-discovery: 0
           tempest-regex: ironic
           branch-override: '{branch-override}'
           ramdisk-type: 'tinyipa'
@@ -1014,6 +1025,7 @@
           virtualbmc-from-source: 0
           ipxe-enabled: 1
           inspector-enabled: 0
+          inspector-auto-discovery: 0
           tempest-regex: ironic
           branch-override: '{branch-override}'
           ramdisk-type: 'tinyipa'
@@ -1051,6 +1063,7 @@
           virtualbmc-from-source: 0
           ipxe-enabled: 1
           inspector-enabled: 0
+          inspector-auto-discovery: 0
           tempest-regex: ironic
           branch-override: '{branch-override}'
           ramdisk-type: 'tinyipa'
@@ -1088,6 +1101,7 @@
           virtualbmc-from-source: 0
           ipxe-enabled: 1
           inspector-enabled: 0
+          inspector-auto-discovery: 0
           tempest-regex: ironic
           branch-override: '{branch-override}'
           ramdisk-type: 'coreos'
@@ -1126,6 +1140,7 @@
           virtualbmc-from-source: 1
           ipxe-enabled: 1
           inspector-enabled: 0
+          inspector-auto-discovery: 0
           tempest-regex: ironic
           branch-override: '{branch-override}'
           ramdisk-type: 'tinyipa'
@@ -1163,6 +1178,7 @@
           virtualbmc-from-source: 0
           ipxe-enabled: 1
           inspector-enabled: 0
+          inspector-auto-discovery: 0
           tempest-regex: ironic
           branch-override: '{branch-override}'
           ramdisk-type: 'coreos'
@@ -1200,6 +1216,7 @@
           virtualbmc-from-source: 0
           ipxe-enabled: 1
           inspector-enabled: 0
+          inspector-auto-discovery: 0
           tempest-regex: ironic
           branch-override: '{branch-override}'
           ramdisk-type: 'tinyipa'
@@ -1237,6 +1254,7 @@
           virtualbmc-from-source: 0
           ipxe-enabled: 1
           inspector-enabled: 0
+          inspector-auto-discovery: 0
           tempest-regex: ironic
           branch-override: '{branch-override}'
           ramdisk-type: 'tinyipa'
@@ -1274,6 +1292,7 @@
           virtualbmc-from-source: 0
           ipxe-enabled: 1
           inspector-enabled: 0
+          inspector-auto-discovery: 0
           tempest-regex: ironic
           branch-override: '{branch-override}'
           ramdisk-type: 'tinyipa'
@@ -1311,6 +1330,7 @@
           virtualbmc-from-source: 0
           ipxe-enabled: 1
           inspector-enabled: 0
+          inspector-auto-discovery: 0
           tempest-regex: ironic
           branch-override: '{branch-override}'
           ramdisk-type: 'coreos'
@@ -1348,6 +1368,7 @@
           virtualbmc-from-source: 0
           ipxe-enabled: 1
           inspector-enabled: 0
+          inspector-auto-discovery: 0
           tempest-regex: ironic
           branch-override: '{branch-override}'
           ramdisk-type: 'tinyipa'
@@ -1385,6 +1406,7 @@
           virtualbmc-from-source: 0
           ipxe-enabled: 1
           inspector-enabled: 0
+          inspector-auto-discovery: 0
           tempest-regex: ironic
           branch-override: '{branch-override}'
           ramdisk-type: 'tinyipa'
@@ -1422,6 +1444,7 @@
           virtualbmc-from-source: 0
           ipxe-enabled: 1
           inspector-enabled: 0
+          inspector-auto-discovery: 0
           tempest-regex: ironic
           branch-override: '{branch-override}'
           ramdisk-type: 'tinyipa'
@@ -1459,7 +1482,46 @@
           virtualbmc-from-source: 0
           ipxe-enabled: 1
           inspector-enabled: 1
+          inspector-auto-discovery: 0
           tempest-regex: InspectorBasicTest
+          branch-override: '{branch-override}'
+          ramdisk-type: 'tinyipa'
+          gate-tempest-full: 0
+          bm-vm-count: 1
+          multitenant-network: 0
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-tempest-dsvm-ironic-inspector-discovery{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 180
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - devstack-virtual-ironic:
+          postgres: 0
+          build-ramdisk: 0
+          deploy_driver: agent_ssh
+          deploy-with-ipa: 1
+          client-from-source: 0
+          ironic-lib-from-source: 0
+          pyghmi-from-source: 0
+          virtualbmc-from-source: 0
+          ipxe-enabled: 1
+          inspector-enabled: 1
+          inspector-auto-discovery: 1
+          tempest-regex: InspectorDiscoveryTest
           branch-override: '{branch-override}'
           ramdisk-type: 'tinyipa'
           gate-tempest-full: 0
@@ -3098,6 +3160,7 @@
       - '{pipeline}-tempest-dsvm-ironic-pxe_ipmitool-pyghmi-src{job-suffix}'
       - '{pipeline}-tempest-dsvm-ironic-pxe_ssh{job-suffix}'
       - '{pipeline}-tempest-dsvm-ironic-inspector{job-suffix}'
+      - '{pipeline}-tempest-dsvm-ironic-inspector-discovery{job-suffix}'
       - '{pipeline}-tempest-dsvm-layer4{job-suffix}'
       - '{pipeline}-tempest-dsvm-lxc-f23{job-suffix}'
       - '{pipeline}-tempest-dsvm-lvm{job-suffix}'
