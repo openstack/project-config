@@ -653,6 +653,7 @@
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_VIRT_DRIVER=ironic
           export DEVSTACK_GATE_IRONIC_DRIVER={deploy_driver}
+          export DEVSTACK_GATE_IRONIC_EPHEMERAL={ephemeral-size}
           export DEVSTACK_GATE_IRONIC_BUILD_RAMDISK={build-ramdisk}
           export TEMPEST_CONCURRENCY=1
           export BRANCH_OVERRIDE={branch-override}
@@ -828,6 +829,7 @@
           postgres: 0
           build-ramdisk: 1
           deploy_driver: pxe_ssh
+          ephemeral-size: 1
           deploy-with-ipa: 0
           client-from-source: 0
           ironic-lib-from-source: 0
@@ -866,6 +868,7 @@
           postgres: 0
           build-ramdisk: 1
           deploy_driver: pxe_ssh
+          ephemeral-size: 1
           deploy-with-ipa: 1
           client-from-source: 0
           ironic-lib-from-source: 0
@@ -904,6 +907,7 @@
           postgres: 0
           build-ramdisk: 0
           deploy_driver: pxe_ssh
+          ephemeral-size: 1
           deploy-with-ipa: 1
           client-from-source: 0
           ironic-lib-from-source: 0
@@ -942,6 +946,7 @@
           postgres: 1
           build-ramdisk: 0
           deploy_driver: pxe_ssh
+          ephemeral-size: 1
           deploy-with-ipa: 1
           client-from-source: 0
           ironic-lib-from-source: 0
@@ -1025,6 +1030,7 @@
           postgres: 0
           build-ramdisk: 0
           deploy_driver: pxe_ssh
+          ephemeral-size: 1
           deploy-with-ipa: 1
           client-from-source: 0
           ironic-lib-from-source: 0
@@ -1063,6 +1069,7 @@
           postgres: 0
           build-ramdisk: 0
           deploy_driver: pxe_ipmitool
+          ephemeral-size: 1
           deploy-with-ipa: 1
           client-from-source: 0
           ironic-lib-from-source: 0
@@ -1101,6 +1108,7 @@
           postgres: 0
           build-ramdisk: 0
           deploy_driver: pxe_ipmitool
+          ephemeral-size: 1
           deploy-with-ipa: 1
           client-from-source: 0
           ironic-lib-from-source: 0
@@ -1140,6 +1148,7 @@
           postgres: 0
           build-ramdisk: 0
           deploy_driver: pxe_ipmitool
+          ephemeral-size: 1
           deploy-with-ipa: 1
           client-from-source: 0
           ironic-lib-from-source: 0
@@ -1178,6 +1187,7 @@
           postgres: 0
           build-ramdisk: 1
           deploy_driver: pxe_ssh
+          ephemeral-size: 1
           deploy-with-ipa: 1
           client-from-source: 0
           ironic-lib-from-source: 0
@@ -1216,6 +1226,46 @@
           postgres: 0
           build-ramdisk: 0
           deploy_driver: agent_ssh
+          ephemeral-size: 0
+          deploy-with-ipa: 1
+          client-from-source: 0
+          ironic-lib-from-source: 0
+          pyghmi-from-source: 0
+          virtualbmc-from-source: 0
+          ipxe-enabled: 1
+          inspector-enabled: 0
+          inspector-auto-discovery: 0
+          tempest-regex: ironic
+          branch-override: '{branch-override}'
+          ramdisk-type: 'tinyipa'
+          gate-tempest-full: 0
+          bm-vm-count: 1
+          multitenant-network: 0
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-tempest-dsvm-ironic-agent_ssh-partition-image{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 180
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - devstack-virtual-ironic:
+          postgres: 0
+          build-ramdisk: 0
+          deploy_driver: agent_ssh
+          ephemeral-size: 1
           deploy-with-ipa: 1
           client-from-source: 0
           ironic-lib-from-source: 0
@@ -1254,6 +1304,7 @@
           postgres: 0
           build-ramdisk: 0
           deploy_driver: agent_ipmitool
+          ephemeral-size: 0
           deploy-with-ipa: 0
           client-from-source: 0
           ironic-lib-from-source: 0
@@ -1292,6 +1343,7 @@
           postgres: 0
           build-ramdisk: 1
           deploy_driver: agent_ssh
+          ephemeral-size: 0
           deploy-with-ipa: 1
           client-from-source: 0
           ironic-lib-from-source: 0
@@ -1330,6 +1382,7 @@
           postgres: 0
           build-ramdisk: 1
           deploy_driver: agent_ssh
+          ephemeral-size: 0
           deploy-with-ipa: 1
           client-from-source: 0
           ironic-lib-from-source: 0
@@ -1368,6 +1421,7 @@
           postgres: 0
           build-ramdisk: 0
           deploy_driver: pxe_ssh
+          ephemeral-size: 1
           deploy-with-ipa: 1
           client-from-source: 1
           ironic-lib-from-source: 0
@@ -1406,6 +1460,7 @@
           postgres: 0
           build-ramdisk: 0
           deploy_driver: pxe_ssh
+          ephemeral-size: 1
           deploy-with-ipa: 1
           client-from-source: 0
           ironic-lib-from-source: 1
@@ -1444,6 +1499,7 @@
           postgres: 0
           build-ramdisk: 0
           deploy_driver: agent_ssh
+          ephemeral-size: 0
           deploy-with-ipa: 0
           client-from-source: 0
           ironic-lib-from-source: 0
@@ -1482,6 +1538,7 @@
           postgres: 0
           build-ramdisk: 0
           deploy_driver: agent_ssh
+          ephemeral-size: 0
           deploy-with-ipa: 1
           client-from-source: 0
           ironic-lib-from-source: 0
@@ -1520,6 +1577,7 @@
           postgres: 0
           build-ramdisk: 0
           deploy_driver: agent_ssh
+          ephemeral-size: 0
           deploy-with-ipa: 1
           client-from-source: 0
           ironic-lib-from-source: 0
