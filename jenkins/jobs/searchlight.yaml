@@ -23,6 +23,30 @@
     node: ubuntu-trusty
 
 - job-template:
+    name: 'gate-{name}-python27-searchlight-es2'
+
+    wrappers:
+      - build-timeout:
+          timeout: 50
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - zuul-git-prep-upper-constraints
+      - elasticsearch-install-2
+      - install-distro-packages
+      - revoke-sudo
+      - python27
+      - assert-no-extra-files
+
+    publishers:
+      - test-results
+      - console-log
+
+    node: ubuntu-trusty
+
+- job-template:
     name: 'gate-{name}-python34-searchlight'
 
     wrappers:
