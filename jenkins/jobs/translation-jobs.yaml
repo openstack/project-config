@@ -8,7 +8,7 @@
       - gerrit-git-prep
       - shell: |
           #!/bin/bash -xe
-          /usr/local/jenkins/slave_scripts/upstream_translation_update.sh {name}
+          /usr/local/jenkins/slave_scripts/upstream_translation_update.sh {name} {template-name}
 
     publishers:
       - console-log
@@ -18,6 +18,13 @@
             - source: 'translation-source/**/*.pot'
               target: 'tarballs/'
               keep-hierarchy: true
+      - scp:
+          site: 'static.openstack.org'
+          files:
+            - target: 'logs/$LOG_PATH'
+              source: 'testrepository.subunit.gz'
+              keep-hierarchy: false
+              copy-after-failure: true
       - proposal-slave-cleanup
 
     node: 'proposal'
@@ -33,10 +40,17 @@
           branch: '{branch}'
       - shell: |
           #!/bin/bash -xe
-          /usr/local/jenkins/slave_scripts/propose_translation_update.sh {name} {branch}
+          /usr/local/jenkins/slave_scripts/propose_translation_update.sh {name} {branch} {template-name}
 
     publishers:
       - console-log
+      - scp:
+          site: 'static.openstack.org'
+          files:
+            - target: 'logs/$LOG_PATH'
+              source: 'testrepository.subunit.gz'
+              keep-hierarchy: false
+              copy-after-failure: true
       - proposal-slave-cleanup
 
     node: 'proposal'
