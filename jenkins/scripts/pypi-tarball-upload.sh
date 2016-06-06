@@ -33,22 +33,4 @@ curl --fail -o $FILENAME http://$TARBALL_SITE/$PROJECT/$FILENAME
 # Make sure we actually got a gzipped file
 file -b $FILENAME | grep gzip
 
-# Uploads may claim to fail but actually succeed so we check if we
-# can download after upload to determine success. They can also fail
-# intermittently, so retrying in a delayed loop helps improve
-# robustness.
-TRY=0
-RETVAL=255
-set +e
-while [[ $TRY -lt 3 ]] && [[ $RETVAL -ne 0 ]]; do
-    twine upload -r pypi $FILENAME
-    curl --head --silent --fail \
-        "https://pypi.python.org/simple/$PROJECT/$FILENAME" >/dev/null 2>&1
-    RETVAL=$?
-    (( TRY++ ))
-    if [[ $TRY -lt 3 ]] && [[ $RETVAL -ne 0 ]]; then
-        echo "Upload failed, retrying in $TRY seconds." >&2
-        sleep $TRY
-    fi
-done
-exit $RETVAL
+twine upload -r pypi $FILENAME
