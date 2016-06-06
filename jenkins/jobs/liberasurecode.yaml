@@ -1,0 +1,16 @@
+- job:
+    name: 'gate-liberasurecode-unit'
+    node: 'ubuntu-trusty'
+
+    builders:
+      - gerrit-git-prep
+      - install-distro-packages
+      - shell: |
+          #!/bin/bash -xe
+          ./autogen.sh
+          ./configure
+          make
+          make test
+
+    publishers:
+      - console-log
