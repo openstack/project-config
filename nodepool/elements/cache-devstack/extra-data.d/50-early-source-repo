@@ -48,7 +48,7 @@ function get_devstack_from_cache {
 
     local REPO_DEST=$TMP_MOUNT_PATH$REPOPATH
     local REPO_SUB_DIRECTORY=$(dirname $REPO_DEST)
-    sudo mkdir -p $REPO_SUB_DIRECTORY
+    sudo mkdir -p $REPO_SUB_DIRECTORY # dib-lint: safe_sudo
 
     # build the same cache name as source-repositories
     CACHE_NAME=$(echo "${REPOTYPE}_${REPOLOCATION}" | sha1sum | awk '{ print $1 }' )
@@ -78,7 +78,7 @@ function get_devstack_from_cache {
     fi
 
     # clone the updated repo to our destination
-    sudo git clone $CACHE_PATH $REPO_DEST
+    sudo git clone $CACHE_PATH $REPO_DEST # dib-lint: safe_sudo
 }
 
 # in case source-repositories hasn't run yet, make the cache
