@@ -1140,8 +1140,8 @@ jobs:
           - ^.*\.rst$
           - ^doc/.*$
           - ^releasenotes/.*$
-  # Skip all except release notes and pep8 jobs for heat
-  - name: ^.*heat-(docs|dsvm-functional-(orig|convg)|python27-db|python34-db).*$
+  # Skip heat docs for release notes and translation
+  - name: ^.*heat-docs.*$
     skip-if:
       - project: ^openstack/heat$
         all-files-match-any:
@@ -1170,6 +1170,7 @@ jobs:
           - ^api-ref/.*$
           - ^doc/.*$
           - ^heat/locale/.*$
+          - ^releasenotes/.*$
   # Skip non-doc jobs for doc-only or translation-only horizon
   # changes. Since doc/source/* is checked by horizon-pep8, this job
   # should not be skipped.
