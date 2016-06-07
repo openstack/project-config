@@ -39,6 +39,9 @@ fi
 
 setup_git
 
+# Setup venv - needed for all projects for subunit
+setup_venv
+
 # Project setup and updating POT files.
 case "$PROJECT" in
     api-site|ha-guide|openstack-manuals|operations-guide|security-doc)
@@ -67,7 +70,6 @@ case "$PROJECT" in
         ;;
     *)
         # Common setup for python and django repositories
-        setup_venv
         # ---- Python projects ----
         module_names=$(get_modulename $PROJECT python)
         if [ -n "$module_names" ]; then
