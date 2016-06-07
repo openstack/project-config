@@ -192,6 +192,9 @@ setup_git
 # Check whether a review already exists, setup review commit message.
 setup_review "$BRANCH"
 
+# Setup venv - needed for all projects for subunit
+setup_venv
+
 case "$PROJECT" in
     api-site|ha-guide|openstack-manuals|operations-guide|security-doc)
         init_manuals "$PROJECT"
@@ -205,7 +208,6 @@ case "$PROJECT" in
         ;;
     *)
         # Common setup for python and django repositories
-        setup_venv
         setup_loglevel_vars
         handle_python_django $PROJECT python
         handle_python_django $PROJECT django
