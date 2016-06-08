@@ -58,17 +58,20 @@ function get_modulename {
 
 function finish {
 
-    if [[ "$ERRORS" -eq 1 ]] ; then
-        $VENV/bin/generate-subunit $TRANS_START_TIME $SECONDS 'fail' $JOBNAME >> $SUBUNIT_OUTPUT
-
-    else
-        $VENV/bin/generate-subunit $TRANS_START_TIME $SECONDS 'success' $JOBNAME >> $SUBUNIT_OUTPUT
-    fi
-
-    gzip -9 $SUBUNIT_OUTPUT
-
-    # Delete temporary directories
+    # Only run this if VENV is setup.
     if [ "$VENV" != "" ] ; then
+        if [[ "$ERRORS" -eq 1 ]] ; then
+            $VENV/bin/generate-subunit $TRANS_START_TIME $SECONDS \
+                'fail' $JOBNAME >> $SUBUNIT_OUTPUT
+
+        else
+            $VENV/bin/generate-subunit $TRANS_START_TIME $SECONDS \
+                'success' $JOBNAME >> $SUBUNIT_OUTPUT
+        fi
+
+        gzip -9 $SUBUNIT_OUTPUT
+
+        # Delete temporary directories
         rm -rf $VENV
         VENV=""
     fi
