@@ -31,7 +31,7 @@ def tempdir():
         reqroot = tempfile.mkdtemp()
         yield reqroot
     finally:
-        shutil.rmtree(reqroot)
+        shutil.rmtree(reqroot, ignore_errors=True)
 
 
 def check_repo(repo_path):
@@ -140,7 +140,15 @@ def main():
         # but not git@
         upstream = p.get('upstream')
         if upstream and 'track-upstream' not in p.get('options', []):
-            found_errors += check_repo(upstream)
+            openstack_repo = 'https://git.openstack.org/%s' % name
+            try:
+                # Check to see if we have already imported the project into
+                # OpenStack, if so skip checking upstream.
+                check_repo(openstack_repo)
+            except git.exc.GitCommandError:
+                # We haven't imported the repo yet, make sure upstream is
+                # valid.
+                found_errors += check_repo(upstream)
         if upstream:
             for prefix in VALID_SCHEMES:
                 if upstream.startswith(prefix):
