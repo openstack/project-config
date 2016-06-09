@@ -714,7 +714,14 @@
           fi
 
           # use tempest plugin
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"TEMPEST_PLUGINS=/opt/stack/new/ironic"
+          if [[ "$ZUUL_BRANCH" != "master" ]] ; then
+            # NOTE(jroll) if this isn't a patch against master, then
+            # fetch master to install the plugin
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"TEMPEST_PLUGINS=git+git://git.openstack.org/openstack/ironic"
+          else
+            # on master, use the local change, so we can pick up any changes to the plugin
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"TEMPEST_PLUGINS=/opt/stack/new/ironic"
+          fi
           # Allow switching between full tempest and baremetal-only
           if [ "{gate-tempest-full}" == "1" ] ; then
               export DEVSTACK_GATE_TEMPEST_FULL=1
