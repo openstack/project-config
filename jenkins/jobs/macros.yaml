@@ -309,6 +309,16 @@
           sudo -H pip install diskimage-builder
 
 - builder:
+    name: proposal-slave-cleanup
+    builders:
+      - shell: |
+          #!/bin/bash
+          cd /
+          rm -rf `dirname $WORKSPACE`/*
+          mkdir $WORKSPACE
+          cd $WORKSPACE
+
+- builder:
     name: puppet-prepare-node
     builders:
       - shell: |
@@ -1134,13 +1144,6 @@
     publishers:
       - zuul-swift-upload-logs-with-console:
           upload_source: '"**/*nose_results.html" "**/*testr_results.html.gz" ".testrepository/tmp*" "**/*testrepository.subunit.gz" ".tox/*/log/*"'
-
-- publisher:
-    name: proposal-slave-cleanup
-    publishers:
-      - postbuildscript:
-          builders:
-            - shell: "/usr/local/jenkins/slave_scripts/slave-cleanup.sh"
 
 - publisher:
     name: copy-puppet-logs
