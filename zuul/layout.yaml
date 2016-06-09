@@ -494,6 +494,14 @@ project-templates:
     post:
       - '{name}-api-guide'
 
+  - name: install-guide-jobs
+    check:
+      - gate-{name}-install-guide
+    gate:
+      - gate-{name}-install-guide
+    post:
+      - '{name}-install-guide'
+
   # This job needs to run on all repositories that are part of the
   # global requirements syncing which is setup in the requirements
   # repository. If a repository is in requirements/projects.txt, it
@@ -1850,6 +1858,15 @@ jobs:
       - '^tox.ini$'
       - '^api-ref/.*'
 
+  - name: ^gate-.*-install-guide$
+    success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/install-guide/build/html/
+    # This is only available in Newton.
+    branch: ^(?!stable/(kilo|liberty|mitaka)).*$
+    files:
+      - '^tox.ini$'
+      - '^install-guide/.*'
+      - other-requirements.txt
+
   - name: ^(?!gate-).*-api-guide$
     # Only publish from master
     branch: master
@@ -1857,6 +1874,9 @@ jobs:
   - name: ^(?!gate-).*-api-ref$
     # Only publish from master
     branch: master
+
+  - name: ^(?!gate-).*-install-guide$
+    branch: ^(?!stable/(kilo|liberty|mitaka)).*$
 
   - name: ^gate-.*-js-draft
     success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/dist/
@@ -6702,6 +6722,7 @@ projects:
       - name: experimental-tripleo-jobs
       - name: release-notes-jobs
       - name: api-ref-jobs
+      - name: install-guide-jobs
     check:
       - gate-heat-dsvm-functional-orig-mysql-lbaasv1
       - gate-heat-dsvm-functional-convg-mysql-lbaasv1
