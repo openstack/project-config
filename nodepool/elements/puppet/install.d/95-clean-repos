@@ -27,15 +27,24 @@ fi
 set -e
 
 OS_FAMILY=$(facter osfamily)
-if [ "$OS_FAMILY" == "Debian" ] ; then
-    rm -f /etc/apt/sources.list.d/*
-    apt-get update
-elif [ "$OS_FAMILY" == "RedHat" ] ; then
-    # Can't delete * in yum.repos.d since all of the repos are listed there.
-    # Be specific instead.
-    if [ -f /etc/yum.repos.d/puppetlabs.repo ] ; then
-        sudo rm -f /etc/yum.repos.d/puppetlabs.repo
-    fi
-fi
+
+case $OS_FAMILY in
+    "Debian")
+        repo=/etc/apt/sources.list.d/puppetlabs.list
+        update="apt-get update"
+        ;;
+    "RedHat")
+        repo=/etc/yum.repos.d/puppetlabs.repo
+        # yum/dnf will notice this is gone, so don't need to spend
+        # time updating.
+        update=""
+        ;;
+    *)
+        die "Don't know how to cleanup!"
+        ;;
+esac
+
+rm -f $repo
+$update
 
 rm /usr/local/bin/prepare-node
