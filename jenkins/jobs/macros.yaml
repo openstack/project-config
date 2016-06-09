@@ -1144,17 +1144,3 @@
     publishers:
       - zuul-swift-upload-logs-with-console:
           upload_source: '"**/*nose_results.html" "**/*testr_results.html.gz" ".testrepository/tmp*" "**/*testrepository.subunit.gz" ".tox/*/log/*"'
-
-- publisher:
-    name: copy-puppet-logs
-    publishers:
-      - postbuildscript:
-          builders:
-            - shell: |
-                #!/bin/bash -x
-                /usr/local/jenkins/slave_scripts/copy_puppet_logs.sh
-          # These flags really mean only if on * when
-          # checked. When both set to false the post script
-          # should run on every job regardless of status.
-          onfailure: False
-          onsuccess: False
