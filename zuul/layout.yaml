@@ -856,20 +856,16 @@ project-templates:
 
   - name: check-tripleo-jobs
     check-tripleo:
-      - gate-tripleo-ci-f22-upgrades
-      - gate-tripleo-ci-f22-ha
-      - gate-tripleo-ci-f22-nonha
-    experimental-tripleo:
       - gate-tripleo-ci-centos-7-upgrades
       - gate-tripleo-ci-centos-7-ha
       - gate-tripleo-ci-centos-7-nonha
+    experimental-tripleo:
       - gate-tripleo-ci-centos-7-containers
-      - gate-tripleo-ci-f22-containers
-      - gate-tripleo-ci-f22-ha-tempest
+      - gate-tripleo-ci-centos-7-ha-tempest
 
   - name: experimental-tripleo-jobs
     experimental-tripleo:
-      - gate-tripleo-ci-f22-nonha
+      - gate-tripleo-ci-centos-7-nonha
 
   - name: salt-formula-jobs
     check:
@@ -1291,7 +1287,7 @@ jobs:
     branch: ^(?!stable/(kilo|liberty)).*$
 
   # no need to run the jobs for doc / releasenotes / unittests patches
-  - name: ^gate-(puppet-.*-(syntax|unit|beaker|tempest)-|tripleo-ci-f22-).*$
+  - name: ^gate-(puppet-.*-(syntax|unit|beaker|tempest)-|tripleo-ci-centos-7-).*$
     skip-if:
       - project: ^openstack/puppet-.*$
         all-files-match-any:
@@ -1807,7 +1803,7 @@ jobs:
   - name: gate-ironicclient-dsvm-functional
     voting: false
 
-  - name: gate-tripleo-ci-f22-containers
+  - name: gate-tripleo-ci-centos-7-containers
     voting: false
 
   - name: ^gate-.*-tox-doc-publish-checkbuild$
@@ -4262,12 +4258,12 @@ projects:
       - name: noop-jobs
       - name: check-tripleo-jobs
     periodic:
-      - periodic-tripleo-ci-f22-upgrades
-      - periodic-tripleo-ci-f22-ha
-      - periodic-tripleo-ci-f22-nonha
-      - periodic-tripleo-ci-f22-ha-liberty
-      - periodic-tripleo-ci-f22-ha-mitaka
-      - periodic-tripleo-ci-f22-ha-tempest
+      - periodic-tripleo-ci-centos-7-upgrades
+      - periodic-tripleo-ci-centos-7-ha
+      - periodic-tripleo-ci-centos-7-nonha
+      - periodic-tripleo-ci-centos-7-ha-liberty
+      - periodic-tripleo-ci-centos-7-ha-mitaka
+      - periodic-tripleo-ci-centos-7-ha-tempest
 
   - name: openstack-infra/trystack-site
     template:
@@ -5635,7 +5631,7 @@ projects:
       - gate-dib-dsvm-functests-centos-7
       - gate-dib-utils-tox-func
     check-tripleo:
-      - gate-tripleo-ci-f22-nonha
+      - gate-tripleo-ci-centos-7-nonha
     gate:
       - gate-dib-dsvm-functests-ubuntu-trusty
       - gate-dib-dsvm-functests-centos-7
@@ -5658,7 +5654,7 @@ projects:
       - gate-dib-dsvm-functests-ubuntu-trusty-extras-nv
       - gate-dib-dsvm-functests-centos-7-extras-nv
     check-tripleo:
-      - gate-tripleo-ci-f22-nonha
+      - gate-tripleo-ci-centos-7-nonha
     gate:
       - gate-dib-dsvm-functests-ubuntu-trusty
       - gate-dib-dsvm-functests-centos-7
@@ -9594,7 +9590,7 @@ projects:
       - name: puppet-branch-tarball-jobs
       - name: openstack-server-release-jobs
     check-tripleo:
-      - gate-tripleo-ci-f22-nonha
+      - gate-tripleo-ci-centos-7-nonha
 
   - name: openstack/puppet-autossh
     template:
@@ -9624,7 +9620,7 @@ projects:
       - name: puppet-branch-tarball-jobs
       - name: openstack-server-release-jobs
     check-tripleo:
-      - gate-tripleo-ci-f22-nonha
+      - gate-tripleo-ci-centos-7-nonha
 
   - name: openstack/puppet-ceph
     template:
@@ -9641,7 +9637,7 @@ projects:
       - gate-puppet-ceph-puppet-beaker-rspec-ubuntu-trusty-nv
       - gate-puppet-ceph-puppet-beaker-rspec-centos-7-nv
     check-tripleo:
-      - gate-tripleo-ci-f22-nonha
+      - gate-tripleo-ci-centos-7-nonha
 
   - name: openstack/puppet-cinder
     template:
@@ -9657,7 +9653,7 @@ projects:
       - name: puppet-branch-tarball-jobs
       - name: openstack-server-release-jobs
     check-tripleo:
-      - gate-tripleo-ci-f22-nonha
+      - gate-tripleo-ci-centos-7-nonha
 
   - name: openstack/puppet-congress
     template:
@@ -9701,7 +9697,7 @@ projects:
       - name: puppet-branch-tarball-jobs
       - name: openstack-server-release-jobs
     check-tripleo:
-      - gate-tripleo-ci-f22-nonha
+      - gate-tripleo-ci-centos-7-nonha
 
   - name: openstack/puppet-gnocchi
     template:
@@ -9716,7 +9712,7 @@ projects:
       - name: puppet-branch-tarball-jobs
       - name: openstack-server-release-jobs
     check-tripleo:
-      - gate-tripleo-ci-f22-nonha
+      - gate-tripleo-ci-centos-7-nonha
 
   - name: openstack/puppet-heat
     template:
@@ -9731,7 +9727,7 @@ projects:
       - name: puppet-branch-tarball-jobs
       - name: openstack-server-release-jobs
     check-tripleo:
-      - gate-tripleo-ci-f22-nonha
+      - gate-tripleo-ci-centos-7-nonha
 
   - name: openstack/puppet-horizon
     template:
@@ -9746,7 +9742,7 @@ projects:
       - name: puppet-branch-tarball-jobs
       - name: openstack-server-release-jobs
     check-tripleo:
-      - gate-tripleo-ci-f22-nonha
+      - gate-tripleo-ci-centos-7-nonha
 
   - name: openstack/puppet-ironic
     template:
@@ -9761,7 +9757,7 @@ projects:
       - name: puppet-branch-tarball-jobs
       - name: openstack-server-release-jobs
     check-tripleo:
-      - gate-tripleo-ci-f22-nonha
+      - gate-tripleo-ci-centos-7-nonha
 
   - name: openstack/puppet-keystone
     template:
@@ -9776,7 +9772,7 @@ projects:
       - name: puppet-branch-tarball-jobs
       - name: openstack-server-release-jobs
     check-tripleo:
-      - gate-tripleo-ci-f22-nonha
+      - gate-tripleo-ci-centos-7-nonha
 
   - name: openstack/puppet-magnum
     template:
@@ -9857,7 +9853,7 @@ projects:
       - name: puppet-branch-tarball-jobs
       - name: openstack-server-release-jobs
     check-tripleo:
-      - gate-tripleo-ci-f22-nonha
+      - gate-tripleo-ci-centos-7-nonha
 
   - name: openstack/puppet-nova
     template:
@@ -9871,7 +9867,7 @@ projects:
       - name: puppet-branch-tarball-jobs
       - name: openstack-server-release-jobs
     check-tripleo:
-      - gate-tripleo-ci-f22-nonha
+      - gate-tripleo-ci-centos-7-nonha
 
   - name: openstack/puppet-octavia
     template:
@@ -9960,7 +9956,7 @@ projects:
       - name: puppet-branch-tarball-jobs
       - name: openstack-server-release-jobs
     check-tripleo:
-      - gate-tripleo-ci-f22-nonha
+      - gate-tripleo-ci-centos-7-nonha
 
   - name: openstack/puppet-oslo
     template:
@@ -9974,7 +9970,7 @@ projects:
       - name: puppet-branch-tarball-jobs
       - name: openstack-server-release-jobs
     check-tripleo:
-      - gate-tripleo-ci-f22-nonha
+      - gate-tripleo-ci-centos-7-nonha
 
   - name: openstack/puppet-ovn
     template:
@@ -9996,7 +9992,7 @@ projects:
       - name: puppet-branch-tarball-jobs
       - name: openstack-server-release-jobs
     check-tripleo:
-      - gate-tripleo-ci-f22-ha
+      - gate-tripleo-ci-centos-7-ha
 
   - name: openstack/puppet-rally
     template:
@@ -10044,7 +10040,7 @@ projects:
       - name: puppet-branch-tarball-jobs
       - name: openstack-server-release-jobs
     check-tripleo:
-      - gate-tripleo-ci-f22-nonha
+      - gate-tripleo-ci-centos-7-nonha
 
   - name: openstack/puppet-tempest
     template:
@@ -10107,7 +10103,7 @@ projects:
       - name: puppet-branch-tarball-jobs
       - name: openstack-server-release-jobs
     check-tripleo:
-      - gate-tripleo-ci-f22-nonha
+      - gate-tripleo-ci-centos-7-nonha
 
   - name: openstack/puppet-watcher
     template:
