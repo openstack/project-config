@@ -430,8 +430,7 @@ function filter_commits {
     # Don't send files where the only things which have changed are
     # the creation date, the version number, the revision date,
     # name of last translator, comment lines, or diff file information.
-    # Also, don't send files if only .pot files would be changed.
-    PO_CHANGE=0
+    REAL_CHANGE=0
     # Don't iterate over deleted files
     for f in $(git diff --cached --name-only --diff-filter=AM); do
         # It's ok if the grep fails
@@ -462,18 +461,16 @@ function filter_commits {
         if [ $changed -eq 0 ]; then
             git reset -q "$f"
             git checkout -- "$f"
-        # Check for all files ending with ".po".
         # We will take this import if at least one change adds new content,
         # thus adding a new translation.
-        # If only lines are removed, we do not need this.
-        elif [[ $added -gt 0 && $f =~ .po$ ]] ; then
-            PO_CHANGE=1
+        # If only lines are removed, we do not need to generate an import.
+        elif [ $added -gt 0 ] ; then
+            REAL_CHANGE=1
         fi
     done
-    # If no po file was changed, only pot source files were changed
-    # and those changes can be ignored as they give no benefit on
-    # their own.
-    if [ $PO_CHANGE -eq 0 ] ; then
+
+    # If no file has any real change, revert all changes.
+    if [ $REAL_CHANGE -eq 0 ] ; then
         # New files need to be handled differently
         for f in $(git diff --cached --name-only --diff-filter=A) ; do
             git reset -q -- "$f"
