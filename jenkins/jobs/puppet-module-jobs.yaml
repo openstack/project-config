@@ -177,7 +177,10 @@
           template-name: "{template-name}"
       - link-logs
       - puppet-openstack-integration-checkout
-      - install-distro-packages
+      - shell: |
+          #!/bin/bash -xe
+          export PACKAGES=puppet-openstack-integration/other-requirements.txt
+          /usr/local/jenkins/slave_scripts/install-distro-packages.sh
       - shell: |
           #!/bin/bash -xe
           cd puppet-openstack-integration
@@ -202,7 +205,10 @@
           template-name: "{template-name}"
       - link-logs
       - puppet-openstack-integration-checkout
-      - install-distro-packages
+      - shell: |
+          #!/bin/bash -xe
+          export PACKAGES=puppet-openstack-integration/other-requirements.txt
+          /usr/local/jenkins/slave_scripts/install-distro-packages.sh
       - puppet-prepare-node
       - shell: |
           #!/bin/bash -xe
