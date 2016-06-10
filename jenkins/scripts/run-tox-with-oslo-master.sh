@@ -24,6 +24,12 @@ script_path=/usr/local/jenkins/slave_scripts
 
 cat << EOF > oslo-from-master.sh
 pip install -q -U \
+    -e git+https://git.openstack.org/openstack/automaton.git#egg=automaton
+pip install -q -U \
+    -e git+https://git.openstack.org/openstack/debtcollector.git#egg=debtcollector
+pip install -q -U \
+    -e git+https://git.openstack.org/openstack/futurist.git#egg=futurist
+pip install -q -U \
     -e git+https://git.openstack.org/openstack/oslo.cache.git#egg=oslo.cache
 pip install -q -U \
     -e git+https://git.openstack.org/openstack/oslo.concurrency.git#egg=oslo.concurrency
@@ -63,6 +69,10 @@ pip install -q -U \
     -e git+https://git.openstack.org/openstack/oslotest.git#egg=oslotest
 pip install -q -U \
     -e git+https://git.openstack.org/openstack/oslo.db.git#egg=oslo.db
+pip install -q -U \
+    -e git+https://git.openstack.org/openstack/taskflow.git#egg=taskflow
+pip install -q -U \
+    -e git+https://git.openstack.org/openstack/tooz.git#egg=tooz
 pip freeze | grep oslo
 EOF
 
