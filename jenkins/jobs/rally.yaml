@@ -62,6 +62,7 @@
           export DEVSTACK_GATE_EXERCISES=0
           export RALLY_SCENARIO={scenario}
           export DEVSTACK_GATE_USE_KEYSTONE_V2API={keystone_use_v2api}
+          export DEVSTACK_GATE_PREPOPULATE_USERS={prepopulate_users}
 
           if [ $DEVSTACK_GATE_USE_KEYSTONE_V2API -eq 1 ]; then
               export IDENTITY_API_VERSION=2.0
@@ -383,6 +384,7 @@
             keystone_use_v2api: '0'
             senlin: '0'
             magnum: '0'
+            prepopulate_users: '0'
 
     publishers:
       - devstack-logs
@@ -530,6 +532,7 @@
           keystone_use_v2api: '0'
           senlin: '0'
           magnum: '0'
+          prepopulate_users: '0'
 
     publishers:
       - devstack-logs
@@ -556,6 +559,34 @@
           keystone_use_v2api: '0'
           senlin: '0'
           magnum: '0'
+          prepopulate_users: '0'
+
+    publishers:
+      - devstack-logs
+      - rally-plot
+      - console-log
+
+
+- job-template:
+    name: 'gate-rally-dsvm-neutron-existing-users-{name}'
+    node: ubuntu-trusty
+
+    wrappers:
+      - build-timeout:
+          timeout: 130
+      - timestamps
+
+    builders:
+      - devstack-rally-gate:
+          scenario: '{name}-neutron-existing-users'
+          ironic: '0'
+          neutron: '1'
+          zaqar: '0'
+          large_ops: '0'
+          keystone_use_v2api: '0'
+          senlin: '0'
+          magnum: '0'
+          prepopulate_users: '1'
 
     publishers:
       - devstack-logs
@@ -582,6 +613,7 @@
           keystone_use_v2api: '0'
           senlin: '0'
           magnum: '0'
+          prepopulate_users: '0'
 
     publishers:
       - devstack-logs
@@ -608,6 +640,7 @@
           keystone_use_v2api: '0'
           senlin: '0'
           magnum: '0'
+          prepopulate_users: '0'
 
     publishers:
       - devstack-logs
@@ -633,6 +666,7 @@
           keystone_use_v2api: '0'
           senlin: '0'
           magnum: '0'
+          prepopulate_users: '0'
 
     publishers:
       - devstack-logs
@@ -891,6 +925,7 @@
             keystone_use_v2api: '1'
             senlin: '0'
             magnum: '0'
+            prepopulate_users: '0'
 
     publishers:
       - devstack-logs
@@ -916,6 +951,7 @@
           keystone_use_v2api: '0'
           senlin: '1'
           magnum: '0'
+          prepopulate_users: '0'
 
     publishers:
       - devstack-logs
@@ -942,6 +978,7 @@
           keystone_use_v2api: '0'
           senlin: '0'
           magnum: '1'
+          prepopulate_users: '0'
 
     publishers:
       - devstack-logs
