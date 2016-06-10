@@ -33,6 +33,9 @@ INVALID_PO_FILE=0
 # set to 0 on successfull run.
 ERROR_ABORT=1
 
+# We need a UTF-8 locale, set it properly in case it's not set.
+export LANG=en_US.UTF-8
+
 trap "finish" EXIT
 
 # Set up some branch dependent variables
