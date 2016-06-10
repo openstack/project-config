@@ -21,17 +21,9 @@
           export PROJECTS="openstack/python-muranoclient $PROJECTS"
           export KEEP_LOCALRC=1
 
-          if [[ $ZUUL_BRANCH =~ "kilo" ]]; then
-              # Kilo version uses 'hooks' approach that requires explicit
-              # enabling of services.
-              # todo(freerunner): Remove this ugly workaround when kilo support will be
-              # todo(freerunner): dropped off.
-              ENABLED_SERVICES+=,murano,murano-api,murano-engine
-          else
-              # Enable murano devstack plugin. Provided repo should be cloned by zuul before devstack run
-              # and below provided link should not be used.
-              export DEVSTACK_LOCAL_CONFIG="enable_plugin murano git://git.openstack.org/openstack/murano"
-          fi
+          # Enable murano devstack plugin. Provided repo should be cloned by zuul before devstack run
+          # and below provided link should not be used.
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin murano git://git.openstack.org/openstack/murano"
 
           function pre_test_hook {
               cd /opt/stack/new/murano/functionaltests
@@ -85,17 +77,9 @@
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin congress git://git.openstack.org/openstack/congress"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"MURANO_ENABLE_MODEL_POLICY_ENFORCEMENT=True"
 
-          if [[ $ZUUL_BRANCH =~ "kilo" ]]; then
-              # Kilo version uses 'hooks' approach that requires explicit
-              # enabling of services.
-              # todo(freerunner): Remove this ugly workaround when kilo support will be
-              # todo(freerunner): dropped off.
-              ENABLED_SERVICES+=,murano,murano-api,murano-engine
-          else
-              # Enable murano devstack plugin. Provided repo should be cloned by zuul before devstack run
-              # and below provided link should not be used.
-              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin murano git://git.openstack.org/openstack/murano"
-          fi
+          # Enable murano devstack plugin. Provided repo should be cloned by zuul before devstack run
+          # and below provided link should not be used.
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin murano git://git.openstack.org/openstack/murano"
 
           function pre_test_hook {
               cd /opt/stack/new/murano/functionaltests
@@ -144,17 +128,9 @@
           export PROJECTS="openstack/python-muranoclient $PROJECTS"
           export KEEP_LOCALRC=1
 
-          if [[ $ZUUL_BRANCH =~ "kilo" ]]; then
-              # Kilo version uses 'hooks' approach that requires explicit
-              # enabling of services.
-              # todo(freerunner): Remove this ugly workaround when kilo support will be
-              # todo(freerunner): dropped off.
-              ENABLED_SERVICES+=,murano,murano-api,murano-engine
-          else
-              # Enable murano devstack plugin. Provided repo should be cloned by zuul before devstack run
-              # and below provided link should not be used.
-              export DEVSTACK_LOCAL_CONFIG="enable_plugin murano git://git.openstack.org/openstack/murano"
-          fi
+          # Enable murano devstack plugin. Provided repo should be cloned by zuul before devstack run
+          # and below provided link should not be used.
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin murano git://git.openstack.org/openstack/murano"
 
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
