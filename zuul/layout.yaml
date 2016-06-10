@@ -1131,7 +1131,7 @@ jobs:
           - ^doc/.*$
           - ^releasenotes/.*$
   # Skip non-doc jobs for doc-only neutron-lib changes.
-  - name: ^.*neutron-lib-python(27|34)$
+  - name: ^.*neutron-lib-(python(27|34)|coverage)$
     skip-if:
       - project: ^openstack/neutron-lib$
         all-files-match-any:
@@ -1445,6 +1445,9 @@ jobs:
     voting: false
 
   - name: networking-cisco-coverage
+    voting: false
+
+  - name: neutron-lib-coverage
     voting: false
 
   - name: gate-neutron-dsvm-functional-py34
@@ -8162,6 +8165,7 @@ projects:
       - name: translation-jobs
     check:
       - gate-tempest-dsvm-neutron-src-neutron-lib
+      - neutron-lib-coverage
     gate:
       - gate-tempest-dsvm-neutron-src-neutron-lib
 
