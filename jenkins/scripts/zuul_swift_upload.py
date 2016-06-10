@@ -23,6 +23,7 @@ import argparse
 import logging
 import glob2
 import magic
+import mimetypes
 import os
 import Queue
 import requests
@@ -154,12 +155,20 @@ def get_file_mime(file_path):
         return None
 
     if hasattr(magic, 'from_file'):
-        return magic.from_file(file_path, mime=True)
+        mime = magic.from_file(file_path, mime=True)
     else:
         # no magic.from_file, we might be using the libmagic bindings
         m = magic.open(magic.MAGIC_MIME)
         m.load()
-        return m.file(file_path).split(';')[0]
+        mime = m.file(file_path).split(';')[0]
+    # libmagic can fail to detect the right mime type when content
+    # is too generic. The case for css or js files. So in case
+    # text/plain is detected then we rely on the mimetype db
+    # to guess by file extension.
+    if mime == 'text/plain':
+       mime_guess = mimetypes.guess_type(file_path)[0]
+       mime = mime_guess if mime_guess else mime
+    return mime
 
 
 def get_file_metadata(file_path):
