@@ -5,7 +5,8 @@
 # directory, stable/X will be published to the X directory. For
 # example stable/newton documents will life in the newton directory.
 
-tox -e install-guide
+venv=install-guide
+tox -e $venv
 result=$?
 
 [ -e .tox/$venv/bin/pbr ] && freezecmd=pbr || freezecmd=pip
@@ -36,8 +37,8 @@ fi
 if [ ! -z $TARGET ] ; then
     # Move the docs into subdir based on branch
     mkdir install-guide/build/$TARGET
-    mv doc/build/html/* doc/build/$TARGET
-    mv doc/build/$TARGET doc/build/html/$TARGET
+    mv install-guide/build/html/* install-guide/build/$TARGET
+    mv install-guide/build/$TARGET install-guide/build/html/$TARGET
 fi
 
 exit $result
