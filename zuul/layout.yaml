@@ -1413,10 +1413,16 @@ jobs:
   - name: gate-zaqar-tox-integration
     voting: false
 
-  # NOTE(flwang) Make tempest jobs non-voting until Zaqar's tempest
-  # environment stablizes
-  - name: ^gate-tempest-dsvm-.*-zaqar$
+  # NOTE(wangxiyuan) As the tempest test has been enabled and the functional
+  # test may cause the interdependent issue, this check is unnecessary now. So
+  # switch the zaqar client functional test to non-voting.
+  - name: ^gate-dsvm-.*-zaqar$
     voting: false
+
+  # NOTE(wangxiyuan) tempest test for zaqar was introduced in the newton cycle,
+  # so testing the earlier branches doesn't make sense.
+  - name: ^gate-tempest-dsvm-.*-zaqar$
+    branch: ^(?!stable/(kilo|liberty|mitaka)).*$
 
   - name: gate-tempest-dsvm-neutron-nv
     branch: ^feature/pecan
@@ -12744,8 +12750,8 @@ projects:
       - gate-tempest-dsvm-mongodb-zaqar
       - gate-tempest-dsvm-redis-zaqar
     gate:
-      - gate-dsvm-mongodb-zaqar
-      - gate-dsvm-redis-zaqar
+      - gate-tempest-dsvm-mongodb-zaqar
+      - gate-tempest-dsvm-redis-zaqar
 
   - name: openstack/zaqar-specs
     template:
