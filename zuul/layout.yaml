@@ -96,6 +96,11 @@ pipelines:
       gerrit:
         - event: ref-updated
           ref: ^refs/tags/.*$
+    failure:
+      smtp:
+        from: jenkins@openstack.org
+        to: release-job-failures@lists.openstack.org
+        subject: 'Tag of {change.project} failed'
 
   - name: pre-release
     description: This pipeline runs jobs on projects in response to pre-release tags.
@@ -106,6 +111,11 @@ pipelines:
       gerrit:
         - event: ref-updated
           ref: ^refs/tags/[0-9]+(\.[0-9]+)*(a|b|rc)[0-9]+$
+    failure:
+      smtp:
+        from: jenkins@openstack.org
+        to: release-job-failures@lists.openstack.org
+        subject: 'Pre-release of {change.project} failed'
 
   - name: release
     description: When a commit is tagged as a release, this pipeline runs jobs that publish archives and documentation.
@@ -116,6 +126,11 @@ pipelines:
       gerrit:
         - event: ref-updated
           ref: ^refs/tags/[0-9]+(\.[0-9]+)*$
+    failure:
+      smtp:
+        from: jenkins@openstack.org
+        to: release-job-failures@lists.openstack.org
+        subject: 'Release of {change.project} failed'
 
   - name: silent
     description: This pipeline is used for silently testing new jobs.
