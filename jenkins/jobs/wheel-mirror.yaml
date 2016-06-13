@@ -16,7 +16,7 @@
 
           # Build the wheels into staging directory
           echo "Building wheels"
-          /usr/local/jenkins/slave_scripts/wheel-build.sh $WHEEL_DIR
+          /usr/local/jenkins/slave_scripts/wheel-build.sh $WHEEL_DIR {python}
 
           # Get an afs token and copy the wheels to AFS
           echo "Obtaining token and copying wheels to AFS"
@@ -47,7 +47,7 @@
           echo "Done."
 
 - job-template:
-    name: 'wheel-build-{node_arch}'
+    name: 'wheel-build-{node_arch}-{python}'
     node: 'wheel-mirror-{node_arch}'
 
     wrappers:
