@@ -602,7 +602,11 @@ project-templates:
         - '{name}-pypi-both-upload':
             - wheel-build-ubuntu-trusty-amd64-python2:
               - wheel-release-trustyx64
+            - wheel-build-ubuntu-trusty-amd64-python3:
+              - wheel-release-trustyx64
             - wheel-build-centos-7-amd64-python2:
+              - wheel-release-cent7x64
+            - wheel-build-centos-7-amd64-python3:
               - wheel-release-cent7x64
             - '{name}-announce-release'
 
@@ -2861,10 +2865,16 @@ jobs:
   - name: wheel-build-ubuntu-trusty-amd64-python2
     mutex: mirror.wheel.trustyx64
 
+  - name: wheel-build-ubuntu-trusty-amd64-python3
+    mutex: mirror.wheel.trustyx64
+
   - name: wheel-release-trustyx64
     mutex: mirror.wheel.trustyx64
 
   - name: wheel-build-centos-7-amd64-python2
+    mutex: mirror.wheel.cent7x64
+
+  - name: wheel-build-centos-7-amd64-python3
     mutex: mirror.wheel.cent7x64
 
   - name: wheel-release-cent7x64
@@ -11186,7 +11196,11 @@ projects:
       - propose-requirements-constraints-master
       - wheel-build-ubuntu-trusty-amd64-python2:
         - wheel-release-trustyx64
+      - wheel-build-ubuntu-trusty-amd64-python3:
+        - wheel-release-trustyx64
       - wheel-build-centos-7-amd64-python2:
+        - wheel-release-cent7x64
+      - wheel-build-centos-7-amd64-python3:
         - wheel-release-cent7x64
     post:
       - propose-requirements-updates
