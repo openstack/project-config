@@ -28,25 +28,7 @@
 
           export PROJECTS="openstack/smaug $PROJECTS"
 
-          ENABLED_SERVICES=rabbit,mysql,key
-          ENABLED_SERVICES+=,n-cpu,n-api,n-crt,n-cond,n-sch,n-cauth
-          # n-obj has been removed from mitaka
-          if [[ "stable/kilo stable/liberty" =~ $ZUUL_BRANCH ]]; then
-              ENABLED_SERVICES+=,n-obj
-          fi
-          ENABLED_SERVICES+=,neutron,q-svc,q-agt,q-dhcp,q-meta
-          ENABLED_SERVICES+=,cinder,g-api,g-reg
-          ENABLED_SERVICES+=,c-api,c-vol,c-sch,c-bak,horizon
-          ENABLED_SERVICES+=,s-proxy,s-object,s-container,s-account
-          ENABLED_SERVICES+=,h-eng,h-api,h-api-cfn,h-api-cw
-          ENABLED_SERVICES+=,smaug,smaug-api,smaug-operationengine,smaug-protection
-
-          export ENABLED_SERVICES
-          DEVSTACK_LOCAL_CONFIG="enable_plugin smaug git://git.openstack.org/openstack/smaug"
-          DEVSTACK_LOCAL_CONFIG+=$'\n'"SWIFT_HASH=66a3d6b56c1f479c8b4e70ab5c2000f5"
-          DEVSTACK_LOCAL_CONFIG+=$'\n'"SWIFT_REPLICAS=1"
-          DEVSTACK_LOCAL_CONFIG+=$'\n'"SWIFT_DATA_DIR=$DEST/data"
-          export DEVSTACK_LOCAL_CONFIG
+          export DEVSTACK_GATE_SETTINGS=$BASE/new/smaug/devstack/devstackgaterc
 
           function gate_hook {{
               bash -xe $BASE/new/smaug/smaug/tests/contrib/gate_hook.sh fullstack
