@@ -7499,7 +7499,14 @@ projects:
   - name: openstack/monasca-analytics
     template:
       - name: merge-check
-      - name: noop-jobs
+      - name: publish-to-pypi
+      - name: check-requirements
+    check:
+      - gate-monasca-analytics-pep8
+      - gate-monasca-analytics-python27
+    gate:
+      - gate-monasca-analytics-pep8
+      - gate-monasca-analytics-python27
 
   - name: openstack/monasca-api
     template:
