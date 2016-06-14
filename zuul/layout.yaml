@@ -2761,8 +2761,19 @@ jobs:
     branch: ^(?!stable/kilo).*$
 
   # Saharaclient functional test don't run on kilo or earlier
-  - name: ^gate-saharaclient-dsvm-functional$
+  - name: ^gate-sahara-cli-nv$
     branch: ^(?!stable/kilo).*$
+    skip-if:
+      - project: ^openstack/sahara-tests$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+          - ^releasenotes/.*$
+          - ^etc/.*$
+          - ^sahara_tests/.*$
+          - ^sahara_tempest_plugin/.*$
+          - ^tools/.*$
+          - ^tox.ini$
 
   # Only run the unit cross tests for cliff against master.
   - name: ^gate-cliff-tox-(openstackclient|neutronclient)-tip$
@@ -10854,9 +10865,7 @@ projects:
       - name: osc-plugin-jobs
     check:
       - gate-python-saharaclient-python34
-      - gate-saharaclient-dsvm-functional
-    gate:
-      - gate-saharaclient-dsvm-functional
+      - gate-sahara-cli-nv
     post:
       - python-saharaclient-coverage
     experimental:
@@ -11372,6 +11381,7 @@ projects:
       - gate-sahara-tests-pylint
       - gate-sahara-tests-dsvm-scenario-neutron-heat
       - gate-sahara-tests-dsvm-scenario-nova-heat
+      - gate-sahara-cli-nv
     gate:
       - gate-sahara-tests-dsvm-scenario-neutron-heat
       - gate-sahara-tests-dsvm-scenario-nova-heat

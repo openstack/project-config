@@ -128,9 +128,9 @@
       - sahara-extra-publish
 
 
-- job-template:
-    name: '{pipeline}-saharaclient-dsvm-functional{job-suffix}'
-    node: '{node}'
+- job:
+    name: 'gate-sahara-cli-nv'
+    node: ubuntu-trusty
 
     wrappers:
       - build-timeout:
@@ -145,18 +145,15 @@
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export DEVSTACK_LOCAL_CONFIG="enable_plugin sahara git://git.openstack.org/openstack/sahara"
-          export BRANCH_OVERRIDE={branch-override}
-          export PROJECTS="openstack/python-saharaclient $PROJECTS"
+          export PROJECTS="openstack/sahara-tests $PROJECTS"
           export DEVSTACK_PROJECT_FROM_GIT=python-saharaclient
-          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
-              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
-          fi
 
-          function post_test_hook {{
-              # Configure and run functional tests
-              $BASE/new/python-saharaclient/saharaclient/tests/functional/hooks/post_test_hook.sh
-          }}
+          function post_test_hook {
+              cd /opt/stack/new/sahara-tests/tools/gate/cli_tests
+              ./post_test_hook.sh
+          }
           export -f post_test_hook
+
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
 
