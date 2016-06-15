@@ -12,7 +12,6 @@
           /usr/local/jenkins/slave_scripts/upstream_translation_update.sh {name} {template-name}
 
     publishers:
-      - console-log
       - scp:
           site: 'tarballs.openstack.org'
           files:
@@ -26,6 +25,7 @@
               source: 'testrepository.subunit.gz'
               keep-hierarchy: false
               copy-after-failure: true
+      - console-log
 
     node: 'proposal'
 
@@ -44,7 +44,6 @@
           /usr/local/jenkins/slave_scripts/propose_translation_update.sh {name} {branch} {template-name}
 
     publishers:
-      - console-log
       - scp:
           site: 'static.openstack.org'
           files:
@@ -52,6 +51,7 @@
               source: 'testrepository.subunit.gz'
               keep-hierarchy: false
               copy-after-failure: true
+      - console-log
 
     node: 'proposal'
 

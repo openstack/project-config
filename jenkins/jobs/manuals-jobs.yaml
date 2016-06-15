@@ -33,9 +33,9 @@
       - assert-no-extra-files
 
     publishers:
-      - console-log
       - upload-docs-draft
       - upload-doc-build-results
+      - console-log
 
 - job-template:
     name: '{name}-tox-doc-{envlist}'
@@ -56,9 +56,9 @@
           envlist: '{envlist}'
 
     publishers:
-      - console-log
       - upload-to-docs-site
       - upload-doc-build-results
+      - console-log
 
 
 - job-group:
@@ -90,7 +90,6 @@
       - shell: "/usr/local/jenkins/slave_scripts/run-install-guide.sh"
 
     publishers:
-      - console-log
       - scp:
           site: 'static.openstack.org'
           files:
@@ -98,6 +97,7 @@
               source: 'install-guide/build/html/**'
               keep-hierarchy: true
               copy-after-failure: true
+      - console-log
 
 - job-template:
     name: '{name}-install-guide'

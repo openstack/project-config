@@ -13,7 +13,6 @@
             #!/bin/bash -xe
             /usr/local/jenkins/slave_scripts/php-laravel-build.sh
     publishers:
-        - console-log
         - coverage-log
         - scp:
             site: 'static.openstack.org'
@@ -22,6 +21,7 @@
                   source: './reports/**'
                   keep-hierarchy: true
                   copy-after-failure: true
+        - console-log
 
 - job-template:
     name: 'openstackid-release-{job-suffix}'
@@ -53,7 +53,6 @@
             cp openstackid-$PROJECT_VER.tar.gz tarballs/openstackid-latest.tar.gz
             mv openstackid-$PROJECT_VER.tar.gz tarballs/
     publishers:
-        - console-log
         - coverage-log
         - scp:
             site: 'static.openstack.org'
@@ -66,3 +65,4 @@
                   source: 'tarballs/*.tar.gz'
                   keep-hierarchy: false
                   copy-after-failure: false
+        - console-log

@@ -159,7 +159,6 @@
       - infra-puppet-apply
 
     publishers:
-      - console-log
       - scp:
           site: 'static.openstack.org'
           files:
@@ -167,6 +166,7 @@
               source: 'openstack-infra/system-config/applytest/**'
               keep-hierarchy: false
               copy-after-failure: true
+      - console-log
 
 - job-template:
     name: 'gate-openstackci-beaker-{node}'
@@ -227,7 +227,6 @@
           envlist: 'ical'
 
     publishers:
-      - console-log
       - scp:
           site: 'static.openstack.org'
           files:
@@ -253,6 +252,7 @@
             - target: 'calendars/'
               source: 'output/calendars/*'
               copy-after-failure: false
+      - console-log
 
 - job:
     name: gate-irc-meetings-tox-ical
@@ -279,7 +279,6 @@
           # should run on every job regardless of status.
           onfailure: False
           onsuccess: False
-      - console-log
       - scp:
           site: 'static.openstack.org'
           files:
@@ -287,6 +286,7 @@
               source: 'output/**'
               keep-hierarchy: false
               copy-after-failure: true
+      - console-log
 
 - job:
     name: gate-infra-ansible
@@ -372,7 +372,6 @@
           mv ~/rpmbuild/RPMS/x86_64 $WORKSPACE/package-afs-centos7
 
     publishers:
-      - console-log
       - scp:
           site: 'tarballs.openstack.org'
           files:
@@ -380,3 +379,4 @@
               source: 'package-afs-centos7/**'
               keep-hierarchy: true
               copy-after-failure: false
+      - console-log

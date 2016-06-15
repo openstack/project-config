@@ -28,7 +28,6 @@
           command: '{command}'
       - assert-no-extra-files
     publishers:
-      - console-log
       - coverage-log
       - scp:
           site: 'static.openstack.org'
@@ -45,6 +44,7 @@
               source: 'karma.subunit'
               keep-hierarchy: false
               copy-after-failure: true
+      - console-log
 
 # Builds and uploads a tarball using NPM.
 - job-template:
@@ -76,7 +76,6 @@
       - tarball:
           project: '{name}'
           site: '{tarball-site}'
-      - console-log
       - scp:
           site: 'static.openstack.org'
           files:
@@ -84,6 +83,7 @@
               source: 'npm-shrinkwrap.json'
               keep-hierarchy: false
               copy-after-failure: false
+      - console-log
 
 # Builds and uploads a draft version of the project to docs-draft.
 - job-template:
@@ -117,7 +117,6 @@
           mv ./package/{package-dir}/* ./dist/
 
     publishers:
-      - console-log
       - coverage-log
       - scp:
           site: 'static.openstack.org'
@@ -132,6 +131,7 @@
               source: 'npm-shrinkwrap.json'
               keep-hierarchy: false
               copy-after-failure: false
+      - console-log
 
 # Builds a draft application and uploads it to docs-draft. To use this build,
 # your Gruntfile must declare a target named "build:draft"
@@ -158,7 +158,6 @@
       - assert-no-extra-files
 
     publishers:
-      - console-log
       - coverage-log
       - scp:
           site: 'static.openstack.org'
@@ -174,6 +173,7 @@
               source: 'dist/**'
               keep-hierarchy: true
               copy-after-failure: false
+      - console-log
 
 # Builds a release tarball
 - job-template:
@@ -204,7 +204,6 @@
           cp {name}-$PROJECT_VER.tar.gz tarballs/{name}-latest.tar.gz
           mv {name}-$PROJECT_VER.tar.gz tarballs/
     publishers:
-      - console-log
       - coverage-log
       - scp:
           site: 'static.openstack.org'
@@ -217,6 +216,7 @@
               source: 'tarballs/*.tar.gz'
               keep-hierarchy: false
               copy-after-failure: false
+      - console-log
 
 # Uploads a release tarball to npm.
 - job-template:
