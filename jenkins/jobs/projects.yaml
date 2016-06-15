@@ -5353,8 +5353,19 @@
       - gate-{name}-requirements
       - openstack-publish-jobs
       - openstack-releasenotes-jobs
-      - 'gate-{name}-dsvm-commit':
-          node: ubuntu-trusty
+      - 'gate-{name}-openstack-ansible-{scenario}-{node}{job-suffix}':
+          job-suffix: ''
+          node:
+            - centos-7
+            - ubuntu-trusty
+            - ubuntu-xenial
+          scenario: aio
+      - 'gate-{name}-openstack-ansible-{scenario}-{node}{job-suffix}':
+          job-suffix: '-nv'
+          node:
+            - centos-7
+            - ubuntu-xenial
+          scenario: aio
 
 - project:
     name: openstack-ansible-apt_package_pinning
