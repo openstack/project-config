@@ -10,7 +10,6 @@
           envlist: 'publishdocs-api'
 
     publishers:
-      - console-log
       - upload-doc-build-results
       - ftp:
           site: developer.openstack.org
@@ -22,6 +21,7 @@
           source: 'swagger/**'
           target: 'draft/swagger/'
           remove-prefix: 'swagger/'
+      - console-log
 
 - job:
     name: openstack-api-ref-publish-lang
@@ -35,13 +35,13 @@
           envlist: 'publishlang-api'
 
     publishers:
-      - console-log
       - upload-doc-build-results
       - ftp:
           site: developer.openstack.org
           source: 'publish-docs/api-ref/**'
           target: '/'
           remove-prefix: 'publish-docs/api-ref/'
+      - console-log
 
 - job:
     name: gate-build-swagger
@@ -57,8 +57,8 @@
           envlist: 'makeswagger'
 
     publishers:
-      - console-log
       - upload-swagger-draft
+      - console-log
 
 - job-template:
     name: gate-{name}-api-guide
@@ -73,8 +73,8 @@
           envlist: 'api-guide'
 
     publishers:
-      - console-log
       - upload-api-guide-draft
+      - console-log
 
 - job-template:
     name: '{name}-api-guide'
@@ -123,8 +123,8 @@
           envlist: 'api-ref'
 
     publishers:
-      - console-log
       - upload-api-ref-draft
+      - console-log
 
 - job-template:
     name: '{name}-api-ref'
