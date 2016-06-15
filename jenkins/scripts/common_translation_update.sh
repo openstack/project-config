@@ -63,7 +63,7 @@ function finish {
 
     # Only run this if VENV is setup.
     if [ "$VENV" != "" ] ; then
-        if [[ "$ERRORS" -eq 1 ]] ; then
+        if [[ "$ERROR_ABORT" -eq 1 ]] ; then
             $VENV/bin/generate-subunit $TRANS_START_TIME $SECONDS \
                 'fail' $JOBNAME >> $SUBUNIT_OUTPUT
 
