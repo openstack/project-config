@@ -625,6 +625,27 @@ project-templates:
               - wheel-release-cent7x64
             - '{name}-announce-release'
 
+  # Do a pre-check on xstatic version numbers matching tags then upload
+  # wheels and sdists etc.
+  - name: xstatic-publish-jobs
+    pre-release:
+      - 'xstatic-check-version':
+        - '{name}-tarball':
+          - '{name}-pypi-both-upload'
+    release:
+      - 'xstatic-check-version':
+        - '{name}-tarball':
+          - '{name}-pypi-both-upload':
+            - wheel-build-ubuntu-trusty-amd64-python2:
+              - wheel-release-trustyx64
+            - wheel-build-ubuntu-trusty-amd64-python3:
+              - wheel-release-trustyx64
+            - wheel-build-centos-7-amd64-python2:
+              - wheel-release-cent7x64
+            - wheel-build-centos-7-amd64-python3:
+              - wheel-release-cent7x64
+            - '{name}-announce-release'
+
   # Release OpenStack Server packages.
   - name: openstack-server-release-jobs
     pre-release:
@@ -12711,10 +12732,7 @@ projects:
     template:
       - name: merge-check
       - name: noop-jobs
-      - name: publish-to-pypi
-    experimental:
-      - xstatic-check-version:
-        - xstatic-angular-bootstrap-tarball-experimental
+      - name: xstatic-publish-jobs
 
   - name: openstack/xstatic-angular-cookies
     template:
