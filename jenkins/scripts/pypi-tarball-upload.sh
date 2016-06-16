@@ -28,7 +28,7 @@ DISTNAME=$(/usr/local/jenkins/slave_scripts/pypi-extract-name.py --tarball \
 FILENAME="$DISTNAME-$TAG.tar.gz"
 
 rm -rf *tar.gz
-curl --fail -o $FILENAME http://$TARBALL_SITE/$PROJECT/$FILENAME
+curl --fail -o $FILENAME https://$TARBALL_SITE/$PROJECT/$FILENAME
 
 # Make sure we actually got a gzipped file
 file -b $FILENAME | grep gzip

@@ -30,7 +30,7 @@ WHEELTYPE=$(/usr/local/jenkins/slave_scripts/pypi-extract-universal.py)
 FILENAME="$DISTNAME-$TAG-$WHEELTYPE-none-any.whl"
 
 rm -rf *.whl
-curl --fail -o $FILENAME http://$TARBALL_SITE/$PROJECT/$FILENAME
+curl --fail -o $FILENAME https://$TARBALL_SITE/$PROJECT/$FILENAME
 
 # Make sure we actually got a wheel
 file -b $FILENAME | grep -i zip
