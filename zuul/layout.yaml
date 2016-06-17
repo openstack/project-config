@@ -1813,6 +1813,9 @@ jobs:
   - name: gate-cinder-tox-db-functional
     voting: false
 
+  - name: gate-cinder-tox-compliance
+    branch: ^(?!stable/(kilo|liberty|mitaka)).*$
+
   - name: dev-zuul-coverage
     voting: false
 
@@ -5130,6 +5133,7 @@ projects:
       - gate-tempest-dsvm-full-devstack-plugin-ceph
       - gate-cinder-dsvm-apache
       - gate-cinder-tox-db-functional
+      - gate-cinder-tox-compliance
       # These jobs test open source plugins and must remain with the -nv branch
       # designator unless cinder gives permission.
       - gate-cinder-tempest-dsvm-glusterfs-nv
@@ -5140,6 +5144,7 @@ projects:
       - gate-tempest-dsvm-neutron-identity-v3-only-full-nv
     gate:
       - gate-tempest-dsvm-full-devstack-plugin-ceph
+      - gate-cinder-tox-compliance
     experimental:
       - gate-grenade-dsvm-forward
       - gate-tempest-dsvm-full-sheepdog-src-os-brick-nv
