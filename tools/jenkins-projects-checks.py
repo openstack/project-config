@@ -151,8 +151,28 @@ def validate_jobs():
                 count += 1
                 errors = True
 
+            # NOTE(pabelanger): Make sure console-log is our last publisher
+            # defined. We use the publisher to upload logs from zuul-launcher.
+            result = _check_console_log_publisher(schema, entry)
+            if result:
+                print job_file
+                count += result
+                errors = True
+
     print ("%d errors found validating YAML files in jenkins/jobs/*.yaml.\n" % count)
     return errors
+
+
+def _check_console_log_publisher(schema, entry):
+    count = 0
+    if schema == JOB or schema == JOB_TEMPLATE:
+        if 'publishers' in entry:
+            if 'console-log' in entry['publishers'] and \
+                    entry['publishers'][-1] != 'console-log':
+                print "ERROR: The console-log publisher MUST be the last " \
+                    "publisher in '%s':" % entry['name']
+                count += 1
+    return count
 
 
 def check_all():
