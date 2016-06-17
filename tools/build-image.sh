@@ -30,4 +30,4 @@ export CONFIG_REF=${CONFIG_REF:-master}
 export EXTRA_ELEMENTS=${EXTRA_ELEMENTS:-}
 
 disk-image-create -x --no-tmpfs -o $IMAGE_NAME $DISTRO \
-    vm openstack-repos puppet nodepool-base node-devstack simple-init $EXTRA_ELEMENTS
+    vm openstack-repos puppet nodepool-base cache-devstack simple-init $EXTRA_ELEMENTS
