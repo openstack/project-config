@@ -1992,6 +1992,8 @@
     name: gerrit
     tarball-site: tarballs.openstack.org
     gerrit-project: 'https://git.openstack.org/openstack-infra/gerrit'
+    plugin-parent-name: ''
+    plugin-parent-project: ''
 
     jobs:
       - '{plugin-name}-gerrit-plugin-{plugin-branch}':
@@ -2008,6 +2010,15 @@
           gerrit-branch: 'openstack/2.11.4'
           plugin-name: 'importer'
           plugin-project: 'https://gerrit.googlesource.com/plugins/{plugin-name}'
+          plugin-branch: 'stable-2.11'
+      # its plugins depend on a parent plugin. We need to build parent
+      # the parent plugin then build the child plugin.
+      - '{plugin-name}-gerrit-plugin-{plugin-branch}':
+          gerrit-branch: 'openstack/2.11.4'
+          plugin-name: 'its-storyboard'
+          plugin-project: 'https://gerrit.googlesource.com/plugins/{plugin-name}'
+          plugin-parent-name: 'its-base'
+          plugin-parent-project: 'https://gerrit.googlesource.com/plugins/{plugin-parent-name}'
           plugin-branch: 'stable-2.11'
 
 - project:
