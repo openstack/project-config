@@ -317,6 +317,40 @@
     publishers:
       - console-log
 
+- job-template:
+    name: 'gate-puppet-openstack-infra-spec-helper-unit-{node}'
+    node: '{node}'
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - zuul-clone:
+          project: openstack/puppet-openstack_infra_spec_helper
+      - install-distro-packages
+      - puppet-prepare-node
+      - shell: |
+          #!/bin/bash -xe
+          cd openstack/puppet-openstack_infra_spec_helper
+          ./run_unit_tests.sh
+
+    wrappers:
+      - build-timeout:
+          timeout: 60
+      - timestamps
+
+    publishers:
+      - console-log
+
+- job-group:
+    name: 'puppet-openstack-infra-spec-helper-jobs'
+    node:
+      - centos-7
+      - ubuntu-xenial
+      - ubuntu-trusty
+    jobs:
+      - 'gate-puppet-openstack-infra-spec-helper-unit-{node}'
+
 - job:
     name: periodic-package-afs-centos7
     node: centos-7
