@@ -1822,15 +1822,6 @@ jobs:
     voting: false
     failure-message: WARNING broken links in docs
 
-  - name: gate-project-config-compare-xml
-    voting: false
-    failure-message: Jenkins XML output has changed.
-    success-message: Jenkins XML output is unchanged.
-    files:
-      - 'jenkins/jobs/.*'
-      - 'tools/run-compare-clonemap.yaml'
-      - 'tools/run-compare-xml.sh'
-
   - name: gate-dsvm-nodepool
     voting: false
 
@@ -1846,10 +1837,21 @@ jobs:
   - name: gate-bashate-devstack
     voting: false
 
+  - name: gate-project-config-compare-xml
+    voting: false
+    failure-message: Jenkins XML output has changed.
+    success-message: Jenkins XML output is unchanged.
+    files:
+      - 'jenkins/jobs/.*'
+      - 'other-requirements.txt'
+      - 'tools/run-compare-clonemap.yaml'
+      - 'tools/run-compare-xml.sh'
+
   - name: gate-project-config-irc-access
     files:
       - 'accessbot/channels.yaml'
       - 'gerritbot/channels.yaml'
+      - 'other-requirements.txt'
       - 'tools/check_channels_yaml.sh'
       - 'tools/normalize_channels_yaml.py'
       - 'tools/projectconfig_yamllib.py'
@@ -1858,6 +1860,7 @@ jobs:
   - name: gate-project-config-jenkins-project
     files:
       - 'jenkins/jobs/projects.yaml'
+      - 'other-requirements.txt'
       - 'tools/jenkins-projects-checks.py'
       - 'tox.ini'
 
@@ -1865,50 +1868,59 @@ jobs:
     files:
       - '^.*\.sh$'
       - '^.*\.py$'
+      - 'other-requirements.txt'
       - 'test-requirements.txt'
       - 'tox.ini'
 
   - name: gate-infra-docs-index
     files:
       - 'docs-site/.*'
+      - 'other-requirements.txt'
       - 'tox.ini'
 
   - name: gate-generate-specs-site
     files:
       - 'specs/.*'
+      - 'other-requirements.txt'
       - 'tox.ini'
 
   - name: gate-project-config-grafyaml
     files:
       - '^grafana/.*$'
+      - 'other-requirements.txt'
       - 'tox.ini'
 
   - name: gate-project-config-dib
     files:
       - '^nodepool/elements/.*$'
+      - 'other-requirements.txt'
       - 'tox.ini'
 
   - name: gate-project-config-gerrit
     files:
       - '^gerrit/acls/.*$'
+      - 'other-requirements.txt'
       - 'tools/check_valid_gerrit_config.sh'
       - 'tox.ini'
 
   - name: gate-project-config-nodepool
     files:
       - '^nodepool/nodepool.yaml'
+      - 'other-requirements.txt'
       - 'tox.ini'
 
   - name: gate-project-config-projects-yaml
     files:
       - 'check_valid_gerrit_projects.py'
       - 'gerrit/projects.yaml'
+      - 'other-requirements.txt'
       - 'tools/check_projects_yaml_alphabetized.sh'
       - 'tox.ini'
 
   - name: ^gate-project-config-bindep-fallback.*$
     files:
       - 'jenkins/data/bindep-fallback.txt'
+      - 'other-requirements.txt'
 
   - name: gate-ironicclient-dsvm-functional
     voting: false
