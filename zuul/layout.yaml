@@ -2062,6 +2062,21 @@ jobs:
   - name: gate-sahara-tests-pylint
     voting: false
 
+  # run tempest tests for sahara-tests only when the directory
+  # which contains the tempest tests is changed.
+  - name: ^gate-tempest-dsvm-sahara.*$
+    skip-if:
+      - project: ^openstack/sahara-tests$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+          - ^releasenotes/.*$
+          - ^etc/.*$
+          - ^sahara_tests/.*$
+          - ^sahara_cli_tests/.*$
+          - ^tools/.*$
+          - ^tox.ini$
+
   - name: gate-app-catalog-ui-dsvm-integration
     voting: false
 
@@ -11492,6 +11507,7 @@ projects:
       - name: release-notes-jobs
     check:
       - gate-sahara-tests-pylint
+      - gate-tempest-dsvm-sahara-nv
       - gate-sahara-tests-dsvm-scenario-neutron-heat
       - gate-sahara-tests-dsvm-scenario-nova-heat
     gate:
