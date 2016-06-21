@@ -1,5 +1,5 @@
 - job-template:
-    name: '{pipeline}-functional-dsvm-magnum-{coe}{job-suffix}'
+    name: '{pipeline}-functional-dsvm-magnum-{coe}{special}{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -23,6 +23,9 @@
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          if [ "{special}" == "-identity-v3-only" ] ; then
+              export DEVSTACK_LOCAL_CONFIG="ENABLE_IDENTITY_V2=False"
           fi
           export PROJECTS="openstack/magnum $PROJECTS"
           export PROJECTS="openstack/python-magnumclient $PROJECTS"
