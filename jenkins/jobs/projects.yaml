@@ -8145,10 +8145,17 @@
       - python-jobs
       - openstack-publish-jobs
       - pypi-jobs
-      - '{pipeline}-swiftclient-dsvm-functional{job-suffix}':
+      - '{pipeline}-swiftclient-dsvm-functional{special}{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
+          special: ''
           job-suffix: ''
+          branch-override: default
+      - '{pipeline}-swiftclient-dsvm-functional{special}{job-suffix}':
+          pipeline: gate
+          node: ubuntu-trusty
+          special: '-identity-v3-only'
+          job-suffix: '-nv'
           branch-override: default
       - 'lib-forward-testing-{name}'
 
@@ -9183,16 +9190,25 @@
           envlist: func
       - 'gate-{name}-tox-{envlist}':
           envlist: func-in-process-fast-post
-      - '{pipeline}-swift-dsvm-functional{job-suffix}':
+      - '{pipeline}-swift-dsvm-functional{special}{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
+          special: ''
           job-suffix: ''
           branch-override: default
-      - '{pipeline}-swift-dsvm-functional{job-suffix}':
+      - '{pipeline}-swift-dsvm-functional{special}{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
+          special: ''
           job-suffix: '-nv'
           branch-override: default
+      - '{pipeline}-swift-dsvm-functional{special}{job-suffix}':
+          pipeline: gate
+          node: ubuntu-trusty
+          special: '-identity-v3-only'
+          job-suffix: '-nv'
+          branch-override: default
+
 # No one is interested in stable/ branches on swift, so don't run bitrot jobs
 
 - project:

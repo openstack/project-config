@@ -1,5 +1,5 @@
 - job-template:
-    name: '{pipeline}-swift-dsvm-functional{job-suffix}'
+    name: '{pipeline}-swift-dsvm-functional{special}{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -22,6 +22,9 @@
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
+          if [ "{special}" == "-identity-v3-only" ] ; then
+              export DEVSTACK_LOCAL_CONFIG="ENABLE_IDENTITY_V2=False"
+          fi
 
           function post_test_hook {{
               cd /opt/stack/new/swift
@@ -39,7 +42,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-swiftclient-dsvm-functional{job-suffix}'
+    name: '{pipeline}-swiftclient-dsvm-functional{special}{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -63,6 +66,9 @@
           export DEVSTACK_PROJECT_FROM_GIT=python-swiftclient
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          if [ "{special}" == "-identity-v3-only" ] ; then
+              export DEVSTACK_LOCAL_CONFIG="ENABLE_IDENTITY_V2=False"
           fi
 
           function post_test_hook {{
