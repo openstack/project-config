@@ -1539,6 +1539,9 @@ jobs:
   - name: ^gate-tempest-dsvm-ironic-agent_ipmitool-nv$
     branch: ^(?!stable/(kilo|liberty)).*$
 
+  - name: gate-ironic-python-agent-tox-func
+    voting: false
+
   # NOTE(dtantsur): the old ironic ramdisk is not supported in newton
   - name: ^gate-tempest-dsvm-ironic-pxe_ssh$
     branch: ^stable/(liberty|mitaka).*$
@@ -7229,6 +7232,7 @@ projects:
       - name: publish-to-pypi
       - name: release-notes-jobs
     check:
+      - gate-ironic-python-agent-tox-func
       - gate-tempest-dsvm-ironic-agent_ssh-coreos-src
       - gate-tempest-dsvm-ironic-agent_ssh-tinyipa-src
       - gate-tempest-dsvm-ironic-pxe_ipa-coreos-src
