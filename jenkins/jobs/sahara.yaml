@@ -145,8 +145,10 @@
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export DEVSTACK_LOCAL_CONFIG="enable_plugin sahara git://git.openstack.org/openstack/sahara"
-          export PROJECTS="openstack/sahara-tests $PROJECTS"
-          export DEVSTACK_PROJECT_FROM_GIT=python-saharaclient
+          export PROJECTS="openstack/sahara-tests openstack/python-saharaclient $PROJECTS"
+          if [ "$ZUUL_PROJECT" = "openstack/python-saharaclient" ]; then
+              export DEVSTACK_PROJECT_FROM_GIT=python-saharaclient
+          fi
 
           function post_test_hook {
               cd /opt/stack/new/sahara-tests/tools/gate/cli_tests
