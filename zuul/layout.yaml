@@ -2816,6 +2816,9 @@ jobs:
   - name: gate-networking-nec-python34
     branch: ^(?!stable/(?:kilo|liberty)).*$
 
+  - name: gate-quark-python34
+    voting: false
+
   - name: periodic-tempest-dsvm-full-test-accounts-master
     tags: periodic-qa
   - name: periodic-tempest-dsvm-neutron-full-test-accounts-master
@@ -3011,6 +3014,7 @@ jobs:
     branch: master
     voting: false
 
+  # Mutexes
   - name: wheel-build-ubuntu-trusty-amd64-python2
     mutex: mirror.wheel.trustyx64
 
@@ -11250,9 +11254,10 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
       - name: check-requirements
       - name: publish-to-pypi
+    check:
+      - gate-quark-python34
 
   - name: openstack/rack
     template:
