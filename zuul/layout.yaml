@@ -1838,6 +1838,10 @@ jobs:
     voting: false
     failure-message: Jenkins XML output has changed.
     success-message: Jenkins XML output is unchanged.
+    files:
+      - 'jenkins/jobs/.*'
+      - 'tools/run-compare-clonemap.yaml'
+      - 'tools/run-compare-xml.sh'
 
   - name: gate-dsvm-nodepool
     voting: false
@@ -1853,6 +1857,70 @@ jobs:
 
   - name: gate-bashate-devstack
     voting: false
+
+  - name: gate-project-config-irc-access
+    files:
+      - 'accessbot/channels.yaml'
+      - 'gerritbot/channels.yaml'
+      - 'tools/check_channels_yaml.sh'
+      - 'tools/normalize_channels_yaml.py'
+      - 'tools/projectconfig_yamllib.py'
+      - 'tox.ini'
+
+  - name: gate-project-config-jenkins-project
+    files:
+      - 'jenkins/jobs/projects.yaml'
+      - 'tools/jenkins-projects-checks.py'
+      - 'tox.ini'
+
+  - name: gate-project-config-linters
+    files:
+      - '^.*\.sh$'
+      - '^.*\.py$'
+      - 'test-requirements.txt'
+      - 'tox.ini'
+
+  - name: gate-infra-docs-index
+    files:
+      - 'docs-site/.*'
+      - 'tox.ini'
+
+  - name: gate-generate-specs-site
+    files:
+      - 'specs/.*'
+      - 'tox.ini'
+
+  - name: gate-project-config-grafyaml
+    files:
+      - '^grafana/.*$'
+      - 'tox.ini'
+
+  - name: gate-project-config-dib
+    files:
+      - '^nodepool/elements/.*$'
+      - 'tox.ini'
+
+  - name: gate-project-config-gerrit
+    files:
+      - '^gerrit/acls/.*$'
+      - 'tools/check_valid_gerrit_config.sh'
+      - 'tox.ini'
+
+  - name: gate-project-config-nodepool
+    files:
+      - '^nodepool/nodepool.yaml'
+      - 'tox.ini'
+
+  - name: gate-project-config-projects-yaml
+    files:
+      - 'check_valid_gerrit_projects.py'
+      - 'gerrit/projects.yaml'
+      - 'tools/check_projects_yaml_alphabetized.sh'
+      - 'tox.ini'
+
+  - name: ^gate-project-config-bindep-fallback.*$
+    files:
+      - 'jenkins/data/bindep-fallback.txt'
 
   - name: gate-ironicclient-dsvm-functional
     voting: false
