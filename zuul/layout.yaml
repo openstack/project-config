@@ -2804,8 +2804,7 @@ jobs:
     branch: ^(?!stable/liberty).*$
 
   - name: gate-murano-agent-python34
-    branch: ^(?!stable/liberty).*$
-    voting: false
+    branch: ^(?!stable/(?:liberty|mitaka)).*$
 
   - name: gate-networking-hyperv-python34
     branch: ^(?!stable/kilo).*$
@@ -7912,11 +7911,10 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
+      - name: python3-jobs
       - name: publish-to-pypi
       - name: check-requirements
       - name: release-notes-jobs
-    check:
-      - gate-murano-agent-python34
     post:
       - murano-agent-coverage
 
