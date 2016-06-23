@@ -17,23 +17,3 @@
 
     publishers:
       - console-log
-
-- job:
-    name: 'xstatic-angular-bootstrap-tarball-experimental'
-    node: ubuntu-trusty
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - revoke-sudo
-      - gerrit-git-prep
-      - tarball:
-          env: venv
-
-    publishers:
-      - scp:
-          site: 'static.openstack.org'
-          files:
-            - target: 'logs/$LOG_PATH/tarballs/'
-              source: 'dist/*'
-      - console-log
