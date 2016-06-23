@@ -43,24 +43,6 @@
           excludes: ''
       - console-log
 
-- job-template:
-    name: '{name}-merge-release-tags'
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - revoke-sudo
-      - gerrit-git-prep
-      - shell: |
-          #!/bin/bash -xe
-          TAG=`echo $ZUUL_REFNAME | sed 's/refs.tags.//'`
-          /usr/local/jenkins/slave_scripts/merge_tags.sh $TAG
-
-    publishers:
-      - console-log
-
-    node: 'proposal'
-
 
 # Publish releasenotes to docs.openstack.org/releasenotes/. This is
 # always published from master branch.
@@ -126,7 +108,6 @@
     jobs:
       - '{name}-docs'
       - '{name}-docs-tags-only'
-      - '{name}-merge-release-tags'
 
 
 - job-group:
