@@ -1,0 +1,100 @@
+#!/bin/bash
+#
+# Shared functions for shell scripts
+#
+
+# Make sure custom grep options don't get in the way
+unset GREP_OPTIONS
+
+
+function lp_project_to_repo {
+    typeset proj="$1"
+
+    if [[ $proj == python-*client* ]]; then
+        echo $proj
+    elif [[ $proj == glance-store ]]; then
+        echo glance_store
+    elif [[ $proj == django-openstack-auth ]]; then
+        echo django_openstack_auth
+    else
+        # Some of the repository names don't match the launchpad names, e.g.
+        # python-stevedore and python-cliff.
+        echo $proj | sed -e 's|^python-||'
+    fi
+}
+
+function title {
+    echo
+    if [ -t 1 ]; then
+        echo "$(tput bold)$(tput setaf 1)[ $1 ]$(tput sgr0)"
+    else
+        echo "[ $1 ]"
+    fi
+}
+
+
+function _cleanup_tmp {
+    rm -rf $MYTMPDIR
+    return 0
+}
+
+
+function setup_temp_space {
+    MYTMPDIR=`mktemp -d _tmp-${1}-XXX`
+    mkdir -p "$MYTMPDIR"
+    trap _cleanup_tmp EXIT
+    cd "$MYTMPDIR"
+    # NOTE(dhellmann): On some platforms mktemp returns a short name
+    # instead of a full path, so expand the full path by looking at
+    # where we ended up after the cd operation.
+    MYTMPDIR="$(pwd)"
+}
+
+
+
+function get_last_tag {
+    # Print the most recent tag for a ref. If no ref is specified, the
+    # currently checked out branch is examined.
+    local ref="$1"
+    if ! git describe --abbrev=0 --first-parent ${ref} >/dev/null 2>&1; then
+        echo ""
+    else
+        git describe --abbrev=0 --first-parent ${ref}
+    fi
+}
+
+
+function update_gitreview {
+    typeset branch="$1"
+
+    title "Updating .gitreview"
+    git checkout $branch
+    # Remove a trailing newline, if present, to ensure consistent
+    # formatting when we add the defaultbranch line next.
+    typeset grcontents="$(echo -n "$(cat .gitreview | grep -v defaultbranch)")
+defaultbranch=$branch"
+    echo "$grcontents" > .gitreview
+    git add .gitreview
+    git commit -m "Update .gitreview for $branch"
+    git show
+    local shortbranch=$(basename $branch)
+    git review -t "create-${shortbranch}"
+}
+
+
+function clone_repo {
+    typeset repo="$1"
+    typeset branch="$2"
+    if [ -z "$branch" ]; then
+        branch="master"
+    fi
+    title "Cloning $repo"
+    output=$({ zuul-cloner --branch "$branch" git://git.openstack.org $repo \
+               && (cd $repo && git review -s); } 2>&1)
+    _retval=$?
+    if [ $_retval -ne 0 ] ; then
+        echo "$output"
+    fi
+
+    return $_retval
+}
