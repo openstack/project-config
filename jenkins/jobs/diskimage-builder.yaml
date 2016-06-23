@@ -17,6 +17,12 @@
             openstack/diskimage-builder \
             openstack/dib-utils
 
+          # We do things that might exceed the default 2GiB tmpfs, and
+          # use the larger mounted space.
+          mkdir /opt/dib_cache
+          export DIB_NO_TMPFS=1
+          export TMPDIR=/opt/dib_cache
+
           virtualenv env
 
           ./env/bin/pip install $(pwd)/openstack/dib-utils
