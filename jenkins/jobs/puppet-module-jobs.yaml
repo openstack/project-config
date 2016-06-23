@@ -256,6 +256,35 @@
       - console-log
 
 - job-template:
+    name: 'gate-puppet-openstack-spec-helper-syntax-{puppet_version}-{node}'
+    node: '{node}'
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - zuul-clone:
+          project: openstack/puppet-openstack_spec_helper
+      - install-distro-packages
+      - puppet-prepare-node
+      - shell: |
+          #!/bin/bash -xe
+          cd openstack/puppet-openstack_spec_helper
+          # FUTURE_PARSER=yes is only supported by Puppet 3.x
+          if [ "{puppet_version}" -lt "4" ]; then
+              export FUTURE_PARSER=yes
+          fi
+          ./run_syntax_tests.sh
+
+    wrappers:
+      - build-timeout:
+          timeout: 60
+      - timestamps
+
+    publishers:
+      - console-log
+
+- job-template:
     name: 'gate-puppet-openstack-spec-helper-unit-{node}'
     node: '{node}'
 
@@ -457,7 +486,11 @@
     name: 'puppet-openstack-spec-helper-jobs'
     node:
       - centos-7
+    puppet_version:
+      - 3
+      - 4
     jobs:
       - 'gate-puppet-openstack-spec-helper-lint-{node}'
+      - 'gate-puppet-openstack-spec-helper-syntax-{puppet_version}-{node}'
       - 'gate-puppet-openstack-spec-helper-unit-{node}'
       - 'gate-puppet-openstack-spec-helper-beaker-rspec-{node}'
