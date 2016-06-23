@@ -349,19 +349,19 @@ project-templates:
 
   # Invokes the same targets as python-jobs with one change:
   # python27-searchlight is used instead of python27.
-  # The job python27-searchlight installs extra packages
+  # The job python27-searchlight installs extra packages.
+  # The job python27-searchlight-es1 installs extra packages.
   - name: python-jobs-searchlight
     check:
       - 'gate-{name}-docs'
       - 'gate-{name}-pep8'
       - 'gate-{name}-python27-searchlight'
+      - 'gate-{name}-python27-searchlight-es1'
     gate:
       - 'gate-{name}-docs'
       - 'gate-{name}-pep8'
       - 'gate-{name}-python27-searchlight'
-    experimental:
-      # Make it default in check and gate after experimental run
-      - 'gate-{name}-python27-searchlight-es2'
+      - 'gate-{name}-python27-searchlight-es1'
     post:
       - '{name}-branch-tarball'
 
@@ -449,6 +449,7 @@ project-templates:
       - 'gate-{name}-python34'
 
   # Invokes the same targets as python3-jobs, but sets up extra packages.
+  # The job python34-searchlight installs extra packages.
   - name: python3-jobs-searchlight
     check:
       - 'gate-{name}-python34-searchlight'
