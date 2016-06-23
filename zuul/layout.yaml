@@ -1475,13 +1475,23 @@ jobs:
   - name: ^gate-heat-dsvm-functional-.*-lbaasv2$
     branch: ^(?!stable/(kilo|liberty|mitaka)).*$
 
+  # NOTE(therve) (heat) functional lbaas v1 testing is deprecated in newton and
+  # forward.
+  - name: ^gate-heat-dsvm-functional-.*-lbaasv1$
+    branch: ^(stable/(kilo|liberty|mitaka)).*$
+
   # NOTE(tonyb) (heat) functional testing was introduced in the liberty
   # cycle so testing the kilo branch doesn't make sense.
   - name: gate-heatclient-dsvm-functional
     branch: ^(?!stable/kilo).*$
 
-  - name: ^gate-heat-dsvm-functional-convg-mysql-.*$
-    branch: ^(?!stable/(kilo|liberty)).*$
+  # NOTE(therve) (heat) only run convergence lbaasv1 on mitaka
+  - name: ^gate-heat-dsvm-functional-convg-mysql-lbaasv1$
+    branch: ^(stable/mitaka).*$
+
+  # NOTE(therve) (heat) run convergence lbaasv2 newton and forward
+  - name: ^gate-heat-dsvm-functional-convg-mysql-lbaasv2$
+    branch: ^(?!stable/(kilo|liberty|mitaka)).*$
 
   - name: gate-tempest-dsvm-heat
     branch: ^(stable/(kilo|liberty)).*$
