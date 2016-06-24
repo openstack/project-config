@@ -78,7 +78,7 @@
           services+=,ceilometer-collector,ceilometer-api
           services+=,ceilometer-anotification
           # n-obj has been removed from mitaka
-          if [[ "stable/kilo stable/liberty" =~ $ZUUL_BRANCH ]]; then
+          if [[ "$ZUUL_BRANCH" == "stable/liberty" ]]; then
               services+=,n-obj,
           fi
           export HEAT_BUILD_PIP_MIRROR=True
@@ -88,19 +88,14 @@
           export DEVSTACK_GATE_INSTALL_TESTONLY=1
           export KEEP_LOCALRC=1
           export DEVSTACK_LOCAL_CONFIG="enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
-          if [[ "$ZUUL_BRANCH" == "stable/kilo" ]]; then
-              services+=,ceilometer-alarm-evaluator,ceilometer-alarm-notifier
-              services+=,q-vpn
-          else
-              export PROJECTS="openstack/aodh $PROJECTS"
-              export PROJECTS="openstack/zaqar $PROJECTS"
-              export PROJECTS="openstack/python-zaqarclient $PROJECTS"
-              export PROJECTS="openstack/neutron-vpnaas $PROJECTS"
-              services+=,aodh-api,aodh-alarm-evaluator,aodh-alarm-notifier
-              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin aodh git://git.openstack.org/openstack/aodh"
-              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin zaqar git://git.openstack.org/openstack/zaqar"
-              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin neutron-vpnaas git://git.openstack.org/openstack/neutron-vpnaas"
-          fi
+          export PROJECTS="openstack/aodh $PROJECTS"
+          export PROJECTS="openstack/zaqar $PROJECTS"
+          export PROJECTS="openstack/python-zaqarclient $PROJECTS"
+          export PROJECTS="openstack/neutron-vpnaas $PROJECTS"
+          services+=,aodh-api,aodh-alarm-evaluator,aodh-alarm-notifier
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin aodh git://git.openstack.org/openstack/aodh"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin zaqar git://git.openstack.org/openstack/zaqar"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin neutron-vpnaas git://git.openstack.org/openstack/neutron-vpnaas"
 
           if [ "{lbaasversion}" = "lbaasv2" ]; then
               # Enable LBaaS V2 plugin
@@ -246,7 +241,7 @@
           OVERRIDE_ENABLED_SERVICES=c-api,c-bak,c-sch,c-vol,cinder,dstat,g-api,g-reg,h-api,h-api-cfn,h-api-cw,h-eng,heat,key,mysql,n-api,n-cond,n-cpu,n-crt,n-sch,q-agt,q-dhcp,q-l3,q-meta,q-metering,q-svc,rabbit,s-account,s-container,s-object,s-proxy
           export GRENADE_PLUGINRC="enable_grenade_plugin heat https://git.openstack.org/openstack/heat"
           # n-obj has been removed from mitaka
-          if [[ "stable/kilo stable/liberty" =~ $ZUUL_BRANCH ]]; then
+          if [[ "$ZUUL_BRANCH" == "stable/liberty" ]]; then
               OVERRIDE_ENABLED_SERVICES+=,n-obj
           fi
           export OVERRIDE_ENABLED_SERVICES

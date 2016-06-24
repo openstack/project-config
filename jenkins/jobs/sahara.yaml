@@ -20,13 +20,8 @@
           export DEVSTACK_GATE_EXERCISES=0
           export DEVSTACK_GATE_INSTALL_TESTONLY=1
           export DEVSTACK_GATE_NEUTRON=1
-          if [[ "stable/kilo" =~ $ZUUL_BRANCH ]]; then
-              # Sahara was moved out of DevStack as plugin after Kilo
-              export DEVSTACK_GATE_SAHARA=1
-          else
-              export DEVSTACK_LOCAL_CONFIG="enable_plugin sahara git://git.openstack.org/openstack/sahara"
-          fi
-          if [[ ! "stable/kilo stable/liberty" =~ $ZUUL_BRANCH ]]; then
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin sahara git://git.openstack.org/openstack/sahara"
+          if [[ ! "stable/liberty" =~ $ZUUL_BRANCH ]]; then
               # sahara-dashboard was split out from Horizon after Liberty
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin sahara-dashboard git://git.openstack.org/openstack/sahara-dashboard"
           fi
@@ -191,13 +186,8 @@
           export DEVSTACK_LOCAL_CONFIG="export TEMPEST_PLUGINS='/opt/stack/new/sahara-tests'"
           export PROJECTS="openstack/sahara-tests $PROJECTS"
 
-          if [[ "stable/kilo" =~ $ZUUL_BRANCH ]]; then
-              # Sahara was moved out of DevStack as plugin after Kilo
-              export DEVSTACK_GATE_SAHARA=1
-          else
-              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin sahara git://git.openstack.org/openstack/sahara"
-              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
-          fi
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin sahara git://git.openstack.org/openstack/sahara"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -230,18 +220,13 @@
           export PYTHONUNBUFFERED=true
           OVERRIDE_ENABLED_SERVICES=c-api,c-bak,c-sch,c-vol,cinder,dstat,g-api,g-reg,h-api,h-api-cfn,h-api-cw,h-eng,heat,key,mysql,n-api,n-cond,n-cpu,n-crt,n-sch,q-agt,q-dhcp,q-l3,q-meta,q-metering,q-svc,rabbit,s-account,s-container,s-object,s-proxy,q-lbaas,ceilometer-acompute,ceilometer-acentral,ceilometer-collector,ceilometer-api,sahara
           # n-obj has been removed from mitaka
-          if [[ "stable/kilo stable/liberty" =~ $ZUUL_BRANCH ]]; then
+          if [[ "stable/liberty" =~ $ZUUL_BRANCH ]]; then
               OVERRIDE_ENABLED_SERVICES+=,n-obj,
           fi
           export GRENADE_PLUGINRC="enable_grenade_plugin sahara https://git.openstack.org/openstack/sahara"
           export GRENADE_PLUGINRC+=$'\n'"enable_grenade_plugin heat https://git.openstack.org/openstack/heat"
-          # in liberty, vpnaas switched to a new service name
-          if [[ $ZUUL_BRANCH == "stable/kilo" ]]; then
-              OVERRIDE_ENABLED_SERVICES+=,q-vpn,
-          else
-              export DEVSTACK_LOCAL_CONFIG="enable_plugin neutron-vpnaas https://git.openstack.org/openstack/neutron-vpnaas"
-              export GRENADE_PLUGINRC+=$'\n'"enable_grenade_plugin neutron-vpnaas https://git.openstack.org/openstack/neutron-vpnaas"
-          fi
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin neutron-vpnaas https://git.openstack.org/openstack/neutron-vpnaas"
+          export GRENADE_PLUGINRC+=$'\n'"enable_grenade_plugin neutron-vpnaas https://git.openstack.org/openstack/neutron-vpnaas"
           export OVERRIDE_ENABLED_SERVICES
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_TEMPEST=0
