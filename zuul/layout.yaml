@@ -1320,7 +1320,7 @@ jobs:
     branch: master
 
   - name: gate-openstack-manuals-tox-checksyntax
-    branch: ^(stable/(kilo|liberty)).*$
+    branch: ^(stable/liberty).*$
 
   # Packstack integration jobs should only run on master and stable/mitaka
   # onwards
@@ -1330,7 +1330,7 @@ jobs:
         all-files-match-any:
           - ^releasenotes/.*$
           - ^docs/.*$
-    branch: ^(?!stable/(kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
 
   # no need to run the jobs for doc / releasenotes / unittests patches
   - name: ^gate-(puppet-.*-(syntax|unit|beaker|tempest)-|tripleo-ci-centos-7-).*$
@@ -1351,10 +1351,6 @@ jobs:
   - name: ^gate-puppet-openstackci-puppet-beaker-rspec-.*$
     voting: false
 
-  # puppet-integration lint/syntax jobs run only after stable/kilo
-  - name: ^gate-puppet-openstack-integration-puppet-.*$
-    branch: ^(?!stable/kilo).*$
-
   # puppet-integration on trusty stopped after Mitaka (OpenStack) and Hammer (Ceph) releases.
   - name: ^gate-puppet-openstack-integration-3-scenario00(1|2)-tempest-ubuntu-trusty$
     branch: ^(stable/(liberty|mitaka|hammer)).*$
@@ -1366,15 +1362,15 @@ jobs:
 
   # puppet-integration scenario003 was introduced after Liberty (OpenStack).
   - name: ^gate-puppet-openstack-integration-3-scenario003-tempest-centos-7$
-    branch: ^(?!stable/(kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
 
   # puppet-integration on xenial started after Mitaka (OpenStack) and Hammer (Ceph) releases.
   - name: ^gate-puppet-openstack-integration-3-scenario00(1|2|3)-tempest-ubuntu-xenial.*$
-    branch: ^(?!stable/(kilo|liberty|mitaka|hammer)).*$
+    branch: ^(?!stable/(liberty|mitaka|hammer)).*$
 
   # puppet-integration with puppet4 only after Mitaka (OpenStack) and Hammer (Ceph) releases.
   - name: ^gate-puppet-openstack-integration-4-.*-nv$
-    branch: ^(?!stable/(kilo|liberty|mitaka|hammer)).*$
+    branch: ^(?!stable/(liberty|mitaka|hammer)).*$
 
   - name: gate-requirements-integration-dsvm-resolver
     voting: false
@@ -1403,7 +1399,6 @@ jobs:
     voting: false
 
   - name: gate-rally-dsvm-neutron-neutron
-    branch: ^(?!stable/kilo).*$
     voting: false
 
   - name: gate-rally-dsvm-neutron-unstable
@@ -1459,7 +1454,7 @@ jobs:
   # NOTE(wangxiyuan) tempest test for zaqar was introduced in the newton cycle,
   # so testing the earlier branches doesn't make sense.
   - name: ^gate-tempest-dsvm-.*-zaqar$
-    branch: ^(?!stable/(kilo|liberty|mitaka)).*$
+    branch: ^(?!stable/(liberty|mitaka)).*$
 
   - name: gate-tempest-dsvm-neutron-nv
     branch: ^feature/pecan
@@ -1467,17 +1462,12 @@ jobs:
   # NOTE(markvan) (heat) functional lbaas v2 testing was introduced in the mitaka
   # cycle as experimental, so testing it there and earlier branches doesn't make sense.
   - name: ^gate-heat-dsvm-functional-.*-lbaasv2$
-    branch: ^(?!stable/(kilo|liberty|mitaka)).*$
+    branch: ^(?!stable/(liberty|mitaka)).*$
 
   # NOTE(therve) (heat) functional lbaas v1 testing is deprecated in newton and
   # forward.
   - name: ^gate-heat-dsvm-functional-.*-lbaasv1$
-    branch: ^(stable/(kilo|liberty|mitaka)).*$
-
-  # NOTE(tonyb) (heat) functional testing was introduced in the liberty
-  # cycle so testing the kilo branch doesn't make sense.
-  - name: gate-heatclient-dsvm-functional
-    branch: ^(?!stable/kilo).*$
+    branch: ^(stable/(liberty|mitaka)).*$
 
   # NOTE(therve) (heat) only run convergence lbaasv1 on mitaka
   - name: ^gate-heat-dsvm-functional-convg-mysql-lbaasv1$
@@ -1485,13 +1475,13 @@ jobs:
 
   # NOTE(therve) (heat) run convergence lbaasv2 newton and forward
   - name: ^gate-heat-dsvm-functional-convg-mysql-lbaasv2$
-    branch: ^(?!stable/(kilo|liberty|mitaka)).*$
+    branch: ^(?!stable/(liberty|mitaka)).*$
 
   - name: gate-tempest-dsvm-heat
-    branch: ^(stable/(kilo|liberty)).*$
+    branch: ^(stable/liberty).*$
 
   - name: gate-tempest-dsvm-heat-apache
-    branch: ^(?!stable/(kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
 
     # NOTE(sambetts) Make requirements check non-voting for networking-cisco
     # until cisco requirements are in global requirements.
@@ -1505,7 +1495,7 @@ jobs:
     voting: false
 
   - name: gate-neutron-dsvm-functional-py34
-    branch: ^(?!stable/(kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
     voting: false
 
   - name: gate-tempest-dsvm-neutron-pg-full
@@ -1515,9 +1505,6 @@ jobs:
     # all jobs. Disable until there is resolution.
   - name: ^gate-.*-pypy(-db)?$
     voting: false
-
-  - name: ^gate-tempest-dsvm-cells$
-    branch: ^(?!stable/(kilo)).*$
 
     # don't run any grenade jobs on the oldest supported stable
     # branch, this lets us catch all jobs that don't otherwise have
@@ -1546,23 +1533,17 @@ jobs:
   - name: ^gate-tempest-dsvm-ironic-parallel-nv$
     branch: ^(?!stable)
 
-  # NOTE(mriedem): gate-tempest-dsvm-ironic-pxe_ipa does not run reliably in
-  # kilo and is meant as a replacement for the pxe_ssh job starting in
-  # liberty.
-  - name: ^gate-tempest-dsvm-ironic-pxe_ipa$
-    branch: ^(?!stable/kilo).*$
-
   - name: ^gate-tempest-dsvm-ironic-pxe_ipmitool-nv$
-    branch: ^(?!stable/(kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
 
   - name: ^gate-tempest-dsvm-ironic-pxe_ipmitool-pyghmi-src-nv$
-    branch: ^(?!stable/(kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
 
   - name: ^gate-tempest-dsvm-ironic-pxe_ipmitool-virtualbmc-src-nv$
-    branch: ^(?!stable/(kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
 
   - name: ^gate-tempest-dsvm-ironic-agent_ipmitool-nv$
-    branch: ^(?!stable/(kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
 
   - name: gate-ironic-python-agent-tox-func
     voting: false
@@ -1592,10 +1573,7 @@ jobs:
     voting: false
 
   - name: gate-neutron-dsvm-tempest-vpnaas
-    branch: ^(?!stable/(kilo|liberty)).*$
-
-  - name: gate-ec2-api-python34
-    branch: ^(?!stable/kilo).*$
+    branch: ^(?!stable/liberty).*$
 
   - name: gate-functional-neutron-dsvm-gceapi
     voting: false
@@ -1610,13 +1588,12 @@ jobs:
     voting: false
 
   - name: gate-python-magnumclient-python34
-    branch: ^(?!stable/(kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
 
   - name: gate-magnum-python34
-    branch: ^(?!stable/(kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
 
   - name: gate-functional-dsvm-magnum-api
-    branch: ^(?!stable/kilo).*$
     skip-if:
       - project: ^openstack/magnum$
         all-files-match-any:
@@ -1624,7 +1601,7 @@ jobs:
           - ^doc/.*$
 
   - name: gate-functional-dsvm-magnum-k8s
-    branch: ^(?!stable/(kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
     skip-if:
       - project: ^openstack/magnum$
         all-files-match-any:
@@ -1634,7 +1611,7 @@ jobs:
           - ^magnum/templates/mesos/.*$
 
   - name: gate-functional-dsvm-magnum-swarm
-    branch: ^(?!stable/(kilo|liberty)).$
+    branch: ^(?!stable/liberty).$
     skip-if:
       - project: ^openstack/magnum$
         all-files-match-any:
@@ -1644,7 +1621,7 @@ jobs:
           - ^magnum/templates/mesos/.*$
 
   - name: gate-functional-dsvm-magnum-mesos
-    branch: ^(?!stable/(kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
     skip-if:
       - project: ^openstack/magnum$
         all-files-match-any:
@@ -1657,7 +1634,7 @@ jobs:
     voting: false
 
   - name: gate-tempest-dsvm-multinode-live-migration
-    branch: ^(?!stable/(kilo|liberty|mitaka)).*$
+    branch: ^(?!stable/(liberty|mitaka)).*$
     skip-if:
       - project: ^openstack/nova$
         all-files-match-any:
@@ -1678,62 +1655,39 @@ jobs:
     branch: ^(?!stable/(liberty|mitaka)).*$
 
   - name: gate-tempest-dsvm-nova-libvirt-kvm-apr
-    branch: ^(?!stable/(kilo|liberty|mitaka)).*$
+    branch: ^(?!stable/(liberty|mitaka)).*$
     voting: false
 
   - name: gate-tempest-dsvm-neutron-multinode-full
-    branch: ^(?!stable/kilo).*$
     voting: false
 
   - name: gate-tempest-dsvm-neutron-dvr-multinode-full
-    branch: ^(?!stable/kilo).*$
     voting: false
 
   - name: gate-tempest-dsvm-neutron-ovs-native
-    branch: ^(?!stable/kilo).*$
     voting: false
 
   - name: gate-tempest-dsvm-neutron-dvr-ovs-native
-    branch: ^(?!stable/kilo).*$
     voting: false
 
   - name: networking-midonet-coverage
     voting: false
 
-  - name: gate-networking-midonet-python34
-    branch: ^(?!stable/kilo).*$
-
   - name: ^gate-tempest-dsvm-networking-midonet-v1
     voting: false
 
-  - name: ^gate-tempest-dsvm-networking-midonet-ml2
-    branch: ^(?!stable/kilo).*$
-
-  - name: gate-networking-midonet-v2-rally-dsvm-nv
-    branch: ^(?!stable/kilo).*$
-
   - name: ^gate-tempest-dsvm-networking-odl-(lithium-snapshot|beryllium-snapshot|boron-snapshot)
-    branch: ^(?!stable/(icehouse|juno|kilo)).*$
+    branch: ^(?!stable/(icehouse|juno)).*$
     voting: false
 
-  - name: gate-install-dsvm-networking-bgpvpn
-    branch: ^(?!stable/kilo).*$
-
   - name: gate-networking-odl-python34
-    branch: ^(?!stable/(icehouse|juno|kilo)).*$
+    branch: ^(?!stable/(icehouse|juno)).*$
 
   - name: gate-tempest-dsvm-networking-onos
     voting: false
 
   - name: ^gate-tempest-dsvm-dragonflow
-    branch: ^(?!stable/(kilo)).*$
     voting: false
-
-  - name: gate-dragonflow-dsvm-rally-nv
-    branch: ^(?!stable/(kilo)).*$
-
-  - name: gate-dragonflow-dsvm-fullstack-nv
-    branch: ^(?!stable/(kilo)).*$
 
   - name: gate-dragonflow-python34
     voting: false
@@ -1742,47 +1696,29 @@ jobs:
     voting: false
 
   - name: ^gate-neutron-fwaas-dsvm-tempest$
-    branch: ^(?!stable/(?:kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
     voting: false
 
-  - name: ^gate-neutron-fwaas-python34$
-    branch: ^(?!stable/kilo).*$
-
-  - name: ^gate-neutron-lbaasv1-dsvm-api$
-    branch: ^(?!stable/kilo).*$
-
-  - name: ^gate-neutron-lbaasv2-dsvm-.*$
-    branch: ^(?!stable/kilo).*$
-
   - name: ^gate-neutron-lbaasv2-dsvm-scenario$
-    branch: ^(?!stable/kilo).*$
     voting: false
 
   - name: ^gate-neutron-lbaas-dsvm-functional.*$
-    branch: ^(?!stable/(kilo|liberty|mitaka)).*$
+    branch: ^(?!stable/(liberty|mitaka)).*$
 
   - name: gate-tempest-dsvm-octavia
-    branch: ^(?!stable/(kilo|liberty)).*$
-
-  - name: ^gate-neutron-lbaas-python34$
-    branch: ^(?!stable/kilo).*$
+    branch: ^(?!stable/liberty).*$
 
   - name: ^gate-group-based-policy-dsvm-functional$
-    branch: ^(?!stable/kilo).*$
     voting: false
 
   - name: ^gate-group-based-policy-dsvm-rally$
-    branch: ^(?!stable/kilo).*$
     voting: false
 
-  - name: ^gate-functional-dsvm-astara.*$
-    branch: ^(?!stable/(?:juno|kilo)).*$
-
   - name: ^gate-functional-dsvm-networking-sfc-nv$
-    branch: ^(?!stable/(?:kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
 
   - name: ^gate-tempest-dsvm-networking-sfc-nv$
-    branch: ^(?!stable/(?:kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
 
 # For Gerrit ver 2.8.x and later (using buck)
   - name: ^.*gerrit.*buck$
@@ -1790,49 +1726,48 @@ jobs:
 
     # For stable compat jobs.
   - name: ^gate-tempest-dsvm-neutron-src-.*-mitaka$
-    branch: ^(?!stable/(?:kilo|liberty|mitaka)).*$
+    branch: ^(?!stable/(liberty|mitaka)).*$
     voting: false
 
   - name: ^gate-oslo.messaging-dsvm-functional-.*-rabbit$
     voting: false
 
   - name: ^gate-oslo.messaging-dsvm-functional-.*-qpid$
-    branch: ^stable/(kilo|liberty)$
+    branch: ^stable/liberty$
     voting: false
 
   - name: ^gate-oslo.messaging-dsvm-functional-.*-amqp1.*$
-    branch: ^(?!stable/(?:kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
     voting: false
 
   - name: ^gate-oslo.messaging-dsvm-functional-.*-pika$
-    branch: ^(?!stable/(?:kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
     voting: false
 
   - name: ^gate-oslo.messaging-dsvm-functional-.*-zeromq$
-    branch: ^(?!stable/(?:kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
     voting: false
 
   - name: gate-oslo.log-src-grenade-dsvm
-    branch: ^(?!stable/(?:kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
     voting: false
 
   - name: gate-oslo.messaging-src-grenade-dsvm
-    branch: ^(?!stable/(?:kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
     voting: false
 
   - name: gate-oslo.messaging-src-grenade-dsvm-multinode
-    branch: ^(?!stable/(?:kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
     voting: false
 
   - name: gate-oslo.versionedobjects-src-grenade-dsvm-multinode
-    branch: ^(?!stable/(?:kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
     voting: false
 
   - name: gate-rally-dsvm-cinder
     voting: false
 
   - name: gate-cinder-dsvm-apache
-    branch: ^(?!stable/kilo).*$
     voting: false
 
   - name: ^gate-cinder-pylint$
@@ -2010,7 +1945,7 @@ jobs:
   - name: ^gate-.*-install-guide$
     success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/install-guide/build/html/
     # This is only available in Newton.
-    branch: ^(?!stable/(kilo|liberty|mitaka)).*$
+    branch: ^(?!stable/(liberty|mitaka)).*$
     files:
       - '^tox.ini$'
       - '^install-guide/.*'
@@ -2025,7 +1960,7 @@ jobs:
     branch: master
 
   - name: ^(?!gate-).*-install-guide$
-    branch: ^(?!stable/(kilo|liberty|mitaka)).*$
+    branch: ^(?!stable/(liberty|mitaka)).*$
 
   - name: ^gate-.*-js-draft
     success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/dist/
@@ -2069,38 +2004,18 @@ jobs:
           - ^.*\.rst$
           - ^doc/.*$
 
-  - name: gate-python-barbicanclient-devstack-dsvm
-    branch: ^(?!stable/kilo).*$
-
-  - name: gate-python-barbicanclient-devstack-dsvm-oldstable
-    branch: ^stable/kilo$
-
-  - name: gate-barbican-python34
-    branch: ^(?!stable/kilo).*$
-
-  - name: gate-barbican-simple-crypto-devstack-dsvm
-    branch: ^(?!stable/kilo).*$
-
-  - name: gate-barbican-devstack-dsvm-oldstable
-    branch: ^stable/kilo$
-
   - name: gate-barbican-dogtag-devstack-dsvm
     voting: false
-    branch: ^(?!stable/kilo).*$
-
-  - name: gate-barbican-dogtag-devstack-dsvm-f23-oldstable
-    voting: false
-    branch: ^stable/kilo$
 
   - name: gate-barbican-kmip-devstack-dsvm
     voting: false
-    branch: ^(?!stable/(?:kilo|liberty|mitaka)).*$
+    branch: ^(?!stable/(liberty|mitaka)).*$
 
   - name: gate-designate-python34-db
-    branch: ^(?!stable/(?:kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
 
   - name: ^gate-tempest-dsvm-designate-.*$
-    branch: ^(?!stable/(?:kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
 
   # This overrides the above "looser" match above
   - name: ^gate-tempest-dsvm-designate-.*-mitaka$
@@ -2111,16 +2026,16 @@ jobs:
     voting: false
 
   - name: gate-congress-python34
-    branch: ^(?!stable/(kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
 
   - name: gate-congress-dsvm-api
     branch: ^(?!stable/kilo).*$
 
   - name: gate-congress-new-arch-devstack
-    branch: ^(?!stable/(kilo|liberty|mitaka)).*$
+    branch: ^(?!stable/(liberty|mitaka)).*$
 
   - name: gate-congress-tox-db-new_arch
-    branch: ^(?!stable/(kilo|liberty|mitaka)).*$
+    branch: ^(?!stable/(liberty|mitaka)).*$
 
   - name: gate-rally-dsvm-cue-rabbitmq
     voting: false
@@ -2130,9 +2045,6 @@ jobs:
 
   - name: gate-elastic-recheck-tox-queries
     voting: false
-
-  - name: gate-ironic-python34-db
-    branch: ^(?!stable/kilo).*$
 
   - name: gate-sahara-pylint
     voting: false
@@ -2145,14 +2057,10 @@ jobs:
     voting: false
 
   - name: ^gate-sahara-extra-artifacts$
-    branch: ^(?!stable/kilo).*$
     voting: false
 
   - name: sahara-coverage-db
     voting: false
-
-  - name: gate-sahara-python34-db
-    branch: ^(?!stable/kilo).*$
 
   - name: gate-sahara-dashboard-tox-py27dj19
     branch: ^(?!stable/(mitaka)).*$
@@ -2164,7 +2072,7 @@ jobs:
     voting: false
 
   - name: ^gate-sahara-dsvm-scenario.*-heat$
-    branch: ^(?!stable/(kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
 
   - name: ^gate-sahara-dsvm-scenario.*-nv$
     branch: ^stable/liberty$
@@ -2197,23 +2105,23 @@ jobs:
     voting: false
 
   - name: gate-keystone-tox-db-legacy_drivers
-    branch: ^(?!stable/(kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
 
   - name: gate-tempest-dsvm-keystone-uwsgi-full-nv
-    branch: ^(?!stable/(kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
 
   - name: gate-tempest-dsvm-keystone-eventlet-full
-    branch: ^stable/(kilo|liberty|mitaka).*$
+    branch: ^stable/(liberty|mitaka).*$
     voting: false
 
   - name: gate-keystone-dsvm-functional
-    branch: ^(?!stable/(kilo|liberty|mitaka)).*$
+    branch: ^(?!stable/(liberty|mitaka)).*$
 
   - name: gate-keystone-dsvm-functional-v3-only-nv
-    branch: ^(?!stable/(kilo|liberty|mitaka)).*$
+    branch: ^(?!stable/(liberty|mitaka)).*$
 
   - name: check-osc-plugins
-    branch: ^(?!stable/(kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
     voting: false
 
   - name: gate-keystonemiddleware-tox-bandit
@@ -2237,7 +2145,7 @@ jobs:
 
   # python3 support was fully implemented only in mitaka
   - name: gate-mistral-python34
-    branch: ^(?!stable/(?:juno|kilo|liberty)).*$
+    branch: ^(?!stable/(?:juno|liberty)).*$
 
   - name: gate-mistral-devstack-dsvm
     voting: false
@@ -2252,7 +2160,7 @@ jobs:
     voting: false
 
   - name: gate-mistral-docker-buildimage
-    branch: ^(?!stable/(?:juno|kilo|liberty)).*$
+    branch: ^(?!stable/(?:juno|liberty)).*$
     voting: false
 
   - name: python-jenkins-coverage
@@ -2288,32 +2196,6 @@ jobs:
   - name: murano-coverage-db
     voting: false
 
-  - name: gate-networking-cisco-python34
-    branch: ^(?!stable/(?:juno|kilo)).*$
-
-  - name: gate-heat-python34-db
-    branch: ^(?!stable/kilo).*$
-
-  - name: gate-horizon-python34
-    branch: ^(?!stable/kilo).*$
-
-  - name: gate-oslo.db-tox-db-mysql-python
-    branch: ^(?!stable/kilo).*$
-
-  # NOTE(mriedem): oslo.db didn't support py34 until moving to pymysql in
-  # liberty.
-  - name: gate-oslo.db-python34-db
-    branch: ^(?!stable/kilo).*$
-
-  - name: gate-oslo.vmware-python34
-    branch: ^(?!stable/kilo).*$
-
-  - name: gate-oslo.messaging-python34
-    branch: ^(?!stable/kilo).*$
-
-  - name: gate-oslo.rootwrap-python34
-    branch: ^(?!stable/kilo).*$
-
   - name: gate-solum-infra-guestagent-python34
     voting: false
 
@@ -2347,9 +2229,6 @@ jobs:
   - name: gate-manila-pylint
     voting: false
 
-  - name: gate-manila-python34-db
-    branch: ^(?!stable/kilo).*$
-
   - name: gate-manila-buildimage-docker
     voting: false
 
@@ -2360,7 +2239,7 @@ jobs:
     voting: false
 
   - name: gate-manila-tempest-dsvm-postgres-zfsonlinux
-    branch: ^(?!stable/(?:kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
     voting: false
 
   - name: gate-manila-tempest-dsvm-postgres-container
@@ -2379,11 +2258,11 @@ jobs:
     voting: false
 
   - name: gate-manila-tempest-dsvm-cephfs-native
-    branch: ^(?!stable/(?:kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
     voting: false
 
   - name: gate-manila-tempest-minimal-dsvm-lvm
-    branch: ^(?!stable/(?:kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
 
   - name: gate-manila-tempest-minimal-dsvm-dummy
     branch: ^(?!stable/(?:liberty|mitaka)).*$
@@ -2396,37 +2275,37 @@ jobs:
     voting: false
 
   - name: gate-oslo.messaging-src-dsvm-full-amqp1-centos7
-    branch: ^(?!stable/(?:kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
     voting: false
 
   - name: gate-oslo.messaging-src-dsvm-full-zmq
-    branch: ^(?!stable/(?:kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
     voting: false
 
   - name: gate-oslo.messaging-src-dsvm-full-pika
-    branch: ^(?!stable/(?:kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
     voting: false
 
   - name: gate-oslo.messaging-telemetry-dsvm-integration-zmq
-    branch: ^(?!stable/(?:kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
     voting: false
 
   - name: gate-oslo.messaging-telemetry-dsvm-integration-pika
-    branch: ^(?!stable/(?:kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
     voting: false
 
   - name: gate-tempest-neutron-dsvm-src-oslo.messaging-zmq
-    branch: ^(?!stable/(?:kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
     voting: false
 
   - name: gate-tempest-neutron-dsvm-src-oslo.messaging-pika
-    branch: ^(?!stable/(?:kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
     voting: false
 
   # NOTE(rpodolyaka): since Ic7ab3b9e6dc8354861be1af46210269f74c04333 we require
   # SQLAlchemy >= 1.0.10, so this job is not needed for Mitaka+
   - name: gate-oslo.db-tox-db-sqla_09
-    branch: ^(stable/(kilo|liberty)).*$
+    branch: ^(stable/liberty).*$
 
   - name: gate-manila-tempest-dsvm-hdfs
     voting: false
@@ -2449,28 +2328,22 @@ jobs:
   - name: gate-tempest-dsvm-docker-centos7
     voting: false
 
-  - name: gate-tempest-dsvm-neutron-dvr
-    branch: ^(?!stable/kilo).*$
-
   - name: gate-neutron-dsvm-fullstack
-    branch: ^(?!stable/kilo).*$
     voting: false
 
   - name: gate-tacker-dsvm-functional
-    # disable job in kilo because func tests are not supported in that branch
-    branch: ^(?!stable/kilo).*$
     voting: false
 
   - name: gate-tacker-python34-db
-    branch: ^(?!stable/(kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
     voting: false
 
   - name: gate-tacker-horizon-python34
-    branch: ^(?!stable/(kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
     voting: false
 
   - name: gate-python-tackerclient-python34
-    branch: ^(?!stable/(kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
     voting: false
 
   - name: gate-tempest-dsvm-neutron-ipv6only
@@ -2491,15 +2364,15 @@ jobs:
     voting: false
 
   - name: gate-trove-scenario-functional-dsvm-mysql
-    branch: ^(?!stable/(?:kilo|liberty|mitaka)).*$
+    branch: ^(?!stable/(liberty|mitaka)).*$
     voting: false
 
   - name: gate-trove-scenario-functional-dsvm-redis
-    branch: ^(?!stable/(?:kilo|liberty|mitaka)).*$
+    branch: ^(?!stable/(liberty|mitaka)).*$
     voting: false
 
   - name: gate-trove-python34-db
-    branch: ^(?!stable/(?:juno|kilo|liberty|mitaka)).*$
+    branch: ^(?!stable/(liberty|mitaka)).*$
 
   - name: gate-trove-dashboard-python34
     branch: ^(?!stable/(mitaka)).*$
@@ -2525,32 +2398,20 @@ jobs:
   - name: gate-tempest-dsvm-full-lio
     voting: false
 
-  - name: gate-horizon-jshint
-    branch: ^stable/kilo
-
-  - name: ^gate-horizon-npm-run-.*$
-    branch: ^(?!stable/kilo).*$
-
   - name: gate-aodh-dsvm-functional-hbase
     branch: ^(?!stable/liberty).*$
 
   - name: ^gate-aodh-dsvm-tempest-plugin-.*
     branch: ^(?!stable/liberty).*$
 
-  - name: ^gate-telemetry-dsvm-integration-.*$
-    branch: ^(?!stable/kilo).*$
-
-  - name: gate-horizon-tox-py27dj18
-    branch: ^(?!stable/kilo).*$
-
   - name: gate-horizon-tox-py27dj19
-    branch: ^(?!stable/(kilo|liberty|mitaka)).*$
+    branch: ^(?!stable/(liberty|mitaka)).*$
 
   - name: gate-django_openstack_auth-tox-py27dj18
-    branch: ^(?!stable/(kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
 
   - name: gate-django_openstack_auth-tox-py27dj19
-    branch: ^(?!stable/(kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
 
   # TODO(doug-fish): Make voting once tests are proven to pass reliably
   - name: gate-neutron-lbaas-dashboard-npm-run-lint
@@ -2564,29 +2425,16 @@ jobs:
     voting: false
 
   - name: gate-horizon-selenium-headless
-    branch: ^(?!stable/(kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
 
   - name: gate-horizon-dsvm-integration
-    branch: ^(?!stable/(kilo|liberty)).*$
-
-  - name: gate-swiftclient-dsvm-functional
-    branch: ^(?!stable/kilo).*$
-
-  - name: ^gate-glanceclient-dsvm-functional
-    branch: ^(?!stable/kilo).*$
+    branch: ^(?!stable/liberty).*$
 
   # TODO(kragniz): Enable voting for each driver when the jobs are
   # functioning for that driver
   - name: ^gate-glance_store-dsvm-functional.*$
-    branch: ^(?!stable/(kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
     voting: false
-
-  - name: gate-glance_store-python34
-    branch: ^(?!stable/kilo).*$
-
-  - name: gate-tempest-dsvm-full-ceph-plugin-src-glance_store
-    # NOTE(flaper87): Disable job in Kilo until we fix the gate.
-    branch: ^(?!stable/kilo).*$
 
   - name: ^gate-tempest-dsvm-full-ceph-plugin-src-.*$
 
@@ -2653,7 +2501,7 @@ jobs:
 
   # except for puppet-openstack_extras beaker that have been introduced after Kilo
   - name: ^gate-puppet-openstack_extras-puppet-beaker-rspec-.*$
-    branch: ^(?!stable/(icehouse|juno|kilo)).*$
+    branch: ^(?!stable/juno).*$
 
   # Aims to break when a new version of Puppet is released
   # For now, run the jobs only on master so if the job starts to
@@ -2665,33 +2513,29 @@ jobs:
 
   # Starting from Newton and Jewel, Puppet OpenStack will gate on Xenial nodes.
   - name: ^gate-.*-puppet-beaker-rspec-ubuntu-xenial.*$
-    branch: ^(?!stable/(icehouse|juno|kilo|liberty|mitaka|hammer)).*$
+    branch: ^(?!stable/(liberty|mitaka|hammer)).*$
 
   # Before Newton and Jewel, Puppet OpenStack gates on Trusty nodes.
   - name: ^gate-.*-puppet-beaker-rspec-ubuntu-trusty$
-    branch: ^stable/(kilo|liberty|mitaka|hammer).*$
+    branch: ^stable/(liberty|mitaka|hammer).*$
 
   # Starting from Newton and Jewel, Puppet OpenStack stops testing on Puppet 3.3, 3.4, 3.7 and 4.0.
   - name: ^gate-puppet-.*-puppet-unit-(3.(3|4|7)|4.0)-.*$
-    branch: ^stable/(icehouse|juno|kilo|liberty|mitaka|hammer).*$
+    branch: ^stable/(liberty|mitaka|hammer).*$
 
   # Starting from Mitaka and Jewel, Puppet OpenStack starts voting on Puppet 4.5.
   - name: ^gate-puppet-.*-puppet-unit-4.5-.*$
-    branch: ^(?!stable/(icehouse|juno|kilo|liberty|hammer)).*$
+    branch: ^(?!stable/(liberty|hammer)).*$
 
   - name: ^gate-puppet-((?!swift).)*-puppet-syntax-.*$
-    branch: ^(?!stable/(icehouse)).*$
+    branch: ^(?!stable/icehouse).*$
 
   # puppet-swift can never be future parser compatible without breaking the API
   - name: ^gate-puppet-swift-puppet-syntax-4-.*$
     branch: ^(?!stable/(icehouse|juno)).*$
 
-  # these compat jobs only work on liberty+
-  - name: ^gate-tempest-dsvm-nova-v20
-    branch: ^(?!stable/kilo).*$
-
   - name: ^gate-tempest-dsvm-lxc
-    branch: ^(?!stable/(kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
 
   # TODO(yamamoto): Revisit when Neutron driver API become more stable.
   # OFAgent will be removed in the Newton cycle.
@@ -2774,55 +2618,24 @@ jobs:
   - name: gate-fuel-web-python27-db
     branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
 
-  - name: gate-ceilometer-dsvm-functional-mongodb
-    branch: ^(?!stable/kilo).*$
-
-  - name: gate-ceilometer-dsvm-functional-mysql
-    branch: ^(?!stable/kilo).*$
-
-  - name: gate-ceilometer-dsvm-functional-postgresql
-    branch: ^(?!stable/kilo).*$
-
   - name: ^gate-ceilometer-dsvm-tempest-plugin-.*
     branch: ^(?!stable/liberty).*$
 
   # Freezer specific gate settings
   - name: ^gate-freezer(-api|-web-ui)?-docs.*$
-    branch: ^(?!stable/(kilo|liberty)).*$
-
-  - name: ^gate-freezer-api-devstack-dsvm.*$
-    branch: ^(?!stable/kilo).*$
-
-  - name: ^gate-freezer-web-ui-devstack-dsvm.*$
-    branch: ^(?!stable/kilo).*$
-
-  - name: ^gate-freezer-devstack-dsvm.*$
-    branch: ^(?!stable/kilo).*$
-
-  - name: ^gate-freezer(-api|-web-ui)?-python34.*$
-    branch: ^(?!stable/kilo).*$
-
-  # Python 3.4 jobs
-  - name: ^gate-cinder-python34-db$
-    branch: ^(?!stable/kilo).*$
-
-  - name: gate-compute-hyperv-python34
-    branch: ^(?!stable/kilo).*$
+    branch: ^(?!stable/liberty).*$
 
   - name: gate-keystone-python34-db
-    branch: ^(?!stable/(?:kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
 
   - name: gate-swift-tox-bandit
     voting: false
 
   - name: gate-swift-python34
-    branch: ^(?!stable/(?:kilo|liberty)).*$
-
-  - name: gate-nova-python34-db
-    branch: ^(?!stable/kilo).*$
+    branch: ^(?!stable/liberty).*$
 
   - name: ^gate-glance-python34-db$
-    branch: ^(?!stable/(?:kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
 
   - name: gate-murano-python34-db
     branch: ^(?!stable/(?:liberty|mitaka)).*$
@@ -2833,14 +2646,11 @@ jobs:
   - name: gate-murano-agent-python34
     branch: ^(?!stable/(?:liberty|mitaka)).*$
 
-  - name: gate-networking-hyperv-python34
-    branch: ^(?!stable/kilo).*$
-
   - name: gate-kuryr-python34
     voting: false
 
   - name: gate-networking-nec-python34
-    branch: ^(?!stable/(?:kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
 
   - name: gate-quark-python34
     voting: false
@@ -2897,10 +2707,6 @@ jobs:
   - name: gate-python-keystoneclient-requirements
     branch: ^(?!feature/keystoneauth_integration).*$
 
-  # Ceilometerclient added functional testing in master only
-  - name: ^gate-ceilometerclient-dsvm-functional$
-    branch: ^(?!stable/kilo).*$
-
   - name: ^gate-gnocchi-grenade-dsvm-functional-.*-1\.x$
     branch: ^(?!stable/1\..).*$
     voting: false
@@ -2909,13 +2715,7 @@ jobs:
     branch: ^(?!stable/(?:1\..|2.0)).*$
     voting: false
 
-  # Saharaclient python 3.4 tests don't run on kilo or earlier
-  - name: ^gate-python-saharaclient-python34$
-    branch: ^(?!stable/kilo).*$
-
-  # Saharaclient functional test don't run on kilo or earlier
   - name: ^gate-sahara-cli-nv$
-    branch: ^(?!stable/kilo).*$
     skip-if:
       - project: ^openstack/sahara-tests$
         all-files-match-any:
@@ -2934,14 +2734,10 @@ jobs:
   # Skip Kilo and Liberty for
   # neutronclient-test-dsvm-functional-adv-svcs
   - name: ^gate-neutronclient-test-dsvm-functional-adv-svcs$
-    branch: ^(?!stable/(?:kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
 
   - name: ^gate-ironic-inspector-dsvm-discovery$
     branch: ^(?!stable/liberty).*$
-
-  # NOTE(mriedem): ironic-inspector doesn't have a stable/kilo branch
-  - name: ^gate-ironic-inspector-dsvm-ipa.*$
-    branch: ^(?!stable/kilo).*$
 
   - name: ^gate-tempest-dsvm-ironic-inspector-nv$
     branch: ^(?!stable/liberty).*$
@@ -2951,7 +2747,7 @@ jobs:
 
   # NOTE(jlvilla): Ironic Grenade does not work until after mitaka
   - name: ^gate-grenade-dsvm-ironic
-    branch: ^(?!stable/(kilo|liberty|mitaka)).*$
+    branch: ^(?!stable/(liberty|mitaka)).*$
 
   - name: gate-senlin-dsvm-functional
     voting: false
@@ -2976,7 +2772,7 @@ jobs:
     voting: false
 
   - name: gate-tempest-dsvm-neutron-scenario
-    branch: ^(?!stable/(?:kilo|liberty|mitaka)).*$
+    branch: ^(?!stable/(liberty|mitaka)).*$
     voting: false
 
   - name: ^gate-.*-releasenotes$
@@ -3015,13 +2811,6 @@ jobs:
   - name: ^openstack-ansible-releasenotes$
     branch: ^(?!juno|kilo).*$
 
-  # Don't run python34 on Kilo
-  - name: ^gate-neutron-vpnaas-python34$
-    branch: ^(?!stable/kilo).*$
-
-  - name: ^gate-neutron-python34$
-    branch: ^(?!stable/kilo).*$
-
   - name: gate-python-fuelclient-python34
     branch: ^(?!stable/(?:6\.1|7.0)).*$
 
@@ -3035,16 +2824,16 @@ jobs:
     voting: false
 
   - name: gate-tooz-tox-db-py27-consul
-    branch: ^(?!stable/(?:kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
 
   - name: gate-tooz-tox-db-py34-consul
-    branch: ^(?!stable/(?:kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
 
   - name: gate-tooz-tox-db-py34-etcd
-    branch: ^(?!stable/(?:kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
 
   - name: gate-tooz-tox-db-py27-etcd
-    branch: ^(?!stable/(?:kilo|liberty)).*$
+    branch: ^(?!stable/liberty).*$
 
     # Requirements project publishes documents from master only.
   - name: ^(?:gate-)requirements-docs$
@@ -4897,15 +4686,12 @@ projects:
       - name: api-guide-jobs
     check:
       - gate-barbican-simple-crypto-devstack-dsvm
-      - gate-barbican-devstack-dsvm-oldstable
       - barbican-coverage
       - gate-barbican-dogtag-devstack-dsvm
-      - gate-barbican-dogtag-devstack-dsvm-f23-oldstable
     experimental:
       - gate-barbican-kmip-devstack-dsvm
     gate:
       - gate-barbican-simple-crypto-devstack-dsvm
-      - gate-barbican-devstack-dsvm-oldstable
 
   - name: openstack/barbican-specs
     template:
@@ -7070,7 +6856,6 @@ projects:
       - name: release-notes-jobs
       - name: javascript-jobs
     check:
-      - gate-horizon-jshint
       - gate-horizon-tox-py27dj18
       - gate-horizon-tox-py27dj19
       - gate-horizon-dsvm-integration
@@ -10559,10 +10344,8 @@ projects:
       - name: osc-plugin-jobs
     check:
       - gate-python-barbicanclient-devstack-dsvm
-      - gate-python-barbicanclient-devstack-dsvm-oldstable
     gate:
       - gate-python-barbicanclient-devstack-dsvm
-      - gate-python-barbicanclient-devstack-dsvm-oldstable
 
   - name: openstack/python-bileanclient
     template:
@@ -12734,12 +12517,10 @@ projects:
       - name: merge-check
     check:
       - gate-trove-functional-dsvm-mysql
-      - gate-trove-functional-dsvm-mysql-kilo
       - gate-trove-functional-dsvm-mysql-liberty
       - gate-trove-functional-dsvm-mysql-mitaka
     gate:
       - gate-trove-functional-dsvm-mysql
-      - gate-trove-functional-dsvm-mysql-kilo
       - gate-trove-functional-dsvm-mysql-liberty
       - gate-trove-functional-dsvm-mysql-mitaka
     experimental:
