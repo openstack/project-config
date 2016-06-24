@@ -381,7 +381,7 @@ class PostThread(threading.Thread):
         while True:
             try:
                 job = self.queue.get_nowait()
-                logging.debug("%s: proccessing job %s",
+                logging.debug("%s: processing job %s",
                         threading.current_thread(),
                         job)
                 self._post_file(*job)
