@@ -27,7 +27,7 @@
           # branches below are dropped. Prior to Newton, the API Tempest tests are
           # invoked explicitly and thus we need the following variables set. From
           # Newton onward, everything is taken care of by the Tempest plugin framework
-          if [ "$ZUUL_BRANCH" == "stable/kilo" -o "$ZUUL_BRANCH" == "stable/liberty" -o "$ZUUL_BRANCH" == "stable/mitaka" ] ; then
+          if [ "$ZUUL_BRANCH" == "stable/liberty" -o "$ZUUL_BRANCH" == "stable/mitaka" ] ; then
               export DEVSTACK_GATE_TEMPEST_NOTESTS=1
               export DEVSTACK_GATE_INSTALL_TESTONLY=1
           else
@@ -157,22 +157,12 @@
           fi
 
           function gate_hook {{
-              if [[ -e $BASE/new/neutron/neutron/tests/contrib/gate_hook.sh ]]; then
-                  bash -xe $BASE/new/neutron/neutron/tests/contrib/gate_hook.sh dsvm-functional
-              else
-                  # Before kilo
-                  bash -xe $BASE/new/neutron/neutron/tests/functional/contrib/gate_hook.sh
-              fi
+              bash -xe $BASE/new/neutron/neutron/tests/contrib/gate_hook.sh dsvm-functional
           }}
           export -f gate_hook
 
           function post_test_hook {{
-              if [[ -e $BASE/new/neutron/neutron/tests/contrib/post_test_hook.sh ]]; then
-                 bash -xe $BASE/new/neutron/neutron/tests/contrib/post_test_hook.sh dsvm-functional{python}
-              else
-                 # Before kilo
-                 bash -xe $BASE/new/neutron/neutron/tests/functional/contrib/post_test_hook.sh
-              fi
+              bash -xe $BASE/new/neutron/neutron/tests/contrib/post_test_hook.sh dsvm-functional{python}
           }}
           export -f post_test_hook
 

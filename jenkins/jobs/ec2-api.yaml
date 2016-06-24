@@ -30,18 +30,8 @@
               export DEVSTACK_GATE_NEUTRON=0
           fi
 
-          if [ "$ZUUL_BRANCH" = "stable/kilo" ] ; then
-              export DEVSTACK_GATE_TEMPEST_NOTESTS=1
-              function post_test_hook {{
-                  source $BASE/new/devstack/accrc/admin/admin
-                  cd /opt/stack/new/ec2-api/
-                  ./ec2api/tests/contrib/post_test_hook.sh
-              }}
-              export -f post_test_hook
-          else
-              export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
-              export DEVSTACK_GATE_TEMPEST_REGEX="ec2api.tests.functional"
-          fi
+          export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
+          export DEVSTACK_GATE_TEMPEST_REGEX="ec2api.tests.functional"
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
