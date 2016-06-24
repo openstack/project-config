@@ -1516,14 +1516,6 @@ jobs:
     branch: ^(?!stable/(liberty|mitaka)).*$
     voting: false
 
-    # this is a deprecated way of testing, multinode grenade should be
-    # used to test this from mitaka forward.
-    #
-    # NOTE(sdague) when you remove the kilo branch, remove this line
-    # as well.
-  - name: ^gate-grenade-dsvm-partial-ncpu$
-    branch: ^stable/liberty$
-
   - name: ^gate-tempest-dsvm-ironic-parallel-nv$
     branch: ^(?!stable)
 
@@ -2898,7 +2890,6 @@ projects:
       - gate-devstack-bashate
       - gate-devstack-unit-tests
       - gate-grenade-dsvm-forward
-      - gate-grenade-dsvm-partial-ncpu
       - gate-tempest-dsvm-ironic-agent_ssh-nv
       - gate-devstack-dsvm-updown
       - gate-tempest-dsvm-neutron-identity-v3-only-full-nv
@@ -2913,7 +2904,6 @@ projects:
     gate:
       - gate-devstack-docs
       - gate-devstack-bashate
-      - gate-grenade-dsvm-partial-ncpu
       - gate-grenade-dsvm-multinode
       - gate-grenade-dsvm-neutron-multinode
     experimental:
@@ -2945,7 +2935,6 @@ projects:
       - gate-grenade-dsvm
       - gate-grenade-dsvm-forward
       - gate-grenade-dsvm-neutron
-      - gate-grenade-dsvm-partial-ncpu
       - gate-grenade-dsvm-heat-nv
       - gate-grenade-dsvm-multinode
       - gate-grenade-dsvm-neutron-multinode
@@ -2954,7 +2943,6 @@ projects:
     gate:
       - gate-grenade-dsvm
       - gate-grenade-dsvm-neutron
-      - gate-grenade-dsvm-partial-ncpu
       - gate-grenade-dsvm-multinode
       - gate-grenade-dsvm-neutron-multinode
       - gate-grenade-publish-docs
@@ -3123,7 +3111,6 @@ projects:
       - gate-devstack-gate-unittests
       - gate-devstack-gate-bashate
       - gate-dg-hooks-dsvm
-      - gate-grenade-dsvm-partial-ncpu
       - gate-grenade-dsvm-multinode
       - gate-grenade-dsvm-neutron-multinode
       - gate-neutron-dsvm-functional-nv
@@ -3142,7 +3129,6 @@ projects:
       - gate-tempest-dsvm-neutron-multinode-full
     gate:
       - gate-devstack-gate-unittests
-      - gate-grenade-dsvm-partial-ncpu
       - gate-grenade-dsvm-multinode
       - gate-grenade-dsvm-neutron-multinode
     experimental:
@@ -8317,7 +8303,6 @@ projects:
       - name: api-ref-jobs
     check:
       - gate-nova-tox-db-functional
-      - gate-grenade-dsvm-partial-ncpu
       - gate-grenade-dsvm-multinode
       - gate-tempest-dsvm-ironic-pxe_ipa-nv
       - gate-tempest-dsvm-cells
@@ -8327,7 +8312,6 @@ projects:
       - gate-tempest-dsvm-multinode-live-migration
     gate:
       - gate-nova-tox-db-functional
-      - gate-grenade-dsvm-partial-ncpu
       - gate-grenade-dsvm-multinode
       - gate-tempest-dsvm-cells
       - gate-tempest-dsvm-full-devstack-plugin-ceph
@@ -11271,11 +11255,6 @@ projects:
       - gate-requirements-tox-validate
       - gate-requirements-tox-validate-projects
       - gate-grenade-dsvm-multinode
-      # NOTE(mriedem): The multinode and partial-ncpu jobs should be mutually
-      # exclusive as to what branches they run on. partial-ncpu should only
-      # run on stable/liberty changes and multinode should only run on mitaka+
-      # changes.
-      - gate-grenade-dsvm-partial-ncpu
     gate:
       - gate-requirements-docs
       - gate-requirements-pep8
@@ -11285,7 +11264,6 @@ projects:
       - gate-requirements-tox-validate
       - gate-requirements-tox-validate-projects
       - gate-grenade-dsvm-multinode
-      - gate-grenade-dsvm-partial-ncpu
     periodic:
       - propose-requirements-constraints-master
       - wheel-build-ubuntu-trusty-amd64-python2:
@@ -12148,7 +12126,6 @@ projects:
       - gate-tempest-pep8
       - gate-tempest-docs
       - gate-tempest-python27
-      - gate-grenade-dsvm-partial-ncpu
       - gate-grenade-dsvm-multinode
       - gate-grenade-dsvm-neutron-multinode
       - gate-grenade-dsvm-neutron
@@ -12174,7 +12151,6 @@ projects:
       - gate-tempest-pep8
       - gate-tempest-docs
       - gate-tempest-python27
-      - gate-grenade-dsvm-partial-ncpu
       - gate-tempest-dsvm-layer4
       - gate-grenade-dsvm-multinode
       - gate-grenade-dsvm-neutron-multinode
