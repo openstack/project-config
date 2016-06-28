@@ -4581,6 +4581,8 @@
     jobs:
       - coverage-jobs
       - python-jobs
+      - python-liberty-bitrot-jobs
+      - python-mitaka-bitrot-jobs
       - pypi-jobs
       - openstack-publish-jobs
       - translation-jobs
@@ -4597,6 +4599,16 @@
           node: ubuntu-trusty
           job-suffix: ''
           branch-override: default
+      - '{pipeline}-tempest-dsvm-networking-midonet-v2{job-suffix}':
+          pipeline: periodic
+          node: ubuntu-trusty
+          job-suffix: '-mitaka'
+          branch-override: stable/mitaka
+      - '{pipeline}-tempest-dsvm-networking-midonet-v2{job-suffix}':
+          pipeline: periodic
+          node: ubuntu-trusty
+          job-suffix: '-liberty'
+          branch-override: stable/liberty
       - '{pipeline}-tempest-dsvm-networking-midonet-ml2{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
