@@ -766,6 +766,8 @@
 
               export IRONIC_INSPECTOR_AUTO_DISCOVERY={inspector-auto-discovery}
               if [ "IRONIC_INSPECTOR_AUTO_DISCOVERY" == "1" ]; then
+                   # discovery test requires sudo for iptables and virsh
+                   export DEVSTACK_GATE_REMOVE_STACK_SUDO=0
                    # enable enroll hook
                    export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_INSPECTOR_NODE_NOT_FOUND_HOOK=enroll"
               fi
