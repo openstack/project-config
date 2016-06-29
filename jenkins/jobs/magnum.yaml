@@ -78,16 +78,20 @@
 
           export PATH=$PATH:$(pwd)/openstack/dib-utils/bin
           export PATH=$PATH:$(pwd)/openstack/diskimage-builder/bin
-          export ELEMENTS_PATH=./openstack/diskimage-builder/elements:./openstack/magnum/magnum/elements
+
+          MAGNUM_ELEMENTS=./openstack/magnum/magnum/drivers/common/image
+          DIB_ELEMENTS=./openstack/diskimage-builder/elements
+          export ELEMENTS_PATH=$DIB_ELEMENTS:$MAGNUM_ELEMENTS
+
           export DIB_IMAGE_SIZE=2.2
 
-          ./openstack/magnum/magnum/elements/fedora-atomic/install_imagebuild_deps.sh
+          $MAGNUM_ELEMENTS/fedora-atomic/install_imagebuild_deps.sh
 
           IMAGE_NAME="fedora-atomic-f23-dib"
           DIB_RELEASE="23" disk-image-create -x -o $WORKSPACE/$IMAGE_NAME fedora-atomic
 
           # validate image
-          ./openstack/magnum/magnum/elements/fedora-atomic/validate_atomic_image.sh $WORKSPACE/${IMAGE_NAME}.qcow2
+          $MAGNUM_ELEMENTS/fedora-atomic/validate_atomic_image.sh $WORKSPACE/${IMAGE_NAME}.qcow2
 
     publishers:
       - scp:
