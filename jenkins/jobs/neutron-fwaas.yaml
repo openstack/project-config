@@ -68,6 +68,13 @@
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
+          if [[ "$ZUUL_BRANCH" != "stable/mitaka" ]]; then
+              # Note the actual url here is somewhat irrelevant because it
+              # caches in nodepool, however make it a valid url for
+              # documentation purposes.
+              export DEVSTACK_LOCAL_CONFIG="enable_plugin neutron-fwaas git://git.openstack.org/openstack/neutron-fwaas"
+          fi
+          export ENABLE_SERVICES="q-fwaas"
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
