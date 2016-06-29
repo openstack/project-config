@@ -26,6 +26,8 @@ NODEPOOL_MIRROR_HOST=$(echo $NODEPOOL_MIRROR_HOST|tr '[:upper:]' '[:lower:]')
 NODEPOOL_PYPI_MIRROR=${NODEPOOL_PYPI_MIRROR:-http://$NODEPOOL_MIRROR_HOST/pypi/simple}
 NODEPOOL_WHEEL_MIRROR=${NODEPOOL_WHEEL_MIRROR:-http://$NODEPOOL_MIRROR_HOST/wheel/$AFS_SLUG}
 NODEPOOL_UBUNTU_MIRROR=${NODEPOOL_UBUNTU_MIRROR:-http://$NODEPOOL_MIRROR_HOST/ubuntu}
+NODEPOOL_CENTOS_MIRROR=${NODEPOOL_CENTOS_MIRROR:-http://$NODEPOOL_MIRROR_HOST/centos}
+NODEPOOL_EPEL_MIRROR=${NODEPOOL_EPEL_MIRROR:-http://$NODEPOOL_MIRROR_HOST/epel}
 NODEPOOL_CEPH_MIRROR=${NODEPOOL_CEPH_MIRROR:-http://$NODEPOOL_MIRROR_HOST/ceph-deb-hammer}
 NODEPOOL_NPM_MIRROR=${NODEPOOL_NPM_MIRROR:-http://$NODEPOOL_MIRROR_HOST/npm/}
 
@@ -100,32 +102,32 @@ elif [ "$LSBDISTID" == "CentOS" ]; then
     sudo dd of=/etc/yum.repos.d/CentOS-Base.repo <<EOF
 [base]
 name=CentOS-\$releasever - Base
-baseurl=http://$NODEPOOL_MIRROR_HOST/centos/\$releasever/os/\$basearch/
+baseurl=$NODEPOOL_CENTOS_MIRROR/\$releasever/os/\$basearch/
 gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-\$releasever
 
 #released updates
 [updates]
 name=CentOS-\$releasever - Updates
-baseurl=http://$NODEPOOL_MIRROR_HOST/centos/\$releasever/updates/\$basearch/
+baseurl=$NODEPOOL_CENTOS_MIRROR/\$releasever/updates/\$basearch/
 gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-\$releasever
 
 #additional packages that may be useful
 [extras]
 name=CentOS-\$releasever - Extras
-baseurl=http://$NODEPOOL_MIRROR_HOST/centos/\$releasever/extras/\$basearch/
+baseurl=$NODEPOOL_CENTOS_MIRROR/\$releasever/extras/\$basearch/
 gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-7
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-\$releasever
 EOF
 
     sudo dd of=/etc/yum.repos.d/epel.repo <<EOF
 [epel]
-name=Extra Packages for Enterprise Linux 7 - \$basearch
-baseurl=http://$NODEPOOL_MIRROR_HOST/epel/7/\$basearch
+name=Extra Packages for Enterprise Linux \$releasever - \$basearch
+baseurl=$NODEPOOL_EPEL_MIRROR/\$releasever/\$basearch
 failovermethod=priority
 enabled=1
 gpgcheck=1
-gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-7
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-\$releasever
 EOF
 fi
