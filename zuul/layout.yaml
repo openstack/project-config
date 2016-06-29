@@ -2732,12 +2732,8 @@ jobs:
   - name: ^gate-grenade-dsvm-ironic
     branch: ^(?!stable/(liberty|mitaka)).*$
 
-  - name: gate-senlin-dsvm-functional
-    voting: false
-
   - name: gate-senlin-dsvm-tempest-functional
     branch: ^(?!stable/mitaka).*$
-    voting: false
 
   - name: gate-senlin-dsvm-tempest-api
     branch: ^(?!stable/mitaka).*$
@@ -11569,12 +11565,12 @@ projects:
       - name: api-ref-jobs
     check:
       - gate-senlin-dsvm-tempest-api
+      - gate-senlin-dsvm-tempest-functional
     gate:
       - gate-senlin-dsvm-tempest-api
-    experimental:
-      - gate-senlin-dsvm-functional
-      - gate-rally-dsvm-senlin-senlin
       - gate-senlin-dsvm-tempest-functional
+    experimental:
+      - gate-rally-dsvm-senlin-senlin
 
   - name: openstack/senlin-dashboard
     template:
