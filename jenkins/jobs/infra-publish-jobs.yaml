@@ -19,6 +19,29 @@
             excludes: ''
         - console-log
 
+- job-template:
+    name: '{name}-infra-docs-tags-only'
+    description: Publish infra documents, use when only publish on tag
+    node: ubuntu-trusty
+
+    builders:
+        - print-template-name:
+            template-name: "{template-name}"
+        - gerrit-git-prep
+        - install-distro-packages
+        - revoke-sudo
+        - docs-tags-only-env:
+            env: venv
+
+    publishers:
+        - ftp:
+            site: '{doc-publisher-site}'
+            source: 'doc/build/html/**'
+            target: 'infra/{doc-publisher-folder}'
+            remove-prefix: 'doc/build/html'
+            excludes: ''
+        - console-log
+
 - job:
     name: publish-infra-docs-index
     description: Render and publish the infra docs index.
@@ -58,3 +81,4 @@
     name: infra-publish-jobs
     jobs:
         - '{name}-infra-docs'
+        - '{name}-infra-docs-tags-only'
