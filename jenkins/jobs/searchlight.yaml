@@ -69,3 +69,27 @@
       - console-log
 
     node: ubuntu-trusty
+
+- job-template:
+    name: 'gate-{name}-python35-searchlight-nv'
+
+    wrappers:
+      - build-timeout:
+          timeout: 40
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - zuul-git-prep-upper-constraints
+      - elasticsearch-install
+      - install-distro-packages
+      - revoke-sudo
+      - python35
+      - assert-no-extra-files
+
+    publishers:
+      - test-results
+      - console-log
+
+    node: ubuntu-xenial
