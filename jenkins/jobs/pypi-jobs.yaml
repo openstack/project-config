@@ -16,23 +16,9 @@
     publishers:
       - console-log
 
-
-- job-template:
-    name: '{name}-pypi-wheel-upload'
-    node: release
-
-    builders:
-      - revoke-sudo
-      - gerrit-git-prep
-      - shell: |
-          /usr/local/jenkins/slave_scripts/pypi-wheel-upload.sh {name} {tarball-site}
-
-    publishers:
-      - console-log
-
-
 - job-group:
     name: pypi-jobs
     jobs:
       - '{name}-pypi-both-upload'
-      - '{name}-pypi-wheel-upload'
+      - '{name}-tarball'
+      - '{name}-announce-release'

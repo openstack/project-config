@@ -215,8 +215,9 @@
 
     jobs:
       - python-jobs
-      - hook-{name}-rtfd
       - openstack-publish-jobs
+      - openstack-server-release-jobs
+      - hook-{name}-rtfd
       - '{pipeline}-functional-dsvm-astara{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
@@ -245,6 +246,7 @@
       - python-jobs
       - hook-{name}-rtfd
       - openstack-publish-jobs
+      - openstack-server-release-jobs
 
 - project:
     name: astara-neutron
@@ -255,6 +257,7 @@
       - python-jobs
       - hook-{name}-rtfd
       - openstack-publish-jobs
+      - openstack-server-release-jobs
 
 - project:
     name: automaton
@@ -300,9 +303,10 @@
 
     jobs:
       - python-jobs
-      - translation-jobs
       - openstack-publish-jobs
       - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
+      - translation-jobs
       - 'gate-barbican-{plugin}-devstack-dsvm':
           plugin: simple-crypto
           node: ubuntu-trusty
@@ -401,6 +405,7 @@
       - python-jobs
       - openstack-publish-jobs
       - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
 
 - project:
     name: bilean
@@ -430,6 +435,7 @@
     jobs:
       - python-db-jobs
       - gate-{name}-pylint
+      - '{name}-tarball'
 
 - project:
     name: blazar-nova
@@ -437,6 +443,7 @@
 
     jobs:
       - python-jobs
+      - '{name}-tarball'
 
 - project:
     name: browbeat
@@ -480,10 +487,11 @@
       - python-liberty-bitrot-jobs
       - python-mitaka-bitrot-jobs
       - openstack-publish-jobs
+      - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - translation-jobs
       - translation-jobs-mitaka
       - gate-rally-dsvm-fakevirt-{name}
-      - openstack-releasenotes-jobs
       - 'gate-ceilometer-dsvm-tempest-plugin-{backend}{network}':
           backend: 'mongodb'
           network: ''
@@ -800,11 +808,12 @@
       - python-liberty-bitrot-db-jobs
       - python-mitaka-bitrot-db-jobs
       - openstack-publish-jobs
-      - gate-{name}-pylint
+      - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - translation-jobs
       - translation-jobs-mitaka
+      - gate-{name}-pylint
       - gate-rally-dsvm-{name}
-      - openstack-releasenotes-jobs
       - '{pipeline}-cinder-dsvm-apache{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
@@ -891,8 +900,9 @@
     doc-publisher-site: docs.openstack.org
 
     jobs:
-      - openstack-publish-jobs
       - python-jobs
+      - openstack-publish-jobs
+      - openstack-server-release-jobs
 
 - project:
     name: cloudkitty-dashboard
@@ -955,6 +965,7 @@
     jobs:
       - python-jobs
       - openstack-publish-jobs
+      - openstack-server-release-jobs
       - '{pipeline}-congress-dsvm-api{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
@@ -1098,6 +1109,7 @@
     jobs:
       - python-jobs
       - openstack-publish-jobs
+      - '{name}-tarball'
       - periodic-python-jobs-with-oslo-master
       - 'gate-rally-dsvm-cue-{broker}':
           broker: 'rabbitmq'
@@ -1153,7 +1165,7 @@
       - python-mitaka-bitrot-db-jobs
       - openstack-publish-jobs
       - openstack-releasenotes-jobs
-      - pypi-jobs
+      - openstack-server-release-jobs
       - translation-jobs
       - gate-rally-dsvm-designate-{name}
       - 'gate-tempest-dsvm-designate-{designate-driver}{job-suffix}':
@@ -1200,7 +1212,7 @@
     jobs:
       - python-jobs
       - openstack-publish-jobs
-      - pypi-jobs
+      - openstack-server-release-jobs
       - translation-jobs
       - translation-jobs-mitaka
 
@@ -1692,6 +1704,7 @@
 
     jobs:
       - python-jobs
+      - '{name}-tarball'
 
 - project:
     name: ec2-api
@@ -2148,10 +2161,11 @@
       - python-liberty-bitrot-db-jobs
       - python-mitaka-bitrot-db-jobs
       - openstack-publish-jobs
+      - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - translation-jobs
       - translation-jobs-mitaka
       - gate-rally-dsvm-{name}
-      - openstack-releasenotes-jobs
       - periodic-python-jobs-with-oslo-master
       - api-ref-jobs:
           service: image
@@ -2392,6 +2406,13 @@
 
     jobs:
       - python-db-jobs
+      - python-liberty-bitrot-db-jobs
+      - python-mitaka-bitrot-db-jobs
+      - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
+      - openstack-publish-jobs
+      - translation-jobs
+      - translation-jobs-mitaka
       - '{pipeline}-heat-dsvm-functional-{engine}-{datastore}-{lbaasversion}{special}{job-suffix}':
           datastore: mysql
           pipeline: gate
@@ -2479,13 +2500,7 @@
           node: ubuntu-trusty
           job-suffix: ''
           branch-override: default
-      - python-liberty-bitrot-db-jobs
-      - python-mitaka-bitrot-db-jobs
-      - openstack-publish-jobs
-      - translation-jobs
-      - translation-jobs-mitaka
       - gate-rally-dsvm-fakevirt-{name}
-      - openstack-releasenotes-jobs
       - api-ref-jobs:
           service: orchestration
       - install-guide-jobs:
@@ -2551,10 +2566,11 @@
       - python-liberty-bitrot-jobs
       - python-mitaka-bitrot-jobs
       - openstack-publish-jobs
-      - javascript-jobs
+      - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - translation-jobs
       - translation-jobs-mitaka
-      - openstack-releasenotes-jobs
+      - javascript-jobs
       - gate-{name}-tox-{envlist}:
           envlist:
             - py27dj18
@@ -2659,11 +2675,12 @@
 
     jobs:
       - python-db-jobs
-      - openstack-publish-jobs
       - python-liberty-bitrot-db-jobs
       - python-mitaka-bitrot-db-jobs
-      - translation-jobs
+      - openstack-publish-jobs
       - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
+      - translation-jobs
       - api-ref-jobs:
           service: baremetal
       - '{pipeline}-ironic-dsvm-functional{job-suffix}':
@@ -2978,10 +2995,11 @@
       - python-liberty-bitrot-db-jobs
       - python-mitaka-bitrot-db-jobs
       - openstack-publish-jobs
+      - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - translation-jobs
       - translation-jobs-mitaka
       - gate-rally-dsvm-{name}
-      - openstack-releasenotes-jobs
       - api-ref-jobs:
           service: identity
       - 'gate-{name}-tox-{envlist}':
@@ -3285,9 +3303,10 @@
     jobs:
       - python-jobs
       - openstack-publish-jobs
+      - openstack-server-release-jobs
+      - translation-jobs
       - install-guide-jobs:
           service: container-infrastructure-management
-      - translation-jobs
       - '{pipeline}-functional-dsvm-magnum-{coe}{special}{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
@@ -3332,6 +3351,7 @@
     jobs:
       - python-jobs
       - openstack-publish-jobs
+      - openstack-server-release-jobs
       - translation-jobs
 
 - project:
@@ -3343,12 +3363,13 @@
       - python-db-jobs
       - python-liberty-bitrot-jobs
       - python-mitaka-bitrot-jobs
+      - openstack-publish-jobs
+      - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
+      - translation-jobs
       - gate-{name}-pylint
       - gate-{name}-tox-{envlist}:
           envlist: genconfig
-      - openstack-publish-jobs
-      - translation-jobs
-      - openstack-releasenotes-jobs
       - '{pipeline}-grenade-dsvm-manila':
           pipeline: 'gate'
           branch-override: default
@@ -3480,8 +3501,9 @@
 
     jobs:
       - python-jobs
-      - pypi-jobs
       - openstack-publish-jobs
+      - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - '{pipeline}-{component}-devstack-dsvm':
           pipeline: gate
           node: ubuntu-trusty
@@ -3490,7 +3512,6 @@
           name: task
       - gate-{name}-tox-db-{envlist}:
           envlist: unit-postgresql
-      - openstack-releasenotes-jobs
 
 - project:
     name: mistral-dashboard
@@ -4120,10 +4141,11 @@
       - python-liberty-bitrot-jobs
       - python-mitaka-bitrot-jobs
       - openstack-publish-jobs
-      - gate-rally-dsvm-neutron-{name}
+      - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - translation-jobs
       - translation-jobs-mitaka
-      - openstack-releasenotes-jobs
+      - gate-rally-dsvm-neutron-{name}
       - '{pipeline}-grenade-dsvm-neutron-multinode{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty-2-node
@@ -4215,6 +4237,7 @@
       - python-jobs
       - openstack-publish-jobs
       - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - '{pipeline}-neutron-dynamic-routing-dsvm-functional{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
@@ -4233,11 +4256,12 @@
 
     jobs:
       - python-jobs
-      - translation-jobs
       - python-liberty-bitrot-jobs
       - python-mitaka-bitrot-jobs
       - openstack-publish-jobs
       - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
+      - translation-jobs
       - '{pipeline}-neutron-fwaas-dsvm-functional{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
@@ -4256,11 +4280,12 @@
 
     jobs:
       - python-jobs
-      - translation-jobs
       - python-liberty-bitrot-jobs
       - python-mitaka-bitrot-jobs
       - openstack-publish-jobs
+      - openstack-server-release-jobs
       - openstack-releasenotes-jobs
+      - translation-jobs
       - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
@@ -4374,11 +4399,12 @@
 
     jobs:
       - python-jobs
-      - translation-jobs
       - python-liberty-bitrot-jobs
       - python-mitaka-bitrot-jobs
       - openstack-publish-jobs
+      - openstack-server-release-jobs
       - openstack-releasenotes-jobs
+      - translation-jobs
       - '{pipeline}-neutron-vpnaas-dsvm-{vpnaastest}{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
@@ -4448,12 +4474,13 @@
       - python-liberty-bitrot-db-jobs
       - python-mitaka-bitrot-db-jobs
       - openstack-publish-jobs
+      - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
+      - translation-jobs
+      - translation-jobs-mitaka
       - 'gate-{name}-tox-db-{envlist}':
           envlist:
             - functional
-      - translation-jobs
-      - translation-jobs-mitaka
-      - openstack-releasenotes-jobs
       - periodic-python-jobs-with-oslo-master
       - api-guide-jobs:
           service: compute
@@ -5600,6 +5627,7 @@
       - scenario003
     jobs:
       - python-jobs
+      - '{name}-tarball'
       - 'gate-{name}-releasenotes'
       - 'gate-packstack-integration-{scenario}-tempest-{ostype}'
 
@@ -5741,6 +5769,7 @@
 
     jobs:
       - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs-trusty:
@@ -5753,8 +5782,6 @@
           job-suffix: ''
           branch-override: default
       - '{name}-branch-tarball'
-      - '{name}-tarball'
-      - '{name}-announce-release'
 
 - project:
     name: puppet-apparmor
@@ -5835,6 +5862,7 @@
 
     jobs:
       - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs-trusty:
@@ -5847,8 +5875,6 @@
           job-suffix: ''
           branch-override: default
       - '{name}-branch-tarball'
-      - '{name}-tarball'
-      - '{name}-announce-release'
 
 - project:
     name: puppet-bugdaystats
@@ -5883,6 +5909,7 @@
 
     jobs:
       - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs-trusty:
@@ -5895,8 +5922,6 @@
           job-suffix: ''
           branch-override: default
       - '{name}-branch-tarball'
-      - '{name}-tarball'
-      - '{name}-announce-release'
 
 - project:
     name: puppet-ceph
@@ -5905,6 +5930,7 @@
 
     jobs:
       - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs-trusty:
@@ -5917,8 +5943,6 @@
           job-suffix: '-nv'
           branch-override: default
       - '{name}-branch-tarball'
-      - '{name}-tarball'
-      - '{name}-announce-release'
 
 - project:
     name: puppet-cgit
@@ -5940,6 +5964,7 @@
 
     jobs:
       - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs-trusty:
@@ -5952,8 +5977,6 @@
           job-suffix: ''
           branch-override: default
       - '{name}-branch-tarball'
-      - '{name}-tarball'
-      - '{name}-announce-release'
 
 - project:
     name: puppet-ciwatch
@@ -5975,6 +5998,7 @@
 
     jobs:
       - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs-trusty:
@@ -5987,8 +6011,6 @@
           job-suffix: ''
           branch-override: default
       - '{name}-branch-tarball'
-      - '{name}-tarball'
-      - '{name}-announce-release'
 
 - project:
     name: puppet-designate
@@ -5997,6 +6019,7 @@
 
     jobs:
       - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs-trusty:
@@ -6009,8 +6032,6 @@
           job-suffix: ''
           branch-override: default
       - '{name}-branch-tarball'
-      - '{name}-tarball'
-      - '{name}-announce-release'
 
 - project:
     name: puppet-diskimage_builder
@@ -6045,6 +6066,7 @@
 
     jobs:
       - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs-trusty:
@@ -6057,8 +6079,6 @@
           job-suffix: ''
           branch-override: default
       - '{name}-branch-tarball'
-      - '{name}-tarball'
-      - '{name}-announce-release'
 
 - project:
     name: puppet-elastic_recheck
@@ -6158,6 +6178,7 @@
 
     jobs:
       - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs-trusty:
@@ -6170,8 +6191,6 @@
           job-suffix: ''
           branch-override: default
       - '{name}-branch-tarball'
-      - '{name}-tarball'
-      - '{name}-announce-release'
 
 - project:
     name: puppet-gnocchi
@@ -6180,6 +6199,7 @@
 
     jobs:
       - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs-trusty:
@@ -6192,8 +6212,6 @@
           job-suffix: ''
           branch-override: default
       - '{name}-branch-tarball'
-      - '{name}-tarball'
-      - '{name}-announce-release'
 
 - project:
     name: puppet-grafyaml
@@ -6241,6 +6259,7 @@
 
     jobs:
       - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs-trusty:
@@ -6253,8 +6272,6 @@
           job-suffix: ''
           branch-override: default
       - '{name}-branch-tarball'
-      - '{name}-tarball'
-      - '{name}-announce-release'
 
 - project:
     name: puppet-horizon
@@ -6263,6 +6280,7 @@
 
     jobs:
       - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs-trusty:
@@ -6275,8 +6293,6 @@
           job-suffix: ''
           branch-override: default
       - '{name}-branch-tarball'
-      - '{name}-tarball'
-      - '{name}-announce-release'
 
 - project:
     name: puppet-hound
@@ -6338,6 +6354,7 @@
 
     jobs:
       - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs-trusty:
@@ -6350,8 +6367,6 @@
           job-suffix: ''
           branch-override: default
       - '{name}-branch-tarball'
-      - '{name}-tarball'
-      - '{name}-announce-release'
 
 - project:
     name: puppet-jeepyb
@@ -6398,9 +6413,10 @@
     doc-publisher-site: docs.openstack.org
 
     jobs:
+      - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - puppet-check-jobs
       - puppet-module-unit
-      - openstack-releasenotes-jobs
       - puppet-beaker-jobs-trusty:
           job-suffix: ''
           branch-override: default
@@ -6411,8 +6427,6 @@
           job-suffix: ''
           branch-override: default
       - '{name}-branch-tarball'
-      - '{name}-tarball'
-      - '{name}-announce-release'
 
 - project:
     name: puppet-kibana
@@ -6498,8 +6512,7 @@
           job-suffix: ''
           branch-override: default
       - '{name}-branch-tarball'
-      - '{name}-tarball'
-      - '{name}-announce-release'
+      - openstack-server-release-jobs
 
 - project:
     name: puppet-mailman
@@ -6521,6 +6534,7 @@
 
     jobs:
       - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs-trusty:
@@ -6533,8 +6547,6 @@
           job-suffix: ''
           branch-override: default
       - '{name}-branch-tarball'
-      - '{name}-tarball'
-      - '{name}-announce-release'
 
 - project:
     name: puppet-mediawiki
@@ -6583,6 +6595,7 @@
 
     jobs:
       - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs-trusty:
@@ -6595,8 +6608,6 @@
           job-suffix: ''
           branch-override: default
       - '{name}-branch-tarball'
-      - '{name}-tarball'
-      - '{name}-announce-release'
 
 - project:
     name: puppet-monasca
@@ -6613,6 +6624,7 @@
 
     jobs:
       - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs-trusty:
@@ -6625,8 +6637,6 @@
           job-suffix: ''
           branch-override: default
       - '{name}-branch-tarball'
-      - '{name}-tarball'
-      - '{name}-announce-release'
 
 - project:
     name: puppet-mysql_backup
@@ -6656,6 +6666,7 @@
 
     jobs:
       - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs-trusty:
@@ -6668,8 +6679,6 @@
           job-suffix: ''
           branch-override: default
       - '{name}-branch-tarball'
-      - '{name}-tarball'
-      - '{name}-announce-release'
 
 - project:
     name: puppet-nodepool
@@ -6691,6 +6700,7 @@
 
     jobs:
       - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs-trusty:
@@ -6703,8 +6713,6 @@
           job-suffix: ''
           branch-override: default
       - '{name}-branch-tarball'
-      - '{name}-tarball'
-      - '{name}-announce-release'
 
 - project:
     name: puppet-octavia
@@ -6713,6 +6721,7 @@
 
     jobs:
       - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs-trusty:
@@ -6725,8 +6734,6 @@
           job-suffix: ''
           branch-override: default
       - '{name}-branch-tarball'
-      - '{name}-tarball'
-      - '{name}-announce-release'
 
 - project:
     name: puppet-odsreg
@@ -6769,6 +6776,7 @@
 
     jobs:
       - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs-trusty:
@@ -6781,8 +6789,6 @@
           job-suffix: ''
           branch-override: default
       - '{name}-branch-tarball'
-      - '{name}-tarball'
-      - '{name}-announce-release'
 
 - project:
     name: puppet-openstack-guide
@@ -6885,6 +6891,7 @@
 
     jobs:
       - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs-trusty:
@@ -6897,8 +6904,6 @@
           job-suffix: ''
           branch-override: default
       - '{name}-branch-tarball'
-      - '{name}-tarball'
-      - '{name}-announce-release'
 
 - project:
     name: puppet-os_client_config
@@ -6920,6 +6925,7 @@
 
     jobs:
       - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs-trusty:
@@ -6932,8 +6938,6 @@
           job-suffix: ''
           branch-override: default
       - '{name}-branch-tarball'
-      - '{name}-tarball'
-      - '{name}-announce-release'
 
 - project:
     name: puppet-ovn
@@ -6942,6 +6946,7 @@
 
     jobs:
       - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs-trusty:
@@ -6954,8 +6959,6 @@
           job-suffix: ''
           branch-override: default
       - '{name}-branch-tarball'
-      - '{name}-tarball'
-      - '{name}-announce-release'
 
 - project:
     name: puppet-pacemaker
@@ -6964,6 +6967,7 @@
 
     jobs:
       - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs-trusty:
@@ -6976,8 +6980,6 @@
           job-suffix: ''
           branch-override: default
       - '{name}-branch-tarball'
-      - '{name}-tarball'
-      - '{name}-announce-release'
 
 - project:
     name: puppet-packagekit
@@ -7077,6 +7079,7 @@
 
     jobs:
       - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs-trusty:
@@ -7089,8 +7092,6 @@
           job-suffix: ''
           branch-override: default
       - '{name}-branch-tarball'
-      - '{name}-tarball'
-      - '{name}-announce-release'
 
 - project:
     name: puppet-redis
@@ -7151,6 +7152,7 @@
 
     jobs:
       - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs-trusty:
@@ -7163,8 +7165,6 @@
           job-suffix: ''
           branch-override: default
       - '{name}-branch-tarball'
-      - '{name}-tarball'
-      - '{name}-announce-release'
 
 - project:
     name: puppet-setproxy
@@ -7298,6 +7298,7 @@
 
     jobs:
       - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs-trusty:
@@ -7310,8 +7311,6 @@
           job-suffix: ''
           branch-override: default
       - '{name}-branch-tarball'
-      - '{name}-tarball'
-      - '{name}-announce-release'
 
 - project:
     name: puppet-tacker
@@ -7320,6 +7319,7 @@
 
     jobs:
       - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs-trusty:
@@ -7332,8 +7332,6 @@
           job-suffix: ''
           branch-override: default
       - '{name}-branch-tarball'
-      - '{name}-tarball'
-      - '{name}-announce-release'
 
 - project:
     name: puppet-tempest
@@ -7342,6 +7340,7 @@
 
     jobs:
       - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs-trusty:
@@ -7354,8 +7353,6 @@
           job-suffix: ''
           branch-override: default
       - '{name}-branch-tarball'
-      - '{name}-tarball'
-      - '{name}-announce-release'
 
 - project:
     name: puppet-tmpreaper
@@ -7388,11 +7385,10 @@
     tarball-site: tarballs.openstack.org
 
     jobs:
+      - openstack-server-release-jobs
       - puppet-check-jobs
       - puppet-module-unit
       - '{name}-branch-tarball'
-      - '{name}-tarball'
-      - '{name}-announce-release'
 
 - project:
     name: puppet-trove
@@ -7401,6 +7397,7 @@
 
     jobs:
       - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs-trusty:
@@ -7413,8 +7410,6 @@
           job-suffix: ''
           branch-override: default
       - '{name}-branch-tarball'
-      - '{name}-tarball'
-      - '{name}-announce-release'
 
 - project:
     name: puppet-ulimit
@@ -7488,6 +7483,7 @@
 
     jobs:
       - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs-trusty:
@@ -7500,8 +7496,6 @@
           job-suffix: ''
           branch-override: default
       - '{name}-branch-tarball'
-      - '{name}-tarball'
-      - '{name}-announce-release'
 
 - project:
     name: puppet-vswitch
@@ -7510,6 +7504,7 @@
 
     jobs:
       - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs-trusty:
@@ -7522,8 +7517,6 @@
           job-suffix: ''
           branch-override: default
       - '{name}-branch-tarball'
-      - '{name}-tarball'
-      - '{name}-announce-release'
 
 - project:
     name: puppet-watcher
@@ -7532,6 +7525,7 @@
 
     jobs:
       - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs-trusty:
@@ -7544,8 +7538,6 @@
           job-suffix: ''
           branch-override: default
       - '{name}-branch-tarball'
-      - '{name}-tarball'
-      - '{name}-announce-release'
 
 - project:
     name: puppet-yum
@@ -7580,6 +7572,7 @@
 
     jobs:
       - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
       - puppet-check-jobs
       - puppet-module-unit
       - puppet-beaker-jobs-trusty:
@@ -7592,8 +7585,6 @@
           job-suffix: ''
           branch-override: default
       - '{name}-branch-tarball'
-      - '{name}-tarball'
-      - '{name}-announce-release'
 
 - project:
     name: puppet-zuul
@@ -7697,6 +7688,7 @@
 
     jobs:
       - python-jobs
+      - '{name}-tarball'
 
 - project:
     name: python-brick-cinderclient-ext
@@ -8655,11 +8647,12 @@
       - python-db-jobs
       - python-liberty-bitrot-db-jobs
       - python-mitaka-bitrot-db-jobs
-      - gate-{name}-pylint
-      - pypi-jobs
-      - translation-jobs
       - openstack-publish-jobs
       - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
+      - translation-jobs
+      - translation-jobs-mitaka
+      - gate-{name}-pylint
       - '{pipeline}-tempest-dsvm-sahara{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
@@ -8743,8 +8736,8 @@
 
     jobs:
       - python-jobs
-      - pypi-jobs
       - openstack-publish-jobs
+      - openstack-server-release-jobs
 
 - project:
     name: sahara-image-elements
@@ -8880,7 +8873,7 @@
       - python-jobs-searchlight
       - openstack-publish-jobs
       - openstack-releasenotes-jobs
-      - pypi-jobs
+      - openstack-server-release-jobs
       - translation-jobs
 
 - project:
@@ -9059,9 +9052,10 @@
 
     jobs:
       - python-jobs
-      - 'gate-{name}-pypy'
+      - openstack-server-release-jobs
       - openstack-publish-jobs
       - openstack-releasenotes-jobs
+      - 'gate-{name}-pypy'
 
 - project:
     name: solum-dashboard
@@ -9327,11 +9321,12 @@
       - python-jobs
       - python-liberty-bitrot-jobs
       - python-mitaka-bitrot-jobs
+      - openstack-server-release-jobs
       - openstack-publish-jobs
-      - api-ref-jobs:
-          service: object-storage
       - translation-jobs
       - translation-jobs-mitaka
+      - api-ref-jobs:
+          service: object-storage
       - 'gate-{name}-tox-{envlist}':
           envlist: bandit
       - 'gate-{name}-tox-{envlist}':
@@ -9356,8 +9351,6 @@
           special: '-identity-v3-only'
           job-suffix: '-nv'
           branch-override: default
-
-# No one is interested in stable/ branches on swift, so don't run bitrot jobs
 
 - project:
     name: swift-bench
@@ -9388,6 +9381,7 @@
 
     jobs:
       - python-jobs
+      - '{name}-tarball'
       - gate-{name}-pylint
       - gate-{name}-tox-{envlist}:
           envlist: tempauth
@@ -9823,9 +9817,10 @@
       - python-db-jobs
       - python-liberty-bitrot-db-jobs
       - python-mitaka-bitrot-db-jobs
+      - openstack-server-release-jobs
       - openstack-publish-jobs
-      - translation-jobs
       - openstack-releasenotes-jobs
+      - translation-jobs
       - openstack-doc-jobs
       - install-guide-jobs:
           service: database
@@ -10027,7 +10022,6 @@
     tarball-site: tarballs.openstack.org
 
     jobs:
-      - python-jobs
       - pypi-jobs
 
 - project:
@@ -10035,7 +10029,6 @@
     tarball-site: tarballs.openstack.org
 
     jobs:
-      - python-jobs
       - pypi-jobs
 
 - project:
@@ -10043,7 +10036,6 @@
     tarball-site: tarballs.openstack.org
 
     jobs:
-      - python-jobs
       - pypi-jobs
 
 - project:
@@ -10051,7 +10043,6 @@
     tarball-site: tarballs.openstack.org
 
     jobs:
-      - python-jobs
       - pypi-jobs
 
 - project:
@@ -10059,7 +10050,6 @@
     tarball-site: tarballs.openstack.org
 
     jobs:
-      - python-jobs
       - pypi-jobs
 
 - project:
@@ -10067,7 +10057,6 @@
     tarball-site: tarballs.openstack.org
 
     jobs:
-      - python-jobs
       - pypi-jobs
 
 - project:
@@ -10075,7 +10064,6 @@
     tarball-site: tarballs.openstack.org
 
     jobs:
-      - python-jobs
       - pypi-jobs
 
 - project:
@@ -10083,7 +10071,6 @@
     tarball-site: tarballs.openstack.org
 
     jobs:
-      - python-jobs
       - pypi-jobs
 
 - project:
@@ -10091,7 +10078,6 @@
     tarball-site: tarballs.openstack.org
 
     jobs:
-      - python-jobs
       - pypi-jobs
 
 - project:
@@ -10099,7 +10085,6 @@
     tarball-site: tarballs.openstack.org
 
     jobs:
-      - python-jobs
       - pypi-jobs
 
 - project:
@@ -10107,7 +10092,6 @@
     tarball-site: tarballs.openstack.org
 
     jobs:
-      - python-jobs
       - pypi-jobs
 
 - project:
@@ -10115,7 +10099,6 @@
     tarball-site: tarballs.openstack.org
 
     jobs:
-      - python-jobs
       - pypi-jobs
 
 - project:
@@ -10123,7 +10106,6 @@
     tarball-site: tarballs.openstack.org
 
     jobs:
-      - python-jobs
       - pypi-jobs
 
 - project:
@@ -10131,7 +10113,6 @@
     tarball-site: tarballs.openstack.org
 
     jobs:
-      - python-jobs
       - pypi-jobs
 
 - project:
@@ -10139,7 +10120,6 @@
     tarball-site: tarballs.openstack.org
 
     jobs:
-      - python-jobs
       - pypi-jobs
 
 - project:
@@ -10147,7 +10127,6 @@
     tarball-site: tarballs.openstack.org
 
     jobs:
-      - python-jobs
       - pypi-jobs
 
 - project:
@@ -10155,7 +10134,6 @@
     tarball-site: tarballs.openstack.org
 
     jobs:
-      - python-jobs
       - pypi-jobs
 
 - project:
@@ -10163,7 +10141,6 @@
     tarball-site: tarballs.openstack.org
 
     jobs:
-      - python-jobs
       - pypi-jobs
 
 - project:
@@ -10171,7 +10148,6 @@
     tarball-site: tarballs.openstack.org
 
     jobs:
-      - python-jobs
       - pypi-jobs
 
 - project:
@@ -10179,7 +10155,6 @@
     tarball-site: tarballs.openstack.org
 
     jobs:
-      - python-jobs
       - pypi-jobs
 
 - project:
@@ -10187,7 +10162,6 @@
     tarball-site: tarballs.openstack.org
 
     jobs:
-      - python-jobs
       - pypi-jobs
 
 - project:
@@ -10195,7 +10169,6 @@
     tarball-site: tarballs.openstack.org
 
     jobs:
-      - python-jobs
       - pypi-jobs
 
 - project:
@@ -10203,7 +10176,6 @@
     tarball-site: tarballs.openstack.org
 
     jobs:
-      - python-jobs
       - pypi-jobs
 
 - project:
@@ -10211,7 +10183,6 @@
     tarball-site: tarballs.openstack.org
 
     jobs:
-      - python-jobs
       - pypi-jobs
 
 - project:
@@ -10219,7 +10190,6 @@
     tarball-site: tarballs.openstack.org
 
     jobs:
-      - python-jobs
       - pypi-jobs
 
 - project:
@@ -10227,7 +10197,6 @@
     tarball-site: tarballs.openstack.org
 
     jobs:
-      - python-jobs
       - pypi-jobs
 
 - project:
@@ -10235,7 +10204,6 @@
     tarball-site: tarballs.openstack.org
 
     jobs:
-      - python-jobs
       - pypi-jobs
 
 - project:
@@ -10261,11 +10229,12 @@
 
     jobs:
       - python-jobs
-      - openstack-publish-jobs
-      - translation-jobs
-      - openstack-releasenotes-jobs
       - python-liberty-bitrot-jobs
       - python-mitaka-bitrot-jobs
+      - openstack-publish-jobs
+      - openstack-releasenotes-jobs
+      - openstack-server-release-jobs
+      - translation-jobs
       - 'gate-{name}-tox-{envlist}':
           envlist: integration
       - gate-rally-dsvm-zaqar-{name}
@@ -10312,6 +10281,7 @@
     jobs:
       - python-jobs
       - openstack-publish-jobs
+      - openstack-server-release-jobs
       - translation-jobs
 
 - project:
