@@ -35,10 +35,12 @@ venv=$(pwd)/$venv_name
 
 # install known OpenStackClient plugins
 install_from_source python-openstackclient
+install_from_source python-aodhclient
 install_from_source python-barbicanclient
 install_from_source python-congressclient
 install_from_source python-cueclient
 install_from_source python-designateclient
+install_from_source python-gnocchiclient
 install_from_source python-heatclient
 install_from_source python-ironicclient
 install_from_source python-ironic-inspector-client
@@ -48,6 +50,7 @@ install_from_source python-saharaclient
 install_from_source python-searchlightclient
 install_from_source python-senlinclient
 install_from_source python-tripleoclient
+install_from_source python-watcherclient
 install_from_source python-zaqarclient
 
 echo "Begin freeze output from $venv virtualenv:"
