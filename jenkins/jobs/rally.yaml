@@ -57,6 +57,7 @@
           export DEVSTACK_GATE_IRONIC={ironic}
           export DEVSTACK_GATE_ZAQAR={zaqar}
           export DEVSTACK_GATE_SENLIN={senlin}
+          export DEVSTACK_GATE_WATCHER={watcher}
           export DEVSTACK_GATE_MAGNUM={magnum}
           export DEVSTACK_GATE_TEMPEST_LARGE_OPS={large_ops}
           export DEVSTACK_GATE_EXERCISES=0
@@ -107,6 +108,12 @@
               export PROJECTS="openstack/python-senlinclient $PROJECTS"
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin senlin git://git.openstack.org/openstack/senlin"
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_service sl-api sl-eng"
+          fi
+          if [ $DEVSTACK_GATE_WATCHER -ne 0 ]; then
+              export PROJECTS="openstack/watcher $PROJECTS"
+              export PROJECTS="openstack/python-watcherclient $PROJECTS"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin watcher git://git.openstack.org/openstack/watcher"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_service watcher-api watcher-decision-engine watcher-applier"
           fi
           if [ $DEVSTACK_GATE_MAGNUM -ne 0 ]||[ $RALLY_SCENARIO = "magnum" ]; then
               export PROJECTS="openstack/magnum $PROJECTS"
@@ -377,6 +384,7 @@
             senlin: '0'
             magnum: '0'
             prepopulate_users: '0'
+            watcher: '0'
 
     publishers:
       - devstack-logs
@@ -525,6 +533,7 @@
           senlin: '0'
           magnum: '0'
           prepopulate_users: '0'
+          watcher: '0'
 
     publishers:
       - devstack-logs
@@ -552,6 +561,7 @@
           senlin: '0'
           magnum: '0'
           prepopulate_users: '0'
+          watcher: '0'
 
     publishers:
       - devstack-logs
@@ -579,6 +589,7 @@
           senlin: '0'
           magnum: '0'
           prepopulate_users: '1'
+          watcher: '0'
 
     publishers:
       - devstack-logs
@@ -606,6 +617,7 @@
           senlin: '0'
           magnum: '0'
           prepopulate_users: '0'
+          watcher: '0'
 
     publishers:
       - devstack-logs
@@ -633,6 +645,7 @@
           senlin: '0'
           magnum: '0'
           prepopulate_users: '0'
+          watcher: '0'
 
     publishers:
       - devstack-logs
@@ -659,6 +672,7 @@
           senlin: '0'
           magnum: '0'
           prepopulate_users: '0'
+          watcher: '0'
 
     publishers:
       - devstack-logs
@@ -913,6 +927,7 @@
             senlin: '0'
             magnum: '0'
             prepopulate_users: '0'
+            watcher: '0'
 
     publishers:
       - devstack-logs
@@ -939,6 +954,35 @@
           senlin: '1'
           magnum: '0'
           prepopulate_users: '0'
+          watcher: '0'
+
+    publishers:
+      - devstack-logs
+      - rally-plot
+      - console-log
+
+
+- job-template:
+    name: 'gate-rally-dsvm-watcher-{name}'
+    node: ubuntu-trusty
+
+    wrappers:
+      - build-timeout:
+          timeout: 130
+      - timestamps
+
+    builders:
+      - devstack-rally-gate:
+          scenario: '{name}-watcher'
+          ironic: '0'
+          neutron: '0'
+          zaqar: '0'
+          large_ops: '0'
+          keystone_use_v2api: '0'
+          senlin: '0'
+          magnum: '0'
+          prepopulate_users: '0'
+          watcher: '1'
 
     publishers:
       - devstack-logs
@@ -966,6 +1010,7 @@
           senlin: '0'
           magnum: '1'
           prepopulate_users: '0'
+          watcher: '0'
 
     publishers:
       - devstack-logs
