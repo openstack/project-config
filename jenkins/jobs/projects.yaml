@@ -1326,16 +1326,6 @@
           node: ubuntu-trusty-2-node
           job-suffix: '-nv'
           branch-override: default
-      - '{pipeline}-{name}-src-grenade-dsvm-multinode{job-suffix}':
-          pipeline: gate
-          node: ubuntu-trusty-2-node
-          job-suffix: ''
-          branch-override: default
-      - '{pipeline}-{name}-src-grenade-dsvm-multinode{job-suffix}':
-          pipeline: gate
-          node: ubuntu-trusty-2-node
-          job-suffix: '-nv'
-          branch-override: default
       - '{pipeline}-tempest-dsvm-multinode-full{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty-2-node
@@ -1445,13 +1435,6 @@
 
     jobs:
       - gate-{name}-bashate
-      - '{pipeline}-tempest-dsvm-full-devstack-plugin-ceph{job-suffix}':
-          node: ubuntu-trusty
-          pipeline: gate
-          plugin: ceph
-          plugin-repo: openstack/devstack-plugin-ceph
-          job-suffix: '-nv'
-          branch-override: default
       - '{pipeline}-tempest-dsvm-full-devstack-plugin-ceph{job-suffix}':
           node: ubuntu-trusty
           pipeline: gate
@@ -1599,11 +1582,6 @@
           node: centos-7
           job-suffix: ''
           tests: ''
-      - '{pipeline}-tempest-dsvm-ironic-pxe_ssh{job-suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
-          job-suffix: '-dib'
-          branch-override: default
 
 - project:
     name: distil
@@ -2687,11 +2665,6 @@
           pipeline: gate
           node: ubuntu-trusty
           job-suffix: ''
-          branch-override: default
-      - '{pipeline}-tempest-dsvm-ironic-pxe_ssh{job-suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
-          job-suffix: '-nv'
           branch-override: default
       - '{pipeline}-tempest-dsvm-ironic-pxe_ipa{job-suffix}':
           pipeline: gate
@@ -5195,8 +5168,6 @@
       - python-jobs
       - 'gate-{name}-pypy'
       - pypi-jobs
-      - gate-{name}-tox-{envlist}:
-          envlist: openstackclient-tip
 
 - project:
     name: oslo-cookiecutter
@@ -5333,11 +5304,6 @@
           pipeline: gate
           node: ubuntu-trusty-2-node
           job-suffix: ''
-          branch-override: default
-      - '{pipeline}-{name}-src-grenade-dsvm-multinode{job-suffix}':
-          pipeline: gate
-          node: ubuntu-trusty-2-node
-          job-suffix: '-nv'
           branch-override: default
       - '{pipeline}-oslo.messaging-dsvm-functional-{version}-{driver}{ostype}':
           version: 'py27'
@@ -7677,7 +7643,6 @@
       - 'gate-{name}-pypy'
       - openstack-publish-jobs
       - pypi-jobs
-      - 'lib-forward-testing-{name}'
 
 - project:
     name: python-bileanclient
@@ -7910,7 +7875,6 @@
       - openstack-publish-jobs
       - pypi-jobs
       - translation-jobs
-      - 'lib-forward-testing-{name}'
       - '{pipeline}-heatclient-dsvm-functional{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
@@ -7945,7 +7909,6 @@
       - openstack-publish-jobs
       - pypi-jobs
       - openstack-releasenotes-jobs
-      - 'lib-forward-testing-{name}'
       - '{pipeline}-ironicclient-dsvm-functional{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
@@ -8027,7 +7990,6 @@
       - openstack-publish-jobs
       - pypi-jobs
       - openstack-releasenotes-jobs
-      - 'lib-forward-testing-{name}'
 
 - project:
     name: python-mistralclient
@@ -8362,7 +8324,6 @@
           node: ubuntu-trusty
           job-suffix: ''
           branch-override: default
-      - 'lib-forward-testing-{name}'
 
 - project:
     name: python-zunclient
