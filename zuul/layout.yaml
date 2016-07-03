@@ -1273,6 +1273,24 @@ jobs:
         all-files-match-any:
           - ^.*\.rst$
           - ^doc/.*$
+  # Skip non-doc jobs for doc-only python-tripleoclient changes. Since documents
+  # are checked by python-tripleoclient-pep8 it should not be skipped.
+  # Tripleo-ci gate jobs are disabled for docs-only patches elsewhere.
+  - name: ^gate-python-tripleoclient-(python27|python34)$
+    skip-if:
+      - project: ^openstack/python-tripleoclient$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+  # Skip non-doc jobs for doc-only tripleo-common changes. Since documents
+  # are checked by tripleo-common-pep8 it should not be skipped.
+  # Tripleo-ci gate jobs are disabled for docs-only patches elsewhere.
+  - name: ^gate-tripleo-common-(python27|python34)$
+    skip-if:
+      - project: ^openstack/tripleo-common$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
   # Skip non-doc jobs for doc-only networking-midonet changes.  Since
   # doc/source/conf.py is checked by networking-midonet-pep8, that job
   # should not be skipped.
@@ -1362,6 +1380,10 @@ jobs:
           - ^tempest/tests/.*$
           - ^tempest/hacking/.*$
           - ^releasenotes/.*$
+      - project: ^openstack/(python-tripleoclient|tripleo-common)$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
 
   - name: ^gate-puppet-openstackci-puppet-beaker-rspec-.*$
     voting: false
