@@ -2673,9 +2673,9 @@ jobs:
 
   # skip all openstack-ansible jobs except the releasenotes/docs
   # jobs for rst/doc/releasenotes files
-  - name: ^gate-openstack-ansible-(?!(docs|releasenotes)).*$
+  - name: ^gate-openstack-ansible(?!.*(-docs|-releasenotes)).*$
     skip-if:
-      - project: ^openstack/openstack-ansible$
+      - project: ^openstack/openstack-ansible(?!-specs).*$
         all-files-match-any:
           - ^.*\.rst$
           - ^doc/.*
