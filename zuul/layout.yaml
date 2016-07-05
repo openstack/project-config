@@ -442,26 +442,54 @@ project-templates:
     gate:
       - 'gate-tempest-dsvm-neutron-src-{name}-plugin'
 
-  - name: python3-jobs
+  - name: python34-jobs
     check:
       - 'gate-{name}-python34'
     gate:
       - 'gate-{name}-python34'
 
-  # Invokes the same targets as python3-jobs, but sets up extra packages.
+  # Invokes the same targets as python34-jobs, but sets up databases.
+  - name: python34-db-jobs
+    check:
+      - 'gate-{name}-python34-db'
+    gate:
+      - 'gate-{name}-python34-db'
+
+  # Invokes the same targets as python34-jobs, but sets up extra packages.
   # The job python34-searchlight installs extra packages.
-  - name: python3-jobs-searchlight
+  - name: python34-jobs-searchlight
     check:
       - 'gate-{name}-python34-searchlight'
     gate:
       - 'gate-{name}-python34-searchlight'
 
-  # Invokes the same targets as python3-jobs, but sets up databases.
-  - name: python3-db-jobs
+  - name: python35-jobs-nv
     check:
-      - 'gate-{name}-python34-db'
+      - 'gate-{name}-python35-nv'
+
+  # Invokes the same targets as python35-jobs-nv, but sets up databases.
+  - name: python35-db-jobs-nv
+    check:
+      - 'gate-{name}-python35-db-nv'
+
+  - name: python35-jobs
+    check:
+      - 'gate-{name}-python35'
     gate:
-      - 'gate-{name}-python34-db'
+      - 'gate-{name}-python35'
+
+  # Invokes the same targets as python35-jobs, but sets up databases.
+  - name: python35-db-jobs
+    check:
+      - 'gate-{name}-python35-db'
+    gate:
+      - 'gate-{name}-python35-db'
+
+  # Invokes the same targets as python35-jobs, but sets up extra packages.
+  # The job python35-searchlight installs extra packages.
+  - name: python35-jobs-searchlight
+    check:
+      - 'gate-{name}-python35-searchlight-nv'
 
   - name: osc-plugin-jobs
     check:
@@ -992,6 +1020,10 @@ jobs:
   # -nv jobs are never voting.
   - name: ^.*-nv$
     voting: false
+  # Restrict python35 testing to >= Newton.
+  - name: ^gate-.*-python35(-db)?(-nv)?$
+    branch: ^(?!stable/(liberty|mitaka)).*$
+
   # because of global requirements overrides, there is no reason to
   # run tempest/grenade tests after a requirements sync, as they've
   # already been run in the requirements job with the override.
@@ -1173,7 +1205,7 @@ jobs:
           - ^doc/.*$
           - ^releasenotes/.*$
   # Skip non docs jobs for doc-only neutronclient changes
-  - name: ^gate-(python-neutronclient-(python27|python34|pypy)|neutronclient-test-dsvm-functional|neutronclient-test-dsvm-functional-adv-svcs|tempest-dsvm-neutron-src-python-neutronclient)$
+  - name: ^gate-(python-neutronclient-(python27|python3[45](-nv)?|pypy)|neutronclient-test-dsvm-functional|neutronclient-test-dsvm-functional-adv-svcs|tempest-dsvm-neutron-src-python-neutronclient)$
     skip-if:
       - project: ^openstack/python-neutronclient$
         all-files-match-any:
@@ -1182,7 +1214,7 @@ jobs:
           - ^doc/.*$
           - ^releasenotes/.*$
   # Skip non-doc jobs for doc-only neutron-lib changes.
-  - name: ^.*(neutron-lib-(python(27|34)|coverage)|tempest-dsvm-neutron-src-neutron-lib)$
+  - name: ^.*(neutron-lib-(python(27|3[45](-nv)?)|coverage)|tempest-dsvm-neutron-src-neutron-lib)$
     skip-if:
       - project: ^openstack/neutron-lib$
         all-files-match-any:
@@ -1192,7 +1224,7 @@ jobs:
           - ^releasenotes/.*$
   # Skip non-doc jobs for doc-only neutron-vpnaas changes. The dsvm
   # tests area already skipped by another check.
-  - name: ^.*neutron-vpnaas-python(27|34)$
+  - name: ^.*neutron-vpnaas-python(27|3[45](-nv)?)$
     skip-if:
       - project: ^openstack/neutron-vpnaas$
         all-files-match-any:
@@ -1209,7 +1241,7 @@ jobs:
   # Skip non-doc jobs for doc-only or translation-only nova changes.
   # Since doc/source/conf.py is checked by nova-(pep8|pylint), those
   # jobs should not be skipped.
-  - name: ^.*nova-(tox-(db-)?functional|python27-db|python34-db)
+  - name: ^.*nova-(tox-(db-)?functional|python27-db|python3[45]-db(-nv)?)
     skip-if:
       - project: ^openstack/nova$
         all-files-match-any:
@@ -1222,7 +1254,7 @@ jobs:
   # Skip non-doc jobs for doc-only or translation-only heat changes.
   # Since doc/source/* is checked by heat-pep8, this job should not be
   # skipped.
-  - name: ^.*heat-(python27|python34)-db$
+  - name: ^.*heat-(python27|python3[45])-db(-nv)?$
     skip-if:
       - project: ^openstack/heat$
         all-files-match-any:
@@ -1234,7 +1266,7 @@ jobs:
   # Skip non-doc jobs for doc-only or translation-only horizon
   # changes. Since doc/source/* is checked by horizon-pep8, this job
   # should not be skipped.
-  - name: ^.*horizon-(python27|python34|tox-py27dj.*|npm-run-.*|selenium-headless|dsvm-integration)$
+  - name: ^.*horizon-(python27|python3[45](-nv)?|tox-py27dj.*|npm-run-.*|selenium-headless|dsvm-integration)$
     skip-if:
       - project: ^openstack/horizon$
         all-files-match-any:
@@ -1244,13 +1276,13 @@ jobs:
           - ^openstack_dashboard/locale/.*$
   # Skip non-doc jobs for doc-only ironic changes. Since documents are checked
   # by ironic-pep8 it should not be skipped.
-  - name: ^.*ironic-(python27|python34)-db$
+  - name: ^.*ironic-(python27|python3[45])-db(-nv)?$
     skip-if:
       - project: ^openstack/ironic$
         all-files-match-any:
           - ^.*\.rst$
           - ^doc/.*$
-  - name: ^.*ironic-inspector-(python27-db|python34-db|tox-func)$
+  - name: ^.*ironic-inspector-(python27-db|python3[45]-db(-nv)?|tox-func)$
     skip-if:
       - project: ^openstack/ironic-inspector$
         all-files-match-any:
@@ -1258,7 +1290,7 @@ jobs:
           - ^doc/.*$
   # Skip non-doc jobs for doc-only python-ironicclient changes. Since documents
   # are checked by python-ironicclient-pep8 it should not be skipped.
-  - name: ^gate-(python-ironicclient-(python27|python34|pypy)|ironicclient-dsvm-functional|tempest-dsvm-python-ironicclient-src)$
+  - name: ^gate-(python-ironicclient-(python27|python3[45](-nv)?|pypy)|ironicclient-dsvm-functional|tempest-dsvm-python-ironicclient-src)$
     skip-if:
       - project: ^openstack/python-ironicclient$
         all-files-match-any:
@@ -1294,7 +1326,7 @@ jobs:
   # Skip non-doc jobs for doc-only networking-midonet changes.  Since
   # doc/source/conf.py is checked by networking-midonet-pep8, that job
   # should not be skipped.
-  - name: ^.*networking-midonet-(python27|python34)$
+  - name: ^.*networking-midonet-(python27|python3[45](-nv)?)$
     skip-if:
       - project: ^openstack/networking-midonet$
         all-files-match-any:
@@ -1303,7 +1335,7 @@ jobs:
   # Skip non-doc jobs for doc-only magnum changes.  Since
   # doc/source/conf.py is checked by gate-magnum-pep8, that job
   # should not be skipped.
-  - name: ^gate-magnum-python(27|34)$
+  - name: ^gate-magnum-python(27|3[45](-nv)?)$
     skip-if:
       - project: ^openstack/magnum$
         all-files-match-any:
@@ -1312,7 +1344,7 @@ jobs:
   # Skip non-doc jobs for doc-only tap-as-a-service changes.  Since
   # doc/source/conf.py is checked by tap-as-a-service-pep8, that job
   # should not be skipped.
-  - name: ^.*tap-as-a-service-(python27|python34)$
+  - name: ^.*tap-as-a-service-(python27|python3[45](-nv)?)$
     skip-if:
       - project: ^openstack/tap-as-a-service$
         all-files-match-any:
@@ -1327,7 +1359,7 @@ jobs:
         all-files-match-any:
           - ^.*\.rst$
           - ^doc/.*$
-  - name: ^.*diskimage-builder-(python27|python34)$
+  - name: ^.*diskimage-builder-(python27|python3[45](-nv)?)$
     skip-if:
       - project: ^openstack/diskimage-builder$
         all-files-match-any:
@@ -2907,7 +2939,8 @@ projects:
       - name: merge-check
       - name: publish-to-pypi
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-client-publish-jobs
       - name: release-notes-jobs
     check:
@@ -3001,7 +3034,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: publish-to-pypi
       - name: pypy-jobs
     check:
@@ -3033,7 +3067,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: publish-to-pypi
 
   - name: openstack-dev/oslo-cookiecutter
@@ -3048,7 +3083,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: publish-to-pypi
       - name: lib-forward-testing
       - name: pypy-jobs
@@ -3120,7 +3156,8 @@ projects:
       - name: publish-to-pypi
       - name: pypy-jobs
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
     check:
       - gate-bindep-docs
     gate:
@@ -3200,7 +3237,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: publish-to-pypi
       - name: docs-on-rtfd
 
@@ -3247,14 +3285,16 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: publish-to-pypi
 
   - name: openstack-infra/git-restack
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: publish-to-pypi
     check:
       - gate-git-restack-python34
@@ -3265,7 +3305,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: publish-to-pypi
     check:
       - gate-git-review-python34
@@ -3287,7 +3328,8 @@ projects:
       - name: merge-check
       - name: publish-to-pypi
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: infra-publish-jobs
 
   - name: openstack-infra/grafyaml
@@ -3295,7 +3337,8 @@ projects:
       - name: merge-check
       - name: publish-to-pypi
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: infra-publish-jobs
     check:
       - grafyaml-coverage
@@ -3362,7 +3405,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: publish-to-pypi
       - name: infra-publish-jobs
     check:
@@ -3423,6 +3467,7 @@ projects:
       - name: python-db-jobs
       - name: publish-to-pypi
       - name: infra-publish-jobs
+      - name: python35-db-jobs-nv
     check:
       - nodepool-coverage-db
       - gate-dsvm-nodepool
@@ -4115,7 +4160,8 @@ projects:
       - name: merge-check
       - name: publish-to-pypi
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
     post:
       - python-storyboardclient-coverage
     release:
@@ -4172,7 +4218,8 @@ projects:
       - name: merge-check
       - name: publish-to-pypi
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: infra-publish-jobs
     check:
       - shade-coverage
@@ -4206,7 +4253,8 @@ projects:
       - name: infra-publish-jobs
       - name: merge-check
       - name: publish-to-pypi
-      - name: python3-db-jobs
+      - name: python34-db-jobs
+      - name: python35-db-jobs-nv
     check:
       - gate-storyboard-pep8
       - gate-storyboard-python27-db
@@ -4248,7 +4296,8 @@ projects:
     template:
       - name: merge-check
       - name: publish-to-pypi
-      - name: python3-db-jobs
+      - name: python34-db-jobs
+      - name: python35-db-jobs-nv
       - name: release-notes-jobs
     check:
       - gate-subunit2sql-pep8
@@ -4317,7 +4366,8 @@ projects:
     template:
       - name: merge-check
       - name: publish-to-pypi
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
     check:
       - gate-yaml2ical-pep8
     gate:
@@ -4342,6 +4392,7 @@ projects:
       - name: publish-to-pypi
       - name: python-db-jobs
       - name: infra-publish-jobs
+      - name: python35-db-jobs-nv
     check:
       - dev-zuul-coverage
       - gate-zuul-python34-db
@@ -4370,7 +4421,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: pypy-jobs
       - name: openstack-server-publish-jobs
       - name: check-requirements
@@ -4497,7 +4549,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
       - name: translation-jobs
       - name: release-notes-jobs
@@ -4648,7 +4701,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
@@ -4658,7 +4712,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
@@ -4699,7 +4754,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: translation-jobs
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
@@ -4782,7 +4838,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
       - name: publish-to-pypi
 
@@ -4840,7 +4897,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: publish-to-pypi
       - name: openstack-client-publish-jobs
       - name: check-requirements
@@ -4861,7 +4919,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
       - name: periodic-liberty
@@ -4896,7 +4955,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: publish-to-pypi
       - name: docs-on-rtfd
 
@@ -4909,7 +4969,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-client-publish-jobs
       - name: lib-forward-testing-plugin
       - name: publish-to-pypi
@@ -5089,7 +5150,8 @@ projects:
     template:
       - name: merge-check
       - name: python-charm-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
 
   - name: openstack/ci-cd-pipeline-app-murano
     template:
@@ -5100,7 +5162,8 @@ projects:
     template:
       - name: merge-check
       - name: python-db-jobs
-      - name: python3-db-jobs
+      - name: python34-db-jobs
+      - name: python35-db-jobs-nv
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
       - name: periodic-db-liberty
@@ -5163,7 +5226,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: pypy-jobs
       - name: publish-to-pypi
       - name: lib-forward-testing
@@ -5182,7 +5246,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
     check:
       - gate-cloud-init-tox-py27-coverage
       - gate-cloud-init-tox-py34-coverage
@@ -5193,7 +5258,8 @@ projects:
   - name: openstack/cloudbase-init
     template:
       - name: merge-check
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: publish-to-pypi
     check:
       - gate-cloudbase-init-docs
@@ -5228,7 +5294,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
     post:
@@ -5238,7 +5305,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
       - name: publish-to-pypi
     post:
@@ -5300,7 +5368,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: publish-to-pypi
 
   - name: openstack/congress
@@ -5308,7 +5377,8 @@ projects:
       - name: merge-check
       - name: check-requirements
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
     check:
@@ -5437,7 +5507,8 @@ projects:
       - name: merge-check
       - name: openstack-server-publish-jobs
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
       - name: periodic-jobs-with-oslo-master
     check:
@@ -5475,7 +5546,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
@@ -5499,14 +5571,16 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
 
   - name: openstack/designate
     template:
       - name: merge-check
       - name: python-db-jobs
-      - name: python3-db-jobs
+      - name: python34-db-jobs
+      - name: python35-db-jobs-nv
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
       - name: periodic-db-liberty
@@ -5709,7 +5783,8 @@ projects:
       - name: openstack-server-publish-jobs
       - name: publish-to-pypi
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: release-notes-jobs
     check:
       - gate-dib-dsvm-functests-ubuntu-trusty
@@ -5738,7 +5813,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-client-publish-jobs
       - name: check-requirements
       - name: lib-forward-testing
@@ -5765,7 +5841,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: publish-to-pypi
 
   - name: openstack/docs-specs
@@ -5785,6 +5862,7 @@ projects:
       - gate-dox-pep8
       - gate-dox-python27
       - gate-dox-python34
+      - gate-dox-python35-nv
     gate:
       - gate-dox-pep8
       - gate-dox-python27
@@ -5798,6 +5876,7 @@ projects:
       - name: openstack-server-publish-jobs
     check:
       - gate-dragonflow-python34
+      - gate-dragonflow-python35-nv
       - gate-tempest-dsvm-dragonflow
       - gate-dragonflow-dsvm-rally-nv
       - gate-dragonflow-dsvm-fullstack-nv
@@ -5830,7 +5909,8 @@ projects:
   - name: openstack/ec2-api
     template:
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: merge-check
       - name: check-requirements
       - name: publish-to-pypi
@@ -5851,7 +5931,8 @@ projects:
       - name: merge-check
       - name: check-requirements
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
 
   - name: openstack/election
     template:
@@ -5866,7 +5947,8 @@ projects:
   - name: openstack/entropy
     template:
       - name: merge-check
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
     check:
       - gate-entropy-docs
       - gate-entropy-pep8
@@ -5909,22 +5991,25 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: publish-to-pypi
       - name: release-notes-jobs
 
   - name: openstack/flame
     template:
-    - name: merge-check
-    - name: python-jobs
-    - name: python3-jobs
+      - name: merge-check
+      - name: python-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
 
   - name: openstack/freezer
     template:
       - name: merge-check
       - name: publish-to-pypi
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
     check:
       - gate-freezer-devstack-dsvm
@@ -5938,7 +6023,8 @@ projects:
       - name: merge-check
       - name: publish-to-pypi
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
     check:
       - gate-freezer-api-devstack-dsvm
@@ -5952,7 +6038,8 @@ projects:
       - name: merge-check
       - name: publish-to-pypi
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
     check:
       - gate-freezer-dr-pylint
@@ -5973,7 +6060,8 @@ projects:
       - name: merge-check
       - name: publish-to-pypi
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
       - name: translation-jobs
     check:
@@ -5986,7 +6074,8 @@ projects:
   - name: openstack/fuel-agent
     template:
       - name: merge-check
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
     check:
       - gate-fuel-agent-pep8
       - gate-fuel-agent-python27
@@ -6015,7 +6104,8 @@ projects:
   - name: openstack/fuel-devops
     template:
       - name: merge-check
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: python-jobs
     check:
       - gate-fuel-devops-pylint
@@ -6069,7 +6159,8 @@ projects:
   - name: openstack/fuel-mirror
     template:
       - name: merge-check
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
     check:
       - gate-fuel-mirror-pep8
       - gate-fuel-mirror-python27
@@ -6549,7 +6640,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
@@ -6595,7 +6687,8 @@ projects:
     template:
       - name: merge-check
       - name: publish-to-pypi
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
     check:
       - gate-giftwrap-pep8
       - gate-giftwrap-python27
@@ -6615,7 +6708,8 @@ projects:
       - name: merge-check
       - name: check-requirements
       - name: publish-to-pypi
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
     check:
       - gate-git-upstream-pep8
       - gate-git-upstream-python27
@@ -6626,7 +6720,8 @@ projects:
   - name: openstack/glance
     template:
       - name: merge-check
-      - name: python3-db-jobs
+      - name: python34-db-jobs
+      - name: python35-db-jobs-nv
       - name: python-db-jobs
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
@@ -6662,7 +6757,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
       - name: release-notes-jobs
       - name: check-requirements
@@ -6683,7 +6779,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
       - name: publish-to-pypi
 
@@ -6777,7 +6874,8 @@ projects:
     template:
       - name: merge-check
       - name: python-db-jobs
-      - name: python3-db-jobs
+      - name: python34-db-jobs
+      - name: python35-db-jobs-nv
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
       - name: periodic-db-liberty
@@ -6822,7 +6920,8 @@ projects:
       - name: merge-check
       - name: check-requirements
       - name: publish-to-pypi
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
     check:
       - gate-heat-cfntools-pep8
       - gate-heat-cfntools-python27
@@ -6861,7 +6960,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: publish-to-pypi
       - name: openstack-server-publish-jobs
       - name: check-requirements
@@ -6874,7 +6974,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
     check:
       - gate-higgins-devstack-dsvm
@@ -6885,7 +6986,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
       - name: periodic-liberty
@@ -6993,7 +7095,8 @@ projects:
     template:
       - name: merge-check
       - name: python-db-jobs
-      - name: python3-db-jobs
+      - name: python34-db-jobs
+      - name: python35-db-jobs-nv
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
       - name: periodic-db-liberty
@@ -7030,7 +7133,8 @@ projects:
     template:
       - name: merge-check
       - name: python-db-jobs
-      - name: python3-db-jobs
+      - name: python34-db-jobs
+      - name: python35-db-jobs-nv
       - name: openstack-server-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
@@ -7062,7 +7166,8 @@ projects:
   - name: openstack/ironic-lib
     template:
       - name: merge-check
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
       - name: publish-to-pypi
     check:
@@ -7080,7 +7185,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       # Using the server jobs since it will regen on every commit, not only
       # on release.
       - name: openstack-server-publish-jobs
@@ -7118,7 +7224,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
       - name: publish-to-pypi
       - name: docs-on-rtfd
@@ -7168,7 +7275,8 @@ projects:
     template:
       - name: merge-check
       - name: python-db-jobs
-      - name: python3-db-jobs
+      - name: python34-db-jobs
+      - name: python35-db-jobs-nv
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
       - name: periodic-db-liberty
@@ -7212,7 +7320,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
@@ -7223,7 +7332,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-client-publish-jobs
       - name: check-requirements
       - name: lib-forward-testing
@@ -7272,7 +7382,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
       - name: openstack-server-publish-jobs
       - name: publish-to-pypi
@@ -7297,7 +7408,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
       - name: openstack-server-publish-jobs
       - name: publish-to-pypi
@@ -7312,7 +7424,8 @@ projects:
       - name: check-requirements
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
 
   - name: openstack/kosmos-specs
     template:
@@ -7368,7 +7481,8 @@ projects:
       - name: merge-check
       - name: publish-to-pypi
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
     check:
       - gate-ldappool-pep8
     gate:
@@ -7386,7 +7500,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
@@ -7422,7 +7537,8 @@ projects:
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
       - name: python-db-jobs
-      - name: python3-db-jobs
+      - name: python34-db-jobs
+      - name: python35-db-jobs-nv
       - name: check-requirements
       - name: translation-jobs
       - name: release-notes-jobs
@@ -7524,14 +7640,16 @@ projects:
       - name: merge-check
       - name: publish-to-pypi
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
 
   - name: openstack/mistral
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
       - name: check-requirements
@@ -7747,7 +7865,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
@@ -7756,7 +7875,8 @@ projects:
     template:
       - name: merge-check
       - name: python-db-jobs
-      - name: python3-db-jobs
+      - name: python34-db-jobs
+      - name: python35-db-jobs-nv
       - name: publish-to-pypi
       - name: openstack-server-publish-jobs
       - name: check-requirements
@@ -7784,7 +7904,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: publish-to-pypi
       - name: check-requirements
       - name: release-notes-jobs
@@ -7802,7 +7923,8 @@ projects:
       - name: publish-to-pypi
       - name: check-requirements
       - name: release-notes-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: translation-jobs
       - name: translation-jobs-mitaka
     check:
@@ -7840,7 +7962,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: docs-on-rtfd
       - name: publish-to-pypi
     check:
@@ -7915,7 +8038,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: publish-to-pypi
     check:
       - gate-networking-cisco-requirements
@@ -7936,7 +8060,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
       - name: publish-to-pypi
 
@@ -7944,7 +8069,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
       - name: publish-to-pypi
 
@@ -7952,7 +8078,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
       - name: publish-to-pypi
     check:
@@ -7964,7 +8091,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
       - name: publish-to-pypi
 
@@ -7972,7 +8100,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
       - name: publish-to-pypi
 
@@ -7981,7 +8110,8 @@ projects:
       - name: merge-check
       - name: check-requirements
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: publish-to-pypi
 
   - name: openstack/networking-infoblox
@@ -8010,7 +8140,8 @@ projects:
       - name: merge-check
       - name: check-requirements
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: publish-to-pypi
       - name: openstack-server-publish-jobs
       - name: release-notes-jobs
@@ -8034,13 +8165,15 @@ projects:
       - name: merge-check
       - name: check-requirements
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
 
   - name: openstack/networking-odl
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: publish-to-pypi
       - name: openstack-server-publish-jobs
       - name: check-requirements
@@ -8092,6 +8225,7 @@ projects:
       - name: check-requirements
     check:
       - gate-networking-ovn-python34
+      - gate-networking-ovn-python35-nv
       - gate-tempest-dsvm-networking-ovn
       - gate-tempest-dsvm-networking-ovn-native-l3-nv
       - gate-rally-dsvm-networking-ovn-nv
@@ -8115,7 +8249,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: publish-to-pypi
 
   - name: openstack/networking-sfc
@@ -8125,7 +8260,8 @@ projects:
       - name: openstack-server-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
     check:
       - gate-tempest-dsvm-networking-sfc-nv
       - gate-functional-dsvm-networking-sfc-nv
@@ -8151,7 +8287,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
       - name: periodic-liberty
@@ -8214,7 +8351,8 @@ projects:
       - name: check-requirements
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-release-jobs
       - name: openstack-server-publish-jobs
       - name: release-notes-jobs
@@ -8231,7 +8369,8 @@ projects:
       - name: periodic-liberty
       - name: periodic-mitaka
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-release-jobs
       - name: release-notes-jobs
       - name: translation-jobs
@@ -8249,7 +8388,8 @@ projects:
       - name: periodic-liberty
       - name: periodic-mitaka
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-release-jobs
       - name: release-notes-jobs
       - name: translation-jobs
@@ -8292,7 +8432,8 @@ projects:
       - name: openstack-server-publish-jobs
       - name: publish-to-pypi
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: translation-jobs
       - name: api-ref-jobs
     check:
@@ -8317,7 +8458,8 @@ projects:
       - name: periodic-liberty
       - name: periodic-mitaka
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-release-jobs
       - name: release-notes-jobs
       - name: translation-jobs
@@ -8345,7 +8487,8 @@ projects:
     template:
       - name: merge-check
       - name: python-db-jobs
-      - name: python3-db-jobs
+      - name: python34-db-jobs
+      - name: python35-db-jobs-nv
       - name: periodic-jobs-with-oslo-master
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
@@ -8410,7 +8553,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: publish-to-pypi
       - name: docs-on-rtfd
 
@@ -8444,7 +8588,8 @@ projects:
       - name: periodic-mitaka
       - name: periodic-jobs-with-oslo-master
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
       - name: publish-to-pypi
       - name: release-notes-jobs
@@ -8472,7 +8617,8 @@ projects:
       - name: merge-check
       - name: pypy-jobs
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: publish-to-pypi
 
   - name: openstack/opencafe
@@ -8981,7 +9127,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: javascript-jobs
 
   - name: openstack/openstack-manuals
@@ -9085,7 +9232,8 @@ projects:
       - name: merge-check
       - name: check-requirements
       - name: publish-to-pypi
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-tripleo-jobs
     check:
       - gate-os-apply-config-pep8
@@ -9104,7 +9252,8 @@ projects:
       - name: openstack-client-publish-jobs
       - name: publish-to-pypi
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: lib-forward-testing
       - name: release-notes-jobs
     check:
@@ -9124,7 +9273,8 @@ projects:
       - name: openstack-client-publish-jobs
       - name: publish-to-pypi
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: pypy-jobs
       - name: release-notes-jobs
 
@@ -9134,7 +9284,8 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-tripleo-jobs
     post:
       - os-cloud-config-docs
@@ -9146,7 +9297,8 @@ projects:
       - name: merge-check
       - name: check-requirements
       - name: publish-to-pypi
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-tripleo-jobs
     check:
       - gate-os-collect-config-pep8
@@ -9186,7 +9338,8 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
 
 #TODO: add docs
   - name: openstack/os-refresh-config
@@ -9194,7 +9347,8 @@ projects:
       - name: merge-check
       - name: check-requirements
       - name: publish-to-pypi
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-tripleo-jobs
     check:
       - gate-os-refresh-config-pep8
@@ -9211,7 +9365,8 @@ projects:
       - name: publish-to-pypi
       - name: check-requirements
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
 
   - name: openstack/os-vif
@@ -9221,14 +9376,16 @@ projects:
       - name: openstack-server-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: release-notes-jobs
 
   - name: openstack/os-win
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
       - name: publish-to-pypi
 
@@ -9238,7 +9395,8 @@ projects:
       - name: merge-check
       - name: publish-to-pypi
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: pypy-jobs
 
   - name: openstack/oslo-specs
@@ -9254,7 +9412,8 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
       - name: translation-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: lib-forward-testing
       - name: stable-compat-jobs
 
@@ -9265,7 +9424,8 @@ projects:
       - name: openstack-server-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: translation-jobs
       - name: lib-forward-testing
       - name: stable-compat-jobs
@@ -9276,7 +9436,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
@@ -9288,7 +9449,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
@@ -9299,7 +9461,8 @@ projects:
     template:
       - name: merge-check
       - name: python-db-jobs
-      - name: python3-db-jobs
+      - name: python34-db-jobs
+      - name: python35-db-jobs-nv
       - name: openstack-server-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
@@ -9315,7 +9478,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
@@ -9329,7 +9493,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
@@ -9344,7 +9509,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
@@ -9376,7 +9542,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
       - name: check-requirements
       - name: pypy-jobs
@@ -9389,7 +9556,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
@@ -9401,7 +9569,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
@@ -9412,7 +9581,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
@@ -9425,7 +9595,8 @@ projects:
       - name: merge-check
       - name: openstack-server-publish-jobs
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
       - name: publish-to-pypi
       - name: lib-forward-testing
@@ -9435,7 +9606,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
@@ -9446,7 +9618,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
@@ -9463,7 +9636,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
@@ -9475,7 +9649,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
@@ -9488,7 +9663,8 @@ projects:
   - name: openstack/oslo.vmware
     template:
       - name: merge-check
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: python-jobs
       - name: openstack-server-publish-jobs
       - name: check-requirements
@@ -9516,7 +9692,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: pypy-jobs
       - name: openstack-server-publish-jobs
       - name: check-requirements
@@ -9561,7 +9738,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
       - name: openstack-server-publish-jobs
       - name: publish-to-pypi
@@ -9635,7 +9813,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
       - name: translation-jobs
       - name: release-notes-jobs
@@ -9674,7 +9853,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: pypy-jobs
       - name: check-requirements
       - name: publish-to-pypi
@@ -9686,7 +9866,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: publish-to-pypi
     post:
       - poppy-ui-coverage
@@ -9710,7 +9891,8 @@ projects:
     template:
       - name: merge-check
       - name: publish-to-pypi
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
     check:
       - gate-proliantutils-pep8
       - gate-proliantutils-python27
@@ -10315,7 +10497,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
@@ -10345,7 +10528,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
@@ -10354,7 +10538,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
@@ -10363,7 +10548,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-client-publish-jobs
       - name: publish-to-pypi
       - name: pypy-jobs
@@ -10380,7 +10566,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: publish-to-pypi
       - name: pypy-jobs
       - name: openstack-client-publish-jobs
@@ -10395,7 +10582,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
       - name: publish-to-pypi
 
@@ -10420,7 +10608,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-client-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
@@ -10434,7 +10623,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-client-publish-jobs
       - name: publish-to-pypi
       - name: pypy-jobs
@@ -10457,7 +10647,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-client-publish-jobs
       - name: check-requirements
       - name: lib-forward-testing
@@ -10477,7 +10668,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: publish-to-pypi
     post:
       - python-cloudkittyclient-coverage
@@ -10504,6 +10696,7 @@ projects:
       - gate-python-congressclient-pep8
       - gate-python-congressclient-python27
       - gate-python-congressclient-python34
+      - gate-python-congressclient-python35-nv
     gate:
       - gate-python-congressclient-pep8
       - gate-python-congressclient-python27
@@ -10518,6 +10711,7 @@ projects:
       - name: osc-plugin-jobs
     check:
       - gate-python-cueclient-python34
+      - gate-python-cueclient-python35-nv
 
   - name: openstack/python-designateclient
     template:
@@ -10530,6 +10724,7 @@ projects:
       - name: designate-dsvm-jobs
     check:
       - gate-python-designateclient-python34
+      - gate-python-designateclient-python35-nv
     post:
       - python-designateclient-coverage
 
@@ -10544,7 +10739,8 @@ projects:
     template:
       - name: merge-check
       - name: publish-to-pypi
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
     check:
       - gate-python-dracclient-pep8
       - gate-python-dracclient-python27
@@ -10575,7 +10771,8 @@ projects:
 
   - name: openstack/python-fuelclient
     template:
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: merge-check
       - name: publish-to-pypi
     check:
@@ -10594,7 +10791,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-client-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
@@ -10613,7 +10811,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-client-publish-jobs
       - name: publish-to-pypi
       - name: pypy-jobs
@@ -10631,7 +10830,8 @@ projects:
   - name: openstack/python-heatclient
     template:
       - name: merge-check
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
       - name: publish-to-pypi
       - name: pypy-jobs
@@ -10654,7 +10854,8 @@ projects:
   - name: openstack/python-ironic-inspector-client
     template:
       - name: merge-check
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
       - name: publish-to-pypi
       - name: release-notes-jobs
@@ -10673,7 +10874,8 @@ projects:
   - name: openstack/python-ironicclient
     template:
       - name: merge-check
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: python-jobs
       - name: openstack-client-publish-jobs
       - name: check-requirements
@@ -10693,7 +10895,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: publish-to-pypi
       - name: docs-on-rtfd
     check:
@@ -10703,7 +10906,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
       - name: publish-to-pypi
     check:
@@ -10715,7 +10919,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-client-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
@@ -10741,6 +10946,7 @@ projects:
       - name: publish-to-pypi
     experimental:
       - gate-python-keystoneclient-kerberos-python34
+      - gate-python-keystoneclient-kerberos-python35-nv
 
   - name: openstack/python-kiteclient
     template:
@@ -10751,7 +10957,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
       - name: openstack-client-publish-jobs
       - name: publish-to-pypi
@@ -10763,7 +10970,8 @@ projects:
       - name: openstack-client-publish-jobs
       - name: publish-to-pypi
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
       - name: release-notes-jobs
     check:
@@ -10778,7 +10986,8 @@ projects:
       - name: merge-check
       - name: publish-to-pypi
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
       - name: osc-plugin-jobs
     check:
@@ -10804,7 +11013,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: publish-to-pypi
       - name: check-requirements
       - name: release-notes-jobs
@@ -10830,7 +11040,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-client-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
@@ -10853,7 +11064,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-client-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
@@ -10876,13 +11088,15 @@ projects:
       - name: merge-check
       - name: publish-to-pypi
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
 
   - name: openstack/python-openstackclient
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-client-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
@@ -10901,7 +11115,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
       - name: pypy-jobs
       - name: publish-to-pypi
@@ -10914,7 +11129,8 @@ projects:
   - name: openstack/python-opentsdbclient
     template:
       - name: merge-check
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
     check:
       - gate-python-opentsdbclient-pep8
       - gate-python-opentsdbclient-python27
@@ -10939,7 +11155,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-client-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
@@ -10959,7 +11176,8 @@ projects:
       - name: merge-check
       - name: check-requirements
       - name: publish-to-pypi
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
     check:
       - gate-python-scciclient-pep8
       - gate-python-scciclient-python27
@@ -10971,7 +11189,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs-searchlight
-      - name: python3-jobs-searchlight
+      - name: python34-jobs-searchlight
+      - name: python35-jobs-searchlight
       - name: openstack-client-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
@@ -10984,7 +11203,8 @@ projects:
       - name: merge-check
       - name: publish-to-pypi
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: translation-jobs
       - name: osc-plugin-jobs
 
@@ -10992,7 +11212,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
       - name: publish-to-pypi
 
@@ -11000,7 +11221,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
       - name: publish-to-pypi
       - name: pypy-jobs
@@ -11016,7 +11238,8 @@ projects:
     template:
       - name: merge-check
       - name: publish-to-pypi
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
     check:
       - gate-python-surveilclient-docs
       - gate-python-surveilclient-pep8
@@ -11030,7 +11253,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       # We are deliberately using the server publish jobs here in order
       # to push updated docs with every merged patch.
       - name: openstack-server-publish-jobs
@@ -11063,7 +11287,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
       - name: publish-to-pypi
       - name: check-tripleo-jobs
@@ -11075,7 +11300,8 @@ projects:
       - name: check-requirements
       - name: openstack-client-publish-jobs
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: publish-to-pypi
       - name: pypy-jobs
       - name: lib-forward-testing
@@ -11089,7 +11315,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
       - name: publish-to-pypi
 
@@ -11097,7 +11324,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-client-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
@@ -11109,7 +11337,8 @@ projects:
     template:
       - name: merge-check
       - name: publish-to-pypi
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
     check:
       - gate-python-wsmanclient-pep8
       - gate-python-wsmanclient-python27
@@ -11120,7 +11349,8 @@ projects:
   - name: openstack/python-zaqarclient
     template:
       - name: merge-check
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
       - name: publish-to-pypi
       - name: osc-plugin-jobs
@@ -11139,7 +11369,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
 
   - name: openstack/qa-specs
@@ -11176,7 +11407,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
       - name: publish-to-pypi
     check:
@@ -11239,6 +11471,7 @@ projects:
       - gate-refstack-pep8
       - gate-refstack-python27
       - gate-refstack-python34
+      - gate-refstack-python35-nv
       - gate-refstack-tox-db-py27-func-mysql
     gate:
       - gate-refstack-pep8
@@ -11286,24 +11519,27 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
 
   - name: openstack/reno
     template:
-    - name: merge-check
-    - name: python-jobs
-    - name: python3-jobs
-    - name: openstack-server-publish-jobs
-    - name: publish-to-pypi
+      - name: merge-check
+      - name: python-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
+      - name: openstack-server-publish-jobs
+      - name: publish-to-pypi
 
   - name: openstack/requests-mock
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: pypy-jobs
       - name: publish-to-pypi
       - name: docs-on-rtfd
@@ -11376,7 +11612,8 @@ projects:
     template:
       - name: merge-check
       - name: python-db-jobs
-      - name: python3-db-jobs
+      - name: python34-db-jobs
+      - name: python35-db-jobs-nv
       - name: periodic-db-liberty
       - name: periodic-db-mitaka
       - name: openstack-server-publish-jobs
@@ -11415,7 +11652,8 @@ projects:
     template:
       - name: merge-check
       - name: check-requirements
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: publish-to-pypi
       - name: translation-jobs
       - name: translation-jobs-mitaka
@@ -11482,7 +11720,8 @@ projects:
       - name: merge-check
       - name: python-jobs
       - name: openstack-server-publish-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
       - name: publish-to-pypi
       - name: release-notes-jobs
@@ -11547,7 +11786,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
       - name: publish-to-pypi
     experimental:
@@ -11558,7 +11798,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs-searchlight
-      - name: python3-jobs-searchlight
+      - name: python34-jobs-searchlight
+      - name: python35-jobs-searchlight
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
       - name: check-requirements
@@ -11623,7 +11864,8 @@ projects:
       - name: openstack-server-publish-jobs
       - name: publish-to-pypi
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: release-notes-jobs
       - name: translation-jobs
       - name: api-ref-jobs
@@ -11656,7 +11898,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: publish-to-pypi
 
   - name: openstack/shotgun
@@ -11684,7 +11927,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
       - name: publish-to-pypi
     check:
@@ -11694,7 +11938,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
       - name: publish-to-pypi
 
@@ -11713,7 +11958,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
       - name: pypy-jobs
       - name: release-notes-jobs
@@ -11764,7 +12010,8 @@ projects:
       - name: merge-check
       - name: publish-to-pypi
       - name: docs-on-rtfd
-      - name: python3-db-jobs
+      - name: python34-db-jobs
+      - name: python35-db-jobs-nv
     check:
       - gate-sqlalchemy-migrate-pep8
       - gate-sqlalchemy-migrate-python27-db
@@ -11779,7 +12026,8 @@ projects:
   - name: openstack/stackalytics
     template:
       - name: merge-check
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: docs-on-rtfd
       - name: python-jobs
     pre-release:
@@ -11926,7 +12174,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: pypy-jobs
       - name: check-requirements
       - name: publish-to-pypi
@@ -11961,7 +12210,8 @@ projects:
       - name: merge-check
       - name: publish-to-pypi
       - name: docs-on-rtfd
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: pypy-jobs
     check:
       - gate-surveil-docs
@@ -11989,7 +12239,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
       - name: periodic-liberty
@@ -12130,6 +12381,7 @@ projects:
       - name: openstack-server-publish-jobs
       - name: release-notes-jobs
       - name: translation-jobs
+      - name: python35-db-jobs-nv
     check:
       - gate-tacker-dsvm-functional
       - gate-tacker-python34-db
@@ -12143,6 +12395,7 @@ projects:
         - gate-tacker-horizon-pep8
         - gate-tacker-horizon-python27
         - gate-tacker-horizon-python34
+        - gate-tacker-horizon-python35-nv
     gate:
         - gate-tacker-horizon-pep8
         - gate-tacker-horizon-python27
@@ -12161,7 +12414,8 @@ projects:
       - name: merge-check
       - name: check-requirements
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
     check:
       - gate-tempest-dsvm-tap-as-a-service
     gate:
@@ -12172,7 +12426,8 @@ projects:
       - name: merge-check
       - name: check-requirements
       - name: python-db-jobs
-      - name: python3-db-jobs
+      - name: python34-db-jobs
+      - name: python35-db-jobs-nv
       - name: pypy-db-jobs
       - name: openstack-server-publish-jobs
       - name: publish-to-pypi
@@ -12204,7 +12459,8 @@ projects:
       - name: check-requirements
       - name: integrated-gate
       - name: grenade
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: publish-to-pypi
       - name: release-notes-jobs
     check:
@@ -12298,7 +12554,8 @@ projects:
       - name: publish-to-pypi
       - name: lib-forward-testing
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: release-notes-jobs
     post:
       - tempest-lib-docs
@@ -12324,7 +12581,8 @@ projects:
       - name: merge-check
       - name: check-requirements
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
       - name: publish-to-pypi
       - name: lib-forward-testing
@@ -12369,7 +12627,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: publish-to-pypi
       - name: openstack-server-publish-jobs
       - name: check-requirements
@@ -12421,7 +12680,8 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-tripleo-jobs
 
   - name: openstack/tripleo-docs
@@ -12518,7 +12778,8 @@ projects:
     template:
       - name: merge-check
       - name: python-db-jobs
-      - name: python3-db-jobs
+      - name: python34-db-jobs
+      - name: python35-db-jobs-nv
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
       - name: periodic-db-liberty
@@ -12639,7 +12900,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
       - name: publish-to-pypi
     experimental:
@@ -12653,7 +12915,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: check-requirements
       - name: publish-to-pypi
 
@@ -12680,7 +12943,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
       - name: translation-jobs
       - name: check-requirements
@@ -12696,7 +12960,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
 
   - name: openstack/watcher-specs
@@ -12719,7 +12984,8 @@ projects:
   - name: openstack/wsme
     template:
       - name: merge-check
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: publish-to-pypi
     check:
       - gate-wsme-python27
@@ -12901,13 +13167,15 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: publish-to-pypi
 
   - name: openstack/zaqar
     template:
       - name: merge-check
-      - name: python3-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: python-jobs
       - name: periodic-liberty
       - name: periodic-mitaka
