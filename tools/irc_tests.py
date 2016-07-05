@@ -39,31 +39,31 @@ def access_gerrit_check():
     for channel in gerrit_config:
         for entry in REQUIRED_ENTRIES:
             if entry not in gerrit_config[channel]:
-                print("  Required entry '%s' not specified for channel '%s'"
+                print("ERROR: Required entry '%s' not specified for channel '%s'"
                       % (entry, channel))
                 errors = True
             elif not gerrit_config[channel][entry]:
-                print("  Entry '%s' has no content for channel '%s'"
+                print("ERROR: Entry '%s' has no content for channel '%s'"
                       % (entry, channel))
                 errors = True
 
         for event in gerrit_config[channel]['events']:
             if event not in VALID_EVENTS:
-                print("  Event '%s' for channel '%s' is invalid"
+                print("ERROR: Event '%s' for channel '%s' is invalid"
                       % (event, channel))
                 errors = True
 
     print("\nChecking that all channels in gerritbot are also in accessbot")
     for channel in gerrit_config:
         if channel not in access_channel_set:
-            print("  %s is missing from accessbot" % channel)
+            print("ERROR: %s is missing from accessbot" % channel)
             errors = True
 
     # IRC has a limit of 120 channels that we unfortunately hit with
     # gerritbot. If we try connect to more, it will not connect to
     # all. Avoid this situation.
     if len(gerrit_config) > 120:
-        print ("gerritbot can only handle 120 channels but found %s."
+        print ("ERROR: gerritbot can only handle 120 channels but found %s."
                % len(gerrit_config))
         print ("Sorry, we're at our limit and cannot add more for now.")
         print ("If you want to help set up another instance contact the "
