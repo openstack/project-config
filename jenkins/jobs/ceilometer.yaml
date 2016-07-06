@@ -41,7 +41,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-ceilometer-dsvm-functional-{backend}{job-suffix}'
+    name: '{pipeline}-ceilometer-dsvm-functional-{backend}{special}{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -66,6 +66,9 @@
           if [ "{backend}" = "postgresql" ] ; then
               export DEVSTACK_GATE_POSTGRES=1
           fi
+          if [ "{special}" == "-identity-v3-only" ] ; then
+              export DEVSTACK_LOCAL_CONFIG="ENABLE_IDENTITY_V2=False"
+          fi
 
           function post_test_hook {{
               # Configure and run functional tests
@@ -82,7 +85,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-ceilometerclient-dsvm-functional{job-suffix}'
+    name: '{pipeline}-ceilometerclient-dsvm-functional{special}{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -108,6 +111,9 @@
           fi
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          if [ "{special}" == "-identity-v3-only" ] ; then
+              export DEVSTACK_LOCAL_CONFIG="ENABLE_IDENTITY_V2=False"
           fi
 
           function post_test_hook {{

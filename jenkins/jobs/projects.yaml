@@ -549,22 +549,32 @@
           network: ''
           job-suffix: '-nv'
           branch-override: default
-      - '{pipeline}-ceilometer-dsvm-functional-{backend}{job-suffix}':
+      - '{pipeline}-ceilometer-dsvm-functional-{backend}{special}{job-suffix}':
           pipeline: 'gate'
           backend: 'mongodb'
           node: ubuntu-trusty
+          special: ''
           job-suffix: ''
           branch-override: default
-      - '{pipeline}-ceilometer-dsvm-functional-{backend}{job-suffix}':
+      - '{pipeline}-ceilometer-dsvm-functional-{backend}{special}{job-suffix}':
           pipeline: 'gate'
           backend: 'mysql'
           node: ubuntu-trusty
+          special: ''
           job-suffix: ''
           branch-override: default
-      - '{pipeline}-ceilometer-dsvm-functional-{backend}{job-suffix}':
+      - '{pipeline}-ceilometer-dsvm-functional-{backend}{special}{job-suffix}':
           node: ubuntu-trusty
           pipeline: gate
           backend: postgresql
+          special: ''
+          job-suffix: ''
+          branch-override: default
+      - '{pipeline}-ceilometer-dsvm-functional-{backend}{special}{job-suffix}':
+          pipeline: 'gate'
+          backend: 'mongodb'
+          node: ubuntu-trusty
+          special: '-identity-v3-only'
           job-suffix: ''
           branch-override: default
       - 'gate-telemetry-dsvm-integration-{name}'
@@ -8193,9 +8203,16 @@
           node: ubuntu-trusty
           job-suffix: ''
           branch-override: default
-      - '{pipeline}-ceilometerclient-dsvm-functional{job-suffix}':
+      - '{pipeline}-ceilometerclient-dsvm-functional{special}{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
+          special: ''
+          job-suffix: ''
+          branch-override: default
+      - '{pipeline}-ceilometerclient-dsvm-functional{special}{job-suffix}':
+          pipeline: gate
+          node: ubuntu-trusty
+          special: '-identity-v3-only'
           job-suffix: ''
           branch-override: default
       - 'gate-telemetry-dsvm-integration-{name}'
