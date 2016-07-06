@@ -15,18 +15,25 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# dib-lint: disable=setu setpipefail
+# dib-lint: disable=setu setpipefail sete
 if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
     set -x
 fi
-set -e
 
+STACKVIZ_NPM_TIMEOUT="15m"
 STACKVIZ_DIR=/opt/stackviz
 cp -r /opt/git/openstack/stackviz $STACKVIZ_DIR
 
 cd $STACKVIZ_DIR
 
-npm install
-npm run prod
+timeout $STACKVIZ_NPM_TIMEOUT npm install
+ret=$?
 
-rm -rf node_modules/
+if [[ $ret -eq 0 ]]; then
+    npm run prod && rm -rf node_modules/
+else
+    echo "stackviz build aborted due to npm error"
+    rm -rf $STACKVIZ_DIR
+fi
+
+exit 0
