@@ -689,14 +689,19 @@
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_DEPLOY_DRIVER_ISCSI_WITH_IPA=True"
               # Support for non-CoreOS IPA ramdisks was added in Mitaka
               if [ "$ZUUL_BRANCH" != "stable/kilo" -a "$ZUUL_BRANCH" != "stable/liberty" ] ; then
-                  export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_RAMDISK_TYPE={ramdisk-type}"
                   # Standardize VM size for each supported ramdisk
                   case "{ramdisk-type}" in
                       'tinyipa')
                           export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_VM_SPECS_RAM=384"
+                          export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_RAMDISK_TYPE=tinyipa"
+                          ;;
+                      'tinyipa256')
+                          export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_VM_SPECS_RAM=256"
+                          export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_RAMDISK_TYPE=tinyipa"
                           ;;
                       'coreos')
                           export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_VM_SPECS_RAM=1280"
+                          export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_RAMDISK_TYPE=coreos"
                           ;;
                   # if using a ramdisk without a known good value, use the devstack
                   # default by not exporting any value for IRONIC_VM_SPECS_RAM
@@ -883,6 +888,45 @@
           tempest-regex: ironic
           branch-override: '{branch-override}'
           ramdisk-type: 'tinyipa'
+          gate-tempest-full: 0
+          bm-vm-count: 1
+          multitenant-network: 0
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-tempest-dsvm-ironic-pxe_ipa-tinyipa256-src{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 75
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - devstack-virtual-ironic:
+          postgres: 0
+          build-ramdisk: 1
+          deploy_driver: pxe_ssh
+          ephemeral-size: 1
+          deploy-with-ipa: 1
+          client-from-source: 0
+          ironic-lib-from-source: 0
+          pyghmi-from-source: 0
+          virtualbmc-from-source: 0
+          ipxe-enabled: 1
+          inspector-enabled: 0
+          inspector-auto-discovery: 0
+          tempest-regex: ironic
+          branch-override: '{branch-override}'
+          ramdisk-type: 'tinyipa256'
           gate-tempest-full: 0
           bm-vm-count: 1
           multitenant-network: 0
