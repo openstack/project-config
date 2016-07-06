@@ -381,6 +381,14 @@ project-templates:
     post:
       - '{name}-branch-tarball'
 
+  - name: python-charm-layer-jobs
+    check:
+      - 'gate-{name}-pep8'
+      - 'gate-{name}-tox-charm-build'
+    gate:
+      - 'gate-{name}-pep8'
+      - 'gate-{name}-tox-charm-build'
+
   - name: periodic-jobs-with-oslo-master
     periodic:
       - 'periodic-{name}-py27-with-oslo-master'
@@ -5070,6 +5078,21 @@ projects:
     template:
       - name: merge-check
       - name: python-charm-jobs
+
+  - name: openstack/charm-layer-openstack
+    template:
+      - name: merge-check
+      - name: python-charm-layer-jobs
+
+  - name: openstack/charm-layer-openstack-api
+    template:
+      - name: merge-check
+      - name: python-charm-layer-jobs
+
+  - name: openstack/charm-layer-openstack-principle
+    template:
+      - name: merge-check
+      - name: python-charm-layer-jobs
 
   - name: openstack/charm-lxd
     template:
