@@ -1,5 +1,5 @@
 - job-template:
-    name: 'gate-ceilometer-dsvm-tempest-plugin-{backend}{network}'
+    name: 'gate-ceilometer-dsvm-tempest-plugin-{backend}{special}{network}{job-suffix}'
     node: ubuntu-trusty
 
     wrappers:
@@ -25,6 +25,9 @@
           fi
           if [ "{backend}" = "postgresql" ] ; then
               export DEVSTACK_GATE_POSTGRES=1
+          fi
+          if [ "{special}" == "-identity-v3-only" ] ; then
+              export DEVSTACK_LOCAL_CONFIG="ENABLE_IDENTITY_V2=False"
           fi
           if [ "x{network}" = "x-neutron" ] ; then
               export DEVSTACK_GATE_NEUTRON=1
