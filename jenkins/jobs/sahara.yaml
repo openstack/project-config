@@ -139,6 +139,10 @@
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
+          export KEEP_LOCALRC=1
+          export DEVSTACK_GATE_TEMPEST=0
+          export DEVSTACK_GATE_EXERCISES=0
+          export DEVSTACK_GATE_INSTALL_TESTONLY=1
           export DEVSTACK_LOCAL_CONFIG="enable_plugin sahara git://git.openstack.org/openstack/sahara"
           export PROJECTS="openstack/sahara-tests openstack/python-saharaclient $PROJECTS"
           if [ "$ZUUL_PROJECT" = "openstack/python-saharaclient" ]; then
