@@ -3063,6 +3063,39 @@
     tarball-site: tarballs.openstack.org
     doc-publisher-site: docs.openstack.org
 
+    job-suffix:
+      - ''
+      - '-nv'
+
+    src:
+      - ''
+      - '-src'
+
+    driver:
+      - 'pxe_ssh'
+      - 'agent_ssh'
+      - 'pxe_ipmitool'
+      - 'agent_ipmitool'
+
+    ramdisk-type:
+      - 'coreos'
+      - 'tinyipa'
+
+    image-type:
+      - 'wholedisk'
+      - 'partition'
+
+    exclude:
+      - driver: 'pxe_ipmitool'
+        job-suffix: ''
+      - driver: 'agent_ipmitool'
+        job-suffix: ''
+      - image-type: 'partition'
+        ramdisk-type: 'agent_ssh'
+        job-suffix: ''
+      - image-type: 'wholedisk'
+        driver: 'pxe_ssh'
+
     jobs:
       - coverage-db-jobs
       - python-db-jobs
@@ -3076,15 +3109,21 @@
           suffix: '-nv'
       - api-ref-jobs:
           service: baremetal
+      - '{pipeline}-tempest-dsvm-ironic-ipa-{image-type}-{driver}-{ramdisk-type}{src}{job-suffix}':
+          pipeline: gate
+          node: ubuntu-trusty
+          branch-override: default
+      - '{pipeline}-tempest-dsvm-ironic-ipa-{image-type}-{driver}-{ramdisk-type}{src}{job-suffix}':
+          pipeline: gate
+          node: ubuntu-trusty
+          branch-override: default
+          driver: 'pxe_ssh'
+          job-suffix: ''
+          ramdisk-type: 'tinyipa256'
       - '{pipeline}-ironic-dsvm-functional{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
           job-suffix: ''
-          branch-override: default
-      - '{pipeline}-tempest-dsvm-ironic-pxe_ipa{job-suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
-          job-suffix: '-nv'
           branch-override: default
       - '{pipeline}-tempest-dsvm-ironic-pxe_ipa-full{job-suffix}':
           pipeline: gate
@@ -3095,73 +3134,6 @@
           pipeline: gate
           node: ubuntu-trusty
           job-suffix: '-nv'
-          branch-override: default
-      - '{pipeline}-tempest-dsvm-ironic-agent_ssh{job-suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
-          job-suffix: '-nv'
-          branch-override: default
-      - '{pipeline}-tempest-dsvm-ironic-agent_ssh-partition-image{job-suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
-          job-suffix: '-nv'
-          branch-override: default
-      - '{pipeline}-tempest-dsvm-ironic-agent_ipmitool{job-suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
-          job-suffix: '-nv'
-          branch-override: default
-      - '{pipeline}-tempest-dsvm-ironic-pxe_ipmitool{job-suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
-          job-suffix: '-nv'
-          branch-override: default
-      - '{pipeline}-tempest-dsvm-ironic-agent_ssh-coreos-src{job-suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
-          job-suffix: ''
-          branch-override: default
-      - '{pipeline}-tempest-dsvm-ironic-agent_ssh-partition-image-coreos-src{job-suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
-          job-suffix: '-nv'
-          branch-override: default
-      - '{pipeline}-tempest-dsvm-ironic-agent_ssh-tinyipa-src{job-suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
-          job-suffix: ''
-          branch-override: default
-      - '{pipeline}-tempest-dsvm-ironic-agent_ssh-partition-image-tinyipa-src{job-suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
-          job-suffix: '-nv'
-          branch-override: default
-      - '{pipeline}-tempest-dsvm-ironic-pxe_ipa-coreos-src{job-suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
-          job-suffix: ''
-          branch-override: default
-      - '{pipeline}-tempest-dsvm-ironic-pxe_ipa-tinyipa-src{job-suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
-          job-suffix: ''
-          branch-override: default
-      - '{pipeline}-tempest-dsvm-ironic-pxe_ipa-tinyipa256-src{job-suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
-          job-suffix: ''
-          branch-override: default
-      - '{pipeline}-tempest-dsvm-ironic-pxe_ipmitool-{ramdisk}-src{job-suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
-          job-suffix: '-nv'
-          ramdisk: 'tinyipa'
-          branch-override: default
-      - '{pipeline}-tempest-dsvm-ironic-agent_ipmitool-{ramdisk}-src{job-suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
-          job-suffix: '-nv'
-          ramdisk: 'tinyipa'
           branch-override: default
       - '{pipeline}-tempest-dsvm-ironic-parallel{job-suffix}':
           pipeline: gate

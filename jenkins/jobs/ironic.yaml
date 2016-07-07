@@ -1,3 +1,202 @@
+- builder:
+    name: ironic-extra-vars
+    builders:
+      - shell: |
+          cat << EOF >> ironic-extra-vars
+            {script}
+          EOF
+
+- builder:
+    name: ironic-client-from-source
+    builders:
+      - ironic-extra-vars:
+          script: |
+            export DEVSTACK_PROJECT_FROM_GIT="python-ironicclient,$DEVSTACK_PROJECT_FROM_GIT"
+
+- builder:
+    name: ironic-lib-from-source
+    builders:
+      - ironic-extra-vars:
+          script: |
+            export DEVSTACK_PROJECT_FROM_GIT="ironic-lib,$DEVSTACK_PROJECT_FROM_GIT"
+
+- builder:
+    name: ironic-pygmi-from-source
+    builders:
+      - ironic-extra-vars:
+          script: |
+            export DEVSTACK_PROJECT_FROM_GIT="pyghmi,$DEVSTACK_PROJECT_FROM_GIT"
+
+- builder:
+    name: ironic-virtualbmc-from-source
+    builders:
+      - ironic-extra-vars:
+          script: |
+            export DEVSTACK_PROJECT_FROM_GIT="virtualbmc,$DEVSTACK_PROJECT_FROM_GIT"
+
+- builder:
+    name: ironic-deploy-with-IPA
+    builders:
+      - ironic-extra-vars:
+          script: |
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_DEPLOY_DRIVER_ISCSI_WITH_IPA=True"
+            # Support for non-CoreOS IPA ramdisks was added in Mitaka
+            if [ "$ZUUL_BRANCH" != "stable/liberty" ] ; then
+                # Standardize VM size for each supported ramdisk
+                case "{ramdisk-type}" in
+                    'tinyipa')
+                        export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_VM_SPECS_RAM=384"
+                        export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_RAMDISK_TYPE=tinyipa"
+                        ;;
+                    'tinyipa256')
+                        export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_VM_SPECS_RAM=256"
+                        export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_RAMDISK_TYPE=tinyipa"
+                        ;;
+                    'coreos')
+                        export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_VM_SPECS_RAM=1280"
+                        export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_RAMDISK_TYPE=coreos"
+                        ;;
+                # if using a ramdisk without a known good value, use the devstack
+                # default by not exporting any value for IRONIC_VM_SPECS_RAM
+                esac
+            else
+                # For kilo and liberty, we still need 1280mb of ram as
+                # we only have the CoreOS ramdisk.
+                export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_VM_SPECS_RAM=1280"
+            fi
+
+- builder:
+    name: ironic-ipxe-disabled
+    builders:
+      - ironic-extra-vars:
+          script: |
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_IPXE_ENABLED=False"
+
+- builder:
+    name: ironic-tempest-full
+    builders:
+      - ironic-extra-vars:
+          script: |
+            export DEVSTACK_GATE_TEMPEST_FULL=1
+
+- builder:
+    name: ironic-tempest-regex
+    builders:
+      - ironic-extra-vars:
+          script: |
+            export DEVSTACK_GATE_TEMPEST_REGEX="{tempest-regex}"
+
+- builder:
+    name: ironic-multitenant
+    builders:
+      - ironic-extra-vars:
+          script: |
+            export DEVSTACK_GATE_OS_TEST_TIMEOUT=2400
+            # networking-generic-switch requires sudo to execute ovs-vsctl commands
+            export DEVSTACK_GATE_REMOVE_STACK_SUDO=0
+            export PROJECTS="openstack/networking-generic-switch $PROJECTS"
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin networking-generic-switch git://git.openstack.org/openstack/networking-generic-switch"
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_PLUGIN_EXTRA_CONF_PATH=/etc/neutron/plugins/ml2"
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_PLUGIN_EXTRA_CONF_FILES['networking-generic-switch']=ml2_conf_genericswitch.ini"
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_USE_LINK_LOCAL=True"
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"OVS_PHYSICAL_BRIDGE=brbm"
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"PHYSICAL_NETWORK=mynetwork"
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_PROVISION_NETWORK_NAME=ironic-provision"
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_PROVISION_SUBNET_PREFIX=10.0.5.0/24"
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_PROVISION_SUBNET_GATEWAY=10.0.5.1"
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_PLUGIN=ml2"
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"ENABLE_TENANT_VLANS=True"
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_ML2_TENANT_NETWORK_TYPE=vlan"
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"TENANT_VLAN_RANGE=100:150"
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_ENABLED_NETWORK_INTERFACES=flat,neutron"
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_NETWORK_INTERFACE=neutron"
+            export DEVSTACK_GATE_TEMPEST_REGEX=baremetal_multitenancy
+
+- builder:
+    name: ironic-inspector-enabled
+    builders:
+      - ironic-extra-vars:
+          script: |
+            export PROJECTS="openstack/ironic-inspector $PROJECTS"
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ironic-inspector git://git.openstack.org/openstack/ironic-inspector"
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"TEMPEST_PLUGINS+=' /opt/stack/new/ironic-inspector'"
+
+            export IRONIC_INSPECTOR_AUTO_DISCOVERY={inspector-auto-discovery}
+            if [ "IRONIC_INSPECTOR_AUTO_DISCOVERY" == "1" ]; then
+                 # discovery test requires sudo for iptables and virsh
+                 export DEVSTACK_GATE_REMOVE_STACK_SUDO=0
+                 # enable enroll hook
+                 export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_INSPECTOR_NODE_NOT_FOUND_HOOK=enroll"
+            fi
+
+- builder:
+    name: ironic-postgres-enabled
+    builders:
+      - ironic-extra-vars:
+          script: |
+            export DEVSTACK_GATE_POSTGRES=1
+
+- builder:
+    # NOTE(adam_g): This is a temporary macro until we can define the Ironic d-s-g job in a
+    # standard, minimal fashion.
+    name: devstack-virtual-ironic
+    builders:
+      - shell: |
+          #!/bin/bash -xe
+          export PROJECTS="openstack/ironic $PROJECTS"
+          export PROJECTS="openstack/ironic-lib $PROJECTS"
+          export PROJECTS="openstack/ironic-python-agent $PROJECTS"
+          export PROJECTS="openstack/python-ironicclient $PROJECTS"
+          export PROJECTS="openstack/pyghmi $PROJECTS"
+          export PROJECTS="openstack/virtualbmc $PROJECTS"
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_IRONIC=1
+          export DEVSTACK_GATE_NEUTRON=1
+          export DEVSTACK_GATE_VIRT_DRIVER=ironic
+          export DEVSTACK_GATE_IRONIC_DRIVER={deploy_driver}
+          export TEMPEST_CONCURRENCY=1
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+
+          if [ "{image-type}" == "wholedisk" ] ; then
+            export DEVSTACK_GATE_IRONIC_EPHEMERAL=0
+          else
+            export DEVSTACK_GATE_IRONIC_EPHEMERAL=1
+          fi
+
+          if [ -n "{build-ramdisk}" ] ; then
+            export DEVSTACK_GATE_IRONIC_BUILD_RAMDISK=1
+          fi
+
+          export DEVSTACK_PROJECT_FROM_GIT=""
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_VM_COUNT={bm-vm-count}"
+
+          # use tempest plugin
+          if [[ "$ZUUL_BRANCH" != "master" ]] ; then
+            # NOTE(jroll) if this isn't a patch against master, then
+            # fetch master to install the plugin
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"TEMPEST_PLUGINS=git+git://git.openstack.org/openstack/ironic"
+          else
+            # on master, use the local change, so we can pick up any changes to the plugin
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"TEMPEST_PLUGINS=/opt/stack/new/ironic"
+          fi
+
+          # devstack plugin didn't exist until mitaka
+          if [[ "$ZUUL_BRANCH" != "stable/liberty" ]] ; then
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ironic git://git.openstack.org/openstack/ironic"
+          fi
+
+          # Ensure the ironic-extra-vars file exists
+          touch ironic-extra-vars
+          # Pull in the extra variables injected by the optional builders
+          source ironic-extra-vars
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
 - job-template:
     name: '{pipeline}-ironic-dsvm-functional{job-suffix}'
     node: '{node}'
@@ -282,6 +481,490 @@
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_BUILD_DEPLOY_RAMDISK=False"
 
           # No post_test_hook is needed while tests live in tempest
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-tempest-dsvm-ironic-pxe_ssh{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 180
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - ironic-ipxe-disabled
+      - ironic-tempest-regex:
+          tempest-regex: ironic
+      - devstack-virtual-ironic:
+          build-ramdisk: 1
+          deploy_driver: pxe_ssh
+          image-type: partition
+          branch-override: '{branch-override}'
+          bm-vm-count: 1
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-tempest-dsvm-ironic-ipa-{image-type}-{driver}-{ramdisk-type}{src}{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 75
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - ironic-deploy-with-IPA:
+          ramdisk-type: '{ramdisk-type}'
+      - ironic-tempest-regex:
+          tempest-regex: ironic
+      - devstack-virtual-ironic:
+          build-ramdisk: '{src}'
+          deploy_driver: '{driver}'
+          image-type: '{image-type}'
+          branch-override: '{branch-override}'
+          bm-vm-count: 1
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-tempest-dsvm-ironic-pxe_ipa-full{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 160
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - ironic-deploy-with-IPA:
+          ramdisk-type: 'tinyipa'
+      - ironic-tempest-full
+      - devstack-virtual-ironic:
+          build-ramdisk: 1
+          deploy_driver: pxe_ssh
+          image-type: partition
+          branch-override: '{branch-override}'
+          bm-vm-count: 7
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-tempest-dsvm-ironic-pxe_ipa-postgres{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 180
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - ironic-deploy-with-IPA:
+          ramdisk-type: 'tinyipa'
+      - ironic-tempest-regex:
+          tempest-regex: ironic
+      - ironic-postgres-enabled
+      - devstack-virtual-ironic:
+          build-ramdisk: ''
+          deploy_driver: pxe_ssh
+          image-type: partition
+          branch-override: '{branch-override}'
+          bm-vm-count: 1
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-tempest-dsvm-ironic-parallel{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 180
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PROJECTS="openstack/ironic $PROJECTS"
+          export PROJECTS="openstack/ironic-lib $PROJECTS"
+          export PROJECTS="openstack/ironic-python-agent $PROJECTS"
+          export PROJECTS="openstack/python-ironicclient $PROJECTS"
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TEMPEST=1
+          # NOTE(deva): tempest-lib support was added in Mitaka
+          # but this job doesn't run on stable branches, so we can keep it simple here
+          export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
+          export DEVSTACK_GATE_IRONIC=1
+          export DEVSTACK_GATE_NEUTRON=1
+          export DEVSTACK_GATE_VIRT_DRIVER=ironic
+          export TEMPEST_CONCURRENCY=2
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          # Run only baremetal tests
+          export DEVSTACK_GATE_TEMPEST_REGEX='ironic'
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-tempest-dsvm-ironic-pxe_ipmitool-pyghmi-src{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 180
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - ironic-deploy-with-IPA:
+          ramdisk-type: 'coreos'
+      - ironic-tempest-regex:
+          tempest-regex: ironic
+      - ironic-pygmi-from-source
+      - devstack-virtual-ironic:
+          build-ramdisk: ''
+          deploy_driver: pxe_ipmitool
+          image-type: partition
+          branch-override: '{branch-override}'
+          bm-vm-count: 1
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-tempest-dsvm-ironic-pxe_ipmitool-virtualbmc-src{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 180
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - ironic-deploy-with-IPA:
+          ramdisk-type: 'tinyipa'
+      - ironic-tempest-regex:
+          tempest-regex: ironic
+      - ironic-virtualbmc-from-source
+      - ironic-pygmi-from-source
+      - devstack-virtual-ironic:
+          build-ramdisk: ''
+          deploy_driver: pxe_ipmitool
+          image-type: partition
+          branch-override: '{branch-override}'
+          bm-vm-count: 1
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-tempest-dsvm-python-ironicclient-src{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 180
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - ironic-deploy-with-IPA:
+          ramdisk-type: 'tinyipa'
+      - ironic-tempest-regex:
+          tempest-regex: ironic
+      - ironic-client-from-source
+      - devstack-virtual-ironic:
+          build-ramdisk: ''
+          deploy_driver: pxe_ssh
+          image-type: partition
+          branch-override: '{branch-override}'
+          bm-vm-count: 1
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-tempest-dsvm-ironic-lib-src{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 180
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - ironic-deploy-with-IPA:
+          ramdisk-type: 'tinyipa'
+      - ironic-tempest-regex:
+          tempest-regex: ironic
+      - ironic-lib-from-source
+      - devstack-virtual-ironic:
+          build-ramdisk: ''
+          deploy_driver: pxe_ssh
+          image-type: partition
+          branch-override: '{branch-override}'
+          bm-vm-count: 1
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-tempest-dsvm-ironic-multitenant-network{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 180
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - ironic-deploy-with-IPA:
+          ramdisk-type: 'tinyipa'
+      - ironic-tempest-regex:
+          tempest-regex: ironic
+      - ironic-multitenant
+      - devstack-virtual-ironic:
+          build-ramdisk: ''
+          deploy_driver: agent_ssh
+          image-type: wholedisk
+          branch-override: '{branch-override}'
+          bm-vm-count: 3
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-tempest-dsvm-ironic-inspector{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 180
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - ironic-deploy-with-IPA:
+          ramdisk-type: 'tinyipa'
+      - ironic-tempest-regex:
+          tempest-regex: InspectorBasicTest
+      - ironic-inspector-enabled:
+          inspector-auto-discovery: 0
+      - devstack-virtual-ironic:
+          build-ramdisk: ''
+          deploy_driver: agent_ssh
+          image-type: wholedisk
+          branch-override: '{branch-override}'
+          bm-vm-count: 1
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-tempest-dsvm-ironic-inspector-discovery{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 180
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - ironic-deploy-with-IPA:
+          ramdisk-type: 'tinyipa'
+      - ironic-tempest-regex:
+          tempest-regex: InspectorDiscoveryTest
+      - ironic-inspector-enabled:
+          inspector-auto-discovery: 0
+      - devstack-virtual-ironic:
+          build-ramdisk: ''
+          deploy_driver: agent_ssh
+          image-type: wholedisk
+          branch-override: '{branch-override}'
+          bm-vm-count: 1
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-grenade-dsvm-ironic{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 180
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PROJECTS="openstack/ironic $PROJECTS"
+          export PROJECTS="openstack/ironic-lib $PROJECTS"
+          export PROJECTS="openstack/ironic-python-agent $PROJECTS"
+          export PROJECTS="openstack/python-ironicclient $PROJECTS"
+          export PROJECTS="openstack-dev/grenade $PROJECTS"
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_GRENADE=pullup
+          export DEVSTACK_GATE_IRONIC=1
+          export DEVSTACK_GATE_NEUTRON=1
+          export DEVSTACK_GATE_VIRT_DRIVER=ironic
+          export TEMPEST_CONCURRENCY=1
+          export DEVSTACK_GATE_OS_TEST_TIMEOUT=2400
+          export DEVSTACK_GATE_TEMPEST_BAREMETAL_BUILD_TIMEOUT=1200
+          export DEVSTACK_LOCAL_CONFIG="IRONIC_VM_SPECS_RAM=384"$'\n'"IRONIC_VM_COUNT=7"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_DEPLOY_DRIVER_ISCSI_WITH_IPA=True"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_RAMDISK_TYPE=tinyipa"
+          # Make IPXE configuration consistent between Mitaka and Master
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_IPXE_ENABLED=True"
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          export GRENADE_PLUGINRC="enable_grenade_plugin ironic https://git.openstack.org/openstack/ironic"
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-grenade-dsvm-ironic-inspector{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 180
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PROJECTS="openstack/ironic $PROJECTS"
+          export PROJECTS="openstack/ironic-lib $PROJECTS"
+          export PROJECTS="openstack/ironic-python-agent $PROJECTS"
+          export PROJECTS="openstack/python-ironicclient $PROJECTS"
+          export PROJECTS="openstack/ironic-inspector $PROJECTS"
+          export PROJECTS="openstack/python-ironic-inspector-client $PROJECTS"
+          export PROJECTS="openstack-dev/grenade $PROJECTS"
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_GRENADE=pullup
+          export DEVSTACK_GATE_IRONIC=1
+          export DEVSTACK_GATE_NEUTRON=1
+          export DEVSTACK_GATE_VIRT_DRIVER=ironic
+          export TEMPEST_CONCURRENCY=1
+          export DEVSTACK_GATE_OS_TEST_TIMEOUT=2400
+          export DEVSTACK_GATE_TEMPEST_BAREMETAL_BUILD_TIMEOUT=1200
+          export DEVSTACK_LOCAL_CONFIG="IRONIC_VM_SPECS_RAM=384"$'\n'"IRONIC_VM_COUNT=7"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_DEPLOY_DRIVER_ISCSI_WITH_IPA=True"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_RAMDISK_TYPE=tinyipa"
+          # Make IPXE configuration consistent between Mitaka and Master
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_IPXE_ENABLED=True"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_INSPECTOR_RAMDISK_ELEMENT=ironic-agent"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_INSPECTOR_MANAGE_FIREWALL=True"
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          export GRENADE_PLUGINRC+=$'\n'"enable_grenade_plugin ironic https://git.openstack.org/openstack/ironic"
+          export GRENADE_PLUGINRC+=$'\n'"enable_grenade_plugin ironic-inspector https://git.openstack.org/openstack/ironic-inspector"
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
 
