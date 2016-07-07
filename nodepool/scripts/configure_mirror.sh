@@ -27,6 +27,40 @@ source /etc/nodepool/provider
 NODEPOOL_MIRROR_HOST=${NODEPOOL_MIRROR_HOST:-mirror.$NODEPOOL_REGION.$NODEPOOL_CLOUD.openstack.org}
 NODEPOOL_MIRROR_HOST=$(echo $NODEPOOL_MIRROR_HOST|tr '[:upper:]' '[:lower:]')
 
+# Write the default value for NODEPOOL_MIRROR_HOST into the mirror_info
+# script first. This allows us to set a default while allowing consumers
+# to override values if necessary.
+echo "export NODEPOOL_MIRROR_HOST=\${NODEPOOL_MIRROR_HOST:-$NODEPOOL_MIRROR_HOST}" > /tmp/mirror_info.sh
+# Copy AFS Slug generation details into mirror_info.sh so that consumers
+# don't have to know about generating the wheel mirror's
+# distro-release-processor tuple.
+cat /usr/local/jenkins/slave_scripts/afs-slug.sh >> /tmp/mirror_info.sh
+# We write this as a heredoc so that the same information used by this script
+# is useable by others without double accounting. Note that the quoted EOF
+# means we don't do variable expansion.
+cat << "EOF" >> /tmp/mirror_info.sh
+export NODEPOOL_DEBIAN_MIRROR=${NODEPOOL_DEBIAN_MIRROR:-http://$NODEPOOL_MIRROR_HOST/debian}
+export NODEPOOL_PYPI_MIRROR=${NODEPOOL_PYPI_MIRROR:-http://$NODEPOOL_MIRROR_HOST/pypi/simple}
+export NODEPOOL_WHEEL_MIRROR=${NODEPOOL_WHEEL_MIRROR:-http://$NODEPOOL_MIRROR_HOST/wheel/$AFS_SLUG}
+export NODEPOOL_UBUNTU_MIRROR=${NODEPOOL_UBUNTU_MIRROR:-http://$NODEPOOL_MIRROR_HOST/ubuntu}
+export NODEPOOL_CENTOS_MIRROR=${NODEPOOL_CENTOS_MIRROR:-http://$NODEPOOL_MIRROR_HOST/centos}
+export NODEPOOL_DEBIAN_OPENSTACK_MIRROR=${NODEPOOL_DEBIAN_OPENSTACK_MIRROR:-http://$NODEPOOL_MIRROR_HOST/debian-openstack}
+export NODEPOOL_EPEL_MIRROR=${NODEPOOL_EPEL_MIRROR:-http://$NODEPOOL_MIRROR_HOST/epel}
+export NODEPOOL_FEDORA_MIRROR=${NODEPOOL_FEDORA_MIRROR:-http://$NODEPOOL_MIRROR_HOST/fedora}
+export NODEPOOL_OPENSUSE_MIRROR=${NODEPOOL_OPENSUSE_MIRROR:-http://$NODEPOOL_MIRROR_HOST/opensuse}
+export NODEPOOL_CEPH_MIRROR=${NODEPOOL_CEPH_MIRROR:-http://$NODEPOOL_MIRROR_HOST/ceph-deb-hammer}
+export NODEPOOL_UCA_MIRROR=${NODEPOOL_UCA_MIRROR:-http://$NODEPOOL_MIRROR_HOST/ubuntu-cloud-archive}
+export NODEPOOL_MARIADB_MIRROR=${NODEPOOL_MARIADB_MIRROR:-http://$NODEPOOL_MIRROR_HOST/ubuntu-mariadb}
+export NODEPOOL_NPM_MIRROR=${NODEPOOL_NPM_MIRROR:-http://$NODEPOOL_MIRROR_HOST/npm/}
+EOF
+
+sudo mkdir -p /etc/ci
+sudo mv /tmp/mirror_info.sh /etc/ci/mirror_info.sh
+source /etc/ci/mirror_info.sh
+
+LSBDISTID=$(lsb_release -is)
+LSBDISTCODENAME=$(lsb_release -cs)
+
 # Double check that when the node is made ready it is able
 # to resolve names against DNS.
 # NOTE(pabelanger): Because it is possible for nodepool to SSH into a node but
@@ -44,26 +78,6 @@ for COUNT in {1..10}; do
     fi
 done
 host $NODEPOOL_MIRROR_HOST
-
-# Generate the AFS Slug from the host system.
-source /usr/local/jenkins/slave_scripts/afs-slug.sh
-
-LSBDISTID=$(lsb_release -is)
-LSBDISTCODENAME=$(lsb_release -cs)
-
-NODEPOOL_DEBIAN_MIRROR=${NODEPOOL_DEBIAN_MIRROR:-http://$NODEPOOL_MIRROR_HOST/debian}
-NODEPOOL_PYPI_MIRROR=${NODEPOOL_PYPI_MIRROR:-http://$NODEPOOL_MIRROR_HOST/pypi/simple}
-NODEPOOL_WHEEL_MIRROR=${NODEPOOL_WHEEL_MIRROR:-http://$NODEPOOL_MIRROR_HOST/wheel/$AFS_SLUG}
-NODEPOOL_UBUNTU_MIRROR=${NODEPOOL_UBUNTU_MIRROR:-http://$NODEPOOL_MIRROR_HOST/ubuntu}
-NODEPOOL_CENTOS_MIRROR=${NODEPOOL_CENTOS_MIRROR:-http://$NODEPOOL_MIRROR_HOST/centos}
-NODEPOOL_DEBIAN_OPENSTACK_MIRROR=${NODEPOOL_DEBIAN_OPENSTACK_MIRROR:-http://$NODEPOOL_MIRROR_HOST/debian-openstack}
-NODEPOOL_EPEL_MIRROR=${NODEPOOL_EPEL_MIRROR:-http://$NODEPOOL_MIRROR_HOST/epel}
-NODEPOOL_FEDORA_MIRROR=${NODEPOOL_FEDORA_MIRROR:-http://$NODEPOOL_MIRROR_HOST/fedora}
-NODEPOOL_OPENSUSE_MIRROR=${NODEPOOL_OPENSUSE_MIRROR:-http://$NODEPOOL_MIRROR_HOST/opensuse}
-NODEPOOL_CEPH_MIRROR=${NODEPOOL_CEPH_MIRROR:-http://$NODEPOOL_MIRROR_HOST/ceph-deb-hammer}
-NODEPOOL_UCA_MIRROR=${NODEPOOL_UCA_MIRROR:-http://$NODEPOOL_MIRROR_HOST/ubuntu-cloud-archive}
-NODEPOOL_MARIADB_MIRROR=${NODEPOOL_MARIADB_MIRROR:-http://$NODEPOOL_MIRROR_HOST/ubuntu-mariadb}
-NODEPOOL_NPM_MIRROR=${NODEPOOL_NPM_MIRROR:-http://$NODEPOOL_MIRROR_HOST/npm/}
 
 PIP_CONF="\
 [global]
