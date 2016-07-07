@@ -45,6 +45,29 @@ def tokens(data):
 acl = {}
 out = ''
 
+valid_keys = {'abandon',
+              'access',
+              'copyAllScoresOnTrivialRebase',
+              'create',
+              'defaultValue',
+              'exclusiveGroupPermissions',
+              'forgeAuthor',
+              'forgeCommitter',
+              'function',
+              'label-Code-Review',
+              'label-Rollcall-Vote',
+              'label-Workflow',
+              'label-Verified',
+              'mergeContent',
+              'push',
+              'pushMerge',
+              'pushSignedTag',
+              'requireChangeId',
+              'requireContributorAgreement',
+              'state',
+              'value'
+}
+
 if '0' in transformations or not transformations:
     dry_run = True
 else:
@@ -65,6 +88,10 @@ for line in aclfd:
     # key=value lines
     elif '=' in line:
         acl[section].append(line)
+        # Check for valid keys
+        key = line.split('=')[0].strip()
+        if key not in valid_keys:
+            raise Exception('Unrecognized key in line: "%s"' % line)
     # WTF
     else:
         raise Exception('Unrecognized line: "%s"' % line)
