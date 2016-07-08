@@ -29,6 +29,7 @@ NODEPOOL_UBUNTU_MIRROR=${NODEPOOL_UBUNTU_MIRROR:-http://$NODEPOOL_MIRROR_HOST/ub
 NODEPOOL_CENTOS_MIRROR=${NODEPOOL_CENTOS_MIRROR:-http://$NODEPOOL_MIRROR_HOST/centos}
 NODEPOOL_EPEL_MIRROR=${NODEPOOL_EPEL_MIRROR:-http://$NODEPOOL_MIRROR_HOST/epel}
 NODEPOOL_CEPH_MIRROR=${NODEPOOL_CEPH_MIRROR:-http://$NODEPOOL_MIRROR_HOST/ceph-deb-hammer}
+NODEPOOL_UCA_MIRROR=${NODEPOOL_UCA_MIRROR:-http://$NODEPOOL_MIRROR_HOST/ubuntu-cloud-archive}
 NODEPOOL_NPM_MIRROR=${NODEPOOL_NPM_MIRROR:-http://$NODEPOOL_MIRROR_HOST/npm/}
 
 cat >/tmp/pip.conf <<EOF
@@ -77,6 +78,9 @@ EOF
     sudo mkdir -p /etc/apt/sources.list.available.d
     sudo dd of=/etc/apt/sources.list.available.d/ceph-deb-hammer.list <<EOF
 deb $NODEPOOL_CEPH_MIRROR $LSBDISTCODENAME main
+EOF
+    sudo dd of=/etc/apt/sources.list.available.d/ubuntu-cloud-archive.list <<EOF
+deb $NODEPOOL_UCA_MIRROR $LSBDISTCODENAME-updates main
 EOF
     # Keep this for backward compat until devstack ceph plugin is updated
     sudo dd of=/etc/apt/sources.list.d/ceph-deb-hammer.list <<EOF
