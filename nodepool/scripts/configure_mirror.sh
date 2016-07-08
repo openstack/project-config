@@ -72,6 +72,13 @@ deb $NODEPOOL_UBUNTU_MIRROR $LSBDISTCODENAME-updates main universe
 deb $NODEPOOL_UBUNTU_MIRROR $LSBDISTCODENAME-backports main universe
 deb $NODEPOOL_UBUNTU_MIRROR $LSBDISTCODENAME-security main universe
 EOF
+    # Opt in repos. Jobs that want to take advantage of them can copy or
+    # symlink them into /etc/apt/sources.list.d/
+    sudo mkdir -p /etc/apt/sources.list.available.d
+    sudo dd of=/etc/apt/sources.list.available.d/ceph-deb-hammer.list <<EOF
+deb $NODEPOOL_CEPH_MIRROR $LSBDISTCODENAME main
+EOF
+    # Keep this for backward compat until devstack ceph plugin is updated
     sudo dd of=/etc/apt/sources.list.d/ceph-deb-hammer.list <<EOF
 deb $NODEPOOL_CEPH_MIRROR $LSBDISTCODENAME main
 EOF
