@@ -1528,6 +1528,84 @@
       - console-log
 
 - job-template:
+    name: '{pipeline}-tempest-dsvm-ironic-pxe_ipmitool-{ramdisk}-src{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 180
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - devstack-virtual-ironic:
+          postgres: 0
+          build-ramdisk: 1
+          deploy_driver: pxe_ipmitool
+          ephemeral-size: 1
+          deploy-with-ipa: 1
+          client-from-source: 0
+          ironic-lib-from-source: 0
+          pyghmi-from-source: 0
+          virtualbmc-from-source: 0
+          ipxe-enabled: 1
+          inspector-enabled: 0
+          inspector-auto-discovery: 0
+          tempest-regex: ironic
+          branch-override: '{branch-override}'
+          ramdisk-type: '{ramdisk}'
+          gate-tempest-full: 0
+          bm-vm-count: 1
+          multitenant-network: 0
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-tempest-dsvm-ironic-agent_ipmitool-{ramdisk}-src{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 180
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - devstack-virtual-ironic:
+          postgres: 0
+          build-ramdisk: 1
+          deploy_driver: agent_ipmitool
+          ephemeral-size: 1
+          deploy-with-ipa: 1
+          client-from-source: 0
+          ironic-lib-from-source: 0
+          pyghmi-from-source: 0
+          virtualbmc-from-source: 0
+          ipxe-enabled: 1
+          inspector-enabled: 0
+          inspector-auto-discovery: 0
+          tempest-regex: ironic
+          branch-override: '{branch-override}'
+          ramdisk-type: '{ramdisk}'
+          gate-tempest-full: 0
+          bm-vm-count: 1
+          multitenant-network: 0
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
     name: '{pipeline}-tempest-dsvm-python-ironicclient-src{job-suffix}'
     node: '{node}'
 
