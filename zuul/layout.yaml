@@ -1772,6 +1772,11 @@ jobs:
   - name: gate-networking-ovn-python34
     voting: false
 
+  - name: gate-vmware-nsx-python34
+    # support did not exist until after mitaka
+    branch: ^(?!stable/(icehouse|juno|liberty|mitaka)).*$
+    voting: false
+
   - name: gate-tempest-dsvm-networking-onos
     voting: false
 
@@ -13196,6 +13201,9 @@ projects:
       - name: python-jobs
       - name: check-requirements
       - name: publish-to-pypi
+      - name: python35-jobs-nv
+    check:
+      - gate-vmware-nsx-python34
 
   - name: openstack/watcher
     template:
