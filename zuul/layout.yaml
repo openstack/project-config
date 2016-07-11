@@ -1849,7 +1849,10 @@ jobs:
     branch: ^(?!stable/liberty).*$
     voting: false
 
-  - name: ^gate-oslo.messaging-dsvm-functional-.*-zeromq.*$
+  - name: ^gate-oslo.messaging-dsvm-functional-.*-zeromq$
+    branch: ^(?!stable/liberty).*$
+
+  - name: ^gate-oslo.messaging-dsvm-functional-.*-zeromq-.*$
     branch: ^(?!stable/liberty).*$
     voting: false
 
@@ -2376,6 +2379,7 @@ jobs:
   - name: gate-tempest-dsvm-full-amqp1
     voting: false
 
+  # for devstack-plugin-zmq
   - name: gate-tempest-dsvm-full-zmq
     voting: false
 
@@ -2384,7 +2388,6 @@ jobs:
 
   - name: gate-oslo.messaging-src-dsvm-full-zmq
     branch: ^(?!stable/liberty).*$
-    voting: false
 
   - name: gate-oslo.messaging-src-dsvm-full-pika
     branch: ^(?!stable/liberty).*$
@@ -2400,7 +2403,6 @@ jobs:
 
   - name: gate-tempest-neutron-dsvm-src-oslo.messaging-zmq
     branch: ^(?!stable/liberty).*$
-    voting: false
 
   - name: gate-tempest-neutron-dsvm-src-oslo.messaging-pika
     branch: ^(?!stable/liberty).*$
@@ -9791,6 +9793,9 @@ projects:
     gate:
       - gate-oslo.messaging-dsvm-functional-py27-amqp1-centos7
       - gate-oslo.messaging-src-dsvm-full-amqp1-centos7
+      - gate-oslo.messaging-dsvm-functional-py27-zeromq
+      - gate-oslo.messaging-src-dsvm-full-zmq
+      - gate-tempest-neutron-dsvm-src-oslo.messaging-zmq
     post:
       - oslo.messaging-coverage
 
