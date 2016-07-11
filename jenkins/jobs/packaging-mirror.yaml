@@ -1,0 +1,83 @@
+- builder:
+    name: reprepro-import
+    builders:
+      - shell: |
+          #!/bin/bash -xe
+
+          AFS_DIR=/afs/.openstack.org/mirror/deb-openstack
+          PACKAGE_DIR=/opt/packaging/workspace
+          URL=http://tarballs.openstack.org/$ZUUL_PROJECT/uploads/$ZUUL_REF
+          # TODO(pabelanger): Remove this hardcoded URL once experimental
+          # testing is finished.
+          URL=http://tarballs.openstack.org/openstack-pkg-tools/uploads/d2b2b048228e08f77ee0403e5a5f637cc5c6148d
+
+          # Delete any previous build directory
+          rm -rf $PACKAGE_DIR
+          mkdir $PACKAGE_DIR
+
+          # Download prebuild packaging from tarballs.o.o
+          echo "Downloading packages"
+          wget --recursive \
+              --no-parent \
+              --no-host-directories \
+              --cut-dirs=3 \
+              -R "index.html*" \
+              --directory-prefix=$PACKAGE_DIR \
+              $URL
+
+          REPREPRO="k5start -t -f /etc/packaging.keytab \
+              service/packaging \
+              -- timeout -k 2m 30m \
+              reprepro --confdir /etc/reprepro/{reprepro}"
+
+          # Get an afs token and import the packages to reprepro
+          echo "Obtaining token and importing packages to reprepro"
+          $REPREPRO include {codename} $PACKAGE_DIR/*.changes
+
+          echo "Checking state of mirror"
+          $REPREPRO checkpool fast
+          $REPREPRO check
+
+          echo "List all packages"
+          $REPREPRO list {codename}
+
+          echo "Done."
+
+- job-template:
+    name: reprepro-import-{reprepro}-{codename}
+    node: release
+
+    wrappers:
+      - build-timeout:
+          timeout: 90
+      - timestamps
+
+    builders:
+      - revoke-sudo
+      - link-logs
+      - net-info
+      - reprepro-import:
+          codename: "{codename}"
+          reprepro: "{reprepro}"
+
+    publishers:
+      - console-log
+
+- job-template:
+    name: reprepro-release-{reprepro}
+    node: release
+
+    wrappers:
+      - build-timeout:
+          timeout: 90
+      - timestamps
+
+    builders:
+      - revoke-sudo
+      - link-logs
+      - net-info
+      - afs-release:
+          volume: mirror.{reprepro}
+
+    publishers:
+      - console-log
