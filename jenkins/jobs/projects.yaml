@@ -1361,16 +1361,18 @@
       - openstack-server-release-jobs
       - translation-jobs
       - gate-rally-dsvm-designate-{name}
-      - 'gate-tempest-dsvm-designate-{designate-driver}{job-suffix}':
+      - 'gate-tempest-dsvm-designate-{designate-driver}{special}{job-suffix}':
           node: ubuntu-trusty
           branch-override: default
+          special: ''
           job-suffix: ''
           designate-driver:
             - powerdns
             - bind9
-      - 'gate-tempest-dsvm-designate-{designate-driver}{job-suffix}':
+      - 'gate-tempest-dsvm-designate-{designate-driver}{special}{job-suffix}':
           node: ubuntu-trusty
           branch-override: stable/mitaka
+          special: ''
           job-suffix: '-mitaka'
           designate-driver:
             - powerdns
@@ -1394,6 +1396,12 @@
           node: ubuntu-trusty
           designate-driver:
             - powerdns
+      - 'gate-tempest-dsvm-designate-{designate-driver}{special}{job-suffix}':
+          node: ubuntu-trusty
+          special: '-identity-v3-only'
+          job-suffix: '-nv'
+          designate-driver: 'powerdns'
+          branch-override: default
       - api-ref-jobs:
           service: dns
 

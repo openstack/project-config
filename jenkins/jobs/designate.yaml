@@ -1,6 +1,6 @@
 # Job for Designate+Tempest
 - job-template:
-    name: 'gate-tempest-dsvm-designate-{designate-driver}{job-suffix}'
+    name: 'gate-tempest-dsvm-designate-{designate-driver}{special}{job-suffix}'
 
     node: '{node}'
 
@@ -36,6 +36,10 @@
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+
+          if [ "{special}" == "-identity-v3-only" ] ; then
+              export DEVSTACK_LOCAL_CONFIG="ENABLE_IDENTITY_V2=False"
           fi
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
