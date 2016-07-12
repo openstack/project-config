@@ -29,5 +29,16 @@ export CONFIG_SOURCE=${CONFIG_SOURCE:-https://git.openstack.org/openstack-infra/
 export CONFIG_REF=${CONFIG_REF:-master}
 export EXTRA_ELEMENTS=${EXTRA_ELEMENTS:-}
 
-disk-image-create -x --no-tmpfs -o $IMAGE_NAME $DISTRO \
-    vm openstack-repos puppet nodepool-base cache-devstack simple-init $EXTRA_ELEMENTS
+# The list of elements here should match nodepool/nodepool.yaml
+disk-image-create -x --no-tmpfs -o $IMAGE_NAME \
+    $DISTRO \
+    vm \
+    simple-init \
+    openstack-repos \
+    nodepool-base \
+    cache-devstack \
+    cache-bindep \
+    growroot \
+    infra-package-needs \
+    stackviz \
+    $EXTRA_ELEMENTS
