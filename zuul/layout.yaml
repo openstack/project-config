@@ -2930,6 +2930,12 @@ jobs:
     voting: false
 
   # Mutexes
+  - name: reprepro-import-debian-openstack-jessie
+    mutex: mirror.deb-openstack
+
+  - name: reprepro-release-deb-openstack
+    mutex: mirror.deb-openstack
+
   - name: wheel-build-ubuntu-trusty-amd64-python2
     mutex: mirror.wheel.trustyx64
 
@@ -5662,7 +5668,8 @@ projects:
     post:
       - pkgdeb-publish-openstack-pkg-tools
     experimental:
-      - reprepro-import-debian-openstack-jessie
+      - reprepro-import-debian-openstack-jessie:
+        - reprepro-release-deb-openstack
 
   - name: openstack/debtcollector
     template:
