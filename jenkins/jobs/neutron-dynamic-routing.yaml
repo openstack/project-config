@@ -25,6 +25,7 @@
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
+          export PROJECTS="openstack/neutron-dynamic-routing $PROJECTS"
 
           function gate_hook {{
               bash -xe $BASE/new/neutron-dynamic-routing/neutron_dynamic_routing/tests/contrib/gate_hook.sh dsvm-functional
@@ -68,6 +69,7 @@
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
+          export PROJECTS="openstack/neutron-dynamic-routing $PROJECTS"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin neutron-dynamic-routing git://git.openstack.org/openstack/neutron-dynamic-routing"
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
