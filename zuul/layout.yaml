@@ -2284,6 +2284,10 @@ jobs:
     # python3 support was implemented in mitaka
     branch: ^(?!stable/liberty).*$
 
+  - name: gate-python-muranoclient-tox-py27-mitaka
+    branch: ^(?!stable/(?:liberty|mitaka)).*$
+    voting: false
+
   - name: gate-murano-devstack-dsvm
     branch: ^(stable/liberty).*$
 
@@ -2305,6 +2309,14 @@ jobs:
     voting: false
 
   - name: gate-murano-pylint
+    voting: false
+
+  - name: gate-murano-tox-py27-mitaka
+    branch: ^(?!stable/(?:liberty|mitaka)).*$
+    voting: false
+
+  - name: gate-murano-dashboard-tox-py27-mitaka
+    branch: ^(?!stable/(?:liberty|mitaka)).*$
     voting: false
 
   - name: murano-coverage-db
@@ -8122,6 +8134,7 @@ projects:
     check:
       - murano-coverage-db
       - gate-murano-pylint
+      - gate-murano-tox-py27-mitaka
       - gate-murano-devstack-dsvm
       - gate-murano-congress-devstack-dsvm
       - gate-rally-dsvm-murano-task
@@ -8164,6 +8177,7 @@ projects:
     check:
       - gate-murano-dashboard-pep8
       - gate-murano-dashboard-python27
+      - gate-murano-dashboard-tox-py27-mitaka
       - gate-murano-dashboard-npm-run-lint
       - gate-murano-devstack-dsvm
     gate:
@@ -11285,6 +11299,7 @@ projects:
       - name: osc-plugin-jobs
     check:
       - gate-muranoclient-dsvm-functional
+      - gate-python-muranoclient-tox-py27-mitaka
     gate:
       - gate-muranoclient-dsvm-functional
 
