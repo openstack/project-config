@@ -2779,21 +2779,6 @@ jobs:
           - ^doc/.*
           - ^releasenotes/.*
 
-  # skip openstack-ansible-docs gate jobs for the juno branch
-  # documentation was only introduced in kilo
-  - name: ^gate-openstack-ansible-docs.*$
-    branch: ^(?!juno).*$
-
-  # skip openstack-ansible-docs post jobs for the juno branch
-  # documentation was only introduced in kilo
-  - name: ^openstack-ansible-docs.*$
-    branch: ^(?!juno).*$
-
-  # lint compliance was only introduced in kilo
-  # this applies to all openstack-ansible repositories
-  - name: ^gate-openstack-ansible.*-linters$
-    branch: ^(?!juno).*$
-
   # Skip OpenStack-Ansible Xenial role jobs for liberty and stable/mitaka
   # Xenial support was only introduced in Newton
   - name: ^gate-openstack-ansible-.*-func-ubuntu-xenial.*$
@@ -2896,17 +2881,9 @@ jobs:
   - name: ^gate-(manila-ui|oslo.(messaging|cache|concurrency|middleware|privsep|reports|rootwrap|service|context|vmware|policy))-releasenotes$
     branch: ^(?!stable/(?:kilo|liberty|mitaka)).*$
 
-  # skip gate-openstack-ansible-releasenotes jobs for juno & kilo branches
-  - name: ^gate-openstack-ansible-releasenotes$
-    branch: ^(?!juno|kilo).*$
-
     # Post job is run on liberty and newer branches only
   - name: ^(?!gate).*-releasenotes$
     branch: ^(?!stable/(?:juno|kilo)).*$
-
-  # Skip openstack-ansible-releasenotes post jobs for juno & kilo branches
-  - name: ^openstack-ansible-releasenotes$
-    branch: ^(?!juno|kilo).*$
 
   - name: gate-python-fuelclient-python34
     branch: ^(?!stable/(?:6\.1|7.0)).*$
