@@ -2560,6 +2560,12 @@ jobs:
   - name: ^gate-tempest-dsvm-smoke-tlsproxy.*$
     voting: false
 
+  # NOTE(sdake): This is presently failing but will be made voting as
+  # soon as kolla updates its configuration or fixes its issues.
+  - name: gate-kolla-tox-bandit
+    branch: ^(?!stable/(liberty|mitaka)).*$
+    voting: false
+
   - name: gate-kolla-dsvm-build-centos-binary
     voting: false
 
@@ -7615,6 +7621,7 @@ projects:
       - name: publish-to-pypi
       - name: release-notes-jobs
     check:
+      - gate-kolla-tox-bandit
       - gate-kolla-dsvm-build-centos-binary
       - gate-kolla-dsvm-deploy-centos-binary
       - gate-kolla-dsvm-build-centos-source
