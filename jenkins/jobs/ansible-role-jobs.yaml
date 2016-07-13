@@ -60,7 +60,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-{name}-ansible-func-{ostype}{job-suffix}'
+    name: '{pipeline}-{name}-ansible-{scenario}-{ostype}{job-suffix}'
     node: '{ostype}'
 
     wrappers:
@@ -79,8 +79,17 @@
           cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
           ssh-keyscan localhost >> ~/.ssh/known_hosts
           ssh-keyscan 127.0.0.1 >> ~/.ssh/known_hosts
-      - tox:
-          envlist: functional
+      - shell: |
+          # Many of the Ansible roles have a tox environment
+          # called 'functional', so we implement a mapping
+          # of the scenario 'func' to 'functional' so reduce
+          # the need for code churn in those repositories
+          # immediately.
+          if [ "{scenario}" == "func" ]; then
+            /usr/local/jenkins/slave_scripts/run-tox.sh functional
+          else
+            /usr/local/jenkins/slave_scripts/run-tox.sh {scenario}
+          fi
 
     publishers:
       - console-log
@@ -90,20 +99,22 @@
     jobs:
       - 'gate-{name}-docs'
       - 'gate-{name}-linters'
-      - '{pipeline}-{name}-ansible-func-{ostype}{job-suffix}':
+      - '{pipeline}-{name}-ansible-{scenario}-{ostype}{job-suffix}':
           job-suffix: '-nv'
           ostype:
             - centos-7
             - ubuntu-trusty
             - ubuntu-xenial
           pipeline: gate
-      - '{pipeline}-{name}-ansible-func-{ostype}{job-suffix}':
+          scenario: func
+      - '{pipeline}-{name}-ansible-{scenario}-{ostype}{job-suffix}':
           job-suffix: ''
           ostype:
             - centos-7
             - ubuntu-trusty
             - ubuntu-xenial
           pipeline: gate
+          scenario: func
       - '{name}-announce-release'
 
 - job-group:
