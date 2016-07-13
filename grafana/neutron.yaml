@@ -57,12 +57,13 @@ dashboard:
     - title: Graphs
       height: 320px
       panels:
-        - title: API/Functional/Fullstack Failure Rates (Check queue)
+        - title: API/Functional/Fullstack Failure Rates/KeystoneV3 (Check queue)
           span: 4
           targets:
             - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-neutron-dsvm-api.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-neutron-dsvm-api.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-dsvm-api')
             - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-neutron-dsvm-functional.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-neutron-dsvm-functional.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-dsvm-functional')
             - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-neutron-dsvm-fullstack.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-neutron-dsvm-fullstack.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-dsvm-fullstack')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-tempest-dsvm-neutron-identity-v3-only-full-nv.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-tempest-dsvm-neutron-identity-v3-only-full-nv.{SUCCESS,FAILURE})),'24hours'), 'gate-tempest-dsvm-neutron-identity-v3-only-full-nv')
           type: graph
     - title: Graphs
       height: 320px
