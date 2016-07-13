@@ -97,6 +97,51 @@
       - devstack-logs
       - console-log
 
+- job-template:
+    name: 'gate-grenade-dsvm-designate-{designate-driver}{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 180
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
+          export DEVSTACK_GATE_GRENADE=pullup
+
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"DESIGNATE_SERVICE_PORT_DNS=5322"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"DESIGNATE_BACKEND_DRIVER={designate-driver}"
+
+          export PROJECTS="openstack/designate $PROJECTS"
+          export PROJECTS="openstack/python-designateclient $PROJECTS"
+          export PROJECTS="openstack/designate-dashboard $PROJECTS"
+          export PROJECTS="openstack/designate-tempest-plugin $PROJECTS"
+          export PROJECTS="openstack-dev/grenade $PROJECTS"
+
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+
+          export GRENADE_PLUGINRC="enable_grenade_plugin designate https://git.openstack.org/openstack/designate"
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
 
 - job-template:
     name: 'gate-designate-dsvm-{designate-driver}'
