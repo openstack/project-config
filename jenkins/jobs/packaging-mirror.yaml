@@ -5,6 +5,7 @@
           #!/bin/bash -xe
 
           AFS_DIR=/afs/.openstack.org/mirror/deb-openstack
+          BRANCH=$(echo $ZUUL_BRANCH | cut -d/ -f2)
           PACKAGE_DIR=$WORKSPACE/packages
           PROJECT=$(echo $ZUUL_PROJECT | cut -d/ -f2)
           URL=http://tarballs.openstack.org/packaging-deb/$PROJECT/uploads/$ZUUL_COMMIT
@@ -30,14 +31,14 @@
 
           # Get an afs token and import the packages to reprepro
           echo "Obtaining token and importing packages to reprepro"
-          $REPREPRO include {codename} $PACKAGE_DIR/*.changes
+          $REPREPRO include {codename}-$BRANCH $PACKAGE_DIR/*.changes
 
           echo "Checking state of mirror"
           $REPREPRO checkpool fast
           $REPREPRO check
 
           echo "List all packages"
-          $REPREPRO list {codename}
+          $REPREPRO list {codename}-$BRANCH
 
           echo "Done."
 
