@@ -30,6 +30,7 @@ NODEPOOL_PYPI_MIRROR=${NODEPOOL_PYPI_MIRROR:-http://$NODEPOOL_MIRROR_HOST/pypi/s
 NODEPOOL_WHEEL_MIRROR=${NODEPOOL_WHEEL_MIRROR:-http://$NODEPOOL_MIRROR_HOST/wheel/$AFS_SLUG}
 NODEPOOL_UBUNTU_MIRROR=${NODEPOOL_UBUNTU_MIRROR:-http://$NODEPOOL_MIRROR_HOST/ubuntu}
 NODEPOOL_CENTOS_MIRROR=${NODEPOOL_CENTOS_MIRROR:-http://$NODEPOOL_MIRROR_HOST/centos}
+NODEPOOL_DEBIAN_OPENSTACK_MIRROR=${NODEPOOL_DEBIAN_OPENSTACK_MIRROR:-http://$NODEPOOL_MIRROR_HOST/debian-openstack}
 NODEPOOL_EPEL_MIRROR=${NODEPOOL_EPEL_MIRROR:-http://$NODEPOOL_MIRROR_HOST/epel}
 NODEPOOL_CEPH_MIRROR=${NODEPOOL_CEPH_MIRROR:-http://$NODEPOOL_MIRROR_HOST/ceph-deb-hammer}
 NODEPOOL_UCA_MIRROR=${NODEPOOL_UCA_MIRROR:-http://$NODEPOOL_MIRROR_HOST/ubuntu-cloud-archive}
@@ -79,6 +80,9 @@ deb-src http://security.debian.org/ $LSBDISTCODENAME/updates main
 
 deb http://httpredir.debian.org/debian $LSBDISTCODENAME-backports main
 deb-src http://httpredir.debian.org/debian $LSBDISTCODENAME-backports main"
+
+DEBIAN_OPENSTACK_NEWTON_SOURCES_LIST="\
+deb $NODEPOOL_DEBIAN_OPENSTACK_MIRROR $LSBDISTCODENAME-newton main"
 
 YUM_REPOS_CENTOS_BASE="\
 [base]
@@ -165,6 +169,23 @@ elif [ "$LSBDISTID" == "Debian" ] ; then
     sudo mv /tmp/sources.list /etc/apt/
     sudo chown root:root /etc/apt/sources.list
     sudo chmod 0644 /etc/apt/sources.list
+
+    # Opt in repos. Jobs that want to take advantage of them can copy or
+    # symlink them into /etc/apt/sources.list.d/
+    sudo mkdir -p /etc/apt/sources.list.available.d
+
+    # Debian OpenStack Newton
+    echo "$DEBIAN_OPENSTACK_NEWTON_SOURCES_LIST" >/tmp/debian-openstack-newton.list
+    sudo mv /tmp/debian-openstack-newton.list /etc/apt/sources.list.available.d/
+
+    sudo chown root:root /etc/apt/sources.list.available.d/*
+    sudo chmod 0644 /etc/apt/sources.list.available.d/*
+
+    # Turn off checking of GPG signatures
+    echo "$APT_CONF_UNAUTHENTICATED" >/tmp/99unauthenticated
+    sudo mv /tmp/99unauthenticated /etc/apt/apt.conf.d/
+    sudo chown root:root /etc/apt/apt.conf.d/99unauthenticated
+    sudo chmod 0644 /etc/apt/apt.conf.d/99unauthenticated
 
 elif [ "$LSBDISTID" == "CentOS" ]; then
     echo "$YUM_REPOS_CENTOS_BASE" >/tmp/CentOS-Base.repo
