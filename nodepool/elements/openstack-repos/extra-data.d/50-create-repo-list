@@ -38,10 +38,11 @@ def main():
                 args = dict(
                     name=os.path.basename(project),
                     location=os.path.join('/opt/git', project),
-                    url='%s/%s.git' % (GIT_BASE, project))
+                    url='%s/%s.git' % (GIT_BASE, project),
+                    ref='*')
 
                 projects_list.write("%(name)s git %(location)s "
-                                    "%(url)s\n" % args)
+                                    "%(url)s %(ref)s\n" % args)
         # Clone openstack-infra/system-config again so that we can use it to
         # build the image without interferring with the slave repo cache.
         project = 'openstack-infra/system-config'
