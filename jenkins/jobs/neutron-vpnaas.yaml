@@ -153,16 +153,17 @@
           else
               export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
               export DEVSTACK_GATE_TEMPEST_REGEX="^neutron_vpnaas.tests.tempest.api\."
+          fi
 
           function gate_hook {{
-              bash -xe $BASE/new/neutron-vpnaas/neutron_vpnaas/test/contrib/gate_hook.sh api{which}
+              bash -xe $BASE/new/neutron-vpnaas/neutron_vpnaas/tests/contrib/gate_hook.sh api{which}
           }}
           export -f gate_hook
 
-          function post_gate_hook {{
-              bash -xe $BASE/new/neutron-vpnaas/neutron_vpnaas/test/contrib/post_gate_hook.sh api{which}
+          function post_test_hook {{
+              bash -xe $BASE/new/neutron-vpnaas/neutron_vpnaas/tests/contrib/post_test_hook.sh api{which}
           }}
-          export -f post_gate_hook
+          export -f post_test_hook
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
