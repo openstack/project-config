@@ -3366,11 +3366,29 @@ projects:
       - name: python-jobs
       - name: python34-jobs
       - name: python35-jobs-nv
-      - name: publish-to-pypi
     check:
       - gate-git-review-python34
+    pre-release:
+      - git-review-tarball:
+          - git-review-pypi-both-upload
     release:
       - git-review-infra-docs-tags-only
+      - git-review-tarball:
+        - git-review-tarball-signing
+        - git-review-pypi-both-upload:
+            - wheel-build-ubuntu-trusty-amd64-python2:
+              - wheel-release-trustyx64
+            - wheel-build-ubuntu-trusty-amd64-python3:
+              - wheel-release-trustyx64
+            - wheel-build-ubuntu-xenial-amd64-python2:
+              - wheel-release-xenialx64
+            - wheel-build-ubuntu-xenial-amd64-python3:
+              - wheel-release-xenialx64
+            - wheel-build-centos-7-amd64-python2:
+              - wheel-release-cent7x64
+            - wheel-build-centos-7-amd64-python3:
+              - wheel-release-cent7x64
+            - git-review-announce-release
 
   - name: openstack-infra/gitdm
     template:
