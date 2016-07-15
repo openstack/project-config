@@ -90,7 +90,8 @@ function clone_repo {
     fi
     title "Cloning $repo"
     output=$({ zuul-cloner --branch "$branch" git://git.openstack.org $repo \
-               && (cd $repo && git review -s); } 2>&1)
+               && (cd $repo && git review -s && git remote -v update \
+                   && git fetch -v --tags); } 2>&1)
     _retval=$?
     if [ $_retval -ne 0 ] ; then
         echo "$output"
