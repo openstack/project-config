@@ -131,3 +131,27 @@
     jobs:
       - gate-{name}-install-guide
       - '{name}-install-guide'
+
+# TODO(jaegerandi): Remove this again after testing. This is just for
+# testing that zuul-cloner works with constraints in the post queue.
+# It does not do anything usefull.
+- job:
+    name: zuul-cloner-test
+    node: ubuntu-trusty
+
+    builders:
+      - zuul-git-prep-upper-constraints
+      - install-distro-packages
+      - revoke-sudo
+      - shell: |
+          #!/bin/bash -xe
+          # Just output some information about git status and variables
+          echo $ZUUL_REFNAME
+          echo $ZUUL_BRANCH
+          git log -n2
+          git status
+      - tox:
+          envlist: zuul-cloner-test
+
+    publishers:
+      - console-log
