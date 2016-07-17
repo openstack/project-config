@@ -51,7 +51,7 @@ def set_node_options(item, job, params):
     release_re = r'^.*-(forge|jenkinsci|mavencentral|pypi-(both|wheel)|npm)-upload$'
     hook_re = r'^hook-(.*?)-(rtfd)$'
     wheel_re = r'^wheel-(build|release)-.*$'
-    reprepro_re = r'^reprepro-(import|release)-.*$'
+    reprepro_re = r'^reprepro-(import|release|sign)-.*$'
     signing_re = r'^(.*-tarball-signing|tag-releases)$'
     # jobs run on the persistent proposal, release, signing, and wheel
     # build workers

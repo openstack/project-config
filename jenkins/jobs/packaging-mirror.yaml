@@ -57,6 +57,15 @@
 
           echo "Done."
 
+- builder:
+    name: reprepro-gpg-sign
+    builders:
+      - shell: |
+          #!/bin/bash -xe
+          echo "Signing packages"
+          /usr/local/jenkins/slave_scripts/reprepro-gpg-sign.sh {codename}
+          echo "Done."
+
 - job-template:
     name: reprepro-import-{reprepro}-{codename}
     node: release
@@ -73,6 +82,19 @@
       - reprepro-import:
           codename: "{codename}"
           reprepro: "{reprepro}"
+
+    publishers:
+      - console-log
+
+- job-template:
+    name: reprepro-sign-{codename}
+    node: signing
+
+    builders:
+      - revoke-sudo
+      - link-logs
+      - reprepro-gpg-sign:
+          codename: "{codename}"
 
     publishers:
       - console-log
