@@ -66,3 +66,14 @@ Here are some points to look at:
 
 * Proposal jobs should not run arbitrary scripts from other
   repositories or install untrusted packages.
+
+Removing check-requirements job
+===============================
+
+* The http://git.openstack.org/cgit/openstack/requirements repository holds
+  list of projects that have check-requirements job in <root>/projects.txt.
+
+* Whenever a review is submitted for removing check-requirements job,
+  the reviewer should verify that the project has been removed from
+  projects.txt already or that this project-config change depends
+  on the review to remove it.
