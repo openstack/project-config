@@ -50,10 +50,13 @@
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
 
+          function post_test_hook {{
+              $BASE/new/$ZUUL_PROJECT/tests/hooks/post_test_hook.sh
+          }}
+          export -f post_test_hook
+
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
-      - tox:
-          envlist: functional
 
     publishers:
       - devstack-logs
