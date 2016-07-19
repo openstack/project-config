@@ -82,10 +82,6 @@ EOF
     sudo dd of=/etc/apt/sources.list.available.d/ubuntu-cloud-archive.list <<EOF
 deb $NODEPOOL_UCA_MIRROR $LSBDISTCODENAME-updates main
 EOF
-    # Keep this for backward compat until devstack ceph plugin is updated
-    sudo dd of=/etc/apt/sources.list.d/ceph-deb-hammer.list <<EOF
-deb $NODEPOOL_CEPH_MIRROR $LSBDISTCODENAME main
-EOF
 
     if [ "$LSBDISTCODENAME" != 'precise' ] ; then
         # Turn off multi-arch
