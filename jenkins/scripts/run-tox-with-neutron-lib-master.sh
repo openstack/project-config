@@ -14,6 +14,7 @@ fi
 script_path=/usr/local/jenkins/slave_scripts
 
 sed -i "s/neutron-lib.*/-e git+https:\/\/git.openstack.org\/openstack\/neutron-lib.git#egg=neutron-lib/g" requirements.txt
+sed -i "s/neutron-lib.*/-e git+https:\/\/git.openstack.org\/openstack\/neutron-lib.git#egg=neutron-lib/g" upper-constraints.txt
 
 cat << EOF >> tox.ini
 
@@ -21,7 +22,6 @@ cat << EOF >> tox.ini
 setenv = VIRTUAL_ENV={envdir}
 passenv = TRACE_FAILONLY GENERATE_HASHES http_proxy HTTP_PROXY https_proxy HTTPS_PROXY no_proxy NO_PROXY
 usedevelop = True
-install_command = pip install {opts} {packages}
 deps = -r{toxinidir}/requirements.txt
        -r{toxinidir}/test-requirements.txt
 whitelist_externals = sh
