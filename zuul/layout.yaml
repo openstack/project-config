@@ -906,19 +906,19 @@ project-templates:
       - gate-puppet-openstack-integration-3-scenario004-tempest-ubuntu-xenial-nv
       - gate-puppet-openstack-integration-3-scenario004-tempest-centos-7-nv
 
-  - name: puppet-openstack-spec-helper-jobs
+  - name: puppet-openstack-libraries-jobs
     check:
-      - gate-puppet-openstack-spec-helper-lint-centos-7
-      - gate-puppet-openstack-spec-helper-syntax-3-centos-7
-      - gate-puppet-openstack-spec-helper-syntax-4-centos-7
-      - gate-puppet-openstack-spec-helper-unit-centos-7
-      - gate-puppet-openstack-spec-helper-beaker-rspec-centos-7
+      - gate-puppet-openstack-libraries-puppet-lint-centos-7
+      - gate-puppet-openstack-libraries-puppet-syntax-3-centos-7
+      - gate-puppet-openstack-libraries-puppet-syntax-4-centos-7
+      - gate-puppet-openstack-libraries-puppet-unit-centos-7
+      - gate-puppet-openstack-libraries-puppet-beaker-rspec-centos-7
     gate:
-      - gate-puppet-openstack-spec-helper-lint-centos-7
-      - gate-puppet-openstack-spec-helper-syntax-3-centos-7
-      - gate-puppet-openstack-spec-helper-syntax-4-centos-7
-      - gate-puppet-openstack-spec-helper-unit-centos-7
-      - gate-puppet-openstack-spec-helper-beaker-rspec-centos-7
+      - gate-puppet-openstack-libraries-puppet-lint-centos-7
+      - gate-puppet-openstack-libraries-puppet-syntax-3-centos-7
+      - gate-puppet-openstack-libraries-puppet-syntax-4-centos-7
+      - gate-puppet-openstack-libraries-puppet-unit-centos-7
+      - gate-puppet-openstack-libraries-puppet-beaker-rspec-centos-7
 
   - name: puppet-syntax
     check:
@@ -10597,7 +10597,8 @@ projects:
   - name: openstack/puppet-modulesync-configs
     template:
       - name: merge-check
-      - name: noop-jobs
+      - name: puppet-openstack-libraries-jobs
+
 
   - name: openstack/puppet-monasca
     template:
@@ -10667,12 +10668,7 @@ projects:
   - name: openstack/puppet-openstack-cookiecutter
     template:
       - name: merge-check
-    check:
-      - gate-puppet-openstack-cookiecutter-puppet-3-cookiecutter-check
-      - gate-puppet-openstack-cookiecutter-puppet-4-cookiecutter-check
-    gate:
-      - gate-puppet-openstack-cookiecutter-puppet-3-cookiecutter-check
-      - gate-puppet-openstack-cookiecutter-puppet-4-cookiecutter-check
+      - name: puppet-openstack-libraries-jobs
 
   - name: openstack/puppet-openstack_extras
     template:
@@ -10714,7 +10710,7 @@ projects:
   - name: openstack/puppet-openstack_spec_helper
     template:
       - name: merge-check
-      - name: puppet-openstack-spec-helper-jobs
+      - name: puppet-openstack-libraries-jobs
       - name: release-notes-jobs
 
   - name: openstack/puppet-openstack-specs
