@@ -344,21 +344,20 @@
     node: centos-7
 
     builders:
-      - gerrit-git-prep
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - puppet-openstack-integration-checkout
+      - zuul-clone:
+          project: openstack/puppet-openstack-cookiecutter
       - install-distro-packages
       - puppet-prepare-node
+      - allow-local-ssh-root
       - shell: |
           #!/bin/bash -xe
-          mkdir .bundled_gems
-          export PUPPET_GEM_VERSION='~> {puppet_version}'
-          export GEM_HOME=`pwd`/.bundled_gems
-          gem install bundler --no-rdoc --no-ri --verbose
-          OS_NEW_MODULE_TEST=yes bash -x ./contrib/bootstrap.sh whazz dummy
-          cd puppet-whazz/puppet-modulesync-configs/modules/puppet-whazz
-          $GEM_HOME/bin/bundle install --retry 3
-          $GEM_HOME/bin/bundle exec rake lint
-          $GEM_HOME/bin/bundle exec rake validate
-          $GEM_HOME/bin/bundle exec rake spec
+          cd openstack/puppet-openstack-cookiecutter
+          trap "../../puppet-openstack-integration/copy_logs.sh" EXIT
+          ./run_tests.sh
 
     wrappers:
       - build-timeout:
