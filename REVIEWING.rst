@@ -77,3 +77,12 @@ Removing check-requirements job
   the reviewer should verify that the project has been removed from
   projects.txt already or that this project-config change depends
   on the review to remove it.
+
+Jobs for persistent node
+========================
+
+In general, nodes are off-lined after a job run. Some special nodes
+are not off-lined and long-lived. Ensure for these nodes that any job
+running on them is handled in zuul/openstack_functions.py.
+
+Current nodes that are long-lived are: proposal, release, signing, wheel-mirror-*

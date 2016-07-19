@@ -52,11 +52,13 @@ def set_node_options(item, job, params):
     hook_re = r'^hook-(.*?)-(rtfd)$'
     wheel_re = r'^wheel-(build|release)-.*$'
     reprepro_re = r'^reprepro-(import|release)-.*$'
+    signing_re = r'^tag-releases$'
     # jobs run on the persistent proposal, release, and wheel build
     # workers
     if (re.match(proposal_re, job.name) or
         re.match(release_re, job.name) or
         re.match(hook_re, job.name) or
         re.match(reprepro_re, job.name) or
+        re.match(signing_re, job.name) or
         re.match(wheel_re, job.name)):
         reusable_node(item, job, params)
