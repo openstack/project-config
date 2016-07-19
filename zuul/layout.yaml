@@ -1312,7 +1312,7 @@ jobs:
   # Skip non-doc jobs for doc-only or translation-only neutron
   # changes. Since doc/source/conf.py is checked by
   # neutron-(pep8|pylint), those jobs should not be skipped.
-  - name: ^.*neutron-(dsvm-api|dsvm-functional|dsvm-functional-py34|python(27|34)|lbaasv[12]-dsvm-(api|minimal)|dsvm-fullstack)$
+  - name: ^.*neutron-(dsvm-api|dsvm-functional|dsvm-functional-py34|python(27|34)|coverage-.+|lbaasv[12]-dsvm-(api|minimal)|dsvm-fullstack)$
     skip-if:
       - project: ^openstack/neutron$
         all-files-match-any:
@@ -9150,6 +9150,7 @@ projects:
       - name: experimental-tripleo-jobs
       - name: release-notes-jobs
     check:
+      - neutron-coverage-ubuntu-xenial
       - gate-neutron-dsvm-api
       - gate-neutron-dsvm-functional
       - gate-neutron-dsvm-fullstack
@@ -9166,6 +9167,7 @@ projects:
       - gate-tempest-dsvm-neutron-dvr-multinode-full
       - gate-tempest-dsvm-ironic-ipa-partition-pxe_ssh-tinyipa
     gate:
+      - neutron-coverage-ubuntu-xenial
       - gate-neutron-dsvm-api
       - gate-tempest-dsvm-neutron-dvr
       - gate-tempest-dsvm-neutron-linuxbridge
