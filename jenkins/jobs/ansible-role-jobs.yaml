@@ -100,8 +100,11 @@
 
 - job-group:
     name: 'ansible-role-jobs'
+    node:
+      - ubuntu-trusty
+      - ubuntu-xenial
     jobs:
-      - 'gate-{name}-docs'
+      - 'gate-{name}-docs-{node}'
       - 'gate-{name}-linters'
       - '{pipeline}-{name}-ansible-{scenario}-{ostype}{job-suffix}':
           job-suffix: '-nv'
@@ -123,8 +126,11 @@
 
 - job-group:
     name: 'ansible-role-dsvm-jobs'
+    node:
+      - ubuntu-trusty
+      - ubuntu-xenial
     jobs:
-      - 'gate-{name}-docs'
+      - 'gate-{name}-docs-{node}'
       - 'gate-{name}-linters'
       - '{pipeline}-{name}-dsvm-ansible-func-{ostype}{job-suffix}':
           job-suffix: '-nv'
