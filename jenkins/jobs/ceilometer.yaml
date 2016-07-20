@@ -170,11 +170,20 @@
           export DEVSTACK_GATE_EXERCISES=0
           export DEVSTACK_GATE_INSTALL_TESTONLY=1
 
-          export PROJECTS="openstack/ceilometer openstack/aodh openstack/gnocchi openstack/panko"
+          export PROJECTS="openstack/ceilometer openstack/aodh openstack/gnocchi"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin gnocchi git://git.openstack.org/openstack/gnocchi"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin aodh git://git.openstack.org/openstack/aodh"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin panko git://git.openstack.org/openstack/panko"
+
+          case "$ZUUL_BRANCH" in
+              stable/liberty|stable/mitaka) break;;
+              stable/1.3|stable/2.0|stable/2.1) break;;
+              *)
+                export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin panko git://git.openstack.org/openstack/panko"
+                export PROJECTS="openstack/panko $PROJECTS"
+                ;;
+          esac
+
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"GNOCCHI_ARCHIVE_POLICY=high"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"CEILOMETER_PIPELINE_INTERVAL=5"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"CEILOMETER_BACKEND=gnocchi"
@@ -221,11 +230,19 @@
           export DEVSTACK_GATE_EXERCISES=0
           export DEVSTACK_GATE_INSTALL_TESTONLY=1
 
-          export PROJECTS="openstack/ceilometer openstack/panko openstack/aodh openstack/gnocchi openstack/oslo.messaging openstack/devstack-plugin-{plugin}"
+          export PROJECTS="openstack/ceilometer openstack/aodh openstack/gnocchi openstack/oslo.messaging openstack/devstack-plugin-{plugin}"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin gnocchi git://git.openstack.org/openstack/gnocchi"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin aodh git://git.openstack.org/openstack/aodh"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin panko git://git.openstack.org/openstack/panko"
+
+          case "$ZUUL_BRANCH" in
+              stable/liberty|stable/mitaka) break;;
+              stable/1.3|stable/2.0|stable/2.1) break;;
+              *)
+                export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin panko git://git.openstack.org/openstack/panko"
+                export PROJECTS="openstack/panko $PROJECTS"
+          esac
+
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"GNOCCHI_ARCHIVE_POLICY=high"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"CEILOMETER_PIPELINE_INTERVAL=5"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"CEILOMETER_BACKEND=gnocchi"
