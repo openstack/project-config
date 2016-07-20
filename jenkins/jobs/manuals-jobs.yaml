@@ -61,6 +61,30 @@
       - console-log
 
 
+- job-template:
+    name: 'gate-{name}-tox-doc-publish-{envlist}-ubuntu-xenial'
+    node: ubuntu-xenial
+
+    wrappers:
+      - build-timeout:
+          timeout: 40
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
+      - tox:
+          envlist: '{envlist}'
+      - assert-no-extra-files
+
+    publishers:
+      - upload-docs-draft
+      - upload-doc-build-results
+      - console-log
+
 - job-group:
     name: openstack-doc-jobs
     jobs:

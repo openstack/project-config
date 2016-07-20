@@ -1428,6 +1428,9 @@ jobs:
   - name: gate-openstack-manuals-tox-checksyntax
     branch: ^(stable/liberty).*$
 
+  - name: gate-openstack-manuals-tox-doc-publish-checkbuild-ubuntu-xenial
+    voting: false
+
   # Packstack integration jobs should only run on master and stable/mitaka
   # onwards
   - name: ^gate-packstack-integration-.*-tempest-centos-7$
@@ -2019,7 +2022,7 @@ jobs:
   - name: gate-tripleo-ci-centos-7-ovb-containers
     voting: false
 
-  - name: ^gate-.*-tox-doc-publish-checkbuild$
+  - name: ^gate-.*-tox-doc-publish-checkbuild.*$
     success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/publish-docs/
 
   - name: ^gate-.*-tox-checklang$
@@ -9561,6 +9564,7 @@ projects:
       - name: release-notes-jobs
     check:
       - gate-openstack-manuals-tox-checksyntax
+      - gate-openstack-manuals-tox-doc-publish-checkbuild-ubuntu-xenial
     gate:
       - gate-openstack-manuals-tox-checksyntax
     post:
