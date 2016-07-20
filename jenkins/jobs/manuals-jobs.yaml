@@ -15,7 +15,7 @@
 
 - job-template:
     name: 'gate-{name}-tox-doc-publish-{envlist}'
-    node: ubuntu-trusty
+    node: ubuntu-xenial
 
     wrappers:
       - build-timeout:
@@ -39,7 +39,7 @@
 
 - job-template:
     name: '{name}-tox-doc-{envlist}'
-    node: ubuntu-trusty
+    node: ubuntu-xenial
 
     wrappers:
       - build-timeout:
@@ -57,31 +57,6 @@
 
     publishers:
       - upload-to-docs-site
-      - upload-doc-build-results
-      - console-log
-
-
-- job-template:
-    name: 'gate-{name}-tox-doc-publish-{envlist}-ubuntu-xenial'
-    node: ubuntu-xenial
-
-    wrappers:
-      - build-timeout:
-          timeout: 40
-      - timestamps
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - gerrit-git-prep
-      - install-distro-packages
-      - revoke-sudo
-      - tox:
-          envlist: '{envlist}'
-      - assert-no-extra-files
-
-    publishers:
-      - upload-docs-draft
       - upload-doc-build-results
       - console-log
 
@@ -105,7 +80,7 @@
 - job-template:
     name: gate-{name}-install-guide
     description: Build and draft the Install Guide from source.
-    node: ubuntu-trusty
+    node: ubuntu-xenial
 
     builders:
       - zuul-git-prep-upper-constraints
@@ -126,7 +101,7 @@
 - job-template:
     name: '{name}-install-guide'
     description: Build and publish the Install Guide from source.
-    node: ubuntu-trusty
+    node: ubuntu-xenial
 
     builders:
       - zuul-git-prep-upper-constraints
