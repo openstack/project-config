@@ -2816,6 +2816,9 @@ jobs:
   - name: gate-murano-agent-python34
     branch: ^(?!stable/(?:liberty|mitaka)).*$
 
+  - name: gate-murano-apps-linters
+    voting: false
+
   - name: gate-networking-nec-python34
     branch: ^(?!stable/liberty).*$
 
@@ -8573,7 +8576,10 @@ projects:
   - name: openstack/murano-apps
     template:
       - name: merge-check
-      - name: noop-jobs
+    check:
+      - gate-murano-apps-linters
+    gate:
+      - noop
 
   - name: openstack/murano-dashboard
     template:
