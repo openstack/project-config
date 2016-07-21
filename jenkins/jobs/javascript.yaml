@@ -5,7 +5,7 @@
 # subsequently copied to static.openstack.org (the clickthrough target from
 # gerrit).
 - job-template:
-    name: 'gate-{name}-npm-run-{command}'
+    name: 'gate-{name}-nodejs4-npm-run-{command}'
     node: ubuntu-xenial
 
     wrappers:
@@ -48,7 +48,7 @@
 
 # Builds and uploads a tarball using NPM.
 - job-template:
-    name: '{name}-npm-publish-tarball'
+    name: '{name}-nodejs4-npm-publish-tarball'
     node: ubuntu-xenial
 
     builders:
@@ -87,7 +87,7 @@
 
 # Builds and uploads a draft version of the project to docs-draft.
 - job-template:
-    name: '{name}-npm-publish-draft'
+    name: '{name}-nodejs4-npm-publish-draft'
     node: ubuntu-xenial
 
     builders:
@@ -235,13 +235,13 @@
 - job-group:
     name: nodejs4-jobs
     jobs:
-      - 'gate-{name}-npm-run-{command}':
+      - 'gate-{name}-nodejs4-npm-run-{command}':
           command: 'lint'
-      - 'gate-{name}-npm-run-{command}':
+      - 'gate-{name}-nodejs4-npm-run-{command}':
           command: 'test'
 
 - job-group:
-    name: publish-to-npm
+    name: nodejs4-publish-to-npm
     jobs:
-      - '{name}-npm-publish-tarball'
+      - '{name}-nodejs4-npm-publish-tarball'
       - '{name}-npm-upload'
