@@ -1037,6 +1037,16 @@ project-templates:
       - '{name}-nodejs4-npm-publish-tarball':
         - '{name}-npm-upload'
 
+  - name: nodejs6-jobs
+    check:
+      - gate-{name}-nodejs6-npm-run-lint
+      - gate-{name}-nodejs6-npm-run-test
+
+  - name: nodejs6-publish-to-npm
+    release:
+      - '{name}-nodejs6-npm-publish-tarball':
+        - '{name}-npm-upload'
+
   - name: windmill-jobs-centos7
     check:
       - 'gate-windmill-deploy-centos-7'
@@ -2950,6 +2960,9 @@ jobs:
 
   - name: gate-heat-translator-tox-py27-tosca-parser-master
     branch: master
+    voting: false
+
+  - name: ^.*-nodejs6-npm-run.*$
     voting: false
 
   # Mutexes
@@ -7638,6 +7651,7 @@ projects:
       - name: merge-check
       - name: nodejs4-jobs
       - name: nodejs4-publish-to-npm
+      - name: nodejs6-jobs
 
   - name: openstack/karma-subunit-reporter
     template:

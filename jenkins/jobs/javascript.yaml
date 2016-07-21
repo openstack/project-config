@@ -171,6 +171,22 @@
           version: '4'
       - '{name}-npm-upload'
 
+- job-group:
+    name: nodejs6-jobs
+    jobs:
+      - 'gate-{name}-nodejs{version}-npm-run-{command}':
+          command: 'lint'
+          version: '6'
+      - 'gate-{name}-nodejs{version}-npm-run-{command}':
+          command: 'test'
+          version: '6'
+
+- job-group:
+    name: nodejs6-publish-to-npm
+    jobs:
+      - '{name}-nodejs{version}-npm-publish-tarball':
+          version: '6'
+      - '{name}-npm-upload'
 
 
 ## Legacy Jobs (DEPRECATED)
