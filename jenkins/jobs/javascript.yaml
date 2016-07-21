@@ -1,3 +1,21 @@
+## Generic jobs
+
+# Uploads a release tarball to npm.
+- job-template:
+    name: '{name}-npm-upload'
+    node: release
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - shell: |
+          /usr/local/jenkins/slave_scripts/npm-tarball-upload.sh {name} {tarball-site}
+
+    publishers:
+      - console-log
+
+## Node4 Jobs
+
 # Executes a command registered inside of package.json. For more information on
 # how this works, see https://docs.npmjs.com/cli/run-script. This build assumes
 # that whatever is being run under the hood, it will pipe its output to the
@@ -136,6 +154,24 @@
               copy-after-failure: false
       - console-log
 
+- job-group:
+    name: nodejs4-jobs
+    jobs:
+      - 'gate-{name}-nodejs4-npm-run-{command}':
+          command: 'lint'
+      - 'gate-{name}-nodejs4-npm-run-{command}':
+          command: 'test'
+
+- job-group:
+    name: nodejs4-publish-to-npm
+    jobs:
+      - '{name}-nodejs4-npm-publish-tarball'
+      - '{name}-npm-upload'
+
+
+
+## Legacy Jobs (DEPRECATED)
+
 # Builds a draft application and uploads it to docs-draft. To use this build,
 # your Gruntfile must declare a target named "build:draft"
 - job-template:
@@ -222,31 +258,3 @@
               keep-hierarchy: false
               copy-after-failure: false
       - console-log
-
-# Uploads a release tarball to npm.
-- job-template:
-    name: '{name}-npm-upload'
-    node: release
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - shell: |
-          /usr/local/jenkins/slave_scripts/npm-tarball-upload.sh {name} {tarball-site}
-
-    publishers:
-      - console-log
-
-- job-group:
-    name: nodejs4-jobs
-    jobs:
-      - 'gate-{name}-nodejs4-npm-run-{command}':
-          command: 'lint'
-      - 'gate-{name}-nodejs4-npm-run-{command}':
-          command: 'test'
-
-- job-group:
-    name: nodejs4-publish-to-npm
-    jobs:
-      - '{name}-nodejs4-npm-publish-tarball'
-      - '{name}-npm-upload'
