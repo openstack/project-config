@@ -123,9 +123,9 @@
       - console-log
 
 
-- job:
-    name: 'gate-sahara-cli-nv'
-    node: ubuntu-trusty
+- job-template:
+    name: '{pipeline}-{name}-cli{job-suffix}'
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -139,27 +139,28 @@
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
-          export KEEP_LOCALRC=1
-          export DEVSTACK_GATE_TEMPEST=0
-          export DEVSTACK_GATE_EXERCISES=0
-          export DEVSTACK_GATE_INSTALL_TESTONLY=1
+          export DEVSTACK_GATE_NEUTRON=1
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_TEMPEST_REGEX="sahara_tempest_plugin.tests.cli"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin sahara git://git.openstack.org/openstack/sahara"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"export TEMPEST_PLUGINS='/opt/stack/new/sahara-tests'"
           export PROJECTS="openstack/sahara-tests openstack/python-saharaclient $PROJECTS"
+
           if [ "$ZUUL_PROJECT" = "openstack/python-saharaclient" ]; then
               export DEVSTACK_PROJECT_FROM_GIT=python-saharaclient
           fi
 
-          function pre_test_hook {
+          function pre_test_hook {{
               cd /opt/stack/new/sahara-tests/tools/gate/cli_tests
               ./pre_test_hook.sh
-          }
+          }}
 
           export -f pre_test_hook
 
-          function post_test_hook {
+          function post_test_hook {{
               cd /opt/stack/new/sahara-tests/tools/gate/cli_tests
               ./post_test_hook.sh
-          }
+          }}
 
           export -f post_test_hook
 
@@ -188,7 +189,7 @@
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
-          export DEVSTACK_GATE_TEMPEST_REGEX="(sahara_tempest_plugin|data_processing)"
+          export DEVSTACK_GATE_TEMPEST_REGEX="(sahara_tempest_plugin.tests.api|data_processing)"
           export DEVSTACK_LOCAL_CONFIG="export TEMPEST_PLUGINS='/opt/stack/new/sahara-tests'"
           export PROJECTS="openstack/sahara-tests $PROJECTS"
 
