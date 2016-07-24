@@ -23,7 +23,7 @@
 # subsequently copied to static.openstack.org (the clickthrough target from
 # gerrit).
 - job-template:
-    name: 'gate-{name}-nodejs4-npm-run-{command}'
+    name: 'gate-{name}-nodejs{version}-npm-run-{command}'
     node: ubuntu-xenial
 
     wrappers:
@@ -37,7 +37,7 @@
       - gerrit-git-prep
       - install-distro-packages
       - nodejs-install:
-          version: 4
+          version: '{version}'
       - xvfb-install
       - chrome-install
       - firefox-install
@@ -67,7 +67,7 @@
 
 # Builds and uploads a tarball using NPM.
 - job-template:
-    name: '{name}-nodejs4-npm-publish-tarball'
+    name: '{name}-nodejs{version}-npm-publish-tarball'
     node: ubuntu-xenial
 
     builders:
@@ -76,7 +76,7 @@
       - gerrit-git-prep
       - install-distro-packages
       - nodejs-install:
-          version: 4
+          version: '{version}'
       - revoke-sudo
 
       # This will build ./{name}-{version}.tgz, where {version} is read from
@@ -107,7 +107,7 @@
 
 # Builds and uploads a draft version of the project to docs-draft.
 - job-template:
-    name: '{name}-nodejs4-npm-publish-draft'
+    name: '{name}-nodejs{version}-npm-publish-draft'
     node: ubuntu-xenial
 
     builders:
@@ -116,7 +116,7 @@
       - gerrit-git-prep
       - install-distro-packages
       - nodejs-install:
-          version: 4
+          version: '{version}'
       - revoke-sudo
       # This will build ./{name}-{version}.tgz, where {version} is read from
       # package.json.
@@ -157,15 +157,18 @@
 - job-group:
     name: nodejs4-jobs
     jobs:
-      - 'gate-{name}-nodejs4-npm-run-{command}':
+      - 'gate-{name}-nodejs{version}-npm-run-{command}':
           command: 'lint'
-      - 'gate-{name}-nodejs4-npm-run-{command}':
+          version: '4'
+      - 'gate-{name}-nodejs{version}-npm-run-{command}':
           command: 'test'
+          version: '4'
 
 - job-group:
     name: nodejs4-publish-to-npm
     jobs:
-      - '{name}-nodejs4-npm-publish-tarball'
+      - '{name}-nodejs{version}-npm-publish-tarball':
+          version: '4'
       - '{name}-npm-upload'
 
 

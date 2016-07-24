@@ -3401,9 +3401,11 @@
 
     jobs:
       - nodejs4-jobs
-      - '{name}-nodejs4-npm-publish-tarball'
-      - '{name}-nodejs4-npm-publish-draft':
+      - '{name}-nodejs{version}-npm-publish-tarball':
+          version: '4'
+      - '{name}-nodejs{version}-npm-publish-draft':
           package-dir: 'www' # Grab everything in ./package/www
+          version: '4'
 
 - project:
     name: jacket
@@ -10320,14 +10322,18 @@
     tarball-site: tarballs.openstack.org
 
     jobs:
-      - 'gate-{name}-nodejs4-npm-run-{command}':
+      - 'gate-{name}-nodejs{version}-npm-run-{command}':
           command: 'lint'
-      - 'gate-{name}-nodejs4-npm-run-{command}':
+          version: '4'
+      - 'gate-{name}-nodejs{version}-npm-run-{command}':
           command: 'test-unit'
-      - 'gate-{name}-nodejs4-npm-run-{command}':
+          version: '4'
+      - 'gate-{name}-nodejs{version}-npm-run-{command}':
           command: 'test-functional'
-      - 'gate-{name}-nodejs4-npm-run-{command}':
+          version: '4'
+      - 'gate-{name}-nodejs{version}-npm-run-{command}':
           command: 'test-integration'
+          version: '4'
       - gate-{name}-js-draft
       - '{name}-js-release-{job-suffix}':
           job-suffix: 'master'
@@ -10899,10 +10905,12 @@
     doc-publisher-site: docs.openstack.org
 
     jobs:
-      - 'gate-{name}-nodejs4-npm-run-{command}':
+      - 'gate-{name}-nodejs{version}-npm-run-{command}':
           command: 'test'
-      - 'gate-{name}-nodejs4-npm-run-{command}':
+          version: '4'
+      - 'gate-{name}-nodejs{version}-npm-run-{command}':
           command: 'lint'
+          version: '4'
 
 - project:
     name: tripleo-validations
