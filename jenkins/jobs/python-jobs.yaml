@@ -64,7 +64,7 @@
     node: ubuntu-trusty
 
 - job-template:
-    name: 'gate-{name}-pep8'
+    name: 'gate-{name}-pep8-{node}'
 
     builders:
       - print-template-name:
@@ -78,7 +78,7 @@
     publishers:
       - console-log
 
-    node: ubuntu-trusty
+    node: '{node}'
 
 - job-template:
     name: 'gate-{name}-pylint'
@@ -98,7 +98,7 @@
     node: ubuntu-trusty
 
 - job-template:
-    name: 'gate-{name}-python27'
+    name: 'gate-{name}-python27-{node}'
 
     wrappers:
       - build-timeout:
@@ -118,10 +118,10 @@
       - test-results
       - console-log
 
-    node: ubuntu-trusty
+    node: '{node}'
 
 - job-template:
-    name: 'gate-{name}-python27-db'
+    name: 'gate-{name}-python27-db-{node}'
     description: 'Same job as gate-{name}-python27 but sets up databases.'
 
     wrappers:
@@ -148,7 +148,7 @@
       - test-results
       - console-log
 
-    node: ubuntu-trusty
+    node: '{node}'
 
 - job-template:
     name: 'periodic-{name}-{python}-with-oslo-master'
@@ -342,7 +342,7 @@
     node: ubuntu-xenial
 
 - job-template:
-    name: 'gate-{name}-docs'
+    name: 'gate-{name}-docs-{node}'
 
     builders:
       - print-template-name:
@@ -356,7 +356,7 @@
       - upload-sphinx-draft
       - console-log
 
-    node: ubuntu-trusty
+    node: '{node}'
 
 - job-template:
     name: 'gate-{name}-tox-{envlist}'
@@ -492,7 +492,7 @@
 
 - job-template:
     name: '{name}-branch-tarball'
-    node: ubuntu-trusty
+    node: ubuntu-xenial
 
     builders:
       - print-template-name:
@@ -516,7 +516,7 @@
 
 - job-template:
     name: 'gate-{name}-requirements'
-    node: ubuntu-trusty
+    node: ubuntu-xenial
 
     builders:
       - print-template-name:
@@ -593,11 +593,14 @@
 
 - job-group:
     name: python-jobs
+    node:
+      - ubuntu-trusty
+      - ubuntu-xenial
     jobs:
-      - 'gate-{name}-pep8'
-      - 'gate-{name}-python27'
+      - 'gate-{name}-pep8-{node}'
+      - 'gate-{name}-python27-{node}'
       - 'gate-{name}-python34'
-      - 'gate-{name}-docs'
+      - 'gate-{name}-docs-{node}'
       - 'gate-{name}-requirements'
       - '{name}-branch-tarball'
       # pylint isn't standard
@@ -607,11 +610,14 @@
 
 - job-group:
     name: python-db-jobs
+    node:
+      - ubuntu-trusty
+      - ubuntu-xenial
     jobs:
-      - 'gate-{name}-pep8'
-      - 'gate-{name}-python27-db'
+      - 'gate-{name}-pep8-{node}'
+      - 'gate-{name}-python27-db-{node}'
       - 'gate-{name}-python34-db'
-      - 'gate-{name}-docs'
+      - 'gate-{name}-docs-{node}'
       - 'gate-{name}-requirements'
       - '{name}-branch-tarball'
       # pylint isn't standard
@@ -621,12 +627,15 @@
 
 - job-group:
     name: python-jobs-searchlight
+    node:
+      - ubuntu-trusty
+      - ubuntu-xenial
     jobs:
-      - 'gate-{name}-pep8'
+      - 'gate-{name}-pep8-{node}'
       - 'gate-{name}-python27-searchlight'
       - 'gate-{name}-python27-searchlight-es1'
       - 'gate-{name}-python34-searchlight'
-      - 'gate-{name}-docs'
+      - 'gate-{name}-docs-{node}'
       - 'gate-{name}-requirements'
       - '{name}-branch-tarball'
       # pylint isn't standard

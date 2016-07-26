@@ -745,7 +745,10 @@
 
     jobs:
       - openstack-publish-jobs
-      - gate-{name}-docs
+      - gate-{name}-docs-{node}:
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: charm-hacluster
@@ -948,7 +951,10 @@
 
     jobs:
       - specs-jobs
-      - gate-{name}-pep8
+      - gate-{name}-pep8-{node}:
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: charm-swift-proxy
@@ -1144,7 +1150,10 @@
     name: compass-specs
 
     jobs:
-      - gate-{name}-docs
+      - gate-{name}-docs-{node}:
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: compute-hyperv
@@ -1366,7 +1375,10 @@
 
     jobs:
       - openstack-publish-jobs
-      - 'gate-{name}-docs'
+      - 'gate-{name}-docs-{node}':
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - 'gate-{name}-tox-{envlist}':
           envlist:
             - doc8
@@ -1484,7 +1496,10 @@
 
     jobs:
       - gate-{name}-bashate
-      - gate-{name}-docs
+      - gate-{name}-docs-{node}:
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - openstack-publish-jobs
       - propose-devstack-plugins-list
 
@@ -1977,9 +1992,18 @@
     tarball-site: tarballs.openstack.org
 
     jobs:
-      - gate-{name}-pep8
-      - gate-{name}-docs
-      - gate-{name}-python27
+      - gate-{name}-pep8-{node}:
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
+      - gate-{name}-docs-{node}:
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
+      - gate-{name}-python27-{node}:
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - 'gate-{name}-tox-{envlist}':
           envlist: queries
 
@@ -1988,7 +2012,10 @@
     docroot: election
 
     jobs:
-      - 'gate-{name}-docs'
+      - 'gate-{name}-docs-{node}':
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - 'static-{name}-publish'
 
 - project:
@@ -2031,8 +2058,14 @@
     jobs:
       - openstack-publish-jobs
       - '{name}-tarball'
-      - gate-{name}-docs
-      - gate-{name}-pep8
+      - gate-{name}-docs-{node}:
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
+      - gate-{name}-pep8-{node}:
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: fairy-slipper
@@ -2296,7 +2329,10 @@
     doc-publisher-site: docs.openstack.org
 
     jobs:
-      - gate-{name}-docs
+      - gate-{name}-docs-{node}:
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - openstack-publish-jobs
 
 - project:
@@ -2342,7 +2378,10 @@
     tarball-site: tarballs.openstack.org
 
     jobs:
-      - gate-{name}-docs
+      - gate-{name}-docs-{node}:
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - hook-{name}-rtfd
 
 - project:
@@ -2756,7 +2795,10 @@
     docroot: governance
 
     jobs:
-      - 'gate-{name}-docs'
+      - 'gate-{name}-docs-{node}':
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - 'static-{name}-publish'
 
 - project:
@@ -2764,7 +2806,10 @@
     docroot: governance-uc
 
     jobs:
-      - 'gate-{name}-docs'
+      - 'gate-{name}-docs-{node}':
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: grafyaml
@@ -3066,15 +3111,24 @@
 
     jobs:
       - openstack-publish-jobs
-      - gate-{name}-pep8
-      - gate-{name}-docs
+      - gate-{name}-pep8-{node}:
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
+      - gate-{name}-docs-{node}:
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - gate-{name}-requirements
 
 - project:
     name: inception
 
     jobs:
-      - gate-{name}-pep8
+      - gate-{name}-pep8-{node}:
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: infra-ansible
@@ -3090,7 +3144,10 @@
 
     jobs:
       - infra-publish-jobs
-      - 'gate-{name}-docs'
+      - 'gate-{name}-docs-{node}':
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: infra-specs
@@ -3119,7 +3176,10 @@
     name: intel-nfv-ci-tests
 
     jobs:
-      - gate-{name}-pep8
+      - gate-{name}-pep8-{node}:
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: iotronic
@@ -3317,7 +3377,10 @@
 
     jobs:
       - specs-jobs
-      - gate-{name}-pep8
+      - gate-{name}-pep8-{node}:
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: ironic-lib
@@ -3787,7 +3850,10 @@
     name: kwapi
 
     jobs:
-      - gate-{name}-pep8
+      - gate-{name}-pep8-{node}:
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: ldappool
@@ -3968,9 +4034,15 @@
     doc-publisher-site: docs.openstack.org
 
     jobs:
-      - gate-{name}-pep8
+      - gate-{name}-pep8-{node}:
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - gate-{name}-requirements
-      - gate-{name}-docs
+      - gate-{name}-docs-{node}:
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - 'gate-manila-publishimage-{image-name}':
           image-name: generic
       - 'gate-manila-buildimage-{image-name}':
@@ -5184,7 +5256,10 @@
 
     jobs:
       - specs-jobs
-      - gate-{name}-pep8
+      - gate-{name}-pep8-{node}:
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: nova-zvm-virt-driver
@@ -5232,7 +5307,10 @@
     name: opencafe
 
     jobs:
-      - gate-{name}-pep8
+      - gate-{name}-pep8-{node}:
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: openstack-ansible
@@ -5333,7 +5411,10 @@
     jobs:
       - openstack-publish-jobs
       - openstack-releasenotes-jobs
-      - 'gate-{name}-docs'
+      - 'gate-{name}-docs-{node}':
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - 'gate-{name}-linters'
       - gate-{name}-requirements
 
@@ -5580,7 +5661,10 @@
     jobs:
       - openstack-publish-jobs
       - openstack-releasenotes-jobs
-      - 'gate-{name}-docs'
+      - 'gate-{name}-docs-{node}':
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - 'gate-{name}-linters'
       - gate-{name}-requirements
       - '{name}-announce-release'
@@ -5710,8 +5794,14 @@
 
     jobs:
       - openstack-publish-jobs
-      - 'gate-{name}-docs'
-      - 'gate-{name}-pep8'
+      - 'gate-{name}-docs-{node}':
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
+      - 'gate-{name}-pep8-{node}':
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: openstack-salt-specs
@@ -5761,7 +5851,10 @@
       - 'openstackid-release-{job-suffix}':
           job-suffix: 'branch'
       - infra-publish-jobs
-      - 'gate-{name}-docs'
+      - 'gate-{name}-docs-{node}':
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: os-api-ref
@@ -6408,8 +6501,14 @@
     name: ospurge
 
     jobs:
-      - gate-{name}-pep8
-      - gate-{name}-python27
+      - gate-{name}-pep8-{node}:
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
+      - gate-{name}-python27-{node}:
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: ossa
@@ -6417,7 +6516,10 @@
     docroot: security
 
     jobs:
-      - 'gate-{name}-docs'
+      - 'gate-{name}-docs-{node}':
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - 'static-{name}-publish'
 
 - project:
@@ -6564,7 +6666,10 @@
     doc-publisher-site: docs.openstack.org
 
     jobs:
-      - 'gate-{name}-docs'
+      - 'gate-{name}-docs-{node}':
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: proliantutils
@@ -7651,7 +7756,10 @@
 
     jobs:
       - openstack-publish-jobs
-      - gate-{name}-docs
+      - gate-{name}-docs-{node}:
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: puppet-openstack_health
@@ -7721,7 +7829,10 @@
       - 'gate-openstackci-beaker-{node}':
           node: ubuntu-trusty
           ostype: trusty
-      - gate-{name}-docs
+      - gate-{name}-docs-{node}:
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - infra-publish-jobs
 
 - project:
@@ -9471,7 +9582,10 @@
     name: ramdisk-func-test
 
     jobs:
-      - gate-{name}-pep8
+      - gate-{name}-pep8-{node}:
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: refstack
@@ -9516,12 +9630,18 @@
     docroot: releases
 
     jobs:
-      - 'gate-{name}-docs'
+      - 'gate-{name}-docs-{node}':
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - 'gate-{name}-tox-{envlist}':
           envlist: validate
       - 'gate-{name}-tox-{envlist}':
           envlist: list-changes
-      - gate-{name}-pep8
+      - gate-{name}-pep8-{node}:
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - 'static-{name}-publish'
 
 - project:
@@ -9741,7 +9861,10 @@
     tarball-site: tarballs.openstack.org
 
     jobs:
-      - gate-{name}-pep8
+      - gate-{name}-pep8-{node}:
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: sahara-dashboard
@@ -10537,7 +10660,10 @@
             - ubuntu-xenial
             - fedora-23
       - infra-publish-jobs
-      - 'gate-{name}-docs'
+      - 'gate-{name}-docs-{node}':
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: tacker
@@ -10728,7 +10854,10 @@
     docroot: transparency-policy
 
     jobs:
-      - 'gate-{name}-docs'
+      - 'gate-{name}-docs-{node}':
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - 'static-{name}-publish'
 
 - project:
@@ -10878,7 +11007,10 @@
     doc-publisher-site: docs.openstack.org
 
     jobs:
-      - gate-{name}-docs
+      - gate-{name}-docs-{node}:
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - openstack-publish-jobs
 
 - project:
@@ -10904,7 +11036,10 @@
     tarball-site: tarballs.openstack.org
 
     jobs:
-      - gate-{name}-docs
+      - gate-{name}-docs-{node}:
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - openstack-publish-jobs
 
 - project:
