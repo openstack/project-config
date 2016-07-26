@@ -17,18 +17,45 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-set -ex
-
 TOOLSDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $TOOLSDIR/functions
 
 function usage {
-    echo "Usage: release_from_yaml.sh releases_repository [deliverable_files]"
+    echo "Usage: release_from_yaml.sh [(-m|--manual)] releases_repository [deliverable_files]"
+    echo "       release_from_yaml.sh (-h|--help)"
     echo
+    echo "Example: release_from_yaml.sh -m ~/repos/openstack/releases"
     echo "Example: release_from_yaml.sh ~/repos/openstack/releases"
-    echo "Example: release_from_yaml.sh ~/repos/openstack/releases"
-    echo "Example: release_from_yaml.sh ~/repos/openstack/releases deliverables/mitaka/oslo.config.yaml"
+    echo "Example: release_from_yaml.sh -m ~/repos/openstack/releases deliverables/mitaka/oslo.config.yaml"
 }
+
+OPTS=$(getopt -o hm --long manual,help -n $0 -- "$@")
+if [ $? != 0 ] ; then
+    echo "Failed parsing options." >&2
+    usage
+    exit 1
+fi
+eval set -- "$OPTS"
+set -ex
+
+BOT_RUNNING=true
+
+while true; do
+    case "$1" in
+        -h|--help)
+            usage
+            exit 0
+            ;;
+        -m|--manual)
+            BOT_RUNNING=false
+            shift
+            ;;
+        --)
+            shift
+            break
+            ;;
+    esac
+done
 
 if [ $# -lt 1 ]; then
     echo "ERROR: No releases_repository specified"
@@ -70,8 +97,10 @@ $TOOLSDIR/list_deliverable_changes.py -r $RELEASES_REPO $DELIVERABLES \
     # repository. When we're confident that it is working correctly,
     # we can remove this block and apply it to all repositories.
     if [ "$repo" != "openstack/release-test" ]; then
-        echo "SKIPPING during testing phase"
-        continue
+        if $BOT_RUNNING; then
+            echo "SKIPPING during testing phase"
+            continue
+        fi
     fi
     $TOOLSDIR/release.sh $repo $series $version $hash $announce_to $pypi $first_full "$RELEASE_META"
 done
