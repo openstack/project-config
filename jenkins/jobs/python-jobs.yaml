@@ -1,5 +1,5 @@
 - job-template:
-    name: '{name}-coverage'
+    name: '{name}-coverage-{node}'
 
     wrappers:
       - build-timeout:
@@ -25,10 +25,10 @@
               copy-after-failure: true
       - console-log
 
-    node: ubuntu-trusty
+    node: '{node}'
 
 - job-template:
-    name: '{name}-coverage-db'
+    name: '{name}-coverage-db-{node}'
     description: 'Same job as {name}-coverage but sets up databases.'
 
     wrappers:
@@ -61,7 +61,7 @@
               copy-after-failure: true
       - console-log
 
-    node: ubuntu-trusty
+    node: '{node}'
 
 - job-template:
     name: 'gate-{name}-pep8-{node}'
@@ -651,10 +651,16 @@
 
 - job-group:
     name: coverage-jobs
+    node:
+      - ubuntu-trusty
+      - ubuntu-xenial
     jobs:
-      - '{name}-coverage'
+      - '{name}-coverage-{node}'
 
 - job-group:
     name: coverage-db-jobs
+    node:
+      - ubuntu-trusty
+      - ubuntu-xenial
     jobs:
-      - '{name}-coverage-db'
+      - '{name}-coverage-db-{node}'

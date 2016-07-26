@@ -1579,7 +1579,7 @@ jobs:
   - name: gate-rally-dsvm-senlin-rally
     voting: false
 
-  - name: senlin-coverage
+  - name: ^senlin-coverage-ubuntu-(trusty|xenial)
     voting: false
 
   - name: gate-rally-dsvm-verify-full-discover-resources
@@ -1648,10 +1648,10 @@ jobs:
   - name: gate-networking-cisco-requirements
     voting: false
 
-  - name: networking-cisco-coverage
+  - name: ^networking-cisco-coverage-ubuntu-(trusty|xenial)
     voting: false
 
-  - name: neutron-lib-coverage
+  - name: ^neutron-lib-coverage-ubuntu-(trusty|xenial)
     voting: false
 
   - name: gate-neutron-dsvm-functional-py34
@@ -1818,7 +1818,7 @@ jobs:
   - name: gate-tempest-dsvm-neutron-dvr-ovs-native
     voting: false
 
-  - name: networking-midonet-coverage
+  - name: ^networking-midonet-coverage-ubuntu-(trusty|xenial)
     voting: false
 
   - name: ^gate-tempest-dsvm-networking-midonet-v1
@@ -2151,19 +2151,19 @@ jobs:
   - name: gate-app-catalog-ui-nodejs4-npm-run-lint
     voting: false
 
-  - name: barbican-coverage
+  - name: ^barbican-coverage-ubuntu-(trusty|xenial)
     voting: false
 
-  - name: designate-coverage-db
+  - name: ^designate-coverage-db-ubuntu-(trusty|xenial)
     voting: false
 
-  - name: manila-coverage-db
+  - name: ^manila-coverage-db-ubuntu-(trusty|xenial)
     voting: false
 
-  - name: manila-ui-coverage
+  - name: ^manila-ui-coverage-ubuntu-(trusty|xenial)
     voting: false
 
-  - name: magnum-coverage
+  - name: ^magnum-coverage-ubuntu-(trusty|xenial)
     voting: false
     skip-if:
       - project: ^openstack/magnum$
@@ -2223,7 +2223,7 @@ jobs:
   - name: ^gate-sahara-extra-artifacts$
     voting: false
 
-  - name: sahara-coverage-db
+  - name: ^sahara-coverage-db-ubuntu-(trusty|xenial)
     voting: false
 
   - name: gate-sahara-dashboard-dsvm-integration
@@ -2327,7 +2327,7 @@ jobs:
     branch: ^(?!stable/(?:juno|liberty)).*$
     voting: false
 
-  - name: python-jenkins-coverage
+  - name: ^python-jenkins-coverage-ubuntu-(trusty|xenial)
     voting: false
 
   - name: gate-python-muranoclient-python34
@@ -2369,7 +2369,7 @@ jobs:
     branch: ^(?!stable/(?:liberty|mitaka)).*$
     voting: false
 
-  - name: murano-coverage-db
+  - name: ^murano-coverage-db-ubuntu-(trusty|xenial)
     voting: false
 
   - name: gate-solum-infra-guestagent-python34
@@ -2746,7 +2746,7 @@ jobs:
   - name: ^gate-fuel-devops-python3.*$
     branch: ^(?!(release/(?:2\.9)|stable)).*$
 
-  - name: ^fuel-devops-coverage
+  - name: ^fuel-devops-coverage-ubuntu-(trusty|xenial)
     branch: ^(?!(release/(?:2\.9)|stable)).*$
 
   - name: ^gate-fuel-devops-pylint
@@ -2968,10 +2968,10 @@ jobs:
   - name: ^gate-python-fuelclient-python27-ubuntu-(trusty|xenial)
     branch: ^(?!stable/(?:6\.1)).*$
 
-  - name: watcher-coverage
+  - name: ^watcher-coverage-ubuntu-(trusty|xenial)
     voting: false
 
-  - name: python-watcherclient-coverage
+  - name: ^python-watcherclient-coverage-ubuntu-(trusty|xenial)
     voting: false
 
   - name: gate-rally-dsvm-watcher-watcher
@@ -3152,7 +3152,8 @@ projects:
       - gate-hacking-integration-nova
     post:
       - hacking-docs
-      - hacking-coverage
+      - hacking-coverage-ubuntu-trusty
+      - hacking-coverage-ubuntu-xenial
     pre-release:
       - hacking-docs
     release:
@@ -3211,7 +3212,8 @@ projects:
       - gate-pbr-installation-dsvm
       - gate-pbr-installation-dsvm-upstream
     post:
-      - pbr-coverage
+      - pbr-coverage-ubuntu-trusty
+      - pbr-coverage-ubuntu-xenial
       - pbr-docs
     pre-release:
       - pbr-docs
@@ -3273,7 +3275,8 @@ projects:
       - name: python34-jobs
       - name: python35-jobs-nv
     post:
-      - bindep-coverage
+      - bindep-coverage-ubuntu-trusty
+      - bindep-coverage-ubuntu-xenial
     release:
       - bindep-infra-docs-tags-only
 
@@ -3479,9 +3482,11 @@ projects:
       - name: python35-jobs-nv
       - name: infra-publish-jobs
     check:
-      - grafyaml-coverage
+      - grafyaml-coverage-ubuntu-trusty
+      - grafyaml-coverage-ubuntu-xenial
     post:
-      - grafyaml-coverage
+      - grafyaml-coverage-ubuntu-trusty
+      - grafyaml-coverage-ubuntu-xenial
 
   - name: openstack-infra/groups
     template:
@@ -3553,10 +3558,12 @@ projects:
       - name: infra-publish-jobs
     check:
       - jenkins-job-builder-compare-xml
-      - jenkins-job-builder-coverage
+      - jenkins-job-builder-coverage-ubuntu-trusty
+      - jenkins-job-builder-coverage-ubuntu-xenial
       - gate-jenkins-job-builder-tox-docs-linkcheck
     post:
-      - jenkins-job-builder-coverage
+      - jenkins-job-builder-coverage-ubuntu-trusty
+      - jenkins-job-builder-coverage-ubuntu-xenial
 
   - name: openstack-infra/js-afs-blob-store
     template:
@@ -3615,12 +3622,14 @@ projects:
       - name: infra-publish-jobs
       - name: python35-db-jobs-nv
     check:
-      - nodepool-coverage-db
+      - nodepool-coverage-db-ubuntu-trusty
+      - nodepool-coverage-db-ubuntu-xenial
       - gate-dsvm-nodepool
       - gate-dsvm-nodepool-src-shade
       - gate-nodepool-python34-db
     post:
-      - nodepool-coverage-db
+      - nodepool-coverage-db-ubuntu-trusty
+      - nodepool-coverage-db-ubuntu-xenial
 
   - name: openstack-infra/nose-html-output
     template:
@@ -4336,7 +4345,8 @@ projects:
       - name: python34-jobs
       - name: python35-jobs-nv
     post:
-      - python-storyboardclient-coverage
+      - python-storyboardclient-coverage-ubuntu-trusty
+      - python-storyboardclient-coverage-ubuntu-xenial
     release:
       - python-storyboardclient-infra-docs-tags-only
 
@@ -4403,7 +4413,8 @@ projects:
       - name: python35-jobs-nv
       - name: infra-publish-jobs
     check:
-      - shade-coverage
+      - shade-coverage-ubuntu-trusty
+      - shade-coverage-ubuntu-xenial
       - gate-shade-dsvm-functional-keystone2
       - gate-shade-dsvm-functional-neutron
       - gate-shade-dsvm-functional-nova
@@ -4416,7 +4427,8 @@ projects:
       - gate-shade-dsvm-functional-nova
       - gate-shade-dsvm-ansible
     post:
-      - shade-coverage
+      - shade-coverage-ubuntu-trusty
+      - shade-coverage-ubuntu-xenial
 
   - name: openstack-infra/statusbot
     template:
@@ -4450,7 +4462,8 @@ projects:
       - gate-storyboard-python27-db-ubuntu-xenial
     post:
       - storyboard-branch-tarball
-      - storyboard-coverage-db
+      - storyboard-coverage-db-ubuntu-trusty
+      - storyboard-coverage-db-ubuntu-xenial
     pre-release:
       - storyboard-infra-docs-tags-only
     release:
@@ -4587,7 +4600,8 @@ projects:
       - dev-zuul-coverage
       - gate-zuul-python34-db
     post:
-      - zuul-coverage-db
+      - zuul-coverage-db-ubuntu-trusty
+      - zuul-coverage-db-ubuntu-xenial
     periodic:
       - periodic-test
 
@@ -4831,12 +4845,14 @@ projects:
     check:
       - gate-ara-integration-centos-7
       - gate-ara-integration-ubuntu-trusty
-      - ara-coverage
+      - ara-coverage-ubuntu-trusty
+      - ara-coverage-ubuntu-xenial
     gate:
       - gate-ara-integration-centos-7
       - gate-ara-integration-ubuntu-trusty
     post:
-      - ara-coverage
+      - ara-coverage-ubuntu-trusty
+      - ara-coverage-ubuntu-xenial
 
   - name: openstack/astara
     template:
@@ -4975,7 +4991,8 @@ projects:
       - name: api-guide-jobs
     check:
       - gate-barbican-simple-crypto-devstack-dsvm
-      - barbican-coverage
+      - barbican-coverage-ubuntu-trusty
+      - barbican-coverage-ubuntu-xenial
       - gate-barbican-dogtag-devstack-dsvm
     experimental:
       - gate-barbican-kmip-devstack-dsvm
@@ -5587,7 +5604,8 @@ projects:
       - name: python35-jobs-nv
       - name: publish-to-pypi
     post:
-      - cloudbase-init-coverage
+      - cloudbase-init-coverage-ubuntu-trusty
+      - cloudbase-init-coverage-ubuntu-xenial
 
   - name: openstack/cloudcafe
     template:
@@ -5616,7 +5634,8 @@ projects:
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
     post:
-      - cloudkitty-coverage
+      - cloudkitty-coverage-ubuntu-trusty
+      - cloudkitty-coverage-ubuntu-xenial
 
   - name: openstack/cloudkitty-dashboard
     template:
@@ -5627,7 +5646,8 @@ projects:
       - name: openstack-server-publish-jobs
       - name: publish-to-pypi
     post:
-      - cloudkitty-dashboard-coverage
+      - cloudkitty-dashboard-coverage-ubuntu-trusty
+      - cloudkitty-dashboard-coverage-ubuntu-xenial
 
   - name: openstack/cloudpulse
     template:
@@ -5840,7 +5860,8 @@ projects:
       - name: check-requirements
       - name: periodic-jobs-with-oslo-master
     check:
-      - cue-coverage
+      - cue-coverage-ubuntu-trusty
+      - cue-coverage-ubuntu-xenial
       - gate-cue-integration-dsvm-rabbitmq
       - gate-rally-dsvm-cue-rabbitmq
     gate:
@@ -5932,9 +5953,11 @@ projects:
       - name: designate-dsvm-jobs
       - name: api-ref-jobs
     check:
-      - designate-coverage-db
+      - designate-coverage-db-ubuntu-trusty
+      - designate-coverage-db-ubuntu-xenial
     post:
-      - designate-coverage-db
+      - designate-coverage-db-ubuntu-trusty
+      - designate-coverage-db-ubuntu-xenial
 
   - name: openstack/designate-dashboard
     template:
@@ -5947,9 +5970,11 @@ projects:
       - name: translation-jobs-mitaka
       - name: designate-dsvm-jobs
     check:
-      - designate-dashboard-coverage
+      - designate-dashboard-coverage-ubuntu-trusty
+      - designate-dashboard-coverage-ubuntu-xenial
     post:
-      - designate-dashboard-coverage
+      - designate-dashboard-coverage-ubuntu-trusty
+      - designate-dashboard-coverage-ubuntu-xenial
 
   - name: openstack/designate-specs
     template:
@@ -6586,9 +6611,11 @@ projects:
       - name: python-jobs
     check:
       - gate-fuel-devops-pylint
-      - fuel-devops-coverage
+      - fuel-devops-coverage-ubuntu-trusty
+      - fuel-devops-coverage-ubuntu-xenial
     gate:
-      - fuel-devops-coverage
+      - fuel-devops-coverage-ubuntu-trusty
+      - fuel-devops-coverage-ubuntu-xenial
 
   - name: openstack/fuel-docs
     template:
@@ -7480,7 +7507,8 @@ projects:
       - gate-tempest-dsvm-heat-apache
       - gate-grenade-dsvm-heat
     post:
-      - heat-coverage-db
+      - heat-coverage-db-ubuntu-trusty
+      - heat-coverage-db-ubuntu-xenial
     periodic:
       - gate-rally-dsvm-fakevirt-heat
     experimental:
@@ -7551,7 +7579,8 @@ projects:
       - name: openstack-server-publish-jobs
       - name: check-requirements
     post:
-      - heat-translator-coverage
+      - heat-translator-coverage-ubuntu-trusty
+      - heat-translator-coverage-ubuntu-xenial
     check:
       - gate-heat-translator-tox-py27-tosca-parser-master
 
@@ -7598,7 +7627,8 @@ projects:
       - gate-grenade-dsvm
       - gate-horizon-dsvm-tempest-plugin
     post:
-      - horizon-coverage
+      - horizon-coverage-ubuntu-trusty
+      - horizon-coverage-ubuntu-xenial
     experimental:
       - gate-grenade-dsvm-forward
 
@@ -7712,14 +7742,17 @@ projects:
       - gate-tempest-dsvm-ironic-agent_ipmitool-nv
       - gate-grenade-dsvm-ironic
       - gate-tempest-dsvm-ironic-multitenant-network-nv
-      - ironic-coverage-db
+      - ironic-coverage-db-ubuntu-trusty
+      - ironic-coverage-db-ubuntu-xenial
     gate:
       - gate-tempest-dsvm-ironic-agent_ssh
       - gate-tempest-dsvm-ironic-pxe_ipa
       - gate-grenade-dsvm-ironic
-      - ironic-coverage-db
+      - ironic-coverage-db-ubuntu-trusty
+      - ironic-coverage-db-ubuntu-xenial
     post:
-      - ironic-coverage-db
+      - ironic-coverage-db-ubuntu-trusty
+      - ironic-coverage-db-ubuntu-xenial
     experimental:
       - gate-ironic-dsvm-functional
       - gate-tempest-dsvm-ironic-parallel-nv
@@ -7774,7 +7807,8 @@ projects:
       - gate-ironic-lib-pep8-ubuntu-xenial
       - gate-ironic-lib-python27-ubuntu-xenial
       - gate-tempest-dsvm-ironic-lib-src
-      - ironic-lib-coverage
+      - ironic-lib-coverage-ubuntu-trusty
+      - ironic-lib-coverage-ubuntu-xenial
     gate:
       - gate-ironic-lib-pep8-ubuntu-trusty
       - gate-ironic-lib-python27-ubuntu-trusty
@@ -7782,7 +7816,8 @@ projects:
       - gate-ironic-lib-python27-ubuntu-xenial
       - gate-tempest-dsvm-ironic-lib-src
     post:
-      - ironic-lib-coverage
+      - ironic-lib-coverage-ubuntu-trusty
+      - ironic-lib-coverage-ubuntu-xenial
 
   - name: openstack/ironic-python-agent
     template:
@@ -7906,7 +7941,8 @@ projects:
       - gate-tempest-dsvm-keystone-eventlet-full
       - gate-tempest-dsvm-keystone-uwsgi-full-nv
       - gate-tempest-dsvm-neutron-identity-v3-only-full-nv
-      - keystone-coverage-db
+      - keystone-coverage-db-ubuntu-trusty
+      - keystone-coverage-db-ubuntu-xenial
     gate:
       - gate-keystone-dsvm-functional
       - gate-keystone-tox-bandit
@@ -7955,7 +7991,8 @@ projects:
     gate:
       - gate-keystonemiddleware-tox-bandit
     post:
-      - keystonemiddleware-coverage
+      - keystonemiddleware-coverage-ubuntu-trusty
+      - keystonemiddleware-coverage-ubuntu-xenial
 
   - name: openstack/kiloeyes
     template:
@@ -7972,7 +8009,8 @@ projects:
       - gate-kiloeyes-pep8-ubuntu-xenial
       - gate-kiloeyes-python27-ubuntu-xenial
     post:
-      - kiloeyes-coverage
+      - kiloeyes-coverage-ubuntu-trusty
+      - kiloeyes-coverage-ubuntu-xenial
 
   - name: openstack/kingbird
     template:
@@ -8128,7 +8166,8 @@ projects:
       - gate-functional-dsvm-magnum-api-identity-v3-only-nv
       - gate-functional-dsvm-magnum-k8s-ironic-nv
       - gate-functional-dsvm-magnum-swarm-ironic-nv
-      - magnum-coverage
+      - magnum-coverage-ubuntu-trusty
+      - magnum-coverage-ubuntu-xenial
     gate:
       - gate-functional-dsvm-magnum-api
       - gate-functional-dsvm-magnum-k8s
@@ -8161,7 +8200,8 @@ projects:
       - name: periodic-mitaka
       - name: api-ref-jobs
     check:
-      - manila-coverage-db
+      - manila-coverage-db-ubuntu-trusty
+      - manila-coverage-db-ubuntu-xenial
       - gate-manila-tox-genconfig
       - gate-manila-pylint
       - gate-manila-tempest-dsvm-mysql-generic
@@ -8181,7 +8221,8 @@ projects:
       - gate-manila-tempest-minimal-dsvm-lvm
       - gate-grenade-dsvm-manila
     post:
-      - manila-coverage-db
+      - manila-coverage-db-ubuntu-trusty
+      - manila-coverage-db-ubuntu-xenial
     experimental:
       - gate-manila-tempest-minimal-dsvm-dummy
       - gate-rally-dsvm-manila-multibackend
@@ -8230,7 +8271,8 @@ projects:
       - name: translation-jobs
       - name: release-notes-jobs
     check:
-      - manila-ui-coverage
+      - manila-ui-coverage-ubuntu-trusty
+      - manila-ui-coverage-ubuntu-xenial
 
   - name: openstack/marshal
     template:
@@ -8527,7 +8569,8 @@ projects:
       - gate-monasca-ui-pep8-ubuntu-xenial
       - gate-monasca-ui-python27-ubuntu-xenial
     post:
-      - monasca-ui-coverage
+      - monasca-ui-coverage-ubuntu-trusty
+      - monasca-ui-coverage-ubuntu-xenial
 
   - name: openstack/monasca-vagrant
     template:
@@ -8559,7 +8602,8 @@ projects:
       - name: translation-jobs
       - name: periodic-jobs-with-oslo-master
     check:
-      - murano-coverage-db
+      - murano-coverage-db-ubuntu-trusty
+      - murano-coverage-db-ubuntu-xenial
       - gate-murano-pylint
       - gate-murano-tox-py27-mitaka
       - gate-murano-devstack-dsvm
@@ -8572,7 +8616,8 @@ projects:
       - gate-tempest-dsvm-murano-api
       - gate-murano-devstack-dsvm
     post:
-      - murano-coverage-db
+      - murano-coverage-db-ubuntu-trusty
+      - murano-coverage-db-ubuntu-xenial
 
   - name: openstack/murano-agent
     template:
@@ -8584,7 +8629,8 @@ projects:
       - name: check-requirements
       - name: release-notes-jobs
     post:
-      - murano-agent-coverage
+      - murano-agent-coverage-ubuntu-trusty
+      - murano-agent-coverage-ubuntu-xenial
 
   - name: openstack/murano-apps
     template:
@@ -8648,7 +8694,8 @@ projects:
       - name: docs-on-rtfd
       - name: publish-to-pypi
     check:
-      - nerd-reviewer-coverage
+      - nerd-reviewer-coverage-ubuntu-trusty
+      - nerd-reviewer-coverage-ubuntu-xenial
 
   - name: openstack/network-checker
     template:
@@ -8730,7 +8777,8 @@ projects:
       - name: publish-to-pypi
     check:
       - gate-networking-cisco-requirements
-      - networking-cisco-coverage
+      - networking-cisco-coverage-ubuntu-trusty
+      - networking-cisco-coverage-ubuntu-xenial
 
   - name: openstack/networking-edge-vpn
     template:
@@ -8844,7 +8892,8 @@ projects:
       - gate-tempest-dsvm-networking-midonet-v2
       - gate-tempest-dsvm-networking-midonet-ml2
       - gate-networking-midonet-v2-rally-dsvm-nv
-      - networking-midonet-coverage
+      - networking-midonet-coverage-ubuntu-trusty
+      - networking-midonet-coverage-ubuntu-xenial
     gate:
       - gate-tempest-dsvm-networking-midonet-v2
 
@@ -9025,7 +9074,8 @@ projects:
       - gate-grenade-dsvm-neutron-multinode
       - gate-grenade-dsvm-neutron-dvr-multinode
     post:
-      - neutron-coverage
+      - neutron-coverage-ubuntu-trusty
+      - neutron-coverage-ubuntu-xenial
     experimental:
       - gate-neutron-dsvm-functional-py34
       - gate-tempest-dsvm-neutron-scenario
@@ -9061,7 +9111,8 @@ projects:
       - gate-neutron-dynamic-routing-dsvm-functional-nv
       - gate-neutron-dynamic-routing-dsvm-tempest-nv
     post:
-      - neutron-dynamic-routing-coverage
+      - neutron-dynamic-routing-coverage-ubuntu-trusty
+      - neutron-dynamic-routing-coverage-ubuntu-xenial
 
   - name: openstack/neutron-fwaas
     template:
@@ -9078,7 +9129,8 @@ projects:
     check:
       - gate-neutron-fwaas-dsvm-tempest
     post:
-      - neutron-fwaas-coverage
+      - neutron-fwaas-coverage-ubuntu-trusty
+      - neutron-fwaas-coverage-ubuntu-xenial
     experimental:
       - gate-neutron-fwaas-dsvm-functional
 
@@ -9140,7 +9192,8 @@ projects:
       - name: api-ref-jobs
     check:
       - gate-tempest-dsvm-neutron-src-neutron-lib
-      - neutron-lib-coverage
+      - neutron-lib-coverage-ubuntu-trusty
+      - neutron-lib-coverage-ubuntu-xenial
     gate:
       - gate-tempest-dsvm-neutron-src-neutron-lib
 
@@ -9178,7 +9231,8 @@ projects:
       - gate-neutron-vpnaas-dsvm-rally
       - gate-neutron-dsvm-tempest-vpnaas
     post:
-      - neutron-vpnaas-coverage
+      - neutron-vpnaas-coverage-ubuntu-trusty
+      - neutron-vpnaas-coverage-ubuntu-xenial
 
   - name: openstack/nomad
     template:
@@ -9220,7 +9274,8 @@ projects:
       - gate-tempest-dsvm-cells
       - gate-tempest-dsvm-full-devstack-plugin-ceph
     post:
-      - nova-coverage-db
+      - nova-coverage-db-ubuntu-trusty
+      - nova-coverage-db-ubuntu-xenial
       - nova-releasenotes-test
     experimental:
       - gate-tempest-dsvm-nova-v20-api
@@ -9244,7 +9299,8 @@ projects:
       - gate-tempest-dsvm-docker
       - gate-tempest-dsvm-docker-centos7
     post:
-      - nova-docker-coverage
+      - nova-docker-coverage-ubuntu-trusty
+      - nova-docker-coverage-ubuntu-xenial
 
   - name: openstack/nova-lxd
     template:
@@ -10007,7 +10063,8 @@ projects:
       - gate-os-apply-config-pep8-ubuntu-xenial
       - gate-os-apply-config-python27-ubuntu-xenial
     post:
-      - os-apply-config-coverage
+      - os-apply-config-coverage-ubuntu-trusty
+      - os-apply-config-coverage-ubuntu-xenial
       - os-apply-config-branch-tarball
 
   - name: openstack/os-brick
@@ -10054,7 +10111,8 @@ projects:
       - name: check-tripleo-jobs
     post:
       - os-cloud-config-docs
-      - os-cloud-config-coverage
+      - os-cloud-config-coverage-ubuntu-trusty
+      - os-cloud-config-coverage-ubuntu-xenial
 
 #TODO: add docs
   - name: openstack/os-collect-config
@@ -10076,7 +10134,8 @@ projects:
       - gate-os-collect-config-pep8-ubuntu-xenial
       - gate-os-collect-config-python27-ubuntu-xenial
     post:
-      - os-collect-config-coverage
+      - os-collect-config-coverage-ubuntu-trusty
+      - os-collect-config-coverage-ubuntu-xenial
       - os-collect-config-branch-tarball
 
   - name: openstack/os-namos
@@ -10102,7 +10161,8 @@ projects:
       - gate-os-net-config-pep8-ubuntu-xenial
       - gate-os-net-config-python27-ubuntu-xenial
     post:
-      - os-net-config-coverage
+      - os-net-config-coverage-ubuntu-trusty
+      - os-net-config-coverage-ubuntu-xenial
       - os-net-config-branch-tarball
 
   - name: openstack/os-performance-tools
@@ -10211,7 +10271,8 @@ projects:
       - name: stable-compat-jobs
       - name: release-notes-jobs
     post:
-      - oslo.concurrency-coverage
+      - oslo.concurrency-coverage-ubuntu-trusty
+      - oslo.concurrency-coverage-ubuntu-xenial
 
   - name: openstack/oslo.config
     template:
@@ -10269,7 +10330,8 @@ projects:
       - name: lib-forward-testing
       - name: stable-compat-jobs
     post:
-      - oslo.i18n-coverage
+      - oslo.i18n-coverage-ubuntu-trusty
+      - oslo.i18n-coverage-ubuntu-xenial
 
   - name: openstack/oslo.log
     template:
@@ -10326,7 +10388,8 @@ projects:
       - gate-oslo.messaging-src-dsvm-full-zmq
       - gate-tempest-neutron-dsvm-src-oslo.messaging-zmq
     post:
-      - oslo.messaging-coverage
+      - oslo.messaging-coverage-ubuntu-trusty
+      - oslo.messaging-coverage-ubuntu-xenial
 
   - name: openstack/oslo.middleware
     template:
@@ -10495,7 +10558,8 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
     post:
-      - oslotest-coverage
+      - oslotest-coverage-ubuntu-trusty
+      - oslotest-coverage-ubuntu-xenial
 
   - name: openstack/osops-coda
     template:
@@ -10541,9 +10605,11 @@ projects:
       - name: publish-to-pypi
       - name: lib-forward-testing
     check:
-      - osprofiler-coverage
+      - osprofiler-coverage-ubuntu-trusty
+      - osprofiler-coverage-ubuntu-xenial
     post:
-      - osprofiler-coverage
+      - osprofiler-coverage-ubuntu-trusty
+      - osprofiler-coverage-ubuntu-xenial
 
   - name: openstack/ospurge
     template:
@@ -10676,7 +10742,8 @@ projects:
       - name: publish-to-pypi
       - name: docs-on-rtfd
     post:
-      - poppy-coverage
+      - poppy-coverage-ubuntu-trusty
+      - poppy-coverage-ubuntu-xenial
 
   - name: openstack/poppy-ui
     template:
@@ -10686,7 +10753,8 @@ projects:
       - name: python35-jobs-nv
       - name: publish-to-pypi
     post:
-      - poppy-ui-coverage
+      - poppy-ui-coverage-ubuntu-trusty
+      - poppy-ui-coverage-ubuntu-xenial
 
   - name: openstack/powervc-driver
     template:
@@ -11325,7 +11393,8 @@ projects:
       - name: publish-to-pypi
       - name: lib-forward-testing
     post:
-      - pycadf-coverage
+      - pycadf-coverage-ubuntu-trusty
+      - pycadf-coverage-ubuntu-xenial
 
   - name: openstack/pyeclib
     template:
@@ -11485,7 +11554,8 @@ projects:
       - gate-cinderclient-dsvm-functional-identity-v3-only-nv
       - gate-python-cinderclient-pylint
     post:
-      - python-cinderclient-coverage
+      - python-cinderclient-coverage-ubuntu-trusty
+      - python-cinderclient-coverage-ubuntu-xenial
     experimental:
       - gate-grenade-dsvm-forward
 
@@ -11497,7 +11567,8 @@ projects:
       - name: python35-jobs-nv
       - name: publish-to-pypi
     post:
-      - python-cloudkittyclient-coverage
+      - python-cloudkittyclient-coverage-ubuntu-trusty
+      - python-cloudkittyclient-coverage-ubuntu-xenial
 
   - name: openstack/python-cloudpulseclient
     template:
@@ -11560,7 +11631,8 @@ projects:
     check:
       - gate-python-designateclient-python34
     post:
-      - python-designateclient-coverage
+      - python-designateclient-coverage-ubuntu-trusty
+      - python-designateclient-coverage-ubuntu-xenial
 
   - name: openstack/python-distilclient
     template:
@@ -11642,7 +11714,8 @@ projects:
     gate:
       - gate-glanceclient-dsvm-functional
     post:
-      - python-glanceclient-coverage
+      - python-glanceclient-coverage-ubuntu-trusty
+      - python-glanceclient-coverage-ubuntu-xenial
     experimental:
       - gate-grenade-dsvm-forward
 
@@ -11688,7 +11761,8 @@ projects:
       - gate-heatclient-dsvm-functional
     post:
       - python-heatclient-branch-tarball
-      - python-heatclient-coverage
+      - python-heatclient-coverage-ubuntu-trusty
+      - python-heatclient-coverage-ubuntu-xenial
     release:
       - python-heatclient-docs
 
@@ -11731,11 +11805,13 @@ projects:
     check:
       - gate-tempest-dsvm-python-ironicclient-src
       - gate-ironicclient-dsvm-functional
-      - python-ironicclient-coverage
+      - python-ironicclient-coverage-ubuntu-trusty
+      - python-ironicclient-coverage-ubuntu-xenial
     gate:
       - gate-tempest-dsvm-python-ironicclient-src
     post:
-      - python-ironicclient-coverage
+      - python-ironicclient-coverage-ubuntu-trusty
+      - python-ironicclient-coverage-ubuntu-xenial
 
   - name: openstack/python-jenkins
     template:
@@ -11746,7 +11822,8 @@ projects:
       - name: publish-to-pypi
       - name: docs-on-rtfd
     check:
-      - python-jenkins-coverage
+      - python-jenkins-coverage-ubuntu-trusty
+      - python-jenkins-coverage-ubuntu-xenial
 
   - name: openstack/python-k8sclient
     template:
@@ -11780,7 +11857,8 @@ projects:
       - gate-keystoneclient-dsvm-functional
       - gate-python-keystoneclient-tox-bandit
     post:
-      - python-keystoneclient-coverage
+      - python-keystoneclient-coverage-ubuntu-trusty
+      - python-keystoneclient-coverage-ubuntu-xenial
     experimental:
       - gate-grenade-dsvm-forward
 
@@ -11829,7 +11907,8 @@ projects:
     gate:
       - gate-manilaclient-dsvm-neutron-functional
     post:
-      - python-manilaclient-coverage
+      - python-manilaclient-coverage-ubuntu-trusty
+      - python-manilaclient-coverage-ubuntu-xenial
 
   - name: openstack/python-mistralclient
     template:
@@ -11861,7 +11940,8 @@ projects:
       - gate-python-monascaclient-pep8-ubuntu-xenial
       - gate-python-monascaclient-python27-ubuntu-xenial
     post:
-      - python-monascaclient-coverage
+      - python-monascaclient-coverage-ubuntu-trusty
+      - python-monascaclient-coverage-ubuntu-xenial
 
   - name: openstack/python-muranoclient
     template:
@@ -11912,7 +11992,8 @@ projects:
       - gate-neutronclient-test-dsvm-functional
       - gate-neutronclient-test-dsvm-functional-adv-svcs
     post:
-      - python-neutronclient-coverage
+      - python-neutronclient-coverage-ubuntu-trusty
+      - python-neutronclient-coverage-ubuntu-xenial
     experimental:
       - gate-grenade-dsvm-forward
 
@@ -11934,7 +12015,8 @@ projects:
     gate:
       - gate-novaclient-dsvm-functional
     post:
-      - python-novaclient-coverage
+      - python-novaclient-coverage-ubuntu-trusty
+      - python-novaclient-coverage-ubuntu-xenial
     experimental:
       - gate-grenade-dsvm-forward
 
@@ -11965,7 +12047,8 @@ projects:
     gate:
       - gate-osc-dsvm-functional
     post:
-      - python-openstackclient-coverage
+      - python-openstackclient-coverage-ubuntu-trusty
+      - python-openstackclient-coverage-ubuntu-xenial
 
   - name: openstack/python-openstacksdk
     template:
@@ -11979,7 +12062,8 @@ projects:
     check:
       - gate-sdk-dsvm-functional
     post:
-      - python-openstacksdk-coverage
+      - python-openstacksdk-coverage-ubuntu-trusty
+      - python-openstacksdk-coverage-ubuntu-xenial
       - python-openstacksdk-docs
 
   - name: openstack/python-opentsdbclient
@@ -12002,7 +12086,8 @@ projects:
     template:
       - name: merge-check
     check:
-      - python-rackclient-coverage
+      - python-rackclient-coverage-ubuntu-trusty
+      - python-rackclient-coverage-ubuntu-xenial
       - gate-python-rackclient-pep8-ubuntu-trusty
       - gate-python-rackclient-python27-ubuntu-trusty
       - gate-python-rackclient-pep8-ubuntu-xenial
@@ -12013,7 +12098,8 @@ projects:
       - gate-python-rackclient-pep8-ubuntu-xenial
       - gate-python-rackclient-python27-ubuntu-xenial
     post:
-      - python-rackclient-coverage
+      - python-rackclient-coverage-ubuntu-trusty
+      - python-rackclient-coverage-ubuntu-xenial
 
   - name: openstack/python-saharaclient
     template:
@@ -12031,7 +12117,8 @@ projects:
       - gate-python-saharaclient-python34
       - gate-sahara-cli-nv
     post:
-      - python-saharaclient-coverage
+      - python-saharaclient-coverage-ubuntu-trusty
+      - python-saharaclient-coverage-ubuntu-xenial
     experimental:
       - gate-python-saharaclient-pypy
 
@@ -12095,7 +12182,8 @@ projects:
       - name: publish-to-pypi
       - name: pypy-jobs
     post:
-      - python-solumclient-coverage
+      - python-solumclient-coverage-ubuntu-trusty
+      - python-solumclient-coverage-ubuntu-xenial
 
   - name: openstack/python-sticksclient
     template:
@@ -12132,7 +12220,8 @@ projects:
       - gate-swift-dsvm-functional
       - gate-swiftclient-dsvm-functional
     post:
-      - python-swiftclient-coverage
+      - python-swiftclient-coverage-ubuntu-trusty
+      - python-swiftclient-coverage-ubuntu-xenial
 
   - name: openstack/python-tackerclient
     template:
@@ -12192,7 +12281,8 @@ projects:
       - name: publish-to-pypi
       - name: osc-plugin-jobs
     check:
-      - python-watcherclient-coverage
+      - python-watcherclient-coverage-ubuntu-trusty
+      - python-watcherclient-coverage-ubuntu-xenial
 
   - name: openstack/python-wsmanclient
     template:
@@ -12253,7 +12343,8 @@ projects:
     template:
       - name: merge-check
     check:
-      - rack-coverage-db
+      - rack-coverage-db-ubuntu-trusty
+      - rack-coverage-db-ubuntu-xenial
       - gate-rack-pep8-ubuntu-trusty
       - gate-rack-python27-db-ubuntu-trusty
       - gate-rack-pep8-ubuntu-xenial
@@ -12278,7 +12369,8 @@ projects:
       - name: openstack-server-publish-jobs
       - name: publish-to-pypi
     check:
-      - rally-coverage
+      - rally-coverage-ubuntu-trusty
+      - rally-coverage-ubuntu-xenial
       - gate-rally-install-centos-7
       - gate-rally-install-ubuntu-trusty
       - gate-rally-dsvm-rally
@@ -12309,7 +12401,8 @@ projects:
       - gate-rally-dsvm-verify-light-discover-resources
       - gate-rally-dsvm-verify-full-discover-resources
     post:
-      - rally-coverage
+      - rally-coverage-ubuntu-trusty
+      - rally-coverage-ubuntu-xenial
     experimental:
       - gate-rally-dsvm-ironic-rally
       - gate-rally-dsvm-monasca-rally
@@ -12364,7 +12457,8 @@ projects:
       - gate-refstack-client-pep8-ubuntu-xenial
       - gate-refstack-client-python27-ubuntu-xenial
     post:
-      - refstack-client-coverage
+      - refstack-client-coverage-ubuntu-trusty
+      - refstack-client-coverage-ubuntu-xenial
 
   - name: openstack/release-schedule-generator
     template:
@@ -12500,7 +12594,8 @@ projects:
     check:
       - gate-sahara-pylint
       - gate-tempest-dsvm-sahara
-      - sahara-coverage-db
+      - sahara-coverage-db-ubuntu-trusty
+      - sahara-coverage-db-ubuntu-xenial
       - gate-grenade-dsvm-sahara
       - gate-sahara-dsvm-scenario-neutron-heat
       - gate-sahara-dsvm-scenario-nova-heat
@@ -12513,7 +12608,8 @@ projects:
       - gate-sahara-dsvm-scenario-nova-heat
       - gate-tempest-dsvm-sahara
     post:
-      - sahara-coverage-db
+      - sahara-coverage-db-ubuntu-trusty
+      - sahara-coverage-db-ubuntu-xenial
 
   - name: openstack/sahara-ci-config
     template:
@@ -12550,7 +12646,8 @@ projects:
       - gate-sahara-dashboard-tox-py27dj19
     post:
       - sahara-dashboard-branch-tarball
-      - sahara-dashboard-coverage
+      - sahara-dashboard-coverage-ubuntu-trusty
+      - sahara-dashboard-coverage-ubuntu-xenial
 
 # TODO: add docs
   - name: openstack/sahara-extra
@@ -12618,13 +12715,16 @@ projects:
       - gate-sahara-tests-dsvm-scenario-neutron-heat
       - gate-sahara-tests-dsvm-scenario-nova-heat
       - gate-sahara-cli-nv
-      - sahara-tests-coverage
+      - sahara-tests-coverage-ubuntu-trusty
+      - sahara-tests-coverage-ubuntu-xenial
     gate:
       - gate-sahara-tests-dsvm-scenario-neutron-heat
       - gate-sahara-tests-dsvm-scenario-nova-heat
-      - sahara-tests-coverage
+      - sahara-tests-coverage-ubuntu-trusty
+      - sahara-tests-coverage-ubuntu-xenial
     post:
-      - sahara-tests-coverage
+      - sahara-tests-coverage-ubuntu-trusty
+      - sahara-tests-coverage-ubuntu-xenial
 
   - name: openstack/salt-formula-ceilometer
     template:
@@ -12775,7 +12875,8 @@ projects:
       - name: translation-jobs
       - name: api-ref-jobs
     check:
-      - senlin-coverage
+      - senlin-coverage-ubuntu-trusty
+      - senlin-coverage-ubuntu-xenial
       - gate-senlin-dsvm-tempest-api
       - gate-senlin-dsvm-tempest-functional
     gate:
@@ -12882,7 +12983,8 @@ projects:
     gate:
       - gate-solum-devstack-dsvm
     post:
-      - solum-coverage
+      - solum-coverage-ubuntu-trusty
+      - solum-coverage-ubuntu-xenial
 
   - name: openstack/solum-dashboard
     template:
@@ -12892,7 +12994,8 @@ projects:
       - name: publish-to-pypi
       - name: pypy-jobs
     post:
-      - solum-dashboard-coverage
+      - solum-dashboard-coverage-ubuntu-trusty
+      - solum-dashboard-coverage-ubuntu-xenial
 
   - name: openstack/solum-infra-guestagent
     template:
@@ -12904,7 +13007,8 @@ projects:
     check:
       - gate-solum-infra-guestagent-python34
     post:
-      - solum-infra-guestagent-coverage
+      - solum-infra-guestagent-coverage-ubuntu-trusty
+      - solum-infra-guestagent-coverage-ubuntu-xenial
 
   - name: openstack/solum-specs
     template:
@@ -13219,7 +13323,8 @@ projects:
       - gate-grenade-dsvm
       - gate-swift-dsvm-functional
     post:
-      - swift-coverage
+      - swift-coverage-ubuntu-trusty
+      - swift-coverage-ubuntu-xenial
     experimental:
       - gate-grenade-dsvm-forward
       - gate-grenade-dsvm-multinode
@@ -13286,7 +13391,8 @@ projects:
       - gate-swift3-tox-keystone
       - gate-swift3-tox-s3acl
     post:
-      - swift3-coverage
+      - swift3-coverage-ubuntu-trusty
+      - swift3-coverage-ubuntu-xenial
     release:
       - swift3-tarball
 
@@ -13414,7 +13520,8 @@ projects:
       - name: publish-to-pypi
       - name: lib-forward-testing
     post:
-      - taskflow-coverage-db
+      - taskflow-coverage-db-ubuntu-trusty
+      - taskflow-coverage-db-ubuntu-xenial
 
   - name: openstack/telcowg-usecases
     template:
@@ -13493,7 +13600,8 @@ projects:
       - gate-tempest-dsvm-nova-v20-api
     post:
       - tempest-docs
-      - tempest-coverage
+      - tempest-coverage-ubuntu-trusty
+      - tempest-coverage-ubuntu-xenial
       - tempest-branch-tarball
     pre-release:
       - tempest-tarball
@@ -13601,7 +13709,8 @@ projects:
       - gate-tooz-tox-db-py27-mysql
       - gate-tooz-tox-db-py34-mysql
     post:
-      - tooz-coverage
+      - tooz-coverage-ubuntu-trusty
+      - tooz-coverage-ubuntu-xenial
 
   - name: openstack/tosca-parser
     template:
@@ -13613,7 +13722,8 @@ projects:
       - name: openstack-server-publish-jobs
       - name: check-requirements
     post:
-      - tosca-parser-coverage
+      - tosca-parser-coverage-ubuntu-trusty
+      - tosca-parser-coverage-ubuntu-xenial
 
   - name: openstack/training-guides
     template:
@@ -13796,7 +13906,8 @@ projects:
       - gate-trove-functional-dsvm-mysql
     post:
       - trove-tox-doc-publishdocs
-      - trove-coverage-db
+      - trove-coverage-db-ubuntu-trusty
+      - trove-coverage-db-ubuntu-xenial
     experimental:
       - gate-grenade-dsvm-trove
 
@@ -13821,7 +13932,8 @@ projects:
       - gate-trove-dashboard-python27-ubuntu-xenial
     post:
       - trove-dashboard-branch-tarball
-      - trove-dashboard-coverage
+      - trove-dashboard-coverage-ubuntu-trusty
+      - trove-dashboard-coverage-ubuntu-xenial
 
   - name: openstack/trove-image-builder
     template:
@@ -13869,7 +13981,8 @@ projects:
       - name: python-jobs
       - name: docs-on-rtfd
     post:
-      - turbo-hipster-coverage
+      - turbo-hipster-coverage-ubuntu-trusty
+      - turbo-hipster-coverage-ubuntu-xenial
 
   - name: openstack/uc-recognition
     template:
@@ -13947,7 +14060,8 @@ projects:
       - name: publish-to-pypi
       - name: release-notes-jobs
     check:
-      - watcher-coverage
+      - watcher-coverage-ubuntu-trusty
+      - watcher-coverage-ubuntu-xenial
       - gate-watcher-dsvm-multinode-nv
     experimental:
       - gate-rally-dsvm-watcher-watcher
