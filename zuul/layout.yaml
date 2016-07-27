@@ -1681,7 +1681,7 @@ jobs:
   - name: ^gate-tempest-dsvm-ironic-parallel-nv$
     branch: ^(?!stable)
 
-  - name: ^gate-tempest-dsvm-ironic-pxe_ipmitool-nv$
+  - name: ^gate-tempest-dsvm-ironic-ipa-partition-pxe_ipmitool-tinyipa-nv$
     branch: ^(?!stable/liberty).*$
 
   - name: ^gate-tempest-dsvm-ironic-pxe_ipmitool-pyghmi-src-nv$
@@ -1690,7 +1690,7 @@ jobs:
   - name: ^gate-tempest-dsvm-ironic-pxe_ipmitool-virtualbmc-src-nv$
     branch: ^(?!stable/liberty).*$
 
-  - name: ^gate-tempest-dsvm-ironic-agent_ipmitool-nv$
+  - name: ^gate-tempest-dsvm-ironic-ipa-wholedisk-agent_ipmitool-tinyipa-nv$
     branch: ^(?!stable/liberty).*$
 
   - name: gate-ironic-python-agent-tox-func
@@ -3080,7 +3080,7 @@ projects:
       - gate-devstack-bashate
       - gate-devstack-unit-tests
       - gate-grenade-dsvm-forward
-      - gate-tempest-dsvm-ironic-agent_ssh-nv
+      - gate-tempest-dsvm-ironic-ipa-wholedisk-agent_ssh-tinyipa-nv
       - gate-devstack-dsvm-updown
       - gate-tempest-dsvm-neutron-identity-v3-only-full-nv
       - gate-swift-dsvm-functional-nv
@@ -7745,19 +7745,19 @@ projects:
     check:
       - gate-tempest-dsvm-ironic-pxe_ssh
       - gate-tempest-dsvm-ironic-pxe_ipa-postgres-nv
-      - gate-tempest-dsvm-ironic-agent_ssh
-      - gate-tempest-dsvm-ironic-agent_ssh-partition-image-nv
-      - gate-tempest-dsvm-ironic-pxe_ipa
+      - gate-tempest-dsvm-ironic-ipa-wholedisk-agent_ssh-tinyipa
+      - gate-tempest-dsvm-ironic-ipa-partition-agent_ssh-tinyipa-nv
+      - gate-tempest-dsvm-ironic-ipa-partition-pxe_ssh-tinyipa
       - gate-ironic-inspector-dsvm-ipa-nv
-      - gate-tempest-dsvm-ironic-pxe_ipmitool-nv
-      - gate-tempest-dsvm-ironic-agent_ipmitool-nv
+      - gate-tempest-dsvm-ironic-ipa-partition-pxe_ipmitool-tinyipa-nv
+      - gate-tempest-dsvm-ironic-ipa-wholedisk-agent_ipmitool-tinyipa-nv
       - gate-grenade-dsvm-ironic
       - gate-tempest-dsvm-ironic-multitenant-network-nv
       - ironic-coverage-db-ubuntu-trusty
       - ironic-coverage-db-ubuntu-xenial
     gate:
-      - gate-tempest-dsvm-ironic-agent_ssh
-      - gate-tempest-dsvm-ironic-pxe_ipa
+      - gate-tempest-dsvm-ironic-ipa-wholedisk-agent_ssh-tinyipa
+      - gate-tempest-dsvm-ironic-ipa-partition-pxe_ssh-tinyipa
       - gate-grenade-dsvm-ironic
       - ironic-coverage-db-ubuntu-trusty
       - ironic-coverage-db-ubuntu-xenial
@@ -7844,22 +7844,24 @@ projects:
       - name: release-notes-jobs
     check:
       - gate-ironic-python-agent-tox-func
-      - gate-tempest-dsvm-ironic-agent_ssh-coreos-src
-      - gate-tempest-dsvm-ironic-agent_ssh-partition-image-coreos-src-nv
-      - gate-tempest-dsvm-ironic-agent_ssh-tinyipa-src
-      - gate-tempest-dsvm-ironic-agent_ssh-partition-image-tinyipa-src-nv
-      - gate-tempest-dsvm-ironic-pxe_ipa-coreos-src
-      - gate-tempest-dsvm-ironic-pxe_ipa-tinyipa-src
-      - gate-tempest-dsvm-ironic-pxe_ipmitool-tinyipa-src-nv
-      - gate-tempest-dsvm-ironic-agent_ipmitool-tinyipa-src-nv
+      - gate-tempest-dsvm-ironic-ipa-wholedisk-agent_ssh-coreos-src
+      - gate-tempest-dsvm-ironic-ipa-partition-agent_ssh-coreos-src-nv
+      - gate-tempest-dsvm-ironic-ipa-wholedisk-agent_ssh-tinyipa-src
+      - gate-tempest-dsvm-ironic-ipa-partition-agent_ssh-tinyipa-src-nv
+      - gate-tempest-dsvm-ironic-ipa-partition-pxe_ssh-tinyipa-src
+      - gate-tempest-dsvm-ironic-ipa-partition-pxe_ssh-coreos-src
+      - gate-tempest-dsvm-ironic-ipa-wholedisk-agent_ipmitool-coreos-src-nv
+      - gate-tempest-dsvm-ironic-ipa-wholedisk-agent_ipmitool-tinyipa-src-nv
+      - gate-tempest-dsvm-ironic-ipa-partition-pxe_ipmitool-tinyipa-src-nv
+      - gate-tempest-dsvm-ironic-ipa-partition-pxe_ipmitool-coreos-src-nv
       - gate-ironic-inspector-dsvm-ipa-src-nv
     gate:
-      - gate-tempest-dsvm-ironic-agent_ssh-coreos-src
-      - gate-tempest-dsvm-ironic-agent_ssh-tinyipa-src
-      - gate-tempest-dsvm-ironic-pxe_ipa-coreos-src
-      - gate-tempest-dsvm-ironic-pxe_ipa-tinyipa-src
+      - gate-tempest-dsvm-ironic-ipa-wholedisk-agent_ssh-coreos-src
+      - gate-tempest-dsvm-ironic-ipa-wholedisk-agent_ssh-tinyipa-src
+      - gate-tempest-dsvm-ironic-ipa-partition-pxe_ssh-coreos-src
+      - gate-tempest-dsvm-ironic-ipa-partition-pxe_ssh-tinyipa-src
     experimental:
-      - gate-tempest-dsvm-ironic-pxe_ipa-tinyipa256-src
+      - gate-tempest-dsvm-ironic-ipa-partition-pxe_ssh-tinyipa256-src
     post:
       - ironic-python-agent-buildimage-coreos
       - ironic-python-agent-buildimage-tinyipa
@@ -9080,7 +9082,7 @@ projects:
       - gate-grenade-dsvm-neutron-dvr-multinode
       - gate-tempest-dsvm-neutron-multinode-full
       - gate-tempest-dsvm-neutron-dvr-multinode-full
-      - gate-tempest-dsvm-ironic-pxe_ipa-nv
+      - gate-tempest-dsvm-ironic-ipa-partition-pxe_ssh-tinyipa
     gate:
       - gate-neutron-dsvm-api
       - gate-tempest-dsvm-neutron-dvr
@@ -9277,7 +9279,7 @@ projects:
     check:
       - gate-nova-tox-db-functional
       - gate-grenade-dsvm-multinode
-      - gate-tempest-dsvm-ironic-pxe_ipa-nv
+      - gate-tempest-dsvm-ironic-ipa-partition-pxe_ssh-tinyipa
       - gate-tempest-dsvm-cells
       - gate-tempest-dsvm-full-devstack-plugin-ceph
       - gate-tempest-dsvm-multinode-full
@@ -13574,7 +13576,7 @@ projects:
       - gate-grenade-dsvm-multinode
       - gate-grenade-dsvm-neutron-multinode
       - gate-grenade-dsvm-neutron
-      - gate-tempest-dsvm-ironic-agent_ssh-nv
+      - gate-tempest-dsvm-ironic-ipa-wholedisk-agent_ssh-tinyipa-nv
       - gate-tempest-dsvm-neutron-full-ssh
       - gate-tempest-dsvm-neutron-identity-v3-only-full-nv
       - gate-tempest-dsvm-full-devstack-plugin-ceph
