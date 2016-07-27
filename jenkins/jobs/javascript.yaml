@@ -65,6 +65,47 @@
               copy-after-failure: true
       - console-log
 
+- job-template:
+    name: '{name}-dsvm-nodejs{version}-npm-run-{command}'
+    node: ubuntu-xenial
+
+    wrappers:
+      - build-timeout:
+          timeout: 40
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - gerrit-git-prep
+      - install-distro-packages
+      - nodejs-install:
+          version: "{version}"
+      - xvfb-install
+      - chrome-install
+      - firefox-install
+      - devstack-checkout
+      - revoke-sudo
+      - xvfb-start
+      - npm-dsvm-run:
+          pre_test_command: 'configure-devstack'
+          post_test_command: "{command}"
+      - assert-no-extra-files
+    publishers:
+      - devstack-logs
+      - scp:
+          site: 'static.openstack.org'
+          files:
+            - target: 'logs/$LOG_PATH'
+              source: 'reports/**'
+              keep-hierarchy: true
+              copy-after-failure: true
+            - target: 'logs/$LOG_PATH'
+              source: 'karma.subunit'
+              keep-hierarchy: false
+              copy-after-failure: true
+      - console-log
+
 # Builds and uploads a tarball using NPM.
 - job-template:
     name: '{name}-nodejs{version}-npm-publish-tarball'
