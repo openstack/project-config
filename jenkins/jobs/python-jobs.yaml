@@ -23,6 +23,7 @@
               source: 'cover/**'
               keep-hierarchy: true
               copy-after-failure: true
+      - test-results
       - console-log
 
     node: '{node}'
@@ -59,6 +60,7 @@
               source: 'cover/**'
               keep-hierarchy: true
               copy-after-failure: true
+      - test-results
       - console-log
 
     node: '{node}'
@@ -76,6 +78,7 @@
           env: pep8
 
     publishers:
+      - test-results
       - console-log
 
     node: '{node}'
@@ -93,6 +96,7 @@
           env: pylint
 
     publishers:
+      - test-results
       - console-log
 
     node: ubuntu-trusty
@@ -354,6 +358,7 @@
 
     publishers:
       - upload-sphinx-draft
+      - test-results
       - console-log
 
     node: '{node}'
@@ -488,6 +493,7 @@
       - wheel:
           project: '{name}'
           site: '{tarball-site}'
+      - test-results
       - console-log
 
 - job-template:
@@ -512,6 +518,7 @@
       - tarball:
           project: '{name}'
           site: '{tarball-site}'
+      - test-results
       - console-log
 
 - job-template:
@@ -529,6 +536,7 @@
           /usr/local/jenkins/slave_scripts/project-requirements-change.py $ZUUL_BRANCH
 
     publishers:
+      - test-results
       - console-log
 
 
@@ -574,7 +582,8 @@
           $TOOLS_DIR/announce.sh $WORKSPACE $VERSION
 
     publishers:
-        - console-log
+      - test-results
+      - console-log
 
 - job-group:
     name: periodic-python-jobs-with-oslo-master
