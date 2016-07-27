@@ -265,11 +265,13 @@ project-templates:
     check:
       - 'gate-{name}-docs-ubuntu-trusty'
       - 'gate-{name}-docs-ubuntu-xenial'
-      - 'gate-{name}-linters'
+      - 'gate-{name}-linters-ubuntu-trusty'
+      - 'gate-{name}-linters-ubuntu-xenial'
     gate:
       - 'gate-{name}-docs-ubuntu-trusty'
       - 'gate-{name}-docs-ubuntu-xenial'
-      - 'gate-{name}-linters'
+      - 'gate-{name}-linters-ubuntu-trusty'
+      - 'gate-{name}-linters-ubuntu-xenial'
 
   - name: ansible-role-functional-jobs-centos7
     check:
@@ -329,9 +331,11 @@ project-templates:
 
   - name: fuel-ccp-component
     check:
-      - 'gate-{name}-linters'
+      - 'gate-{name}-linters-ubuntu-trusty'
+      - 'gate-{name}-linters-ubuntu-xenial'
     gate:
-      - 'gate-{name}-linters'
+      - 'gate-{name}-linters-ubuntu-trusty'
+      - 'gate-{name}-linters-ubuntu-xenial'
 
   - name: python-jobs
     check:
@@ -441,13 +445,15 @@ project-templates:
     check:
       - 'gate-{name}-docs-ubuntu-trusty'
       - 'gate-{name}-docs-ubuntu-xenial'
-      - 'gate-{name}-linters'
+      - 'gate-{name}-linters-ubuntu-trusty'
+      - 'gate-{name}-linters-ubuntu-xenial'
       - 'gate-{name}-python27-ubuntu-trusty'
       - 'gate-{name}-python27-ubuntu-xenial'
     gate:
       - 'gate-{name}-docs-ubuntu-trusty'
       - 'gate-{name}-docs-ubuntu-xenial'
-      - 'gate-{name}-linters'
+      - 'gate-{name}-linters-ubuntu-trusty'
+      - 'gate-{name}-linters-ubuntu-xenial'
       - 'gate-{name}-python27-ubuntu-trusty'
       - 'gate-{name}-python27-ubuntu-xenial'
     post:
@@ -2052,7 +2058,7 @@ jobs:
       - 'tools/jenkins-projects-checks.py'
       - 'tox.ini'
 
-  - name: gate-project-config-linters
+  - name: ^gate-project-config-linters-ubuntu-(trusty|xenial)$
     files:
       - '^.*\.sh$'
       - '^.*\.py$'
@@ -2112,7 +2118,7 @@ jobs:
   - name: gate-tripleo-ci-centos-7-ovb-containers
     voting: false
 
-  - name: gate-tripleo-quickstart-linters
+  - name: ^gate-tripleo-quickstart-linters-ubuntu-(trusty|xenial)$
     voting: false
 
   - name: ^gate-.*-tox-doc-publish-checkbuild.*$
@@ -2870,7 +2876,7 @@ jobs:
   - name: gate-murano-agent-python34
     branch: ^(?!stable/(?:liberty|mitaka)).*$
 
-  - name: gate-murano-apps-linters
+  - name: ^gate-murano-apps-linters-ubuntu-(trusty|xenial)$
     voting: false
 
   - name: gate-networking-nec-python34
@@ -2894,7 +2900,7 @@ jobs:
 
   # skip all openstack-ansible jobs except the releasenotes/docs/linters
   # jobs for rst/doc/releasenotes related files
-  - name: ^gate-openstack-ansible(?!.*(-docs|-releasenotes|-linters)).*$
+  - name: ^gate-openstack-ansible(?!.*(-docs|-releasenotes|-linters-ubuntu-(trusty|xenial))).*$
     skip-if:
       - project: ^openstack/openstack-ansible(?!-specs).*$
         all-files-match-any:
@@ -3764,7 +3770,8 @@ projects:
       - gate-project-config-gerrit
       - gate-project-config-grafyaml
       - gate-project-config-layout
-      - gate-project-config-linters
+      - gate-project-config-linters-ubuntu-trusty
+      - gate-project-config-linters-ubuntu-xenial
       - gate-project-config-irc-access
       - gate-project-config-jenkins-project
       - gate-project-config-nodepool
@@ -3775,7 +3782,8 @@ projects:
       - gate-project-config-gerrit
       - gate-project-config-grafyaml
       - gate-project-config-layout
-      - gate-project-config-linters
+      - gate-project-config-linters-ubuntu-trusty
+      - gate-project-config-linters-ubuntu-xenial
       - gate-project-config-irc-access
       - gate-project-config-nodepool
       - gate-project-config-jenkins-project
@@ -3795,11 +3803,13 @@ projects:
     check:
       - gate-project-config-compare-xml
       - gate-project-config-layout
-      - gate-project-config-example-linters
+      - gate-project-config-example-linters-ubuntu-trusty
+      - gate-project-config-example-linters-ubuntu-xenial
       - gate-project-config-jenkins-project
     gate:
       - gate-project-config-layout
-      - gate-project-config-example-linters
+      - gate-project-config-example-linters-ubuntu-trusty
+      - gate-project-config-example-linters-ubuntu-xenial
       - gate-project-config-jenkins-project
 
   - name: openstack-infra/publications
@@ -4585,10 +4595,12 @@ projects:
       - name: infra-puppet-apply-jobs
       - name: infra-publish-jobs
     check:
-      - gate-system-config-linters
+      - gate-system-config-linters-ubuntu-trusty
+      - gate-system-config-linters-ubuntu-xenial
       - gate-system-config-puppet-syntax
     gate:
-      - gate-system-config-linters
+      - gate-system-config-linters-ubuntu-trusty
+      - gate-system-config-linters-ubuntu-xenial
       - gate-system-config-puppet-syntax
 
   - name: openstack-infra/tripleo-ci
@@ -8727,7 +8739,8 @@ projects:
     template:
       - name: merge-check
     check:
-      - gate-murano-apps-linters
+      - gate-murano-apps-linters-ubuntu-trusty
+      - gate-murano-apps-linters-ubuntu-xenial
     gate:
       - noop
 
@@ -9516,12 +9529,14 @@ projects:
     check:
       - gate-openstack-ansible-docs-ubuntu-trusty
       - gate-openstack-ansible-docs-ubuntu-xenial
-      - gate-openstack-ansible-linters
+      - gate-openstack-ansible-linters-ubuntu-trusty
+      - gate-openstack-ansible-linters-ubuntu-xenial
       - gate-openstack-ansible-dsvm-commit
     gate:
       - gate-openstack-ansible-docs-ubuntu-trusty
       - gate-openstack-ansible-docs-ubuntu-xenial
-      - gate-openstack-ansible-linters
+      - gate-openstack-ansible-linters-ubuntu-trusty
+      - gate-openstack-ansible-linters-ubuntu-xenial
       - gate-openstack-ansible-dsvm-commit
     experimental:
       - gate-openstack-ansible-ansible-func-centos-7-nv
@@ -9630,11 +9645,13 @@ projects:
     check:
       - gate-openstack-ansible-ops-docs-ubuntu-trusty
       - gate-openstack-ansible-ops-docs-ubuntu-xenial
-      - gate-openstack-ansible-ops-linters
+      - gate-openstack-ansible-ops-linters-ubuntu-trusty
+      - gate-openstack-ansible-ops-linters-ubuntu-xenial
     gate:
       - gate-openstack-ansible-ops-docs-ubuntu-trusty
       - gate-openstack-ansible-ops-docs-ubuntu-xenial
-      - gate-openstack-ansible-ops-linters
+      - gate-openstack-ansible-ops-linters-ubuntu-trusty
+      - gate-openstack-ansible-ops-linters-ubuntu-xenial
 
   - name: openstack/openstack-ansible-os_aodh
     template:
@@ -9936,11 +9953,13 @@ projects:
     check:
       - gate-openstack-ansible-plugins-docs-ubuntu-trusty
       - gate-openstack-ansible-plugins-docs-ubuntu-xenial
-      - gate-openstack-ansible-plugins-linters
+      - gate-openstack-ansible-plugins-linters-ubuntu-trusty
+      - gate-openstack-ansible-plugins-linters-ubuntu-xenial
     gate:
       - gate-openstack-ansible-plugins-docs-ubuntu-trusty
       - gate-openstack-ansible-plugins-docs-ubuntu-xenial
-      - gate-openstack-ansible-plugins-linters
+      - gate-openstack-ansible-plugins-linters-ubuntu-trusty
+      - gate-openstack-ansible-plugins-linters-ubuntu-xenial
     release:
       - openstack-ansible-plugins-announce-release
 
@@ -13982,7 +14001,8 @@ projects:
     template:
       - name: merge-check
     check:
-      - gate-tripleo-quickstart-linters
+      - gate-tripleo-quickstart-linters-ubuntu-trusty
+      - gate-tripleo-quickstart-linters-ubuntu-xenial
     gate:
       - noop
 
