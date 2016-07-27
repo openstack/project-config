@@ -455,31 +455,45 @@ project-templates:
 
   - name: grenade
     check:
-      - 'gate-grenade-dsvm'
+      - 'gate-grenade-dsvm-ubuntu-trusty'
+      - 'gate-grenade-dsvm-ubuntu-xenial'
     gate:
-      - 'gate-grenade-dsvm'
+      - 'gate-grenade-dsvm-ubuntu-trusty'
+      - 'gate-grenade-dsvm-ubuntu-xenial'
     experimental:
-      - 'gate-grenade-dsvm-neutron'
+      - 'gate-grenade-dsvm-neutron-ubuntu-trusty'
+      - 'gate-grenade-dsvm-neutron-ubuntu-xenial'
 
   - name: integrated-gate
     check:
-      - 'gate-tempest-dsvm-full'
-      - 'gate-tempest-dsvm-postgres-full'
-      - 'gate-tempest-dsvm-neutron-full'
+      - 'gate-tempest-dsvm-full-ubuntu-trusty'
+      - 'gate-tempest-dsvm-postgres-full-ubuntu-trusty'
+      - 'gate-tempest-dsvm-neutron-full-ubuntu-trusty'
+      - 'gate-tempest-dsvm-full-ubuntu-xenial'
+      - 'gate-tempest-dsvm-postgres-full-ubuntu-xenial'
+      - 'gate-tempest-dsvm-neutron-full-ubuntu-xenial'
     gate:
-      - 'gate-tempest-dsvm-full'
-      - 'gate-tempest-dsvm-postgres-full'
-      - 'gate-tempest-dsvm-neutron-full'
+      - 'gate-tempest-dsvm-full-ubuntu-trusty'
+      - 'gate-tempest-dsvm-postgres-full-ubuntu-trusty'
+      - 'gate-tempest-dsvm-neutron-full-ubuntu-trusty'
+      - 'gate-tempest-dsvm-full-ubuntu-xenial'
+      - 'gate-tempest-dsvm-postgres-full-ubuntu-xenial'
+      - 'gate-tempest-dsvm-neutron-full-ubuntu-xenial'
 
   - name: integrated-gate-neutron
     check:
-      - 'gate-tempest-dsvm-neutron-full'
-      - 'gate-grenade-dsvm-neutron'
+      - 'gate-tempest-dsvm-neutron-full-ubuntu-trusty'
+      - 'gate-grenade-dsvm-neutron-ubuntu-trusty'
+      - 'gate-tempest-dsvm-neutron-full-ubuntu-xenial'
+      - 'gate-grenade-dsvm-neutron-ubuntu-xenial'
     gate:
-      - 'gate-tempest-dsvm-neutron-full'
-      - 'gate-grenade-dsvm-neutron'
+      - 'gate-tempest-dsvm-neutron-full-ubuntu-trusty'
+      - 'gate-grenade-dsvm-neutron-ubuntu-trusty'
+      - 'gate-tempest-dsvm-neutron-full-ubuntu-xenial'
+      - 'gate-grenade-dsvm-neutron-ubuntu-xenial'
     experimental:
-      - 'gate-tempest-dsvm-neutron-pg-full'
+      - 'gate-tempest-dsvm-neutron-pg-full-ubuntu-trusty'
+      - 'gate-tempest-dsvm-neutron-pg-full-ubuntu-xenial'
 
   - name: lib-forward-testing
     check:
@@ -1103,6 +1117,11 @@ jobs:
     branch: ^stable/(liberty|mitaka)$
   - name: ^.*-ubuntu-xenial$
     branch: ^(?!stable/(liberty|mitaka)).*$
+  # These are tests for the designated branch run against
+  # projects that only have a master branch therefore we need
+  # to run ubuntu-trusty jobs against master.
+  - name: ^.*-ubuntu-trusty-(liberty|mitaka)(-nv)?$
+    branch: master
   # Restrict python35 testing to >= Newton.
   - name: ^gate-.*-python35(-db)?(-nv)?$
     branch: ^(?!stable/(liberty|mitaka)).*$
@@ -1552,7 +1571,7 @@ jobs:
       - '^tox.ini'
       - '^upper-constraints.txt'
 
-  - name: gate-tempest-dsvm-full
+  - name: gate-tempest-dsvm-full-ubuntu-xenial
     queue-name: integrated
 
   - name: ^gate-rally-dsvm-rally-.*$
@@ -1655,7 +1674,7 @@ jobs:
     branch: ^(?!stable/liberty).*$
     voting: false
 
-  - name: gate-tempest-dsvm-neutron-pg-full
+  - name: ^gate-tempest-dsvm-neutron-pg-full-ubuntu-(trusty|xenial)
     voting: false
 
     # BUG #1290562 pypy does not work with new setuptools, so is breaking
@@ -3084,7 +3103,8 @@ projects:
       - gate-devstack-dsvm-updown
       - gate-tempest-dsvm-neutron-identity-v3-only-full-nv
       - gate-swift-dsvm-functional-nv
-      - gate-grenade-dsvm-neutron
+      - gate-grenade-dsvm-neutron-ubuntu-trusty
+      - gate-grenade-dsvm-neutron-ubuntu-xenial
       - gate-tempest-dsvm-multinode-full
       - gate-tempest-dsvm-neutron-multinode-full
       - gate-grenade-dsvm-multinode
@@ -3124,17 +3144,21 @@ projects:
     template:
       - name: merge-check
     check:
-      - gate-grenade-dsvm
+      - gate-grenade-dsvm-ubuntu-trusty
+      - gate-grenade-dsvm-ubuntu-xenial
+      - gate-grenade-dsvm-neutron-ubuntu-trusty
+      - gate-grenade-dsvm-neutron-ubuntu-xenial
       - gate-grenade-dsvm-forward
-      - gate-grenade-dsvm-neutron
       - gate-grenade-dsvm-heat-nv
       - gate-grenade-dsvm-multinode
       - gate-grenade-dsvm-neutron-multinode
       - gate-grenade-publish-docs
       - gate-grenade-dsvm-ironic-nv
     gate:
-      - gate-grenade-dsvm
-      - gate-grenade-dsvm-neutron
+      - gate-grenade-dsvm-ubuntu-trusty
+      - gate-grenade-dsvm-ubuntu-xenial
+      - gate-grenade-dsvm-neutron-ubuntu-trusty
+      - gate-grenade-dsvm-neutron-ubuntu-xenial
       - gate-grenade-dsvm-multinode
       - gate-grenade-dsvm-neutron-multinode
       - gate-grenade-publish-docs
@@ -3317,12 +3341,12 @@ projects:
       - gate-grenade-dsvm-neutron-multinode
       - gate-neutron-dsvm-functional-nv
       - gate-swift-dsvm-functional-nv
-      - gate-tempest-dsvm-full-liberty-nv
-      - gate-tempest-dsvm-neutron-full-liberty-nv
-      - gate-tempest-dsvm-postgres-full-liberty-nv
-      - gate-tempest-dsvm-full-mitaka-nv
-      - gate-tempest-dsvm-neutron-full-mitaka-nv
-      - gate-tempest-dsvm-postgres-full-mitaka-nv
+      - gate-tempest-dsvm-full-ubuntu-trusty-liberty-nv
+      - gate-tempest-dsvm-neutron-full-ubuntu-trusty-liberty-nv
+      - gate-tempest-dsvm-postgres-full-ubuntu-trusty-liberty-nv
+      - gate-tempest-dsvm-full-ubuntu-trusty-mitaka-nv
+      - gate-tempest-dsvm-neutron-full-ubuntu-trusty-mitaka-nv
+      - gate-tempest-dsvm-postgres-full-ubuntu-trusty-mitaka-nv
       - gate-tempest-dsvm-platform-centos7-nv
       - gate-tempest-dsvm-multinode-full
       - gate-tempest-dsvm-neutron-multinode-full
@@ -3331,10 +3355,6 @@ projects:
       - gate-grenade-dsvm-multinode
       - gate-grenade-dsvm-neutron-multinode
     experimental:
-      - experimental-grenade-dsvm
-      - experimental-tempest-dsvm-full
-      - experimental-tempest-dsvm-neutron-full
-      - experimental-tempest-dsvm-postgres-full
       - gate-grenade-dsvm-forward
       - gate-tempest-dsvm-neutron-dvr-multinode-full
 
@@ -7629,20 +7649,19 @@ projects:
       - name: translation-jobs-mitaka
       - name: release-notes-jobs
       - name: nodejs4-jobs
+      - name: grenade
     check:
       - gate-horizon-tox-py27dj18
       - gate-horizon-tox-py27dj19
       - gate-horizon-tox-py27dj110
       - gate-horizon-dsvm-integration
       - gate-horizon-selenium-headless
-      - gate-grenade-dsvm
       - gate-horizon-dsvm-tempest-plugin
     gate:
       - gate-horizon-tox-py27dj18
       - gate-horizon-tox-py27dj19
       - gate-horizon-dsvm-integration
       - gate-horizon-selenium-headless
-      - gate-grenade-dsvm
       - gate-horizon-dsvm-tempest-plugin
     post:
       - horizon-coverage-ubuntu-trusty
@@ -9085,7 +9104,8 @@ projects:
       - gate-tempest-dsvm-neutron-dvr
       - gate-tempest-dsvm-neutron-identity-v3-only-full-nv
       - gate-tempest-dsvm-neutron-linuxbridge
-      - gate-tempest-dsvm-neutron-pg-full
+      - gate-tempest-dsvm-neutron-pg-full-ubuntu-trusty
+      - gate-tempest-dsvm-neutron-pg-full-ubuntu-xenial
       - gate-neutron-lbaasv2-dsvm-minimal
       - gate-grenade-dsvm-neutron-multinode
       - gate-grenade-dsvm-neutron-dvr-multinode
@@ -13335,17 +13355,21 @@ projects:
     check:
       - gate-swift-tox-func
       - gate-swift-tox-func-in-process-fast-post
-      - gate-tempest-dsvm-full
+      - gate-tempest-dsvm-full-ubuntu-trusty
+      - gate-tempest-dsvm-full-ubuntu-xenial
       - gate-tempest-dsvm-neutron-identity-v3-only-full-nv
-      - gate-grenade-dsvm
+      - gate-grenade-dsvm-ubuntu-trusty
+      - gate-grenade-dsvm-ubuntu-xenial
       - gate-swift-dsvm-functional
       - gate-swift-tox-bandit
       - gate-swift-dsvm-functional-identity-v3-only-nv
     gate:
       - gate-swift-tox-func
       - gate-swift-tox-func-in-process-fast-post
-      - gate-tempest-dsvm-full
-      - gate-grenade-dsvm
+      - gate-tempest-dsvm-full-ubuntu-trusty
+      - gate-tempest-dsvm-full-ubuntu-xenial
+      - gate-grenade-dsvm-ubuntu-trusty
+      - gate-grenade-dsvm-ubuntu-xenial
       - gate-swift-dsvm-functional
     post:
       - swift-coverage-ubuntu-trusty
@@ -13584,7 +13608,7 @@ projects:
     check:
       - gate-grenade-dsvm-multinode
       - gate-grenade-dsvm-neutron-multinode
-      - gate-grenade-dsvm-neutron
+      - gate-grenade-dsvm-neutron-ubuntu-xenial
       - gate-tempest-dsvm-ironic-ipa-wholedisk-agent_ssh-tinyipa-nv
       - gate-tempest-dsvm-neutron-full-ssh
       - gate-tempest-dsvm-neutron-identity-v3-only-full-nv
@@ -13596,13 +13620,13 @@ projects:
       - gate-tempest-dsvm-layer4
       - gate-tempest-dsvm-neutron-dvr
       # mitaka compat jobs for tempest master
-      - gate-tempest-dsvm-full-mitaka
-      - gate-tempest-dsvm-postgres-full-mitaka
-      - gate-tempest-dsvm-neutron-full-mitaka
+      - gate-tempest-dsvm-full-ubuntu-trusty-mitaka
+      - gate-tempest-dsvm-postgres-full-ubuntu-trusty-mitaka
+      - gate-tempest-dsvm-neutron-full-ubuntu-trusty-mitaka
       # liberty compat jobs for tempest master
-      - gate-tempest-dsvm-full-liberty
-      - gate-tempest-dsvm-postgres-full-liberty
-      - gate-tempest-dsvm-neutron-full-liberty
+      - gate-tempest-dsvm-full-ubuntu-trusty-liberty
+      - gate-tempest-dsvm-postgres-full-ubuntu-trusty-liberty
+      - gate-tempest-dsvm-neutron-full-ubuntu-trusty-liberty
     gate:
       - gate-tempest-dsvm-layer4
       - gate-grenade-dsvm-multinode
@@ -13635,12 +13659,12 @@ projects:
     periodic-stable:
       # add periodic tempest jobs even when they run as compat jobs
       # on each tempest master check for stable-maint visiblity
-      - periodic-tempest-dsvm-full-liberty
-      - periodic-tempest-dsvm-neutron-full-liberty
-      - periodic-tempest-dsvm-postgres-full-liberty
-      - periodic-tempest-dsvm-full-mitaka
-      - periodic-tempest-dsvm-neutron-full-mitaka
-      - periodic-tempest-dsvm-postgres-full-mitaka
+      - periodic-tempest-dsvm-full-ubuntu-trusty-liberty
+      - periodic-tempest-dsvm-neutron-full-ubuntu-trusty-liberty
+      - periodic-tempest-dsvm-postgres-full-ubuntu-trusty-liberty
+      - periodic-tempest-dsvm-full-ubuntu-trusty-mitaka
+      - periodic-tempest-dsvm-neutron-full-ubuntu-trusty-mitaka
+      - periodic-tempest-dsvm-postgres-full-ubuntu-trusty-mitaka
     periodic:
       - periodic-tempest-dsvm-full-test-accounts-master
       - periodic-tempest-dsvm-neutron-full-test-accounts-master
@@ -14362,5 +14386,7 @@ projects:
 
   - name: z/tempest
     gate:
-      - gate-tempest-dsvm-full
-      - gate-tempest-dsvm-postgres-full
+      - gate-tempest-dsvm-full-ubuntu-trusty
+      - gate-tempest-dsvm-full-ubuntu-xenial
+      - gate-tempest-dsvm-postgres-full-ubuntu-trusty
+      - gate-tempest-dsvm-postgres-full-ubuntu-xenial
