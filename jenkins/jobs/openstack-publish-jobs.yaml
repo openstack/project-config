@@ -1,6 +1,6 @@
 - job-template:
-    name: '{name}-docs'
-    node: ubuntu-trusty
+    name: '{name}-docs-{node}'
+    node: '{node}'
 
     builders:
       - print-template-name:
@@ -139,7 +139,10 @@
 - job-group:
     name: openstack-publish-jobs
     jobs:
-      - '{name}-docs'
+      - '{name}-docs-{node}':
+    node:
+      - ubuntu-trusty
+      - ubuntu-xenial
 
 - job-group:
     name: openstack-client-publish-jobs
