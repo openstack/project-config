@@ -2106,6 +2106,9 @@ jobs:
   - name: gate-tripleo-ci-centos-7-ovb-containers
     voting: false
 
+  - name: gate-tripleo-quickstart-linters
+    voting: false
+
   - name: ^gate-.*-tox-doc-publish-checkbuild.*$
     success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/publish-docs/
 
@@ -13933,7 +13936,10 @@ projects:
   - name: openstack/tripleo-quickstart
     template:
       - name: merge-check
-      - name: noop-jobs
+    check:
+      - gate-tripleo-quickstart-linters
+    gate:
+      - noop
 
   - name: openstack/tripleo-specs
     template:
