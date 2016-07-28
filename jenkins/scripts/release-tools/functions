@@ -85,13 +85,29 @@ defaultbranch=$branch"
 function clone_repo {
     typeset repo="$1"
     typeset branch="$2"
-    if [ -z "$branch" ]; then
-        branch="master"
-    fi
+
     title "Cloning $repo"
-    (zuul-cloner --branch "$branch" git://git.openstack.org $repo \
-        && (cd $repo && git review -s && git remote -v update \
-        && git fetch -v --tags))
-    _retval=$?
-    return $_retval
+
+    set -e
+
+    # Create the parent directory in case it doesn't already exist.
+    mkdir -p $(dirname $repo)
+
+    # Clone into openstack/foo instead of just foo.
+    git clone git://git.openstack.org/$repo $repo
+
+    # Configure git-review so we can propose patches to the repo if
+    # needed.
+    (cd $repo && git review -s)
+
+    # Make sure we have all of the existing tags so we can refer to
+    # them for building the release notes.
+    (cd $repo && git fetch -v --tags)
+
+    # Make sure the active branch is set correctly.
+    if [ ! -z "$branch" ]; then
+        (cd $repo && git checkout $branch)
+    fi
+
+    return 0
 }
