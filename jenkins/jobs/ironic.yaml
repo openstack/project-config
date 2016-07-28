@@ -113,6 +113,13 @@
             export DEVSTACK_GATE_TEMPEST_REGEX=baremetal_multitenancy
 
 - builder:
+    name: ironic-multinode
+    builders:
+      - ironic-extra-vars:
+          script: |
+            export DEVSTACK_GATE_TOPOLOGY="multinode"
+
+- builder:
     name: ironic-inspector-enabled
     builders:
       - ironic-extra-vars:
@@ -536,6 +543,37 @@
           ramdisk-type: '{ramdisk-type}'
       - ironic-tempest-regex:
           tempest-regex: ironic
+      - devstack-virtual-ironic:
+          build-ramdisk: '{src}'
+          deploy_driver: '{driver}'
+          image-type: '{image-type}'
+          branch-override: '{branch-override}'
+          bm-vm-count: 1
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-tempest-dsvm-ironic-ipa-{image-type}-{driver}-{ramdisk-type}{src}-multinode{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 75
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - ironic-deploy-with-IPA:
+          ramdisk-type: '{ramdisk-type}'
+      - ironic-tempest-regex:
+          tempest-regex: ironic
+      - ironic-multinode
       - devstack-virtual-ironic:
           build-ramdisk: '{src}'
           deploy_driver: '{driver}'
