@@ -148,6 +148,7 @@ labels:
     ready-script: configure_mirror.sh
     min-ready: 6
     providers:
+      - name: tripleo-test-cloud-rh1
       - name: tripleo-test-cloud-rh2
 providers:
   - name: rax-dfw
@@ -618,6 +619,23 @@ providers:
       - name: centos-7
         min-ram: 8000
         name-filter: 'm2.medium'
+        diskimage: centos-7
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+  - name: tripleo-test-cloud-rh1
+    region-name: 'regionOne'
+    cloud: tripleo-test-cloud-rh1
+    boot-timeout: 120
+    max-servers: 2
+    rate: 0.001
+    clean-floating-ips: true
+    networks:
+      - net-label: private
+    images:
+      - name: centos-7
+        min-ram: 6144
+        name-filter: undercloud
         diskimage: centos-7
         username: jenkins
         private-key: /home/nodepool/.ssh/id_rsa
