@@ -1439,6 +1439,11 @@ jobs:
         all-files-match-any:
           - ^.*\.rst$
           - ^doc/.*$
+
+  # tripleo multinode and undercloud jobs were introduced during Newton cycle.
+  - name: ^gate-tripleo-ci-.*(multinode|undercloud).*$
+    branch: ^(?!stable/(liberty|mitaka)).*$
+
   # Skip non-doc jobs for doc-only networking-midonet changes.  Since
   # doc/source/conf.py is checked by networking-midonet-pep8, that job
   # should not be skipped.
