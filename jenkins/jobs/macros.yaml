@@ -158,6 +158,59 @@
           /usr/local/jenkins/slave_scripts/gerrit-git-prep.sh https://review.openstack.org git://git.openstack.org
 
 - builder:
+    name: constraints-git-prep
+    builders:
+      - shell: |
+          #!/bin/bash -xe
+
+          # No need to copy for openstack/requirements
+          if [[ "$ZUUL_PROJECT" == "openstack/requirements" ]]; then
+              exit 0
+          fi
+
+          # Check out requirements repository for coresponding branch
+          REQS_DIR=`mktemp -d`
+          function cleanup {
+              rm -rf $REQS_DIR
+          }
+          trap cleanup EXIT
+          export ZUUL_REF=""
+          export ZUUL_CHANGE=""
+          export ZUUL_PROJECT="openstack/requirements"
+          pushd $REQS_DIR
+          /usr/local/jenkins/slave_scripts/gerrit-git-prep.sh https://review.openstack.org git://git.openstack.org
+          popd
+          cp $REQS_DIR/upper-constraints.txt ./
+
+
+- builder:
+    name: constraints-branch-git-prep
+    builders:
+      - shell: |
+          #!/bin/bash -xe
+
+          # No need to copy for openstack/requirements
+          if [[ "$ZUUL_PROJECT" == "openstack/requirements" ]]; then
+              exit 0
+          fi
+
+          # Check out requirements repository for coresponding branch
+          REQS_DIR=`mktemp -d`
+          function cleanup {{
+              rm -rf $REQS_DIR
+          }}
+          trap cleanup EXIT
+          export BRANCH={branch}
+          export ZUUL_REF=""
+          export ZUUL_CHANGE=""
+          export ZUUL_PROJECT="openstack/requirements"
+          pushd $REQS_DIR
+          /usr/local/jenkins/slave_scripts/gerrit-git-prep.sh https://review.openstack.org git://git.openstack.org
+          popd
+          cp $REQS_DIR/upper-constraints.txt ./
+
+
+- builder:
     name: zuul-clone
     builders:
       - shell: |
