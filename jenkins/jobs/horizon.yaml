@@ -1,5 +1,5 @@
-- job:
-    name: gate-horizon-dsvm-integration
+- job-template:
+    name: 'gate-horizon-dsvm-integration-{testtype}'
     node: ubuntu-trusty
 
     wrappers:
@@ -22,16 +22,16 @@
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_SETTINGS=/opt/stack/new/horizon/tools/gate/integration/devstack_gate_rc
 
-          function pre_test_hook {
+          function pre_test_hook {{
               cd /opt/stack/new/horizon/tools/gate/integration
-              ./pre_test_hook.sh
-          }
+              ./pre_test_hook.sh '{testtype}'
+          }}
           export -f pre_test_hook
 
-          function post_test_hook {
+          function post_test_hook {{
               cd /opt/stack/new/horizon/tools/gate/integration
               ./post_test_hook.sh
-          }
+          }}
           export -f post_test_hook
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
@@ -53,6 +53,14 @@
               source: 'test_reports/**'
               keep-hierarchy: true
               copy-after-failure: true
+
+- job-group:
+    name: 'horizon-dsvm-integration-jobs'
+    jobs:
+      - 'gate-horizon-dsvm-integration-{testtype}':
+          testtype: 'current'
+      - 'gate-horizon-dsvm-integration-{testtype}':
+          testtype: 'deprecated'
 
 - job:
     name: gate-horizon-selenium-headless
