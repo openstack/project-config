@@ -23,15 +23,6 @@ function lp_project_to_repo {
     fi
 }
 
-function title {
-    echo
-    if [ -t 1 ]; then
-        echo "$(tput bold)$(tput setaf 1)[ $1 ]$(tput sgr0)"
-    else
-        echo "[ $1 ]"
-    fi
-}
-
 
 function _cleanup_tmp {
     rm -rf $MYTMPDIR
@@ -67,7 +58,7 @@ function get_last_tag {
 function update_gitreview {
     typeset branch="$1"
 
-    title "Updating .gitreview"
+    echo "Updating .gitreview"
     git checkout $branch
     # Remove a trailing newline, if present, to ensure consistent
     # formatting when we add the defaultbranch line next.
@@ -85,8 +76,6 @@ defaultbranch=$branch"
 function clone_repo {
     typeset repo="$1"
     typeset branch="$2"
-
-    title "Cloning $repo"
 
     set -e
 
