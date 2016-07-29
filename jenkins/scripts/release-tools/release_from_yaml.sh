@@ -64,7 +64,7 @@ RELEASE_META=$(git show --format=full --show-notes=review $parent | egrep -i '(A
 
 $TOOLSDIR/list_deliverable_changes.py -r $RELEASES_REPO $DELIVERABLES \
 | while read deliverable series version repo hash announce_to pypi first_full; do
-    title "$repo $series $version $hash $announce_to"
+    echo "$deliverable $series $version $repo $hash $announce_to $pypi $first_full"
     # FIXME(dhellmann): While we work out the kinks in the job, we
     # only want to actually apply the tags to the release-test
     # repository. When we're confident that it is working correctly,

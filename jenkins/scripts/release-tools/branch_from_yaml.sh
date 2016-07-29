@@ -45,7 +45,7 @@ DELIVERABLES="$@"
 
 $TOOLSDIR/list_deliverable_changes.py -r $RELEASES_REPO $DELIVERABLES \
 | while read deliverable ignore_series version repo ignore_hash ignore_announce_to pypi ignore_first_full; do
-    title "$repo $series $version"
+    echo "$deliverable $version $repo"
     $TOOLSDIR/make_stable_branch.sh $SERIES $repo $version
 done
 

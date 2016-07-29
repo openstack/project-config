@@ -64,7 +64,7 @@ TARGETSHA=`git log -1 $SHA --format='%H'`
 # Determine the most recent tag before we add the new one.
 PREVIOUS=$(get_last_tag $TARGETSHA)
 
-title "Tagging $TARGETSHA as $VERSION"
+echo "Tagging $TARGETSHA as $VERSION"
 if git show-ref "$VERSION"; then
     echo "$REPO already has a version $VERSION tag"
     # Reset the notion of "previous" to the version associated with
@@ -85,7 +85,6 @@ meta:pypi: $INCLUDE_PYPI
 meta:first: $FIRST_FULL
 $EXTRA_METADATA
 "
-    echo "Tag message is '$TAGMSG'"
     git tag -m "$TAGMSG" -s "$VERSION" $TARGETSHA
     git push gerrit $VERSION
 fi
@@ -94,7 +93,6 @@ fi
 # so ignore failures.
 set +e
 
-title "Adding comments to fixed bugs"
 BUGS=$(git log $PREVIOUS..$VERSION | egrep -i "Closes(.| )Bug:" | egrep -o "[0-9]+")
 if [[ -z "$BUGS" ]]; then
     echo "No bugs found $PREVIOUS .. $VERSION"
@@ -107,7 +105,7 @@ fi
 
 # Try to propose a constraints update for libraries.
 if [[ $INCLUDE_PYPI == "yes" ]]; then
-    title "Proposing constraints update"
+    echo "Proposing constraints update"
     dist_name=$(python setup.py --name)
     if [[ -z "$dist_name" ]]; then
         echo "Could not determine the name of the constraint to update"
