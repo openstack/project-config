@@ -1,8 +1,8 @@
 # this job template requires a bootstrap.sh script (which installs chefdk and other dependencies)
 # and a Rakefile with the tests that should be executed in the cookbook
 - job-template:
-    name: gate-{name}-chef-rake
-    node: ubuntu-trusty
+    name: 'gate-{name}-chef-rake'
+    node: 'ubuntu-xenial'
 
     wrappers:
       - build-timeout:
@@ -25,7 +25,7 @@
 # and a Rakefile with the integration tests that should be executed
 # sudo privileges for jenkins are not revoked, since they are needed during the chef run executed for integration testing
 - job-template:
-    name: gate-{node}-{name}-chef-rake-integration-nv
+    name: gate-{name}-chef-rake-integration-{node}-nv
     node: '{node}'
 
     wrappers:
@@ -46,7 +46,7 @@
       - console-log
 
 - job-template:
-    name: periodic-{node}-{name}-chef-rake-integration
+    name: periodic-{name}-chef-rake-integration-{node}
     node: '{node}'
 
     wrappers:
@@ -71,7 +71,7 @@
     name: chef-test-jobs
     jobs:
       - gate-{name}-chef-rake
-      - gate-{node}-{name}-chef-rake-integration-nv:
+      - gate-{name}-chef-rake-integration-{node}-nv:
           node:
             - centos-7
             - ubuntu-trusty
