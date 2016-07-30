@@ -1538,6 +1538,10 @@ jobs:
           - ^.*\.rst$
           - ^doc/.*$
 
+  # Only run the cross unittests on upper-constraints.txt updates
+  - name: ^gate-cross-.*-python.*$
+    files: ^upper-constraints.txt$
+
   - name: ^gate-puppet-openstackci-puppet-beaker-rspec-.*$
     voting: false
 
@@ -12644,12 +12648,28 @@ projects:
       - gate-requirements-tox-validate
       - gate-requirements-tox-validate-projects
       - gate-grenade-dsvm-multinode
+      # Cross testing constraints against project unittests
+      - gate-cross-cinder-python27-db-ubuntu-xenial
+      - gate-cross-glance-python27-db-ubuntu-xenial
+      - gate-cross-horizon-python27-ubuntu-xenial
+      - gate-cross-keystone-python27-db-ubuntu-xenial
+      - gate-cross-neutron-python27-ubuntu-xenial
+      - gate-cross-nova-python27-db-ubuntu-xenial
+      - gate-cross-swift-python27-ubuntu-xenial
     gate:
       - gate-requirements-integration-dsvm
       - gate-requirements-tox-babel
       - gate-requirements-tox-validate
       - gate-requirements-tox-validate-projects
       - gate-grenade-dsvm-multinode
+      # Cross testing constraints against project unittests
+      - gate-cross-cinder-python27-db-ubuntu-xenial
+      - gate-cross-glance-python27-db-ubuntu-xenial
+      - gate-cross-horizon-python27-ubuntu-xenial
+      - gate-cross-keystone-python27-db-ubuntu-xenial
+      - gate-cross-neutron-python27-ubuntu-xenial
+      - gate-cross-nova-python27-db-ubuntu-xenial
+      - gate-cross-swift-python27-ubuntu-xenial
     periodic:
       - propose-requirements-constraints-master
       - wheel-build-ubuntu-trusty-amd64-python2:
