@@ -48,12 +48,12 @@
 # always published from master branch.
 - job-template:
     name: '{name}-releasenotes'
-    node: ubuntu-trusty
+    node: ubuntu-xenial
 
     builders:
       - print-template-name:
           template-name: "{template-name}"
-      - branch-git-prep:
+      - zuul-git-branch-prep-upper-constraints:
           branch: master
       - install-distro-packages
       - revoke-sudo
@@ -84,52 +84,15 @@
           excludes: ''
       - console-log
 
+
 - job-template:
-    name: '{name}-releasenotes-test'
+    name: 'gate-{name}-releasenotes'
     node: ubuntu-xenial
 
     builders:
       - print-template-name:
           template-name: "{template-name}"
-      - zuul-git-branch-prep-upper-constraints:
-          branch: master
-      - install-distro-packages
-      - revoke-sudo
-      - shell: |
-          #!/bin/bash -xe
-          #
-          # Some testing:
-          git checkout origin/stable/mitaka
-          git checkout origin/stable/liberty
-          git tag
-          # When building the release notes after a patch merges we
-          # always want to build from master. Reno will find release
-          # notes on other branches and insert them into the right
-          # places in the documentation build, but only master has all
-          # of the appropriate branch-specific input files for
-          # Sphinx. The branch-git-prep builder checks out the
-          # repository where the current patch just merged, but it
-          # honors zuul configuration variables that may cause it to
-          # check out a patch merged into a stable branch. So, reset
-          # what we've checked out to master.
-          #
-          git checkout origin/master
-      - tox:
-          envlist: 'releasenotes'
-
-    publishers:
-      # TODO(jaegerandi): Add publishing
-      - console-log
-
-
-- job-template:
-    name: 'gate-{name}-releasenotes'
-    node: ubuntu-trusty
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - gerrit-git-prep
+      - zuul-git-prep-upper-constraints:
       - install-distro-packages
       - revoke-sudo
       - tox:
