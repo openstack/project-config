@@ -652,32 +652,32 @@ project-templates:
   # DocBook XML and RST files.
   - name: openstack-doc-gate
     check:
-      - gate-{name}-tox-checklinks
-      - gate-{name}-tox-checkniceness
-      - gate-{name}-tox-checksyntax
-      - gate-{name}-tox-checkdeletions
+      - gate-{name}-tox-checklinks-ubuntu-xenial
+      - gate-{name}-tox-checkniceness-ubuntu-xenial
+      - gate-{name}-tox-checksyntax-ubuntu-xenial
+      - gate-{name}-tox-checkdeletions-ubuntu-xenial
       - gate-{name}-tox-doc-publish-checkbuild
     gate:
-      - gate-{name}-tox-checkniceness
-      - gate-{name}-tox-checksyntax
-      - gate-{name}-tox-checkdeletions
+      - gate-{name}-tox-checkniceness-ubuntu-xenial
+      - gate-{name}-tox-checksyntax-ubuntu-xenial
+      - gate-{name}-tox-checkdeletions-ubuntu-xenial
       - gate-{name}-tox-doc-publish-checkbuild
 
   # Used for building documentation projects that contain
   # only RST files.
   - name: openstack-doc-rst-gate
     check:
-      - gate-{name}-tox-checkniceness
+      - gate-{name}-tox-checkniceness-ubuntu-xenial
       - gate-{name}-tox-doc-publish-checkbuild
     gate:
-      - gate-{name}-tox-checkniceness
+      - gate-{name}-tox-checkniceness-ubuntu-xenial
       - gate-{name}-tox-doc-publish-checkbuild
 
   - name: openstack-doc-translation
     check:
-      - 'gate-{name}-tox-checklang'
+      - gate-{name}-tox-checklang-ubuntu-xenial
     gate:
-      - 'gate-{name}-tox-checklang'
+      - gate-{name}-tox-checklang-ubuntu-xenial
     post:
       - '{name}-upstream-translation-update'
       - '{name}-tox-doc-publishlang'
@@ -1505,7 +1505,7 @@ jobs:
   - name: propose-openstack-manuals-updates
     branch: master
 
-  - name: gate-openstack-manuals-tox-checksyntax
+  - name: gate-openstack-manuals-tox-checksyntax-ubuntu-xenial
     branch: ^(stable/liberty).*$
 
   # Packstack integration jobs should only run on master and stable/mitaka
@@ -2118,19 +2118,19 @@ jobs:
   - name: ^gate-.*-tox-doc-publish-checkbuild.*$
     success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/publish-docs/
 
-  - name: ^gate-.*-tox-checklang$
+  - name: ^gate-.*-tox-checklang.*$
     # Only run job if at least one po or pot file was changed
     files:
       - '^.*\.po$'
       - '^.*\.pot$'
 
-  - name: ^gate-.*-tox-checklinks$
+  - name: ^gate-.*-tox-checklinks-ubuntu-xenial$
     branch: master
     voting: false
     files:
       - '^.*\.xml$'
 
-  - name: ^gate-.*-tox-checksyntax$
+  - name: ^gate-.*-tox-checksyntax-ubuntu-xenial$
     files:
       - '^.*\.ent$'
       - '^.*\.po$'
@@ -2617,7 +2617,7 @@ jobs:
     files:
       - '^apidocs/.*$'
 
-  - name: gate-trove-tox-checklinks
+  - name: ^gate-trove-tox-checklinks
     files:
       - '^apidocs/.*$'
 
@@ -4864,10 +4864,10 @@ projects:
       - name: openstack-doc-gate
       - name: openstack-doc-translation
     check:
-      - gate-api-site-tox-checklang
+      - gate-api-site-tox-checklang-ubuntu-xenial
       - gate-build-swagger
     gate:
-      - gate-api-site-tox-checklang
+      - gate-api-site-tox-checklang-ubuntu-xenial
       - gate-build-swagger
     post:
       - api-site-upstream-translation-update
@@ -10062,9 +10062,9 @@ projects:
       - name: translation-jobs-mitaka
       - name: release-notes-jobs
     check:
-      - gate-openstack-manuals-tox-checksyntax
+      - gate-openstack-manuals-tox-checksyntax-ubuntu-xenial
     gate:
-      - gate-openstack-manuals-tox-checksyntax
+      - gate-openstack-manuals-tox-checksyntax-ubuntu-xenial
     post:
       - openstack-manuals-tox-doc-publishdocs
       - propose-openstack-manuals-updates
@@ -14037,7 +14037,7 @@ projects:
       - gate-trove-tox-doc-publish-checkbuild
       - gate-trove-functional-dsvm-mysql
       - gate-tempest-dsvm-trove
-      - gate-trove-tox-checklinks
+      - gate-trove-tox-checklinks-ubuntu-xenial
       - gate-trove-scenario-functional-dsvm-redis
       - gate-trove-scenario-functional-dsvm-mysql
     gate:
