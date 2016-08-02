@@ -12,6 +12,10 @@
     - shell: |
           #!/bin/bash -xe
 
+          # Add OpenStack Infra internal repositories to APT source lists
+          sudo ln -s \
+          /etc/apt/sources.list.available.d/debian-openstack-newton.list \
+          /etc/apt/sources.list.d/debian-openstack-newton.list
           # Install the build env...
           sudo apt-get update
           sudo apt-get install -y openstack-pkg-tools
@@ -34,11 +38,12 @@
     builders:
     - gerrit-git-prep
     - shell: |
-          #!/bin/bash
+          #!/bin/bash -xe
 
-          set -x
-          set -e
-
+          # Add OpenStack Infra internal repositories to APT source lists
+          sudo ln -s \
+          /etc/apt/sources.list.available.d/debian-openstack-newton.list \
+          /etc/apt/sources.list.d/debian-openstack-newton.list
           # Install the build env...
           sudo apt-get update
           sudo apt-get install -y openstack-pkg-tools
