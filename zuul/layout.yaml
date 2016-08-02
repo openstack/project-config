@@ -2215,6 +2215,14 @@ jobs:
   - name: ^manila-ui-coverage-ubuntu-(trusty|xenial)
     voting: false
 
+  - name: gate-manila-ui-tox-py27dj19
+    branch: ^(?!stable/(liberty|mitaka)).*$
+
+  # TODO(tmazur): Make voting once tests are proven to pass reliably
+  - name: gate-manila-ui-tox-py27dj110
+    branch: ^(?!stable/(liberty|mitaka)).*$
+    voting: false
+
   - name: ^magnum-coverage-ubuntu-(trusty|xenial)
     voting: false
     skip-if:
@@ -8391,8 +8399,12 @@ projects:
       - name: translation-jobs
       - name: release-notes-jobs
     check:
+      - gate-manila-ui-tox-py27dj19
+      - gate-manila-ui-tox-py27dj110
       - manila-ui-coverage-ubuntu-trusty
       - manila-ui-coverage-ubuntu-xenial
+    gate:
+      - gate-manila-ui-tox-py27dj19
 
   - name: openstack/marshal
     template:
