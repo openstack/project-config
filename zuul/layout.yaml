@@ -3346,7 +3346,6 @@ projects:
     template:
       - name: bindep-fallback
       - name: merge-check
-      - name: publish-to-pypi
       - name: pypy-jobs
       - name: python-jobs
       - name: python34-jobs
@@ -3354,8 +3353,27 @@ projects:
     post:
       - bindep-coverage-ubuntu-trusty
       - bindep-coverage-ubuntu-xenial
+    pre-release:
+      - bindep-tarball:
+          - bindep-pypi-both-upload
     release:
       - bindep-infra-docs-tags-only
+      - bindep-tarball:
+        - bindep-tarball-signing
+        - bindep-pypi-both-upload:
+            - wheel-build-ubuntu-trusty-amd64-python2:
+              - wheel-release-trustyx64
+            - wheel-build-ubuntu-trusty-amd64-python3:
+              - wheel-release-trustyx64
+            - wheel-build-ubuntu-xenial-amd64-python2:
+              - wheel-release-xenialx64
+            - wheel-build-ubuntu-xenial-amd64-python3:
+              - wheel-release-xenialx64
+            - wheel-build-centos-7-amd64-python2:
+              - wheel-release-cent7x64
+            - wheel-build-centos-7-amd64-python3:
+              - wheel-release-cent7x64
+            - bindep-announce-release
 
   - name: openstack-infra/bugdaystats
     template:
