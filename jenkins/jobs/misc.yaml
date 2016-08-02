@@ -25,9 +25,9 @@
       - console-log
 
 - job-template:
-    name: 'gate-{name}-linters'
+    name: 'gate-{name}-linters-{node}'
     description: General target to run all lint like jobs
-    node: 'ubuntu-trusty'
+    node: '{node}'
 
     builders:
       - print-template-name:
@@ -66,3 +66,11 @@
 
     publishers:
       - console-log
+
+- job-group:
+    name: linters-jobs
+    node:
+      - ubuntu-trusty
+      - ubuntu-xenial
+    jobs:
+      - 'gate-{name}-linters-{node}'
