@@ -715,9 +715,11 @@ project-templates:
   - name: publish-to-pypi
     pre-release:
       - '{name}-tarball':
+          - '{name}-tarball-signing'
           - '{name}-pypi-both-upload'
     release:
       - '{name}-tarball':
+        - '{name}-tarball-signing'
         - '{name}-pypi-both-upload':
             - wheel-build-ubuntu-trusty-amd64-python2:
               - wheel-release-trustyx64
@@ -739,10 +741,12 @@ project-templates:
     pre-release:
       - 'xstatic-check-version':
         - '{name}-tarball':
+          - '{name}-tarball-signing'
           - '{name}-pypi-both-upload'
     release:
       - 'xstatic-check-version':
         - '{name}-tarball':
+          - '{name}-tarball-signing'
           - '{name}-pypi-both-upload':
             - wheel-build-ubuntu-trusty-amd64-python2:
               - wheel-release-trustyx64
@@ -761,9 +765,11 @@ project-templates:
   # Release OpenStack Server packages.
   - name: openstack-server-release-jobs
     pre-release:
-      - '{name}-tarball'
+      - '{name}-tarball':
+        - '{name}-tarball-signing'
     release:
       - '{name}-tarball':
+        - '{name}-tarball-signing'
         - '{name}-announce-release'
 
   - name: release-notes-jobs
@@ -3349,6 +3355,7 @@ projects:
     template:
       - name: bindep-fallback
       - name: merge-check
+      - name: publish-to-pypi
       - name: pypy-jobs
       - name: python-jobs
       - name: python34-jobs
@@ -3356,27 +3363,8 @@ projects:
     post:
       - bindep-coverage-ubuntu-trusty
       - bindep-coverage-ubuntu-xenial
-    pre-release:
-      - bindep-tarball:
-          - bindep-pypi-both-upload
     release:
       - bindep-infra-docs-tags-only
-      - bindep-tarball:
-        - bindep-tarball-signing
-        - bindep-pypi-both-upload:
-            - wheel-build-ubuntu-trusty-amd64-python2:
-              - wheel-release-trustyx64
-            - wheel-build-ubuntu-trusty-amd64-python3:
-              - wheel-release-trustyx64
-            - wheel-build-ubuntu-xenial-amd64-python2:
-              - wheel-release-xenialx64
-            - wheel-build-ubuntu-xenial-amd64-python3:
-              - wheel-release-xenialx64
-            - wheel-build-centos-7-amd64-python2:
-              - wheel-release-cent7x64
-            - wheel-build-centos-7-amd64-python3:
-              - wheel-release-cent7x64
-            - bindep-announce-release
 
   - name: openstack-infra/bugdaystats
     template:
@@ -3536,29 +3524,11 @@ projects:
       - name: python-jobs
       - name: python34-jobs
       - name: python35-jobs-nv
+      - name: publish-to-pypi
     check:
       - gate-git-review-python34
-    pre-release:
-      - git-review-tarball:
-          - git-review-pypi-both-upload
     release:
       - git-review-infra-docs-tags-only
-      - git-review-tarball:
-        - git-review-tarball-signing
-        - git-review-pypi-both-upload:
-            - wheel-build-ubuntu-trusty-amd64-python2:
-              - wheel-release-trustyx64
-            - wheel-build-ubuntu-trusty-amd64-python3:
-              - wheel-release-trustyx64
-            - wheel-build-ubuntu-xenial-amd64-python2:
-              - wheel-release-xenialx64
-            - wheel-build-ubuntu-xenial-amd64-python3:
-              - wheel-release-xenialx64
-            - wheel-build-centos-7-amd64-python2:
-              - wheel-release-cent7x64
-            - wheel-build-centos-7-amd64-python3:
-              - wheel-release-cent7x64
-            - git-review-announce-release
 
   - name: openstack-infra/gitdm
     template:
