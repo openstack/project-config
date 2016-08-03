@@ -179,7 +179,7 @@
           else
             export DEVSTACK_GATE_IRONIC_BUILD_RAMDISK=0
           fi
-            
+
           export DEVSTACK_PROJECT_FROM_GIT=""
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_VM_COUNT={bm-vm-count}"
 
@@ -516,7 +516,7 @@
       - ironic-tempest-regex:
           tempest-regex: ironic
       - devstack-virtual-ironic:
-          build-ramdisk: 1
+          build-ramdisk: ''
           deploy_driver: pxe_ssh
           image-type: partition
           branch-override: '{branch-override}'
@@ -606,7 +606,7 @@
           ramdisk-type: 'tinyipa'
       - ironic-tempest-full
       - devstack-virtual-ironic:
-          build-ramdisk: 1
+          build-ramdisk: ''
           deploy_driver: pxe_ssh
           image-type: partition
           branch-override: '{branch-override}'
@@ -942,6 +942,7 @@
           export TEMPEST_CONCURRENCY=1
           export DEVSTACK_GATE_OS_TEST_TIMEOUT=2400
           export DEVSTACK_GATE_TEMPEST_BAREMETAL_BUILD_TIMEOUT=1200
+          export DEVSTACK_GATE_IRONIC_BUILD_RAMDISK=0
           export DEVSTACK_LOCAL_CONFIG="IRONIC_VM_SPECS_RAM=384"$'\n'"IRONIC_VM_COUNT=7"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_DEPLOY_DRIVER_ISCSI_WITH_IPA=True"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_RAMDISK_TYPE=tinyipa"
