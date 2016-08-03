@@ -93,9 +93,14 @@ function clone_repo {
     # them for building the release notes.
     (cd $repo && git fetch -v --tags)
 
-    # Make sure the active branch is set correctly.
+    # Make sure the active branch is set correctly, if the branch
+    # exists.
     if [ ! -z "$branch" ]; then
-        (cd $repo && git checkout $branch)
+        if git show origin/$branch; then
+            (cd $repo && git checkout $branch)
+        else
+            echo "Branch $branch does not exist, using master."
+        fi
     fi
 
     return 0
