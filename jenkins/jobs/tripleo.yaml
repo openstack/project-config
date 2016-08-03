@@ -67,5 +67,12 @@
           ./safe-devstack-vm-gate-wrap.sh
 
     publishers:
+      - scp:
+          site: 'tarballs.openstack.org'
+          files:
+            - source: 'images/*'
+              target: 'tarballs/tripleo-ci/images/'
+              keep-hierarchy: false
+              copy-after-failure: false
       - devstack-logs
       - console-log
