@@ -420,31 +420,6 @@
     node: '{node}'
 
 - job-template:
-    name: 'gate-{name}-tox-{envlist}'
-    description: 'Runs tox, does not set up any databases.'
-    node: ubuntu-trusty
-
-    wrappers:
-      - build-timeout:
-          timeout: 40
-      - timestamps
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - zuul-git-prep-upper-constraints
-      - install-distro-packages
-      - revoke-sudo
-      - tox:
-          envlist: '{envlist}'
-      - assert-no-extra-files
-
-    publishers:
-      - test-results
-      - console-log
-
-
-- job-template:
     name: 'gate-{name}-tox-{envlist}-{node}'
     description: 'Runs tox, does not set up any databases.'
     node: '{node}'

@@ -21,8 +21,11 @@
           suffix: '-nv'
       - openstack-publish-jobs
       - pypi-jobs
-      - 'gate-{name}-tox-{envlist}':
+      - 'gate-{name}-tox-{envlist}-{node}':
           envlist: bandit
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: ansible-role-cloud-launcher
@@ -1040,8 +1043,12 @@
       - 'gate-{name}-tox-db-{envlist}':
           envlist: functional
       - periodic-python-jobs-with-oslo-master
-      - 'gate-{name}-tox-{envlist}':
-          envlist: compliance
+      - 'gate-{name}-tox-{envlist}-{node}':
+          envlist:
+            - compliance
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: cinder-specs
@@ -1081,10 +1088,13 @@
       - 'gate-{name}-python35{suffix}':
           suffix: '-nv'
       - pypi-jobs
-      - gate-{name}-tox-{envlist}:
-          envlist: neutronclient-tip
-      - gate-{name}-tox-{envlist}:
-          envlist: openstackclient-tip
+      - 'gate-{name}-tox-{envlist}-{node}':
+          envlist:
+            - neutronclient-tip
+            - openstackclient-tip
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - 'lib-forward-testing-{name}'
       - openstack-publish-jobs
 
@@ -1096,10 +1106,13 @@
       - python-jobs
       - 'gate-{name}-python35{suffix}':
           suffix: '-nv'
-      - gate-{name}-tox-{envlist}:
+      - 'gate-{name}-tox-{envlist}-{node}':
           envlist:
             - py27-coverage
             - py34-coverage
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: cloudbase-init
@@ -1419,11 +1432,14 @@
           node:
             - ubuntu-trusty
             - ubuntu-xenial
-      - 'gate-{name}-tox-{envlist}':
+      - 'gate-{name}-tox-{envlist}-{node}':
           envlist:
             - doc8
             - jsonlint
             - jsonschema
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: delimiter
@@ -1835,8 +1851,11 @@
     jobs:
       - python-jobs
       - pypi-jobs
-      - 'gate-{name}-tox-{envlist}':
+      - 'gate-{name}-tox-{envlist}-{node}':
           envlist: func
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: diskimage-builder
@@ -1898,7 +1917,10 @@
       - 'lib-forward-testing-{name}'
       - translation-jobs
       - translation-jobs-mitaka
-      - gate-{name}-tox-{envlist}:
+      - 'gate-{name}-tox-{envlist}-{node}':
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           envlist:
             - py27dj18
             - py27dj19
@@ -2038,8 +2060,11 @@
           node:
             - ubuntu-trusty
             - ubuntu-xenial
-      - 'gate-{name}-tox-{envlist}':
+      - 'gate-{name}-tox-{envlist}-{node}':
           envlist: queries
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: election
@@ -3095,8 +3120,11 @@
           suffix: ''
       - openstack-publish-jobs
       - pypi-jobs
-      - 'gate-{name}-tox-{envlist}':
+      - 'gate-{name}-tox-{envlist}-{node}':
           envlist: py27-tosca-parser-master
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: higgins
@@ -3126,11 +3154,14 @@
       - nodejs4-jobs
       - 'gate-{name}-python35{suffix}':
           suffix: '-nv'
-      - gate-{name}-tox-{envlist}:
+      - 'gate-{name}-tox-{envlist}-{node}':
           envlist:
             - py27dj18
             - py27dj19
             - py27dj110
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: horizon-cisco-ui
@@ -3361,8 +3392,11 @@
       - pypi-jobs
       - translation-jobs
       - openstack-releasenotes-jobs
-      - gate-{name}-tox-{envlist}:
+      - 'gate-{name}-tox-{envlist}-{node}':
           envlist: func
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - '{pipeline}-ironic-inspector-dsvm-{ramdisk}{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
@@ -3444,8 +3478,11 @@
           image-type: coreos
       - 'ironic-python-agent-buildimage-{image-type}':
           image-type: tinyipa
-      - gate-{name}-tox-{envlist}:
+      - 'gate-{name}-tox-{envlist}-{node}':
           envlist: func
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: ironic-specs
@@ -3521,8 +3558,11 @@
       - infra-publish-jobs
       - 'gate-{name}-python35{suffix}':
           suffix: '-nv'
-      - 'gate-{name}-tox-{envlist}':
+      - 'gate-{name}-tox-{envlist}-{node}':
           envlist: docs-linkcheck
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: js-afs-blob-store
@@ -3591,8 +3631,13 @@
       - gate-rally-dsvm-{name}
       - api-ref-jobs:
           service: identity
-      - 'gate-{name}-tox-{envlist}':
-          envlist: bandit
+      - 'gate-{name}-tox-{envlist}-{node}':
+          envlist:
+            - bandit
+            - patch_cover
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - 'gate-{name}-tox-db-{envlist}':
           envlist: legacy_drivers
       - '{pipeline}-tempest-dsvm-keystone-eventlet-full{job-suffix}':
@@ -3616,8 +3661,6 @@
           branch-override: default
           node: ubuntu-trusty
       - periodic-python-jobs-with-oslo-master
-      - 'gate-{name}-tox-{envlist}':
-          envlist: patch_cover
 
 - project:
     name: keystone-specs
@@ -3653,8 +3696,11 @@
       - pypi-jobs
       - openstack-releasenotes-jobs
       - 'lib-forward-testing-{name}'
-      - 'gate-{name}-tox-{envlist}':
+      - 'gate-{name}-tox-{envlist}-{node}':
           envlist: bandit
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: kiloeyes
@@ -3694,8 +3740,11 @@
       - pypi-jobs
       - openstack-publish-jobs
       - openstack-releasenotes-jobs
-      - 'gate-{name}-tox-{envlist}':
+      - 'gate-{name}-tox-{envlist}-{node}':
           envlist: bandit
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - '{pipeline}-kolla-dsvm-{action}-{distro}-{type}':
           action: build
           distro: centos
@@ -4002,8 +4051,11 @@
       - openstack-server-release-jobs
       - translation-jobs
       - gate-{name}-pylint
-      - gate-{name}-tox-{envlist}:
+      - 'gate-{name}-tox-{envlist}-{node}':
           envlist: genconfig
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - api-ref-jobs:
           service: shared-file-systems
       - '{pipeline}-grenade-dsvm-manila':
@@ -4096,10 +4148,13 @@
       - openstack-publish-jobs
       - translation-jobs
       - openstack-releasenotes-jobs
-      - gate-{name}-tox-{envlist}:
+      - 'gate-{name}-tox-{envlist}-{node}':
           envlist:
             - py27dj19
             - py27dj110
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: marshal
@@ -4161,7 +4216,7 @@
           component: mistral
       - gate-rally-dsvm-mistral-{name}:
           name: task
-      - gate-{name}-tox-db-{envlist}:
+      - 'gate-{name}-tox-db-{envlist}':
           envlist: unit-postgresql
 
 - project:
@@ -4304,8 +4359,11 @@
       - python-db-jobs
       - 'gate-{name}-python35-db{suffix}':
           suffix: '-nv'
-      - 'gate-{name}-tox-{envlist}':
+      - 'gate-{name}-tox-{envlist}-{node}':
           envlist: py27-mitaka
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - gate-{name}-pylint
       - pypi-jobs
       - openstack-publish-jobs
@@ -4359,8 +4417,11 @@
       - python-jobs
       - 'gate-{name}-python35{suffix}':
           suffix: '-nv'
-      - 'gate-{name}-tox-{envlist}':
+      - 'gate-{name}-tox-{envlist}-{node}':
           envlist: py27-mitaka
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - pypi-jobs
       - nodejs4-jobs
       - openstack-releasenotes-jobs
@@ -5349,8 +5410,11 @@
           suffix: ''
       - periodic-python-jobs-with-oslo-master
       - openstack-releasenotes-jobs
-      - 'gate-{name}-tox-{envlist}':
+      - 'gate-{name}-tox-{envlist}-{node}':
           envlist: bandit
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - '{pipeline}-tempest-dsvm-octavia{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
@@ -6141,8 +6205,11 @@
     name: oslo-cookiecutter
 
     jobs:
-      - gate-{name}-tox-{envlist}:
+      - 'gate-{name}-tox-{envlist}-{node}':
           envlist: cookiecutter
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: oslo-specs
@@ -6672,7 +6739,7 @@
       - openstack-publish-jobs
       - translation-jobs
       - openstack-releasenotes-jobs
-      - gate-{name}-tox-{envlist}:
+      - 'gate-{name}-tox-{envlist}-{node}':
           envlist:
             - py27-mysql
             - py27-postgresql
@@ -6683,6 +6750,9 @@
             - py35-mysql
             - py35-postgresql
             - py35-mongodb
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - 'gate-telemetry-dsvm-integration-{name}'
 
 - project:
@@ -9090,8 +9160,11 @@
           suffix: ''
       - pypi-jobs
       - openstack-releasenotes-jobs
-      - gate-{name}-tox-{envlist}:
+      - 'gate-{name}-tox-{envlist}-{node}':
           envlist: func
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - '{pipeline}-python-ironic-inspector-client-dsvm{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
@@ -9168,8 +9241,11 @@
           node: ubuntu-trusty
           job-suffix: ''
           branch-override: default
-      - 'gate-{name}-tox-{envlist}':
+      - 'gate-{name}-tox-{envlist}-{node}':
           envlist: bandit
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: python-keystoneclient-kerberos
@@ -9251,8 +9327,11 @@
       - python-jobs
       - 'gate-{name}-python35{suffix}':
           suffix: '-nv'
-      - 'gate-{name}-tox-{envlist}':
+      - 'gate-{name}-tox-{envlist}-{node}':
           envlist: py27-mitaka
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - pypi-jobs
       - '{pipeline}-muranoclient-dsvm-functional{job-suffix}':
           pipeline: gate
@@ -9692,8 +9771,11 @@
           heat: 1
           neutron: 1
           sahara: 1
-      - gate-{name}-tox-{envlist}:
+      - 'gate-{name}-tox-{envlist}-{node}':
           envlist: self
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - gate-rally-dsvm-neutron-{name}:
           name: unstable
       - gate-rally-dsvm-rally-{service}:
@@ -9775,10 +9857,13 @@
           node:
             - ubuntu-trusty
             - ubuntu-xenial
-      - 'gate-{name}-tox-{envlist}':
-          envlist: validate
-      - 'gate-{name}-tox-{envlist}':
-          envlist: list-changes
+      - 'gate-{name}-tox-{envlist}-{node}':
+          envlist:
+            - validate
+            - list-changes
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - gate-{name}-pep8-{node}:
           node:
             - ubuntu-trusty
@@ -9820,10 +9905,13 @@
           suffix: '-nv'
       - pypi-jobs
       - hook-{name}-rtfd
-      - gate-{name}-tox-{envlist}:
-          envlist: keystoneclient-tip
-      - gate-{name}-tox-{envlist}:
-          envlist: novaclient-tip
+      - 'gate-{name}-tox-{envlist}-{node}':
+          envlist:
+            - keystoneclient-tip
+            - novaclient-tip
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: requestsexceptions
@@ -9848,14 +9936,15 @@
       - propose-requirements-constraints{job-suffix}:
           job-suffix: '-master'
           branch-override: master
-      - 'gate-{name}-tox-{envlist}':
-          envlist: validate
-      - 'gate-{name}-tox-{envlist}':
-          envlist: validate-projects
-      - 'gate-{name}-tox-{envlist}':
-          envlist: babel
-      - 'gate-{name}-tox-{envlist}':
-          envlist: py27-with-upper-constraints
+      - 'gate-{name}-tox-{envlist}-{node}':
+          envlist:
+            - validate
+            - validate-projects
+            - babel
+            - py27-with-upper-constraints
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       # This is a periodic job to ensure that our wheels are reasonably
       # up-to-date. Adding it to the requirements project seems to be the best
       # place to put it, though it's not strictly a requirement for
@@ -9916,8 +10005,11 @@
     name: rpm-packaging
 
     jobs:
-      - 'gate-{name}-tox-{envlist}':
+      - 'gate-{name}-tox-{envlist}-{node}':
           envlist: lint
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: sahara
@@ -10020,10 +10112,13 @@
       - translation-jobs
       - translation-jobs-mitaka
       - openstack-releasenotes-jobs
-      - gate-{name}-tox-{envlist}:
+      - 'gate-{name}-tox-{envlist}-{node}':
           envlist:
             - py27dj19
             - py27dj110
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: sahara-extra
@@ -10697,14 +10792,15 @@
           service: object-storage
       - install-guide-jobs:
           service: object-storage
-      - 'gate-{name}-tox-{envlist}':
-          envlist: bandit
-      - 'gate-{name}-tox-{envlist}':
-          envlist: func
-      - 'gate-{name}-tox-{envlist}':
-          envlist: func-in-process-fast-post
-      - 'gate-{name}-tox-{envlist}':
-          envlist: func-in-process-encryption
+      - 'gate-{name}-tox-{envlist}-{node}':
+          envlist:
+            - bandit
+            - func
+            - func-in-process-fast-post
+            - func-in-process-encryption
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - '{pipeline}-swift-dsvm-functional{special}{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
@@ -10757,12 +10853,14 @@
       - '{name}-tarball'
       - '{name}-tarball-signing'
       - gate-{name}-pylint
-      - gate-{name}-tox-{envlist}:
-          envlist: tempauth
-      - gate-{name}-tox-{envlist}:
-          envlist: keystone
-      - gate-{name}-tox-{envlist}:
-          envlist: s3acl
+      - 'gate-{name}-tox-{envlist}-{node}':
+          envlist:
+            - tempauth
+            - keystone
+            - s3acl
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: swiftonfile
@@ -11722,8 +11820,11 @@
       - translation-jobs
       - 'gate-{name}-python35{suffix}':
           suffix: '-nv'
-      - 'gate-{name}-tox-{envlist}':
+      - 'gate-{name}-tox-{envlist}-{node}':
           envlist: integration
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - gate-rally-dsvm-zaqar-{name}
       - '{pipeline}-dsvm-{backend}-zaqar{job-suffix}':
           pipeline: gate
