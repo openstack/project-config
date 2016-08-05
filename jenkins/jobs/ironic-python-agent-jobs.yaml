@@ -30,6 +30,29 @@
           mkdir UPLOAD_RAW
           mkdir UPLOAD_TAR
 
+          JOBNAME={template-name}
+          TRANS_START_TIME=$(date +%s)
+          SUBUNIT_OUTPUT=testrepository.subunit
+          ERRORS=1
+          VENV=$(mktemp -d)
+          virtualenv $VENV
+          $VENV/bin/pip install -U os-testr
+
+          trap "finish" EXIT
+
+          function finish {{
+              if [[ '$ERRORS' -eq 1 ]]; then
+                  $VENV/bin/generate-subunit $TRANS_START_TIME $SECONDS 'fail' $JOBNAME >> $SUBUNIT_OUTPUT
+              else
+                  $VENV/bin/generate-subunit $TRANS_START_TIME $SECONDS 'success' $JOBNAME >> $SUBUNIT_OUTPUT
+              fi
+              gzip -9 $SUBUNIT_OUTPUT
+              if [ "$VENV" != "" ] ; then
+                  rm -rf $VENV
+                  VENV=""
+              fi
+          }}
+
           type="{image-type}"
           case $type in
               tinyipa)
@@ -47,6 +70,7 @@
                   mv ipa-coreos*.tar.gz UPLOAD_TAR
               ;;
           esac
+          ERRORS=0
 
 
     publishers:
@@ -61,4 +85,11 @@
               target: 'tarballs/ironic-python-agent/{image-type}/'
               keep-hierarchy: false
               copy-after-failure: false
+      - scp:
+          site: 'static.openstack.org'
+          files:
+            - target: 'logs/$LOG_PATH'
+              source: 'testrepository.subunit.gz'
+              keep-hierarchy: false
+              copy-after-failure: true
       - console-log
