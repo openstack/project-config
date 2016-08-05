@@ -23,7 +23,7 @@ setup_cfg = ConfigParser.SafeConfigParser()
 setup_cfg.read("setup.cfg")
 distname = setup_cfg.get("metadata", "name")
 assert distname
-if not len(sys.argv) or sys.argv[1] == "--tarball":
+if len(sys.argv) == 1 or sys.argv[1] == "--tarball":
     print(distname)
 elif sys.argv[1] == "--wheel":
     print(wheel.bdist_wheel.safer_name(distname))
