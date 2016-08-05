@@ -1,0 +1,53 @@
+- job:
+    name: pkgdeb-build-auto-backports
+    node: debian-jessie
+
+    wrappers:
+      - build-timeout:
+          timeout: 30
+      - timestamps
+
+    builders:
+    - gerrit-git-prep
+    - shell: |
+          #!/bin/bash
+
+          set -x
+          set -e
+
+          sudo cp /etc/apt/sources.list.available.d/debian-openstack-newton.list /etc/apt/sources.list.d
+          sudo apt-get update
+          sudo apt-get install -y openstack-pkg-tools
+          sudo pkgos-infra-install-sbuild
+          ./check-and-build-bpo
+
+    publishers:
+      - console-log
+
+- job:
+    name: pkgdeb-publish-auto-backports
+    node: debian-jessie
+
+    wrappers:
+      - build-timeout:
+          timeout: 30
+      - timestamps
+
+    builders:
+    - gerrit-git-prep
+    - shell: |
+          #!/bin/bash
+
+          set -x
+          set -e
+
+          sudo cp /etc/apt/sources.list.available.d/debian-openstack-newton.list /etc/apt/sources.list.d
+          sudo apt-get update
+          sudo apt-get install -y openstack-pkg-tools
+          sudo pkgos-infra-install-sbuild
+          ./check-and-build-bpo
+
+    publishers:
+      - deb-pkgs:
+          project: deb-auto-backports
+      - console-log

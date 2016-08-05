@@ -6034,6 +6034,18 @@ projects:
       - name: merge-check
       - name: noop-jobs
 
+  - name: openstack/deb-auto-backports
+    template:
+      - name: merge-check
+    check:
+      - pkgdeb-build-auto-backports
+    gate:
+      - pkgdeb-build-auto-backports
+    post:
+      - pkgdeb-publish-auto-backports:
+        - reprepro-import-debian-openstack-jessie-backports:
+          - reprepro-release-deb-openstack
+
   - name: openstack/deb-openstack-pkg-tools
     template:
       - name: merge-check
