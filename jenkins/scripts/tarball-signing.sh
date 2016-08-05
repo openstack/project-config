@@ -26,12 +26,12 @@ TAG=$(echo $ZUUL_REF | sed 's/^refs.tags.//')
 # to see if this is a universal wheel or not
 DISTNAME=$(/usr/local/jenkins/slave_scripts/pypi-extract-name.py --wheel \
     || echo $PROJECT)
-TARBALL="$(/usr/local/jenkins/slave_scripts/pypi-extract-name.py
-    --tarball || echo $PROJECT)-${TAG}.tar.gz"
-WHEEL="$(/usr/local/jenkins/slave_scripts/pypi-extract-name.py
-    --wheel || echo $PROJECT)-${TAG}-$(
-    /usr/local/jenkins/slave_scripts/pypi-extract-universal.py ||
-    true)-none-any.whl"
+TARBALL=$(/usr/local/jenkins/slave_scripts/pypi-extract-name.py \
+    --tarball || echo $PROJECT)-${TAG}.tar.gz
+WHEEL=$(/usr/local/jenkins/slave_scripts/pypi-extract-name.py \
+    --wheel || echo $PROJECT)-${TAG}-$( \
+    /usr/local/jenkins/slave_scripts/pypi-extract-universal.py || \
+    true)-none-any.whl
 
 rm -rf *.asc *.tar.gz *.whl
 
