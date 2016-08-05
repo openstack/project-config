@@ -201,3 +201,43 @@
       - test-results
       - devstack-logs
       - console-log
+
+- job-template:
+    name: 'gate-dsvm-{name}-{murano-app}-unittest-{node}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 130
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - zuul-git-prep
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_NEUTRON=1
+          export KEYSTONE_USE_MOD_WSGI=False
+          # Allow tempest to use site-packages with plugins
+          export PROJECTS="openstack/murano $PROJECTS"
+          export PROJECTS="openstack/python-muranoclient $PROJECTS"
+          export PROJECTS="openstack/murano-dashboard $PROJECTS"
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin murano git://git.openstack.org/openstack/murano"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service heat h-api h-api-cfn h-api-cw h-eng"
+          function post_test_hook {{
+              # Configure and run functional tests
+              . /opt/stack/new/devstack/openrc admin admin
+              cd ${{WORKSPACE}}
+              tox -ve {murano-app}-unittest
+          }}
+          export -f post_test_hook
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - test-results
+      - devstack-logs
+      - console-log
