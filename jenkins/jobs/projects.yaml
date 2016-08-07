@@ -3748,84 +3748,39 @@
           node:
             - ubuntu-trusty
             - ubuntu-xenial
-      - '{pipeline}-kolla-dsvm-{action}-{distro}-{type}':
-          action: build
-          distro: centos
+      - '{pipeline}-kolla-dsvm-{action}-{distro}-{type}-{node}{job-suffix}':
+          action:
+            - build
+            - deploy
+          distro:
+            - centos
+            - oraclelinux
           node: 'centos-7'
           pipeline: gate
-          type: binary
-      - '{pipeline}-kolla-dsvm-{action}-{distro}-{type}':
-          action: deploy
-          distro: centos
-          node: 'centos-7'
-          pipeline: gate
-          type: binary
-      - '{pipeline}-kolla-dsvm-{action}-{distro}-{type}':
-          action: build
-          distro: centos
-          node: 'centos-7'
-          pipeline: gate
-          type: source
-      - '{pipeline}-kolla-dsvm-{action}-{distro}-{type}':
-          action: deploy
-          distro: centos
-          node: 'centos-7'
-          pipeline: gate
-          type: source
-      - '{pipeline}-kolla-dsvm-{action}-{distro}-{type}':
-          action: build
+          type:
+            - binary
+            - source
+          job-suffix: '-nv'
+      - '{pipeline}-kolla-dsvm-{action}-{distro}-{type}-{node}{job-suffix}':
+          action:
+            - build
+            - deploy
           distro: ubuntu
-          node: ubuntu-trusty
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           pipeline: gate
-          type: binary
-      - '{pipeline}-kolla-dsvm-{action}-{distro}-{type}':
-          action: build
-          distro: ubuntu
-          node: ubuntu-trusty
-          pipeline: gate
-          type: source
-      - '{pipeline}-kolla-dsvm-{action}-{distro}-{type}':
-          action: deploy
-          distro: ubuntu
-          node: ubuntu-trusty
-          pipeline: gate
-          type: binary
-      - '{pipeline}-kolla-dsvm-{action}-{distro}-{type}':
-          action: deploy
-          distro: ubuntu
-          node: ubuntu-trusty
-          pipeline: gate
-          type: source
-      - '{pipeline}-kolla-dsvm-{action}-{distro}-{type}':
-          action: build
-          distro: oraclelinux
-          node: 'centos-7'
-          pipeline: gate
-          type: binary
-      - '{pipeline}-kolla-dsvm-{action}-{distro}-{type}':
-          action: deploy
-          distro: oraclelinux
-          node: 'centos-7'
-          pipeline: gate
-          type: binary
-      - '{pipeline}-kolla-dsvm-{action}-{distro}-{type}':
-          action: build
-          distro: oraclelinux
-          node: 'centos-7'
-          pipeline: gate
-          type: source
-      - '{pipeline}-kolla-dsvm-{action}-{distro}-{type}':
-          action: deploy
-          distro: oraclelinux
-          node: 'centos-7'
-          pipeline: gate
-          type: source
-      - '{pipeline}-kolla-dsvm-{action}-{distro}-{type}':
+          type:
+            - binary
+            - source
+          job-suffix: "-nv"
+      - '{pipeline}-kolla-dsvm-{action}-{distro}-{type}-{node}{job-suffix}':
           action: deploy-multinode
           distro: ubuntu
           node: 'ubuntu-trusty-2-node'
           pipeline: gate
           type: source
+          job-suffix: "-nv"
 
 - project:
     name: kolla-kubernetes
