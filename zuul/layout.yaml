@@ -2442,6 +2442,9 @@ jobs:
     branch: ^(?!stable/(?:liberty|mitaka)).*$
     voting: false
 
+  - name: ^murano-dashboard-coverage-ubuntu-xenial
+    voting: false
+
   - name: ^murano-coverage-db-ubuntu-(trusty|xenial)
     voting: false
 
@@ -8796,6 +8799,7 @@ projects:
       - name: translation-jobs
       - name: translation-jobs-mitaka
     check:
+      - murano-dashboard-coverage-ubuntu-xenial
       - gate-murano-dashboard-pep8-ubuntu-trusty
       - gate-murano-dashboard-python27-ubuntu-trusty
       - gate-murano-dashboard-pep8-ubuntu-xenial
@@ -8810,6 +8814,8 @@ projects:
       - gate-murano-dashboard-python27-ubuntu-xenial
       - gate-murano-dashboard-nodejs4-npm-run-lint
       - gate-murano-devstack-dsvm
+    post:
+      - murano-dashboard-coverage-ubuntu-xenial
 
   - name: openstack/murano-deployment
     template:
