@@ -10,6 +10,17 @@
           PROJECT=$(echo $ZUUL_PROJECT | cut -d/ -f2)
           URL=http://tarballs.openstack.org/packaging-deb/$PROJECT/uploads/$ZUUL_COMMIT
 
+          # Build up which distribution we are using. Here we will be
+          # converting:
+          #   jessie-> jessie-newton
+          #   jessie-backports -> jessie-newton-backports
+          IFS='-' read -r -a array <<< {codename}
+          DISTRIBUTION="${{array[0]}}"
+          DISTRIBUTION+=-$BRANCH
+          if ! [ -z "${{array[1]}}" ]; then
+              DISTRIBUTION+="-${{array[1]}}"
+          fi
+
           # Delete any previous build directory
           rm -rf $PACKAGE_DIR
           mkdir -p $PACKAGE_DIR
@@ -33,7 +44,7 @@
           echo "Obtaining token and importing packages to reprepro"
           $FILES=$PACKAGE_DIR/*.changes
           for f in $FILES; do
-              $REPREPRO include {codename}-$BRANCH $f
+              $REPREPRO include $DISTRIBUTION $f
           done
 
           echo "Checking state of mirror"
@@ -41,7 +52,7 @@
           $REPREPRO check
 
           echo "List all packages"
-          $REPREPRO list {codename}-$BRANCH
+          $REPREPRO list $DISTRIBUTION
 
           echo "Done."
 
