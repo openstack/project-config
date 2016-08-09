@@ -24,7 +24,6 @@
       - 'gate-{name}-tox-{envlist}-{node}':
           envlist: bandit
           node:
-            - ubuntu-trusty
             - ubuntu-xenial
 
 - project:
@@ -1047,7 +1046,6 @@
           envlist:
             - compliance
           node:
-            - ubuntu-trusty
             - ubuntu-xenial
 
 - project:
@@ -1093,7 +1091,6 @@
             - neutronclient-tip
             - openstackclient-tip
           node:
-            - ubuntu-trusty
             - ubuntu-xenial
       - 'lib-forward-testing-{name}'
       - openstack-publish-jobs
@@ -3159,9 +3156,13 @@
           suffix: '-nv'
       - 'gate-{name}-tox-{envlist}-{node}':
           envlist:
-            - py27dj18
             - py27dj19
             - py27dj110
+          node:
+            - ubuntu-xenial
+      - 'gate-{name}-tox-{envlist}-{node}':
+          envlist:
+            - py27dj18
           node:
             - ubuntu-trusty
             - ubuntu-xenial
@@ -3635,9 +3636,10 @@
       - api-ref-jobs:
           service: identity
       - 'gate-{name}-tox-{envlist}-{node}':
-          envlist:
-            - bandit
-            - patch_cover
+          envlist: bandit
+          node: ubuntu-trusty
+      - 'gate-{name}-tox-{envlist}-{node}':
+          envlist: patch_cover
           node:
             - ubuntu-trusty
             - ubuntu-xenial
@@ -3703,7 +3705,6 @@
           envlist: bandit
           node:
             - ubuntu-trusty
-            - ubuntu-xenial
 
 - project:
     name: kiloeyes
@@ -3746,7 +3747,6 @@
       - 'gate-{name}-tox-{envlist}-{node}':
           envlist: bandit
           node:
-            - ubuntu-trusty
             - ubuntu-xenial
       - '{pipeline}-kolla-dsvm-{action}-{distro}-{type}':
           action: build
@@ -4365,7 +4365,6 @@
       - 'gate-{name}-tox-{envlist}-{node}':
           envlist: py27-mitaka
           node:
-            - ubuntu-trusty
             - ubuntu-xenial
       - gate-{name}-pylint
       - pypi-jobs
@@ -4423,7 +4422,6 @@
       - 'gate-{name}-tox-{envlist}-{node}':
           envlist: py27-mitaka
           node:
-            - ubuntu-trusty
             - ubuntu-xenial
       - pypi-jobs
       - nodejs4-jobs
@@ -9946,8 +9944,11 @@
           branch-override: master
       - 'gate-{name}-tox-{envlist}-{node}':
           envlist:
-            - validate
             - validate-projects
+          node: ubuntu-xenial
+      - 'gate-{name}-tox-{envlist}-{node}':
+          envlist:
+            - validate
             - babel
             - py27-with-upper-constraints
           node:
@@ -10125,7 +10126,6 @@
             - py27dj19
             - py27dj110
           node:
-            - ubuntu-trusty
             - ubuntu-xenial
 
 - project:
@@ -10805,9 +10805,13 @@
             - bandit
             - func
             - func-in-process-fast-post
-            - func-in-process-encryption
           node:
             - ubuntu-trusty
+            - ubuntu-xenial
+      - 'gate-{name}-tox-{envlist}-{node}':
+          envlist:
+            - func-in-process-encryption
+          node:
             - ubuntu-xenial
       - '{pipeline}-swift-dsvm-functional{special}{job-suffix}':
           pipeline: gate
