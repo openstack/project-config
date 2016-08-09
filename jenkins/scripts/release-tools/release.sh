@@ -105,10 +105,20 @@ else
         $BUGS
 fi
 
+# Apply the PEP 503 rules to turn the dist name into a canonical form,
+# in case that's the version that appears in upper-constraints.txt. We
+# have to try substituting both versions because we have a mix in that
+# file and if we rename projects we'll end up with bad references to
+# existing build artifacts.
+function pep503 {
+    echo $1 | sed -e 's/[-_.]\+/-/g' | tr '[:upper:]' '[:lower:]'
+}
+
 # Try to propose a constraints update for libraries.
 if [[ $INCLUDE_PYPI == "yes" ]]; then
     echo "Proposing constraints update"
     dist_name=$(python setup.py --name)
+    canonical_name=$(pep503 $dist_name)
     if [[ -z "$dist_name" ]]; then
         echo "Could not determine the name of the constraint to update"
     else
@@ -117,6 +127,7 @@ if [[ $INCLUDE_PYPI == "yes" ]]; then
         cd openstack/requirements
         git checkout -b "$dist_name-$VERSION"
         sed -e "s/^${dist_name}=.*/$dist_name===$VERSION/" --in-place upper-constraints.txt
+        sed -e "s/^${canonical_name}=.*/$canonical_name===$VERSION/" --in-place upper-constraints.txt
         git commit -a -m "update constraint for $dist_name to new release $VERSION
 
 $TAGMSG
