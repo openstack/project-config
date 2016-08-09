@@ -110,7 +110,7 @@ def get_modified_deliverable_file_content(reporoot, filenames):
             final_versions and
             this_version['version'] == final_versions[0]
         ) else 'no'
-        diff_start = this_version.get('diff-start', '')
+        diff_start = this_version.get('diff-start', '-')
         for project in this_version['projects']:
             yield (deliverable_name, series_name, version,
                    diff_start,
