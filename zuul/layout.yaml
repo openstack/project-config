@@ -2810,7 +2810,7 @@ jobs:
   - name: ^gate-fuel-devops-python3.*$
     branch: ^(?!(release/(?:2\.9)|stable)).*$
 
-  - name: ^fuel-devops-coverage-ubuntu-(trusty|xenial)
+  - name: ^fuel-devops-coverage-ubuntu-xenial$
     branch: ^(?!(release/(?:2\.9)|stable)).*$
 
   - name: ^gate-fuel-devops-pylint
@@ -2839,8 +2839,11 @@ jobs:
   - name: ^gate-fuel-mirror-python.*$
     branch: ^stable/(?:8\.0|mitaka).*$
 
-  - name: ^gate-fuel-ostf-python27-db-ubuntu-(trusty|xenial)
-    branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
+  - name: ^gate-fuel-ostf-python27-db-ubuntu-trusty
+    branch: ^(stable/mitaka).*$
+
+  - name: ^gate-fuel-ostf-python27-db-ubuntu-xenial
+    branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0|mitaka)).*$
 
   - name: ^gate-fuel-plugins-python.*$
     branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
@@ -2848,12 +2851,19 @@ jobs:
   - name: ^gate-fuel-stats-python.*$
     branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
 
-  - name: ^gate-fuel-web-docs-ubuntu-(trusty|xenial)
-    branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0|8\.0)).*$
+  - name: ^gate-fuel-web-docs-ubuntu-trusty
+    branch: ^(stable/mitaka).*$
     voting: false
 
-  - name: ^gate-fuel-web-python27-db-ubuntu-(trusty|xenial)
-    branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
+  - name: ^gate-fuel-web-docs-ubuntu-xenial
+    branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0|8\.0|mitaka)).*$
+    voting: false
+
+  - name: ^gate-fuel-web-python27-db-ubuntu-trusty
+    branch: ^(stable/(8\.0|mitaka)).*$
+
+  - name: ^gate-fuel-web-python27-db-ubuntu-xenial
+    branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0|8\.0|mitaka)).*$
 
   - name: ^gate-ceilometer-dsvm-tempest-plugin-.*
     branch: ^(?!stable/liberty).*$
@@ -3038,8 +3048,11 @@ jobs:
   - name: gate-python-fuelclient-python34
     branch: ^(?!stable/(?:6\.1|7.0)).*$
 
-  - name: ^gate-python-fuelclient-python27-ubuntu-(trusty|xenial)
-    branch: ^(?!stable/(?:6\.1)).*$
+  - name: ^gate-python-fuelclient-python27-ubuntu-trusty
+    branch: ^(stable/(7\.0|8\.0|mitaka)).*$
+
+  - name: ^gate-python-fuelclient-python27-ubuntu-xenial
+    branch: ^(?!stable/(?:6\.1|7\.0|8\.0|mitaka)).*$
 
   - name: ^watcher-coverage-ubuntu-(trusty|xenial)
     voting: false
@@ -6764,10 +6777,8 @@ projects:
       - name: python-jobs
     check:
       - gate-fuel-devops-pylint
-      - fuel-devops-coverage-ubuntu-trusty
       - fuel-devops-coverage-ubuntu-xenial
     gate:
-      - fuel-devops-coverage-ubuntu-trusty
       - fuel-devops-coverage-ubuntu-xenial
 
   - name: openstack/fuel-docs
