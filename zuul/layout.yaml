@@ -1592,14 +1592,16 @@ jobs:
   - name: gate-requirements-integration-dsvm-resolver
     voting: false
 
-  - name: ^gate-requirements-tox-validate-ubuntu-(trusty|xenial)$
-    branch: ^(?!stable/kilo).*$
+  - name: ^gate-requirements-tox-validate-ubuntu-xenial$
+    branch: ^(?!stable/(kilo|liberty|mitaka)).*$
 
-  - name: ^gate-requirements-tox-py27-with-upper-constraints-ubuntu-(trusty|xenial)$
+  - name: ^gate-requirements-tox-py27-with-upper-constraints-ubuntu-trusty$
     voting: false
-    branch: ^(?!stable/kilo).*$
 
-  - name: ^gate-requirements-tox-validate-projects-ubuntu-(trusty|xenial)$
+  - name: ^gate-requirements-tox-py27-with-upper-constraints-ubuntu-xenial$
+    voting: false
+
+  - name: ^gate-requirements-tox-validate-projects-ubuntu-xenial$
     branch: master
 
   - name: gate-requirements-tox-babel-ubuntu-xenial
@@ -2011,7 +2013,7 @@ jobs:
     branch: ^(?!stable/(liberty)).*$
     voting: false
 
-  - name: ^gate-cinder-tox-compliance-ubuntu-(trusty|xenial)$
+  - name: ^gate-cinder-tox-compliance-ubuntu-xenial$
     branch: ^(?!stable/(liberty|mitaka)).*$
 
   - name: dev-zuul-coverage
@@ -2228,12 +2230,8 @@ jobs:
   - name: ^manila-ui-coverage-ubuntu-(trusty|xenial)
     voting: false
 
-  - name: gate-manila-ui-tox-py27dj19-ubuntu-xenial
-    branch: ^(?!stable/(liberty|mitaka)).*$
-
   # TODO(tmazur): Make voting once tests are proven to pass reliably
   - name: gate-manila-ui-tox-py27dj110-ubuntu-xenial
-    branch: ^(?!stable/(liberty|mitaka)).*$
     voting: false
 
   - name: ^magnum-coverage-ubuntu-(trusty|xenial)
@@ -2302,11 +2300,7 @@ jobs:
   - name: gate-sahara-dashboard-dsvm-integration
     voting: false
 
-  - name: ^gate-sahara-dashboard-tox-py27dj19-ubuntu-(trusty|xenial)$
-    branch: ^(?!stable/(mitaka)).*$
-
-  - name: ^gate-sahara-dashboard-tox-py27dj110-ubuntu-(trusty|xenial)$
-    branch: ^(?!stable/(mitaka)).*$
+  - name: ^gate-sahara-dashboard-tox-py27dj110-ubuntu-xenial$
     voting: false
 
   - name: gate-sahara-dashboard-python34
@@ -2343,7 +2337,7 @@ jobs:
   - name: gate-app-catalog-ui-dsvm-integration
     voting: false
 
-  - name: ^gate-keystone-tox-bandit-ubuntu-(trusty|xenial)$
+  - name: ^gate-keystone-tox-bandit-ubuntu-trusty$
     branch: ^stable/liberty$
 
   - name: ^gate-keystone-tox-patch_cover-ubuntu-(trusty|xenial)$
@@ -2368,10 +2362,10 @@ jobs:
   - name: check-osc-plugins
     branch: ^(?!stable/(liberty|mitaka)).*$
 
-  - name: ^gate-keystonemiddleware-tox-bandit-ubuntu-(trusty|xenial)$
+  - name: ^gate-keystonemiddleware-tox-bandit-ubuntu-trusty$
     branch: ^stable/liberty$
 
-  - name: ^gate-python-keystoneclient-tox-bandit-ubuntu-(trusty|xenial)$
+  - name: ^gate-python-keystoneclient-tox-bandit-ubuntu-trusty$
     branch: ^stable/liberty$
 
   - name: gate-rally-dsvm-keystone
@@ -2411,8 +2405,7 @@ jobs:
     # python3 support was implemented in mitaka
     branch: ^(?!stable/liberty).*$
 
-  - name: ^gate-python-muranoclient-tox-py27-mitaka-ubuntu-(trusty|xenial)$
-    branch: ^(?!stable/(?:liberty|mitaka)).*$
+  - name: ^gate-python-muranoclient-tox-py27-mitaka-ubuntu-xenial$
     voting: false
 
   - name: gate-murano-devstack-dsvm
@@ -2438,12 +2431,10 @@ jobs:
   - name: gate-murano-pylint
     voting: false
 
-  - name: ^gate-murano-tox-py27-mitaka-ubuntu-(trusty|xenial)$
-    branch: ^(?!stable/(?:liberty|mitaka)).*$
+  - name: ^gate-murano-tox-py27-mitaka-ubuntu-xenial$
     voting: false
 
-  - name: ^gate-murano-dashboard-tox-py27-mitaka-ubuntu-(trusty|xenial)$
-    branch: ^(?!stable/(?:liberty|mitaka)).*$
+  - name: ^gate-murano-dashboard-tox-py27-mitaka-ubuntu-xenial$
     voting: false
 
   - name: ^murano-coverage-db-ubuntu-(trusty|xenial)
@@ -2628,8 +2619,7 @@ jobs:
     branch: ^(?!stable/(mitaka)).*$
     voting: false
 
-  - name: ^gate-anchor-tox-bandit-ubuntu-(trusty|xenial)$
-    branch: master
+  - name: ^gate-anchor-tox-bandit-ubuntu-xenial$
     voting: false
 
   - name: gate-castellan-dsvm-functional
@@ -2654,23 +2644,18 @@ jobs:
   - name: ^gate-aodh-dsvm-tempest-plugin-.*
     branch: ^(?!stable/liberty).*$
 
-  - name: ^gate-horizon-tox-py27dj19-ubuntu-(trusty|xenial)$
-    branch: ^(?!stable/(liberty|mitaka)).*$
-
   # TODO(robcresswell): Make voting once tests are passing reliably
-  - name: ^gate-horizon-tox-py27dj110-ubuntu-(trusty|xenial)$
-    branch: ^(?!stable/(liberty|mitaka)).*$
+  - name: ^gate-horizon-tox-py27dj110-ubuntu-xenial$
     voting: false
 
-  - name: ^gate-django_openstack_auth-tox-py27dj18-ubuntu-(trusty|xenial)$
-    branch: ^(?!stable/liberty).*$
+  - name: ^gate-django_openstack_auth-tox-py27dj18-ubuntu-trusty$
+    branch: ^stable/mitaka.*$
 
-  - name: ^gate-django_openstack_auth-tox-py27dj19-ubuntu-(trusty|xenial)$
-    branch: ^(?!stable/liberty).*$
+  - name: ^gate-django_openstack_auth-tox-py27dj19-ubuntu-trusty$
+    branch: ^stable/mitaka.*$
 
   # TODO(robcresswell): Make voting once tests are passing reliably
   - name: gate-django_openstack_auth-tox-py27dj110-ubuntu-xenial
-    branch: ^(?!stable/(liberty|mitaka)).*$
     voting: false
 
   # TODO(doug-fish): Make voting once tests are proven to pass reliably
@@ -2708,8 +2693,7 @@ jobs:
 
   # NOTE(sdake): This is presently failing but will be made voting as
   # soon as kolla updates its configuration or fixes its issues.
-  - name: ^gate-kolla-tox-bandit-ubuntu-(trusty|xenial)$
-    branch: ^(?!stable/(liberty|mitaka)).*$
+  - name: ^gate-kolla-tox-bandit-ubuntu-xenial$
     voting: false
 
   - name: gate-kolla-dsvm-build-centos-binary
@@ -2887,9 +2871,8 @@ jobs:
   - name: gate-swift-python34
     branch: ^(?!stable/liberty).*$
 
-  - name: ^gate-swift-tox-func-in-process-encryption-ubuntu-(trusty|xenial)$
+  - name: ^gate-swift-tox-func-in-process-encryption-ubuntu-xenial$
     voting: false
-    branch: ^(?!stable/(?:liberty|mitaka)).*$
 
   - name: ^gate-glance-python34-db$
     branch: ^(?!stable/liberty).*$
@@ -2978,7 +2961,7 @@ jobs:
           - ^tox.ini$
 
   # Only run the unit cross tests for cliff against master.
-  - name: ^gate-cliff-tox-(openstackclient|neutronclient)-tip-ubuntu-(trusty|xenial)$
+  - name: ^gate-cliff-tox-(openstackclient|neutronclient)-tip-ubuntu-xenial$
     branch: ^master$
 
   # Skip Liberty for
@@ -4748,7 +4731,6 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
     experimental:
-      - gate-anchor-tox-bandit-ubuntu-trusty
       - gate-anchor-tox-bandit-ubuntu-xenial
 
   - name: openstack/ansible-role-cloud-launcher
@@ -5656,7 +5638,6 @@ projects:
       - gate-tempest-dsvm-full-devstack-plugin-ceph
       - gate-cinder-dsvm-apache
       - gate-cinder-tox-db-functional
-      - gate-cinder-tox-compliance-ubuntu-trusty
       - gate-cinder-tox-compliance-ubuntu-xenial
       # These jobs test open source plugins and must remain with the -nv branch
       # designator unless cinder gives permission.
@@ -5668,7 +5649,6 @@ projects:
       - gate-tempest-dsvm-neutron-identity-v3-only-full-nv
     gate:
       - gate-tempest-dsvm-full-devstack-plugin-ceph
-      - gate-cinder-tox-compliance-ubuntu-trusty
       - gate-cinder-tox-compliance-ubuntu-xenial
     experimental:
       - gate-grenade-dsvm-forward
@@ -5713,14 +5693,12 @@ projects:
       - name: openstack-server-publish-jobs
       - name: check-requirements
     check:
-      - gate-cliff-tox-neutronclient-tip-ubuntu-trusty
       - gate-cliff-tox-neutronclient-tip-ubuntu-xenial
-      - gate-cliff-tox-openstackclient-tip-ubuntu-trusty
+      - gate-cliff-tox-openstackclient-tip-ubuntu-xenial
       - gate-tempest-dsvm-neutron-src-cliff
     gate:
-      - gate-cliff-tox-neutronclient-tip-ubuntu-trusty
       - gate-cliff-tox-neutronclient-tip-ubuntu-xenial
-      - gate-cliff-tox-openstackclient-tip-ubuntu-trusty
+      - gate-cliff-tox-openstackclient-tip-ubuntu-xenial
       - gate-tempest-dsvm-neutron-src-cliff
 
   - name: openstack/cloud-init
@@ -7789,9 +7767,7 @@ projects:
     check:
       - gate-horizon-tox-py27dj18-ubuntu-trusty
       - gate-horizon-tox-py27dj18-ubuntu-xenial
-      - gate-horizon-tox-py27dj19-ubuntu-trusty
       - gate-horizon-tox-py27dj19-ubuntu-xenial
-      - gate-horizon-tox-py27dj110-ubuntu-trusty
       - gate-horizon-tox-py27dj110-ubuntu-xenial
       - gate-horizon-dsvm-integration
       - gate-horizon-selenium-headless
@@ -7799,7 +7775,6 @@ projects:
     gate:
       - gate-horizon-tox-py27dj18-ubuntu-trusty
       - gate-horizon-tox-py27dj18-ubuntu-xenial
-      - gate-horizon-tox-py27dj19-ubuntu-trusty
       - gate-horizon-tox-py27dj19-ubuntu-xenial
       - gate-horizon-dsvm-integration
       - gate-horizon-selenium-headless
@@ -8121,7 +8096,6 @@ projects:
       - name: api-ref-jobs
     check:
       - gate-keystone-tox-bandit-ubuntu-trusty
-      - gate-keystone-tox-bandit-ubuntu-xenial
       - gate-keystone-tox-db-legacy_drivers
       - gate-keystone-dsvm-functional
       - gate-keystone-dsvm-functional-v3-only-nv
@@ -8133,7 +8107,6 @@ projects:
     gate:
       - gate-keystone-dsvm-functional
       - gate-keystone-tox-bandit-ubuntu-trusty
-      - gate-keystone-tox-bandit-ubuntu-xenial
       - gate-keystone-tox-db-legacy_drivers
     experimental:
       - gate-grenade-dsvm-forward
@@ -8177,10 +8150,8 @@ projects:
       - name: release-notes-jobs
     check:
       - gate-keystonemiddleware-tox-bandit-ubuntu-trusty
-      - gate-keystonemiddleware-tox-bandit-ubuntu-xenial
     gate:
       - gate-keystonemiddleware-tox-bandit-ubuntu-trusty
-      - gate-keystonemiddleware-tox-bandit-ubuntu-xenial
     post:
       - keystonemiddleware-coverage-ubuntu-trusty
       - keystonemiddleware-coverage-ubuntu-xenial
@@ -8228,7 +8199,6 @@ projects:
       - name: publish-to-pypi
       - name: release-notes-jobs
     check:
-      - gate-kolla-tox-bandit-ubuntu-trusty
       - gate-kolla-tox-bandit-ubuntu-xenial
       - gate-kolla-dsvm-build-centos-binary
       - gate-kolla-dsvm-deploy-centos-binary
@@ -8803,7 +8773,6 @@ projects:
       - murano-coverage-db-ubuntu-trusty
       - murano-coverage-db-ubuntu-xenial
       - gate-murano-pylint
-      - gate-murano-tox-py27-mitaka-ubuntu-trusty
       - gate-murano-tox-py27-mitaka-ubuntu-xenial
       - gate-murano-devstack-dsvm
       - gate-murano-congress-devstack-dsvm
@@ -8852,7 +8821,6 @@ projects:
       - gate-murano-dashboard-python27-ubuntu-trusty
       - gate-murano-dashboard-pep8-ubuntu-xenial
       - gate-murano-dashboard-python27-ubuntu-xenial
-      - gate-murano-dashboard-tox-py27-mitaka-ubuntu-trusty
       - gate-murano-dashboard-tox-py27-mitaka-ubuntu-xenial
       - gate-murano-dashboard-nodejs4-npm-run-lint
       - gate-murano-devstack-dsvm
@@ -12235,7 +12203,6 @@ projects:
       - name: osc-plugin-jobs
     check:
       - gate-muranoclient-dsvm-functional
-      - gate-python-muranoclient-tox-py27-mitaka-ubuntu-trusty
       - gate-python-muranoclient-tox-py27-mitaka-ubuntu-xenial
     gate:
       - gate-muranoclient-dsvm-functional
@@ -12828,7 +12795,6 @@ projects:
       - gate-requirements-tox-py27-with-upper-constraints-ubuntu-xenial
       - gate-requirements-tox-validate-ubuntu-trusty
       - gate-requirements-tox-validate-ubuntu-xenial
-      - gate-requirements-tox-validate-projects-ubuntu-trusty
       - gate-requirements-tox-validate-projects-ubuntu-xenial
       - gate-grenade-dsvm-multinode
       # Cross testing constraints against project unittests
@@ -12844,7 +12810,6 @@ projects:
       - gate-requirements-tox-babel-ubuntu-xenial
       - gate-requirements-tox-validate-ubuntu-trusty
       - gate-requirements-tox-validate-ubuntu-xenial
-      - gate-requirements-tox-validate-projects-ubuntu-trusty
       - gate-requirements-tox-validate-projects-ubuntu-xenial
       - gate-grenade-dsvm-multinode
       # Cross testing constraints against project unittests
@@ -12948,16 +12913,13 @@ projects:
       - gate-sahara-dashboard-pep8-ubuntu-xenial
       - gate-sahara-dashboard-python27-ubuntu-xenial
       - gate-sahara-dashboard-dsvm-integration
-      - gate-sahara-dashboard-tox-py27dj19-ubuntu-trusty
       - gate-sahara-dashboard-tox-py27dj19-ubuntu-xenial
-      - gate-sahara-dashboard-tox-py27dj110-ubuntu-trusty
       - gate-sahara-dashboard-tox-py27dj110-ubuntu-xenial
     gate:
       - gate-sahara-dashboard-pep8-ubuntu-trusty
       - gate-sahara-dashboard-python27-ubuntu-trusty
       - gate-sahara-dashboard-pep8-ubuntu-xenial
       - gate-sahara-dashboard-python27-ubuntu-xenial
-      - gate-sahara-dashboard-tox-py27dj19-ubuntu-trusty
       - gate-sahara-dashboard-tox-py27dj19-ubuntu-xenial
     post:
       - sahara-dashboard-branch-tarball
@@ -13629,7 +13591,6 @@ projects:
       - gate-swift-tox-func-ubuntu-xenial
       - gate-swift-tox-func-in-process-fast-post-ubuntu-trusty
       - gate-swift-tox-func-in-process-fast-post-ubuntu-xenial
-      - gate-swift-tox-func-in-process-encryption-ubuntu-trusty
       - gate-swift-tox-func-in-process-encryption-ubuntu-xenial
       - gate-tempest-dsvm-full-ubuntu-trusty
       - gate-tempest-dsvm-full-ubuntu-xenial
