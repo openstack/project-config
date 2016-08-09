@@ -90,8 +90,8 @@ fi
 RELEASE_META=$(git show --format=full --show-notes=review $parent | egrep -i '(Author|Commit:|Code-Review|Workflow|Change-Id)' | sed -e 's/^    //g' -e 's/^/meta:release:/g')
 
 $TOOLSDIR/list_deliverable_changes.py -r $RELEASES_REPO $DELIVERABLES \
-| while read deliverable series version repo hash announce_to pypi first_full; do
-    echo "$deliverable $series $version $repo $hash $announce_to $pypi $first_full"
+| while read deliverable series version diff_start repo hash announce_to pypi first_full; do
+    echo "$deliverable $series $version $diff_start $repo $hash $announce_to $pypi $first_full"
     # FIXME(dhellmann): While we work out the kinks in the job, we
     # only want to actually apply the tags to the release-test
     # repository. When we're confident that it is working correctly,
@@ -102,7 +102,7 @@ $TOOLSDIR/list_deliverable_changes.py -r $RELEASES_REPO $DELIVERABLES \
             continue
         fi
     fi
-    $TOOLSDIR/release.sh $repo $series $version $hash $announce_to $pypi $first_full "$RELEASE_META"
+    $TOOLSDIR/release.sh $repo $series $version $diff_start $hash $announce_to $pypi $first_full "$RELEASE_META"
 done
 
 exit 0
