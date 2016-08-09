@@ -82,7 +82,8 @@ deb http://httpredir.debian.org/debian $LSBDISTCODENAME-backports main
 deb-src http://httpredir.debian.org/debian $LSBDISTCODENAME-backports main"
 
 DEBIAN_OPENSTACK_NEWTON_SOURCES_LIST="\
-deb $NODEPOOL_DEBIAN_OPENSTACK_MIRROR $LSBDISTCODENAME-newton main"
+deb $NODEPOOL_DEBIAN_OPENSTACK_MIRROR $LSBDISTCODENAME-newton main
+deb $NODEPOOL_DEBIAN_OPENSTACK_MIRROR $LSBDISTCODENAME-newton-backports main"
 
 YUM_REPOS_CENTOS_BASE="\
 [base]
