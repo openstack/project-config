@@ -53,7 +53,7 @@ class RequirementsList(object):
         return {k: v for d in self.reqs_by_file.values()
                 for k, v in d.items()}
 
-    def extract_reqs(self, content):
+    def extract_reqs(self, content, strict):
         reqs = collections.defaultdict(set)
         parsed = requirement.parse(content)
         for name, entries in parsed.items():
@@ -63,7 +63,8 @@ class RequirementsList(object):
             list_reqs = [r for (r, line) in entries]
             # Strip the comments out before checking if there are duplicates
             list_reqs_stripped = [r._replace(comment='') for r in list_reqs]
-            if len(list_reqs_stripped) != len(set(list_reqs_stripped)):
+            if strict and len(list_reqs_stripped) != len(set(
+                    list_reqs_stripped)):
                 print("Requirements file has duplicate entries "
                       "for package %s : %r." % (name, list_reqs))
                 self.failed = True
@@ -85,11 +86,11 @@ class RequirementsList(object):
             if strict and not content.endswith('\n'):
                 print("Requirements file %s does not "
                       "end with a newline." % fname)
-            self.reqs_by_file[fname] = self.extract_reqs(content)
+            self.reqs_by_file[fname] = self.extract_reqs(content, strict)
 
         for name, content in project.extras(self.project).items():
             print("Processing .[%(extra)s]" % {'extra': name})
-            self.reqs_by_file[name] = self.extract_reqs(content)
+            self.reqs_by_file[name] = self.extract_reqs(content, strict)
 
 
 def grab_args():
