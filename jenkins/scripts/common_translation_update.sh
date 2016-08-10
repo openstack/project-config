@@ -42,12 +42,11 @@ trap "finish" EXIT
 function init_branch {
     local branch=$1
 
-    if [ -z "$UPPER_CONSTRAINTS" ] ; then
-        UPPER_CONSTRAINTS=https://git.openstack.org/cgit/openstack/requirements/plain/upper-constraints.txt
-        if [[ "$branch" != "master" ]] ; then
-            UPPER_CONSTRAINTS="${UPPER_CONSTRAINTS}?h=$branch"
-        fi
-    fi
+    # The calling environment puts upper-constraints.txt in our
+    # working directory.
+    # UPPER_CONSTRAINTS_FILE needs to be exported so that tox can use it
+    # if needed.
+    export UPPER_CONSTRAINTS_FILE=$(pwd)/upper-constraints.txt
     GIT_BRANCH=$branch
 }
 
@@ -96,7 +95,7 @@ function setup_venv {
     virtualenv $VENV
 
     # Install babel using global upper constraints.
-    $VENV/bin/pip install 'Babel' -c $UPPER_CONSTRAINTS
+    $VENV/bin/pip install 'Babel' -c $UPPER_CONSTRAINTS_FILE
 
     # Get version, run this twice - the first one will install pbr
     # and get extra output.
@@ -372,7 +371,7 @@ function install_horizon {
     # same constraints.
     git clone --depth=1 --branch $GIT_BRANCH \
         git://git.openstack.org/openstack/horizon.git $HORIZON_ROOT/horizon
-    (cd ${HORIZON_ROOT}/horizon && $VENV/bin/pip install -c $UPPER_CONSTRAINTS .)
+    (cd ${HORIZON_ROOT}/horizon && $VENV/bin/pip install -c $UPPER_CONSTRAINTS_FILE .)
     rm -rf HORIZON_ROOT
     HORIZON_ROOT=""
 }
