@@ -16,6 +16,9 @@ fi
 if [ -n "$PACKAGES" ] ; then
     # already set in the calling environment
     :
+elif [ -e bindep.txt ] ; then
+    # project has its own bindep list
+    export PACKAGES=bindep.txt
 elif [ -e other-requirements.txt ] ; then
     # project has its own bindep list
     export PACKAGES=other-requirements.txt
