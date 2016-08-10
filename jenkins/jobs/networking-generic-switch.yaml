@@ -87,12 +87,6 @@
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_ML2_TENANT_NETWORK_TYPE=vlan"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"TENANT_VLAN_RANGE=100:150"
 
-          function post_test_hook {{
-                source $BASE/new/devstack/openrc admin admin
-                sudo -E -u stack $BASE/new/networking-generic-switch/devstack/exercise.sh
-          }}
-          export -f post_test_hook
-
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
 
