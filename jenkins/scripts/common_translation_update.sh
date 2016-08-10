@@ -42,9 +42,11 @@ trap "finish" EXIT
 function init_branch {
     local branch=$1
 
-    UPPER_CONSTRAINTS=https://git.openstack.org/cgit/openstack/requirements/plain/upper-constraints.txt
-    if [[ "$branch" != "master" ]] ; then
-        UPPER_CONSTRAINTS="${UPPER_CONSTRAINTS}?h=$branch"
+    if [ -z "$UPPER_CONSTRAINTS" ] ; then
+        UPPER_CONSTRAINTS=https://git.openstack.org/cgit/openstack/requirements/plain/upper-constraints.txt
+        if [[ "$branch" != "master" ]] ; then
+            UPPER_CONSTRAINTS="${UPPER_CONSTRAINTS}?h=$branch"
+        fi
     fi
     GIT_BRANCH=$branch
 }
