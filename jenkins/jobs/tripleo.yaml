@@ -16,6 +16,30 @@
           /usr/zuul-env/bin/zuul-cloner -m $CLONEMAP --cache-dir /opt/git \
               git://git.openstack.org openstack/tripleo-quickstart
 
+- builder:
+    name: python-tripleoclient-buildimage-checkout
+    builders:
+      - shell: |
+          #!/bin/bash -xe
+          CLONEMAP=`mktemp`
+          function cleanup {
+              rm -f $CLONEMAP
+          }
+          trap cleanup EXIT
+          cat > $CLONEMAP << EOF
+          clonemap:
+            - name: 'openstack/(.*)'
+              dest: '\1'
+          EOF
+          /usr/zuul-env/bin/zuul-cloner -m $CLONEMAP \
+            --cache-dir /opt/git \
+            git://git.openstack.org \
+            openstack/heat-templates \
+            openstack/instack-undercloud \
+            openstack/python-tripleoclient \
+            openstack/tripleo-image-elements \
+            openstack/tripleo-puppet-elements
+
 - job-template:
     name: '{pipeline}-tripleo-quickstart-{scenario}-{node}{job-suffix}'
     node: '{node}'
@@ -35,6 +59,47 @@
           envlist: "{scenario}"
 
     publishers:
+      - console-log
+
+- job-template:
+    name: 'gate-python-tripleoclient-buildimage-{image-name}-{node}{suffix}'
+    node: '{node}'
+
+    builders:
+      - link-logs
+      - net-info
+      - python-tripleoclient-buildimage-checkout
+      - install-distro-packages
+      - shell: |
+          #!/bin/bash -xe
+          cd python-tripleoclient
+          ELEMENTS="$WORKSPACE/instack-undercloud/elements:"
+          ELEMENTS+="$WORKSPACE/tripleo-puppet-elements/elements:"
+          ELEMENTS+="$WORKSPACE/tripleo-image-elements/elements:"
+          ELEMENTS+="$WORKSPACE/heat-templates/hot/software-config/elements"
+
+          # Basic Deployment (CLI)
+          # http://docs.openstack.org/developer/tripleo-docs/basic_deployment/basic_deployment_cli.html
+          export USE_DELOREAN_TRUNK=1
+          export DELOREAN_REPO_FILE="delorean.repo"
+
+          if [ "$ZUUL_BRANCH" == "stable/liberty" ]; then
+              export DELOREAN_TRUNK_REPO="http://trunk.rdoproject.org/centos7-liberty/current/"
+          elif [ "$ZUUL_BRANCH" == "stable/mitaka" ]; then
+              export DELOREAN_TRUNK_REPO="http://trunk.rdoproject.org/centos7-mitaka/current/"
+          else
+              export DELOREAN_TRUNK_REPO="http://buildlogs.centos.org/centos/7/cloud/x86_64/rdo-trunk-master-tripleo/"
+          fi
+
+          tox -evenv -- pip install diskimage-builder
+          tox -evenv -- openstack overcloud image build --type {image-name} --elements-path="$ELEMENTS"
+
+          mkdir -p $WORKSPACE/logs
+          mv *.log $WORKSPACE/logs
+
+    publishers:
+      - test-results
+      - devstack-logs
       - console-log
 
 - job-template:
