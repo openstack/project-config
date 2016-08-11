@@ -864,6 +864,15 @@ project-templates:
     gate:
       - gate-{name}-puppet-beaker-rspec-ubuntu-xenial
 
+  - name: tripleo-puppet-jobs
+    check:
+      - gate-tripleo-ci-centos-7-nonha-multinode
+    gate:
+      - gate-tripleo-ci-centos-7-nonha-multinode
+    check-tripleo:
+      - gate-tripleo-ci-centos-7-ovb-nonha-puppet-liberty
+      - gate-tripleo-ci-centos-7-ovb-nonha-puppet-mitaka
+
   - name: puppet-openstack-integration-jobs-all
     check:
       - gate-puppet-openstack-integration-3-scenario001-tempest-ubuntu-trusty
@@ -1466,6 +1475,14 @@ jobs:
   # tripleo multinode and undercloud jobs were introduced during Newton cycle.
   - name: ^gate-tripleo-ci-.*(multinode|undercloud).*$
     branch: ^(?!stable/(liberty|mitaka)).*$
+
+  # Test TripleO stable/liberty in Puppet OpenStack CI
+  - name: ^gate-tripleo-ci-centos-7-ovb-nonha-puppet-liberty$
+    branch: ^(stable/liberty).*$
+
+  # Test TripleO stable/liberty in Puppet OpenStack CI
+  - name: ^gate-tripleo-ci-centos-7-ovb-nonha-puppet-mitaka$
+    branch: ^(stable/mitaka).*$
 
   # Skip non-doc jobs for doc-only networking-midonet changes.  Since
   # doc/source/conf.py is checked by networking-midonet-pep8, that job
@@ -11053,10 +11070,7 @@ projects:
       - name: puppet-openstack-integration-jobs-scenario001
       - name: puppet-branch-tarball-jobs
       - name: openstack-server-release-jobs
-    check:
-      - gate-tripleo-ci-centos-7-nonha-multinode
-    gate:
-      - gate-tripleo-ci-centos-7-nonha-multinode
+      - name: tripleo-puppet-jobs
 
   - name: openstack/puppet-autossh
     template:
@@ -11090,10 +11104,7 @@ projects:
       - name: puppet-openstack-integration-jobs-scenario001
       - name: puppet-branch-tarball-jobs
       - name: openstack-server-release-jobs
-    check:
-      - gate-tripleo-ci-centos-7-nonha-multinode
-    gate:
-      - gate-tripleo-ci-centos-7-nonha-multinode
+      - name: tripleo-puppet-jobs
 
   - name: openstack/puppet-ceph
     template:
@@ -11126,10 +11137,7 @@ projects:
       - name: puppet-openstack-integration-jobs-scenario002
       - name: puppet-branch-tarball-jobs
       - name: openstack-server-release-jobs
-    check:
-      - gate-tripleo-ci-centos-7-nonha-multinode
-    gate:
-      - gate-tripleo-ci-centos-7-nonha-multinode
+      - name: tripleo-puppet-jobs
 
   - name: openstack/puppet-congress
     template:
@@ -11192,10 +11200,7 @@ projects:
       - name: puppet-openstack-integration-jobs-scenario001
       - name: puppet-branch-tarball-jobs
       - name: openstack-server-release-jobs
-    check:
-      - gate-tripleo-ci-centos-7-nonha-multinode
-    gate:
-      - gate-tripleo-ci-centos-7-nonha-multinode
+      - name: tripleo-puppet-jobs
 
   - name: openstack/puppet-heat
     template:
@@ -11210,10 +11215,7 @@ projects:
       - name: puppet-openstack-integration-jobs-scenario003
       - name: puppet-branch-tarball-jobs
       - name: openstack-server-release-jobs
-    check:
-      - gate-tripleo-ci-centos-7-nonha-multinode
-    gate:
-      - gate-tripleo-ci-centos-7-nonha-multinode
+      - name: tripleo-puppet-jobs
 
   - name: openstack/puppet-horizon
     template:
@@ -11228,10 +11230,7 @@ projects:
       - name: puppet-openstack-integration-jobs-scenario003
       - name: puppet-branch-tarball-jobs
       - name: openstack-server-release-jobs
-    check:
-      - gate-tripleo-ci-centos-7-nonha-multinode
-    gate:
-      - gate-tripleo-ci-centos-7-nonha-multinode
+      - name: tripleo-puppet-jobs
 
   - name: openstack/puppet-ironic
     template:
@@ -11261,10 +11260,7 @@ projects:
       - name: release-notes-jobs
       - name: puppet-branch-tarball-jobs
       - name: openstack-server-release-jobs
-    check:
-      - gate-tripleo-ci-centos-7-nonha-multinode
-    gate:
-      - gate-tripleo-ci-centos-7-nonha-multinode
+      - name: tripleo-puppet-jobs
 
   - name: openstack/puppet-magnum
     template:
@@ -11308,10 +11304,7 @@ projects:
       - name: puppet-openstack-integration-jobs-scenario003
       - name: puppet-branch-tarball-jobs
       - name: openstack-server-release-jobs
-    check:
-      - gate-tripleo-ci-centos-7-nonha-multinode
-    gate:
-      - gate-tripleo-ci-centos-7-nonha-multinode
+      - name: tripleo-puppet-jobs
 
   - name: openstack/puppet-modulesync-configs
     template:
@@ -11457,10 +11450,7 @@ projects:
       - name: release-notes-jobs
       - name: puppet-branch-tarball-jobs
       - name: openstack-server-release-jobs
-    check:
-      - gate-tripleo-ci-centos-7-nonha-multinode
-    gate:
-      - gate-tripleo-ci-centos-7-nonha-multinode
+      - name: tripleo-puppet-jobs
 
   - name: openstack/puppet-oslo
     template:
@@ -11474,10 +11464,7 @@ projects:
       - name: release-notes-jobs
       - name: puppet-branch-tarball-jobs
       - name: openstack-server-release-jobs
-    check:
-      - gate-tripleo-ci-centos-7-nonha-multinode
-    gate:
-      - gate-tripleo-ci-centos-7-nonha-multinode
+      - name: tripleo-puppet-jobs
 
   - name: openstack/puppet-ovn
     template:
@@ -11551,10 +11538,7 @@ projects:
       - name: puppet-openstack-integration-jobs-scenario002
       - name: puppet-branch-tarball-jobs
       - name: openstack-server-release-jobs
-    check:
-      - gate-tripleo-ci-centos-7-nonha-multinode
-    gate:
-      - gate-tripleo-ci-centos-7-nonha-multinode
+      - name: tripleo-puppet-jobs
 
   - name: openstack/puppet-tacker
     template:
@@ -11632,10 +11616,7 @@ projects:
       - name: release-notes-jobs
       - name: puppet-branch-tarball-jobs
       - name: openstack-server-release-jobs
-    check:
-      - gate-tripleo-ci-centos-7-nonha-multinode
-    gate:
-      - gate-tripleo-ci-centos-7-nonha-multinode
+      - name: tripleo-puppet-jobs
 
   - name: openstack/puppet-watcher
     template:
@@ -11661,10 +11642,7 @@ projects:
       - name: puppet-openstack-integration-jobs-scenario002
       - name: puppet-branch-tarball-jobs
       - name: openstack-server-release-jobs
-    check:
-      - gate-tripleo-ci-centos-7-nonha-multinode
-    gate:
-      - gate-tripleo-ci-centos-7-nonha-multinode
+      - name: tripleo-puppet-jobs
 
   - name: openstack/pycadf
     template:
