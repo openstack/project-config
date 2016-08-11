@@ -85,6 +85,54 @@
       - console-log
 
 - job-template:
+    name: '{pipeline}-shade-dsvm-functional-libs{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 70
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_NEUTRON=1
+          export DEVSTACK_GATE_HEAT=1
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin designate git://git.openstack.org/openstack/designate"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin magnum git://git.openstack.org/openstack/magnum"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"MAGNUM_GUEST_IMAGE_URL='http://tarballs.openstack.org/magnum/images/fedora-atomic-f23-dib.qcow2'"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"MAGNUM_IMAGE_NAME='fedora-atomic-f23-dib'"
+          export PROJECTS="openstack/designate $PROJECTS"
+          export PROJECTS="openstack/designate-dashboard $PROJECTS"
+          export PROJECTS="openstack/designate-tempest-plugin $PROJECTS"
+          export PROJECTS="openstack/magnum $PROJECTS"
+          export PROJECTS="openstack/python-magnumclient $PROJECTS"
+          export PROJECTS="openstack-infra/shade $PROJECTS"
+
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"LIBS_FROM_GIT=os-client-config,keystoneauth,python-novaclient,python-keystoneclient,python-glanceclient,python-cinderclient,python-neutronclient,python-troveclient,python-ironicclient,python-swiftclient,python-heatclient,python-designateclient,python-magnumclient"
+
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+
+          function post_test_hook {{
+              $BASE/new/shade/shade/tests/functional/hooks/post_test_hook.sh
+          }}
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
     name: '{pipeline}-shade-dsvm-functional-nova{job-suffix}'
     node: '{node}'
 
