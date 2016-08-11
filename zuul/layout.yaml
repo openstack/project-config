@@ -1076,6 +1076,7 @@ project-templates:
       - gate-designate-dsvm-bind9
       - gate-tempest-dsvm-designate-powerdns
       - gate-tempest-dsvm-designate-bind9
+      - gate-tempest-dsvm-designate-powerdns-postgres-nv
       - gate-rally-dsvm-designate-designate
       - gate-grenade-dsvm-designate-powerdns
       - gate-tempest-dsvm-designate-powerdns-identity-v3-only-nv
@@ -1087,7 +1088,6 @@ project-templates:
       - gate-tempest-dsvm-designate-bind9
       - gate-grenade-dsvm-designate-powerdns
     experimental:
-      - gate-designate-dsvm-powerdns-postgres
       - gate-tempest-dsvm-designate-agent-knot2
       - gate-tempest-dsvm-designate-agent-djbdns
       - gate-tempest-dsvm-designate-agent-gdnsd
@@ -2264,6 +2264,9 @@ jobs:
   # This overrides the above "looser" match above
   - name: ^gate-tempest-dsvm-designate-.*-mitaka$
     branch: ^master$
+
+  - name: ^gate-tempest-dsvm-designate-.*-postgres-nv$
+    branch: ^(?!stable/(liberty|mitaka)).*$
 
   - name: gate-octavia-tox-bandit-ubuntu-xenial
     branch: master
