@@ -2404,6 +2404,9 @@ jobs:
   - name: ^gate-python-muranoclient-tox-py27-mitaka-ubuntu-xenial$
     voting: false
 
+  - name: python-muranoclient-coverage-ubuntu-xenial
+    voting: false
+
   - name: gate-murano-devstack-dsvm
     branch: ^(stable/liberty).*$
 
@@ -12239,10 +12242,13 @@ projects:
       - name: translation-jobs
       - name: osc-plugin-jobs
     check:
+      - python-muranoclient-coverage-ubuntu-xenial
       - gate-muranoclient-dsvm-functional
       - gate-python-muranoclient-tox-py27-mitaka-ubuntu-xenial
     gate:
       - gate-muranoclient-dsvm-functional
+    post:
+      - python-muranoclient-coverage-ubuntu-xenial
 
   - name: openstack/python-namosclient
     template:
