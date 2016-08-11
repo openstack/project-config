@@ -23,7 +23,7 @@ from ZanataUtils import IniConfig, ZanataRestService
 
 def get_args():
     parser = argparse.ArgumentParser(description='Check if a version for the '
-                                     'specificed project exists on the Zanata '
+                                     'specified project exists on the Zanata '
                                      'server')
     parser.add_argument('-p', '--project', required=True)
     parser.add_argument('-v', '--version', required=True)
