@@ -37,14 +37,16 @@ def main():
     shell.parse_args([])
     shell.CONF.set_override('connection', DB_URI, group='database')
     session = api.get_session()
-    run_ids = api.get_recent_successful_runs(num_runs=10,
-                                             session=session)
+    runs = api.get_recent_successful_runs_by_run_metadata(
+        'build_name', 'gate-tempest-dsvm-neutron-full',
+        num_runs=10, session=session)
     session.close()
     preseed_path = os.path.join(TEMPEST_PATH, 'preseed-streams')
-    os.mkdir(preseed_path)
-    for run in run_ids:
-        with open(os.path.join(preseed_path, run + '.subunit'), 'w') as fd:
-            write_subunit.sql2subunit(run, fd)
+    if not os.path.isdir(preseed_path):
+        os.mkdir(preseed_path)
+    for run in runs:
+        with open(os.path.join(preseed_path, run.uuid + '.subunit'), 'w') as fd:
+            write_subunit.sql2subunit(run.uuid, fd)
 
 if __name__ == '__main__':
     main()
