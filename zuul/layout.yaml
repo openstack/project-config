@@ -3059,6 +3059,12 @@ jobs:
   - name: reprepro-import-debian-openstack-jessie
     mutex: mirror.deb-openstack
 
+  - name: reprepro-sign-jessie
+    mutex: mirror.deb-openstack
+
+  - name: reprepro-sign-jessie-backports
+    mutex: mirror.deb-openstack
+
   - name: reprepro-release-deb-openstack
     mutex: mirror.deb-openstack
 
@@ -6014,7 +6020,8 @@ projects:
     post:
       - pkgdeb-publish-auto-backports:
         - reprepro-import-debian-openstack-jessie-backports:
-          - reprepro-release-deb-openstack
+          - reprepro-sign-jessie-backports:
+            - reprepro-release-deb-openstack
 
   - name: openstack/deb-openstack-pkg-tools
     template:
@@ -6026,7 +6033,8 @@ projects:
     post:
       - pkgdeb-publish-openstack-pkg-tools:
         - reprepro-import-debian-openstack-jessie:
-          - reprepro-release-deb-openstack
+          - reprepro-sign-jessie:
+            - reprepro-release-deb-openstack
 
   - name: openstack/deb-spice-html5
     template:
