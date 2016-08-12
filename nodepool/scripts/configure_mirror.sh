@@ -26,6 +26,12 @@ LSBDISTCODENAME=$(lsb_release -cs)
 
 NODEPOOL_MIRROR_HOST=${NODEPOOL_MIRROR_HOST:-mirror.$NODEPOOL_REGION.$NODEPOOL_CLOUD.openstack.org}
 NODEPOOL_MIRROR_HOST=$(echo $NODEPOOL_MIRROR_HOST|tr '[:upper:]' '[:lower:]')
+
+# Double check that when the node is made ready it is able
+# to resolve names against DNS.
+host git.openstack.org
+host $NODEPOOL_MIRROR_HOST
+
 NODEPOOL_PYPI_MIRROR=${NODEPOOL_PYPI_MIRROR:-http://$NODEPOOL_MIRROR_HOST/pypi/simple}
 NODEPOOL_WHEEL_MIRROR=${NODEPOOL_WHEEL_MIRROR:-http://$NODEPOOL_MIRROR_HOST/wheel/$AFS_SLUG}
 NODEPOOL_UBUNTU_MIRROR=${NODEPOOL_UBUNTU_MIRROR:-http://$NODEPOOL_MIRROR_HOST/ubuntu}
@@ -114,11 +120,6 @@ failovermethod=priority
 enabled=1
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-\$releasever"
-
-# Double check that when the node is made ready it is able
-# to resolve names against DNS.
-host git.openstack.org
-host $NODEPOOL_MIRROR_HOST
 
 # Write global pip configuration
 echo "$PIP_CONF" >/tmp/pip.conf
