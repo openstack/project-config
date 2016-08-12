@@ -954,6 +954,49 @@
 
 
 - job-template:
+    name: '{pipeline}-grenade-dsvm-neutron-libs-{node}{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 180
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PROJECTS="openstack-dev/grenade $PROJECTS"
+          export PROJECTS="openstack/os-client-config $PROJECTS"
+          export PROJECTS="openstack/keystoneauth $PROJECTS"
+          export PROJECTS="openstack/python-novaclient $PROJECTS"
+          export PROJECTS="openstack/python-keystoneclient $PROJECTS"
+          export PROJECTS="openstack/python-glanceclient $PROJECTS"
+          export PROJECTS="openstack/python-cinderclient $PROJECTS"
+          export PROJECTS="openstack/python-neutronclient $PROJECTS"
+          export PROJECTS="openstack/python-ironicclient $PROJECTS"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"LIBS_FROM_GIT=os-client-config,keystoneauth,python-novaclient,python-keystoneclient,python-glanceclient,python-cinderclient,python-neutronclient,python-ironicclient"
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_GRENADE=pullup
+          export DEVSTACK_GATE_NEUTRON=1
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+
+- job-template:
     name: '{pipeline}-grenade-dsvm-neutron-forward{job-suffix}'
     node: '{node}'
 
