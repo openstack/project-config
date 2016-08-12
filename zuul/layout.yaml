@@ -2721,10 +2721,7 @@ jobs:
   - name: gate-trove-buildimage-percona
     voting: false
 
-  - name: gate-trove-scenario-functional-dsvm-mysql
-    branch: ^(?!stable/(liberty|mitaka)).*$
-
-  - name: gate-trove-scenario-functional-dsvm-redis
+  - name: ^gate-trove-scenario-functional-dsvm-.*$
     branch: ^(?!stable/(liberty|mitaka)).*$
 
   - name: gate-trove-python34-db
@@ -15821,16 +15818,24 @@ projects:
     check:
       - gate-trove-functional-dsvm-mysql
       - gate-tempest-dsvm-trove
-      - gate-trove-scenario-functional-dsvm-redis
+      - gate-trove-scenario-functional-dsvm-mariadb-nv
       - gate-trove-scenario-functional-dsvm-mysql
+      - gate-trove-scenario-functional-dsvm-postgresql-nv
+      - gate-trove-scenario-functional-dsvm-pxc-nv
+      - gate-trove-scenario-functional-dsvm-redis
     gate:
       - gate-trove-functional-dsvm-mysql
-      - gate-trove-scenario-functional-dsvm-redis
       - gate-trove-scenario-functional-dsvm-mysql
+      - gate-trove-scenario-functional-dsvm-redis
     post:
       - trove-coverage-db-ubuntu-trusty
       - trove-coverage-db-ubuntu-xenial
     experimental:
+      - gate-trove-scenario-functional-dsvm-cassandra-nv
+      - gate-trove-scenario-functional-dsvm-couchbase-nv
+      - gate-trove-scenario-functional-dsvm-couchdb-nv
+      - gate-trove-scenario-functional-dsvm-mongodb-nv
+      - gate-trove-scenario-functional-dsvm-percona-nv
       - gate-grenade-dsvm-trove
 
   - name: openstack/trove-dashboard
