@@ -3816,24 +3816,22 @@
       - pypi-jobs
       - openstack-publish-jobs
       - openstack-releasenotes-jobs
-      - '{pipeline}-kolla-kubernetes-{action}-{distro}-{type}':
+      - '{pipeline}-kolla-kubernetes-{action}-{distro}-{type}{job-suffix}':
           action: deploy
           distro: centos
           node: 'centos-7'
           pipeline: gate
-          type: binary
-      - '{pipeline}-kolla-kubernetes-{action}-{distro}-{type}':
-          action: deploy
-          distro: centos
-          node: 'centos-7'
-          pipeline: gate
-          type: source
-      - '{pipeline}-kolla-kubernetes-{action}-{distro}-{type}':
+          type:
+            - binary
+            - source
+          job-suffix: '-nv'
+      - '{pipeline}-kolla-kubernetes-{action}-{distro}-{type}{job-suffix}':
           action: deploy
           distro: ubuntu
           node: ubuntu-trusty
           pipeline: gate
           type: source
+          job-suffix: '-nv'
 
 - project:
     name: kosmos
