@@ -25,11 +25,16 @@ fi
 # This kernel has a single OVS patch
 #  https://git.kernel.org/cgit/linux/kernel/git/davem/net.git/commit/?id=5ef9f289c4e698054e5687edb54f0da3cdc9173a
 # to enable F24 testing until we get a fixed official kernel released
-dnf -y copr enable iwienand/kernel-4.6.4-301.rhbz1361414
-dnf update -y
+dnf -y copr enable iwienand/kernel-f24-rhbz1361414
 
-# This seems something like the least-worse way to do things ...
-#  https://fedoraproject.org/wiki/GRUB_2#Setting_default_entry
-echo "GRUB_DEFAULT=saved" >> /etc/default/grub
-echo "GRUB_SAVEDEFAULT=false" >> /etc/default/grub
-grub2-set-default 'Advanced options for Fedora 24 (Twenty Four)>Fedora (4.6.4-301.rhbz1361414.fc24.x86_64) 24 (Twenty Four)'
+# Current Fedora dib does a cleanup of the kernels to only leave the
+# latest kernel around (for size purposes).  That means this
+# effectively races with the upstream kernel to see who is the latest;
+# when upstream updates, this kernel will be second and get kicked out
+# in cleanup until we rebuild a new version.
+
+# This patch has been added to the F24 kernel repo, however, so we can
+# remove it once the next stable point release is cut
+#   http://pkgs.fedoraproject.org/cgit/rpms/kernel.git/commit/?h=f24&id=c3c83b942761d78d9b362dbd3fdec4112d099b87
+
+dnf -y update
