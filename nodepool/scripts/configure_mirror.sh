@@ -29,7 +29,20 @@ NODEPOOL_MIRROR_HOST=$(echo $NODEPOOL_MIRROR_HOST|tr '[:upper:]' '[:lower:]')
 
 # Double check that when the node is made ready it is able
 # to resolve names against DNS.
-host git.openstack.org
+# NOTE(pabelanger): Because it is possible for nodepool to SSH into a node but
+# DNS has not been fully started, we try up to 300 seconds (10 attempts) to
+# resolve DNS once.
+for COUNT in {1..10}; do
+    set +e
+    host -W 30 git.openstack.org
+    res=$?
+    set -e
+    if [ $res == 0 ]; then
+        break
+    elif [ $COUNT == 10 ]; then
+        exit 1
+    fi
+done
 host $NODEPOOL_MIRROR_HOST
 
 NODEPOOL_PYPI_MIRROR=${NODEPOOL_PYPI_MIRROR:-http://$NODEPOOL_MIRROR_HOST/pypi/simple}
