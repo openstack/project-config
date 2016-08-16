@@ -154,6 +154,27 @@
               copy-after-failure: false
       - console-log
 
+- job-template:
+    name: 'gate-{name}-nodejs{version}-npm-docs'
+    description: Build and publish draft documentation for a JavaScript project.
+    node: ubuntu-xenial
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - gerrit-git-prep
+      - install-distro-packages
+      - nodejs-install:
+          version: '{version}'
+      - revoke-sudo
+      - npm-run:
+          command: 'docs'
+      - assert-no-extra-files
+
+    publishers:
+      - upload-sphinx-draft
+      - console-log
+
 - job-group:
     name: nodejs4-jobs
     jobs:
@@ -162,6 +183,12 @@
           version: '4'
       - 'gate-{name}-nodejs{version}-npm-run-{command}':
           command: 'test'
+          version: '4'
+
+- job-group:
+    name: nodejs4-docs
+    jobs:
+      - 'gate-{name}-nodejs{version}-npm-docs':
           version: '4'
 
 - job-group:
@@ -187,6 +214,12 @@
       - '{name}-nodejs{version}-npm-publish-tarball':
           version: '6'
       - '{name}-npm-upload'
+
+- job-group:
+    name: nodejs6-docs
+    jobs:
+      - 'gate-{name}-nodejs{version}-npm-docs':
+          version: '6'
 
 
 ## Legacy Jobs (DEPRECATED)

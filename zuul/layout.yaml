@@ -1110,6 +1110,10 @@ project-templates:
       - '{name}-nodejs4-npm-publish-tarball':
         - '{name}-npm-upload'
 
+  - name: nodejs4-docs
+    check:
+      - 'gate-{name}-nodejs4-npm-docs'
+
   - name: nodejs6-jobs
     check:
       - gate-{name}-nodejs6-npm-run-lint
@@ -1119,6 +1123,10 @@ project-templates:
     release:
       - '{name}-nodejs6-npm-publish-tarball':
         - '{name}-npm-upload'
+
+  - name: nodejs6-docs
+    check:
+      - 'gate-{name}-nodejs6-npm-docs'
 
   - name: windmill-jobs-centos7
     check:
@@ -2226,6 +2234,9 @@ jobs:
   - name: ^.*-npm-publish-draft$
     success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/dist/
 
+  - name: ^gate-.*-npm-docs$
+    success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/dist/
+
   - name: infra-publications-publish
     branch: ^(?!master).*$
 
@@ -3075,6 +3086,9 @@ jobs:
   - name: ^.*-nodejs6-npm-run.*$
     voting: false
 
+  - name: ^.*-npm-docs$
+    voting: false
+
   # Mutexes
   - name: reprepro-import-debian-openstack-jessie
     mutex: mirror.deb-openstack
@@ -3664,6 +3678,7 @@ projects:
       - name: merge-check
       - name: nodejs4-jobs
       - name: nodejs4-publish-to-npm
+      - name: nodejs4-docs
 
   - name: openstack-infra/js-openstack-registry-hooks
     template:
@@ -8104,6 +8119,7 @@ projects:
       - name: nodejs4-jobs
       - name: nodejs4-publish-to-npm
       - name: nodejs6-jobs
+      - name: nodejs6-docs
 
   - name: openstack/karma-subunit-reporter
     template:
