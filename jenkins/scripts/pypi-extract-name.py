@@ -28,5 +28,5 @@ if len(sys.argv) == 1 or sys.argv[1] == "--tarball":
 elif sys.argv[1] == "--wheel":
     print(wheel.bdist_wheel.safer_name(distname))
 else:
-    sys.stderr.write("ERROR: Valid options are --tarball and --wheel")
+    sys.stderr.write("ERROR: Valid options are --tarball and --wheel\n")
     sys.exit(1)
