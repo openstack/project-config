@@ -2156,6 +2156,9 @@ jobs:
   - name: gate-tripleo-ci-centos-7-ovb-containers
     voting: false
 
+  - name: gate-browbeat-linters-ubuntu-xenial
+    voting: false
+
   - name: ^gate-tripleo-quickstart-linters-ubuntu-(trusty|xenial)$
     voting: false
 
@@ -5234,7 +5237,11 @@ projects:
   - name: openstack/browbeat
     template:
       - name: merge-check
-      - name: python-jobs
+      - name: ansible-role-jobs
+    check:
+      - gate-browbeat-python27-ubuntu-xenial
+    gate:
+      - gate-browbeat-python27-ubuntu-xenial
 
   - name: openstack/castellan
     template:
