@@ -14,7 +14,7 @@
 # under the License.
 
 CODENAME=$1
-AFS_DIR=/afs/.openstack.org/mirror/deb-openstack
+AFS_DIR=/afs/.openstack.org/mirror/debian-openstack
 BRANCH=$(echo $ZUUL_REFNAME | cut -d/ -f2)
 K5START="k5start -t -f /etc/packaging.keytab \
     service/packaging \
