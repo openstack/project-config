@@ -2669,14 +2669,16 @@ jobs:
     voting: false
 
   # Run trove checkbuild and checklinks only for changes to files in directory
-  # apidocs/ .
+  # apidocs/ or tox.ini.
   - name: gate-trove-tox-doc-publish-checkbuild
     files:
       - '^apidocs/.*$'
+      - ^tox.ini$
 
   - name: ^gate-trove-tox-checklinks-ubuntu-(trusty|xenial)$
     files:
       - '^apidocs/.*$'
+      - ^tox.ini$
 
   - name: gate-tempest-dsvm-full-lio
     voting: false
@@ -14286,6 +14288,7 @@ projects:
       - name: translation-jobs
       - name: release-notes-jobs
       - name: periodic-jobs-with-oslo-master
+      - name: api-ref-jobs
     check:
       - gate-trove-tox-doc-publish-checkbuild
       - gate-trove-functional-dsvm-mysql
