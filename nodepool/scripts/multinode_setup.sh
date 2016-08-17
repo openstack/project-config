@@ -19,7 +19,12 @@
 export PATH=$PATH:/usr/local/sbin:/usr/sbin
 
 for ip in $(cat /etc/nodepool/primary_node /etc/nodepool/sub_nodes /etc/nodepool/primary_node_private /etc/nodepool/sub_nodes_private | sort -u); do
-    sudo iptables -I openstack-INPUT 1 -s $ip -j ACCEPT
+    # Check for ipv6 address.
+    if echo $ip | grep -q :; then
+        sudo ip6tables -I openstack-INPUT 1 -s $ip -j ACCEPT
+    else
+        sudo iptables -I openstack-INPUT 1 -s $ip -j ACCEPT
+    fi
 done
 
 echo "" >> /home/jenkins/.ssh/authorized_keys
