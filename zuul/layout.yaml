@@ -1904,6 +1904,14 @@ jobs:
           - ^tox.ini$
     voting: false
 
+  # Only run the neutron LB job on nova if there are changes to nova/network/*
+  # TODO(mriedem): Run this proper on all changes once nova-network is dropped.
+  - name: gate-tempest-dsvm-neutron-linuxbridge
+    skip-if:
+      - project: ^openstack/nova$
+        all-files-match-any:
+          - ^(?!nova/network/.*).*$
+
   - name: ^gate-.*-identity-v3-only.*
     branch: ^(?!stable/(liberty|mitaka)).*$
 
@@ -10964,6 +10972,7 @@ projects:
       - gate-tempest-dsvm-ironic-ipa-partition-pxe_ssh-tinyipa-nv
       - gate-tempest-dsvm-cells
       - gate-tempest-dsvm-full-devstack-plugin-ceph
+      - gate-tempest-dsvm-neutron-linuxbridge
       - gate-tempest-dsvm-neutron-multinode-full
       - gate-tempest-dsvm-multinode-live-migration
     gate:
@@ -10983,7 +10992,6 @@ projects:
       - gate-tempest-dsvm-ironic-pxe_ipa-full-nv
       - gate-tempest-dsvm-lxc-ubuntu-trusty
       - gate-tempest-dsvm-lvm
-      - gate-tempest-dsvm-neutron-linuxbridge
       - gate-tempest-dsvm-neutron-src-oslo.versionedobjects
       - gate-tempest-dsvm-nova-os-vif-nv
       - gate-tempest-dsvm-nova-libvirt-kvm-apr
