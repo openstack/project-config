@@ -1,14 +1,6 @@
-- job:
-    name: pkgdeb-build-pkg
-    node: debian-jessie
-
-    wrappers:
-      - build-timeout:
-          timeout: 30
-      - timestamps
-
+- builder:
+    name: pkgos-infra-build-pkg
     builders:
-    - gerrit-git-prep
     - shell: |
           #!/bin/bash -xe
 
@@ -22,13 +14,26 @@
           sudo pkgos-infra-install-sbuild
           # ...and build
           pkgos-infra-build-pkg
+
+- job-template:
+    name: 'gate-{name}-dpkg-{node}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 30
+      - timestamps
+
+    builders:
+    - gerrit-git-prep
+    - pkgos-infra-build-pkg
 
     publishers:
       - console-log
 
-- job:
-    name: pkgdeb-publish-pkg
-    node: debian-jessie
+- job-template:
+    name: '{name}-dpkg-{node}'
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -37,21 +42,19 @@
 
     builders:
     - gerrit-git-prep
-    - shell: |
-          #!/bin/bash -xe
-
-          # Add OpenStack Infra internal repositories to APT source lists
-          sudo ln -s \
-          /etc/apt/sources.list.available.d/debian-openstack-newton.list \
-          /etc/apt/sources.list.d/debian-openstack-newton.list
-          # Install the build env...
-          sudo apt-get update
-          sudo apt-get install -y openstack-pkg-tools
-          sudo pkgos-infra-install-sbuild
-          # ...and build
-          pkgos-infra-build-pkg
+    - pkgos-infra-build-pkg
 
     publishers:
       - deb-pkgs:
-          project: deb-pkg
+          project: '{name}'
       - console-log
+
+- job-group:
+    name: 'debian-pkg-build'
+    jobs:
+      - 'gate-{name}-dpkg-{node}':
+          node:
+            - debian-jessie
+      - '{name}-dpkg-{node}':
+          node:
+            - debian-jessie
