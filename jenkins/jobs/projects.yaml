@@ -3196,6 +3196,13 @@
           designate-driver:
             - powerdns
             - bind9
+      - 'gate-tempest-dsvm-designate-{designate-driver}{special}{job-suffix}':
+          node: ubuntu-trusty
+          branch-override: default
+          special: '-postgres'
+          job-suffix: '-nv'
+          designate-driver:
+            - powerdns
       - 'gate-tempest-dsvm-designate-agent-{designate-driver}{job-suffix}':
           node: ubuntu-trusty
           branch-override: default
@@ -3216,11 +3223,6 @@
           designate-driver:
             - powerdns
             - bind9
-      # Legacy Job
-      - 'gate-designate-dsvm-{designate-driver}-postgres':
-          node: ubuntu-trusty
-          designate-driver:
-            - powerdns
       - 'gate-tempest-dsvm-designate-{designate-driver}{special}{job-suffix}':
           node: ubuntu-trusty
           special: '-identity-v3-only'

@@ -42,6 +42,10 @@
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"ENABLE_IDENTITY_V2=False"
           fi
 
+          if [ "{special}" == "-postgres" ] ; then
+              export DEVSTACK_GATE_POSTGRES=1
+          fi
+
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
 
@@ -168,79 +172,6 @@
           export PROJECTS="openstack/python-designateclient $PROJECTS"
           export PROJECTS="openstack/designate-dashboard $PROJECTS"
           export PROJECTS="openstack/designate-tempest-plugin $PROJECTS"
-
-          if [[ "$ZUUL_BRANCH" == "stable/liberty" ]]; then
-              # Liberty version uses the older 'hooks' approach to adding
-              # the Designate plugin
-
-              function gate_hook {{
-                  cd /opt/stack/new/designate/contrib/devstack
-                  ./gate_hook.sh
-              }}
-              export -f gate_hook
-
-              function pre_test_hook {{
-                  cd /opt/stack/new/designate/contrib/devstack
-                  ./pre_test_hook.sh
-              }}
-              export -f pre_test_hook
-
-              function post_test_hook {{
-                  cd /opt/stack/new/designate/contrib/devstack
-                  ./post_test_hook.sh
-              }}
-              export -f post_test_hook
-
-          else
-              # Otherwise, enable the Designate devstack plugin.
-              export DEVSTACK_LOCAL_CONFIG="enable_plugin designate git://git.openstack.org/openstack/designate"
-
-              function gate_hook {{
-                  cd /opt/stack/new/designate/devstack/gate
-                  ./gate_hook.sh
-              }}
-              export -f gate_hook
-
-              function post_test_hook {{
-                  cd /opt/stack/new/designate/devstack/gate
-                  ./post_test_hook.sh
-              }}
-              export -f post_test_hook
-          fi
-
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
-
-    publishers:
-      - devstack-logs
-      - console-log
-
-
-- job-template:
-    name: 'gate-designate-dsvm-{designate-driver}-postgres'
-
-    node: '{node}'
-
-    wrappers:
-      - build-timeout:
-          timeout: 70
-      - timestamps
-
-    builders:
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - shell: |
-          #!/bin/bash -xe
-          export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_INSTALL_TESTONLY=1
-          export DEVSTACK_GATE_TEMPEST=1
-          export DEVSTACK_GATE_TEMPEST_NOTESTS=1
-          export DEVSTACK_GATE_DESIGNATE_DRIVER="{designate-driver}"
-          export DEVSTACK_GATE_POSTGRES=1
-          export PROJECTS="openstack/designate $PROJECTS"
-          export PROJECTS="openstack/python-designateclient $PROJECTS"
-          export PROJECTS="openstack/designate-dashboard $PROJECTS"
 
           if [[ "$ZUUL_BRANCH" == "stable/liberty" ]]; then
               # Liberty version uses the older 'hooks' approach to adding
