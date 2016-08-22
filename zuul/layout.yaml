@@ -1506,7 +1506,7 @@ jobs:
   # Skip non-doc jobs for doc-only networking-midonet changes.  Since
   # doc/source/conf.py is checked by networking-midonet-pep8, that job
   # should not be skipped.
-  - name: ^.*networking-midonet-(python27|python3[45](-nv)?)$
+  - name: ^.*networking-midonet-(python27-db|python3[45]-db(-nv)?)$
     skip-if:
       - project: ^openstack/networking-midonet$
         all-files-match-any:
@@ -1942,7 +1942,7 @@ jobs:
   - name: gate-tempest-dsvm-neutron-dvr-ovs-native
     voting: false
 
-  - name: ^networking-midonet-coverage-ubuntu-(trusty|xenial)
+  - name: ^networking-midonet-coverage-db-ubuntu-(trusty|xenial)
     voting: false
 
   - name: ^gate-tempest-dsvm-networking-midonet-v1
@@ -10581,9 +10581,9 @@ projects:
     template:
       - name: merge-check
       - name: check-requirements
-      - name: python-jobs
-      - name: python34-jobs
-      - name: python35-jobs
+      - name: python-db-jobs
+      - name: python34-db-jobs
+      - name: python35-db-jobs
       - name: periodic-liberty
       - name: periodic-mitaka
       - name: publish-to-pypi
@@ -10595,8 +10595,8 @@ projects:
       - gate-tempest-dsvm-networking-midonet-v2
       - gate-tempest-dsvm-networking-midonet-ml2
       - gate-networking-midonet-v2-rally-dsvm-nv
-      - networking-midonet-coverage-ubuntu-trusty
-      - networking-midonet-coverage-ubuntu-xenial
+      - networking-midonet-coverage-db-ubuntu-trusty
+      - networking-midonet-coverage-db-ubuntu-xenial
     gate:
       - gate-tempest-dsvm-networking-midonet-v2
     experimental:
