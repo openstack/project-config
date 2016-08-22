@@ -14372,10 +14372,14 @@ projects:
     template:
       - name: merge-check
       - name: integrated-gate
-      - name: python-jobs
       - name: pypy-jobs
       - name: openstack-server-publish-jobs
     check:
+      - gate-requirements-pep8-ubuntu-trusty
+      - gate-requirements-python27-ubuntu-trusty
+      - gate-requirements-docs-ubuntu-xenial
+      - gate-requirements-pep8-ubuntu-xenial
+      - gate-requirements-python27-ubuntu-xenial
       - gate-requirements-integration-dsvm
       - gate-requirements-integration-dsvm-resolver
       - gate-requirements-tox-babel-ubuntu-xenial
@@ -14394,6 +14398,11 @@ projects:
       - gate-cross-nova-python27-db-ubuntu-xenial
       - gate-cross-swift-python27-ubuntu-xenial
     gate:
+      - gate-requirements-pep8-ubuntu-trusty
+      - gate-requirements-python27-ubuntu-trusty
+      - gate-requirements-docs-ubuntu-xenial
+      - gate-requirements-pep8-ubuntu-xenial
+      - gate-requirements-python27-ubuntu-xenial
       - gate-requirements-integration-dsvm
       - gate-requirements-tox-babel-ubuntu-xenial
       - gate-requirements-tox-validate-ubuntu-trusty
@@ -14424,6 +14433,7 @@ projects:
         - wheel-release-cent7x64
     post:
       - propose-requirements-updates
+      - requirements-branch-tarball
 
   - name: openstack/rpm-packaging
     template:
