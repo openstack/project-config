@@ -107,6 +107,33 @@ dashboard:
           targets:
             - target: aliasByNode(stats.gauges.nodepool.label.*.nodes.delete, 4)
           type: graph
+    - title: Node Launches
+      showTitle: true
+      height: 250px
+      panels:
+        - title: Ready Node Launch Attempts
+          type: graph
+          span: 4
+          nullPointMode: null as zero
+          leftYAxisLabel: "events / min"
+          targets:
+            - target: alias(smartSummarize(stats_counts.nodepool.launch.provider.*.ready, '1m'), 'Count')
+        - title: Error Node Launch Attempts
+          type: graph
+          span: 4
+          nullPointMode: null as zero
+          leftYAxisLabel: "events / min"
+          targets:
+            - target: alias(smartSummarize(sumSeries(stats_counts.nodepool.launch.provider.*.error.*), '1m'), 'Count')
+        - title: Time to Ready
+          type: graph
+          span: 4
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
+          targets:
+            - target: alias(scale(stats.timers.nodepool.launch.provider.*.ready.mean, '0.001'), 'Count')
     - title: Job Runtimes
       showTitle: true
       height: 250px
