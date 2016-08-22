@@ -1874,6 +1874,17 @@ jobs:
           - ^magnum/templates/swarm/.*$
           - ^magnum/templates/mesos/.*$
 
+  # NOTE(yuanying): ironic isn't supported in liberty or mitaka
+  - name: ^gate-functional-dsvm-magnum-k8s-ironic.*
+    branch: ^(?!stable/(liberty|mitaka)).*$
+    skip-if:
+      - project: ^openstack/magnum$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+          - ^magnum/drivers/swarm.*$
+          - ^magnum/drivers/mesos.*$
+
   - name: gate-functional-dsvm-magnum-swarm
     branch: ^(?!stable/liberty).$
     skip-if:
@@ -1883,6 +1894,17 @@ jobs:
           - ^doc/.*$
           - ^magnum/templates/kubernetes/.*$
           - ^magnum/templates/mesos/.*$
+
+  # NOTE(yuanying): ironic isn't supported in liberty or mitaka
+  - name: ^gate-functional-dsvm-magnum-swarm-ironic.*
+    branch: ^(?!stable/(liberty|mitaka)).*$
+    skip-if:
+      - project: ^openstack/magnum$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+          - ^magnum/drivers/k8s.*$
+          - ^magnum/drivers/mesos.*$
 
   - name: gate-functional-dsvm-magnum-mesos
     branch: ^(?!stable/liberty).*$
