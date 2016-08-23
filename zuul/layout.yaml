@@ -2613,6 +2613,18 @@ jobs:
   - name: gate-manila-tempest-dsvm-scenario
     voting: false
 
+  # NOTE(chenk): We enforce the trusty variant of following
+  # job until both on stable and master branches until xenial
+  # variant stablizes.
+  - name: gate-manila-tempest-dsvm-glusterfs-nfs-ubuntu-trusty-nv
+    branch: ^(?:stable/(?:liberty|mitaka|newton).*|master)$
+
+  # NOTE(chenk): We enforce the trusty variant of following
+  # job until both on stable and master branches until xenial
+  # variant stablizes.
+  - name: gate-manila-tempest-dsvm-glusterfs-native-ubuntu-trusty-nv
+    branch: ^(?:stable/(?:liberty|mitaka|newton).*|master)$
+
   - name: gate-manila-tempest-dsvm-cephfs-native
     branch: ^(?!stable/liberty).*$
     voting: false
@@ -9905,8 +9917,6 @@ projects:
       - gate-manila-tempest-dsvm-cephfs-native
       - gate-manila-tempest-dsvm-glusterfs-nfs-ubuntu-trusty-nv
       - gate-manila-tempest-dsvm-glusterfs-native-ubuntu-trusty-nv
-      - gate-manila-tempest-dsvm-glusterfs-nfs-ubuntu-xenial-nv
-      - gate-manila-tempest-dsvm-glusterfs-native-ubuntu-xenial-nv
       - gate-manila-tempest-dsvm-hdfs
       - gate-manila-tempest-minimal-dsvm-dummy
       - gate-manila-tempest-minimal-dsvm-lvm
