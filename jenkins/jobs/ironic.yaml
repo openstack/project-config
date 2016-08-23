@@ -169,9 +169,11 @@
           fi
 
           if [ "{image-type}" == "wholedisk" ] ; then
-            export DEVSTACK_GATE_IRONIC_EPHEMERAL=0
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_TEMPEST_WHOLE_DISK_IMAGE=True"
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_VM_EPHEMERAL_DISK=0"
           else
-            export DEVSTACK_GATE_IRONIC_EPHEMERAL=1
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_TEMPEST_WHOLE_DISK_IMAGE=False"
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_VM_EPHEMERAL_DISK=1"
           fi
 
           if [ -n "{build-ramdisk}" ] ; then
