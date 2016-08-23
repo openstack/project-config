@@ -2246,12 +2246,6 @@ jobs:
       - '^.*\.po$'
       - '^.*\.pot$'
 
-  - name: ^gate-.*-tox-checklinks-ubuntu-xenial$
-    branch: master
-    voting: false
-    files:
-      - '^.*\.xml$'
-
   - name: ^gate-.*-tox-checksyntax-ubuntu-xenial$
     files:
       - '^.*\.ent$'
@@ -4970,14 +4964,12 @@ projects:
   - name: openstack/api-site
     template:
       - name: merge-check
-      - name: openstack-doc-gate
+      - name: openstack-doc-rst-gate
       - name: openstack-doc-translation
     check:
       - gate-api-site-tox-checklang-ubuntu-xenial
-      - gate-build-swagger
     gate:
       - gate-api-site-tox-checklang-ubuntu-xenial
-      - gate-build-swagger
     post:
       - api-site-upstream-translation-update
       - openstack-api-ref
