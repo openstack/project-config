@@ -18,12 +18,6 @@
 
 source /etc/nodepool/provider
 
-# Generate the AFS Slug from the host system.
-source /usr/local/jenkins/slave_scripts/afs-slug.sh
-
-LSBDISTID=$(lsb_release -is)
-LSBDISTCODENAME=$(lsb_release -cs)
-
 NODEPOOL_MIRROR_HOST=${NODEPOOL_MIRROR_HOST:-mirror.$NODEPOOL_REGION.$NODEPOOL_CLOUD.openstack.org}
 NODEPOOL_MIRROR_HOST=$(echo $NODEPOOL_MIRROR_HOST|tr '[:upper:]' '[:lower:]')
 
@@ -44,6 +38,12 @@ for COUNT in {1..10}; do
     fi
 done
 host $NODEPOOL_MIRROR_HOST
+
+# Generate the AFS Slug from the host system.
+source /usr/local/jenkins/slave_scripts/afs-slug.sh
+
+LSBDISTID=$(lsb_release -is)
+LSBDISTCODENAME=$(lsb_release -cs)
 
 NODEPOOL_PYPI_MIRROR=${NODEPOOL_PYPI_MIRROR:-http://$NODEPOOL_MIRROR_HOST/pypi/simple}
 NODEPOOL_WHEEL_MIRROR=${NODEPOOL_WHEEL_MIRROR:-http://$NODEPOOL_MIRROR_HOST/wheel/$AFS_SLUG}
