@@ -1766,6 +1766,38 @@
       - devstack-logs
       - console-log
 
+- job-template:
+    name: '{pipeline}-tempest-dsvm-lvm-multibackend{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 180
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_TEMPEST_FULL=1
+          export DEVSTACK_LOCAL_CONFIG="CINDER_ENABLED_BACKENDS=lvm:lvmdriver-1,lvm:lvmdriver-2"
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
 # tempest-dsvm-full-lio-src-{name} - run a devstack LVM/LIO tempest job,
 # but use the zuul git ref for name instead of the released library
 # version.
@@ -2296,6 +2328,7 @@
       - '{pipeline}-grenade-dsvm-{node}{job-suffix}'
       - '{pipeline}-tempest-dsvm-cells{job-suffix}'
       - '{pipeline}-tempest-dsvm-full-lio{job-suffix}'
+      - '{pipeline}-tempest-dsvm-lvm-multibackend{job-suffix}'
       - '{pipeline}-tempest-dsvm-full-test-accounts{job-suffix}'
       - '{pipeline}-tempest-dsvm-full-{node}{job-suffix}'
       - '{pipeline}-tempest-dsvm-ironic-ipa-wholedisk-agent_ssh-tinyipa-src{job-suffix}'
