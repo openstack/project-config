@@ -1074,6 +1074,7 @@ project-templates:
       - gate-tripleo-ci-centos-7-undercloud-upgrades-nv
       - gate-tripleo-ci-centos-7-nonha-multinode-updates-nv
       - gate-tripleo-ci-centos-7-nonha-multinode-upgrades-nv
+      - gate-tripleo-ci-centos-7-scenario001-multinode-nv
 
   - name: experimental-tripleo-jobs
     experimental-tripleo:
@@ -1496,6 +1497,15 @@ jobs:
   # tripleo multinode and undercloud jobs were introduced during Newton cycle.
   - name: ^gate-tripleo-ci-.*(multinode|undercloud).*$
     branch: ^(?!stable/(liberty|mitaka)).*$
+
+  # NOTE(emilien): zuul v2 does not allow us to specify files rules for specific projects
+  # and are global to the jobname.
+  # It will be done with zuul v3:
+  # http://specs.openstack.org/openstack-infra/infra-specs/specs/zuulv3.html#jobs
+  - name : ^gate-tripleo-ci-centos-7-scenario001-multinode.*$
+    files:
+      - ^puppet/services/sahara.*$
+      - ^manifests/profile/base/sahara.*$
 
   # Test TripleO stable/liberty in Puppet OpenStack CI
   - name: ^gate-tripleo-ci-centos-7-ovb-nonha-puppet-liberty$
