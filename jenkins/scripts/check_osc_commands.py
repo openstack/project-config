@@ -18,6 +18,7 @@ plugins with the purpose of detecting duplicate commands.
 """
 
 import pkg_resources
+import traceback
 
 
 def find_duplicates():
@@ -84,7 +85,9 @@ def find_duplicates():
             try:
                 ep.load()
             except Exception:
-                failed_cmds.setdefault(ep_name, []).append(ep.module_name)
+                exc_string = traceback.format_exc()
+                message = "{}\n{}".format(ep.module_name, exc_string)
+                failed_cmds.setdefault(ep_name, []).append(message)
 
             if _is_valid_command(ep_name, ep.module_name, valid_cmds):
                 valid_cmds.setdefault(ep_name, []).append(ep.module_name)
