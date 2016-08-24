@@ -16,6 +16,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+if [ -f /etc/dib-builddate.txt ]; then
+    echo "Image build date"
+    echo "================"
+    cat /etc/dib-builddate.txt
+fi
+
 source /etc/nodepool/provider
 
 NODEPOOL_MIRROR_HOST=${NODEPOOL_MIRROR_HOST:-mirror.$NODEPOOL_REGION.$NODEPOOL_CLOUD.openstack.org}
