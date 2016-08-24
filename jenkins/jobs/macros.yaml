@@ -441,13 +441,11 @@
 
           # Xvfb Buffer...
           export DISPLAY=:99
-          (cd $ZUUL_URL/$ZUUL_PROJECT && npm install )
+          npm install
           npm_lifecycle_phases="publish install version test stop start restart pack"
 
           # Run any custom devstack configuration required by the project
           function pre_test_hook {{
-              cd $ZUUL_URL/$ZUUL_PROJECT
-
               # Try running as a standard lifecycle script, otherwise try custom.
               if [[ $npm_lifecycle_phases =~ (^| ){pre_test_command}($| ) ]]; then
                   npm {pre_test_command} --silent
@@ -460,7 +458,6 @@
           function post_test_hook {{
               # If you need access to devstack's clouds.yaml file, it is available
               # at its canonical location at /etc/openstack/clouds.yaml
-              cd $ZUUL_URL/$ZUUL_PROJECT
 
               # Try running as a standard lifecycle script, otherwise try custom.
               if [[ $npm_lifecycle_phases =~ (^| ){post_test_command}($| ) ]]; then
