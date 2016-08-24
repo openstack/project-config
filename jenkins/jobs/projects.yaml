@@ -5351,6 +5351,33 @@
       - nodejs4-publish-to-npm
 
 - project:
+    name: karbor
+    tarball-site: tarballs.openstack.org
+    doc-publisher-site: docs.openstack.org
+
+    jobs:
+      - python-jobs
+      - openstack-publish-jobs
+      - 'gate-{name}-python35{suffix}':
+          suffix: '-nv'
+      - pypi-jobs
+      - '{pipeline}-karbor-dsvm-fullstack{job-suffix}':
+          pipeline: gate
+          node: ubuntu-trusty
+          job-suffix: '-nv'
+          branch-override: default
+
+- project:
+    name: karbor-dashboard
+    tarball-site: tarballs.openstack.org
+
+    jobs:
+      - python-jobs
+      - 'gate-{name}-python35{suffix}':
+          suffix: '-nv'
+      - pypi-jobs
+
+- project:
     name: karma-subunit-reporter
     tarball-site: tarballs.openstack.org
     doc-publisher-site: docs.openstack.org
@@ -11145,6 +11172,16 @@
             - py27-functional
 
 - project:
+    name: python-karborclient
+    tarball-site: tarballs.openstack.org
+
+    jobs:
+      - python-jobs
+      - 'gate-{name}-python35{suffix}':
+          suffix: '-nv'
+      - pypi-jobs
+
+- project:
     name: python-keystoneclient
     tarball-site: tarballs.openstack.org
     doc-publisher-site: docs.openstack.org
@@ -11477,16 +11514,6 @@
           suffix: ''
       - pypi-jobs
       - translation-jobs
-
-- project:
-    name: python-smaugclient
-    tarball-site: tarballs.openstack.org
-
-    jobs:
-      - python-jobs
-      - 'gate-{name}-python35{suffix}':
-          suffix: '-nv'
-      - pypi-jobs
 
 - project:
     name: python-solumclient
@@ -12399,33 +12426,6 @@
 
     jobs:
       - python-jobs
-
-- project:
-    name: smaug
-    tarball-site: tarballs.openstack.org
-    doc-publisher-site: docs.openstack.org
-
-    jobs:
-      - python-jobs
-      - openstack-publish-jobs
-      - 'gate-{name}-python35{suffix}':
-          suffix: '-nv'
-      - pypi-jobs
-      - '{pipeline}-smaug-dsvm-fullstack{job-suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
-          job-suffix: '-nv'
-          branch-override: default
-
-- project:
-    name: smaug-dashboard
-    tarball-site: tarballs.openstack.org
-
-    jobs:
-      - python-jobs
-      - 'gate-{name}-python35{suffix}':
-          suffix: '-nv'
-      - pypi-jobs
 
 - project:
     name: solar
