@@ -63,11 +63,11 @@ def access_gerrit_check():
     # gerritbot. If we try connect to more, it will not connect to
     # all. Avoid this situation.
     if len(gerrit_config) > 120:
-        print ("ERROR: gerritbot can only handle 120 channels but found %s."
-               % len(gerrit_config))
-        print ("Sorry, we're at our limit and cannot add more for now.")
-        print ("If you want to help set up another instance contact the "
-               "infra team in #openstack-infra.\n")
+        print("ERROR: gerritbot can only handle 120 channels but found %s."
+              % len(gerrit_config))
+        print("Sorry, we're at our limit and cannot add more for now.")
+        print("If you want to help set up another instance contact the "
+              "infra team in #openstack-infra.\n")
         errors = True
 
     return errors

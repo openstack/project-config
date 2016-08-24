@@ -88,8 +88,8 @@ class CheckAccess(irc.client.SimpleIRCClient):
             return
         if msg.endswith('is not registered.'):
             self.failed = True
-            print ("%s is not registered with ChanServ." %
-                   self.current_channel)
+            print("%s is not registered with ChanServ." %
+                  self.current_channel)
             self.current_channel = None
             self.advance()
             return
@@ -103,10 +103,10 @@ class CheckAccess(irc.client.SimpleIRCClient):
                     break
             if not found:
                 self.failed = True
-                print ("%s does not have permissions on %s:" %
-                       (self.nick, self.current_channel))
+                print("%s does not have permissions on %s:" %
+                      (self.nick, self.current_channel))
                 for nick, flags, msg in self.current_list:
-                    print msg
+                    print(msg)
                 print
             # If this is the first channel checked, set the failure
             # flag to false because we know that the system is
