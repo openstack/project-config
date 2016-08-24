@@ -117,14 +117,14 @@ dashboard:
           nullPointMode: null as zero
           leftYAxisLabel: "events / min"
           targets:
-            - target: alias(smartSummarize(stats_counts.nodepool.launch.provider.*.ready, '1m'), 'Count')
+            - target: aliasByNode(smartSummarize(stats_counts.nodepool.launch.provider.*.ready, '1m'), 4)
         - title: Error Node Launch Attempts
           type: graph
           span: 4
           nullPointMode: null as zero
           leftYAxisLabel: "events / min"
           targets:
-            - target: alias(smartSummarize(sumSeries(stats_counts.nodepool.launch.provider.*.error.*), '1m'), 'Count')
+            - target: aliasByNode(smartSummarize(sumSeries(stats_counts.nodepool.launch.provider.*.error.*), '1m'), 4)
         - title: Time to Ready
           type: graph
           span: 4
@@ -133,7 +133,7 @@ dashboard:
             - s
             - none
           targets:
-            - target: alias(scale(stats.timers.nodepool.launch.provider.*.ready.mean, '0.001'), 'Count')
+            - target: aliasByNode(scale(stats.timers.nodepool.launch.provider.*.ready.mean, '0.001'), 4)
     - title: Job Runtimes
       showTitle: true
       height: 250px
