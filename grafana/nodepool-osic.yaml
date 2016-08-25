@@ -1,5 +1,12 @@
 dashboard:
   title: 'Nodepool: OSIC'
+  templating:
+    - name: provider
+      includeAll: true
+      multi: true
+      query: stats.gauges.nodepool.provider.osic-*
+      refresh: true
+      type: query
   rows:
     - title: Description
       height: 100px
@@ -20,7 +27,7 @@ dashboard:
             full: true
             show: true
           targets:
-            - target: sumSeries(stats.gauges.nodepool.provider.osic-*.nodes.building)
+            - target: sumSeries(stats.gauges.nodepool.provider.$provider.nodes.building)
           type: singlestat
           valueName: current
         - title: Ready
@@ -29,7 +36,7 @@ dashboard:
             full: true
             show: true
           targets:
-            - target: sumSeries(stats.gauges.nodepool.provider.osic-*.nodes.ready)
+            - target: sumSeries(stats.gauges.nodepool.provider.$provider.nodes.ready)
           type: singlestat
           valueName: current
         - title: In Use
@@ -38,7 +45,7 @@ dashboard:
             full: true
             show: true
           targets:
-            - target: sumSeries(stats.gauges.nodepool.provider.osic-*.nodes.used)
+            - target: sumSeries(stats.gauges.nodepool.provider.$provider.nodes.used)
           type: singlestat
           valueName: current
         - title: Deleting
@@ -47,7 +54,7 @@ dashboard:
             full: true
             show: true
           targets:
-              - target: sumSeries(stats.gauges.nodepool.provider.osic-*.nodes.delete)
+              - target: sumSeries(stats.gauges.nodepool.provider.$provider.nodes.delete)
           type: singlestat
           valueName: current
     - title: API Operations
@@ -62,7 +69,7 @@ dashboard:
             - s
             - none
           targets:
-            - target: alias(scale(stats.timers.nodepool.task.osic-cloud1.ServerCreate.mean, '0.001'), 'Cloud 1')
+            - target: aliasSub(aliasByNode(scale(stats.timers.nodepool.task.$provider.ServerCreate.mean, '0.001'), 4), 'osic-', '')
         - title: Get Server
           type: graph
           span: 4
@@ -71,7 +78,7 @@ dashboard:
             - s
             - none
           targets:
-            - target: alias(scale(stats.timers.nodepool.task.osic-cloud1.ServerGet.mean, '0.001'), 'Cloud 1')
+            - target: aliasSub(aliasByNode(scale(stats.timers.nodepool.task.$provider.ServerGet.mean, '0.001'), 4), 'osic-', '')
         - title: Delete Server
           type: graph
           span: 4
@@ -80,7 +87,7 @@ dashboard:
             - s
             - none
           targets:
-            - target: alias(scale(stats.timers.nodepool.task.osic-cloud1.ServerDelete.mean, '0.001'), 'Cloud 1')
+            - target: aliasSub(aliasByNode(scale(stats.timers.nodepool.task.$provider.ServerDelete.mean, '0.001'), 4), 'osic-', '')
         - title: List Servers
           type: graph
           span: 4
@@ -89,7 +96,7 @@ dashboard:
             - s
             - none
           targets:
-            - target: alias(scale(stats.timers.nodepool.task.osic-cloud1.ServerList.mean, '0.001'), 'Cloud 1')
+            - target: aliasSub(aliasByNode(scale(stats.timers.nodepool.task.$provider.ServerList.mean, '0.001'), 4), 'osic-', '')
     - title: Node Launches
       showTitle: true
       height: 250px
@@ -100,14 +107,14 @@ dashboard:
           nullPointMode: null as zero
           leftYAxisLabel: "events / min"
           targets:
-            - target: alias(smartSummarize(stats_counts.nodepool.launch.provider.osic-cloud1.ready, '1m'), 'Cloud 1')
+            - target: aliasSub(aliasByNode(summarize(stats_counts.nodepool.launch.provider.$provider.ready, '1m'), 4), 'osic-', '')
         - title: Error Node Launch Attempts
           type: graph
           span: 4
           nullPointMode: null as zero
           leftYAxisLabel: "events / min"
           targets:
-            - target: alias(smartSummarize(sumSeries(stats_counts.nodepool.launch.provider.osic-cloud1.error.*), '1m'), 'Cloud 1')
+            - target: aliasSub(aliasByNode(smartSummarize(sumSeries(stats_counts.nodepool.launch.provider.$provider.error.*), '1m'), 4), 'osic-', '')
         - title: Time to Ready
           type: graph
           span: 4
@@ -116,7 +123,7 @@ dashboard:
             - s
             - none
           targets:
-            - target: alias(scale(stats.timers.nodepool.launch.provider.osic-cloud1.ready.mean, '0.001'), 'Cloud 1')
+            - target: aliasSub(aliasByNode(scale(stats.timers.nodepool.launch.provider.$provider.ready.mean, '0.001'), 5), 'osic-', '')
         - title: Test Nodes (Cloud 1)
           type: graph
           span: 4
@@ -130,6 +137,22 @@ dashboard:
             - target: alias(stats.gauges.nodepool.provider.osic-cloud1.nodes.used, 'In Use')
             - target: alias(stats.gauges.nodepool.provider.osic-cloud1.nodes.delete, 'Deleting')
             - target: alias(stats.gauges.nodepool.provider.osic-cloud1.max_servers, 'Max')
+          seriesOverrides:
+            - alias: Max
+              stack: False
+        - title: Test Nodes (Cloud 8)
+          type: graph
+          span: 4
+          stack: true
+          tooltip:
+            value_type: individual
+          leftYAxisLabel: "nodes"
+          targets:
+            - target: alias(stats.gauges.nodepool.provider.osic-cloud8.nodes.building, 'Building')
+            - target: alias(stats.gauges.nodepool.provider.osic-cloud8.nodes.ready, 'Available')
+            - target: alias(stats.gauges.nodepool.provider.osic-cloud8.nodes.used, 'In Use')
+            - target: alias(stats.gauges.nodepool.provider.osic-cloud8.nodes.delete, 'Deleting')
+            - target: alias(stats.gauges.nodepool.provider.osic-cloud8.max_servers, 'Max')
           seriesOverrides:
             - alias: Max
               stack: False
