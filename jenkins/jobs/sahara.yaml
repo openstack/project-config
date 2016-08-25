@@ -181,7 +181,7 @@
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
-          export DEVSTACK_GATE_TEMPEST_REGEX="(sahara_tempest_plugin.tests.api|data_processing)"
+          export DEVSTACK_GATE_TEMPEST_REGEX="(sahara_tempest_plugin.tests.api|sahara_tempest_plugin.tests.clients|data_processing)"
           export DEVSTACK_LOCAL_CONFIG="export TEMPEST_PLUGINS='/opt/stack/new/sahara-tests'"
           export PROJECTS="openstack/sahara-tests $PROJECTS"
 
@@ -191,6 +191,15 @@
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
+
+          # required at least by client tests (python and CLI)
+          function pre_test_hook {{
+              cd /opt/stack/new/sahara-tests/tools/gate/cli_tests
+              ./pre_test_hook.sh
+          }}
+
+          export -f pre_test_hook
+
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
 
