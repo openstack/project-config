@@ -42,6 +42,11 @@
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"ENABLE_IDENTITY_V2=False"
           fi
 
+          if [ "{special}" == "-worker-model" ] ; then
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_service designate-worker designate-producer"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service designate-pool-manager designate-zone-manager"
+          fi
+
           if [ "{special}" == "-postgres" ] ; then
               export DEVSTACK_GATE_POSTGRES=1
           fi
