@@ -14,7 +14,7 @@
 # under the License.
 
 CODENAME=$1
-AFS_DIR=/afs/.openstack.org/mirror/debian-openstack
+BASE=/afs/.openstack.org/mirror/debian-openstack
 BRANCH=$(echo $ZUUL_REFNAME | cut -d/ -f2)
 K5START="k5start -t -f /etc/packaging.keytab \
     service/packaging \
@@ -31,7 +31,9 @@ if ! [ -z "${array[1]}" ]; then
     DISTRIBUTION+="-${array[1]}"
 fi
 
-cd $AFS_DIR/dists/$DISTRIBUTION
+cd $BASE/dists/$DISTRIBUTION
 
 $K5START gpg --armor --detach-sign --output Release.gpg Release
 $K5START gpg --armor --clearsign --output InRelease Release
+
+date --iso-8601=ns | $K5START tee $BASE/timestamp.txt
