@@ -159,7 +159,7 @@ def validate_jobs():
                 count += result
                 errors = True
 
-    print ("%d errors found validating YAML files in jenkins/jobs/*.yaml.\n" % count)
+    print("%d errors found validating YAML files in jenkins/jobs/*.yaml.\n" % count)
     return errors
 
 
