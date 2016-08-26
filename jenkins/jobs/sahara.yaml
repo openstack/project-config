@@ -182,6 +182,7 @@
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_TEMPEST=1
+          export KEEP_LOCALRC=1
           export DEVSTACK_GATE_TEMPEST_REGEX="(sahara_tempest_plugin.tests.api|sahara_tempest_plugin.tests.clients|data_processing)"
           export DEVSTACK_LOCAL_CONFIG="export TEMPEST_PLUGINS='/opt/stack/new/sahara-tests'"
           export PROJECTS="openstack/sahara-tests $PROJECTS"
@@ -277,6 +278,11 @@
           export DEVSTACK_GATE_INSTALL_TESTONLY=1
           export KEEP_LOCALRC=1
           export PROJECTS="openstack/sahara-tests $PROJECTS"
+
+          if [ "{name}" == "python-saharaclient" ] ; then
+              export PROJECTS="openstack/python-saharaclient $PROJECTS"
+              export DEVSTACK_PROJECT_FROM_GIT=python-saharaclient
+          fi
 
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
