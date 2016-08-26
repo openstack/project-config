@@ -137,6 +137,14 @@
             fi
 
 - builder:
+    name: ironic-inspector-client-from-source
+    builders:
+      - ironic-extra-vars:
+          script: |
+            export PROJECTS="openstack/python-ironic-inspector-client $PROJECTS"
+            export DEVSTACK_PROJECT_FROM_GIT="python-ironic-inspector-client,$DEVSTACK_PROJECT_FROM_GIT"
+
+- builder:
     name: ironic-postgres-enabled
     builders:
       - ironic-extra-vars:
@@ -877,6 +885,39 @@
           image-type: wholedisk
           branch-override: '{branch-override}'
           bm-vm-count: 1
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-tempest-dsvm-python-ironic-inspector-client{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 180
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - ironic-deploy-with-IPA:
+          ramdisk-type: 'tinyipa'
+      - ironic-tempest-regex:
+          tempest-regex: InspectorSmokeTest
+      - ironic-inspector-enabled:
+          inspector-auto-discovery: 0
+      - devstack-virtual-ironic:
+          build-ramdisk: ''
+          deploy_driver: agent_ssh
+          image-type: wholedisk
+          branch-override: '{branch-override}'
+          bm-vm-count: 1
+      - ironic-inspector-client-from-source
 
     publishers:
       - devstack-logs
