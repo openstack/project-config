@@ -34,6 +34,7 @@ labels:
       - name: internap-mtl01
       - name: internap-nyj01
       - name: osic-cloud1
+      - name: infracloud
   - name: ubuntu-precise
     image: ubuntu-precise
     ready-script: configure_mirror.sh
@@ -47,6 +48,7 @@ labels:
       - name: bluebox-sjc1
       - name: internap-mtl01
       - name: internap-nyj01
+      - name: infracloud
   - name: ubuntu-trusty
     image: ubuntu-trusty
     ready-script: configure_mirror.sh
@@ -61,6 +63,7 @@ labels:
       - name: internap-mtl01
       - name: internap-nyj01
       - name: osic-cloud1
+      - name: infracloud
   - name: ubuntu-trusty-2-node
     image: ubuntu-trusty
     ready-script: multinode_setup.sh
@@ -75,6 +78,7 @@ labels:
       - name: bluebox-sjc1
       - name: internap-mtl01
       - name: internap-nyj01
+      - name: infracloud
   - name: ubuntu-xenial
     image: ubuntu-xenial
     ready-script: configure_mirror.sh
@@ -89,6 +93,7 @@ labels:
       - name: internap-mtl01
       - name: internap-nyj01
       - name: osic-cloud1
+      - name: infracloud
   - name: ubuntu-xenial-2-node
     image: ubuntu-xenial
     ready-script: multinode_setup.sh
@@ -103,6 +108,7 @@ labels:
       - name: bluebox-sjc1
       - name: internap-mtl01
       - name: internap-nyj01
+      - name: infracloud
   - name: centos-7
     image: centos-7
     ready-script: configure_mirror.sh
@@ -117,6 +123,7 @@ labels:
       - name: internap-mtl01
       - name: internap-nyj01
       - name: osic-cloud1
+      - name: infracloud
   - name: fedora-23
     image: fedora-23
     ready-script: configure_mirror.sh
@@ -131,6 +138,7 @@ labels:
       - name: internap-mtl01
       - name: internap-nyj01
       - name: osic-cloud1
+      - name: infracloud
   - name: fedora-24
     image: fedora-24
     ready-script: configure_mirror.sh
@@ -145,6 +153,7 @@ labels:
       - name: internap-mtl01
       - name: internap-nyj01
       - name: osic-cloud1
+      - name: infracloud
   - name: centos-7-2-node
     image: centos-7
     ready-script: multinode_setup.sh
@@ -159,6 +168,7 @@ labels:
       - name: bluebox-sjc1
       - name: internap-mtl01
       - name: internap-nyj01
+      - name: infracloud
   - name: tripleo-centos-7
     image: centos-7
     ready-script: configure_mirror.sh
@@ -785,6 +795,64 @@ providers:
       - name: centos-7
         min-ram: 6144
         name-filter: undercloud
+        diskimage: centos-7
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+  - name: infracloud
+    region-name: 'RegionOne'
+    cloud: infracloud
+    api-timeout: 60
+    boot-timeout: 120
+    max-servers: -1
+    rate: 0.25
+    image-type: 'qcow2'
+    images:
+      - name: ubuntu-precise
+        min-ram: 8000
+        name-filter: 'nodepool'
+        diskimage: ubuntu-precise
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+      - name: ubuntu-trusty
+        min-ram: 8000
+        name-filter: 'nodepool'
+        diskimage: ubuntu-trusty
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+      - name: ubuntu-xenial
+        min-ram: 8000
+        name-filter: 'nodepool'
+        diskimage: ubuntu-xenial
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+      - name: debian-jessie
+        min-ram: 8000
+        name-filter: 'nodepool'
+        diskimage: debian-jessie
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+      - name: fedora-23
+        min-ram: 8000
+        name-filter: 'nodepool'
+        diskimage: fedora-23
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+      - name: fedora-24
+        min-ram: 8000
+        name-filter: 'nodepool'
+        diskimage: fedora-24
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+      - name: centos-7
+        min-ram: 8000
+        name-filter: 'nodepool'
         diskimage: centos-7
         username: jenkins
         private-key: /home/nodepool/.ssh/id_rsa
