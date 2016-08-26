@@ -1069,6 +1069,8 @@ project-templates:
       - gate-tripleo-ci-centos-7-nonha-multinode-updates-nv
       - gate-tripleo-ci-centos-7-nonha-multinode-upgrades-nv
       - gate-tripleo-ci-centos-7-scenario001-multinode-nv
+      - gate-tripleo-ci-centos-7-scenario002-multinode-nv
+      - gate-tripleo-ci-centos-7-scenario003-multinode-nv
 
   - name: experimental-tripleo-jobs
     experimental-tripleo:
@@ -1507,6 +1509,18 @@ jobs:
   # It will be done with zuul v3:
   # http://specs.openstack.org/openstack-infra/infra-specs/specs/zuulv3.html#jobs
   - name : ^gate-tripleo-ci-centos-7-scenario001-multinode.*$
+    files:
+      - ^puppet/services/aodh.*$
+      - ^manifests/profile/base/aodh.*$
+      - ^puppet/services/ceilometer.*$
+      - ^manifests/profile/base/ceilometer.*$
+      - ^puppet/services/gnocchi.*$
+      - ^manifests/profile/base/gnocchi.*$
+  - name : ^gate-tripleo-ci-centos-7-scenario002-multinode.*$
+    files:
+      - ^puppet/services/cinder.*$
+      - ^manifests/profile/base/cinder.*$
+  - name : ^gate-tripleo-ci-centos-7-scenario003-multinode.*$
     files:
       - ^puppet/services/sahara.*$
       - ^manifests/profile/base/sahara.*$
