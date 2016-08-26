@@ -669,40 +669,6 @@
       - devstack-logs
       - console-log
 
-- job-template:
-    name: '{pipeline}-tempest-dsvm-postgres-full-{node}{job-suffix}'
-    node: '{node}'
-
-    wrappers:
-      - build-timeout:
-          timeout: 180
-      - timestamps
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - shell: |
-          #!/bin/bash -xe
-          export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_TEMPEST=1
-          export DEVSTACK_GATE_TEMPEST_FULL=1
-          export DEVSTACK_GATE_POSTGRES=1
-          export DEVSTACK_GATE_CONFIGDRIVE=0
-          export DEVSTACK_GATE_NOVA_API_METADATA_SPLIT=1
-          export BRANCH_OVERRIDE={branch-override}
-          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
-              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
-          fi
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
-
-    publishers:
-      - devstack-logs
-      - console-log
-
 
 - job-template:
     name: '{pipeline}-tempest-dsvm-neutron-identity-v3-only-full{job-suffix}'
@@ -2309,7 +2275,6 @@
     jobs:
       - '{pipeline}-tempest-dsvm-full-{node}{job-suffix}'
       - '{pipeline}-tempest-dsvm-neutron-full-{node}{job-suffix}'
-      - '{pipeline}-tempest-dsvm-postgres-full-{node}{job-suffix}'
 
 # Temporary job group used so that we don't have to support node in
 # all jobs included in devstack-jobs right away. Once all do we can
@@ -2321,7 +2286,6 @@
       - '{pipeline}-grenade-dsvm-neutron-{node}{job-suffix}'
       - '{pipeline}-grenade-dsvm-{node}{job-suffix}'
       - '{pipeline}-tempest-dsvm-full-{node}{job-suffix}'
-      - '{pipeline}-tempest-dsvm-postgres-full-{node}{job-suffix}'
       - '{pipeline}-tempest-dsvm-neutron-full-{node}{job-suffix}'
       - '{pipeline}-tempest-dsvm-neutron-pg-full-{node}{job-suffix}'
 
@@ -2371,7 +2335,6 @@
       - '{pipeline}-tempest-dsvm-neutron-scenario-linuxbridge{job-suffix}'
       - '{pipeline}-tempest-dsvm-nova-v20-api{job-suffix}'
       - '{pipeline}-tempest-dsvm-nova-wsgi-full{job-suffix}'
-      - '{pipeline}-tempest-dsvm-postgres-full-{node}{job-suffix}'
       - '{pipeline}-tempest-dsvm-smoke-tlsproxy{job-suffix}'
       - '{pipeline}-tempest-dsvm-stress-keystonev3{job-suffix}'
       - '{pipeline}-tempest-dsvm-trove{job-suffix}'
