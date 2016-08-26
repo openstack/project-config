@@ -2992,6 +2992,11 @@ jobs:
           - ^doc/.*
           - ^releasenotes/.*
 
+  # Skip OpenStack-Ansible Xenial integrated build jobs for liberty and
+  # stable/mitaka. Xenial support was only introduced in Newton.
+  - name: ^gate-openstack-ansible-openstack-ansible-.*-ubuntu-xenial.*$
+    branch: ^(?!(liberty|stable/mitaka)).*$
+
   # Skip OpenStack-Ansible Xenial role jobs for liberty and stable/mitaka
   # Xenial support was only introduced in Newton
   - name: ^gate-openstack-ansible-.*-func-ubuntu-xenial.*$
