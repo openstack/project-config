@@ -4,11 +4,15 @@
       - shell: |
           #!/bin/bash -xe
 
-          AFS_DIR=/afs/.openstack.org/mirror/deb-openstack
+          BASE=/afs/.openstack.org/mirror/deb-openstack
           BRANCH=$(echo $ZUUL_REFNAME | cut -d/ -f2)
           PACKAGE_DIR=$WORKSPACE/packages
           PROJECT=$(echo $ZUUL_PROJECT | cut -d/ -f2)
           URL=http://tarballs.openstack.org/packaging-deb/$PROJECT/uploads/$ZUUL_COMMIT
+
+          K5START="k5start -t -f /etc/packaging.keytab \
+              service/packaging \
+              -- timeout -k 2m 30m"
 
           # Build up which distribution we are using. Here we will be
           # converting:
@@ -35,10 +39,7 @@
               --directory-prefix=$PACKAGE_DIR \
               $URL/
 
-          REPREPRO="k5start -t -f /etc/packaging.keytab \
-              service/packaging \
-              -- timeout -k 2m 30m \
-              reprepro --confdir /etc/reprepro/{reprepro}"
+          REPREPRO="$K5START reprepro --confdir /etc/reprepro/{reprepro}"
 
           # Get an afs token and import the packages to reprepro
           echo "Obtaining token and importing packages to reprepro"
@@ -54,6 +55,7 @@
           echo "List all packages"
           $REPREPRO list $DISTRIBUTION
 
+          date --iso-8601=ns | $K5START tee $BASE/timestamp.txt
           echo "Done."
 
 - builder:
