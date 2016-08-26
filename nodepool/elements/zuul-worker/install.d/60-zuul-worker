@@ -1,0 +1,29 @@
+#!/bin/bash
+
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+useradd -m zuul
+
+cat > /etc/sudoers.d/zuul << EOF
+zuul ALL=(ALL) NOPASSWD:ALL
+EOF
+
+chmod 0440 /etc/sudoers.d/zuul
+visudo -c || die "Error setting zuul sudo!"
+
+# this was copied from outside the chroot by extras.d
+_pub_key=/tmp/in_target.d/zuul-user-ssh-public-key
+if [ ! -f $_pub_key ]; then
+    die "Can not find Zuul public key!"
+fi
+
+mkdir /home/zuul/.ssh
+chmod 700 /home/zuul/.ssh
+cp $_pub_key /home/zuul/.ssh/authorized_keys
+
+# cleanup everything to the right owner
+chown -R zuul:zuul /home/zuul
