@@ -11199,13 +11199,20 @@
             - ubuntu-trusty
             - ubuntu-xenial
       - pypi-jobs
-      - '{pipeline}-muranoclient-dsvm-functional{job-suffix}':
+      - '{pipeline}-muranoclient-dsvm-functional-{mode}{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
           job-suffix: ''
+          mode: 'mysql-backend'
           branch-override: default
       - openstack-releasenotes-jobs
       - translation-jobs
+      - '{pipeline}-muranoclient-dsvm-functional-{mode}{job-suffix}':
+          pipeline: gate
+          mode: 'glare-backend'
+          node: ubuntu-trusty
+          job-suffix: '-nv'
+          branch-override: default
 
 - project:
     name: python-neutron-pd-driver
