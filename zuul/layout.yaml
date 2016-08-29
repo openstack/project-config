@@ -2878,6 +2878,15 @@ jobs:
   - name: ^gate-fuel-qa-pylint
     branch: ^(?!stable(-mu)?/(?:4\.0|4\.1|5\.0|5\.1|6\.0|6\.1|7\.0|8\.0)).*$
 
+  - name: ^fuel-qa-coverage-ubuntu-trusty
+    branch: ^stable/mitaka.*$
+
+  - name: ^fuel-qa-coverage-ubuntu-xenial
+    branch: ^(?!stable(-mu)?/(?:4\.0|4\.1|5\.0|5\.1|6\.0|6\.1|7\.0|8\.0|mitaka)).*$
+
+  - name: ^gate-fuel-qa-pep8-ubuntu-xenial$
+    branch: ^(?!stable(-mu)?/(?:4\.0|4\.1|5\.0|5\.1|6\.0|6\.1|7\.0|8\.0|mitaka)).*$
+
   - name: ^gate-fuel-qa-python27-ubuntu-xenial$
     branch: ^(?!stable(-mu)?/(?:4\.0|4\.1|5\.0|5\.1|6\.0|6\.1|7\.0|8\.0|mitaka)).*$
 
@@ -8279,7 +8288,7 @@ projects:
     template:
       - name: merge-check
       - name: python34-jobs
-      - name: python35-jobs-nv
+      - name: python35-jobs
       - name: python-jobs
     check:
       - gate-fuel-devops-pylint
@@ -8841,12 +8850,16 @@ projects:
       - gate-fuel-qa-python27-ubuntu-xenial
       - gate-fuel-qa-pep8-ubuntu-xenial
       - gate-fuel-qa-pylint
+      - fuel-qa-coverage-ubuntu-trusty
+      - fuel-qa-coverage-ubuntu-xenial
     gate:
       - gate-fuel-qa-python27-ubuntu-trusty
       - gate-fuel-qa-pep8-ubuntu-trusty
       - gate-fuel-qa-python27-ubuntu-xenial
       - gate-fuel-qa-pep8-ubuntu-xenial
       - gate-fuel-qa-pylint
+      - fuel-qa-coverage-ubuntu-trusty
+      - fuel-qa-coverage-ubuntu-xenial
 
   - name: openstack/fuel-specs
     template:
