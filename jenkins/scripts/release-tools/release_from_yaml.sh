@@ -92,16 +92,6 @@ RELEASE_META=$(git show --format=full --show-notes=review $parent | egrep -i '(A
 $TOOLSDIR/list_deliverable_changes.py -r $RELEASES_REPO $DELIVERABLES \
 | while read deliverable series version diff_start repo hash announce_to pypi first_full; do
     echo "$deliverable $series $version $diff_start $repo $hash $announce_to $pypi $first_full"
-    # FIXME(dhellmann): While we work out the kinks in the job, we
-    # only want to actually apply the tags to the release-test
-    # repository. When we're confident that it is working correctly,
-    # we can remove this block and apply it to all repositories.
-    if [ "$repo" != "openstack/release-test" ]; then
-        if $BOT_RUNNING; then
-            echo "SKIPPING during testing phase"
-            continue
-        fi
-    fi
     $TOOLSDIR/release.sh $repo $series $version $diff_start $hash $announce_to $pypi $first_full "$RELEASE_META"
 done
 
