@@ -2435,10 +2435,8 @@ jobs:
   - name: gate-neutron-lbaas-dashboard-dsvm-integration
     voting: false
 
-  - name: ^gate-sahara-dsvm-scenario.*-heat$
-    branch: ^(?!stable/liberty).*$
-
-  - name: ^gate-sahara-dsvm-scenario.*-nv$
+  # direct engine only in stable/liberty
+  - name: ^gate-sahara-dsvm-scenario.*-direct$
     branch: ^stable/liberty$
 
   - name: gate-sahara-tests-pylint
@@ -14045,6 +14043,7 @@ projects:
     check:
       - gate-python-saharaclient-python34
       - gate-sahara-cli-nv
+      - gate-python-saharaclient-dsvm-scenario-neutron-heat-nv
     post:
       - python-saharaclient-coverage-ubuntu-trusty
       - python-saharaclient-coverage-ubuntu-xenial
@@ -14568,13 +14567,13 @@ projects:
       - gate-grenade-dsvm-sahara
       - gate-sahara-dsvm-scenario-neutron-heat
       - gate-sahara-dsvm-scenario-nova-heat
-      - gate-sahara-dsvm-scenario-neutron-heat-nv
-      - gate-sahara-dsvm-scenario-nova-heat-nv
-      - gate-sahara-dsvm-scenario-neutron-direct-nv
-      - gate-sahara-dsvm-scenario-nova-direct-nv
+      - gate-sahara-dsvm-scenario-neutron-direct
+      - gate-sahara-dsvm-scenario-nova-direct
     gate:
       - gate-sahara-dsvm-scenario-neutron-heat
       - gate-sahara-dsvm-scenario-nova-heat
+      - gate-sahara-dsvm-scenario-neutron-direct
+      - gate-sahara-dsvm-scenario-nova-direct
       - gate-tempest-dsvm-sahara
     post:
       - sahara-coverage-db-ubuntu-trusty
