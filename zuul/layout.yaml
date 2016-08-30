@@ -1202,6 +1202,13 @@ jobs:
         all-files-match-any:
           - ^(test-|)requirements.txt$
 
+  # Never have the governance validation job voting. It is strictly for
+  # extra information and only run if the projects.yaml is changed
+  - name: ^gate-governance-tox-validate-ubuntu-xenial$
+    voting: false
+    files:
+      - ^reference/projects.yaml$
+
   # Skip these long-running and expensive devstack jobs when the
   # change is only to documentation, release notes, unit tests or
   # similar components that won't be exercised by the job anyway.
@@ -9136,6 +9143,7 @@ projects:
     check:
       - gate-governance-docs-ubuntu-trusty
       - gate-governance-docs-ubuntu-xenial
+      - gate-governance-tox-validate-ubuntu-xenial
     gate:
       - gate-governance-docs-ubuntu-trusty
       - gate-governance-docs-ubuntu-xenial
