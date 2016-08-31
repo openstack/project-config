@@ -34,6 +34,7 @@ labels:
       - name: internap-mtl01
       - name: internap-nyj01
       - name: osic-cloud1
+      - name: osic-cloud8
       - name: infracloud-vanilla
   - name: ubuntu-precise
     image: ubuntu-precise
@@ -63,6 +64,7 @@ labels:
       - name: internap-mtl01
       - name: internap-nyj01
       - name: osic-cloud1
+      - name: osic-cloud8
       - name: infracloud-vanilla
   - name: ubuntu-trusty-2-node
     image: ubuntu-trusty
@@ -79,6 +81,7 @@ labels:
       - name: internap-mtl01
       - name: internap-nyj01
       - name: osic-cloud1
+      - name: osic-cloud8
       - name: infracloud-vanilla
   - name: ubuntu-xenial
     image: ubuntu-xenial
@@ -94,6 +97,7 @@ labels:
       - name: internap-mtl01
       - name: internap-nyj01
       - name: osic-cloud1
+      - name: osic-cloud8
       - name: infracloud-vanilla
   - name: ubuntu-xenial-2-node
     image: ubuntu-xenial
@@ -110,6 +114,7 @@ labels:
       - name: internap-mtl01
       - name: internap-nyj01
       - name: osic-cloud1
+      - name: osic-cloud8
       - name: infracloud-vanilla
   - name: centos-7
     image: centos-7
@@ -125,6 +130,7 @@ labels:
       - name: internap-mtl01
       - name: internap-nyj01
       - name: osic-cloud1
+      - name: osic-cloud8
       - name: infracloud-vanilla
   - name: fedora-23
     image: fedora-23
@@ -140,6 +146,7 @@ labels:
       - name: internap-mtl01
       - name: internap-nyj01
       - name: osic-cloud1
+      - name: osic-cloud8
       - name: infracloud-vanilla
   - name: fedora-24
     image: fedora-24
@@ -155,6 +162,7 @@ labels:
       - name: internap-mtl01
       - name: internap-nyj01
       - name: osic-cloud1
+      - name: osic-cloud8
       - name: infracloud-vanilla
   - name: centos-7-2-node
     image: centos-7
@@ -171,6 +179,7 @@ labels:
       - name: internap-mtl01
       - name: internap-nyj01
       - name: osic-cloud1
+      - name: osic-cloud8
       - name: infracloud-vanilla
   - name: tripleo-centos-7
     image: centos-7
@@ -717,6 +726,67 @@ providers:
     ipv6-preferred: true
     networks:
       - name: 'GATEWAY_NET_V6'
+        public: True
+    images:
+      - name: ubuntu-precise
+        min-ram: 8000
+        name-filter: 'm2.medium'
+        diskimage: ubuntu-precise
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+      - name: ubuntu-trusty
+        min-ram: 8000
+        name-filter: 'm2.medium'
+        diskimage: ubuntu-trusty
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+      - name: ubuntu-xenial
+        min-ram: 8000
+        name-filter: 'm2.medium'
+        diskimage: ubuntu-xenial
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+      - name: debian-jessie
+        min-ram: 8000
+        name-filter: 'm2.medium'
+        diskimage: debian-jessie
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+      - name: fedora-23
+        min-ram: 8000
+        name-filter: 'm2.medium'
+        diskimage: fedora-23
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+      - name: fedora-24
+        min-ram: 8000
+        name-filter: 'm2.medium'
+        diskimage: fedora-24
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+      - name: centos-7
+        min-ram: 8000
+        name-filter: 'm2.medium'
+        diskimage: centos-7
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+  - name: osic-cloud8
+    region-name: 'RegionOne'
+    cloud: osic-cloud8
+    api-timeout: 60
+    boot-timeout: 240
+    max-servers: 0
+    rate: 0.001
+    ipv6-preferred: true
+    networks:
+      - name: 'external-v6'
         public: True
     images:
       - name: ubuntu-precise
