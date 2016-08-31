@@ -117,6 +117,14 @@ function pep503 {
 # Try to propose a constraints update for libraries.
 if [[ $INCLUDE_PYPI == "yes" ]]; then
     echo "Proposing constraints update"
+    # NOTE(dhellmann): If the setup_requires dependencies are not
+    # installed yet, running setuptools commands will install
+    # them. Capturing the output of a setuptools command that includes
+    # the output from installing packages produces a bad dist_name, so
+    # we first ask for the name without saving the output and then we
+    # ask for it again and save the output to get a clean
+    # version. This is why we can't have nice things.
+    python setup.py --name
     dist_name=$(python setup.py --name)
     canonical_name=$(pep503 $dist_name)
     if [[ -z "$dist_name" ]]; then
