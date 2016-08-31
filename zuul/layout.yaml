@@ -1789,8 +1789,15 @@ jobs:
   - name: ^neutron-lib-coverage-ubuntu-(trusty|xenial)
     voting: false
 
-  - name: gate-neutron-dsvm-functional-py34
+  - name: gate-neutron-dsvm-functional-py34-ubuntu-trusty
     branch: ^(?!stable/liberty).*$
+    voting: false
+
+  # NOTE(jlibosva) Run Xenial jobs only non-voting for Newton and forward
+  - name: ^gate-neutron-dsvm-(functional|fullstack)-ubuntu-xenial
+    voting: false
+
+  - name: gate-neutron-dsvm-functional-py35-ubuntu-xenial
     voting: false
 
   - name: ^gate-tempest-dsvm-neutron-pg-full-ubuntu-(trusty|xenial)
@@ -2704,7 +2711,10 @@ jobs:
   - name: gate-tempest-dsvm-docker-centos7
     voting: false
 
-  - name: gate-neutron-dsvm-fullstack
+  # NOTE(jlibosva): This job should run on Mitaka and earlier stable branches in
+  #                 the future.
+  - name: gate-neutron-dsvm-fullstack-ubuntu-trusty
+    branch: ^(master|stable/(liberty|mitaka|newton))$
     voting: false
 
   - name: gate-tacker-dsvm-functional
@@ -3289,7 +3299,7 @@ projects:
       - gate-grenade-dsvm-multinode
       - gate-grenade-dsvm-neutron-multinode
     experimental:
-      - gate-neutron-dsvm-functional
+      - gate-neutron-dsvm-functional-ubuntu-trusty
       - gate-tempest-dsvm-neutron-dvr
       - gate-tempest-dsvm-neutron-dvr-multinode-full
       - gate-tempest-dsvm-neutron-linuxbridge
@@ -3521,7 +3531,7 @@ projects:
       - gate-dg-hooks-dsvm
       - gate-grenade-dsvm-multinode
       - gate-grenade-dsvm-neutron-multinode
-      - gate-neutron-dsvm-functional-nv
+      - gate-neutron-dsvm-functional-ubuntu-trusty-nv
       - gate-swift-dsvm-functional-nv
       - gate-tempest-dsvm-full-ubuntu-trusty-liberty-nv
       - gate-tempest-dsvm-neutron-full-ubuntu-trusty-liberty-nv
@@ -10850,8 +10860,8 @@ projects:
     check:
       - neutron-coverage-ubuntu-xenial
       - gate-neutron-dsvm-api
-      - gate-neutron-dsvm-functional
-      - gate-neutron-dsvm-fullstack
+      - gate-neutron-dsvm-functional-ubuntu-trusty
+      - gate-neutron-dsvm-fullstack-ubuntu-trusty
       - gate-rally-dsvm-neutron-neutron
       - gate-tempest-dsvm-neutron-dvr
       - gate-tempest-dsvm-neutron-identity-v3-only-full-nv
@@ -10873,7 +10883,10 @@ projects:
       - neutron-coverage-ubuntu-trusty
       - neutron-coverage-ubuntu-xenial
     experimental:
-      - gate-neutron-dsvm-functional-py34
+      - gate-neutron-dsvm-functional-py34-ubuntu-trusty
+      - gate-neutron-dsvm-functional-ubuntu-xenial
+      - gate-neutron-dsvm-functional-py35-ubuntu-xenial
+      - gate-neutron-dsvm-fullstack-ubuntu-xenial
       - gate-tempest-dsvm-neutron-scenario
       - gate-tempest-dsvm-neutron-scenario-linuxbridge
       - gate-grenade-dsvm-neutron-forward
