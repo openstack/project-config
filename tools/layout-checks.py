@@ -128,6 +128,9 @@ def check_jobs():
         if not found:
             print ("Regex %s has no matches in job list" % jobs['name'])
             errors = True
+        if len(jobs.keys()) == 1:
+            print ("Job %s has no attributes in job list" % jobs['name'])
+            errors = True
 
     return errors
 
