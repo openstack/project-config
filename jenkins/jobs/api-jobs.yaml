@@ -16,6 +16,7 @@
           source: 'publish-docs/api-ref/**'
           target: '/'
           remove-prefix: 'publish-docs/api-ref/'
+      - test-results
       - console-log
 
 - job:
@@ -36,24 +37,7 @@
           source: 'publish-docs/api-ref/**'
           target: '/'
           remove-prefix: 'publish-docs/api-ref/'
-      - console-log
-
-- job:
-    name: gate-build-swagger
-    description: Build and publish draft Swagger files from WADL migration.
-    node: ubuntu-xenial
-
-    builders:
-      - gerrit-git-prep
-      - nodejs-install:
-          version: 4
-      - install-distro-packages
-      - revoke-sudo
-      - tox:
-          envlist: 'makeswagger'
-
-    publishers:
-      - upload-swagger-draft
+      - test-results
       - console-log
 
 - job-template:
@@ -70,6 +54,7 @@
 
     publishers:
       - upload-api-guide-draft
+      - test-results
       - console-log
 
 - job-template:
@@ -90,6 +75,7 @@
           source: 'api-guide/build/html/**'
           target: 'api-guide/{service}'
           remove-prefix: 'api-guide/build/html/'
+      - test-results
       - console-log
 
 # Be aware that the variable "service" needs to be set when this job
@@ -120,6 +106,7 @@
 
     publishers:
       - upload-api-ref-draft
+      - test-results
       - console-log
 
 - job-template:
@@ -140,6 +127,7 @@
           source: 'api-ref/build/html/**'
           target: 'api-ref/{service}'
           remove-prefix: 'api-ref/build/html/'
+      - test-results
       - console-log
 
 # Be aware that the variable "service" needs to be
@@ -174,4 +162,5 @@
           target: 'sdks/python/openstacksdk'
           remove-prefix: 'doc/build/html/'
           excludes: ''
+      - test-results
       - console-log
