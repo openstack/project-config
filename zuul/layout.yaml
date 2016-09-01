@@ -1752,6 +1752,11 @@ jobs:
   - name: ^gate-tempest-dsvm-.*-zaqar$
     branch: ^(?!stable/(liberty|mitaka)).*$
 
+  # NOTE(aweyl) tempest test for vitrage was introduced in the mitaka cycle,
+  # so testing the earlier branches doesn't make sense.
+  - name: ^gate-vitrage-dsvm-datasources$
+    branch: ^(?!stable/liberty).*$
+
   # NOTE(markvan) (heat) functional lbaas v2 testing was introduced in the mitaka
   # cycle as experimental, so testing it there and earlier branches doesn't make sense.
   - name: ^gate-heat-dsvm-functional-.*-lbaasv2$
@@ -16089,12 +16094,12 @@ projects:
       - name: python35-jobs-nv
       - name: check-requirements
       - name: publish-to-pypi
-    experimental:
-      - gate-vitrage-dsvm-datasources-nv
     check:
       - gate-vitrage-dsvm-api
+      - gate-vitrage-dsvm-datasources
     gate:
       - gate-vitrage-dsvm-api
+      - gate-vitrage-dsvm-datasources
 
   - name: openstack/vitrage-dashboard
     template:
