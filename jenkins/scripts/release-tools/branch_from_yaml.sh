@@ -17,7 +17,7 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-set -e
+set -ex
 
 TOOLSDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $TOOLSDIR/functions
@@ -44,8 +44,8 @@ shift
 DELIVERABLES="$@"
 
 $TOOLSDIR/list_deliverable_changes.py -r $RELEASES_REPO $DELIVERABLES \
-| while read deliverable ignore_series version repo ignore_hash ignore_announce_to pypi ignore_first_full; do
-    echo "$deliverable $version $repo"
+| while read deliverable series version diff_start repo hash announce_to pypi first_full; do
+    echo "$SERIES $repo $version"
     $TOOLSDIR/make_stable_branch.sh $SERIES $repo $version
 done
 

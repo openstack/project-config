@@ -73,6 +73,25 @@ defaultbranch=$branch"
 }
 
 
+function update_upper_constraints {
+    typeset branch="$1"
+    typeset uc_server='git.openstack.org'
+    typeset uc_path='cgit/openstack/requirements/plain/upper-constraints.txt'
+    typeset uc_url="https://${uc_server}/${uc_path}?h=${branch}"
+
+    echo "Updating tox.ini for upper-constraints"
+    git checkout $branch
+    sed -i~ -e "s,-c.*{\(env:UPPER_CONSTRAINTS_FILE\)[^ ]*} ,-c{\1:$uc_url}," tox.ini
+    if ! git diff --exit-code >/dev/null 2>&1 ; then
+        git add tox.ini
+        git commit -m "Update UPPER_CONSTRAINTS_FILE for $branch"
+        git show
+        local shortbranch=$(basename $branch)
+        git review -t "create-${shortbranch}"
+    fi
+}
+
+
 function clone_repo {
     typeset repo="$1"
     typeset branch="$2"
