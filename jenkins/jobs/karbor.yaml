@@ -1,5 +1,5 @@
 - job-template:
-    name: '{pipeline}-smaug-dsvm-fullstack{job-suffix}'
+    name: '{pipeline}-karbor-dsvm-fullstack{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -26,17 +26,17 @@
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
 
-          export PROJECTS="openstack/smaug $PROJECTS"
+          export PROJECTS="openstack/karbor $PROJECTS"
 
-          export DEVSTACK_GATE_SETTINGS=/opt/stack/new/smaug/devstack/devstackgaterc
+          export DEVSTACK_GATE_SETTINGS=/opt/stack/new/karbor/devstack/devstackgaterc
 
           function gate_hook {{
-              bash -xe $BASE/new/smaug/karbor/tests/contrib/gate_hook.sh fullstack
+              bash -xe $BASE/new/karbor/karbor/tests/contrib/gate_hook.sh fullstack
           }}
           export -f gate_hook
 
           function post_test_hook {{
-              bash -xe $BASE/new/smaug/karbor/tests/contrib/post_test_hook.sh fullstack
+              bash -xe $BASE/new/karbor/karbor/tests/contrib/post_test_hook.sh fullstack
           }}
           export -f post_test_hook
 
