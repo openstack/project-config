@@ -165,6 +165,13 @@
           export PROJECTS="openstack/tripleo-common $PROJECTS"
           export PROJECTS="openstack/tripleo-puppet-elements $PROJECTS"
 
+          # some projects are not in devstack-gate, we need them to grab logs:
+          export PROJECTS="openstack/aodh $PROJECTS"
+          export PROJECTS="openstack/barbican $PROJECTS"
+          export PROJECTS="openstack/gnocchi $PROJECTS"
+          export PROJECTS="openstack/panko $PROJECTS"
+          export PROJECTS="openstack/mistral $PROJECTS"
+
           sudo chown -hR $(whoami) /opt/git
           function gate_hook {{
               bash -xe /opt/stack/new/tripleo-ci/toci_gate_test.sh
