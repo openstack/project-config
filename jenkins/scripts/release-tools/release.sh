@@ -136,12 +136,15 @@ if [[ $INCLUDE_PYPI == "yes" ]]; then
         git checkout -b "$dist_name-$VERSION"
         sed -e "s/^${dist_name}=.*/$dist_name===$VERSION/" --in-place upper-constraints.txt
         sed -e "s/^${canonical_name}=.*/$canonical_name===$VERSION/" --in-place upper-constraints.txt
-        git commit -a -m "update constraint for $dist_name to new release $VERSION
+        if git commit -a -m "update constraint for $dist_name to new release $VERSION
 
 $TAGMSG
-"
-        git show
-        git review -t 'new-release'
+"; then
+            git show
+            git review -t 'new-release'
+        else
+            echo "Skipping git review because there are no updates."
+        fi
     fi
 fi
 
