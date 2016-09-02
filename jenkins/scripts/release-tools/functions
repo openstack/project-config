@@ -98,11 +98,12 @@ function clone_repo {
 
     set -e
 
-    # Create the parent directory in case it doesn't already exist.
-    mkdir -p $(dirname $repo)
+    if [[ ! -z "$branch" ]]; then
+        branch="--branch $branch"
+    fi
 
-    # Clone into openstack/foo instead of just foo.
-    git clone git://git.openstack.org/$repo $repo
+    # Clone the repository using the given branch, if possible.
+    zuul-cloner $branch git://git.openstack.org $repo
 
     # Configure git-review so we can propose patches to the repo if
     # needed.
@@ -111,16 +112,6 @@ function clone_repo {
     # Make sure we have all of the existing tags so we can refer to
     # them for building the release notes.
     (cd $repo && git fetch -v --tags)
-
-    # Make sure the active branch is set correctly, if the branch
-    # exists.
-    if [ ! -z "$branch" ]; then
-        if git show origin/$branch; then
-            (cd $repo && git checkout $branch)
-        else
-            echo "Branch $branch does not exist, using master."
-        fi
-    fi
 
     return 0
 }
