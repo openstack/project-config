@@ -46,7 +46,7 @@ if $(git branch -r | grep $NEW_BRANCH > /dev/null); then
     echo "A $NEW_BRANCH branch already exists !"
     cd ../..
     rm -rf $MYTMPDIR
-    exit 1
+    exit 0
 fi
 
 echo "Creating $NEW_BRANCH from $VERSION"
