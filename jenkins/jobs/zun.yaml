@@ -18,6 +18,9 @@
           export DEVSTACK_GATE_TEMPEST=0
           export DEVSTACK_GATE_NEUTRON=1
 
+          # Enable tempest for tempest plugin
+          export ENABLED_SERVICES=tempest
+
           export PROJECTS="openstack/zun $PROJECTS"
           export PROJECTS="openstack/python-zunclient $PROJECTS"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin zun git://git.openstack.org/openstack/zun"
@@ -30,6 +33,13 @@
               ./devstack/gate_hook.sh
           }
           export -f gate_hook
+
+          function post_test_hook {{
+              source $BASE/new/devstack/accrc/admin/admin
+              cd /opt/stack/new/higgins/
+              ./zun/tests/contrib/post_test_hook.sh
+          }}
+          export -f post_test_hook
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
