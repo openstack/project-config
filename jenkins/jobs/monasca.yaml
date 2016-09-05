@@ -104,10 +104,9 @@
       - 'gate-tempest-dsvm-monasca-java-full{job-suffix}':
           job-suffix: '-nv'
 
-- job:
-    name: 'gate-tempest-dsvm-monasca-log'
-
-    node: ubuntu-trusty
+- job-template:
+    name: 'gate-tempest-dsvm-monasca-log-api-{node}{suffix}'
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -129,15 +128,15 @@
           PROJECTS="openstack/monasca-api $PROJECTS"
           export PROJECTS="openstack/monasca-log-api $PROJECTS"
 
-          function pre_test_hook {
+          function pre_test_hook {{
               source $BASE/new/monasca-log-api/devstack/pre_test_hook.sh
-          }
+          }}
           export -f pre_test_hook
 
-          function post_test_hook {
+          function post_test_hook {{
               # Configure and run tempest on monasca-log-api installation
               source $BASE/new/monasca-log-api/devstack/post_test_hook.sh
-          }
+          }}
           export -f post_test_hook
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
