@@ -1975,10 +1975,10 @@ jobs:
           - ^magnum/drivers/k8s.*$
           - ^magnum/drivers/swarm.*$
 
-  - name: gate-tempest-dsvm-multinode-full
+  - name: ^gate-tempest-dsvm-multinode-full-ubuntu-(trusty|xenial)$
     voting: false
 
-  - name: gate-tempest-dsvm-multinode-live-migration
+  - name: gate-tempest-dsvm-multinode-live-migration-ubuntu-xenial
     branch: ^(?!stable/(liberty|mitaka)).*$
     skip-if:
       - project: ^openstack/nova$
@@ -2019,10 +2019,10 @@ jobs:
     branch: ^(?!stable/(liberty|mitaka)).*$
     voting: false
 
-  - name: gate-tempest-dsvm-neutron-multinode-full
+  - name: ^gate-tempest-dsvm-neutron-multinode-full-ubuntu-(trusty|xenial)$
     voting: false
 
-  - name: gate-tempest-dsvm-neutron-dvr-multinode-full
+  - name: ^gate-tempest-dsvm-neutron-dvr-multinode-full-ubuntu-(trusty|xenial)$
     voting: false
 
   - name: gate-tempest-dsvm-neutron-ovs-native
@@ -3312,8 +3312,10 @@ projects:
       - gate-swift-dsvm-functional-nv
       - gate-grenade-dsvm-neutron-ubuntu-trusty
       - gate-grenade-dsvm-neutron-ubuntu-xenial
-      - gate-tempest-dsvm-multinode-full
-      - gate-tempest-dsvm-neutron-multinode-full
+      - gate-tempest-dsvm-multinode-full-ubuntu-trusty
+      - gate-tempest-dsvm-neutron-multinode-full-ubuntu-trusty
+      - gate-tempest-dsvm-multinode-full-ubuntu-xenial
+      - gate-tempest-dsvm-neutron-multinode-full-ubuntu-xenial
       - gate-grenade-dsvm-multinode
       - gate-grenade-dsvm-neutron-multinode
       - gate-tempest-dsvm-platform-centos7-nv
@@ -3326,7 +3328,8 @@ projects:
     experimental:
       - gate-neutron-dsvm-functional-ubuntu-trusty
       - gate-tempest-dsvm-neutron-dvr
-      - gate-tempest-dsvm-neutron-dvr-multinode-full
+      - gate-tempest-dsvm-neutron-dvr-multinode-full-ubuntu-trusty
+      - gate-tempest-dsvm-neutron-dvr-multinode-full-ubuntu-xenial
       - gate-tempest-dsvm-neutron-linuxbridge
       - gate-tempest-dsvm-neutron-placement-full-ubuntu-xenial-nv
       - gate-tempest-dsvm-cells
@@ -3567,15 +3570,18 @@ projects:
       - gate-tempest-dsvm-full-ubuntu-trusty-mitaka-nv
       - gate-tempest-dsvm-neutron-full-ubuntu-trusty-mitaka-nv
       - gate-tempest-dsvm-platform-centos7-nv
-      - gate-tempest-dsvm-multinode-full
-      - gate-tempest-dsvm-neutron-multinode-full
+      - gate-tempest-dsvm-multinode-full-ubuntu-trusty
+      - gate-tempest-dsvm-neutron-multinode-full-ubuntu-trusty
+      - gate-tempest-dsvm-multinode-full-ubuntu-xenial
+      - gate-tempest-dsvm-neutron-multinode-full-ubuntu-xenial
     gate:
       - gate-devstack-gate-unittests
       - gate-grenade-dsvm-multinode
       - gate-grenade-dsvm-neutron-multinode
     experimental:
       - gate-grenade-dsvm-forward
-      - gate-tempest-dsvm-neutron-dvr-multinode-full
+      - gate-tempest-dsvm-neutron-dvr-multinode-full-ubuntu-trusty
+      - gate-tempest-dsvm-neutron-dvr-multinode-full-ubuntu-xenial
 
   - name: openstack-infra/elastic-recheck
     template:
@@ -10951,8 +10957,10 @@ projects:
       - gate-neutron-lbaasv2-dsvm-minimal
       - gate-grenade-dsvm-neutron-multinode
       - gate-grenade-dsvm-neutron-dvr-multinode
-      - gate-tempest-dsvm-neutron-multinode-full
-      - gate-tempest-dsvm-neutron-dvr-multinode-full
+      - gate-tempest-dsvm-neutron-multinode-full-ubuntu-trusty
+      - gate-tempest-dsvm-neutron-dvr-multinode-full-ubuntu-trusty
+      - gate-tempest-dsvm-neutron-multinode-full-ubuntu-xenial
+      - gate-tempest-dsvm-neutron-dvr-multinode-full-ubuntu-xenial
       - gate-tempest-dsvm-ironic-ipa-partition-pxe_ssh-tinyipa-nv
     gate:
       - neutron-coverage-ubuntu-xenial
@@ -11171,15 +11179,16 @@ projects:
       - gate-tempest-dsvm-cells
       - gate-tempest-dsvm-full-devstack-plugin-ceph
       - gate-tempest-dsvm-neutron-linuxbridge
-      - gate-tempest-dsvm-neutron-multinode-full
+      - gate-tempest-dsvm-neutron-multinode-full-ubuntu-trusty
+      - gate-tempest-dsvm-neutron-multinode-full-ubuntu-xenial
       - gate-tempest-dsvm-neutron-placement-full-ubuntu-xenial-nv
-      - gate-tempest-dsvm-multinode-live-migration
+      - gate-tempest-dsvm-multinode-live-migration-ubuntu-xenial
     gate:
       - gate-nova-tox-db-functional
       - gate-grenade-dsvm-multinode
       - gate-tempest-dsvm-cells
       - gate-tempest-dsvm-full-devstack-plugin-ceph
-      - gate-tempest-dsvm-multinode-live-migration
+      - gate-tempest-dsvm-multinode-live-migration-ubuntu-xenial
     post:
       - nova-coverage-db-ubuntu-trusty
       - nova-coverage-db-ubuntu-xenial
@@ -11187,8 +11196,10 @@ projects:
       - gate-tempest-dsvm-nova-v20-api
       - gate-grenade-dsvm-forward
       - gate-tempest-dsvm-nova-wsgi-full
-      - gate-tempest-dsvm-multinode-full
-      - gate-tempest-dsvm-neutron-dvr-multinode-full
+      - gate-tempest-dsvm-multinode-full-ubuntu-trusty
+      - gate-tempest-dsvm-multinode-full-ubuntu-xenial
+      - gate-tempest-dsvm-neutron-dvr-multinode-full-ubuntu-trusty
+      - gate-tempest-dsvm-neutron-dvr-multinode-full-ubuntu-xenial
       - gate-tempest-dsvm-ironic-pxe_ipa-full-nv
       - gate-tempest-dsvm-lxc-ubuntu-trusty
       - gate-tempest-dsvm-lvm
@@ -15692,10 +15703,13 @@ projects:
       - periodic-tempest-dsvm-all-master
       - periodic-tempest-dsvm-stress-master
       - gate-tempest-dsvm-stress-keystonev3
-      - gate-tempest-dsvm-multinode-full
-      - gate-tempest-dsvm-multinode-live-migration
-      - gate-tempest-dsvm-neutron-multinode-full
-      - gate-tempest-dsvm-neutron-dvr-multinode-full
+      - gate-tempest-dsvm-multinode-full-ubuntu-trusty
+      - gate-tempest-dsvm-neutron-multinode-full-ubuntu-trusty
+      - gate-tempest-dsvm-neutron-dvr-multinode-full-ubuntu-trusty
+      - gate-tempest-dsvm-multinode-full-ubuntu-xenial
+      - gate-tempest-dsvm-neutron-multinode-full-ubuntu-xenial
+      - gate-tempest-dsvm-neutron-dvr-multinode-full-ubuntu-xenial
+      - gate-tempest-dsvm-multinode-live-migration-ubuntu-xenial
       - gate-grenade-dsvm-forward
       - gate-tempest-dsvm-cells
       - gate-tempest-dsvm-full-test-accounts
