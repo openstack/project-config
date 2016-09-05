@@ -1666,7 +1666,10 @@ jobs:
   - name: ^gate-puppet-openstack-integration-4-.*-nv$
     branch: ^(?!stable/(liberty|mitaka|hammer)).*$
 
-  - name: gate-requirements-integration-dsvm-resolver
+  - name: gate-requirements-integration-dsvm-resolver-ubuntu-trusty
+    voting: false
+
+  - name: gate-requirements-integration-dsvm-resolver-ubuntu-xenial
     voting: false
 
   - name: ^gate-requirements-tox-validate-ubuntu-xenial$
@@ -3444,13 +3447,16 @@ projects:
       - name: lib-forward-testing
       - name: pypy-jobs
     check:
-      - gate-pbr-installation-dsvm
-      - gate-pbr-installation-dsvm-upstream
+      - gate-pbr-installation-dsvm-ubuntu-trusty
+      - gate-pbr-installation-dsvm-upstream-ubuntu-trusty
+      - gate-pbr-installation-dsvm-ubuntu-xenial
+      - gate-pbr-installation-dsvm-upstream-ubuntu-xenial
     gate:
-      - gate-pbr-installation-dsvm
+      - gate-pbr-installation-dsvm-ubuntu-trusty
+      - gate-pbr-installation-dsvm-ubuntu-xenial
     periodic:
-      - gate-pbr-installation-dsvm
-      - gate-pbr-installation-dsvm-upstream
+      - gate-pbr-installation-dsvm-ubuntu-xenial
+      - gate-pbr-installation-dsvm-upstream-ubuntu-xenial
     post:
       - pbr-coverage-ubuntu-trusty
       - pbr-coverage-ubuntu-xenial
@@ -4577,11 +4583,13 @@ projects:
     check:
       - gate-pypi-mirror-pep8-ubuntu-trusty
       - gate-pypi-mirror-pep8-ubuntu-xenial
-      - gate-requirements-integration-dsvm
+      - gate-requirements-integration-dsvm-ubuntu-trusty
+      - gate-requirements-integration-dsvm-ubuntu-xenial
     gate:
       - gate-pypi-mirror-pep8-ubuntu-trusty
       - gate-pypi-mirror-pep8-ubuntu-xenial
-      - gate-requirements-integration-dsvm
+      - gate-requirements-integration-dsvm-ubuntu-trusty
+      - gate-requirements-integration-dsvm-ubuntu-xenial
 
   - name: openstack-infra/python-storyboardclient
     template:
@@ -14603,8 +14611,10 @@ projects:
       - gate-requirements-docs-ubuntu-xenial
       - gate-requirements-pep8-ubuntu-xenial
       - gate-requirements-python27-ubuntu-xenial
-      - gate-requirements-integration-dsvm
-      - gate-requirements-integration-dsvm-resolver
+      - gate-requirements-integration-dsvm-ubuntu-trusty
+      - gate-requirements-integration-dsvm-ubuntu-xenial
+      - gate-requirements-integration-dsvm-resolver-ubuntu-trusty
+      - gate-requirements-integration-dsvm-resolver-ubuntu-xenial
       - gate-requirements-tox-babel-ubuntu-xenial
       - gate-requirements-tox-py27-with-upper-constraints-ubuntu-trusty
       - gate-requirements-tox-py27-with-upper-constraints-ubuntu-xenial
@@ -14626,7 +14636,8 @@ projects:
       - gate-requirements-docs-ubuntu-xenial
       - gate-requirements-pep8-ubuntu-xenial
       - gate-requirements-python27-ubuntu-xenial
-      - gate-requirements-integration-dsvm
+      - gate-requirements-integration-dsvm-ubuntu-trusty
+      - gate-requirements-integration-dsvm-ubuntu-xenial
       - gate-requirements-tox-babel-ubuntu-xenial
       - gate-requirements-tox-validate-ubuntu-trusty
       - gate-requirements-tox-validate-ubuntu-xenial
