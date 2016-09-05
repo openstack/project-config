@@ -466,37 +466,6 @@
       - test-results
       - console-log
 
-
-- job-template:
-    name: 'gate-{name}-tox-db-{envlist}'
-    description: 'Same job as gate-{name}-tox-{envlist} but sets up databases.'
-    node: ubuntu-trusty
-
-    wrappers:
-      - build-timeout:
-          timeout: 40
-      - timestamps
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - zuul-git-prep-upper-constraints
-      - install-distro-packages
-      - mysql-prep
-      - pgsql-prep
-      - mysql-db:
-          db_name: openstack_citest
-      - pgsql-db:
-          db_name: openstack_citest
-      - revoke-sudo
-      - tox:
-          envlist: '{envlist}'
-      - assert-no-extra-files
-
-    publishers:
-      - test-results
-      - console-log
-
 - job-template:
     name: 'gate-{name}-tox-db-{envlist}-{node}'
     description: 'Same job as gate-{name}-tox-db-{envlist} but on node {node}'
@@ -526,7 +495,6 @@
     publishers:
       - test-results
       - console-log
-
 
 - job-template:
     name: '{name}-tarball'

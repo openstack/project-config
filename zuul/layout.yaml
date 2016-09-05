@@ -2151,8 +2151,11 @@ jobs:
   - name: gate-cinderclient-dsvm-functional
     voting: false
 
-  - name: gate-cinder-tox-db-functional
-    branch: ^(?!stable/(liberty)).*$
+  - name: ^gate-cinder-tox-db-functional-ubuntu-trusty$
+    branch: ^stable/mitaka.*$
+    voting: false
+
+  - name: ^gate-cinder-tox-db-functional-ubuntu-xenial$
     voting: false
 
   - name: ^gate-cinder-tox-compliance-ubuntu-xenial$
@@ -2500,8 +2503,8 @@ jobs:
   - name: ^gate-keystone-tox-patch_cover-ubuntu-(trusty|xenial)$
     voting: false
 
-  - name: gate-keystone-tox-db-legacy_drivers
-    branch: ^(?!stable/liberty).*$
+  - name: ^gate-keystone-tox-db-legacy_drivers-ubuntu-trusty$
+    branch: ^stable/mitaka.*$
 
   - name: gate-tempest-dsvm-keystone-uwsgi-full-nv
     branch: ^(?!stable/liberty).*$
@@ -2549,7 +2552,7 @@ jobs:
   - name: gate-mistral-dashboard-python34
     voting: false
 
-  - name: gate-mistral-tox-db-unit-postgresql
+  - name: ^gate-mistral-tox-db-unit-postgresql-ubuntu-(trusty|xenial)$
     voting: false
 
   - name: gate-mistral-docker-buildimage
@@ -2708,7 +2711,7 @@ jobs:
 
   # NOTE(rpodolyaka): since Ic7ab3b9e6dc8354861be1af46210269f74c04333 we require
   # SQLAlchemy >= 1.0.10, so this job is not needed for Mitaka+
-  - name: gate-oslo.db-tox-db-sqla_09
+  - name: ^gate-oslo.db-tox-db-sqla_09-ubuntu-trusty$
     branch: ^(stable/liberty).*$
 
   - name: gate-manila-tempest-dsvm-hdfs
@@ -3190,17 +3193,17 @@ jobs:
   - name: gate-rally-dsvm-watcher-rally
     voting: false
 
-  - name: gate-tooz-tox-db-py27-consul
-    branch: ^(?!stable/liberty).*$
+  - name: gate-tooz-tox-db-py27-consul-ubuntu-trusty
+    branch: ^stable/mitaka.*$
 
-  - name: gate-tooz-tox-db-py34-consul
-    branch: ^(?!stable/liberty).*$
+  - name: gate-tooz-tox-db-py34-consul-ubuntu-trusty
+    branch: ^stable/mitaka.*$
 
-  - name: gate-tooz-tox-db-py34-etcd
-    branch: ^(?!stable/liberty).*$
+  - name: gate-tooz-tox-db-py34-etcd-ubuntu-trusty
+    branch: ^stable/mitaka.*$
 
-  - name: gate-tooz-tox-db-py27-etcd
-    branch: ^(?!stable/liberty).*$
+  - name: gate-tooz-tox-db-py27-etcd-ubuntu-trusty
+    branch: ^stable/mitaka.*$
 
     # Requirements project publishes documents from master only.
   - name: ^(?:gate-)requirements-docs-ubuntu-xenial$
@@ -5815,7 +5818,8 @@ projects:
       - gate-rally-dsvm-cinder
       - gate-tempest-dsvm-full-devstack-plugin-ceph
       - gate-cinder-dsvm-apache
-      - gate-cinder-tox-db-functional
+      - gate-cinder-tox-db-functional-ubuntu-trusty
+      - gate-cinder-tox-db-functional-ubuntu-xenial
       - gate-cinder-tox-compliance-ubuntu-xenial
       - gate-grenade-dsvm-cinder-multinode-nv
       # These jobs test open source plugins and must remain with the -nv branch
@@ -9165,8 +9169,8 @@ projects:
       - gate-gnocchi-pep8-ubuntu-xenial
       - gate-gnocchi-docs-ubuntu-xenial
       - gate-gnocchi-tox-db-py27-mysql-ubuntu-xenial
-      - gate-gnocchi-tox-db-py27-postgresql
-      - gate-gnocchi-tox-db-py34-postgresql
+      - gate-gnocchi-tox-db-py27-postgresql-ubuntu-trusty
+      - gate-gnocchi-tox-db-py34-postgresql-ubuntu-trusty
       - gate-gnocchi-tox-db-py35-mysql-ubuntu-xenial
       - gate-gnocchi-tox-db-py35-postgresql-ubuntu-xenial
       - gate-gnocchi-bashate
@@ -9186,8 +9190,8 @@ projects:
       - gate-gnocchi-pep8-ubuntu-xenial
       - gate-gnocchi-docs-ubuntu-xenial
       - gate-gnocchi-tox-db-py27-mysql-ubuntu-xenial
-      - gate-gnocchi-tox-db-py27-postgresql
-      - gate-gnocchi-tox-db-py34-postgresql
+      - gate-gnocchi-tox-db-py27-postgresql-ubuntu-trusty
+      - gate-gnocchi-tox-db-py34-postgresql-ubuntu-trusty
       - gate-gnocchi-tox-db-py35-mysql-ubuntu-xenial
       - gate-gnocchi-tox-db-py35-postgresql-ubuntu-xenial
       - gate-gnocchi-bashate
@@ -9749,7 +9753,8 @@ projects:
       - name: api-ref-jobs
     check:
       - gate-keystone-tox-bandit-ubuntu-trusty
-      - gate-keystone-tox-db-legacy_drivers
+      - gate-keystone-tox-db-legacy_drivers-ubuntu-trusty
+      - gate-keystone-tox-db-legacy_drivers-ubuntu-xenial
       - gate-keystone-dsvm-functional
       - gate-keystone-dsvm-functional-v3-only-nv
       - gate-tempest-dsvm-keystone-eventlet-full
@@ -9760,7 +9765,8 @@ projects:
     gate:
       - gate-keystone-dsvm-functional
       - gate-keystone-tox-bandit-ubuntu-trusty
-      - gate-keystone-tox-db-legacy_drivers
+      - gate-keystone-tox-db-legacy_drivers-ubuntu-trusty
+      - gate-keystone-tox-db-legacy_drivers-ubuntu-xenial
     experimental:
       - gate-grenade-dsvm-forward
       - gate-rally-dsvm-keystone
@@ -10156,7 +10162,7 @@ projects:
     check:
       - gate-rally-dsvm-mistral-task
       - gate-mistral-devstack-dsvm
-      - gate-mistral-tox-db-unit-postgresql
+      - gate-mistral-tox-db-unit-postgresql-ubuntu-trusty
     post:
       - gate-mistral-docker-buildimage
     experimental:
@@ -11173,7 +11179,8 @@ projects:
       - name: api-guide-jobs
       - name: api-ref-jobs
     check:
-      - gate-nova-tox-db-functional
+      - gate-nova-tox-db-functional-ubuntu-trusty
+      - gate-nova-tox-db-functional-ubuntu-xenial
       - gate-grenade-dsvm-multinode
       - gate-tempest-dsvm-ironic-ipa-partition-pxe_ssh-tinyipa-nv
       - gate-tempest-dsvm-cells
@@ -11184,7 +11191,8 @@ projects:
       - gate-tempest-dsvm-neutron-placement-full-ubuntu-xenial-nv
       - gate-tempest-dsvm-multinode-live-migration-ubuntu-xenial
     gate:
-      - gate-nova-tox-db-functional
+      - gate-nova-tox-db-functional-ubuntu-trusty
+      - gate-nova-tox-db-functional-ubuntu-xenial
       - gate-grenade-dsvm-multinode
       - gate-tempest-dsvm-cells
       - gate-tempest-dsvm-full-devstack-plugin-ceph
@@ -12358,8 +12366,9 @@ projects:
       - name: stable-compat-jobs
       - name: release-notes-jobs
     check:
-      - gate-oslo.db-tox-db-sqla_09
-      - gate-oslo.db-tox-db-mysql-python
+      - gate-oslo.db-tox-db-sqla_09-ubuntu-trusty
+      - gate-oslo.db-tox-db-mysql-python-ubuntu-trusty
+      - gate-oslo.db-tox-db-mysql-python-ubuntu-xenial
 
   - name: openstack/oslo.i18n
     template:
@@ -14514,13 +14523,15 @@ projects:
       - gate-refstack-pep8-ubuntu-xenial
       - gate-refstack-python27-ubuntu-xenial
       - gate-refstack-python34
-      - gate-refstack-tox-db-py27-func-mysql
+      - gate-refstack-tox-db-py27-func-mysql-ubuntu-trusty
+      - gate-refstack-tox-db-py27-func-mysql-ubuntu-xenial
     gate:
       - gate-refstack-pep8-ubuntu-trusty
       - gate-refstack-python27-ubuntu-trusty
       - gate-refstack-pep8-ubuntu-xenial
       - gate-refstack-python27-ubuntu-xenial
-      - gate-refstack-tox-db-py27-func-mysql
+      - gate-refstack-tox-db-py27-func-mysql-ubuntu-trusty
+      - gate-refstack-tox-db-py27-func-mysql-ubuntu-xenial
 
   - name: openstack/refstack-client
     template:
@@ -15133,12 +15144,14 @@ projects:
       - gate-sqlalchemy-migrate-python27-db-ubuntu-trusty
       - gate-sqlalchemy-migrate-pep8-ubuntu-xenial
       - gate-sqlalchemy-migrate-python27-db-ubuntu-xenial
-      - gate-sqlalchemy-migrate-tox-db-py27sa07
+      - gate-sqlalchemy-migrate-tox-db-py27sa07-ubuntu-trusty
+      - gate-sqlalchemy-migrate-tox-db-py27sa07-ubuntu-xenial
       - gate-sqlalchemy-migrate-devstack-dsvm
     gate:
       - gate-sqlalchemy-migrate-python27-db-ubuntu-trusty
       - gate-sqlalchemy-migrate-python27-db-ubuntu-xenial
-      - gate-sqlalchemy-migrate-tox-db-py27sa07
+      - gate-sqlalchemy-migrate-tox-db-py27sa07-ubuntu-trusty
+      - gate-sqlalchemy-migrate-tox-db-py27sa07-ubuntu-xenial
     post:
       - sqlalchemy-migrate-branch-tarball
 
@@ -15793,39 +15806,71 @@ projects:
       - name: publish-to-pypi
       - name: lib-forward-testing
     check:
-      - gate-tooz-tox-db-py27-etcd
-      - gate-tooz-tox-db-py34-etcd
-      - gate-tooz-tox-db-py27-zookeeper
-      - gate-tooz-tox-db-py34-zookeeper
-      - gate-tooz-tox-db-py27-redis
-      - gate-tooz-tox-db-py34-redis
-      - gate-tooz-tox-db-py27-sentinel
-      - gate-tooz-tox-db-py34-sentinel
-      - gate-tooz-tox-db-py27-memcached
-      - gate-tooz-tox-db-py34-memcached
-      - gate-tooz-tox-db-py27-postgresql
-      - gate-tooz-tox-db-py34-postgresql
-      - gate-tooz-tox-db-py27-mysql
-      - gate-tooz-tox-db-py34-mysql
-      - gate-tooz-tox-db-py27-consul
-      - gate-tooz-tox-db-py34-consul
+      - gate-tooz-tox-db-py27-etcd-ubuntu-trusty
+      - gate-tooz-tox-db-py27-etcd-ubuntu-xenial
+      - gate-tooz-tox-db-py34-etcd-ubuntu-trusty
+      - gate-tooz-tox-db-py34-etcd-ubuntu-xenial
+      - gate-tooz-tox-db-py27-zookeeper-ubuntu-trusty
+      - gate-tooz-tox-db-py27-zookeeper-ubuntu-xenial
+      - gate-tooz-tox-db-py34-zookeeper-ubuntu-trusty
+      - gate-tooz-tox-db-py34-zookeeper-ubuntu-xenial
+      - gate-tooz-tox-db-py27-redis-ubuntu-trusty
+      - gate-tooz-tox-db-py27-redis-ubuntu-xenial
+      - gate-tooz-tox-db-py34-redis-ubuntu-trusty
+      - gate-tooz-tox-db-py34-redis-ubuntu-xenial
+      - gate-tooz-tox-db-py27-sentinel-ubuntu-trusty
+      - gate-tooz-tox-db-py27-sentinel-ubuntu-xenial
+      - gate-tooz-tox-db-py34-sentinel-ubuntu-trusty
+      - gate-tooz-tox-db-py34-sentinel-ubuntu-xenial
+      - gate-tooz-tox-db-py27-memcached-ubuntu-trusty
+      - gate-tooz-tox-db-py27-memcached-ubuntu-xenial
+      - gate-tooz-tox-db-py34-memcached-ubuntu-trusty
+      - gate-tooz-tox-db-py34-memcached-ubuntu-xenial
+      - gate-tooz-tox-db-py27-postgresql-ubuntu-trusty
+      - gate-tooz-tox-db-py27-postgresql-ubuntu-xenial
+      - gate-tooz-tox-db-py34-postgresql-ubuntu-trusty
+      - gate-tooz-tox-db-py34-postgresql-ubuntu-xenial
+      - gate-tooz-tox-db-py27-mysql-ubuntu-trusty
+      - gate-tooz-tox-db-py27-mysql-ubuntu-xenial
+      - gate-tooz-tox-db-py34-mysql-ubuntu-trusty
+      - gate-tooz-tox-db-py34-mysql-ubuntu-xenial
+      - gate-tooz-tox-db-py27-consul-ubuntu-trusty
+      - gate-tooz-tox-db-py27-consul-ubuntu-xenial
+      - gate-tooz-tox-db-py34-consul-ubuntu-trusty
+      - gate-tooz-tox-db-py34-consul-ubuntu-xenial
     gate:
-      - gate-tooz-tox-db-py27-etcd
-      - gate-tooz-tox-db-py34-etcd
-      - gate-tooz-tox-db-py27-consul
-      - gate-tooz-tox-db-py34-consul
-      - gate-tooz-tox-db-py27-zookeeper
-      - gate-tooz-tox-db-py34-zookeeper
-      - gate-tooz-tox-db-py27-redis
-      - gate-tooz-tox-db-py34-redis
-      - gate-tooz-tox-db-py27-sentinel
-      - gate-tooz-tox-db-py34-sentinel
-      - gate-tooz-tox-db-py27-memcached
-      - gate-tooz-tox-db-py34-memcached
-      - gate-tooz-tox-db-py27-postgresql
-      - gate-tooz-tox-db-py34-postgresql
-      - gate-tooz-tox-db-py27-mysql
-      - gate-tooz-tox-db-py34-mysql
+      - gate-tooz-tox-db-py27-etcd-ubuntu-trusty
+      - gate-tooz-tox-db-py27-etcd-ubuntu-xenial
+      - gate-tooz-tox-db-py34-etcd-ubuntu-trusty
+      - gate-tooz-tox-db-py34-etcd-ubuntu-xenial
+      - gate-tooz-tox-db-py27-zookeeper-ubuntu-trusty
+      - gate-tooz-tox-db-py27-zookeeper-ubuntu-xenial
+      - gate-tooz-tox-db-py34-zookeeper-ubuntu-trusty
+      - gate-tooz-tox-db-py34-zookeeper-ubuntu-xenial
+      - gate-tooz-tox-db-py27-redis-ubuntu-trusty
+      - gate-tooz-tox-db-py27-redis-ubuntu-xenial
+      - gate-tooz-tox-db-py34-redis-ubuntu-trusty
+      - gate-tooz-tox-db-py34-redis-ubuntu-xenial
+      - gate-tooz-tox-db-py27-sentinel-ubuntu-trusty
+      - gate-tooz-tox-db-py27-sentinel-ubuntu-xenial
+      - gate-tooz-tox-db-py34-sentinel-ubuntu-trusty
+      - gate-tooz-tox-db-py34-sentinel-ubuntu-xenial
+      - gate-tooz-tox-db-py27-memcached-ubuntu-trusty
+      - gate-tooz-tox-db-py27-memcached-ubuntu-xenial
+      - gate-tooz-tox-db-py34-memcached-ubuntu-trusty
+      - gate-tooz-tox-db-py34-memcached-ubuntu-xenial
+      - gate-tooz-tox-db-py27-postgresql-ubuntu-trusty
+      - gate-tooz-tox-db-py27-postgresql-ubuntu-xenial
+      - gate-tooz-tox-db-py34-postgresql-ubuntu-trusty
+      - gate-tooz-tox-db-py34-postgresql-ubuntu-xenial
+      - gate-tooz-tox-db-py27-mysql-ubuntu-trusty
+      - gate-tooz-tox-db-py27-mysql-ubuntu-xenial
+      - gate-tooz-tox-db-py34-mysql-ubuntu-trusty
+      - gate-tooz-tox-db-py34-mysql-ubuntu-xenial
+      - gate-tooz-tox-db-py27-consul-ubuntu-trusty
+      - gate-tooz-tox-db-py27-consul-ubuntu-xenial
+      - gate-tooz-tox-db-py34-consul-ubuntu-trusty
+      - gate-tooz-tox-db-py34-consul-ubuntu-xenial
     post:
       - tooz-coverage-ubuntu-trusty
       - tooz-coverage-ubuntu-xenial

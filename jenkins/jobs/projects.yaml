@@ -1,5 +1,5 @@
 #
-# The projects in this file are sorted alphabetical.
+# The projects in this file are sorted alphabetically.
 #
 
 - project:
@@ -1060,8 +1060,11 @@
           node: ubuntu-xenial
           job-suffix: '-nv'
           branch-override: default
-      - 'gate-{name}-tox-db-{envlist}':
+      - gate-{name}-tox-db-{envlist}-{node}:
           envlist: functional
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - periodic-python-jobs-with-oslo-master
       - 'gate-{name}-tox-{envlist}-{node}':
           envlist:
@@ -4570,10 +4573,13 @@
 
     jobs:
       - python-jobs
-      - gate-{name}-tox-db-{envlist}:
+      - gate-{name}-tox-db-{envlist}-{node}:
           envlist:
             - py27-postgresql
             - py34-postgresql
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - gate-{name}-tox-db-{envlist}-{node}:
           node: ubuntu-xenial
           envlist:
@@ -5453,8 +5459,11 @@
           node:
             - ubuntu-trusty
             - ubuntu-xenial
-      - 'gate-{name}-tox-db-{envlist}':
+      - gate-{name}-tox-db-{envlist}-{node}:
           envlist: legacy_drivers
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - '{pipeline}-tempest-dsvm-keystone-eventlet-full{job-suffix}':
           pipeline: gate
           job-suffix: ''
@@ -6011,8 +6020,11 @@
           component: mistral
       - gate-rally-dsvm-mistral-{name}:
           name: task
-      - 'gate-{name}-tox-db-{envlist}':
+      - gate-{name}-tox-db-{envlist}-{node}:
           envlist: unit-postgresql
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: mistral-dashboard
@@ -7172,9 +7184,12 @@
       - openstack-server-release-jobs
       - translation-jobs
       - translation-jobs-mitaka
-      - 'gate-{name}-tox-db-{envlist}':
+      - gate-{name}-tox-db-{envlist}-{node}:
           envlist:
             - functional
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - periodic-python-jobs-with-oslo-master
       - api-guide-jobs:
           service: compute
@@ -8251,9 +8266,6 @@
     name: oslo.db
     tarball-site: tarballs.openstack.org
     doc-publisher-site: docs.openstack.org
-    envlist:
-      - sqla_09
-      - mysql-python
 
     jobs:
       - python-db-jobs
@@ -8262,7 +8274,17 @@
       - openstack-publish-jobs
       - pypi-jobs
       - translation-jobs
-      - 'gate-{name}-tox-db-{envlist}'
+      - gate-{name}-tox-db-{envlist}-{node}:
+          envlist:
+            - sqla_09
+          node:
+            - ubuntu-trusty
+      - gate-{name}-tox-db-{envlist}-{node}:
+          envlist:
+            - mysql-python
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - 'lib-forward-testing-{name}'
       - 'stable-compat-jobs-{name}'
       - openstack-releasenotes-jobs
@@ -11846,8 +11868,11 @@
           suffix: '-nv'
       - nodejs4-jobs
       - pypi-jobs
-      - 'gate-{name}-tox-db-{envlist}':
+      - gate-{name}-tox-db-{envlist}-{node}:
           envlist: py27-func-mysql
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: refstack-client
@@ -12546,8 +12571,11 @@
       - python-db-jobs
       - 'gate-{name}-python35-db{suffix}':
           suffix: '-nv'
-      - gate-{name}-tox-db-{envlist}:
+      - gate-{name}-tox-db-{envlist}-{node}:
           envlist: py27sa07
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - '{pipeline}-sqlalchemy-migrate-devstack-dsvm{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
@@ -13071,7 +13099,7 @@
           suffix: '-nv'
       - openstack-publish-jobs
       - pypi-jobs
-      - gate-{name}-tox-db-{envlist}:
+      - gate-{name}-tox-db-{envlist}-{node}:
           envlist:
             - py27-etcd
             - py34-etcd
@@ -13089,6 +13117,9 @@
             - py34-mysql
             - py27-consul
             - py34-consul
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
       - 'lib-forward-testing-{name}'
 
 - project:
@@ -13500,7 +13531,7 @@
           datastore: 'mongodb'
       - api-ref-jobs:
           service: database
-      - 'gate-{name}-tox-db-{envlist}-{node}':
+      - gate-{name}-tox-db-{envlist}-{node}:
           node: ubuntu-xenial
           envlist:
             - fakemodetests
