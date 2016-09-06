@@ -1168,7 +1168,7 @@ jobs:
   - name: ^.*-nv$
     voting: false
   # Restrict explicit ubuntu-trusty jobs to < Newton
-  # and xenila to >= Newton.
+  # and xenial to >= Newton.
   - name: ^.*-ubuntu-trusty(-nv)?$
     branch: ^stable/(liberty|mitaka)$
   - name: ^.*-ubuntu-xenial(-nv)?$
@@ -1674,6 +1674,11 @@ jobs:
   # puppet-integration with puppet4 only after Mitaka (OpenStack) and Hammer (Ceph) releases.
   - name: ^gate-puppet-openstack-integration-4-.*-nv$
     branch: ^(?!stable/(liberty|mitaka|hammer)).*$
+
+  # This overrides the above "looser" match above, while we work throught the
+  # py34 -> py35 transition
+  - name: gate-requirements-integration-dsvm-ubuntu-trusty
+    branch: ^(stable/(liberty|mitaka|newton)|master)$
 
   - name: gate-requirements-integration-dsvm-resolver-ubuntu-trusty
     voting: false
