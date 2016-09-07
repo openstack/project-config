@@ -31,29 +31,6 @@
       - devstack-logs
       - console-log
 
-- job:
-    name: 'heat-templates-buildimages'
-    node: ubuntu-trusty
-
-    builders:
-      - link-logs
-      - net-info
-      - gerrit-git-prep
-      - install-distro-packages
-      - diskimage-builder-install
-      - shell: |
-          hot/software-config/test-image/build-heat-test-image.sh
-
-    publishers:
-      - scp:
-          site: 'tarballs.openstack.org'
-          files:
-            - source: 'fedora-heat-test-image.qcow2'
-              target: 'tarballs/heat-test-image'
-              keep-hierarchy: false
-              copy-after-failure: false
-      - console-log
-
 - job-template:
     name: '{pipeline}-heat-dsvm-functional-{engine}-{datastore}-{lbaasversion}{special}{job-suffix}'
     node: '{node}'
