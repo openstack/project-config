@@ -3112,6 +3112,16 @@ jobs:
   - name: ^gate-gnocchi-tox-db-py35
     branch: ^(?!stable/(1\..|2\.[01]))
 
+  # Use Ubuntu Trusty for stable/1.* and 2.*
+  # (i.e. everything that is before Newton)
+  - name: ^gate-gnocchi-dsvm-functional-.+-ubuntu-trusty
+    branch: ^(stable/(1\..|2\.[01]))
+
+  # Use Ubuntu Xenial for stable/2.2 and other future branches
+  # (i.e. Newton and after)
+  - name: ^gate-gnocchi-dsvm-functional-.+-ubuntu-xenial
+    branch: ^(?!stable/(1\..|2\.[01]))
+
   - name: ^gate-gnocchi-grenade-dsvm-functional-.*-1\.x$
     branch: ^(?!stable/1\..).*$
     voting: false
@@ -9343,9 +9353,12 @@ projects:
       - gate-gnocchi-tox-db-py35-mysql-ubuntu-xenial
       - gate-gnocchi-tox-db-py35-postgresql-ubuntu-xenial
       - gate-gnocchi-bashate
-      - gate-gnocchi-dsvm-functional-file-mysql
-      - gate-gnocchi-dsvm-functional-swift-postgresql
-      - gate-gnocchi-dsvm-functional-ceph-mysql
+      - gate-gnocchi-dsvm-functional-file-mysql-ubuntu-xenial
+      - gate-gnocchi-dsvm-functional-swift-postgresql-ubuntu-xenial
+      - gate-gnocchi-dsvm-functional-ceph-mysql-ubuntu-xenial
+      - gate-gnocchi-dsvm-functional-file-mysql-ubuntu-trusty
+      - gate-gnocchi-dsvm-functional-swift-postgresql-ubuntu-trusty
+      - gate-gnocchi-dsvm-functional-ceph-mysql-ubuntu-trusty
       - gate-gnocchi-grenade-dsvm-functional-file-mysql-1.x
       - gate-gnocchi-grenade-dsvm-functional-swift-postgresql-1.x
       - gate-gnocchi-grenade-dsvm-functional-ceph-mysql-1.x
@@ -9364,14 +9377,17 @@ projects:
       - gate-gnocchi-tox-db-py35-mysql-ubuntu-xenial
       - gate-gnocchi-tox-db-py35-postgresql-ubuntu-xenial
       - gate-gnocchi-bashate
-      - gate-gnocchi-dsvm-functional-file-mysql
-      - gate-gnocchi-dsvm-functional-swift-postgresql
-      - gate-gnocchi-dsvm-functional-ceph-mysql
+      - gate-gnocchi-dsvm-functional-file-mysql-ubuntu-xenial
+      - gate-gnocchi-dsvm-functional-swift-postgresql-ubuntu-xenial
+      - gate-gnocchi-dsvm-functional-ceph-mysql-ubuntu-xenial
+      - gate-gnocchi-dsvm-functional-file-mysql-ubuntu-trusty
+      - gate-gnocchi-dsvm-functional-swift-postgresql-ubuntu-trusty
+      - gate-gnocchi-dsvm-functional-ceph-mysql-ubuntu-trusty
       - gate-telemetry-dsvm-integration-gnocchi
     post:
       - gnocchi-branch-tarball
     experimental:
-      - gate-gnocchi-dsvm-functional-influxdb-mysql
+      - gate-gnocchi-dsvm-functional-influxdb-mysql-ubuntu-xenial
 
   - name: openstack/golang-client
     template:
