@@ -129,7 +129,8 @@ def main():
                     # sort of job-description (e.g. "foo-devstack-bar") or
                     # a url ("foo.openstack.org")
                     if re.search(r'(?<![-.])\b%s\b' % word, description):
-                        print("ERROR: %s: should be %s" %
+                        print("ERROR: description '%s': contains wrong word, "
+                              "it should be '%s'" %
                               (description, should_be))
                         found_errors += 1
 
