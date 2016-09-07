@@ -1,5 +1,5 @@
 - job-template:
-    name: 'gate-tempest-dsvm-monasca-python-full-{node}{suffix}'
+    name: 'gate-tempest-dsvm-monasca-{lang}-{backend}-full-{node}{suffix}'
     node: '{node}'
 
     wrappers:
@@ -14,9 +14,21 @@
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_NEUTRON=0
+
           export ENABLED_SERVICES=tempest
+
+          export DEVSTACK_GATE_NEUTRON=1
+          export DEVSTACK_GATE_EXERCISES=0
+
           export DEVSTACK_LOCAL_CONFIG="enable_plugin monasca-api git://git.openstack.org/openstack/monasca-api"
+          if [ {backend} == "postgresql" ]; then
+              export DEVSTACK_GATE_POSTGRES=1
+          else
+              export DEVSTACK_GATE_POSTGRES=0
+          fi
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"MONASCA_API_IMPLEMENTATION_LANG={lang}"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"MONASCA_PERSISTER_IMPLEMENTATION_LANG={lang}"
+
           export PROJECTS="openstack/monasca-api $PROJECTS"
           export PROJECTS="openstack/monasca-persister $PROJECTS"
           export PROJECTS="openstack/monasca-common $PROJECTS"
@@ -27,57 +39,6 @@
           export PROJECTS="openstack/python-monascaclient $PROJECTS"
           export PROJECTS="openstack/monasca-grafana-datasource $PROJECTS"
           export PROJECTS="openstack/monasca-ui $PROJECTS"
-
-          function pre_test_hook {{
-              source $BASE/new/monasca-api/devstack/pre_test_hook.sh
-          }}
-          export -f pre_test_hook
-
-          function post_test_hook {{
-              # Configure and run tempest on monasca-api installation
-              source $BASE/new/monasca-api/devstack/post_test_hook.sh
-          }}
-          export -f post_test_hook
-
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
-
-    publishers:
-      - devstack-logs
-      - console-log
-
-- job-template:
-    name: 'gate-tempest-dsvm-monasca-java-full-{node}{suffix}'
-    node: '{node}'
-
-    wrappers:
-      - build-timeout:
-          timeout: 130
-      - timestamps
-
-    builders:
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - shell: |
-          #!/bin/bash -xe
-          export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_NEUTRON=0
-          export ENABLED_SERVICES=tempest
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin monasca-api git://git.openstack.org/openstack/monasca-api"
-          export PROJECTS="openstack/monasca-api $PROJECTS"
-          export PROJECTS="openstack/monasca-persister $PROJECTS"
-          export PROJECTS="openstack/monasca-common $PROJECTS"
-          export PROJECTS="openstack/monasca-agent $PROJECTS"
-          export PROJECTS="openstack/monasca-notification $PROJECTS"
-          export PROJECTS="openstack/monasca-thresh $PROJECTS"
-          export PROJECTS="openstack/monasca-statsd $PROJECTS"
-          export PROJECTS="openstack/python-monascaclient $PROJECTS"
-          export PROJECTS="openstack/monasca-grafana-datasource $PROJECTS"
-          export PROJECTS="openstack/monasca-ui $PROJECTS"
-
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"MONASCA_API_IMPLEMENTATION_LANG=java"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"MONASCA_PERSISTER_IMPLEMENTATION_LANG=java"
 
           function pre_test_hook {{
               source $BASE/new/monasca-api/devstack/pre_test_hook.sh
@@ -100,20 +61,19 @@
 - job-group:
     name: 'tempest-monasca-full-jobs'
     jobs:
-      - 'gate-tempest-dsvm-monasca-python-full-{node}{suffix}':
+      - 'gate-tempest-dsvm-monasca-{lang}-{backend}-full-{node}{suffix}':
           node:
             - 'ubuntu-trusty'
             - 'ubuntu-xenial'
           suffix:
             - ''
             - '-nv'
-      - 'gate-tempest-dsvm-monasca-java-full-{node}{suffix}':
-          node:
-            - 'ubuntu-trusty'
-            - 'ubuntu-xenial'
-          suffix:
-            - ''
-            - '-nv'
+          lang:
+            - 'python'
+            - 'java'
+          backend:
+            - 'mysql'
+            - 'postgresql'
 
 - job-template:
     name: 'gate-tempest-dsvm-monasca-log-api-{node}{suffix}'
