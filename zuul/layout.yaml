@@ -2768,6 +2768,11 @@ jobs:
     branch: ^(master|stable/(liberty|mitaka|newton))$
     voting: false
 
+  # NOTE(clarkb): This job should run on Mitaka and earlier stable branches in
+  #               the future.
+  - name: gate-neutron-dsvm-api-ubuntu-trusty
+    branch: ^(master|stable/(liberty|mitaka|newton))$
+
   - name: gate-tacker-dsvm-functional
     voting: false
 
@@ -11116,7 +11121,7 @@ projects:
       - name: release-notes-jobs
     check:
       - neutron-coverage-ubuntu-xenial
-      - gate-neutron-dsvm-api
+      - gate-neutron-dsvm-api-ubuntu-trusty
       - gate-neutron-dsvm-functional-ubuntu-trusty
       - gate-neutron-dsvm-fullstack-ubuntu-trusty
       - gate-rally-dsvm-neutron-neutron
@@ -11135,7 +11140,7 @@ projects:
       - gate-tempest-dsvm-ironic-ipa-partition-pxe_ssh-tinyipa-nv
     gate:
       - neutron-coverage-ubuntu-xenial
-      - gate-neutron-dsvm-api
+      - gate-neutron-dsvm-api-ubuntu-trusty
       - gate-tempest-dsvm-neutron-dvr-ubuntu-trusty
       - gate-tempest-dsvm-neutron-dvr-ubuntu-xenial
       - gate-tempest-dsvm-neutron-linuxbridge-ubuntu-trusty
@@ -11159,7 +11164,9 @@ projects:
       - gate-tempest-dsvm-neutron-serviceipv6
       - gate-tempest-dsvm-neutron-ovs-native
       - gate-tempest-dsvm-neutron-dvr-ovs-native
-      - gate-neutron-dsvm-api-pecan
+      - gate-neutron-dsvm-api-ubuntu-xenial
+      - gate-neutron-dsvm-api-pecan-ubuntu-trusty
+      - gate-neutron-dsvm-api-pecan-ubuntu-xenial
       - gate-tempest-dsvm-neutron-pecan
       - gate-tempest-dsvm-neutron-src-neutron-lib
       - gate-grenade-dsvm-neutron-linuxbridge-multinode-nv
