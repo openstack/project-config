@@ -3084,30 +3084,18 @@ jobs:
           - ^doc/.*
           - ^releasenotes/.*
 
-  # Skip OpenStack-Ansible Xenial integrated build jobs for liberty and
-  # stable/mitaka. Xenial support was only introduced in Newton.
-  - name: ^gate-openstack-ansible-openstack-ansible-.*-ubuntu-xenial.*$
-    branch: ^(?!(liberty|stable/mitaka)).*$
-
-  # Skip OpenStack-Ansible Xenial role jobs for liberty and stable/mitaka
-  # Xenial support was only introduced in Newton
-  - name: ^gate-openstack-ansible-.*-func-ubuntu-xenial.*$
-    branch: ^(?!(liberty|stable/mitaka)).*$
-
-  # Skip OpenStack-Ansible CentOS role jobs for liberty and stable/mitaka
-  # CentOS support was only introduced in Newton
-  - name: ^gate-openstack-ansible-.*-func-centos-7.*$
-    branch: ^(?!(liberty|stable/mitaka)).*$
-
-  # Skip OpenStack-Ansible nova-lxd jobs for liberty and stable/mitaka
-  # LXD support was only introduced in Newton
-  - name: ^gate-openstack-ansible-.*-func_lxd.*$
+  # Skip any OpenStack-Ansible jobs which aren't the following scenario's
+  # for liberty and stable/mitaka: aio, func, docs, linters, releasenotes
+  # Also skip any platform other than ubuntu-trusty for the same as that
+  # is the only platform supported for those branches.
+  # Any other jobs are scenario tests which were only introduced in Newton
+  - name: ^gate-openstack-ansible-.*-ansible-(?!((aio|func|docs|linters)-ubuntu-trusty|releasenotes)).*$
     branch: ^(?!(liberty|stable/mitaka)).*$
 
   # Run all OpenStack-Ansible trusty jobs except the docs and linters jobs
-  # as the intention is to support trusty through to Ocata.
+  # for Newton as this is still a supported platform for OpenStack-Ansible.
   - name: ^gate-openstack-ansible.*-((?!(docs|linters)).)*-ubuntu-trusty.*$
-    branch: ^(liberty|stable/(liberty|mitaka|newton|ocata)|master)$
+    branch: ^(liberty|stable/(mitaka|newton)|master)$
 
   # Ignore requirements on the keystoneclient/keystoneauth integration branch
   - name: gate-python-keystoneclient-requirements
