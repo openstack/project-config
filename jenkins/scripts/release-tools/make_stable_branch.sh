@@ -60,22 +60,7 @@ if [[ -d releasenotes/source ]]; then
     # Also update the reno settings, in master
     echo "Updating reno"
     git checkout master
-    shortbranch=$(basename $NEW_BRANCH)
-    commit_msg="Update reno for $NEW_BRANCH"
-    titlebranch=$(python -c "print('$shortbranch'.title())")
-    cat - > releasenotes/source/${shortbranch}.rst <<EOF
-===================================
- $titlebranch Series Release Notes
-===================================
-
-.. release-notes::
-   :branch: origin/$NEW_BRANCH
-EOF
-    echo "    $shortbranch" >> releasenotes/source/index.rst
-    git add releasenotes/source/index.rst releasenotes/source/${shortbranch}.rst
-    git commit -m "$commit_msg"
-    git show
-    git review -t "reno-${shortbranch}"
+    $TOOLSDIR/add_release_note_page.sh $SERIES .
 else
     echo "$REPO does not use reno, no update needed"
 fi
