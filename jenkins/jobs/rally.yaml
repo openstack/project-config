@@ -52,6 +52,7 @@
           export PROJECTS="openstack/rally $PROJECTS"
           export PROJECTS="openstack/ceilometer $PROJECTS"
           export PROJECTS="openstack/aodh $PROJECTS"
+          export PROJECTS="openstack/panko $PROJECTS"
           export CEILOMETER_NOTIFICATION_TOPICS=notifications,profiler
           export DEVSTACK_GATE_NEUTRON={neutron}
           export DEVSTACK_GATE_IRONIC={ironic}
@@ -73,6 +74,7 @@
 
           DEVSTACK_LOCAL_CONFIG="enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
           DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin aodh git://git.openstack.org/openstack/aodh"
+          DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin panko git://git.openstack.org/openstack/panko"
           DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin rally git://git.openstack.org/openstack/rally"
           DEVSTACK_LOCAL_CONFIG+=$'\n'"CINDER_ENABLE_V1_API=True"
 
@@ -89,6 +91,7 @@
           ENABLED_SERVICES+=ceilometer-acompute,ceilometer-acentral,ceilometer-api,
           ENABLED_SERVICES+=ceilometer-anotification,ceilometer-collector,
           ENABLED_SERVICES+=aodh-api,aodh-evaluator,aodh-notifier,
+          ENABLED_SERVICES+=panko-api,
           if [ $DEVSTACK_GATE_NEUTRON -ne 1 ]; then
               ENABLED_SERVICES+=n-net,n-api-meta,
           else
