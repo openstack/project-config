@@ -16,14 +16,13 @@
           export PYTHONUNBUFFERED=true
           export BRANCH_OVERRIDE={branch-override}
           export PROJECTS="openstack/tricircle $PROJECTS"
+          export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_TEMPEST=0
           export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=0
           export DEVSTACK_GATE_TEMPEST_REGEX="tricircle.tempestplugin"
 
           export DEVSTACK_LOCAL_CONFIG="Q_ENABLE_TRICIRCLE=True"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin tricircle https://git.openstack.org/openstack/tricircle/"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_service t-api t-ngw t-cgw t-job"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service n-net"
 
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
