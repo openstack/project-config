@@ -3086,6 +3086,11 @@ jobs:
   - name: ^gate-openstack-ansible-.*-func-centos-7.*$
     branch: ^(?!(liberty|stable/mitaka)).*$
 
+  # Skip OpenStack-Ansible nova-lxd jobs for liberty and stable/mitaka
+  # LXD support was only introduced in Newton
+  - name: ^gate-openstack-ansible-.*-func_lxd.*$
+    branch: ^(?!(liberty|stable/mitaka)).*$
+
   # Run all OpenStack-Ansible trusty jobs except the docs and linters jobs
   # as the intention is to support trusty through to Ocata.
   - name: ^gate-openstack-ansible.*-((?!(docs|linters)).)*-ubuntu-trusty.*$
