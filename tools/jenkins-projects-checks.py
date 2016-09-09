@@ -155,7 +155,7 @@ def validate_jobs():
             # defined. We use the publisher to upload logs from zuul-launcher.
             result = _check_console_log_publisher(schema, entry)
             if result:
-                print job_file
+                print(job_file)
                 count += result
                 errors = True
 
@@ -169,8 +169,8 @@ def _check_console_log_publisher(schema, entry):
         if 'publishers' in entry:
             if 'console-log' in entry['publishers'] and \
                     entry['publishers'][-1] != 'console-log':
-                print "ERROR: The console-log publisher MUST be the last " \
-                    "publisher in '%s':" % entry['name']
+                print("ERROR: The console-log publisher MUST be the last "
+                      "publisher in '%s':" % entry['name'])
                 count += 1
     return count
 
