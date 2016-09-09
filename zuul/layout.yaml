@@ -2486,8 +2486,8 @@ jobs:
   - name: gate-grenade-dsvm-sahara
     voting: false
 
-  - name: ^gate-sahara-extra-artifacts$
-    voting: false
+  - name: ^(gate|post)-sahara-extra-artifacts$
+    branch: ^(?!stable/(mitaka|liberty|icehouse)).*$
 
   - name: ^sahara-coverage-db-ubuntu-(trusty|xenial)
     voting: false
@@ -15052,8 +15052,10 @@ projects:
     gate:
       - gate-sahara-extra-pep8-ubuntu-trusty
       - gate-sahara-extra-pep8-ubuntu-xenial
+      - gate-sahara-extra-artifacts
     post:
       - sahara-extra-branch-tarball
+      - post-sahara-extra-artifacts
 
 # TODO: add docs
   - name: openstack/sahara-image-elements
