@@ -81,3 +81,42 @@
     publishers:
       - devstack-logs
       - console-log
+
+
+# This runs single-node full grenade upgrade with neutron plus cells v2 and
+# the placement-api service.
+- job-template:
+    name: '{pipeline}-grenade-dsvm-neutron-nova-next-{node}{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 180
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export ENABLED_SERVICES=placement-api
+          export PROJECTS="openstack-dev/grenade $PROJECTS"
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_GRENADE=pullup
+          export DEVSTACK_GATE_NEUTRON=1
+          # NOTE(mriedem): cells v2 should be the default after newton-eol
+          export DEVSTACK_LOCAL_CONFIG="NOVA_CONFIGURE_CELLSV2=True"
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
