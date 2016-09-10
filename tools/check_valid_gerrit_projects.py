@@ -129,9 +129,9 @@ def main():
                     # sort of job-description (e.g. "foo-devstack-bar") or
                     # a url ("foo.openstack.org")
                     if re.search(r'(?<![-.])\b%s\b' % word, description):
-                        print("ERROR: description '%s': contains wrong word, "
-                              "it should be '%s'" %
-                              (description, should_be))
+                        print("ERROR: project %s, description '%s': "
+                              "contains wrong word '%s', it should be '%s'" %
+                              (name, description, word, should_be))
                         found_errors += 1
 
         if not description and repo_group in DESCRIPTION_REQUIRED:
