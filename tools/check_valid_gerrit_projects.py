@@ -103,7 +103,7 @@ def main():
 
     for p in projects:
         name = p.get('project')
-        repo_group = name.split('/')[0]
+        repo_group, repo_name = name.split('/')
         if not name:
             # not a project
             found_errors += 1
@@ -200,6 +200,13 @@ def main():
                 found_errors += 1
                 print("ERROR: Project %s has no default acl-config file" %
                       name)
+        # Check redundant groups entry:
+        # By default the groups entry is repo_name, no need to add this.
+        groups = p.get('groups')
+        if groups and len(groups) == 1 and groups[0] == repo_name:
+            found_errors += 1
+            print("ERROR: Project %s has default groups entry, remove it" %
+                  name)
 
     if found_errors:
         print("Found %d error(s) in %s" % (found_errors, args.infile))
