@@ -5425,15 +5425,35 @@
       - 'partition'
 
     exclude:
+      # ipmitool jobs are not voting yet
       - driver: 'pxe_ipmitool'
         job-suffix: ''
       - driver: 'agent_ipmitool'
         job-suffix: ''
+      # agent_* drivers with partitions are experimental
       - image-type: 'partition'
-        ramdisk-type: 'agent_ssh'
+        driver: 'agent_ssh'
         job-suffix: ''
+      - image-type: 'partition'
+        driver: 'agent_ipmitool'
+      # pxe_* drivers with whole disk images are experimental
       - image-type: 'wholedisk'
         driver: 'pxe_ssh'
+        job-suffix: ''
+      - image-type: 'wholedisk'
+        driver: 'pxe_ipmitool'
+      # coreos jobs are only run as source jobs
+      - ramdisk-type: 'coreos'
+        src: ''
+      # this job is always voting
+      - image-type: 'partition'
+        driver: 'pxe_ssh'
+        job-suffix: '-nv'
+      # source variant of this job is always voting
+      - image-type: 'wholedisk'
+        driver: 'agent_ssh'
+        src: '-src'
+        job-suffix: '-nv'
 
     jobs:
       - coverage-db-jobs
@@ -5461,6 +5481,7 @@
           driver: 'pxe_ssh'
           job-suffix: ''
           ramdisk-type: 'tinyipa256'
+          src: '-src'
       - '{pipeline}-tempest-dsvm-ironic-ipa-{image-type}-{driver}-{ramdisk-type}{src}-multinode{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty-2-node
