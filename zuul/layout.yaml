@@ -2028,6 +2028,11 @@ jobs:
           - ^tools/.*$
           - ^tox.ini$
 
+  # NOTE(mriedem): The nova-next job runs with the placement-api service and
+  # cells v2 so it won't work before Newton.
+  - name: gate-grenade-dsvm-neutron-nova-next-ubuntu-trusty-nv
+    branch: ^(?!stable/(liberty|mitaka)).*$
+
   # Only run the neutron LB job on nova if there are changes to nova/network/*
   # TODO(mriedem): Run this proper on all changes once nova-network is dropped.
   - name: ^gate-tempest-dsvm-neutron-linuxbridge-ubuntu-(trusty|xenial)$
@@ -3447,7 +3452,7 @@ projects:
       - grenade-publish-docs
     experimental:
       - gate-grenade-dsvm-neutron-forward
-      - gate-grenade-dsvm-neutron-nova-next-ubuntu-xenial-nv
+      - gate-grenade-dsvm-neutron-nova-next-ubuntu-trusty-nv
       - gate-grenade-dsvm-trove
       - gate-grenade-dsvm-ceilometer
 
@@ -11548,7 +11553,7 @@ projects:
     experimental:
       - gate-tempest-dsvm-nova-v20-api
       - gate-grenade-dsvm-forward
-      - gate-grenade-dsvm-neutron-nova-next-ubuntu-xenial-nv
+      - gate-grenade-dsvm-neutron-nova-next-ubuntu-trusty-nv
       - gate-tempest-dsvm-nova-wsgi-full
       - gate-tempest-dsvm-multinode-full-ubuntu-trusty
       - gate-tempest-dsvm-multinode-full-ubuntu-xenial
