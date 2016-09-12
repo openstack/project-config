@@ -95,6 +95,54 @@
       - console-log
 
 - job-template:
+    name: '{pipeline}-group-based-policy-dsvm-aim{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 130
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_UNSTACK=1
+          export DEVSTACK_GATE_TEMPEST=0
+          export DEVSTACK_GATE_EXERCISES=0
+          export DEVSTACK_GATE_NEUTRON=1
+          export DEVSTACK_GATE_INSTALL_TESTONLY=1
+          export PROJECTS="openstack/group-based-policy $PROJECTS"
+          export PROJECTS="openstack/group-based-policy-automation $PROJECTS"
+          export PROJECTS="openstack/group-based-policy-ui $PROJECTS"
+          export PROJECTS="openstack/python-group-based-policy-client $PROJECTS"
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+
+          function gate_hook {{
+              bash -xe $BASE/new/group-based-policy/gbpservice/tests/contrib/gate_aim_hook.sh dsvm-aim
+          }}
+          export -f gate_hook
+
+          function post_test_hook {{
+             bash -xe $BASE/new/group-based-policy/gbpservice/tests/contrib/post_test_hook.sh dsvm-aim
+          }}
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - test-results
+      - devstack-logs
+      - console-log
+
+- job-template:
     name: '{pipeline}-group-based-policy-dsvm-rally{job-suffix}'
     node: '{node}'
 
