@@ -1051,6 +1051,14 @@ project-templates:
       - gate-openstackci-beaker-centos-7
       - gate-openstackci-beaker-ubuntu-trusty
 
+  - name: infra-logstash-filter-jobs
+    check:
+      - gate-logstash-filters-ubuntu-trusty
+      - gate-logstash-filters-ubuntu-xenial
+    gate:
+      - gate-logstash-filters-ubuntu-trusty
+      - gate-logstash-filters-ubuntu-xenial
+
   - name: check-tripleo-jobs
     check-tripleo:
       - gate-tripleo-ci-centos-7-ovb-ha
@@ -1203,6 +1211,10 @@ jobs:
 
   # Make sure we run ubuntu-trusty on master for tempest-dsvm-lxc.
   - name: ^gate-tempest-dsvm-lxc-ubuntu-trusty$
+    branch: master
+
+  # Make sure we run ubuntu-trusty on master for logstash-filters.
+  - name: ^gate-logstash-filters-ubuntu-trusty$
     branch: master
 
   # because of global requirements overrides, there is no reason to
@@ -3929,7 +3941,7 @@ projects:
   - name: openstack-infra/logstash-filters
     template:
       - name: merge-check
-      - name: noop-jobs
+      - name: infra-logstash-filter-jobs
 
   - name: openstack-infra/lpmqtt
     template:
@@ -4859,6 +4871,7 @@ projects:
       - name: merge-check
       - name: infra-puppet-apply-jobs
       - name: infra-publish-jobs
+      - name: infra-logstash-filter-jobs
     check:
       - gate-system-config-linters-ubuntu-trusty
       - gate-system-config-linters-ubuntu-xenial
