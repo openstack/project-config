@@ -110,6 +110,24 @@
       - console-log
 
 - job-template:
+    name: gate-{name}-api-ref-src
+    description: Build and draft the API Reference from source using os-api-ref from source.
+    node: ubuntu-xenial
+
+    builders:
+      - zuul-git-prep-upper-constraints-cross:
+          project: openstack/os-api-ref
+      - install-distro-packages
+      - revoke-sudo
+      - tox:
+          envlist: 'api-ref'
+
+    publishers:
+      - upload-api-ref-draft
+      - test-results
+      - console-log
+
+- job-template:
     name: '{name}-api-ref'
     description: Build and publish the API Reference from source.
     node: ubuntu-xenial
@@ -142,6 +160,7 @@
 
     jobs:
       - gate-{name}-api-ref
+      - gate-{name}-api-ref-src
       - '{name}-api-ref'
 
 - job:
