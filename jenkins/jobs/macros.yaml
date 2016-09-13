@@ -155,6 +155,31 @@
           fi
 
 - builder:
+    name: zuul-git-prep-upper-constraints-api-ref
+    builders:
+      - shell: |
+          #!/bin/bash -xe
+          CLONEMAP=`mktemp`
+          function cleanup {{
+              mkdir -p $WORKSPACE
+              rm -rf $CLONEMAP
+          }}
+          trap cleanup EXIT
+          cat > $CLONEMAP << EOF
+          clonemap:
+            - name: '{project}'
+              dest: .
+          EOF
+          # clone os-api-ref into a subdir of the main project, makes
+          # it easy to find later for installing.
+          cat >> $CLONEMAP << EOF
+            - name: openstack/os-api-ref
+              dest: os-api-ref
+          EOF
+          /usr/zuul-env/bin/zuul-cloner -m $CLONEMAP --cache-dir /opt/git \
+              git://git.openstack.org '{project}' openstack/os-api-ref
+
+- builder:
     name: zuul-git-branch-prep
     builders:
       - shell: |

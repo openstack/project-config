@@ -115,12 +115,11 @@
     node: ubuntu-xenial
 
     builders:
-      - zuul-git-prep-upper-constraints-cross:
-          project: openstack/os-api-ref
+      - zuul-git-prep-upper-constraints-api-ref:
+          project: openstack/{name}
       - install-distro-packages
       - revoke-sudo
-      - tox:
-          envlist: 'api-ref'
+      - shell: "/usr/local/jenkins/slave_scripts/run-tox-api-ref.sh"
 
     publishers:
       - upload-api-ref-draft
