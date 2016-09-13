@@ -1055,9 +1055,6 @@ project-templates:
     check:
       - gate-logstash-filters-ubuntu-trusty
       - gate-logstash-filters-ubuntu-xenial
-    gate:
-      - gate-logstash-filters-ubuntu-trusty
-      - gate-logstash-filters-ubuntu-xenial
 
   - name: check-tripleo-jobs
     check-tripleo:
@@ -1216,6 +1213,9 @@ jobs:
   # Make sure we run ubuntu-trusty on master for logstash-filters.
   - name: ^gate-logstash-filters-ubuntu-trusty$
     branch: master
+
+  - name: ^gate-logstash-filters-ubuntu-(trusty|xenial)$
+    voting: false
 
   # because of global requirements overrides, there is no reason to
   # run tempest/grenade tests after a requirements sync, as they've
@@ -3942,6 +3942,8 @@ projects:
     template:
       - name: merge-check
       - name: infra-logstash-filter-jobs
+    gate:
+      - noop
 
   - name: openstack-infra/lpmqtt
     template:
