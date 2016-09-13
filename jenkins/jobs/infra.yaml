@@ -146,7 +146,6 @@
       - shell: |
           #!/bin/bash -xe
           /usr/zuul-env/bin/zuul-cloner --cache-dir /opt/git git://git.openstack.org openstack-infra/system-config
-          cd openstack-infra/system-config
 
 - publisher:
     name: infra-puppet-apply-logs
@@ -171,6 +170,7 @@
       - infra-puppet-apply-prep
       - shell: |
           #!/bin/bash -xe
+          cd openstack-infra/system-config
           ./tools/apply-test.sh
 
     publishers:
@@ -187,6 +187,7 @@
       - infra-puppet-apply-prep
       - shell: |
           #!/bin/bash -xe
+          cd openstack-infra/system-config
           ./tools/logstash-filter-test.sh
 
     publishers:
