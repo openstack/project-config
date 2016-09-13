@@ -3799,19 +3799,19 @@
 
     jobs:
       - gate-{name}-bashate
-      - '{pipeline}-tempest-dsvm-full-devstack-plugin-ceph{job-suffix}':
+      - '{pipeline}-tempest-dsvm-full-devstack-plugin-ceph-{node}{job-suffix}':
           node: ubuntu-trusty
           pipeline: gate
           plugin: ceph
           plugin-repo: openstack/devstack-plugin-ceph
           job-suffix: ''
           branch-override: default
-      - '{pipeline}-tempest-dsvm-full-devstack-plugin-ceph{job-suffix}':
+      - '{pipeline}-tempest-dsvm-full-devstack-plugin-ceph-{node}{job-suffix}':
           node: ubuntu-xenial
-          pipeline: experimental
+          pipeline: gate
           plugin: ceph
           plugin-repo: openstack/devstack-plugin-ceph
-          job-suffix: '-nv'
+          job-suffix: ''
           branch-override: default
 
 - project:
@@ -4845,8 +4845,15 @@
           node: ubuntu-trusty
           job-suffix: ''
           branch-override: default
-      - '{pipeline}-tempest-dsvm-full-ceph-plugin-src-{name}{job-suffix}':
+      - '{pipeline}-tempest-dsvm-full-ceph-plugin-src-{name}-{node}{job-suffix}':
           node: ubuntu-trusty
+          pipeline: gate
+          plugin: ceph
+          plugin-repo: openstack/devstack-plugin-ceph
+          job-suffix: ''
+          branch-override: default
+      - '{pipeline}-tempest-dsvm-full-ceph-plugin-src-{name}-{node}{job-suffix}':
+          node: ubuntu-xenial
           pipeline: gate
           plugin: ceph
           plugin-repo: openstack/devstack-plugin-ceph
@@ -8384,8 +8391,15 @@
           suffix: '-nv'
       - openstack-releasenotes-jobs
       - 'lib-forward-testing-{name}'
-      - '{pipeline}-tempest-dsvm-full-ceph-plugin-src-{name}{job-suffix}':
+      - '{pipeline}-tempest-dsvm-full-ceph-plugin-src-{name}-{node}{job-suffix}':
           node: ubuntu-trusty
+          pipeline: gate
+          plugin: ceph
+          plugin-repo: openstack/devstack-plugin-ceph
+          job-suffix: ''
+          branch-override: default
+      - '{pipeline}-tempest-dsvm-full-ceph-plugin-src-{name}-{node}{job-suffix}':
+          node: ubuntu-xenial
           pipeline: gate
           plugin: ceph
           plugin-repo: openstack/devstack-plugin-ceph
