@@ -160,9 +160,10 @@
       - shell: |
           #!/bin/bash -xe
           CLONEMAP=`mktemp`
+          REQS_DIR=`mktemp -d`
           function cleanup {{
               mkdir -p $WORKSPACE
-              rm -rf $CLONEMAP
+              rm -rf $CLONEMAP $REQS_DIR
           }}
           trap cleanup EXIT
           cat > $CLONEMAP << EOF
@@ -175,9 +176,12 @@
           cat >> $CLONEMAP << EOF
             - name: openstack/os-api-ref
               dest: os-api-ref
+            - name: openstack/requirements
+              dest: $REQS_DIR
           EOF
           /usr/zuul-env/bin/zuul-cloner -m $CLONEMAP --cache-dir /opt/git \
-              git://git.openstack.org '{project}' openstack/os-api-ref
+              git://git.openstack.org '{project}' openstack/os-api-ref openstack/requirements
+          cp $REQS_DIR/upper-constraints.txt ./
 
 - builder:
     name: zuul-git-branch-prep
