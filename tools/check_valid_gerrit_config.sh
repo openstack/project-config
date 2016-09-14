@@ -14,7 +14,6 @@ function check_team_acl {
     local failure=0
 
     for config in $configs_list; do
-        echo "Checking $config file..."
 
         $OLDPWD/tools/normalize_acl.py $config all > $TMPDIR/normalized
         if ! diff -u $config $TMPDIR/normalized >>config_failures;
