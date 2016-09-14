@@ -6,6 +6,11 @@
 # Make sure custom grep options don't get in the way
 unset GREP_OPTIONS
 
+# Make sure zuul-cloner is in the path. We don't specify the full path
+# when we try to execute the program because some of the tools are run
+# by hand on systems where it is installed in other locations.
+PATH=/usr/zuul-env/bin:$PATH
+
 
 function lp_project_to_repo {
     typeset proj="$1"
@@ -103,7 +108,7 @@ function clone_repo {
     fi
 
     # Clone the repository using the given branch, if possible.
-    /usr/zuul-env/bin/zuul-cloner $branch git://git.openstack.org $repo
+    zuul-cloner $branch git://git.openstack.org $repo
 
     # Configure git-review so we can propose patches to the repo if
     # needed.
