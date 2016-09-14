@@ -16,6 +16,9 @@ echo "======================================================================"
 .tox/${venv}/bin/${freezecmd} freeze
 echo "======================================================================"
 
+MARKER_TEXT="Project: $ZUUL_PROJECT Ref: $ZUUL_REFNAME Build: $ZUUL_UUID"
+echo $MARKER_TEXT > install-guide/build/html/.root-marker
+
 if [ -z "$ZUUL_REFNAME" ]; then
     TARGET=""
     # Leave documents where they are
@@ -36,9 +39,10 @@ fi
 
 if [ ! -z $TARGET ] ; then
     # Move the docs into subdir based on branch
-    mkdir install-guide/build/$TARGET
-    mv install-guide/build/html/* install-guide/build/$TARGET
-    mv install-guide/build/$TARGET install-guide/build/html/$TARGET
+    TOP=`dirname $TARGET`
+    mv install-guide/build/html install-guide/build/tmp
+    mkdir -p install-guide/build/html/$TOP
+    mv install-guide/build/tmp install-guide/build/html/$TARGET
 fi
 
 exit $result
