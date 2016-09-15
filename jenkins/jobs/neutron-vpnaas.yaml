@@ -64,14 +64,15 @@
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_NEUTRON=1
           export RALLY_SCENARIO=neutron-vpnaas
-          export DEVSTACK_GATE_INSTALL_TESTONLY=1
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
-
+          export PROJECTS="openstack/neutron-vpnaas $PROJECTS"
           export PROJECTS="openstack/rally $PROJECTS"
+
           export DEVSTACK_LOCAL_CONFIG="enable_plugin neutron-vpnaas https://git.openstack.org/openstack/neutron-vpnaas"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin rally git://git.openstack.org/openstack/rally"
 
           function post_test_hook {{
               $BASE/new/rally/tests/ci/rally-gate.sh
