@@ -62,9 +62,9 @@
       - devstack-logs
       - console-log
 
-- job:
-    name: 'dib-buildimage-atomic-f23'
-    node: ubuntu-trusty
+- job-template:
+    name: '{pipeline}-dib-buildimage-{image-name}'
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -96,11 +96,10 @@
 
           $MAGNUM_ELEMENTS/fedora-atomic/install_imagebuild_deps.sh
 
-          IMAGE_NAME="fedora-atomic-f23-dib"
-          DIB_RELEASE="23" disk-image-create -x -o $WORKSPACE/$IMAGE_NAME fedora-atomic
+          DIB_RELEASE="23" disk-image-create -x -o $WORKSPACE/{image-name}-dib fedora-atomic
 
           # validate image
-          $MAGNUM_ELEMENTS/fedora-atomic/validate_atomic_image.sh $WORKSPACE/${IMAGE_NAME}.qcow2
+          $MAGNUM_ELEMENTS/fedora-atomic/validate_atomic_image.sh $WORKSPACE/{image-name}-dib.qcow2
 
     publishers:
       - scp:
