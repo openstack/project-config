@@ -1878,10 +1878,13 @@ jobs:
 
   # Grenade is tricky because we need it to start on old branch
   # then go up to new branch, just continue to start it on trusty.
+  # TODO(clarkb) once we are ready to do newton -> master (basically
+  # when all projects have newton branches) then add master to
+  # trusty exclusion and run it on xenial.
   - name: ^.*grenade-.*-ubuntu-trusty$
-    branch: ^(?!stable/(liberty|newton)).*$
+    branch: ^(master|stable/(mitaka|newton))$
   - name: ^.*grenade-.*-ubuntu-xenial$
-    branch: stable/newton
+    branch: stable/ocata
 
   - name: gate-grenade-dsvm-neutron-dvr-multinode
     branch: ^(?!stable/(liberty|mitaka)).*$
