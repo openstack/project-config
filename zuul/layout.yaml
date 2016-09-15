@@ -2926,11 +2926,11 @@ jobs:
   - name: gate-zaqar-ui-nodejs4-npm-run-test
     voting: false
 
-  - name: gate-horizon-selenium-headless
-    branch: ^(?!stable/liberty).*$
+  - name: ^gate-horizon-selenium-headless-ubuntu-trusty
+    branch: ^(stable/mitaka).*$
 
-  - name: ^gate-horizon-dsvm-integration-.*$
-    branch: ^(?!stable/liberty).*$
+  - name: ^gate-horizon-dsvm-integration-.*-ubuntu-trusty
+    branch: ^(stable/mitaka).*$
 
   # TODO(kragniz): Enable voting for each driver when the jobs are
   # functioning for that driver
@@ -9819,18 +9819,26 @@ projects:
       - gate-horizon-tox-py27dj18-ubuntu-xenial
       - gate-horizon-tox-py27dj19-ubuntu-xenial
       - gate-horizon-tox-py27dj110-ubuntu-xenial
-      - gate-horizon-selenium-headless
-      - gate-horizon-dsvm-tempest-plugin
-      - gate-horizon-dsvm-integration-current
-      - gate-horizon-dsvm-integration-deprecated
+      - gate-horizon-selenium-headless-ubuntu-trusty
+      - gate-horizon-selenium-headless-ubuntu-xenial
+      - gate-horizon-dsvm-tempest-plugin-ubuntu-trusty
+      - gate-horizon-dsvm-tempest-plugin-ubuntu-xenial
+      - gate-horizon-dsvm-integration-current-ubuntu-trusty
+      - gate-horizon-dsvm-integration-current-ubuntu-xenial
+      - gate-horizon-dsvm-integration-deprecated-ubuntu-trusty
+      - gate-horizon-dsvm-integration-deprecated-ubuntu-xenial
     gate:
       - gate-horizon-tox-py27dj18-ubuntu-trusty
       - gate-horizon-tox-py27dj18-ubuntu-xenial
       - gate-horizon-tox-py27dj19-ubuntu-xenial
-      - gate-horizon-selenium-headless
-      - gate-horizon-dsvm-tempest-plugin
-      - gate-horizon-dsvm-integration-current
-      - gate-horizon-dsvm-integration-deprecated
+      - gate-horizon-selenium-headless-ubuntu-trusty
+      - gate-horizon-selenium-headless-ubuntu-xenial
+      - gate-horizon-dsvm-tempest-plugin-ubuntu-trusty
+      - gate-horizon-dsvm-tempest-plugin-ubuntu-xenial
+      - gate-horizon-dsvm-integration-current-ubuntu-trusty
+      - gate-horizon-dsvm-integration-current-ubuntu-xenial
+      - gate-horizon-dsvm-integration-deprecated-ubuntu-trusty
+      - gate-horizon-dsvm-integration-deprecated-ubuntu-xenial
     post:
       - horizon-coverage-ubuntu-trusty
       - horizon-coverage-ubuntu-xenial
@@ -16272,9 +16280,11 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
     check:
-      - gate-horizon-dsvm-tempest-plugin
+      - gate-horizon-dsvm-tempest-plugin-ubuntu-trusty
+      - gate-horizon-dsvm-tempest-plugin-ubuntu-xenial
     gate:
-      - gate-horizon-dsvm-tempest-plugin
+      - gate-horizon-dsvm-tempest-plugin-ubuntu-trusty
+      - gate-horizon-dsvm-tempest-plugin-ubuntu-xenial
 
   - name: openstack/tempest-lib
     template:
