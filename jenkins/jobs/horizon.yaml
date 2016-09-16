@@ -1,6 +1,6 @@
 - job-template:
-    name: 'gate-horizon-dsvm-integration-{testtype}'
-    node: ubuntu-trusty
+    name: 'gate-horizon-dsvm-integration-{testtype}-{node}'
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -57,14 +57,20 @@
 - job-group:
     name: 'horizon-dsvm-integration-jobs'
     jobs:
-      - 'gate-horizon-dsvm-integration-{testtype}':
+      - 'gate-horizon-dsvm-integration-{testtype}-{node}':
           testtype: 'current'
-      - 'gate-horizon-dsvm-integration-{testtype}':
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
+      - 'gate-horizon-dsvm-integration-{testtype}-{node}':
           testtype: 'deprecated'
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
-- job:
-    name: gate-horizon-selenium-headless
-    node: ubuntu-trusty
+- job-template:
+    name: gate-horizon-selenium-headless-{node}
+    node: '{node}'
 
     builders:
       - zuul-git-prep-upper-constraints
@@ -77,9 +83,9 @@
     publishers:
       - console-log
 
-- job:
-    name: gate-horizon-dsvm-tempest-plugin
-    node: ubuntu-trusty
+- job-template:
+    name: gate-horizon-dsvm-tempest-plugin-{node}
+    node: '{node}'
 
     wrappers:
       - build-timeout:
