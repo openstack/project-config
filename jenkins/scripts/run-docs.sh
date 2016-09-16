@@ -27,6 +27,9 @@ echo "======================================================================"
 .tox/${venv}/bin/${freezecmd} freeze
 echo "======================================================================"
 
+MARKER_TEXT="Project: $ZUUL_PROJECT Ref: $ZUUL_REFNAME Build: $ZUUL_UUID"
+echo $MARKER_TEXT > doc/build/html/.root-marker
+
 if [ -z "$ZUUL_REFNAME" ] || [ "$ZUUL_REFNAME" == "master" ] ; then
     : # Leave the docs where they are.
 elif echo $ZUUL_REFNAME | grep refs/tags/ >/dev/null ; then
@@ -48,13 +51,13 @@ elif echo $ZUUL_REFNAME | grep refs/tags/ >/dev/null ; then
         if [ "$tags_handling" = "tags-only" -a "$TAG" = "$LATEST" ] ; then
             # Copy the docs into a subdir if this is a tagged build
             mkdir doc/build/$TAG
-            cp -R doc/build/html/* doc/build/$TAG
+            cp -R doc/build/html/. doc/build/$TAG
             mv doc/build/$TAG doc/build/html/$TAG
         else
             # Move the docs into a subdir if this is a tagged build
-            mkdir doc/build/$TAG
-            mv doc/build/html/* doc/build/$TAG
-            mv doc/build/$TAG doc/build/html/$TAG
+            mv doc/build/html doc/build/tmp
+            mkdir doc/build/html
+            mv doc/build/tmp doc/build/html/$TAG
         fi
     fi
 elif echo $ZUUL_REFNAME | grep stable/ >/dev/null ; then
@@ -64,9 +67,9 @@ elif echo $ZUUL_REFNAME | grep stable/ >/dev/null ; then
     BRANCH=$(echo $ZUUL_REFNAME | sed 's/stable.//')
     if [ ! -z $BRANCH ] ; then
         # Move the docs into a subdir if this is a stable branch build
-        mkdir doc/build/$BRANCH
-        mv doc/build/html/* doc/build/$BRANCH
-        mv doc/build/$BRANCH doc/build/html/$BRANCH
+        mv doc/build/html doc/build/tmp
+        mkdir doc/build/html
+        mv doc/build/tmp doc/build/html/$BRANCH
     fi
 else
     # Put other branch changes in dir named after branch under the
@@ -74,10 +77,10 @@ else
     # accessible under the developer docs root using the branch name.
     # EG: feature/foo or milestone-proposed
     BRANCH=$ZUUL_REFNAME
-    mkdir doc/build/tmp
-    mv doc/build/html/* doc/build/tmp
-    mkdir -p doc/build/html/$BRANCH
-    mv doc/build/tmp/* doc/build/html/$BRANCH
+    TOP=`dirname $BRANCH`
+    mv doc/build/html doc/build/tmp
+    mkdir -p doc/build/html/$TOP
+    mv doc/build/tmp doc/build/html/$BRANCH
 fi
 
 exit $result
