@@ -5823,21 +5823,36 @@
           job-suffix: ''
           branch-override: default
           node: ubuntu-trusty
-      - '{pipeline}-tempest-dsvm-keystone-uwsgi-full{job-suffix}':
+      - '{pipeline}-tempest-dsvm-keystone-uwsgi-full-{node}{job-suffix}':
           pipeline: gate
           job-suffix: '-nv'
           branch-override: default
           node: ubuntu-trusty
-      - '{pipeline}-keystone-dsvm-functional{job-suffix}':
+      - '{pipeline}-tempest-dsvm-keystone-uwsgi-full-{node}{job-suffix}':
+          pipeline: gate
+          job-suffix: '-nv'
+          branch-override: default
+          node: ubuntu-xenial
+      - '{pipeline}-keystone-dsvm-functional-{node}{job-suffix}':
           pipeline: gate
           job-suffix: ''
           branch-override: default
           node: ubuntu-trusty
-      - '{pipeline}-keystone-dsvm-functional-v3-only{job-suffix}':
+      - '{pipeline}-keystone-dsvm-functional-{node}{job-suffix}':
+          pipeline: gate
+          job-suffix: ''
+          branch-override: default
+          node: ubuntu-xenial
+      - '{pipeline}-keystone-dsvm-functional-v3-only-{node}{job-suffix}':
           pipeline: gate
           job-suffix: '-nv'
           branch-override: default
           node: ubuntu-trusty
+      - '{pipeline}-keystone-dsvm-functional-v3-only-{node}{job-suffix}':
+          pipeline: gate
+          job-suffix: '-nv'
+          branch-override: default
+          node: ubuntu-xenial
       - periodic-python-jobs-with-oslo-master
 
 - project:
@@ -11708,9 +11723,14 @@
       - translation-jobs
       - openstack-releasenotes-jobs
       - 'lib-forward-testing-{name}'
-      - '{pipeline}-keystoneclient-dsvm-functional{job-suffix}':
+      - '{pipeline}-keystoneclient-dsvm-functional-{node}{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
+          job-suffix: ''
+          branch-override: default
+      - '{pipeline}-keystoneclient-dsvm-functional-{node}{job-suffix}':
+          pipeline: gate
+          node: ubuntu-xenial
           job-suffix: ''
           branch-override: default
       - 'gate-{name}-tox-{envlist}-{node}':

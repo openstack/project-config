@@ -2570,18 +2570,12 @@ jobs:
   - name: ^gate-keystone-tox-db-legacy_drivers-ubuntu-trusty$
     branch: ^stable/mitaka.*$
 
-  - name: gate-tempest-dsvm-keystone-uwsgi-full-nv
-    branch: ^(?!stable/liberty).*$
+  - name: gate-tempest-dsvm-keystone-uwsgi-full-ubuntu-trusty-nv
+    branch: ^stable/mitaka$
 
   - name: gate-tempest-dsvm-keystone-eventlet-full
     branch: ^stable/(liberty|mitaka).*$
     voting: false
-
-  - name: gate-keystone-dsvm-functional
-    branch: ^(?!stable/(liberty|mitaka)).*$
-
-  - name: gate-keystone-dsvm-functional-v3-only-nv
-    branch: ^(?!stable/(liberty|mitaka)).*$
 
   - name: check-osc-plugins
     branch: ^(?!stable/liberty).*$
@@ -10186,15 +10180,16 @@ projects:
       - gate-keystone-tox-bandit-ubuntu-trusty
       - gate-keystone-tox-db-legacy_drivers-ubuntu-trusty
       - gate-keystone-tox-db-legacy_drivers-ubuntu-xenial
-      - gate-keystone-dsvm-functional
-      - gate-keystone-dsvm-functional-v3-only-nv
+      - gate-keystone-dsvm-functional-ubuntu-xenial
+      - gate-keystone-dsvm-functional-v3-only-ubuntu-xenial-nv
       - gate-tempest-dsvm-keystone-eventlet-full
-      - gate-tempest-dsvm-keystone-uwsgi-full-nv
+      - gate-tempest-dsvm-keystone-uwsgi-full-ubuntu-trusty-nv
+      - gate-tempest-dsvm-keystone-uwsgi-full-ubuntu-xenial-nv
       - gate-tempest-dsvm-neutron-identity-v3-only-full-ubuntu-xenial-nv
       - keystone-coverage-db-ubuntu-trusty
       - keystone-coverage-db-ubuntu-xenial
     gate:
-      - gate-keystone-dsvm-functional
+      - gate-keystone-dsvm-functional-ubuntu-xenial
       - gate-keystone-tox-bandit-ubuntu-trusty
       - gate-keystone-tox-db-legacy_drivers-ubuntu-trusty
       - gate-keystone-tox-db-legacy_drivers-ubuntu-xenial
@@ -14423,11 +14418,13 @@ projects:
       - name: translation-jobs
       - name: release-notes-jobs
     check:
-      - gate-keystoneclient-dsvm-functional
+      - gate-keystoneclient-dsvm-functional-ubuntu-trusty
+      - gate-keystoneclient-dsvm-functional-ubuntu-xenial
       - gate-python-keystoneclient-tox-bandit-ubuntu-trusty
       - gate-python-keystoneclient-tox-bandit-ubuntu-xenial
     gate:
-      - gate-keystoneclient-dsvm-functional
+      - gate-keystoneclient-dsvm-functional-ubuntu-trusty
+      - gate-keystoneclient-dsvm-functional-ubuntu-xenial
       - gate-python-keystoneclient-tox-bandit-ubuntu-trusty
       - gate-python-keystoneclient-tox-bandit-ubuntu-xenial
     post:
