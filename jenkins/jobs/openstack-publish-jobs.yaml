@@ -74,11 +74,8 @@
           git checkout origin/master
       - tox:
           envlist: 'releasenotes'
-      - shell: |
-          #!/bin/bash -xe
-          MARKER_TEXT="Project: $ZUUL_PROJECT Ref: $ZUUL_REFNAME Build: $ZUUL_UUID"
-          echo $MARKER_TEXT > releasenotes/build/html/.root-marker
-
+      - add-docs-root-marker:
+          docsrootdir: releasenotes/build/html
 
     publishers:
       - ftp:
