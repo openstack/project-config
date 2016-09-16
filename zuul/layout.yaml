@@ -3190,6 +3190,14 @@ jobs:
   - name: ^gate-ironic-inspector-dsvm-discovery$
     branch: ^(?!stable/liberty).*$
 
+  # Old dsvm jobs are running on liberty and mitaka, new tempest one - from
+  # newton on
+  - name: ^gate-ironic-inspector-dsvm-ipa.*$
+    branch: ^stable/(liberty|mitaka).*$
+
+  - name: ^gate-python-ironic-inspector-client-dsvm$
+    branch: ^stable/(liberty|mitaka).*$
+
   - name: ^gate-tempest-dsvm-ironic-inspector.*$
     branch: ^(?!stable/(liberty|mitaka)).*$
 
@@ -9984,13 +9992,14 @@ projects:
       - gate-ironic-inspector-dsvm-ipa
       - gate-ironic-inspector-dsvm-discovery
       - gate-grenade-dsvm-ironic-inspector
-      - gate-tempest-dsvm-ironic-inspector-nv
+      - gate-tempest-dsvm-ironic-inspector
     gate:
       - gate-ironic-inspector-tox-func-ubuntu-trusty
       - gate-ironic-inspector-tox-func-ubuntu-xenial
       - gate-ironic-inspector-dsvm-ipa
       - gate-ironic-inspector-dsvm-discovery
       - gate-grenade-dsvm-ironic-inspector
+      - gate-tempest-dsvm-ironic-inspector
     experimental:
       - gate-tempest-dsvm-ironic-inspector-discovery-nv
 
@@ -14351,11 +14360,12 @@ projects:
         - gate-python-ironic-inspector-client-tox-func-ubuntu-trusty
         - gate-python-ironic-inspector-client-tox-func-ubuntu-xenial
         - gate-python-ironic-inspector-client-dsvm
-        - gate-tempest-dsvm-python-ironic-inspector-client-nv
+        - gate-tempest-dsvm-python-ironic-inspector-client
     gate:
         - gate-python-ironic-inspector-client-tox-func-ubuntu-trusty
         - gate-python-ironic-inspector-client-tox-func-ubuntu-xenial
         - gate-python-ironic-inspector-client-dsvm
+        - gate-tempest-dsvm-python-ironic-inspector-client
 
   - name: openstack/python-ironicclient
     template:
