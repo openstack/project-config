@@ -306,6 +306,11 @@
           else
               export BRANCH=$ZUUL_BRANCH
           fi
+          # TODO(jaegerandi): Remove once stable/newton branch for
+          # requirements repo is created.
+          if [[ "$BRANCH" == "stable/newton" ]] ; then
+              BRANCH="master"
+          fi
           export ZUUL_REF=""
           export ZUUL_NEWREV=""
           export ZUUL_CHANGE=""
@@ -334,6 +339,11 @@
           }}
           trap cleanup EXIT
           export BRANCH={branch}
+          # TODO(jaegerandi): Remove once stable/newton branch for
+          # requirements repo is created.
+          if [[ "$BRANCH" == "stable/newton" ]] ; then
+              BRANCH="master"
+          fi
           export ZUUL_REF=""
           export ZUUL_NEWREV=""
           export ZUUL_CHANGE=""
