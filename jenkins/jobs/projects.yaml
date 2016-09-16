@@ -7496,14 +7496,30 @@
           suffix: ''
       - '{pipeline}-neutron-fwaas-dsvm-functional{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node: ubuntu-xenial
           job-suffix: ''
           branch-override: default
-      - '{pipeline}-neutron-fwaas-dsvm-tempest{branch-designator}':
+      - '{pipeline}-neutron-fwaas-{fwaas-version}-dsvm-tempest{branch-designator}{job-suffix}':
+          pipeline: gate
+          node: ubuntu-xenial
+          branch-designator: ''
+          branch-override: default
+          fwaas-version: v2
+          job-suffix: '-nv'
+      - '{pipeline}-neutron-fwaas-{fwaas-version}-dsvm-tempest{branch-designator}{job-suffix}':
+          pipeline: gate
+          node: ubuntu-xenial
+          branch-designator: ''
+          branch-override: default
+          fwaas-version: v1
+          job-suffix: '-nv'
+      - '{pipeline}-neutron-fwaas-{fwaas-version}-dsvm-tempest{branch-designator}{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
           branch-designator: ''
           branch-override: default
+          fwaas-version: legacy
+          job-suffix: '-nv'
       - periodic-python-jobs-with-neutron-lib-master
 
 - project:
