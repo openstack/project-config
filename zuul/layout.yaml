@@ -1681,6 +1681,18 @@ jobs:
           - ^.*\.rst$
           - ^doc/.*$
 
+  # no need to run the jobs for doc / releasenotes / unittests patches
+  - name: ^gate-octavia-v1-dsvm-scenario-ubuntu-xenial.*$
+    skip-if:
+      - project: ^openstack/octavia
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+          - ^etc/.*$
+          - ^tempest/tests/.*$
+          - ^tempest/hacking/.*$
+          - ^releasenotes/.*$
+
   # Only run the cross unittests on upper-constraints.txt updates
   - name: ^gate-cross-.*-python.*$
     files: ^upper-constraints.txt$
@@ -11776,6 +11788,7 @@ projects:
       - gate-neutron-lbaasv2-dsvm-minimal
       - gate-neutron-lbaasv2-dsvm-pool
       - gate-neutron-lbaasv2-dsvm-scenario
+      - gate-octavia-v1-dsvm-scenario-ubuntu-xenial-nv
     gate:
       - gate-neutron-lbaasv2-dsvm-healthmonitor
       - gate-neutron-lbaasv2-dsvm-listener
