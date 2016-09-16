@@ -57,4 +57,4 @@ git add releasenotes/source/index.rst releasenotes/source/${SERIES}.rst
 git diff
 git commit -m "$commit_msg"
 git show
-git review -t "reno-${SERIES}"
+git review -t "reno-${SERIES}" --yes
