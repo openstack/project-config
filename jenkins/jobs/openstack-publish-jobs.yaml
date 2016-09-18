@@ -119,6 +119,22 @@
       - upload-releasenotes-draft
       - console-log
 
+- job-template:
+    name: 'gate-{name}-i18n-releasenotes-nv'
+    node: ubuntu-xenial
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - zuul-git-prep-upper-constraints:
+      - install-distro-packages
+      - revoke-sudo
+      - shell:
+          !include-raw-escape: include-build-releasenotes.sh
+
+    publishers:
+      - upload-releasenotes-draft
+      - console-log
 
 - job-group:
     name: openstack-publish-jobs
