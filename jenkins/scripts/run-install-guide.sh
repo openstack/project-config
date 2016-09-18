@@ -6,6 +6,9 @@
 # example stable/newton documents will life in the newton directory.
 
 venv=install-guide
+
+export UPPER_CONSTRAINTS_FILE=$(pwd)/upper-constraints.txt
+
 tox -e $venv
 result=$?
 
