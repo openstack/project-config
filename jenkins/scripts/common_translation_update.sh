@@ -168,11 +168,7 @@ function setup_manuals {
     ZANATA_RULES=
 
     # List of directories to skip
-    if [ "$project" == "openstack-manuals" ]; then
-        EXCLUDE='.*/**,**/source/common/**'
-    else
-        EXCLUDE='.*/**,**/source/common/**,**/glossary/**'
-    fi
+    EXCLUDE='.*/**'
 
     # Generate pot one by one
     for FILE in ${DocFolder}/*; do
@@ -183,10 +179,6 @@ function setup_manuals {
         DOCNAME=${FILE#${DocFolder}/}
         # Ignore directories that will not get translated
         if [[ "$DOCNAME" =~ ^(www|tools|generated|publish-docs)$ ]]; then
-            continue
-        fi
-        # Skip glossary in all repos besides openstack-manuals.
-        if [ "$project" != "openstack-manuals" -a "$DOCNAME" == "glossary" ]; then
             continue
         fi
         IS_RST=0
@@ -554,27 +546,6 @@ function compress_po_files {
     done
 }
 
-# Reduce size of po files. This reduces the amount of content imported
-# and makes for fewer imports.
-# This does not touch the pot files. This way we can reconstruct the po files
-# using "msgmerge POTFILE POFILE -o COMPLETEPOFILE".
-# Give directory name to not touch files for example under .tox.
-# Pass glossary flag to not touch the glossary.
-function compress_manual_po_files {
-    local directory=$1
-    local glossary=$2
-    for i in $(find $directory -name *.po) ; do
-        if [ "$glossary" -eq 0 ] ; then
-            if [[ $i =~ "/glossary/" ]] ; then
-                continue
-            fi
-        fi
-        msgattrib --translated --no-location --sort-output "$i" \
-            --output="${i}.tmp"
-        mv "${i}.tmp" "$i"
-    done
-}
-
 function pull_from_zanata {
 
     local project=$1
@@ -586,13 +557,13 @@ function pull_from_zanata {
 
     for i in $(find . -name '*.po' ! -path './.*' -prune | cut -b3-); do
         check_po_file "$i"
-        # We want new files to be >75% translated. The glossary and
+        # We want new files to be >75% translated. The
         # common documents in openstack-manuals have that relaxed to
         # >8%.
         percentage=75
         if [ $project = "openstack-manuals" ]; then
             case "$i" in
-                *glossary*|*common*)
+                *common*)
                     percentage=8
                     ;;
             esac
