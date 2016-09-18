@@ -33,16 +33,20 @@ function propose_manuals {
     # Compress downloaded po files
     case "$PROJECT" in
         openstack-manuals)
+            cleanup_po_files "doc"
             cleanup_pot_files "doc"
             compress_po_files "doc"
             ;;
         api-site)
+            cleanup_po_files "api-quick-start"
             cleanup_pot_files "api-quick-start"
             compress_po_files "api-quick-start"
+            cleanup_po_files "firstapp"
             cleanup_pot_files "firstapp"
             compress_po_files "firstapp"
             ;;
         security-doc)
+            cleanup_po_files "security-guide"
             cleanup_pot_files "security-guide"
             compress_po_files "security-guide"
             ;;
@@ -66,6 +70,8 @@ function propose_training_guides {
     # Pull updated translations from Zanata.
     pull_from_zanata "$PROJECT"
 
+    # Cleanup po files
+    cleanup_po_files "doc/upstream-training"
     # Remove pot files
     cleanup_pot_files "doc/upstream-training"
     # Compress downloaded po files

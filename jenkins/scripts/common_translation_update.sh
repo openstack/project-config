@@ -559,12 +559,12 @@ function pull_from_zanata {
         check_po_file "$i"
         # We want new files to be >75% translated. The
         # common documents in openstack-manuals have that relaxed to
-        # >8%.
+        # >30%.
         percentage=75
         if [ $project = "openstack-manuals" ]; then
             case "$i" in
                 *common*)
-                    percentage=8
+                    percentage=30
                     ;;
             esac
         fi
