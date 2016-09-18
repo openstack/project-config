@@ -44,13 +44,13 @@ setup_venv
 
 # Project setup and updating POT files.
 case "$PROJECT" in
-    api-site|ha-guide|openstack-manuals|operations-guide|security-doc)
+    api-site|openstack-manuals|security-doc)
         init_manuals "$PROJECT"
         # POT file extraction is done in setup_manuals.
         setup_manuals "$PROJECT" "$ZANATA_VERSION"
         case "$PROJECT" in
             api-site)
-                ALL_MODULES="api-quick-start api-ref-guides api-ref firstapp"
+                ALL_MODULES="api-quick-start firstapp"
                 ;;
             security-doc)
                 ALL_MODULES="security-guide"
