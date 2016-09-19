@@ -18,7 +18,7 @@ script_path=/usr/local/jenkins/slave_scripts
 cat <<EOF >> tox.ini
 [testenv:api-ref-src]
 commands =
-    pip install -U -e $api_ref_dir
+    pip install -U $api_ref_dir
     sphinx-build -W -b html -d api-ref/build/doctrees api-ref/source api-ref/build/html
 EOF
 
