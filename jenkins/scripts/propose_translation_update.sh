@@ -39,18 +39,10 @@ function propose_manuals {
             compress_manual_po_files "doc" 1
             ;;
         api-site)
-            cleanup_pot_files "api-ref-guides"
-            compress_manual_po_files "api-ref-guides" 0
             cleanup_pot_files "api-quick-start"
             compress_manual_po_files "api-quick-start" 0
-            cleanup_pot_files "api-ref"
-            compress_manual_po_files "api-ref" 0
             cleanup_pot_files "firstapp"
             compress_manual_po_files "firstapp" 0
-            ;;
-        ha-guide|operations-guide)
-            cleanup_pot_files "doc"
-            compress_manual_po_files "doc" 0
             ;;
         security-doc)
             cleanup_pot_files "security-guide"
@@ -196,7 +188,7 @@ setup_review "$BRANCH"
 setup_venv
 
 case "$PROJECT" in
-    api-site|ha-guide|openstack-manuals|operations-guide|security-doc)
+    api-site|openstack-manuals|security-doc)
         init_manuals "$PROJECT"
         setup_manuals "$PROJECT" "$ZANATA_VERSION"
         propose_manuals

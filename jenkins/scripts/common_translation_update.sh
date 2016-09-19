@@ -155,7 +155,7 @@ function init_manuals {
 }
 
 # Setup project manuals projects (api-site, openstack-manuals,
-# operations-guide) for Zanata
+# security-guide) for Zanata
 function setup_manuals {
     local project=$1
     local version=${2:-master}
