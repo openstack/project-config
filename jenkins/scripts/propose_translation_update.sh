@@ -31,22 +31,20 @@ function propose_manuals {
     pull_from_zanata "$PROJECT"
 
     # Compress downloaded po files
-    # Only touch glossary in openstack-manuals but not in any other
-    # repository.
     case "$PROJECT" in
         openstack-manuals)
             cleanup_pot_files "doc"
-            compress_manual_po_files "doc" 1
+            compress_po_files "doc"
             ;;
         api-site)
             cleanup_pot_files "api-quick-start"
-            compress_manual_po_files "api-quick-start" 0
+            compress_po_files "api-quick-start"
             cleanup_pot_files "firstapp"
-            compress_manual_po_files "firstapp" 0
+            compress_po_files "firstapp"
             ;;
         security-doc)
             cleanup_pot_files "security-guide"
-            compress_manual_po_files "security-guide" 0
+            compress_po_files "security-guide"
             ;;
     esac
 
