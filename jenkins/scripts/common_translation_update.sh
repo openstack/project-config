@@ -167,8 +167,13 @@ function setup_manuals {
     # Grab all of the rules for the documents we care about
     ZANATA_RULES=
 
-    # List of directories to skip
-    EXCLUDE='.*/**'
+    # List of directories to skip.
+
+    # All manuals have a source/common subdirectory that is a symlink
+    # to doc/common in openstack-manuals. We have to exclude this
+    # source/common directory everywhere, only doc/common gets
+    # translated.
+    EXCLUDE='.*/**,**/source/common/**'
 
     # Generate pot one by one
     for FILE in ${DocFolder}/*; do
