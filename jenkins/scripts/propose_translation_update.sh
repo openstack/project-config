@@ -24,6 +24,19 @@ source /usr/local/jenkins/slave_scripts/common_translation_update.sh
 
 init_branch $BRANCH
 
+function cleanup_module {
+    local modulename=$1
+
+    # Remove obsolete files.
+    cleanup_po_files "$modulename"
+    cleanup_pot_files "$modulename"
+
+    # Compress downloaded po files, this needs to be done after
+    # cleanup_po_files since that function needs to have information the
+    # number of untranslated strings.
+    compress_po_files "$modulename"
+}
+
 # Propose updates for manuals
 function propose_manuals {
 
@@ -33,22 +46,16 @@ function propose_manuals {
     # Compress downloaded po files
     case "$PROJECT" in
         openstack-manuals)
-            cleanup_po_files "doc"
-            cleanup_pot_files "doc"
-            compress_po_files "doc"
+            # Cleanup po and pot files
+            cleanup_module "doc"
             ;;
         api-site)
-            cleanup_po_files "api-quick-start"
-            cleanup_pot_files "api-quick-start"
-            compress_po_files "api-quick-start"
-            cleanup_po_files "firstapp"
-            cleanup_pot_files "firstapp"
-            compress_po_files "firstapp"
+            # Cleanup po and pot files
+            cleanup_module "api-quick-start"
+            cleanup_module "firstapp"
             ;;
         security-doc)
-            cleanup_po_files "security-guide"
-            cleanup_pot_files "security-guide"
-            compress_po_files "security-guide"
+            cleanup_module "security-guide"
             ;;
     esac
 
@@ -70,12 +77,8 @@ function propose_training_guides {
     # Pull updated translations from Zanata.
     pull_from_zanata "$PROJECT"
 
-    # Cleanup po files
-    cleanup_po_files "doc/upstream-training"
-    # Remove pot files
-    cleanup_pot_files "doc/upstream-training"
-    # Compress downloaded po files
-    compress_po_files "doc/upstream-training"
+    # Cleanup po and pot files
+    cleanup_module "doc/upstream-training"
 
     # Add all changed files to git
     git add doc/upstream-training/source/locale/*
@@ -98,14 +101,8 @@ function propose_python_django {
     # between new files and files already under git control.
     git add $modulename/locale/*
 
-    # Remove obsolete files.
-    cleanup_po_files "$modulename"
-    cleanup_pot_files "$modulename"
-
-    # Compress downloaded po files, this needs to be done after
-    # cleanup_po_files since that function needs to have information the
-    # number of untranslated strings.
-    compress_po_files "$modulename"
+    # Cleanup po and pot files
+    cleanup_module "$modulename"
 
     # Check first whether directory exists, it might be missing if
     # there are no translations.
@@ -166,12 +163,8 @@ function propose_releasenotes {
         # how many strings are translated.
         extract_messages_releasenotes
 
-        # Remove obsolete files.
-        cleanup_po_files "releasenotes"
-        cleanup_pot_files "releasenotes"
-
-        # Compress downloaded po files
-        compress_po_files "releasenotes"
+        # Cleanup files.
+        cleanup_module "releasenotes"
 
         # Add all changed files to git - if there are
         # translated files at all.
