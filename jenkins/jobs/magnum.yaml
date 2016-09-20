@@ -79,27 +79,49 @@
           #!/bin/bash -eux
           cd ~
 
+          if [ "{image-name}" == "ubuntu-mesos" ]; then
+              EXTRA_PROJECTS="openstack/tripleo-image-elements openstack/heat-templates"
+          fi
+
           /usr/zuul-env/bin/zuul-cloner --cache-dir /opt/git \
             git://git.openstack.org \
             openstack/diskimage-builder \
             openstack/dib-utils \
-            openstack/magnum
+            openstack/magnum $EXTRA_PROJECTS
 
           export PATH=$PATH:$(pwd)/openstack/dib-utils/bin
           export PATH=$PATH:$(pwd)/openstack/diskimage-builder/bin
 
-          MAGNUM_ELEMENTS=./openstack/magnum/magnum/drivers/common/image
           DIB_ELEMENTS=./openstack/diskimage-builder/elements
-          export ELEMENTS_PATH=$DIB_ELEMENTS:$MAGNUM_ELEMENTS
 
           export DIB_IMAGE_SIZE=2.2
 
-          $MAGNUM_ELEMENTS/fedora-atomic/install_imagebuild_deps.sh
+          if [ "{image-name}" == "ubuntu-mesos" ]; then
+              TRIPLEO_ELEMENTS=./openstack/tripleo-image-elements/elements
+              HEAT_ELEMENTS=./openstack/heat-templates/hot/software-config/elements
+              MESOS_ELEMENTS=./openstack/magnum/magnum/drivers/mesos_ubuntu_v1/image
+              export ELEMENTS_PATH=$DIB_ELEMENTS:$TRIPLEO_ELEMENTS:$HEAT_ELEMENTS:$MESOS_ELEMENTS
 
-          DIB_RELEASE="23" disk-image-create -x -o $WORKSPACE/{image-name}-dib fedora-atomic
+              $MESOS_ELEMENTS/install_imagebuild_deps.sh
 
-          # validate image
-          $MAGNUM_ELEMENTS/fedora-atomic/validate_atomic_image.sh $WORKSPACE/{image-name}-dib.qcow2
+              export DIB_RELEASE=trusty
+
+              disk-image-create ubuntu vm docker mesos \
+                os-collect-config os-refresh-config os-apply-config \
+                heat-config heat-config-script -o $WORKSPACE/{image-name}.qcow2
+
+              $MESOS_ELEMENTS/validate_image.sh
+          else
+              MAGNUM_ELEMENTS=./openstack/magnum/magnum/drivers/common/image
+              export ELEMENTS_PATH=$DIB_ELEMENTS:$MAGNUM_ELEMENTS
+              $MAGNUM_ELEMENTS/fedora-atomic/install_imagebuild_deps.sh
+
+              export DIB_RELEASE="23"
+              disk-image-create -x -o $WORKSPACE/{image-name}-dib fedora-atomic
+
+              # validate image
+              $MAGNUM_ELEMENTS/fedora-atomic/validate_atomic_image.sh $WORKSPACE/{image-name}-dib.qcow2
+          fi
 
     publishers:
       - scp:
