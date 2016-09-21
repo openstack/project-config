@@ -3221,14 +3221,15 @@ jobs:
   - name: ^gate-grenade-dsvm-ironic.*$
     branch: ^(?!stable/(liberty|mitaka)).*$
 
-  - name: gate-senlin-dsvm-tempest-functional
+  - name: ^gate-senlin-dsvm-tempest-(functional|api|integration)
     branch: ^(?!stable/mitaka).*$
-
-  - name: gate-senlin-dsvm-tempest-api
-    branch: ^(?!stable/mitaka).*$
-
-  - name: gate-senlin-dsvm-tempest-integration-nv
-    branch: ^(?!stable/mitaka).*$
+    skip-if:
+      - project: ^openstack/senlin$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+          - ^api-ref/.*$
+          - ^releasenotes/.*$
 
   - name: gate-scalpels-dsvm-neutron-ubuntu-trusty
     voting: false
