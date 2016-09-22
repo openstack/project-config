@@ -184,9 +184,13 @@
                 ;;
           esac
 
+          case "$ZUUL_BRANCH" in
+            stable/liberty|stable/1.3) break ;;
+            *) export DEVSTACK_LOCAL_CONFIG+=$'\n'"CEILOMETER_BACKEND=gnocchi" ;;
+          esac
+
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"GNOCCHI_ARCHIVE_POLICY=high"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"CEILOMETER_PIPELINE_INTERVAL=5"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"CEILOMETER_BACKEND=gnocchi"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"GNOCCHI_STORAGE_BACKEND=file"
 
           export PROJECTS="openstack/{name} $PROJECTS"
@@ -243,9 +247,13 @@
                 export PROJECTS="openstack/panko $PROJECTS"
           esac
 
+          case "$ZUUL_BRANCH" in
+            stable/liberty|stable/1.3) break ;;
+            *) export DEVSTACK_LOCAL_CONFIG+=$'\n'"CEILOMETER_BACKEND=gnocchi" ;;
+          esac
+
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"GNOCCHI_ARCHIVE_POLICY=high"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"CEILOMETER_PIPELINE_INTERVAL=5"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"CEILOMETER_BACKEND=gnocchi"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"GNOCCHI_STORAGE_BACKEND=file"
 
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin devstack-plugin-{plugin} git://git.openstack.org/openstack/devstack-plugin-{plugin}"
