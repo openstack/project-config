@@ -3211,6 +3211,13 @@ jobs:
           - ^sahara_tempest_plugin/tests/api/.*$
           - ^tox.ini$
 
+  # TODO(esikachev): remove when tox -e cover will be working correct
+  - name: ^sahara-tests-coverage-ubuntu-xenial$
+    voting: false
+
+  - name: ^sahara-tests-coverage-ubuntu-trusty$
+    voting: false
+
   # Only run the unit cross tests for cliff against master.
   - name: ^gate-cliff-tox-(openstackclient|neutronclient)-tip-ubuntu-xenial$
     branch: ^master$
@@ -15459,8 +15466,6 @@ projects:
     gate:
       - gate-sahara-tests-dsvm-scenario-neutron-heat
       - gate-sahara-tests-dsvm-scenario-nova-heat
-      - sahara-tests-coverage-ubuntu-trusty
-      - sahara-tests-coverage-ubuntu-xenial
     post:
       - sahara-tests-coverage-ubuntu-trusty
       - sahara-tests-coverage-ubuntu-xenial
