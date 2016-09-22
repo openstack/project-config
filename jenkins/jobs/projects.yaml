@@ -5502,11 +5502,14 @@
           node: ubuntu-trusty
           job-suffix: '-nv'
           branch-override: default
-      - '{pipeline}-tempest-dsvm-ironic-pxe_ipa-postgres{job-suffix}':
+      - '{pipeline}-tempest-dsvm-ironic-pxe_ipa-postgres-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           job-suffix: '-nv'
           branch-override: default
+
       - '{pipeline}-tempest-dsvm-ironic-parallel{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
