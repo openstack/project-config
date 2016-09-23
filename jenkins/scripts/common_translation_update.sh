@@ -30,7 +30,7 @@ QUIET="--quiet"
 INVALID_PO_FILE=0
 
 # ERROR_ABORT signals whether the script aborts with failure, will be
-# set to 0 on successfull run.
+# set to 0 on successful run.
 ERROR_ABORT=1
 
 # We need a UTF-8 locale, set it properly in case it's not set.

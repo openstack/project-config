@@ -42,7 +42,7 @@ def set_node_options(item, job, params):
     params['TOX_TESTENV_PASSENV'] = ' '.join(zuul_params)
     # Set up log url parameter for all jobs
     set_log_url(item, job, params)
-    # Default to single use node. Potentially overriden below.
+    # Default to single use node. Potentially overridden below.
     # Select node to run job on.
     params['OFFLINE_NODE_WHEN_COMPLETE'] = '1'
     # Pass tags through for subunit2sql
