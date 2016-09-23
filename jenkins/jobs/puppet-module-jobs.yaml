@@ -179,34 +179,6 @@
       - console-log
 
 - job-template:
-    name: 'gate-puppet-openstack-integration-dsvm-multinode{job-suffix}'
-    node: '{node}'
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - link-logs
-      - puppet-openstack-integration-checkout
-      - shell: |
-          #!/bin/bash -xe
-          cd puppet-openstack-integration
-          /usr/local/jenkins/slave_scripts/install-distro-packages.sh
-      - shell: |
-          #!/bin/bash -xe
-          cd puppet-openstack-integration
-          trap "./copy_logs.sh" EXIT
-          ./run_multinode.sh
-
-    wrappers:
-      - build-timeout:
-          timeout: 60
-      - timestamps
-
-    publishers:
-      - devstack-logs
-      - console-log
-
-- job-template:
     name: 'gate-puppet-openstack-integration-{puppet_version}-{scenario}-tempest-{node}{job-suffix}'
     node: '{node}'
 
