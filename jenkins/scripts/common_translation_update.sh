@@ -517,7 +517,7 @@ function cleanup_po_files {
 
     for i in $(find $modulename -name *.po) ; do
         check_po_file "$i"
-        if [ $RATIO -lt 20 ]; then
+        if [ $RATIO -lt 40 ]; then
             git rm -f --ignore-unmatch $i
         fi
     done
@@ -564,19 +564,19 @@ function pull_from_zanata {
         check_po_file "$i"
         # We want new files to be >75% translated. The
         # common documents in openstack-manuals have that relaxed to
-        # >30%.
+        # >40%.
         percentage=75
         if [ $project = "openstack-manuals" ]; then
             case "$i" in
                 *common*)
-                    percentage=30
+                    percentage=40
                     ;;
             esac
         fi
         if [ $RATIO -lt $percentage ]; then
             # This means the file is below the ratio, but we only want
             # to delete it, if it is a new file. Files known to git
-            # that drop below 20% will be cleaned up by
+            # that drop below 40% will be cleaned up by
             # cleanup_po_files.
             if ! git ls-files | grep -xq "$i"; then
                 rm -f "$i"
