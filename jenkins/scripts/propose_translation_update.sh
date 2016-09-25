@@ -157,6 +157,7 @@ function propose_releasenotes {
     # testing are set up in zuul/layout.yaml. If releasenotes exist,
     # they get pushed to the translation server.
 
+    # Note that releasenotes only get translated on master.
     if [[ "$version" == "master" && -f releasenotes/source/conf.py ]]; then
 
         # Note that we need to generate these so that we can calculate
@@ -171,6 +172,12 @@ function propose_releasenotes {
         if [ -d releasenotes/source/locale/ ] ; then
             git add releasenotes/source/locale/
         fi
+    fi
+
+    # Remove any releasenotes translations from stable branches, they
+    # are not needed there.
+    if [[ "$version" != "master" && -d releasenotes/source/locale ]]; then
+        git rm -rf releasenotes/source/locale
     fi
 }
 
