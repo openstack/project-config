@@ -33,7 +33,7 @@ dashboard:
     - title: Graphs
       height: 320px
       panels:
-        - title: Periodic jobs
+        - title: Periodic Job Failure Rates
           span: 4
           targets:
             - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.periodic.job.periodic-networking-ovn-py34-with-neutron-lib-master.FAILURE),sum(stats_counts.zuul.pipeline.periodic.job.periodic-networking-ovn-py34-with-neutron-lib-master.{SUCCESS,FAILURE})),'24hours'), 'periodic-networking-ovn-py34-with-neutron-lib-master')
@@ -55,4 +55,12 @@ dashboard:
           span: 4
           targets:
             - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-rally-dsvm-networking-ovn.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-rally-dsvm-networking-ovn.{SUCCESS,FAILURE})),'24hours'), 'gate-rally-dsvm-networking-ovn')
+          type: graph
+    - title: Graphs
+      height: 320px
+      panels:
+        - title: Grenade Failure Rates (Check queue)
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-grenade-dsvm-networking-ovn-nv.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-grenade-dsvm-networking-ovn-nv.{SUCCESS,FAILURE})),'24hours'), 'gate-grenade-dsvm-networking-ovn-nv')
           type: graph
