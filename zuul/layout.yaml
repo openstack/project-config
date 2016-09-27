@@ -2169,7 +2169,7 @@ jobs:
     voting: false
 
   - name: ^gate-neutron-fwaas-dsvm-functional$
-    voting: false
+    branch: ^(?!stable/(liberty|mitaka)).*$
 
   - name: ^gate-neutron-fwaas-dsvm-tempest$
     branch: ^(?!stable/liberty).*$
@@ -11628,11 +11628,12 @@ projects:
       - name: periodic-jobs-with-neutron-lib-master
     check:
       - gate-neutron-fwaas-dsvm-tempest
+      - gate-neutron-fwaas-dsvm-functional
+    gate:
+      - gate-neutron-fwaas-dsvm-functional
     post:
       - neutron-fwaas-coverage-ubuntu-trusty
       - neutron-fwaas-coverage-ubuntu-xenial
-    experimental:
-      - gate-neutron-fwaas-dsvm-functional
 
   - name: openstack/neutron-lbaas
     template:
