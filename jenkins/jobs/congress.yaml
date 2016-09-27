@@ -48,6 +48,8 @@
               DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin congress git://git.openstack.org/openstack/congress"
               # To be enabled for Mitaka and later
               DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin murano git://git.openstack.org/openstack/murano"
+              # To deploy congress as multi-process (api, pe, datasources)
+              DEVSTACK_LOCAL_CONFIG+=$'\n'"CONGRESS_MULTIPROCESS_DEPLOYMENT=True"
           fi
 
           export ENABLED_SERVICES
@@ -97,6 +99,7 @@
           # Enable congress devstack plugin.
           DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin congress git://git.openstack.org/openstack/congress"
           DEVSTACK_LOCAL_CONFIG+=$'\n'"CONGRESS_REPLICATED=True"
+          DEVSTACK_LOCAL_CONFIG+=$'\n'"CONGRESS_MULTIPROCESS_DEPLOYMENT=True"
           export DEVSTACK_LOCAL_CONFIG
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
