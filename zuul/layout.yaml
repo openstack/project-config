@@ -2267,11 +2267,6 @@ jobs:
   - name: dev-zuul-coverage
     voting: false
 
-  - name: jenkins-job-builder-compare-xml
-    voting: false
-    failure-message: WARNING XML output has changed.
-    success-message: XML output is unchanged.
-
   - name: ^gate-jenkins-job-builder-tox-docs-linkcheck-ubuntu-(trusty|xenial)$
     voting: false
     failure-message: WARNING broken links in docs
@@ -2290,17 +2285,6 @@ jobs:
 
   - name: gate-bashate-devstack
     voting: false
-
-  - name: gate-project-config-compare-xml
-    voting: false
-    failure-message: Jenkins XML output has changed.
-    success-message: Jenkins XML output is unchanged.
-    files:
-      - 'bindep.txt'
-      - 'jenkins/jobs/.*'
-      - 'other-requirements.txt'
-      - 'tools/run-compare-clonemap.yaml'
-      - 'tools/run-compare-xml.sh'
 
   - name: gate-project-config-irc-access
     files:
@@ -3949,7 +3933,6 @@ projects:
       - name: publish-to-pypi
       - name: infra-publish-jobs
     check:
-      - jenkins-job-builder-compare-xml
       - jenkins-job-builder-coverage-ubuntu-trusty
       - jenkins-job-builder-coverage-ubuntu-xenial
       - gate-jenkins-job-builder-tox-docs-linkcheck-ubuntu-trusty
@@ -4091,7 +4074,6 @@ projects:
       - name: bindep-fallback
       - name: merge-check
     check:
-      - gate-project-config-compare-xml
       - gate-project-config-gerrit
       - gate-project-config-grafyaml
       - gate-project-config-layout
@@ -4126,7 +4108,6 @@ projects:
     template:
       - name: merge-check
     check:
-      - gate-project-config-compare-xml
       - gate-project-config-layout
       - gate-project-config-example-linters-ubuntu-trusty
       - gate-project-config-example-linters-ubuntu-xenial
