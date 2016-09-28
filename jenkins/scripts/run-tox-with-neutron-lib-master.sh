@@ -7,7 +7,7 @@ venv=$1
 if [[ -z "$venv" ]]; then
     echo "Usage: $?"
     echo
-    echo "VENV: The tox environment to run (eg 'py34')"
+    echo "VENV: The tox environment to run (eg 'py35')"
     exit 1
 fi
 
@@ -18,7 +18,7 @@ sed -i "s/neutron-lib.*/-e git+https:\/\/git.openstack.org\/openstack\/neutron-l
 
 cat << EOF >> tox.ini
 
-[testenv:py34-neutron-lib-master]
+[testenv:${venv}-neutron-lib-master]
 setenv = VIRTUAL_ENV={envdir}
 passenv = TRACE_FAILONLY GENERATE_HASHES http_proxy HTTP_PROXY https_proxy HTTPS_PROXY no_proxy NO_PROXY
 usedevelop = True
