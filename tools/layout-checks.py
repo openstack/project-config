@@ -15,6 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import argparse
 import ConfigParser
 import copy
 import os
@@ -111,23 +112,22 @@ def grep(source, pattern):
     return found
 
 
-def check_jobs():
+def check_jobs(joblistfile):
     """Check that jobs have matches"""
     errors = False
 
     print("\nChecking job section regex expressions")
     print("======================================")
 
-    # The job-list.txt file is created by tools/run-layout.sh and
+    # The job-list.txt file is created by tox.ini and
     # thus should exist if this is run from tox. If this is manually invoked
-    # the file might not exist, in that case pass the test.
-    job_list_file = ".test/job-list.txt"
-    if not os.path.isfile(job_list_file):
+    # the file might not exist, in that case skip the test.
+    if not os.path.isfile(joblistfile):
         print("Job list file %s does not exist, not checking jobs section"
-              % job_list_file)
+              % joblistfile)
         return False
 
-    with open(job_list_file, 'r') as f:
+    with open(joblistfile, 'r') as f:
         job_list = [line.rstrip() for line in f]
 
     for jobs in layout['jobs']:
@@ -271,6 +271,15 @@ def check_gerrit_zuul_projects():
 
 
 def check_all():
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        'joblistfile',
+        help='Path to job-list.txt file',
+    )
+    args = parser.parse_args()
+
+
     errors = check_projects_sorted()
     errors = check_merge_template() or errors
     errors = check_formatting() or errors
@@ -278,7 +287,7 @@ def check_all():
     errors = check_empty_gate() or errors
     errors = check_mixed_noops() or errors
     errors = check_gerrit_zuul_projects() or errors
-    errors = check_jobs() or errors
+    errors = check_jobs(args.joblistfile) or errors
 
     if errors:
         print("\nFound errors in layout.yaml!")
