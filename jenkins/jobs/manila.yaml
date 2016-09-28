@@ -1,6 +1,6 @@
 - job-template:
-    name: 'gate-manila-tempest-dsvm-{description}'
-    node: ubuntu-trusty
+    name: 'gate-manila-tempest-dsvm-{description}-{node}{suffix}'
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -68,8 +68,8 @@
       - console-log
 
 - job-template:
-    name: 'gate-manila-tempest-minimal-dsvm-{driver}'
-    node: ubuntu-trusty
+    name: 'gate-manila-tempest-minimal-dsvm-{driver}-{node}{suffix}'
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -139,8 +139,8 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-grenade-dsvm-manila'
-    node: ubuntu-trusty
+    name: '{pipeline}-grenade-dsvm-manila-{node}{suffix}'
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -332,9 +332,9 @@
       - console-log
 
 
-- job:
-    name: gate-manila-tempest-dsvm-hdfs
-    node: ubuntu-trusty
+- job-template:
+    name: 'gate-manila-tempest-dsvm-hdfs-{node}{suffix}'
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -362,16 +362,16 @@
           # Keep localrc to be able to set some vars in pre_test_hook
           export KEEP_LOCALRC=1
 
-          function pre_test_hook {
+          function pre_test_hook {{
               # Configure devstack to run manila installation without handling of share servers
               source $BASE/new/devstack-plugin-hdfs/manila/pre_test_hook.sh
-          }
+          }}
           export -f pre_test_hook
 
-          function post_test_hook {
+          function post_test_hook {{
               # Configure and run tempest on multi-backend manila installation
               source $BASE/new/devstack-plugin-hdfs/manila/post_test_hook.sh
-          }
+          }}
           export -f post_test_hook
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
@@ -381,9 +381,9 @@
       - devstack-logs
       - console-log
 
-- job:
-    name: gate-manila-tempest-dsvm-cephfs-native
-    node: ubuntu-trusty
+- job-template:
+    name: 'gate-manila-tempest-dsvm-cephfs-native-{node}{suffix}'
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -429,23 +429,23 @@
           # Keep localrc to be able to set some vars in pre_test_hook
           export KEEP_LOCALRC=1
 
-          function pre_test_hook {
+          function pre_test_hook {{
               # Configure Manila with a CephFSNative driver backend.
               # Refer job-template's pre_test_hook for more details on the
               # arguments.
               source $BASE/new/devstack-plugin-ceph/manila/pre_test_hook.sh \
                   false cephfsnative singlebackend
-          }
+          }}
           export -f pre_test_hook
 
-          function post_test_hook {
+          function post_test_hook {{
               # Configure and run Tempest API tests on Manila with a
               # CephFSNative driver backend.
               # Refer job-template's post_test_hook for more details on the
               # arguments.
               source $BASE/new/devstack-plugin-ceph/manila/post_test_hook.sh \
                   singlebackend cephfsnative api
-          }
+          }}
           export -f post_test_hook
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh

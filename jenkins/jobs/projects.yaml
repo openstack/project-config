@@ -6338,55 +6338,109 @@
           service: shared-file-systems
       - install-guide-jobs:
           service: shared-file-systems
-      - '{pipeline}-grenade-dsvm-manila':
+      - '{pipeline}-grenade-dsvm-manila-{node}{suffix}':
+          node:
+            - 'ubuntu-trusty'
           pipeline: 'gate'
           branch-override: default
-      - 'gate-manila-tempest-minimal-dsvm-{driver}':
-          driver: 'lvm'
-      - 'gate-manila-tempest-minimal-dsvm-{driver}':
-          driver: 'dummy'
-      - 'gate-manila-tempest-dsvm-{description}':
+          suffix: ''
+      - 'gate-manila-tempest-minimal-dsvm-{driver}-{node}{suffix}':
+          node:
+            - 'ubuntu-trusty'
+          driver:
+            - 'lvm'
+          suffix: ''
+      - 'gate-manila-tempest-minimal-dsvm-{driver}-{node}{suffix}':
+          node:
+            - 'ubuntu-xenial'
+          driver:
+            - 'dummy'
+            - 'lvm'
+          suffix: '-nv'
+      - 'gate-manila-tempest-dsvm-cephfs-native-{node}{suffix}':
+          node:
+            - 'ubuntu-trusty'
+            - 'ubuntu-xenial'
+          suffix: '-nv'
+      - 'gate-manila-tempest-dsvm-hdfs-{node}{suffix}':
+          node:
+            - 'ubuntu-trusty'
+            - 'ubuntu-xenial'
+          suffix: '-nv'
+      - 'gate-manila-tempest-dsvm-{description}-{node}{suffix}':
+          node:
+            - 'ubuntu-trusty'
+            - 'ubuntu-xenial'
           description: postgres-generic-singlebackend
           postgres_enabled: '1'
           dhss: '1'
           back_end_type: 'singlebackend'
           driver: 'generic'
           test_type: 'api'
-      - 'gate-manila-tempest-dsvm-{description}':
+          suffix: '-nv'
+      - 'gate-manila-tempest-dsvm-{description}-{node}{suffix}':
+          node:
+            - 'ubuntu-trusty'
           description: mysql-generic
           postgres_enabled: '0'
           dhss: '1'
           back_end_type: 'multibackend'
           driver: 'generic'
           test_type: 'api'
-      - 'gate-manila-tempest-dsvm-{description}':
+          suffix: ''
+      - 'gate-manila-tempest-dsvm-{description}-{node}{suffix}':
+          node:
+            - 'ubuntu-xenial'
+          description: mysql-generic
+          postgres_enabled: '0'
+          dhss: '1'
+          back_end_type: 'multibackend'
+          driver: 'generic'
+          test_type: 'api'
+          suffix: '-nv'
+      - 'gate-manila-tempest-dsvm-{description}-{node}{suffix}':
+          node:
+            - 'ubuntu-trusty'
+            - 'ubuntu-xenial'
           description: postgres-zfsonlinux
           postgres_enabled: '1'
           dhss: '0'
           back_end_type: 'multibackend'
           driver: 'zfsonlinux'
           test_type: 'api'
-      - 'gate-manila-tempest-dsvm-{description}':
+          suffix: '-nv'
+      - 'gate-manila-tempest-dsvm-{description}-{node}{suffix}':
+          node:
+            - 'ubuntu-xenial'
           description: postgres-container
           postgres_enabled: '1'
           dhss: '1'
           back_end_type: 'multibackend'
           driver: 'container'
           test_type: 'api'
-      - 'gate-manila-tempest-dsvm-{description}':
+          suffix: '-nv'
+      - 'gate-manila-tempest-dsvm-{description}-{node}{suffix}':
+          node:
+            - 'ubuntu-trusty'
+            - 'ubuntu-xenial'
           description: generic-no-share-servers
           postgres_enabled: '0'
           dhss: '0'
           back_end_type: 'multibackend'
           driver: 'generic'
           test_type: 'api'
-      - 'gate-manila-tempest-dsvm-{description}':
+          suffix: '-nv'
+      - 'gate-manila-tempest-dsvm-{description}-{node}{suffix}':
+          node:
+            - 'ubuntu-trusty'
+            - 'ubuntu-xenial'
           description: scenario
           postgres_enabled: '0'
           dhss: '1'
           back_end_type: 'multibackend'
           driver: 'generic'
           test_type: 'scenario'
+          suffix: '-nv'
       - 'gate-manila-tempest-dsvm-glusterfs-{variant}-{node}{suffix}':
           node: 'ubuntu-trusty'
           suffix: '-nv'

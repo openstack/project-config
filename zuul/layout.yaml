@@ -2742,24 +2742,14 @@ jobs:
   - name: gate-manila-buildimage-docker
     voting: false
 
-  - name: gate-manila-tempest-dsvm-postgres-generic-singlebackend
-    voting: false
+  - name: gate-manila-tempest-dsvm-postgres-zfsonlinux-ubuntu-trusty-nv
+    branch: ^(?:stable/mitaka).*$
 
-  - name: gate-manila-tempest-dsvm-generic-no-share-servers
-    voting: false
-
-  - name: gate-manila-tempest-dsvm-postgres-zfsonlinux
-    branch: ^(?!stable/liberty).*$
-    voting: false
-
-  - name: gate-manila-tempest-dsvm-postgres-container
-    voting: false
-
-  - name: gate-grenade-dsvm-manila
+  # TODO(vponomaryov): replace it with 'xenial' job when
+  # 'gate-manila-tempest-dsvm-mysql-generic-ubuntu-trusty' job
+  # ported to xenial too.
+  - name: gate-grenade-dsvm-manila-ubuntu-trusty
     branch: ^(?!stable/(?:liberty|mitaka)).*$
-
-  - name: gate-manila-tempest-dsvm-scenario
-    voting: false
 
   # NOTE(chenk): We enforce the trusty variant of following
   # job until both on stable and master branches until xenial
@@ -2773,16 +2763,13 @@ jobs:
   - name: gate-manila-tempest-dsvm-glusterfs-native-ubuntu-trusty-nv
     branch: ^(?:stable/(?:liberty|mitaka|newton).*|master)$
 
-  - name: gate-manila-tempest-dsvm-cephfs-native
-    branch: ^(?!stable/liberty).*$
-    voting: false
+  - name: gate-manila-tempest-dsvm-cephfs-native-ubuntu-trusty-nv
+    branch: ^(?:stable/mitaka).*$
 
-  - name: gate-manila-tempest-minimal-dsvm-lvm
+  # TODO(vponomaryov): make it run only on stable/mitaka branch
+  # when LVM job on Xenial works ok
+  - name: gate-manila-tempest-minimal-dsvm-lvm-ubuntu-trusty
     branch: ^(?!stable/liberty).*$
-
-  - name: gate-manila-tempest-minimal-dsvm-dummy
-    branch: ^(?!stable/(?:liberty|mitaka)).*$
-    voting: false
 
   # Broken by a recent client update; marking non-voting while we
   # determine whether or not to keep this test job
@@ -2824,9 +2811,6 @@ jobs:
   # SQLAlchemy >= 1.0.10, so this job is not needed for Mitaka+
   - name: ^gate-oslo.db-tox-db-sqla_09-ubuntu-trusty$
     branch: ^(stable/liberty).*$
-
-  - name: gate-manila-tempest-dsvm-hdfs
-    voting: false
 
   - name: gate-rally-dsvm-manila-multibackend
     voting: false
@@ -8245,7 +8229,8 @@ projects:
       - gate-devstack-plugin-ceph-bashate
       - gate-tempest-dsvm-full-devstack-plugin-ceph-ubuntu-trusty
       - gate-tempest-dsvm-full-devstack-plugin-ceph-ubuntu-xenial
-      - gate-manila-tempest-dsvm-cephfs-native
+      - gate-manila-tempest-dsvm-cephfs-native-ubuntu-trusty-nv
+      - gate-manila-tempest-dsvm-cephfs-native-ubuntu-xenial-nv
     gate:
       - gate-devstack-plugin-ceph-bashate
       - gate-tempest-dsvm-full-devstack-plugin-ceph-ubuntu-trusty
@@ -8275,7 +8260,8 @@ projects:
     check:
       - gate-devstack-plugin-hdfs-bashate
       - gate-tempest-dsvm-full-hdfs
-      - gate-manila-tempest-dsvm-hdfs
+      - gate-manila-tempest-dsvm-hdfs-ubuntu-trusty-nv
+      - gate-manila-tempest-dsvm-hdfs-ubuntu-xenial-nv
     gate:
       - gate-devstack-plugin-hdfs-bashate
       - gate-tempest-dsvm-full-hdfs
@@ -10572,25 +10558,32 @@ projects:
       - gate-manila-tox-genconfig-ubuntu-trusty
       - gate-manila-tox-genconfig-ubuntu-xenial
       - gate-manila-pylint
-      - gate-manila-tempest-dsvm-mysql-generic
-      - gate-manila-tempest-dsvm-postgres-container
-      - gate-manila-tempest-dsvm-postgres-zfsonlinux
-      - gate-manila-tempest-dsvm-postgres-generic-singlebackend
-      - gate-manila-tempest-dsvm-generic-no-share-servers
-      - gate-manila-tempest-dsvm-scenario
-      - gate-manila-tempest-dsvm-cephfs-native
+      - gate-manila-tempest-dsvm-mysql-generic-ubuntu-trusty
+      - gate-manila-tempest-dsvm-postgres-container-ubuntu-xenial-nv
+      - gate-manila-tempest-dsvm-postgres-zfsonlinux-ubuntu-trusty-nv
+      - gate-manila-tempest-dsvm-postgres-zfsonlinux-ubuntu-xenial-nv
+      - gate-manila-tempest-dsvm-postgres-generic-singlebackend-ubuntu-trusty-nv
+      - gate-manila-tempest-dsvm-postgres-generic-singlebackend-ubuntu-xenial-nv
+      - gate-manila-tempest-dsvm-generic-no-share-servers-ubuntu-trusty-nv
+      - gate-manila-tempest-dsvm-generic-no-share-servers-ubuntu-xenial-nv
+      - gate-manila-tempest-dsvm-scenario-ubuntu-trusty-nv
+      - gate-manila-tempest-dsvm-scenario-ubuntu-xenial-nv
+      - gate-manila-tempest-dsvm-cephfs-native-ubuntu-trusty-nv
+      - gate-manila-tempest-dsvm-cephfs-native-ubuntu-xenial-nv
       - gate-manila-tempest-dsvm-glusterfs-nfs-ubuntu-trusty-nv
       - gate-manila-tempest-dsvm-glusterfs-native-ubuntu-trusty-nv
-      - gate-manila-tempest-dsvm-hdfs
-      - gate-manila-tempest-minimal-dsvm-dummy
-      - gate-manila-tempest-minimal-dsvm-lvm
-      - gate-grenade-dsvm-manila
+      - gate-manila-tempest-dsvm-hdfs-ubuntu-trusty-nv
+      - gate-manila-tempest-dsvm-hdfs-ubuntu-xenial-nv
+      - gate-manila-tempest-minimal-dsvm-dummy-ubuntu-xenial-nv
+      - gate-manila-tempest-minimal-dsvm-lvm-ubuntu-trusty
+      - gate-manila-tempest-minimal-dsvm-lvm-ubuntu-xenial-nv
+      - gate-grenade-dsvm-manila-ubuntu-trusty
     gate:
       - gate-manila-tox-genconfig-ubuntu-trusty
       - gate-manila-tox-genconfig-ubuntu-xenial
-      - gate-manila-tempest-dsvm-mysql-generic
-      - gate-manila-tempest-minimal-dsvm-lvm
-      - gate-grenade-dsvm-manila
+      - gate-manila-tempest-dsvm-mysql-generic-ubuntu-trusty
+      - gate-manila-tempest-minimal-dsvm-lvm-ubuntu-trusty
+      - gate-grenade-dsvm-manila-ubuntu-trusty
     post:
       - manila-coverage-db-ubuntu-trusty
       - manila-coverage-db-ubuntu-xenial
