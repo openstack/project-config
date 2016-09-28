@@ -88,20 +88,20 @@ commands =
     {[testenv]commands}
 EOF
 
-if grep "^\[testenv:py34\]" tox.ini
+if grep "^\[testenv:py35\]" tox.ini
 then
 cat << EOF >> tox.ini
 
-[testenv:py34-oslo-master]
+[testenv:py35-oslo-master]
 posargs =
 commands =
     bash oslo-from-master.sh
-    {[testenv:py34]commands}
+    {[testenv:py35]commands}
 EOF
 else
 cat << EOF >> tox.ini
 
-[testenv:py34-oslo-master]
+[testenv:py35-oslo-master]
 posargs =
 commands =
     bash oslo-from-master.sh
