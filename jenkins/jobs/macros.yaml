@@ -257,7 +257,8 @@
               if [[ "$ZUUL_REFNAME" =~ ^refs/tags/ ]] ; then
                   get_branch_tag
               else
-                  TARGET_BRANCH=$ZUUL_REFNAME
+                  # ZUUL_REFNAME is only available in post jobs
+                  TARGET_BRANCH=${ZUUL_REFNAME:-$ZUUL_REF}
               fi
 
               cat > $CLONEMAP << EOF
