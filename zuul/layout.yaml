@@ -2707,6 +2707,12 @@ jobs:
   - name: ^murano-coverage-db-ubuntu-(trusty|xenial)
     voting: false
 
+  - name: ^kuryr-coverage-ubuntu-(trusty|xenial)
+    voting: false
+
+  - name: ^kuryr-libnetwork-coverage-ubuntu-(trusty|xenial)
+    voting: false
+
   - name: gate-solum-infra-guestagent-python34
     voting: false
 
@@ -10472,6 +10478,9 @@ projects:
       - name: publish-to-pypi
       - name: openstack-server-publish-jobs
       - name: check-requirements
+    check:
+      - kuryr-coverage-ubuntu-trusty
+      - kuryr-coverage-ubuntu-xenial
 
   - name: openstack/kuryr-kubernetes
     template:
@@ -10492,6 +10501,8 @@ projects:
       - name: openstack-server-publish-jobs
       - name: check-requirements
     check:
+      - kuryr-libnetwork-coverage-ubuntu-trusty
+      - kuryr-libnetwork-coverage-ubuntu-xenial
       - gate-install-dsvm-kuryr-libnetwork-nv
       - gate-kuryr-libnetwork-dsvm-fullstack-nv
       - gate-kuryr-libnetwork-dsvm-rally-nv
