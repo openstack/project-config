@@ -16,6 +16,11 @@
           source: 'publish-docs/api-ref/**'
           target: '/'
           remove-prefix: 'publish-docs/api-ref/'
+      - afs:
+          site: afs-developer-docs
+          source: 'publish-docs/api-ref/**'
+          target: '/'
+          remove-prefix: 'publish-docs/api-ref/'
       - test-results
       - console-log
 
@@ -34,6 +39,11 @@
       - upload-doc-build-results
       - ftp:
           site: developer.openstack.org
+          source: 'publish-docs/api-ref/**'
+          target: '/'
+          remove-prefix: 'publish-docs/api-ref/'
+      - afs:
+          site: afs-developer-docs
           source: 'publish-docs/api-ref/**'
           target: '/'
           remove-prefix: 'publish-docs/api-ref/'
@@ -74,6 +84,11 @@
     publishers:
       - ftp:
           site: developer.openstack.org
+          source: 'api-guide/build/html/**'
+          target: 'api-guide/{service}'
+          remove-prefix: 'api-guide/build/html/'
+      - afs:
+          site: afs-developer-docs
           source: 'api-guide/build/html/**'
           target: 'api-guide/{service}'
           remove-prefix: 'api-guide/build/html/'
@@ -148,6 +163,11 @@
           source: 'api-ref/build/html/**'
           target: 'api-ref/{service}'
           remove-prefix: 'api-ref/build/html/'
+      - afs:
+          site: afs-developer-docs
+          source: 'api-ref/build/html/**'
+          target: 'api-ref/{service}'
+          remove-prefix: 'api-ref/build/html/'
       - test-results
       - console-log
 
@@ -184,5 +204,10 @@
           target: 'sdks/python/openstacksdk'
           remove-prefix: 'doc/build/html/'
           excludes: ''
+      - afs:
+          site: afs-developer-docs
+          source: 'doc/build/html/**'
+          target: 'sdks/python/openstacksdk'
+          remove-prefix: 'doc/build/html/'
       - test-results
       - console-log
