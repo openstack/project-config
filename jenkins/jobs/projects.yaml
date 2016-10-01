@@ -6121,21 +6121,25 @@
       - pypi-jobs
       - openstack-publish-jobs
       - openstack-releasenotes-jobs
-      - '{pipeline}-kolla-kubernetes-{action}-{distro}-{type}{job-suffix}':
+      - '{pipeline}-kolla-kubernetes-{action}-{distro}-{type}-{config}{job-suffix}':
           action: deploy
+          config:
+            - ceph
+            - iscsi
           distro: centos
           node: 'centos-7'
           pipeline: gate
-          type:
-            - binary
-            - source
+          type: binary
           job-suffix: '-nv'
-      - '{pipeline}-kolla-kubernetes-{action}-{distro}-{type}{job-suffix}':
+      - '{pipeline}-kolla-kubernetes-{action}-{distro}-{type}-{config}{job-suffix}':
           action: deploy
+          config:
+            - ceph
+            - iscsi
           distro: ubuntu
           node: ubuntu-xenial
           pipeline: gate
-          type: source
+          type: binary
           job-suffix: '-nv'
 
 - project:
