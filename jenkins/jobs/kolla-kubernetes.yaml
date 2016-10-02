@@ -14,8 +14,31 @@
       - install-distro-packages
       - shell: |
           #!/bin/bash -xe
-          tools/setup_gate.sh {action} {distro} {type} {config} {node}
+          tools/setup_gate.sh {action} {distro} {type} {config} {node} shell
           tox -e {action}-{distro}-{type}
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-kolla-kubernetes-ansible-workflow-{config}{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 60
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - zuul-git-prep-upper-constraints
+      - install-distro-packages
+      - shell: |
+          #!/bin/bash -xe
+          tools/setup_gate.sh deploy centos binary {config} {node} ansible
+          tox -e deploy-centos-binary
 
     publishers:
       - devstack-logs
