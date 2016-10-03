@@ -2106,6 +2106,23 @@ jobs:
   - name: gate-grenade-dsvm-neutron-nova-next-ubuntu-trusty-nv
     branch: ^(?!stable/(liberty|mitaka)).*$
 
+  - name: gate-grenade-dsvm-multinode-live-migration-nv
+    branch: ^(?!stable/(liberty|mitaka)).*$
+    skip-if:
+      - project: ^openstack/nova$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+          - ^api-.*$
+          - ^nova/tests/unit/.*$
+          - ^nova/tests/functional/.*$
+          - ^nova/tests/.*\.py$
+          - ^nova/hacking/.*$
+          - ^releasenotes/.*$
+          - ^tests-py3.txt$
+          - ^tools/.*$
+          - ^tox.ini$
+
   # Only run the neutron LB job on nova if there are changes to nova/network/*
   # or nova/virt/libvirt/vif.py since that uses os-vif for LB vif type.
   # TODO(mriedem): Run this proper on all changes once nova-network is dropped.
@@ -11833,6 +11850,7 @@ projects:
       - gate-nova-tox-db-functional-ubuntu-trusty
       - gate-nova-tox-db-functional-ubuntu-xenial
       - gate-grenade-dsvm-multinode
+      - gate-grenade-dsvm-multinode-live-migration-nv
       - gate-tempest-dsvm-cells-ubuntu-trusty
       - gate-tempest-dsvm-cells-ubuntu-xenial
       - gate-tempest-dsvm-full-devstack-plugin-ceph-ubuntu-trusty
