@@ -1053,20 +1053,25 @@ project-templates:
       - gate-tripleo-ci-centos-7-ovb-nonha
     check:
       - gate-tripleo-ci-centos-7-nonha-multinode
-      - gate-tripleo-ci-centos-7-undercloud
       - gate-tripleo-ci-centos-7-scenario001-multinode-nv
       - gate-tripleo-ci-centos-7-scenario002-multinode
       - gate-tripleo-ci-centos-7-scenario003-multinode
       - gate-tripleo-ci-centos-7-nonha-multinode-updates-nv
     gate:
       - gate-tripleo-ci-centos-7-nonha-multinode
-      - gate-tripleo-ci-centos-7-undercloud
       - gate-tripleo-ci-centos-7-scenario002-multinode
       - gate-tripleo-ci-centos-7-scenario003-multinode
     experimental:
       - gate-tripleo-ci-centos-7-containers-multinode-nv
     experimental-tripleo:
       - gate-tripleo-ci-centos-7-ovb-nonha-upgrades-nv
+
+  - name: check-tripleo-undercloud-jobs
+    check:
+      - gate-tripleo-ci-centos-7-undercloud
+      - gate-tripleo-ci-centos-7-undercloud-upgrades-nv
+    gate:
+      - gate-tripleo-ci-centos-7-undercloud
 
   - name: experimental-tripleo-jobs
     experimental-tripleo:
@@ -4935,8 +4940,7 @@ projects:
     template:
       - name: merge-check
       - name: check-tripleo-jobs
-    check:
-      - gate-tripleo-ci-centos-7-undercloud-upgrades-nv
+      - name: check-tripleo-undercloud-jobs
     check-tripleo:
       - gate-tripleo-ci-centos-7-ovb-nonha-liberty
       - gate-tripleo-ci-centos-7-ovb-nonha-mitaka
@@ -10018,13 +10022,13 @@ projects:
       - name: merge-check
       - name: python-jobs
       - name: check-tripleo-jobs
+      - name: check-tripleo-undercloud-jobs
       - name: publish-to-pypi
       - name: experimental-tripleo-jobs
     check:
       - gate-instack-undercloud-puppet-lint
       - gate-instack-undercloud-puppet-syntax-3-centos-7
       - gate-instack-undercloud-puppet-syntax-4-centos-7
-      - gate-tripleo-ci-centos-7-undercloud-upgrades-nv
     gate:
       - gate-instack-undercloud-puppet-lint
       - gate-instack-undercloud-puppet-syntax-3-centos-7
@@ -15042,6 +15046,7 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
       - name: check-tripleo-jobs
+      - name: check-tripleo-undercloud-jobs
       - name: osc-plugin-jobs
     check:
       - gate-tripleo-buildimage-overcloud-full-centos-7-nv
