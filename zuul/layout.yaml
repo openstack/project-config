@@ -2439,17 +2439,6 @@ jobs:
       - '^tox.ini$'
       - '^api-guide/.*'
 
-  # For openstackdocstheme, we want to publish with each change, so extend
-  # the files section.
-  - name: ^gate-openstackdocstheme-api-ref$
-    files:
-      - '^tox.ini$'
-      - '^api-ref/.*'
-      - '^doc/.*$'
-      - '^openstackdocstheme/.*$'
-      - '^.*\.txt$'
-      - '^.*\.rst$'
-
   - name: ^gate-.*-api-ref$
     success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/api-ref/build/html/
     branch: master
@@ -2460,6 +2449,17 @@ jobs:
 
   - name: ^gate-.*-api-ref-src$
     success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/api-ref/build/html/
+
+  # For openstackdocstheme, we want to publish with each change, so extend
+  # the files section.
+  - name: ^gate-openstackdocstheme-api-ref$
+    files:
+      - '^tox.ini$'
+      - '^api-ref/.*'
+      - '^doc/.*$'
+      - '^openstackdocstheme/.*$'
+      - '^.*\.txt$'
+      - '^.*\.rst$'
 
   - name: ^gate-.*-install-guide$
     success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/install-guide/build/html/
