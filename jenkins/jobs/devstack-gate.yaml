@@ -1485,6 +1485,50 @@
 
 
 - job-template:
+    name: '{pipeline}-grenade-dsvm-multinode-live-migration{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 180
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PROJECTS="openstack-dev/grenade $PROJECTS"
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_CONFIGDRIVE=0
+          export DEVSTACK_GATE_NEUTRON=1
+          export DEVSTACK_GATE_TEMPEST_NOTESTS=1
+          export DEVSTACK_GATE_GRENADE=pullup
+          # By default grenade runs only smoke tests so we need to set
+          # RUN_SMOKE to False in order to run live migration tests using
+          # grenade
+          export DEVSTACK_LOCAL_CONFIG="RUN_SMOKE=False"
+          export BRANCH_OVERRIDE={branch-override}
+          export DEVSTACK_GATE_TOPOLOGY="multinode"
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          function post_test_hook {{
+              /opt/stack/new/nova/nova/tests/live_migration/hooks/run_tests.sh
+          }}
+          export -f post_test_hook
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+
+- job-template:
     name: '{pipeline}-{name}-src-grenade-dsvm-multinode{job-suffix}'
     node: '{node}'
 
