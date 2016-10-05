@@ -3179,6 +3179,11 @@ jobs:
   - name: ^gate-openstack-ansible-.*-ansible-(?!((aio|func|docs|linters)-ubuntu-trusty|releasenotes)).*$
     branch: ^(?!(liberty|stable/mitaka)).*$
 
+  # Skip the functional tests against the RHEL 7 STIG content on Newton branch
+  # and earlier branches.
+  - name: ^gate-openstack-ansible-security-ansible-func_rhel7.*$
+    branch: ^(?!(liberty|stable/(mitaka|newton))).*$
+
   # Ignore requirements on the keystoneclient/keystoneauth integration branch
   - name: gate-python-keystoneclient-requirements
     branch: ^(?!feature/keystoneauth_integration).*$
@@ -12646,6 +12651,9 @@ projects:
       - name: ansible-role-functional-jobs-centos7
       - name: ansible-role-functional-jobs-trusty
       - name: ansible-role-functional-jobs-xenial
+    check:
+      - gate-openstack-ansible-security-ansible-func_rhel7-centos-7-nv
+      - gate-openstack-ansible-security-ansible-func_rhel7-ubuntu-xenial-nv
     release:
       - openstack-ansible-security-announce-release
 
