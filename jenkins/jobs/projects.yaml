@@ -338,18 +338,26 @@
       - translation-jobs
       - 'gate-{name}-python35{suffix}':
           suffix: '-nv'
-      - 'gate-barbican-{plugin}-devstack-dsvm':
+      - 'gate-barbican-{plugin}-devstack-dsvm{special}':
           plugin: simple-crypto
           node: ubuntu-trusty
           services: tempest,keystone
-      - 'gate-barbican-{plugin}-devstack-dsvm':
+          special: ''
+      - 'gate-barbican-{plugin}-devstack-dsvm{special}':
+          plugin: simple-crypto
+          node: ubuntu-xenial
+          services: tempest,keystone
+          special: '-postgres'
+      - 'gate-barbican-{plugin}-devstack-dsvm{special}':
           plugin: dogtag
           node: fedora-23
           services: barbican-dogtag,tempest,keystone
-      - 'gate-barbican-{plugin}-devstack-dsvm':
+          special: ''
+      - 'gate-barbican-{plugin}-devstack-dsvm{special}':
           plugin: kmip
           node: ubuntu-trusty
           services: barbican-pykmip,pykmip-server,tempest,keystone
+          special: ''
       - api-guide-jobs:
           service: key-manager
       - install-guide-jobs:
