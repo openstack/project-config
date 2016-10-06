@@ -48,6 +48,7 @@ elif [ "$OWN_PROJECT" == "requirements-constraints" ] ; then
     function update {
         $VENV/bin/generate-constraints -b blacklist.txt -p /usr/bin/python2.7 \
             -p /usr/bin/python3 -r global-requirements.txt \
+            --version-map 3.4:3.5 --version-map 3.5:3.4 \
             > $1/upper-constraints.txt
     }
 elif [ "$OWN_PROJECT" == "devstack-plugins-list" ] ; then
