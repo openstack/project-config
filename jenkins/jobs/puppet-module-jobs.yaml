@@ -344,25 +344,6 @@
     publishers:
       - console-log
 
-- job:
-    name: propose-puppet-openstack-rdo-promote
-    node: proposal
-
-    builders:
-      - proposal-slave-cleanup
-      - revoke-sudo
-      - link-logs
-      - branch-git-prep:
-          branch: master
-      - net-info
-      - shell: |
-          export ZUUL_REFNAME=master
-          /usr/local/jenkins/slave_scripts/propose_update.sh \
-              puppet-openstack-rdo-promote
-
-    publishers:
-      - console-log
-
 - job-group:
     name: 'puppet-check-jobs'
     puppet_version:
