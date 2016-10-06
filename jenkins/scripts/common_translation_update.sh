@@ -412,6 +412,8 @@ function extract_messages_django {
 
 # Extract releasenotes messages
 function extract_messages_releasenotes {
+    local keep_workdir=$1
+
     # Extract messages
     tox -e venv -- sphinx-build -b gettext -d releasenotes/build/doctrees \
         releasenotes/source releasenotes/work
@@ -420,7 +422,65 @@ function extract_messages_releasenotes {
     mkdir -p releasenotes/source/locale/
     msgcat --sort-by-file releasenotes/work/*.pot \
         > releasenotes/source/locale/releasenotes.pot
-    rm -rf releasenotes/work
+    if [ ! -n "$keep_workdir" ]; then
+        rm -rf releasenotes/work
+    fi
+}
+
+# Check releasenote translation progress per language.
+# It checks the progress per release. Add the release note translation
+# if at least one release is well translated (>= 75%).
+# Keep the release note translation in the git repository
+# if at least one release is translated >= 40%.
+# Otherwise (< 40%) the translation are removed.
+#
+# NOTE: this function assume POT files in releasenotes/work
+# extracted by extract_messages_releasenotes().
+# The workdir should be clean up by the caller.
+function check_releasenotes_per_language {
+    local lang_po=$1
+
+    # The expected PO location is
+    # releasenotes/source/locale/<lang>/LC_MESSAGES/releasenotes.po.
+    # Extract language name from 4th component.
+    local lang
+    lang=$(echo $lang_po | cut -d / -f 4)
+
+    local release_pot
+    local release_name
+    local workdir=releasenotes/work
+
+    local has_high_thresh=0
+    local has_low_thresh=0
+
+    mkdir -p $workdir/$lang
+    for release_pot in $(find $workdir -name '*.pot'); do
+        release_name=$(basename $release_pot .pot)
+        # The index file usually contains small number of words,
+        # so we skip to check it.
+        if [ $release_name = "index" ]; then
+            continue
+        fi
+        msgmerge --quiet -o $workdir/$lang/$release_name.po $lang_po $release_pot
+        check_po_file $workdir/$lang/$release_name.po
+        if [ $RATIO -ge 75 ]; then
+            has_high_thresh=1
+            has_low_thresh=1
+        fi
+        if [ $RATIO -ge 40 ]; then
+            has_low_thresh=1
+        fi
+    done
+
+    if ! git ls-files | grep -xq $lang_po; then
+        if [ $has_high_thresh -eq 0 ]; then
+            rm -f $lang_po
+        fi
+    else
+        if [ $has_low_thresh -eq 0 ]; then
+            git rm -f --ignore-unmatch $lang_po
+        fi
+    fi
 }
 
 # Filter out files that we do not want to commit.
@@ -612,6 +672,13 @@ function pull_from_zanata {
     # translations for the project (in particular, '.tox'). Likewise
     # 'node_modules' only contains dependencies and should be ignored.
     for i in $(find . -name '*.po' ! -path './.*' ! -path './node_modules/*' -prune | cut -b3-); do
+        # We check release note translation percentage per release.
+        # To check this we need to extract messages per RST file.
+        # Let's defer checking it to propose_releasenotes.
+        local basefn=
+        if [ "$(basename $i)" = "releasenotes.po" ]; then
+            continue
+        fi
         check_po_file "$i"
         # We want new files to be >75% translated. The
         # common documents in openstack-manuals have that relaxed to

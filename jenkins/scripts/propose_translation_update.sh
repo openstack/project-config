@@ -190,10 +190,25 @@ function propose_releasenotes {
 
         # Note that we need to generate these so that we can calculate
         # how many strings are translated.
-        extract_messages_releasenotes
+        extract_messages_releasenotes "keep_workdir"
 
-        # Cleanup files.
-        cleanup_module "releasenotes"
+        local lang_po
+        local locale_dir=releasenotes/source/locale
+        for lang_po in $(find $locale_dir -name 'releasenotes.po'); do
+            check_releasenotes_per_language $lang_po
+        done
+
+        # Remove the working directory. We no longer needs it.
+        rm -rf releasenotes/work
+
+        # Cleanup POT files.
+        # PO files are already clean up in check_releasenotes_translations.
+        cleanup_pot_files "releasenotes"
+
+        # Compress downloaded po files, this needs to be done after
+        # cleanup_po_files since that function needs to have information the
+        # number of untranslated strings.
+        compress_po_files "releasenotes"
 
         # Add all changed files to git - if there are
         # translated files at all.
