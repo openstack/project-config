@@ -3324,14 +3324,6 @@ jobs:
       - '^tox.ini'
       - '^.*requirements.txt$'
 
-  - name: ^gate-.*-i18n-releasenotes-nv$
-    success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/releasenotes/build/html/
-    branch: ^(?!stable/(?:juno|kilo)).*$
-    files:
-      - '^releasenotes/.*'
-      - '^tox.ini'
-      - '^.*requirements.txt$'
-
   # Some projects do not have releasenotes until the Mitaka cycle
   - name: ^gate-(keystoneauth|keystonemiddleware|networking-midonet|openstack-manuals|os-client-config|packstack|os-brick|puppet-.*)-releasenotes$
     branch: ^(?!stable/(?:juno|kilo|liberty)).*$
@@ -10032,7 +10024,6 @@ projects:
       - gate-horizon-dsvm-integration-current-ubuntu-xenial
       - gate-horizon-dsvm-integration-deprecated-ubuntu-trusty
       - gate-horizon-dsvm-integration-deprecated-ubuntu-xenial
-      - gate-horizon-i18n-releasenotes-nv
     gate:
       - gate-horizon-tox-py27dj18-ubuntu-trusty
       - gate-horizon-tox-py27dj18-ubuntu-xenial
@@ -12772,7 +12763,6 @@ projects:
       - name: translation-jobs-mitaka
       - name: release-notes-jobs
     check:
-      - gate-openstack-manuals-i18n-releasenotes-nv
       - gate-openstack-manuals-tox-checksyntax-ubuntu-xenial
     gate:
       - gate-openstack-manuals-tox-checksyntax-ubuntu-xenial

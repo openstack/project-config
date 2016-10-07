@@ -82,8 +82,8 @@
           # what we've checked out to master.
           #
           git checkout origin/master
-      - tox:
-          envlist: 'releasenotes'
+      - shell:
+          !include-raw-escape: include-build-releasenotes.sh
       - add-docs-root-marker:
           docsrootdir: releasenotes/build/html
 
@@ -104,23 +104,6 @@
 
 - job-template:
     name: 'gate-{name}-releasenotes'
-    node: ubuntu-xenial
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - zuul-git-prep-upper-constraints:
-      - install-distro-packages
-      - revoke-sudo
-      - tox:
-          envlist: 'releasenotes'
-
-    publishers:
-      - upload-releasenotes-draft
-      - console-log
-
-- job-template:
-    name: 'gate-{name}-i18n-releasenotes-nv'
     node: ubuntu-xenial
 
     builders:
