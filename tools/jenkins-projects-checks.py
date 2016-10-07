@@ -14,11 +14,15 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import io
 import glob
 import sys
-import yaml
-
 import voluptuous as v
+
+# The files uses YAML extensions like !include, therefore use the
+# jenkins-job-builder yaml parser for loading.
+from jenkins_jobs import local_yaml
+
 
 BUILDER = v.Schema({
     v.Required('name'): v.All(str),
@@ -62,6 +66,7 @@ PUBLISHER = v.Schema({
     v.Required('publishers'): v.All(list),
     'description': v.All(str)
 })
+
 
 def normalize(s):
     "Normalize string for comparison."
@@ -114,7 +119,7 @@ def validate_jobs():
     print("=====================")
 
     for job_file in glob.glob('jenkins/jobs/*.yaml'):
-        jobs = yaml.load(open(job_file))
+        jobs = local_yaml.load(io.open(job_file, 'r', encoding='utf-8'))
         for item in jobs:
             if 'builder' in item:
                 schema = BUILDER
