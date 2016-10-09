@@ -45,7 +45,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-neutron-fwaas-dsvm-tempest{branch-designator}'
+    name: '{pipeline}-neutron-fwaas-{fwaas-version}-dsvm-tempest{branch-designator}{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -65,6 +65,7 @@
           export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
           export DEVSTACK_GATE_NEUTRON=1
           export BRANCH_OVERRIDE={branch-override}
+          export FWAAS_VERSION={fwaas-version}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
@@ -74,7 +75,13 @@
               # documentation purposes.
               export DEVSTACK_LOCAL_CONFIG="enable_plugin neutron-fwaas git://git.openstack.org/openstack/neutron-fwaas"
           fi
-          export ENABLED_SERVICES="q-fwaas"
+          if [ "$FWAAS_VERSION" = "v2" ] ; then
+              export ENABLED_SERVICES="q-fwaas"
+          elif [ "$FWAAS_VERSION" = "v1" ] ; then
+              export ENABLED_SERVICES="q-fwaas-v1"
+          elif [ "$FWAAS_VERSION" = "legacy" ] ; then
+              export ENABLED_SERVICES="q-fwaas"
+          fi
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
