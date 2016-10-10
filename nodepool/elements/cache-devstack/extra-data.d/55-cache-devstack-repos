@@ -161,6 +161,16 @@ def local_prep(distribution):
                 tokenize(fn, rpms, distribution, comment='#')
             branch_data['rpms'] = rpms
 
+        if os.path.exists(os.path.join(TMP_MOUNT_PATH, 'usr/bin/emerge')):
+            ebuilds = []
+            ebuilddir = os.path.join(DEVSTACK, 'files', 'ebuilds')
+            if not os.path.exists(ebuilddir):
+                ebuilddir = os.path.join(DEVSTACK, 'files', 'ebuilds')
+            for fn in os.listdir(ebuilddir):
+                fn = os.path.join(ebuilddir, fn)
+                tokenize(fn, ebuilds, distribution, comment='#')
+            branch_data['ebuilds'] = ebuilds
+
         images = _find_images(DEVSTACK)
         if not images:
             images = _legacy_find_images(DEVSTACK)
@@ -180,6 +190,8 @@ def main():
                 pkgs.write(" ".join(branch_data['debs']) + "\n")
             elif branch_data.get('rpms'):
                 pkgs.write(" ".join(branch_data['rpms']) + "\n")
+            elif branch_data.get('ebuilds'):
+                pkgs.write(" ".join(branch_data['ebuilds']) + "\n")
             else:
                 sys.exit('No supported package data found.')
 
