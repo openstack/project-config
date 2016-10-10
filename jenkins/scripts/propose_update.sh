@@ -64,13 +64,6 @@ elif [ "$OWN_PROJECT" == "puppet-openstack-constraints" ] ; then
     function update {
         bash /usr/local/jenkins/slave_scripts/generate_puppetfile.sh
     }
-elif [ "$OWN_PROJECT" == "puppet-openstack-rdo-promote" ] ; then
-    INITIAL_COMMIT_MSG="Promote RDO repository to latest consistent URL"
-    TOPIC="openstack/puppet/rdo"
-    PROJECTS=openstack/puppet-openstack-integration
-    function update {
-        bash /usr/local/jenkins/slave_scripts/propose_rdo_promote.sh
-    }
 else
     echo "Unknown project $1" >2
     exit 1
