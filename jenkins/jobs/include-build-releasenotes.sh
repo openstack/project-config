@@ -18,6 +18,17 @@ DIRECTORY=releasenotes
 
 script_path=/usr/local/jenkins/slave_scripts
 
+# Mapping of language codes to language names
+declare -A LANG_NAME=(
+    ["de"]="German"
+    ["en_AU"]="English (Australian)"
+    ["en_GB"]="English (United Kingdom)"
+    ["id"]="Indonesian"
+    ["ja"]="Japanese"
+    ["ko_KR"]="Korean (South Korea)"
+    ["zh_CN"]="Chinese (China)"
+)
+
 # This file always exists in OpenStack CI jobs, check for it so that
 # it can be used manually as well.
 if [ -e "$(pwd)/upper-constraints.txt" ]; then
@@ -88,7 +99,13 @@ for locale in `find ${DIRECTORY}/source/locale/ -maxdepth 1 -type d` ; do
         ${DIRECTORY}/source/ ${DIRECTORY}/build/html/${language}
 
     # Reference translated document from index file
-    echo "* \`${language} <${language}/index.html>\`__" >> ${REFERENCES}
+    if [ ${LANG_NAME["${language}"]+_} ] ; then
+        name=${LANG_NAME["${language}"]}
+        name+=" (${language})"
+        echo "* \`$name <${language}/index.html>\`__" >> ${REFERENCES}
+    else
+        echo "* \`${language} <${language}/index.html>\`__" >> ${REFERENCES}
+    fi
 
     # Remove newly created files
     git clean -f -q ${DIRECTORY}/source/locale/${language}/LC_MESSAGES/*.po
