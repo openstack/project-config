@@ -1,5 +1,5 @@
 - job-template:
-    name: 'gate-barbican-{plugin}-devstack-dsvm'
+    name: 'gate-barbican-{plugin}-devstack-dsvm{special}'
     node: '{node}'
 
     wrappers:
@@ -29,6 +29,10 @@
               ./post_test_hook.sh
           }}
           export -f post_test_hook
+
+          if [ "{special}" == "-postgres" ] ; then
+              export DEVSTACK_GATE_POSTGRES=1
+          fi
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
