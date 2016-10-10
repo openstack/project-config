@@ -211,3 +211,32 @@
           remove-prefix: 'doc/build/html/'
       - test-results
       - console-log
+
+- job:
+    name: murano-firstapp-docs
+    description: Build and publish the Murano Firstapp docs from source.
+    node: ubuntu-xenial
+
+    builders:
+      - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
+      - tox:
+          envlist: 'murano-firstapp'
+      - add-docs-root-marker:
+          docsrootdir: doc/build/murano-firstapp/html
+
+    publishers:
+      - ftp:
+          site: developer.openstack.org
+          source: 'doc/build/murano-firstapp/html/**'
+          target: 'murano-firstapp'
+          remove-prefix: 'doc/build/murano-firstapp/html/'
+          excludes: ''
+      - afs:
+          site: afs-developer-docs
+          source: 'doc/build/murano-firstapp/html/**'
+          target: 'murano-firstapp'
+          remove-prefix: 'doc/build/murano-firstapp/html/'
+      - test-results
+      - console-log

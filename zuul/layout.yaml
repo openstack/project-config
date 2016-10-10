@@ -2492,6 +2492,19 @@ jobs:
   - name: ^(?!gate-).*-install-guide$
     branch: ^(?!stable/(liberty|mitaka)).*$
 
+
+  - name: murano-firstapp-docs
+    # Only publish from master
+    branch: master
+    success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/doc/build/murano-firstapp/html/
+    # This is only build and publised from master
+    branch: master
+    files:
+      - '^tox.ini$'
+      - '^doc/murano-firstapp/.*'
+      - bindep.txt
+      - '^.*requirements.txt$'
+
   - name: ^gate-.*-js-draft
     success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/dist/
 
@@ -11165,12 +11178,15 @@ projects:
       - gate-tempest-dsvm-murano-api
       - gate-tempest-dsvm-murano-cfapi
       - gate-tempest-dsvm-murano-glare-backend
+      - gate-murano-tox-murano-firstapp-ubuntu-xenial
     gate:
       - gate-tempest-dsvm-murano-api
       - gate-murano-devstack-dsvm
+      - gate-murano-tox-murano-firstapp-ubuntu-xenial
     post:
       - murano-coverage-db-ubuntu-trusty
       - murano-coverage-db-ubuntu-xenial
+      - murano-firstapp-docs
 
   - name: openstack/murano-agent
     template:
