@@ -38,7 +38,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-kuryr-libnetwork-dsvm-fullstack{job-suffix}'
+    name: '{pipeline}-kuryr-libnetwork{kuryr_lib-src}-dsvm-fullstack{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -67,6 +67,9 @@
 
           export PROJECTS="openstack/kuryr-libnetwork $PROJECTS"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin kuryr-libnetwork http://git.openstack.org/openstack/kuryr-libnetwork"
+          if [ "{kuryr_lib-src}" == "-kuryr_lib-src" ] ; then
+              export DEVSTACK_PROJECT_FROM_GIT="kuryr"
+          fi
 
           function gate_hook {{
               bash -xe $BASE/new/kuryr-libnetwork/kuryr_libnetwork/tests/contrib/gate_hook.sh fullstack
@@ -87,7 +90,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-kuryr-libnetwork-dsvm-rally{job-suffix}'
+    name: '{pipeline}-kuryr-libnetwork{kuryr_lib-src}-dsvm-rally{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -113,6 +116,9 @@
 
           export DEVSTACK_LOCAL_CONFIG="enable_plugin kuryr-libnetwork http://git.openstack.org/openstack/kuryr-libnetwork"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin rally git://git.openstack.org/openstack/rally"
+          if [ "{kuryr_lib-src}" == "-kuryr_lib-src" ] ; then
+              export DEVSTACK_PROJECT_FROM_GIT="kuryr"
+          fi
 
           export OVERRIDE_ENABLED_SERVICES=kuryr-libnetwork,etcd-server,docker-engine,q-svc,q-dhcp,q-agt,q-l3,key,mysql,rabbit
 
