@@ -90,3 +90,39 @@
       - test-results
       - devstack-logs
       - console-log
+
+- job-template:
+    name: '{pipeline}-grenade-dsvm-neutron-fwaas-multinode{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export ENABLED_SERVICES="q-fwaas-v1"
+          export DEVSTACK_GATE_NEUTRON=1
+          export DEVSTACK_GATE_CONFIGDRIVE=0
+          export DEVSTACK_GATE_GRENADE=pullup
+          export PROJECTS="openstack-dev/grenade $PROJECTS"
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          export DEVSTACK_GATE_TOPOLOGY="multinode"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin neutron-fwaas git://git.openstack.org/openstack/neutron-fwaas"
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
