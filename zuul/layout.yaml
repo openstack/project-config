@@ -1230,6 +1230,9 @@ jobs:
         all-files-match-any:
           - ^(test-|)requirements.txt$
 
+  - name: ^gate-governance-linters.*$
+    voting: false
+
   # Never have the governance validation job voting. It is strictly for
   # extra information and only run if the projects.yaml is changed
   - name: ^gate-governance-tox-validate-ubuntu-xenial$
@@ -9855,6 +9858,7 @@ projects:
     template:
       - name: merge-check
     check:
+      - gate-governance-linters-ubuntu-xenial
       - gate-governance-docs-ubuntu-trusty
       - gate-governance-docs-ubuntu-xenial
       - gate-governance-tox-validate-ubuntu-xenial
