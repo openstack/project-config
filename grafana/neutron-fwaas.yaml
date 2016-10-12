@@ -20,6 +20,13 @@ dashboard:
             - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-neutron-fwaas-python34.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-neutron-fwaas-python34.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-fwaas-python34')
             - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-neutron-fwaas-python35.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-neutron-fwaas-python35.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-fwaas-python35')
           type: graph
+        - title: Docs/Pep8/Functional Failure Rates (Check queue)
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-neutron-fwaas-docs-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-neutron-fwaas-python34.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-fwaas-docs')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-neutron-fwaas-pep8-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-neutron-fwaas-python35.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-fwaas-pep8')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-neutron-fwaas-dsvm-functional.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-neutron-fwaas-python35.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-fwaas-dsvm-functional')
+          type: graph
         - title: Unit Test Failure Rates (Gate queue)
           span: 4
           targets:
@@ -27,13 +34,21 @@ dashboard:
             - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-neutron-fwaas-python34.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-neutron-fwaas-python34.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-fwaas-python34')
             - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-neutron-fwaas-python35.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-neutron-fwaas-python35.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-fwaas-python35')
           type: graph
+        - title: Docs/Pep8/Functional Failure Rates (Gate queue)
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-neutron-fwaas-docs-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-neutron-fwaas-python34.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-fwaas-docs')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-neutron-fwaas-pep8-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-neutron-fwaas-python35.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-fwaas-pep8')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-neutron-fwaas-dsvm-functional.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-neutron-fwaas-python35.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-fwaas-dsvm-functional')
+          type: graph
         - title: Periodic jobs
           span: 4
           targets:
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.periodic.job.periodic-neutron-fwaas-py34-with-neutron-lib-master.FAILURE),sum(stats_counts.zuul.pipeline.periodic.job.periodic-neutron-fwaas-py34-with-neutron-lib-master.{SUCCESS,FAILURE})),'24hours'), 'periodic-neutron-fwaas-py34-with-neutron-lib-master')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.periodic.job.periodic-neutron-fwaas-py35-with-neutron-lib-master.FAILURE),sum(stats_counts.zuul.pipeline.periodic.job.periodic-neutron-fwaas-py34-with-neutron-lib-master.{SUCCESS,FAILURE})),'24hours'), 'periodic-neutron-fwaas-py35-with-neutron-lib-master')
           type: graph
-        - title: Integrated Failure Rates (Gate queue)
+        - title: Tempest Failure Rates (Check queue)
           span: 4
           targets:
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-tempest-dsvm-neutron-fwaas.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-tempest-dsvm-neutron-fwaas.{SUCCESS,FAILURE})),'24hours'), 'gate-tempest-dsvm-neutron-fwaas')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-neutron-fwaas-v2-dsvm-tempest-nv.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-tempest-dsvm-neutron-fwaas.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-fwaas-v2-dsvm-tempest-nv')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-neutron-fwaas-v2-dsvm-tempest-nv.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-tempest-dsvm-neutron-fwaas.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-fwaas-v1-dsvm-tempest-nv')
           type: graph
