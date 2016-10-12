@@ -3242,6 +3242,11 @@ jobs:
   - name: ^gate-openstack-ansible-security-ansible-func_rhel7.*$
     branch: ^(?!(liberty|stable/(mitaka|newton))).*$
 
+  # Skip any OpenStack-Ansible jobs for os_ repositories which run on CentOS7
+  # except os_keystone, os_glance, os_cinder for stable/newton.
+  - name: ^gate-openstack-ansible-os_(?!(keystone|glance|cinder)).*-ansible-.*-centos-7.*$
+    branch: ^(?!(liberty|stable/(mitaka|newton))).*$
+
   # Ignore requirements on the keystoneclient/keystoneauth integration branch
   - name: gate-python-keystoneclient-requirements
     branch: ^(?!feature/keystoneauth_integration).*$
