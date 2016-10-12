@@ -8,7 +8,7 @@ pipelines:
     failure-message: Build failed (check pipeline).  For information on how to proceed, see http://docs.openstack.org/infra/manual/developers.html#automated-testing
     manager: IndependentPipelineManager
     source: gerrit
-    precedence: low
+    precedence: normal
     require:
       open: True
       current-patchset: True
@@ -37,7 +37,7 @@ pipelines:
     failure-message: Build failed (gate pipeline).  For information on how to proceed, see http://docs.openstack.org/infra/manual/developers.html#automated-testing
     manager: DependentPipelineManager
     source: gerrit
-    precedence: low
+    precedence: high
     require:
       open: True
       current-patchset: True
@@ -77,11 +77,21 @@ pipelines:
         - event: ref-updated
           ref: ^(?!refs/).*$
 
+  - name: release-post
+    description: This pipeline runs release-process-critical jobs that operate after specific changes are merged.
+    manager: IndependentPipelineManager
+    source: gerrit
+    precedence: high
+    trigger:
+      gerrit:
+        - event: ref-updated
+          ref: ^(?!refs/).*$
+
   - name: tag
     description: This pipeline runs jobs in response to any tag event.
     manager: IndependentPipelineManager
     source: gerrit
-    precedence: low
+    precedence: high
     trigger:
       gerrit:
         - event: ref-updated
@@ -91,7 +101,7 @@ pipelines:
     description: This pipeline runs jobs on projects in response to pre-release tags.
     manager: IndependentPipelineManager
     source: gerrit
-    precedence: low
+    precedence: high
     trigger:
       gerrit:
         - event: ref-updated
@@ -101,7 +111,7 @@ pipelines:
     description: When a commit is tagged as a release, this pipeline runs jobs that publish archives and documentation.
     manager: IndependentPipelineManager
     source: gerrit
-    precedence: low
+    precedence: high
     trigger:
       gerrit:
         - event: ref-updated
@@ -124,7 +134,7 @@ pipelines:
     failure-message: Build failed (experimental pipeline).
     manager: IndependentPipelineManager
     source: gerrit
-    precedence: low
+    precedence: normal
     trigger:
       gerrit:
         - event: comment-added
@@ -163,6 +173,57 @@ pipelines:
       gerrit:
         verified: -1
 
+  - name: periodic-stable
+    description: Periodic checks of the stable branches.
+    manager: IndependentPipelineManager
+    source: gerrit
+    precedence: low
+    trigger:
+      timer:
+        - time: '1 6 * * *'
+
+
+project-templates:
+  - name: merge-check
+    merge-check:
+      - noop
+
+  - name: noop-jobs
+    check:
+      - noop
+    gate:
+      - noop
+    post:
+      - noop
+    tag:
+      - noop
+    pre-release:
+      - noop
+    release:
+      - noop
+    experimental:
+      - noop
+    silent:
+      - noop
+
+  - name: gate-noop-jobs
+    check:
+      - gate-noop
+    gate:
+      - gate-noop
+    post:
+      - gate-noop
+    tag:
+      - gate-noop
+    pre-release:
+      - gate-noop
+    release:
+      - gate-noop
+    experimental:
+      - gate-noop
+    silent:
+      - gate-noop
+
 jobs:
   - name: ^.*$
     parameter-function: set_log_url
@@ -172,50 +233,25 @@ jobs:
     voting: false
 
 projects:
+
   # This project is setup to run the internal zuul 'noop' job.
   - name: gtest-org/gtest
-    check:
-      - noop
-    gate:
-      - noop
-    post:
-      - noop
-    tag:
-      - noop
-    pre-release:
-      - noop
-    release:
-      - noop
-    experimental:
-      - noop
-    silent:
-      - noop
-    merge-check:
-      - noop
+    template:
+      - name: merge-check
+      - name: noop-jobs
 
-  # This project is setup to run the 'gate-noop' job on jenkins,
-  # make sure the job has been created on jenkins-dev.o.o
+  # This project is setup to run the 'gate-noop' job.
   - name: gtest-org/gtest2
-    check:
-      - gate-noop
-    gate:
-      - gate-noop
-    post:
-      - gate-noop
-    tag:
-      - gate-noop
-    pre-release:
-      - gate-noop
-    release:
-      - gate-noop
-    experimental:
-      - gate-noop
-    silent:
-      - gate-noop
-    merge-check:
-      - gate-noop
+    template:
+      - name: merge-check
+      - name: gate-noop-jobs
 
   # This project is setup to run jobs in the periodic pipeline
   - name: gtest-org/test2
     periodic:
+      - noop
+
+  # This project is setup to run jobs in the periodic-stable pipeline
+  - name: gtest-org/test3
+    periodic-stable:
       - noop
