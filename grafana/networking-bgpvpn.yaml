@@ -1,0 +1,48 @@
+dashboard:
+  title: Networking BGPVPN Failure Rates
+  rows:
+    - title: Description
+      height: 100px
+      panels:
+        - title: Description
+          content: |
+            **This dashboard is managed by [Grafyaml](http://docs.openstack.org/infra/system-config/grafyaml.html).**
+
+            If you would like to make changes to this dashboard, please see the grafana directory in [project-config](https://git.openstack.org/cgit/openstack-infra/project-config/tree/grafana/networking-bgpvpn.yaml).
+          type: text
+    - title: Graphs
+      height: 320px
+      panels:
+        - title: Unit Test Failure Rates (Check queue)
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-networking-bgpvpn-python27-db-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-networking-bgpvpn-python27-db-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-networking-bgpvpn-python27-db-ubuntu-xenial')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-networking-bgpvpn-python35-db-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-networking-bgpvpn-python35-db-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-networking-bgpvpn-python35-db-ubuntu-xenial')
+          type: graph
+        - title: Unit Test Failure Rates (Gate queue)
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-networking-bgpvpn-python27-db-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-networking-bgpvpn-python27-db-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-networking-bgpvpn-python27-db-ubuntu-xenial')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-networking-bgpvpn-python35-db-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-networking-bgpvpn-python35-db-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-networking-bgpvpn-python35-db-ubuntu-xenial')
+          type: graph
+        - title: Integrated Failure Rates (Check queue)
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-tempest-dsvm-networking-bgpvpn-bagpipe.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-tempest-dsvm-networking-bgpvpn-bagpipe.{SUCCESS,FAILURE})),'24hours'), 'gate-tempest-dsvm-networking-bgpvpn-bagpipe')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-networking-bgpvpn-dsvm-functional.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-networking-bgpvpn-dsvm-functional.{SUCCESS,FAILURE})),'24hours'), 'gate-networking-bgpvpn-dsvm-functional')
+          type: graph
+        - title: Integrated Failure Rates (Gate queue)
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-tempest-dsvm-networking-bgpvpn-bagpipe.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-tempest-dsvm-networking-bgpvpn-bagpipe.{SUCCESS,FAILURE})),'24hours'), 'gate-tempest-dsvm-networking-bgpvpn-bagpipe')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-networking-bgpvpn-dsvm-functional.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-networking-bgpvpn-dsvm-functional.{SUCCESS,FAILURE})),'24hours'), 'gate-networking-bgpvpn-dsvm-functional')
+          type: graph
+        - title: Periodic Job Failure Rates
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.periodic.job.periodic-networking-bgpvpn-py35-with-neutron-lib-master.FAILURE),sum(stats_counts.zuul.pipeline.periodic.job.periodic-networking-bgpvpn-py35-with-neutron-lib-master.{SUCCESS,FAILURE})),'24hours'), 'periodic-networking-bgpvpn-py35-with-neutron-lib-master')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.periodic.job.periodic-networking-bgpvpn-python27-db-liberty.FAILURE),sum(stats_counts.zuul.pipeline.periodic.job.periodic-networking-bgpvpn-python27-db-liberty.{SUCCESS,FAILURE})),'24hours'), 'periodic-networking-bgpvpn-python27-db-liberty')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.periodic.job.periodic-networking-bgpvpn-python27-db-mitaka.FAILURE),sum(stats_counts.zuul.pipeline.periodic.job.periodic-networking-bgpvpn-python27-db-mitaka.{SUCCESS,FAILURE})),'24hours'), 'periodic-networking-bgpvpn-python27-db-mitaka')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.periodic.job.periodic-networking-bgpvpn-python27-db-newton.FAILURE),sum(stats_counts.zuul.pipeline.periodic.job.periodic-networking-bgpvpn-python27-db-newton.{SUCCESS,FAILURE})),'24hours'), 'periodic-networking-bgpvpn-python27-db-newton')
+          type: graph
+
