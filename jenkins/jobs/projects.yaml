@@ -5753,9 +5753,11 @@
       - openstack-publish-jobs
       - 'gate-{name}-python35{suffix}':
           suffix: ''
-      - '{pipeline}-tempest-dsvm-ironic-lib-{image-type}-{driver}{job-suffix}':
+      - '{pipeline}-tempest-dsvm-ironic-lib-{image-type}-{driver}-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           job-suffix:
             - ''
             - '-nv'
@@ -5780,11 +5782,6 @@
             - image-type: 'wholedisk'
               driver: 'agent_ipmitool'
               job-suffix: '-nv'
-          branch-override: default
-      - '{pipeline}-tempest-dsvm-ironic-lib-ubuntu-xenial{job-suffix}':
-          pipeline: gate
-          node: ubuntu-xenial
-          job-suffix: '-nv'
           branch-override: default
 
 - project:
