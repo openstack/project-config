@@ -114,7 +114,6 @@ dashboard:
           nullPointMode: null as zero
           leftYAxisLabel: "events / min"
           targets:
-            - target: alias(smartSummarize(sumSeries(stats_counts.nodepool.launch.provider.osic-cloud1.error.*), '1m'), 'CLOUD1')
             - target: alias(smartSummarize(sumSeries(stats_counts.nodepool.launch.provider.osic-cloud1-disk.error.*), '1m'), 'CLOUD1-DISK')
             - target: alias(smartSummarize(sumSeries(stats_counts.nodepool.launch.provider.osic-cloud1-s3500.error.*), '1m'), 'CLOUD1-S3500')
             - target: alias(smartSummarize(sumSeries(stats_counts.nodepool.launch.provider.osic-cloud1-s3700.error.*), '1m'), 'CLOUD1-S3700')
@@ -176,22 +175,6 @@ dashboard:
           seriesOverrides:
             - alias: Max
               stack: False
-        - title: Test Nodes (Cloud 1)
-          type: graph
-          span: 4
-          stack: true
-          tooltip:
-            value_type: individual
-          leftYAxisLabel: "nodes"
-          targets:
-            - target: alias(stats.gauges.nodepool.provider.osic-cloud1.nodes.building, 'Building')
-            - target: alias(stats.gauges.nodepool.provider.osic-cloud1.nodes.ready, 'Available')
-            - target: alias(stats.gauges.nodepool.provider.osic-cloud1.nodes.used, 'In Use')
-            - target: alias(stats.gauges.nodepool.provider.osic-cloud1.nodes.delete, 'Deleting')
-            - target: alias(stats.gauges.nodepool.provider.osic-cloud1.max_servers, 'Max')
-          seriesOverrides:
-            - alias: Max
-              stack: False
         - title: Test Nodes (Cloud 8)
           type: graph
           span: 4
@@ -220,7 +203,6 @@ dashboard:
             - s
             - none
           targets:
-            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-full-ubuntu-xenial.master.ubuntu-xenial.osic-cloud1.runtime.mean, '0.001'), 'CLOUD1')
             - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-full-ubuntu-xenial.master.ubuntu-xenial.osic-cloud1-disk.runtime.mean, '0.001'), 'CLOUD1-DISK')
             - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-full-ubuntu-xenial.master.ubuntu-xenial.osic-cloud1-s3700.runtime.mean, '0.001'), 'CLOUD1-S3700')
             - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-full-ubuntu-xenial.master.ubuntu-xenial.osic-cloud1-s3500.runtime.mean, '0.001'), 'CLOUD1-S3500')
@@ -233,7 +215,6 @@ dashboard:
             - s
             - none
           targets:
-            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-neutron-full-ubuntu-xenial.master.ubuntu-xenial.osic-cloud1.runtime.mean, '0.001'), 'CLOUD1')
             - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-neutron-full-ubuntu-xenial.master.ubuntu-xenial.osic-cloud1-disk.runtime.mean, '0.001'), 'CLOUD1-DISK')
             - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-neutron-full-ubuntu-xenial.master.ubuntu-xenial.osic-cloud1-s3700.runtime.mean, '0.001'), 'CLOUD1-S3700')
             - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-neutron-full-ubuntu-xenial.master.ubuntu-xenial.osic-cloud1-s3500.runtime.mean, '0.001'), 'CLOUD1-S3500')
