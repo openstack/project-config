@@ -51,17 +51,6 @@ PACKAGELIST=`echo "$PACKAGES" | /usr/bindep-env/bin/bindep -b -f - || true`
 if [ -f /usr/bin/apt-get ] ; then
     # --ignore-missing conflicts with set -e, so force it to be ok
     apt-get -y --ignore-missing -d install $PACKAGELIST || true
-elif [ -f /usr/bin/emerge ] ; then
-    # write out use config (won't install/fetch without it)
-    # This lays down install / compile time options needed for bindep to
-    # install / fetch the needed packages.
-    USE_FILE=/etc/portage/package.use/bindep.use
-    cat > $USE_FILE <<EOF
-x11-libs/cairo X
-x11-libs/gdk-pixbuf X
-media-libs/gd truetype png fontconfig jpeg
-EOF
-    emerge -q --fetchonly $PACKAGELIST || true
 else
     ${YUM:-yum} install -y --downloadonly $PACKAGELIST
 fi
