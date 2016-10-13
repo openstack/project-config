@@ -41,12 +41,13 @@ if [ ! -e ${DIRECTORY}/source/locale/ ]; then
     exit 0
 fi
 
-# TODO(amotoki): releasenote conf.py files in most projects do not
-# define 'locale_dirs' setting which is required for i18n.
-# Remove this once repositories are changed.
+# Check that locale_dirs is really set, otherwise translations
+# will not work.
 if ! grep -q -E '^locale_dirs *=' $DIRECTORY/source/conf.py; then
-    echo "locale_dirs = ['locale/']" >> $DIRECTORY/source/conf.py
+    echo "Translations exist and locale_dirs missing in source/conf.py"
+    exit 1
 fi
+
 
 REFERENCES=`mktemp`
 trap "rm -f -- '$REFERENCES'" EXIT
@@ -127,8 +128,3 @@ $script_path/run-tox.sh releasenotes
 
 # Revert any changes to the index file.
 git checkout -- ${DIRECTORY}/source/index.rst
-
-# TODO(amotoki): Revert conf.py now as we might have changed this to
-# enable internationalization.
-# Remove this again later.
-git checkout -- ${DIRECTORY}/source/conf.py
