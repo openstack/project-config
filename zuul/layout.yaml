@@ -2834,16 +2834,6 @@ jobs:
   - name: gate-manila-tempest-dsvm-postgres-zfsonlinux-ubuntu-trusty-nv
     branch: ^(?:stable/mitaka).*$
 
-  # TODO(vponomaryov): remove this filter when xenial job works
-  - name: gate-manila-tempest-dsvm-mysql-generic-ubuntu-trusty
-    branch: ^(?:stable/(?:liberty|mitaka|newton).*|master)$
-
-  # TODO(vponomaryov): replace it with 'xenial' job when
-  # 'gate-manila-tempest-dsvm-mysql-generic-ubuntu-trusty' job
-  # ported to xenial too.
-  - name: gate-grenade-dsvm-manila-ubuntu-trusty
-    branch: ^(?!stable/(?:liberty|mitaka)).*$
-
   # NOTE(chenk): We enforce the trusty variant of following
   # job until both on stable and master branches until xenial
   # variant stablizes.
@@ -2859,10 +2849,8 @@ jobs:
   - name: gate-manila-tempest-dsvm-cephfs-native-ubuntu-trusty-nv
     branch: ^(?:stable/mitaka).*$
 
-  # TODO(vponomaryov): make it run only on stable/mitaka branch
-  # when LVM job on Xenial works ok
   - name: gate-manila-tempest-minimal-dsvm-lvm-ubuntu-trusty
-    branch: ^(?!stable/liberty).*$
+    branch: ^(?:stable/mitaka).*$
 
   # Broken by a recent client update; marking non-voting while we
   # determine whether or not to keep this test job
@@ -10757,7 +10745,7 @@ projects:
       - gate-manila-tox-genconfig-ubuntu-xenial
       - gate-manila-pylint
       - gate-manila-tempest-dsvm-mysql-generic-ubuntu-trusty
-      - gate-manila-tempest-dsvm-mysql-generic-ubuntu-xenial-nv
+      - gate-manila-tempest-dsvm-mysql-generic-ubuntu-xenial
       - gate-manila-tempest-dsvm-postgres-container-ubuntu-xenial-nv
       - gate-manila-tempest-dsvm-postgres-zfsonlinux-ubuntu-trusty-nv
       - gate-manila-tempest-dsvm-postgres-zfsonlinux-ubuntu-xenial-nv
@@ -10773,16 +10761,19 @@ projects:
       - gate-manila-tempest-dsvm-glusterfs-native-ubuntu-trusty-nv
       - gate-manila-tempest-dsvm-hdfs-ubuntu-trusty-nv
       - gate-manila-tempest-dsvm-hdfs-ubuntu-xenial-nv
-      - gate-manila-tempest-minimal-dsvm-dummy-ubuntu-xenial-nv
+      - gate-manila-tempest-minimal-dsvm-dummy-ubuntu-xenial
       - gate-manila-tempest-minimal-dsvm-lvm-ubuntu-trusty
-      - gate-manila-tempest-minimal-dsvm-lvm-ubuntu-xenial-nv
-      - gate-grenade-dsvm-manila-ubuntu-trusty
+      - gate-manila-tempest-minimal-dsvm-lvm-ubuntu-xenial
+      - gate-grenade-dsvm-manila-ubuntu-xenial
     gate:
       - gate-manila-tox-genconfig-ubuntu-trusty
       - gate-manila-tox-genconfig-ubuntu-xenial
       - gate-manila-tempest-dsvm-mysql-generic-ubuntu-trusty
+      - gate-manila-tempest-dsvm-mysql-generic-ubuntu-xenial
+      - gate-manila-tempest-minimal-dsvm-dummy-ubuntu-xenial
       - gate-manila-tempest-minimal-dsvm-lvm-ubuntu-trusty
-      - gate-grenade-dsvm-manila-ubuntu-trusty
+      - gate-manila-tempest-minimal-dsvm-lvm-ubuntu-xenial
+      - gate-grenade-dsvm-manila-ubuntu-xenial
     post:
       - manila-coverage-db-ubuntu-trusty
       - manila-coverage-db-ubuntu-xenial
