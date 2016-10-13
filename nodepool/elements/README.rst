@@ -12,7 +12,7 @@ Install the dependencies:
 
 ::
 
-  sudo apt-get install kpartx qemu-utils curl python-yaml
+  sudo apt-get install kpartx qemu-utils curl python-yaml debootstrap
 
 Install diskimage-builder:
 
@@ -28,11 +28,14 @@ Building an image is simple, we have a script!
 
 ::
 
-  DISTRO="ubuntu" bash tools/build-image.sh
+  bash tools/build-image.sh
 
-See the script for environment variables to set distribution, etc.
-You should be left with a .qcow2 image file of your selected
-distribution.
+See the script for environment variables to set distribution, etc. By default
+it builds an ubuntu-minimal based image.  You should be left with a .qcow2
+image file of your selected distribution.
+
+Infra uses the -minimal build type for building Ubuntu/CentOS/Fedora. For
+example: ubuntu-minimal.
 
 It is a good idea to set ``TMP_DIR`` to somewhere with plenty of space
 to avoid the disappointment of a full-disk mid-way through the script
