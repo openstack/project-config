@@ -1,0 +1,63 @@
+dashboard:
+  title: Octavia Failure Rates
+  rows:
+    - title: Description
+      height: 100px
+      panels:
+        - title: Description
+          content: |
+            **This dashboard is managed by [Grafyaml](http://docs.openstack.org/infra/system-config/grafyaml.html).**
+
+            If you would like to make changes to this dashboard, please see the grafana directory in [project-config](https://git.openstack.org/cgit/openstack-infra/project-config/tree/grafana/octavia.yaml).
+          type: text
+    - title: Graphs
+      height: 320px
+      panels:
+        - title: Unit Test Failure Rates (Check queue)
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-octavia-python27-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-octavia-python27-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-octavia-python27')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-octavia-python34.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-octavia-python34.{SUCCESS,FAILURE})),'24hours'), 'gate-octavia-python34')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-octavia-python35.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-octavia-python35.{SUCCESS,FAILURE})),'24hours'), 'gate-octavia-python35')
+          type: graph
+        - title: Unit Test Failure Rates (Gate queue)
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-octavia-python27-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-octavia-python27-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-octavia-python27')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-octavia-python34.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-octavia-python34.{SUCCESS,FAILURE})),'24hours'), 'gate-octavia-python34')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-octavia-python35.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-octavia-python35.{SUCCESS,FAILURE})),'24hours'), 'gate-octavia-python35')
+          type: graph
+        - title: Periodic jobs
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.periodic.job.periodic-octavia-python27-liberty.FAILURE),sum(stats_counts.zuul.pipeline.periodic.job.periodic-octavia-python27-liberty.{SUCCESS,FAILURE})),'24hours'), 'periodic-octavia-py27-liberty')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.periodic.job.periodic-octavia-python27-mitaka.FAILURE),sum(stats_counts.zuul.pipeline.periodic.job.periodic-octavia-python27-mitaka.{SUCCESS,FAILURE})),'24hours'), 'periodic-octavia-py27-mitaka')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.periodic.job.periodic-octavia-python27-newton.FAILURE),sum(stats_counts.zuul.pipeline.periodic.job.periodic-octavia-python27-newton.{SUCCESS,FAILURE})),'24hours'), 'periodic-octavia-py27-newton')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.periodic.job.periodic-octavia-py27-with-oslo-master.FAILURE),sum(stats_counts.zuul.pipeline.periodic-octavia-py27-with-oslo-master.{SUCCESS,FAILURE})),'24hours'), 'periodic-octavia-py27-with-oslo-master')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.periodic.job.periodic-octavia-py34-with-oslo-master.FAILURE),sum(stats_counts.zuul.pipeline.periodic-octavia-py34-with-oslo-master.{SUCCESS,FAILURE})),'24hours'), 'periodic-octavia-py34-with-oslo-master')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.periodic.job.periodic-octavia-py35-with-oslo-master.FAILURE),sum(stats_counts.zuul.pipeline.periodic-octavia-py35-with-oslo-master.{SUCCESS,FAILURE})),'24hours'), 'periodic-octavia-py35-with-oslo-master')
+          type: graph
+        - title: API Test Failure Rates (Check queue)
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-neutron-lbaasv2-dsvm-loadbalancer.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-neutron-lbaasv2-dsvm-loadbalancer.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-lbaasv2-dsvm-loadbalancer')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-neutron-lbaasv2-dsvm-listener.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-neutron-lbaasv2-dsvm-listener.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-lbaasv2-dsvm-listener')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-neutron-lbaasv2-dsvm-pool.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-neutron-lbaasv2-dsvm-pool.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-lbaasv2-dsvm-pool')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-neutron-lbaasv2-dsvm-member.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-neutron-lbaasv2-dsvm-member.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-lbaasv2-dsvm-member')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-neutron-lbaasv2-dsvm-healthmonitor.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-neutron-lbaasv2-dsvm-healthmonitor.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-lbaasv2-dsvm-healthmonitor')
+          type: graph
+        - title: API Test Failure Rates (Gate queue)
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-neutron-lbaasv2-dsvm-loadbalancer.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-neutron-lbaasv2-dsvm-loadbalancer.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-lbaasv2-dsvm-loadbalancer')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-neutron-lbaasv2-dsvm-listener.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-neutron-lbaasv2-dsvm-listener.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-lbaasv2-dsvm-listener')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-neutron-lbaasv2-dsvm-pool.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-neutron-lbaasv2-dsvm-pool.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-lbaasv2-dsvm-pool')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-neutron-lbaasv2-dsvm-member.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-neutron-lbaasv2-dsvm-member.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-lbaasv2-dsvm-member')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-neutron-lbaasv2-dsvm-healthmonitor.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-neutron-lbaasv2-dsvm-healthmonitor.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-lbaasv2-dsvm-healthmonitor')
+          type: graph
+        - title: Scenario Test Failure Rates (Check queue)
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-neutron-lbaasv2-dsvm-scenario.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-neutron-lbaasv2-dsvm-scenario.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-lbaasv2-dsvm-scenario')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-octavia-v1-dsvm-scenario-ubuntu-xenial-nv.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-octavia-v1-dsvm-scenario-ubuntu-xenial-nv.{SUCCESS,FAILURE})),'24hours'), 'gate-octavia-v1-dsvm-scenario')
+          type: graph
