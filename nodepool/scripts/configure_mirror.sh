@@ -51,6 +51,7 @@ source /usr/local/jenkins/slave_scripts/afs-slug.sh
 LSBDISTID=$(lsb_release -is)
 LSBDISTCODENAME=$(lsb_release -cs)
 
+NODEPOOL_DEBIAN_MIRROR=${NODEPOOL_DEBIAN_MIRROR:-http://$NODEPOOL_MIRROR_HOST/debian}
 NODEPOOL_PYPI_MIRROR=${NODEPOOL_PYPI_MIRROR:-http://$NODEPOOL_MIRROR_HOST/pypi/simple}
 NODEPOOL_WHEEL_MIRROR=${NODEPOOL_WHEEL_MIRROR:-http://$NODEPOOL_MIRROR_HOST/wheel/$AFS_SLUG}
 NODEPOOL_UBUNTU_MIRROR=${NODEPOOL_UBUNTU_MIRROR:-http://$NODEPOOL_MIRROR_HOST/ubuntu}
@@ -93,18 +94,21 @@ UCA_SOURCES_LIST="deb $NODEPOOL_UCA_MIRROR $LSBDISTCODENAME-updates main"
 
 APT_CONF_UNAUTHENTICATED="APT::Get::AllowUnauthenticated \"true\";"
 
-DEBIAN_SOURCES_LIST="\
-deb http://httpredir.debian.org/debian $LSBDISTCODENAME main
-deb-src http://httpredir.debian.org/debian $LSBDISTCODENAME main
+DEBIAN_DEFAULT_SOURCES_LIST="\
+deb $NODEPOOL_DEBIAN_MIRROR $LSBDISTCODENAME main
+deb-src $NODEPOOL_DEBIAN_MIRROR $LSBDISTCODENAME main"
 
-deb http://httpredir.debian.org/debian $LSBDISTCODENAME-updates main
-deb-src http://httpredir.debian.org/debian $LSBDISTCODENAME-updates main
+DEBIAN_UPDATES_SOURCES_LIST="\
+deb $NODEPOOL_DEBIAN_MIRROR $LSBDISTCODENAME-updates main
+deb-src $NODEPOOL_DEBIAN_MIRROR $LSBDISTCODENAME-updates main"
 
-deb http://security.debian.org/ $LSBDISTCODENAME/updates main
-deb-src http://security.debian.org/ $LSBDISTCODENAME/updates main
+DEBIAN_BACKPORTS_SOURCES_LIST="\
+deb $NODEPOOL_DEBIAN_MIRROR $LSBDISTCODENAME-backports main
+deb-src $NODEPOOL_DEBIAN_MIRROR $LSBDISTCODENAME-backports main"
 
-deb http://httpredir.debian.org/debian $LSBDISTCODENAME-backports main
-deb-src http://httpredir.debian.org/debian $LSBDISTCODENAME-backports main"
+DEBIAN_SECURITY_SOURCES_LIST="\
+deb $NODEPOOL_DEBIAN_MIRROR $LSBDISTCODENAME-security main
+deb-src $NODEPOOL_DEBIAN_MIRROR $LSBDISTCODENAME-security main"
 
 DEBIAN_OPENSTACK_NEWTON_SOURCES_LIST="\
 deb $NODEPOOL_DEBIAN_OPENSTACK_MIRROR $LSBDISTCODENAME-newton main
@@ -186,10 +190,17 @@ if [ "$LSBDISTID" == "Ubuntu" ] && [ "$LSBDISTCODENAME" != 'precise' ]; then
     sudo chmod 0644 /etc/apt/apt.conf.d/99unauthenticated
 
 elif [ "$LSBDISTID" == "Debian" ] ; then
-    echo "$DEBIAN_SOURCES_LIST" >/tmp/sources.list
-    sudo mv /tmp/sources.list /etc/apt/
-    sudo chown root:root /etc/apt/sources.list
-    sudo chmod 0644 /etc/apt/sources.list
+    echo "$DEBIAN_DEFAULT_SOURCES_LIST" >/tmp/default.list
+    sudo mv /tmp/default.list /etc/apt/sources.list.d/
+    echo "$DEBIAN_UPDATES_SOURCES_LIST" >/tmp/updates.list
+    sudo mv /tmp/updates.list /etc/apt/sources.list.d/
+    echo "$DEBIAN_BACKPORTS_SOURCES_LIST" >/tmp/backports.list
+    sudo mv /tmp/backports.list /etc/apt/sources.list.d/
+    echo "$DEBIAN_SECURITY_SOURCES_LIST" >/tmp/security.list
+    sudo mv /tmp/security.list /etc/apt/sources.list.d/
+
+    sudo chown root:root /etc/apt/sources.list.d/*.list
+    sudo chmod 0644 /etc/apt/sources.list.d/*.list
 
     # Opt in repos. Jobs that want to take advantage of them can copy or
     # symlink them into /etc/apt/sources.list.d/
