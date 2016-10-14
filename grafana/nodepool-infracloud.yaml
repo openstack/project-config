@@ -124,6 +124,22 @@ dashboard:
             - none
           targets:
             - target: aliasSub(aliasByNode(scale(stats.timers.nodepool.launch.provider.$provider.ready.mean, '0.001'), 5), 'infracloud-', '')
+        - title: Test Nodes (Chocolate)
+          type: graph
+          span: 4
+          stack: true
+          tooltip:
+            value_type: individual
+          leftYAxisLabel: "nodes"
+          targets:
+            - target: alias(stats.gauges.nodepool.provider.infracloud-chocolate.nodes.building, 'Building')
+            - target: alias(stats.gauges.nodepool.provider.infracloud-chocolate.nodes.ready, 'Available')
+            - target: alias(stats.gauges.nodepool.provider.infracloud-chocolate.nodes.used, 'In Use')
+            - target: alias(stats.gauges.nodepool.provider.infracloud-chocolate.nodes.delete, 'Deleting')
+            - target: alias(stats.gauges.nodepool.provider.infracloud-chocolate.max_servers, 'Max')
+          seriesOverrides:
+            - alias: Max
+              stack: False
         - title: Test Nodes (Vanilla)
           type: graph
           span: 4
@@ -152,7 +168,8 @@ dashboard:
             - s
             - none
           targets:
-            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-full-ubuntu-xenial.master.ubuntu-xenial.infracloud-vanilla.runtime.mean, '0.001'), 'Cloud 1')
+            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-full-ubuntu-xenial.master.ubuntu-xenial.infracloud-chocolate.runtime.mean, '0.001'), 'chocolate')
+            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-full-ubuntu-xenial.master.ubuntu-xenial.infracloud-vanilla.runtime.mean, '0.001'), 'vanilla')
         - title: gate-tempest-dsvm-neutron-full
           type: graph
           span: 6
@@ -161,4 +178,5 @@ dashboard:
             - s
             - none
           targets:
-            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-neutron-full-ubuntu-xenial.master.ubuntu-xenial.infracloud-vanilla.runtime.mean, '0.001'), 'Cloud 1')
+            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-neutron-full-ubuntu-xenial.master.ubuntu-xenial.infracloud-chocolate.runtime.mean, '0.001'), 'chocolate')
+            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-neutron-full-ubuntu-xenial.master.ubuntu-xenial.infracloud-vanilla.runtime.mean, '0.001'), 'vanilla')
