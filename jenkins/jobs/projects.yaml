@@ -6573,7 +6573,12 @@
       - python-jobs
       - openstack-publish-jobs
       - openstack-releasenotes-jobs
-      - openstack-server-release-jobs
+      # A couple of projects import mistral as a library to make
+      # plugins work. Until the mistral-lib work is done, we need to
+      # publish mistral itself to pypi for unit test jobs for those
+      # other projects.
+      # - openstack-server-release-jobs
+      - pypi-jobs
       - 'gate-{name}-python35{suffix}':
           suffix: '-nv'
       - '{pipeline}-{component}-devstack-dsvm':
