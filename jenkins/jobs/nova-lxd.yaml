@@ -1,0 +1,41 @@
+- job:
+    name: gate-tempest-dsvm-lxd-nv
+    node: ubuntu-xenial
+
+    wrappers:
+      - build-timeout:
+          timeout: 70
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_NEUTRON=1
+          export DEVSTACK_GATE_VIRT_DRIVER="lxd"
+
+          # Enable nova-lxd devstack plugin. Providede repo should be
+          # cloned by zuul before devstack run and below provided
+          # link should not be used.
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin nova-lxd https://github.com/openstack/nova-lxd"
+
+          # keep localrc to be able to set some vars in pre_test hook
+          export KEEP_LOCALRC=1
+
+          function pre_test_hook {
+            source $BASE/new/nova-lxd/contrib/ci/pre_test_hook.sh
+          }
+          export -f pre_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - test-results
+      - devstack-logs
+      - console-log
