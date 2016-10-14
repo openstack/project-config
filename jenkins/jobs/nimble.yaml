@@ -1,0 +1,38 @@
+- job-template:
+    name: '{pipeline}-nimble-dsvm-functional-{node}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 60
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export PROJECTS="openstack/nimble $PROJECTS"
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin nimble git://git.openstack.org/openstack/nimble"
+
+          function gate_hook {{
+              cd /opt/stack/new/nimble/devstack/gate
+              ./gate_hook.sh
+          }}
+          export -f gate_hook
+
+          function post_test_hook {{
+              cd /opt/stack/new/nimble/nimble/tests/functional/hooks
+              ./post_test_hook.sh
+          }}
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - test-results
+      - devstack-logs
+      - console-log
