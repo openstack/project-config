@@ -38,6 +38,7 @@ labels:
       - name: osic-cloud8
       - name: infracloud-vanilla
       - name: infracloud-chocolate
+      - name: datacentred-sal01
   - name: ubuntu-precise
     image: ubuntu-precise
     ready-script: configure_mirror.sh
@@ -52,6 +53,7 @@ labels:
       - name: internap-nyj01
       - name: infracloud-vanilla
       - name: infracloud-chocolate
+      - name: datacentred-sal01
   - name: ubuntu-trusty
     image: ubuntu-trusty
     ready-script: configure_mirror.sh
@@ -70,6 +72,7 @@ labels:
       - name: osic-cloud8
       - name: infracloud-vanilla
       - name: infracloud-chocolate
+      - name: datacentred-sal01
   - name: ubuntu-trusty-2-node
     image: ubuntu-trusty
     ready-script: multinode_setup.sh
@@ -107,6 +110,7 @@ labels:
       - name: osic-cloud8
       - name: infracloud-vanilla
       - name: infracloud-chocolate
+      - name: datacentred-sal01
   - name: ubuntu-xenial-2-node
     image: ubuntu-xenial
     ready-script: multinode_setup.sh
@@ -144,6 +148,7 @@ labels:
       - name: osic-cloud8
       - name: infracloud-vanilla
       - name: infracloud-chocolate
+      - name: datacentred-sal01
   - name: fedora-23
     image: fedora-23
     ready-script: configure_mirror.sh
@@ -162,6 +167,7 @@ labels:
       - name: osic-cloud8
       - name: infracloud-vanilla
       - name: infracloud-chocolate
+      - name: datacentred-sal01
   - name: fedora-24
     image: fedora-24
     ready-script: configure_mirror.sh
@@ -180,6 +186,7 @@ labels:
       - name: osic-cloud8
       - name: infracloud-vanilla
       - name: infracloud-chocolate
+      - name: datacentred-sal01
   - name: centos-7-2-node
     image: centos-7
     ready-script: multinode_setup.sh
@@ -1067,6 +1074,64 @@ providers:
       - name: centos-7
         min-ram: 8000
         name-filter: 'nodepool'
+        diskimage: centos-7
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+  - name: datacentred-sal01
+    region-name: 'sal01'
+    cloud: datacentred
+    api-timeout: 60
+    boot-timeout: 120
+    max-servers: 0
+    rate: 0.25
+    image-type: 'qcow2'
+    images:
+      - name: ubuntu-precise
+        min-ram: 8000
+        name-filter: 'dc1.8x8'
+        diskimage: ubuntu-precise
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+      - name: ubuntu-trusty
+        min-ram: 8000
+        name-filter: 'dc1.8x8'
+        diskimage: ubuntu-trusty
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+      - name: ubuntu-xenial
+        min-ram: 8000
+        name-filter: 'dc1.8x8'
+        diskimage: ubuntu-xenial
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+      - name: debian-jessie
+        min-ram: 8000
+        name-filter: 'dc1.8x8'
+        diskimage: debian-jessie
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+      - name: fedora-23
+        min-ram: 8000
+        name-filter: 'dc1.8x8'
+        diskimage: fedora-23
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+      - name: fedora-24
+        min-ram: 8000
+        name-filter: 'dc1.8x8'
+        diskimage: fedora-24
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+      - name: centos-7
+        min-ram: 8000
+        name-filter: 'dc1.8x8'
         diskimage: centos-7
         username: jenkins
         private-key: /home/nodepool/.ssh/id_rsa
