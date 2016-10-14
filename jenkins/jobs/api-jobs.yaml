@@ -240,3 +240,26 @@
           remove-prefix: 'doc/build/murano-firstapp/html/'
       - test-results
       - console-log
+
+- job:
+    name: gate-murano-firstapp-docs
+    description: Build and publish draft of the Murano Firstapp docs.
+    node: ubuntu-xenial
+
+    builders:
+      - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
+      - tox:
+          envlist: 'murano-firstapp'
+
+    publishers:
+      - scp:
+          site: 'static.openstack.org'
+          files:
+            - target: 'docs-draft/$LOG_PATH'
+              source: 'doc/build/murano-firstapp/html/**'
+              keep-hierarchy: true
+              copy-after-failure: true
+      - test-results
+      - console-log
