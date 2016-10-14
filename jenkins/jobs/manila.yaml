@@ -158,9 +158,11 @@
           export PROJECTS="openstack-dev/grenade $PROJECTS"
           export PROJECTS="openstack/python-manilaclient $PROJECTS"
           export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_NEUTRON=1
+          export DEVSTACK_GATE_NEUTRON=0
           export DEVSTACK_GATE_GRENADE=pullup
-          export ENABLED_SERVICES=tempest
+
+          # Basic services needed for grenade manila job using dummy driver
+          export OVERRIDE_ENABLED_SERVICES=key,mysql,rabbit
 
           # Enable manila grenade plugin. Provided repo should be
           # cloned by zuul before devstack run and below provided
@@ -169,6 +171,14 @@
 
           # Keep localrc to be able to set some vars in pre_test_hook
           export KEEP_LOCALRC=1
+
+          function pre_test_hook {{
+              source $BASE/new/manila/contrib/ci/pre_test_hook.sh \
+                  True \
+                  dummy \
+                  multibackend
+          }}
+          export -f pre_test_hook
 
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
