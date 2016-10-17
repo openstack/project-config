@@ -1,5 +1,6 @@
 - job-template:
-    name: 'gate-trove-buildimage-{datastore}'
+    description: This is a legacy job that relies on trove-integration and will be removed in Queen.
+    name: 'gate-trove-integration-buildimage-{datastore}{job-suffix}'
     node: ubuntu-trusty
 
     builders:
@@ -29,7 +30,39 @@
 
 
 - job-template:
-    name: 'gate-trove-functional-dsvm-{datastore}{job-suffix}'
+    description: This job uses image elements in the trove repository.
+    name: 'gate-trove-buildimage-{datastore}{job-suffix}'
+    node: ubuntu-trusty
+
+    builders:
+      - link-logs
+      - net-info
+      - gerrit-git-prep
+      - install-distro-packages
+      - shell: |
+          #!/bin/bash -xe
+          sudo mkdir -p /opt/trove-image-build
+          sudo chown $(whoami) /opt/trove-image-build
+          export DEST=/opt/trove-image-build
+          export KEY_DIR=`pwd`/scripts/files/keys
+          cd trove/integration/scripts
+          ./trovestack build-image {datastore}
+          mv $HOME/images/ubuntu_{datastore}/ubuntu_{datastore}.qcow2 $WORKSPACE/{datastore}.qcow2
+
+    publishers:
+      - scp:
+          site: 'tarballs.openstack.org'
+          files:
+            - source: '{datastore}.qcow2'
+              target: 'tarballs/trove/images/ubuntu'
+              keep-hierarchy: false
+              copy-after-failure: false
+      - console-log
+
+
+- job-template:
+    description: This is a legacy job that relies on trove-integration and will be removed in Queen.
+    name: 'gate-trove-legacy-functional-dsvm-{datastore}{job-suffix}'
     node: ubuntu-trusty
 
     wrappers:
@@ -77,7 +110,56 @@
       - console-log
 
 - job-template:
-    name: 'gate-trove-scenario-functional-dsvm-{datastore}{job-suffix}'
+    description: This job uses image elements in the trove repository.
+    name: 'gate-trove-functional-dsvm-{datastore}{job-suffix}'
+    node: ubuntu-trusty
+
+    wrappers:
+      - build-timeout:
+          timeout: 150
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          ENABLED_SERVICES=tempest
+          ENABLED_SERVICES+=,s-proxy,s-object,s-container,s-account
+          ENABLED_SERVICES+=,trove,tr-api,tr-tmgr,tr-cond
+          export ENABLED_SERVICES
+
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin trove git://git.openstack.org/openstack/trove"
+          export PROJECTS="openstack/python-troveclient $PROJECTS"
+          export PROJECTS="openstack/trove-dashboard $PROJECTS"
+          export DEVSTACK_PROJECT_FROM_GIT=python-troveclient
+          export PROJECTS="openstack/tripleo-image-elements $PROJECTS"
+          export PROJECTS="openstack/diskimage-builder $PROJECTS"
+          function post_test_hook {{
+              export BRIDGE_IP=10.1.0.1
+              export DEST=$BASE/new
+              export PATH_DEVSTACK_SRC=$DEST/devstack
+              cd /opt/stack/new/trove/integration/scripts
+              ./trovestack dsvm-gate-tests {datastore}
+          }}
+          export -f post_test_hook
+
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    description: This is a legacy job that relies on trove-integration and will be removed in Queen.
+    name: 'gate-trove-legacy-scenario-functional-dsvm-{datastore}{job-suffix}'
     node: ubuntu-trusty
 
     wrappers:
@@ -111,6 +193,55 @@
               export PATH_DEVSTACK_SRC=$DEST/devstack
               cd /opt/stack/new/trove-integration/scripts
               ./redstack dsvm-gate-tests {datastore} {datastore}_supported
+          }}
+          export -f post_test_hook
+
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    description: This job uses image elements in the trove repository.
+    name: 'gate-trove-scenario-functional-dsvm-{datastore}{job-suffix}'
+    node: ubuntu-trusty
+
+    wrappers:
+      - build-timeout:
+          timeout: 150
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          ENABLED_SERVICES=tempest
+          ENABLED_SERVICES+=,s-proxy,s-object,s-container,s-account
+          ENABLED_SERVICES+=,trove,tr-api,tr-tmgr,tr-cond
+          export ENABLED_SERVICES
+
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin trove git://git.openstack.org/openstack/trove"
+          export PROJECTS="openstack/python-troveclient $PROJECTS"
+          export PROJECTS="openstack/trove-dashboard $PROJECTS"
+          export DEVSTACK_PROJECT_FROM_GIT=python-troveclient
+          export PROJECTS="openstack/tripleo-image-elements $PROJECTS"
+          export PROJECTS="openstack/diskimage-builder $PROJECTS"
+
+          function post_test_hook {{
+              export BRIDGE_IP=10.1.0.1
+              export DEST=$BASE/new
+              export PATH_DEVSTACK_SRC=$DEST/devstack
+              cd /opt/stack/new/trove/integration/scripts
+              ./trovestack dsvm-gate-tests {datastore} {datastore}_supported
           }}
           export -f post_test_hook
 
