@@ -66,6 +66,36 @@
     node: '{node}'
 
 - job-template:
+    name: 'gate-{name}-compare-coverage-{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 75
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - zuul-git-prep-upper-constraints
+      - install-distro-packages
+      - revoke-sudo
+      - coverage:
+          env: compare-cover
+
+    publishers:
+      - scp:
+          site: 'static.openstack.org'
+          files:
+            - target: 'logs/$LOG_PATH'
+              source: 'cover/**'
+              keep-hierarchy: true
+              copy-after-failure: true
+      - test-results
+      - console-log
+
+    node: '{node}'
+
+- job-template:
     name: 'gate-{name}-pep8-{node}'
 
     builders:
