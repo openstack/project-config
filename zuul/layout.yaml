@@ -1790,7 +1790,7 @@ jobs:
   # TODO(lin-a-yang): To start with empty repository, mark all rsc jobs
   # non-voting to not block any changes. Once the jobs all run fine, change
   # back to voting.
-  - name: ^gate-rsc.*$
+  - name: ^gate-rsc-(docs|python|requirements).*$
     voting: false
 
   - name: gate-tempest-dsvm-full-ubuntu-xenial
@@ -15682,7 +15682,8 @@ projects:
       - gate-rsc-python35-nv
       - gate-rsc-requirements
     gate:
-      - noop
+      - gate-rsc-pep8-ubuntu-trusty
+      - gate-rsc-pep8-ubuntu-xenial
 
   - name: openstack/sahara
     template:
