@@ -29,6 +29,13 @@ export CONFIG_SOURCE=${CONFIG_SOURCE:-https://git.openstack.org/openstack-infra/
 export CONFIG_REF=${CONFIG_REF:-master}
 export EXTRA_ELEMENTS=${EXTRA_ELEMENTS:-}
 
+ZUUL_USER_SSH_PUBLIC_KEY=${ZUUL_USER_SSH_PUBLIC_KEY:-$HOME/.ssh/id_rsa.pub}
+if [ ! -f ${ZUUL_USER_SSH_PUBLIC_KEY} ]; then
+    echo "Error: There is no SSH public key at: ${ZUUL_USER_SSH_PUBLIC_KEY}"
+    echo "Error: Image build will fail. Exiting now."
+    exit 1
+fi
+
 # The list of elements here should match nodepool/nodepool.yaml
 disk-image-create -x --no-tmpfs -o $IMAGE_NAME \
     $DISTRO \
