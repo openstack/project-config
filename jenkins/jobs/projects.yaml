@@ -6926,14 +6926,28 @@
       - 'periodic-{name}-{python}-with-neutron-lib-master':
           name: networking-bgpvpn
           python: py27
-      - '{pipeline}-install-dsvm-networking-bgpvpn{job-suffix}':
+      - '{pipeline}-networking-bgpvpn-dsvm-{bgpvpntest}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          bgpvpntest: install
+          node: ubuntu-xenial
           job-suffix: ''
           branch-override: default
-      - '{pipeline}-install-dsvm-networking-bgpvpn-bagpipe{job-suffix}':
+      - '{pipeline}-networking-bgpvpn-bagpipe-dsvm-{bgpvpntest}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          bgpvpntest: install
+          node: ubuntu-xenial
+          job-suffix: ''
+          branch-override: default
+      - '{pipeline}-networking-bgpvpn-dsvm-{bgpvpntest}{job-suffix}':
+          pipeline: gate
+          bgpvpntest: functional
+          node: ubuntu-xenial
+          job-suffix: ''
+          branch-override: default
+      - '{pipeline}-networking-bgpvpn-bagpipe-dsvm-{bgpvpntest}{job-suffix}':
+          pipeline: gate
+          bgpvpntest: functional
+          node: ubuntu-xenial
           job-suffix: ''
           branch-override: default
       - '{pipeline}-tempest-dsvm-networking-bgpvpn-bagpipe{job-suffix}':

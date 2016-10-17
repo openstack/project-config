@@ -1,7 +1,7 @@
 # Inspiration largely taken from networking-ovn.yaml
 
 - job-template:
-    name: '{pipeline}-install-dsvm-networking-bgpvpn{job-suffix}'
+    name: '{pipeline}-networking-bgpvpn-dsvm-{bgpvpntest}{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -36,17 +36,17 @@
           export KEEP_LOCALRC=1
 
           function pre_test_hook {{
-              . $BASE/new/networking-bgpvpn/devstack/pre_test_hook.sh
+              . $BASE/new/networking-bgpvpn/devstack/pre_test_hook.sh dsvm-{bgpvpntest}
           }}
           export -f pre_test_hook
 
           function gate_hook {{
-              . $BASE/new/networking-bgpvpn/devstack/gate_hook.sh
+              . $BASE/new/networking-bgpvpn/devstack/gate_hook.sh dsvm-{bgpvpntest}
           }}
           export -f gate_hook
 
           function post_test_hook {{
-              . $BASE/new/networking-bgpvpn/devstack/post_test_hook.sh
+              . $BASE/new/networking-bgpvpn/devstack/post_test_hook.sh dsvm-{bgpvpntest}
           }}
           export -f post_test_hook
 
@@ -60,7 +60,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-install-dsvm-networking-bgpvpn-bagpipe{job-suffix}'
+    name: '{pipeline}-networking-bgpvpn-bagpipe-dsvm-{bgpvpntest}{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -94,17 +94,17 @@
           export KEEP_LOCALRC=1
 
           function pre_test_hook {{
-              . $BASE/new/networking-bgpvpn/devstack/pre_test_hook.sh
+              . $BASE/new/networking-bgpvpn/devstack/pre_test_hook.sh dsvm-bagpipe-{bgpvpntest}
           }}
           export -f pre_test_hook
 
           function gate_hook {{
-              . $BASE/new/networking-bgpvpn/devstack/gate_hook.sh
+              . $BASE/new/networking-bgpvpn/devstack/gate_hook.sh dsvm-bagpipe-{bgpvpntest}
           }}
           export -f gate_hook
 
           function post_test_hook {{
-              . $BASE/new/networking-bgpvpn/devstack/post_test_hook.sh
+              . $BASE/new/networking-bgpvpn/devstack/post_test_hook.sh dsvm-bagpipe-{bgpvpntest}
           }}
           export -f post_test_hook
 
@@ -156,17 +156,17 @@
           export KEEP_LOCALRC=1
 
           function pre_test_hook {{
-              . $BASE/new/networking-bgpvpn/devstack/pre_test_hook.sh
+              . $BASE/new/networking-bgpvpn/devstack/pre_test_hook.sh dsvm-tempest
           }}
           export -f pre_test_hook
 
           function gate_hook {{
-              . $BASE/new/networking-bgpvpn/devstack/gate_hook.sh
+              . $BASE/new/networking-bgpvpn/devstack/gate_hook.sh dsvm-tempest
           }}
           export -f gate_hook
 
           function post_test_hook {{
-              . $BASE/new/networking-bgpvpn/devstack/post_test_hook.sh
+              . $BASE/new/networking-bgpvpn/devstack/post_test_hook.sh dsvm-tempest
           }}
           export -f post_test_hook
 
