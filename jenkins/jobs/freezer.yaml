@@ -17,11 +17,12 @@
           export PROJECTS="openstack/freezer-api $PROJECTS"
           export PROJECTS="openstack/freezer-web-ui $PROJECTS"
           export PROJECTS="openstack/freezer $PROJECTS"
-          # export PROJECTS="openstack/python-freezerclient $PROJECTS"
+          export PROJECTS="openstack/python-freezerclient $PROJECTS"
           # tempest config
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
-          export DEVSTACK_GATE_TEMPEST_REGEX="{name}_tempest_plugin"
+          TEMPEST_REGEX="{name}_tempest_plugin"
+          export DEVSTACK_GATE_TEMPEST_REGEX=${{TEMPEST_REGEX/\-/\_ }}
           # enable freezer-agent and freezer-scheduler
           export DEVSTACK_LOCAL_CONFIG="enable_plugin freezer https://git.openstack.org/openstack/freezer"
           # enable freezer-api and python-freezerclient
