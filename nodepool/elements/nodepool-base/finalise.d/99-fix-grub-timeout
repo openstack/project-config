@@ -31,8 +31,13 @@ if [ -f /etc/default/grub ] ; then
     if which update-grub &> /dev/null ; then
         update-grub
     else
+        if [[ $DISTRO_NAME == gentoo ]]; then
+            GRUB_CFG=/boot/grub/grub.cfg
+        else
+            GRUB_CFG=/boot/grub2/grub.cfg
+        fi
         # If update-grub isn't available, use grub2-mkconfig directly
-        /usr/sbin/grub2-mkconfig -o /boot/grub2/grub.cfg
+        /usr/sbin/grub2-mkconfig -o "${GRUB_CFG}"
     fi
 elif [ -f /boot/grub/grub.conf ] ; then
     sed -i -e 's/^timeout=[0-9]\+/timeout=0/' /boot/grub/grub.conf
