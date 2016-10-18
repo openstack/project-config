@@ -1928,6 +1928,10 @@ jobs:
   - name: ^gate-neutron-lbaasv1-dsvm-api
     branch: ^stable/(liberty|mitaka)
 
+  # Octavia functional tests
+  - name: ^gate-octavia-tox-functional-ubuntu-xenial
+    branch: ^(?!stable/(liberty|mitaka|newton)).*$
+
     # BUG #1290562 pypy does not work with new setuptools, so is breaking
     # all jobs. Disable until there is resolution.
   - name: ^gate-.*-pypy(-db)?$
@@ -12162,6 +12166,7 @@ projects:
       - gate-neutron-lbaasv2-dsvm-pool
     experimental:
       - gate-octavia-v1-dsvm-scenario-multinode-nv
+      - gate-octavia-tox-functional-ubuntu-xenial
 
   - name: openstack/ooi
     template:
