@@ -14507,26 +14507,32 @@
       - install-guide-jobs:
           service: database
       - periodic-python-jobs-with-oslo-master
-      - 'gate-trove-functional-dsvm-{datastore}{job-suffix}':
-          datastore: 'mysql'
+      - 'gate-trove-legacy-functional-dsvm-{datastore}{job-suffix}':
+          datastore:
+            - 'mysql'
           job-suffix: ''
           branch-override: default
       - 'gate-trove-functional-dsvm-{datastore}{job-suffix}':
+          datastore:
+            - 'mysql'
+          job-suffix: '-nv'
+          branch-override: default
+      - 'gate-trove-legacy-functional-dsvm-{datastore}{job-suffix}':
           datastore: 'mysql'
           job-suffix: '-liberty'
           branch-override: stable/liberty
-      - 'gate-trove-functional-dsvm-{datastore}{job-suffix}':
+      - 'gate-trove-legacy-functional-dsvm-{datastore}{job-suffix}':
           datastore: 'mysql'
           job-suffix: '-mitaka'
           branch-override: stable/mitaka
-      - 'gate-trove-functional-dsvm-{datastore}{job-suffix}':
+      - 'gate-trove-legacy-functional-dsvm-{datastore}{job-suffix}':
           datastore:
             - mysql
             - redis
           job-suffix: '-newton'
           node: ubuntu-xenial
           branch-override: stable/newton
-      - 'gate-trove-scenario-functional-dsvm-{datastore}{job-suffix}':
+      - 'gate-trove-legacy-scenario-functional-dsvm-{datastore}{job-suffix}':
           job-suffix: ''
           branch-override: default
           datastore:
@@ -14534,7 +14540,7 @@
             - redis
             - pxc
             - postgresql
-      - 'gate-trove-scenario-functional-dsvm-{datastore}{job-suffix}':
+      - 'gate-trove-legacy-scenario-functional-dsvm-{datastore}{job-suffix}':
           job-suffix: '-nv'
           branch-override: default
           datastore:
@@ -14544,12 +14550,39 @@
             - mariadb
             - mongodb
             - percona
-      - 'gate-trove-buildimage-{datastore}':
-          datastore: 'mysql'
-      - 'gate-trove-buildimage-{datastore}':
-          datastore: 'percona'
-      - 'gate-trove-buildimage-{datastore}':
-          datastore: 'mongodb'
+      - 'gate-trove-scenario-functional-dsvm-{datastore}{job-suffix}':
+          job-suffix: '-nv'
+          branch-override: default
+          datastore:
+            - mysql
+            - redis
+            - pxc
+            - postgresql
+            - cassandra
+            - couchbase
+            - couchdb
+            - mariadb
+            - mongodb
+            - percona
+      - 'gate-trove-integration-buildimage-{datastore}{job-suffix}':
+          job-suffix: '-nv'
+          datastore:
+            - mysql
+            - percona
+            - mongodb
+      - 'gate-trove-buildimage-{datastore}{job-suffix}':
+          job-suffix: '-nv'
+          datastore:
+            - mysql
+            - percona
+            - mongodb
+            - redis
+            - postgresql
+            - pxc
+            - mariadb
+            - cassandra
+            - couchbase
+
       - api-ref-jobs:
           service: database
       - gate-{name}-tox-db-{envlist}-{node}:

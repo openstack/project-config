@@ -2937,16 +2937,7 @@ jobs:
     branch: ^master$
     voting: false
 
-  - name: gate-trove-buildimage-mysql
-    voting: false
-
-  - name: gate-trove-buildimage-mongodb
-    voting: false
-
-  - name: gate-trove-buildimage-percona
-    voting: false
-
-  - name: ^gate-trove-scenario-functional-dsvm-.*$
+  - name: ^gate-trove-legacy-scenario-functional-dsvm-.*$
     branch: ^(?!stable/(liberty|mitaka)).*$
 
   - name: gate-trove-python34-db
@@ -15306,9 +15297,11 @@ projects:
       - name: lib-forward-testing
       - name: release-notes-jobs
     check:
-      - gate-trove-functional-dsvm-mysql
+      - gate-trove-legacy-functional-dsvm-mysql
     gate:
-      - gate-trove-functional-dsvm-mysql
+      - gate-trove-legacy-functional-dsvm-mysql
+    experimental:
+      - gate-trove-functional-dsvm-mysql-nv
 
   - name: openstack/python-vitrageclient
     template:
@@ -17081,22 +17074,22 @@ projects:
       - name: periodic-jobs-with-oslo-master
       - name: api-ref-jobs
     check:
-      - gate-trove-functional-dsvm-mysql
+      - gate-trove-legacy-functional-dsvm-mysql
       - gate-tempest-dsvm-trove
-      - gate-trove-scenario-functional-dsvm-mariadb-nv
-      - gate-trove-scenario-functional-dsvm-mysql
-      - gate-trove-scenario-functional-dsvm-postgresql
-      - gate-trove-scenario-functional-dsvm-pxc
-      - gate-trove-scenario-functional-dsvm-redis
+      - gate-trove-legacy-scenario-functional-dsvm-mariadb-nv
+      - gate-trove-legacy-scenario-functional-dsvm-mysql
+      - gate-trove-legacy-scenario-functional-dsvm-postgresql
+      - gate-trove-legacy-scenario-functional-dsvm-pxc
+      - gate-trove-legacy-scenario-functional-dsvm-redis
       - gate-trove-tox-db-fakemodetests-ubuntu-xenial
       - gate-trove-tox-db-apiexamples-ubuntu-xenial
       - gate-trove-tox-pylint-ubuntu-xenial
     gate:
-      - gate-trove-functional-dsvm-mysql
-      - gate-trove-scenario-functional-dsvm-mysql
-      - gate-trove-scenario-functional-dsvm-redis
-      - gate-trove-scenario-functional-dsvm-postgresql
-      - gate-trove-scenario-functional-dsvm-pxc
+      - gate-trove-legacy-functional-dsvm-mysql
+      - gate-trove-legacy-scenario-functional-dsvm-mysql
+      - gate-trove-legacy-scenario-functional-dsvm-redis
+      - gate-trove-legacy-scenario-functional-dsvm-postgresql
+      - gate-trove-legacy-scenario-functional-dsvm-pxc
       - gate-trove-tox-db-fakemodetests-ubuntu-xenial
       - gate-trove-tox-db-apiexamples-ubuntu-xenial
       - gate-trove-tox-pylint-ubuntu-xenial
@@ -17104,12 +17097,27 @@ projects:
       - trove-coverage-db-ubuntu-trusty
       - trove-coverage-db-ubuntu-xenial
     experimental:
-      - gate-trove-scenario-functional-dsvm-cassandra-nv
-      - gate-trove-scenario-functional-dsvm-couchbase-nv
-      - gate-trove-scenario-functional-dsvm-couchdb-nv
-      - gate-trove-scenario-functional-dsvm-mongodb-nv
-      - gate-trove-scenario-functional-dsvm-percona-nv
+      - gate-trove-legacy-scenario-functional-dsvm-cassandra-nv
+      - gate-trove-legacy-scenario-functional-dsvm-couchbase-nv
+      - gate-trove-legacy-scenario-functional-dsvm-couchdb-nv
+      - gate-trove-legacy-scenario-functional-dsvm-mongodb-nv
+      - gate-trove-legacy-scenario-functional-dsvm-percona-nv
       - gate-grenade-dsvm-trove
+      - gate-trove-buildimage-mysql-nv
+      - gate-trove-buildimage-percona-nv
+      - gate-trove-buildimage-mongodb-nv
+      - gate-trove-buildimage-redis-nv
+      - gate-trove-buildimage-postgresql-nv
+      - gate-trove-buildimage-pxc-nv
+      - gate-trove-buildimage-mariadb-nv
+      - gate-trove-buildimage-cassandra-nv
+      - gate-trove-buildimage-couchbase-nv
+      - gate-trove-functional-dsvm-mysql-nv
+      - gate-trove-scenario-functional-dsvm-mariadb-nv
+      - gate-trove-scenario-functional-dsvm-mysql-nv
+      - gate-trove-scenario-functional-dsvm-postgresql-nv
+      - gate-trove-scenario-functional-dsvm-pxc-nv
+      - gate-trove-scenario-functional-dsvm-redis-nv
 
   - name: openstack/trove-dashboard
     template:
@@ -17143,29 +17151,29 @@ projects:
     template:
       - name: merge-check
     check:
-      - gate-trove-functional-dsvm-mysql
-      - gate-trove-functional-dsvm-mysql-liberty
-      - gate-trove-functional-dsvm-mysql-mitaka
-      - gate-trove-functional-dsvm-mysql-newton
-      - gate-trove-functional-dsvm-redis-newton
-      - gate-trove-scenario-functional-dsvm-redis
-      - gate-trove-scenario-functional-dsvm-mysql
-      - gate-trove-scenario-functional-dsvm-postgresql
-      - gate-trove-scenario-functional-dsvm-pxc
+      - gate-trove-legacy-functional-dsvm-mysql
+      - gate-trove-legacy-functional-dsvm-mysql-liberty
+      - gate-trove-legacy-functional-dsvm-mysql-mitaka
+      - gate-trove-legacy-functional-dsvm-mysql-newton
+      - gate-trove-legacy-functional-dsvm-redis-newton
+      - gate-trove-legacy-scenario-functional-dsvm-redis
+      - gate-trove-legacy-scenario-functional-dsvm-mysql
+      - gate-trove-legacy-scenario-functional-dsvm-postgresql
+      - gate-trove-legacy-scenario-functional-dsvm-pxc
     gate:
-      - gate-trove-functional-dsvm-mysql
-      - gate-trove-functional-dsvm-mysql-liberty
-      - gate-trove-functional-dsvm-mysql-mitaka
-      - gate-trove-functional-dsvm-mysql-newton
-      - gate-trove-functional-dsvm-redis-newton
-      - gate-trove-scenario-functional-dsvm-redis
-      - gate-trove-scenario-functional-dsvm-mysql
-      - gate-trove-scenario-functional-dsvm-postgresql
-      - gate-trove-scenario-functional-dsvm-pxc
+      - gate-trove-legacy-functional-dsvm-mysql
+      - gate-trove-legacy-functional-dsvm-mysql-liberty
+      - gate-trove-legacy-functional-dsvm-mysql-mitaka
+      - gate-trove-legacy-functional-dsvm-mysql-newton
+      - gate-trove-legacy-functional-dsvm-redis-newton
+      - gate-trove-legacy-scenario-functional-dsvm-redis
+      - gate-trove-legacy-scenario-functional-dsvm-mysql
+      - gate-trove-legacy-scenario-functional-dsvm-postgresql
+      - gate-trove-legacy-scenario-functional-dsvm-pxc
     experimental:
-      - gate-trove-buildimage-mysql
-      - gate-trove-buildimage-percona
-      - gate-trove-buildimage-mongodb
+      - gate-trove-integration-buildimage-mysql-nv
+      - gate-trove-integration-buildimage-percona-nv
+      - gate-trove-integration-buildimage-mongodb-nv
 
   - name: openstack/trove-specs
     template:
