@@ -35,7 +35,35 @@ mv /tmp/forwarding.conf /etc/unbound/
 chown root:root /etc/unbound/forwarding.conf
 chmod a+r /etc/unbound/forwarding.conf
 
-# Overwrite /etc/resolv.conf at boot
+# You'd think rc.local would be simple ...
+#
+# On Redhat systems, systemd's rc-local service looks for an
+# executable /etc/rc.d/rc.local file to run.  On Debian/Ubuntu, the
+# eqivalent file is /etc/rc.local.
+#
+# Centos' systemd package symlinks /etc/rc.local to /etc/rc.d/rc.local
+# correctly. Fedora, however, does not come with an rc.local file at
+# all.  Thus if we have a rc.d directory, but no rc.local file, we
+# need to create it (if you don't have an rc.d directory, and don't
+# have /etc/rc.local, then it's not clear what platform you are on).
+#
+# Bug [1] is filed to bring Fedora in-line with Centos, and has more
+# details on all this.  As at 2016-10-18 is unresolved.
+#
+# [1] https://bugzilla.redhat.com/show_bug.cgi?id=1386052
+if [[ ! -e /etc/rc.local ]]; then
+    if [[ ! -d /etc/rc.d ]]; then
+        echo "No rc.local and no rc.d directory!  See comments in 89-unbound"
+        exit 1
+    fi
+    touch /etc/rc.d/rc.local
+    ln -sf /etc/rc.d/rc.local /etc/rc.local
+    # permissions added below.  selinux context will be fixed up at
+    # end of build.
+fi
+
+# Overwrite /etc/resolv.conf at boot (let's hope nothing else is using
+# rc.local...)
 dd of=/etc/rc.local <<EOF
 #!/bin/bash
 set -o xtrace
@@ -50,5 +78,11 @@ echo 'nameserver 127.0.0.1' > /etc/resolv.conf
 
 exit 0
 EOF
+
+# Debian/Ubuntu ship their dummy rc.local with +x permissions, but
+# CentOS (and the file we created for Fedora) do not ... this is to
+# avoid it holding up the boot as it relies on the network being up).
+# Add +x so it runs.
+chmod a+x /etc/rc.local
 
 echo 'include: /etc/unbound/forwarding.conf' >> /etc/unbound/unbound.conf
