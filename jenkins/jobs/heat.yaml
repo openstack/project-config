@@ -14,10 +14,15 @@
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
-          export OVERRIDE_ENABLED_SERVICES=key,mysql,rabbit,h-api,h-api-cfn,h-api-cw,h-eng,heat
           export DEVSTACK_GATE_TEMPEST=0
           export DEVSTACK_GATE_EXERCISES=0
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
+
+          # enable heat services for mitaka (no devstack plugin available)
+          if [[ "$ZUUL_BRANCH" == "stable/mitaka" ]]; then
+              export ENABLED_SERVICES+=,h-api,h-api-cfn,h-api-cw,h-eng
+          fi
+
           function post_test_hook {
               cd $BASE/new/heat-templates/tools
               ./post_test_hook.sh
@@ -47,29 +52,33 @@
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
-          services=c-api,c-bak,c-sch,c-vol,cinder,dstat,g-api,g-reg,h-api
-          services+=,h-api-cfn,h-api-cw,h-eng,heat,key,mysql,n-api,n-cond
-          services+=,n-cpu,n-crt,n-sch,q-agt,q-dhcp,q-l3,q-meta,q-metering
-          services+=,q-svc,rabbit,s-account,s-container,s-object,s-proxy
-          services+=,ceilometer-acompute,ceilometer-acentral
-          services+=,ceilometer-collector,ceilometer-api
-          services+=,ceilometer-anotification
+          services=rabbit,tempest,mysql,dstat,key
+          services+=,n-api,n-cpu,n-cond,n-sch,n-novnc,n-cauth
+          services+=,g-api,g-reg
+          services+=,c-sch,c-api,c-vol,c-bak
+          services+=,q-svc,q-dhcp,q-meta,q-agt,q-l3
+          services+=,s-proxy,s-object,s-container,s-account
+
+          # enable heat services for mitaka (no devstack plugin available)
+          if [[ "$ZUUL_BRANCH" == "stable/mitaka" ]]; then
+              services+=,h-api,h-api-cfn,h-api-cw,h-eng
+          fi
+
           # n-obj has been removed from mitaka
           if [[ "$ZUUL_BRANCH" == "stable/liberty" ]]; then
-              services+=,n-obj,
+              services+=,n-obj
           fi
-          export HEAT_BUILD_PIP_MIRROR=True
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_TEMPEST_NOTESTS=1
           export DEVSTACK_GATE_EXERCISES=0
           export DEVSTACK_GATE_INSTALL_TESTONLY=1
           export KEEP_LOCALRC=1
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
+          export PROJECTS="openstack/ceilometer $PROJECTS"
           export PROJECTS="openstack/aodh $PROJECTS"
           export PROJECTS="openstack/zaqar $PROJECTS"
           export PROJECTS="openstack/python-zaqarclient $PROJECTS"
-          services+=,aodh-api,aodh-alarm-evaluator,aodh-alarm-notifier
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin aodh git://git.openstack.org/openstack/aodh"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin zaqar git://git.openstack.org/openstack/zaqar"
 
@@ -78,17 +87,16 @@
           if [ "{lbaasversion}" = "lbaasv2" ]; then
               # Enable LBaaS V2 plugin
               export PROJECTS="openstack/neutron-lbaas $PROJECTS"
-              services+=",q-lbaasv2"
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin neutron-lbaas https://git.openstack.org/openstack/neutron-lbaas"
               export PROJECTS="openstack/barbican $PROJECTS"
               export PROJECTS="openstack/python-barbicanclient $PROJECTS"
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin barbican https://git.openstack.org/openstack/barbican"
               # the lbaas v2 driver choice is in the gate pre test hook
           else
-              services+=",q-lbaas"
+              services+=,q-lbaas
           fi
 
-          export OVERRIDE_ENABLED_SERVICES=$services
+          export ENABLED_SERVICES=$services
 
           if [ "{datastore}" == "postgres" ] ; then
               export DEVSTACK_GATE_POSTGRES=1
@@ -158,6 +166,12 @@
           if [ "{special}" == "-identity-v3-only" ] ; then
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"ENABLE_IDENTITY_V2=False"
           fi
+
+          # enable heat services for mitaka (no devstack plugin available)
+          if [[ "$ZUUL_BRANCH" == "stable/mitaka" ]]; then
+              export ENABLED_SERVICES+=,h-api,h-api-cfn,h-api-cw,h-eng,heat
+          fi
+
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
 
@@ -185,12 +199,16 @@
          export BRANCH_OVERRIDE={branch-override}
          export PROJECTS="openstack/python-heatclient $PROJECTS"
          export DEVSTACK_PROJECT_FROM_GIT=python-heatclient
-         export OVERRIDE_ENABLED_SERVICES=key,mysql,rabbit,h-api,h-api-cfn,h-api-cw,h-eng,heat
 
          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
 
          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+         fi
+
+         # enable heat services for mitaka (no devstack plugin available)
+         if [[ "$ZUUL_BRANCH" == "stable/mitaka" ]]; then
+             export ENABLED_SERVICES+=,h-api,h-api-cfn,h-api-cw,h-eng
          fi
 
          function post_test_hook {{
@@ -225,17 +243,20 @@
           #!/bin/bash -xe
           export PROJECTS="openstack-dev/grenade $PROJECTS"
           export PYTHONUNBUFFERED=true
-
-          OVERRIDE_ENABLED_SERVICES=c-api,c-bak,c-sch,c-vol,cinder,dstat,g-api,g-reg,h-api,h-api-cfn,h-api-cw,h-eng,heat,key,mysql,n-api,n-cond,n-cpu,n-crt,n-sch,q-agt,q-dhcp,q-l3,q-meta,q-metering,q-svc,rabbit,s-account,s-container,s-object,s-proxy
           export GRENADE_PLUGINRC="enable_grenade_plugin heat https://git.openstack.org/openstack/heat"
-
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
+
+          # enable heat services for mitaka (no devstack plugin available)
+          if [[ "$ZUUL_BRANCH" == "stable/mitaka" ]]; then
+              ENABLED_SERVICES+=,h-api,h-api-cfn,h-api-cw,h-eng
+          fi
 
           # n-obj has been removed from mitaka
           if [[ "$ZUUL_BRANCH" == "stable/liberty" ]]; then
-              OVERRIDE_ENABLED_SERVICES+=,n-obj
+              ENABLED_SERVICES+=,n-obj
           fi
-          export OVERRIDE_ENABLED_SERVICES
+
+          export ENABLED_SERVICES
 
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_TEMPEST=1
@@ -290,6 +311,12 @@
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
+
+          # enable heat services for mitaka (no devstack plugin available)
+          if [[ "$ZUUL_BRANCH" == "stable/mitaka" ]]; then
+              export ENABLED_SERVICES+=,h-api,h-api-cfn,h-api-cw,h-eng
+          fi
+
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
 
