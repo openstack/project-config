@@ -2179,9 +2179,11 @@ jobs:
   - name: ^gate-tempest-dsvm-networking-midonet-ml2
     voting: false
 
-  - name: ^gate-tempest-dsvm-networking-odl-(beryllium-snapshot|boron-snapshot|carbon-snapshot).*$
-    branch: ^(?!stable/(icehouse|juno)).*$
-    voting: false
+  - name: ^gate-tempest-dsvm-networking-odl-.+-snapshot-.+-nv$
+    branch: ^stable/(liberty|mitaka)$
+
+  - name: ^gate-tempest-dsvm-networking-odl-.+-snapshot$
+    branch: ^(?!stable/(liberty|mitaka)).*$
 
   - name: gate-networking-odl-python34
     branch: ^(?!stable/(icehouse|juno)).*$
@@ -11617,8 +11619,14 @@ projects:
       - name: release-notes-jobs
       - name: translation-jobs
     check:
+      - gate-tempest-dsvm-networking-odl-beryllium-snapshot-liberty-nv
+      - gate-tempest-dsvm-networking-odl-beryllium-snapshot-mitaka-nv
       - gate-tempest-dsvm-networking-odl-beryllium-snapshot
+      - gate-tempest-dsvm-networking-odl-boron-snapshot-liberty-nv
+      - gate-tempest-dsvm-networking-odl-boron-snapshot-mitaka-nv
       - gate-tempest-dsvm-networking-odl-boron-snapshot
+      - gate-tempest-dsvm-networking-odl-carbon-snapshot-liberty-nv
+      - gate-tempest-dsvm-networking-odl-carbon-snapshot-mitaka-nv
       - gate-tempest-dsvm-networking-odl-carbon-snapshot
       - gate-rally-dsvm-networking-odl-beryllium-snapshot-nv
       - gate-rally-dsvm-networking-odl-boron-snapshot-nv
@@ -11626,6 +11634,9 @@ projects:
       - networking-odl-coverage-ubuntu-trusty
       - networking-odl-coverage-ubuntu-xenial
     gate:
+      - gate-tempest-dsvm-networking-odl-beryllium-snapshot
+      - gate-tempest-dsvm-networking-odl-boron-snapshot
+      - gate-tempest-dsvm-networking-odl-carbon-snapshot
       - networking-odl-coverage-ubuntu-trusty
       - networking-odl-coverage-ubuntu-xenial
     post:
