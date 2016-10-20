@@ -7,6 +7,17 @@
           EOF
 
 - builder:
+    name: ironic-grenade
+    builders:
+      - ironic-extra-vars:
+          script: |
+            export PROJECTS="openstack-dev/grenade $PROJECTS"
+            export DEVSTACK_GATE_GRENADE=pullup
+            export DEVSTACK_GATE_OS_TEST_TIMEOUT=2400
+            export DEVSTACK_GATE_TEMPEST_BAREMETAL_BUILD_TIMEOUT=1200
+            export GRENADE_PLUGINRC="enable_grenade_plugin ironic https://git.openstack.org/openstack/ironic"
+
+- builder:
     name: ironic-client-from-source
     builders:
       - ironic-extra-vars:
@@ -1011,6 +1022,36 @@
           export GRENADE_PLUGINRC="enable_grenade_plugin ironic https://git.openstack.org/openstack/ironic"
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-grenade-dsvm-ironic-multitenant{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 180
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - ironic-grenade
+      - ironic-multitenant
+      - ironic-deploy-with-IPA:
+          ramdisk-type: 'tinyipa'
+      - devstack-virtual-ironic:
+          build-ramdisk: ''
+          deploy_driver: pxe_ssh
+          image-type: wholedisk
+          branch-override: '{branch-override}'
+          bm-vm-count: 7
 
     publishers:
       - devstack-logs
