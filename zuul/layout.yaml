@@ -3254,15 +3254,19 @@ jobs:
     tags: periodic-qa
 
   # skip all openstack-ansible jobs except the releasenotes/docs/linters
-  # jobs for rst/doc/releasenotes related files
+  # jobs for files that are not related to functional testing
   - name: ^gate-openstack-ansible(?!.*(-docs|-releasenotes|-linters-ubuntu-(trusty|xenial))).*$
     skip-if:
       - project: ^openstack/openstack-ansible(?!-specs).*$
         all-files-match-any:
-          - ^.*\.rst$
+          - ^\.git.*
+          - ^.*\.(example|md|rst|txt)$
           - ^deploy-guide/.*
           - ^doc/.*
           - ^releasenotes/.*
+          - ^setup\.(cfg|py)$
+          - ^tox.ini$
+          - ^Vagrantfile
 
   # Run all OpenStack-Ansible trusty jobs except the docs and linters jobs
   # for Newton as this is still a supported platform for OpenStack-Ansible.
