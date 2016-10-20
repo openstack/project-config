@@ -2211,13 +2211,13 @@ jobs:
   - name: ^gate-neutron-fwaas-dsvm-functional$
     branch: ^(?!stable/(liberty|mitaka)).*$
 
-  - name: ^gate-neutron-fwaas-legacy-dsvm-tempest-nv$
+  - name: ^gate-neutron-fwaas-legacy-dsvm-tempest$
     branch: ^(stable/(liberty|mitaka)).*$
 
   - name: ^gate-neutron-fwaas-v2-dsvm-tempest-nv$
     branch: ^(?!stable/(liberty|mitaka)).*$
 
-  - name: ^gate-neutron-fwaas-v1-dsvm-tempest-nv$
+  - name: ^gate-neutron-fwaas-v1-dsvm-tempest$
     branch: ^(?!stable/(liberty|mitaka)).*$
 
   - name: ^gate-neutron-lbaasv2-dsvm-scenario$
@@ -11873,10 +11873,12 @@ projects:
       - name: periodic-jobs-with-neutron-lib-master
     check:
       - gate-neutron-fwaas-v2-dsvm-tempest-nv
-      - gate-neutron-fwaas-v1-dsvm-tempest-nv
-      - gate-neutron-fwaas-legacy-dsvm-tempest-nv
+      - gate-neutron-fwaas-v1-dsvm-tempest
+      - gate-neutron-fwaas-legacy-dsvm-tempest
       - gate-neutron-fwaas-dsvm-functional
     gate:
+      - gate-neutron-fwaas-v1-dsvm-tempest
+      - gate-neutron-fwaas-legacy-dsvm-tempest
       - gate-neutron-fwaas-dsvm-functional
     post:
       - neutron-fwaas-coverage-ubuntu-trusty
