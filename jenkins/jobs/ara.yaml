@@ -1,5 +1,5 @@
 - job-template:
-    name: 'gate-ara-integration-{ostype}'
+    name: 'gate-ara-integration-{ansible_version}-{ostype}'
     node: '{ostype}'
     builders:
       - print-template-name:
@@ -9,7 +9,11 @@
       - install-distro-packages
       - shell: |
           #!/bin/bash -xe
-          ./run_tests.sh
+          if [[ "${{ansible_version}}" == "latest" ]]; then
+            ./run_tests.sh
+          else
+            ./run_tests.sh ansible=={ansible_version}
+          fi
     wrappers:
       - build-timeout:
           timeout: 20
