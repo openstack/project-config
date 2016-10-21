@@ -9,11 +9,7 @@
       - install-distro-packages
       - shell: |
           #!/bin/bash -xe
-          if [[ "${{ansible_version}}" == "latest" ]]; then
-            ./run_tests.sh
-          else
-            ./run_tests.sh ansible=={ansible_version}
-          fi
+          ./run_tests.sh ansible=={ansible_version}
     wrappers:
       - build-timeout:
           timeout: 20
