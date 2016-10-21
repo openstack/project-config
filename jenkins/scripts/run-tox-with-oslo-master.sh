@@ -70,7 +70,11 @@ for lib in $oslo_libs; do
 done
 
 echo "Full freeze diff:"
-diff -u pip_freeze_before.txt pip_freeze_after.txt
+
+# Diff seems to exit with non-zero on a difference, but since
+# we expect there to be a difference, we don't want to have this
+# (or tox) fail due to that...
+diff -u pip_freeze_before.txt pip_freeze_after.txt || true
 
 EOF
 
@@ -95,5 +99,8 @@ commands =
     {[testenv]commands}
 EOF
 fi
+
+echo "Post-modification tox.ini:"
+cat tox.ini
 
 $script_path/run-tox.sh $venv-oslo-master
