@@ -16,7 +16,13 @@
             git://git.openstack.org \
             openstack/diskimage-builder \
             openstack/dib-utils
-
+      - shell: |
+          #!/bin/bash -xe
+          cd openstack/diskimage-builder
+          /usr/local/jenkins/slave_scripts/install-distro-packages.sh
+      - shell: |
+          #!/bin/bash -eux
+          #
           # We do things that might exceed the default 2GiB tmpfs, and
           # use the larger mounted space.
           sudo mkdir /opt/dib_cache
@@ -29,6 +35,7 @@
           ./env/bin/pip install $(pwd)/openstack/dib-utils
           ./env/bin/pip install $(pwd)/openstack/diskimage-builder
 
+          # TODO(pabelanger): Remove once we migrated to bindep
           ./openstack/diskimage-builder/tests/install_test_deps.sh
 
           # activate the virtualenv so that any tools run by dib run
