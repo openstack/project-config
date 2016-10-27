@@ -23,9 +23,15 @@ declare -A LANG_NAME=(
     ["de"]="German"
     ["en_AU"]="English (Australian)"
     ["en_GB"]="English (United Kingdom)"
+    ["es"]="Spanish"
+    ["fr"]="French"
     ["id"]="Indonesian"
+    ["it"]="Italian"
     ["ja"]="Japanese"
     ["ko_KR"]="Korean (South Korea)"
+    ["pt_BR"]="Portuguese (Brazil)"
+    ["ru"]="Russian"
+    ["tr_TR"]="Turkish (Turkey)"
     ["zh_CN"]="Chinese (China)"
 )
 
