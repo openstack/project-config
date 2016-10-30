@@ -437,3 +437,26 @@
               keep-hierarchy: true
               copy-after-failure: false
       - console-log
+
+- job:
+    name: experimental-zuul-pep8-ubuntu-xenial
+
+    builders:
+      - zuul-git-prep-upper-constraints
+      - install-distro-packages
+      - shell: |
+          #!/bin/bash -xe
+          # Write global pip configuration minus wheel mirror.
+          awk '!/extra-index-url/' /etc/pip.conf > /tmp/pip.conf
+          sudo mv /tmp/pip.conf /etc/
+          sudo chown root:root /etc/pip.conf
+          sudo chmod 0644 /etc/pip.conf
+      - revoke-sudo
+      - pep8:
+          env: pep8
+
+    publishers:
+      - test-results
+      - console-log
+
+    node: ubuntu-xenial
