@@ -27,7 +27,7 @@ echo "======================================================================"
 .tox/${venv}/bin/${freezecmd} freeze
 echo "======================================================================"
 
-MARKER_TEXT="Project: $ZUUL_PROJECT Ref: $ZUUL_REFNAME Build: $ZUUL_UUID"
+MARKER_TEXT="Project: $ZUUL_PROJECT Ref: $ZUUL_REFNAME Build: $ZUUL_UUID Revision: $ZUUL_NEWREV"
 echo $MARKER_TEXT > doc/build/html/.root-marker
 
 if [ -z "$ZUUL_REFNAME" ] || [ "$ZUUL_REFNAME" == "master" ] ; then
