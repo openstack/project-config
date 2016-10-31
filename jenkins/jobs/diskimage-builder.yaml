@@ -18,13 +18,14 @@
             openstack/dib-utils
       - shell: |
           #!/bin/bash -xe
-          cd openstack/diskimage-builder
+          cd ~/openstack/diskimage-builder
           /usr/local/jenkins/slave_scripts/install-distro-packages.sh
       - shell: |
           #!/bin/bash -eux
           #
           # We do things that might exceed the default 2GiB tmpfs, and
           # use the larger mounted space.
+          cd ~
           sudo mkdir /opt/dib_cache
           sudo chown jenkins:jenkins /opt/dib_cache
           export DIB_NO_TMPFS=1
