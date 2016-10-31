@@ -1500,7 +1500,7 @@ jobs:
         all-files-match-any:
           - ^.*\.rst$
           - ^doc/.*$
-  - name: ^.*ironic-inspector-(python27-db|python3[45]-db(-nv)?|tox-func)$
+  - name: ^.*ironic-inspector-(python27-db|python3[45]-db|tox-func3?)(-ubuntu-.*)?(-nv)?$
     skip-if:
       - project: ^openstack/ironic-inspector$
         all-files-match-any:
@@ -1982,6 +1982,10 @@ jobs:
 
   - name: ^gate-ironic-inspector-dsvm-dib$
     branch: ^stable/(liberty|mitaka).*$
+
+  - name: ^gate-ironic-inspector-tox-func3.*$
+    branch: ^(?!stable/(liberty|mitaka)).*$
+    voting: false
 
     # only here until stable is votable, then merge
     # back to a single job
@@ -10408,6 +10412,7 @@ projects:
     check:
       - gate-ironic-inspector-tox-func-ubuntu-trusty
       - gate-ironic-inspector-tox-func-ubuntu-xenial
+      - gate-ironic-inspector-tox-func3-ubuntu-xenial
       - gate-ironic-inspector-dsvm-dib
       - gate-ironic-inspector-dsvm-ipa
       - gate-ironic-inspector-dsvm-discovery
