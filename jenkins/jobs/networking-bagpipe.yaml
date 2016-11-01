@@ -1,0 +1,48 @@
+- job-template:
+    name: '{pipeline}-tempest-dsvm-networking-bagpipe-{which}{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 130
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_TEMPEST_FULL=1
+          export DEVSTACK_GATE_NEUTRON=1
+          export PROJECTS="openstack/networking-bagpipe $PROJECTS"
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          # Because we are testing a non standard project, add
+          # our project repository. This makes zuul do the right
+          # reference magic for testing changes.
+          export PROJECTS="openstack/networking-bagpipe $PROJECTS"
+          # Note the actual url here is somewhat irrelevant because it
+          # caches in nodepool, however make it a valid url for
+          # documentation purposes.
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin networking-bagpipe git://git.openstack.org/openstack/networking-bagpipe"
+
+          function gate_hook {{
+              bash -xe $BASE/new/networking-bagpipe/devstack/pre_test_hook.sh full-{which}
+          }}
+          export -f gate_hook
+
+          export DEVSTACK_GATE_SETTINGS=/opt/stack/new/networking-bagpipe/devstack/devstack-gate-rc
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
