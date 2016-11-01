@@ -1,0 +1,23 @@
+- builder:
+    name: clone-fuel-ccp
+    builders:
+      - shell: |
+          #!/bin/bash -xe
+          cd "$WORKSPACE"
+          cat > clonemap.yaml << EOF
+          clonemap:
+            - name: openstack/fuel-ccp
+              dest: fuel-ccp
+          EOF
+          /usr/zuul-env/bin/zuul-cloner -m $CLONEMAP --cache-dir /opt/git \
+              openstack/fuel-ccp
+
+- job:
+    name: gate-fuel-ccp-validate
+    builders:
+      - revoke-sudo
+      - clone-fuel-ccp
+      - shell: |
+          #!/bin/bash -xe
+          cd "$WORKSPACE/fuel-ccp/tools/gate"
+          ./run.sh
