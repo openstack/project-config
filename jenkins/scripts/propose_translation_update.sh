@@ -88,6 +88,7 @@ function propose_training_guides {
 # Propose updates for python and django projects
 function propose_python_django {
     local modulename=$1
+    local version=$2
 
     # Check for empty directory and exit early
     local content=$(ls -A $modulename/locale/)
@@ -103,6 +104,11 @@ function propose_python_django {
 
     # Cleanup po and pot files
     cleanup_module "$modulename"
+    if [ "$version" == "master" ] ; then
+        # Remove not anymore translated log files on master, but not
+        # on released stable branches.
+        cleanup_log_files "$modulename"
+    fi
 
     # Check first whether directory exists, it might be missing if
     # there are no translations.
@@ -140,11 +146,11 @@ function handle_python_django {
                     extract_messages_django "$modulename"
                     ;;
                 python)
-                    # Extract all messages from project, including log messages.
+                    # Extract messages from project except log messages
                     extract_messages_python "$modulename"
                     ;;
             esac
-            propose_python_django "$modulename"
+            propose_python_django "$modulename" "$ZANATA_VERSION"
         done
     fi
 }
@@ -204,7 +210,6 @@ case "$PROJECT" in
         ;;
     *)
         # Common setup for python and django repositories
-        setup_loglevel_vars
         handle_python_django $PROJECT python
         handle_python_django $PROJECT django
         ;;

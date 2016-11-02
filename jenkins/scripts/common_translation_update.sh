@@ -294,17 +294,6 @@ EOF
     return $success
 }
 
-# Setup global variables LEVELS and LKEYWORDS
-function setup_loglevel_vars {
-    # Strings for various log levels
-    LEVELS="info warning error critical"
-    # Keywords for each log level:
-    declare -g -A LKEYWORD
-    LKEYWORD['info']='_LI'
-    LKEYWORD['warning']='_LW'
-    LKEYWORD['error']='_LE'
-    LKEYWORD['critical']='_LC'
-}
 
 # Delete empty pot files
 function check_empty_pot {
@@ -320,7 +309,6 @@ function check_empty_pot {
 }
 
 # Run extract_messages for python projects.
-# Needs variables setup via setup_loglevel_vars.
 function extract_messages_python {
     local modulename=$1
 
@@ -341,18 +329,6 @@ function extract_messages_python {
         -k "_C:1c,2" -k "_P:1,2" \
         -o ${pot} ${modulename}
     check_empty_pot ${pot}
-
-    # Update the log level .pot files
-    for level in $LEVELS ; do
-        pot=${modulename}/locale/${modulename}-log-${level}.pot
-        $VENV/bin/pybabel ${QUIET} extract --no-default-keywords \
-            --add-comments Translators: \
-            --msgid-bugs-address="https://bugs.launchpad.net/openstack-i18n/" \
-            --project=${PROJECT} --version=${VERSION} \
-            -k ${LKEYWORD[$level]} \
-            -o ${pot} ${modulename}
-        check_empty_pot ${pot}
-    done
 }
 
 # Django projects need horizon installed for extraction, install it in
@@ -520,6 +496,25 @@ function cleanup_po_files {
         if [ $RATIO -lt 40 ]; then
             git rm -f --ignore-unmatch $i
         fi
+    done
+}
+
+# Remove obsolete log lovel files. We  have added them in the past but
+# do not translate them anymore, so let's eventually remove them.
+function cleanup_log_files {
+    local modulename=$1
+    local levels="info warning error critical"
+
+    for i in $(find $modulename -name *.po) ; do
+        # We do not store the log level files anymore, remove them
+        # from git.
+        local bi=$(basename $i)
+
+        for level in $levels ; do
+            if [[ "$bi" == "$modulename-log-$level.po" ]] ; then
+                git rm -f --ignore-unmatch $i
+            fi
+        done
     done
 }
 
