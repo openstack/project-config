@@ -8183,6 +8183,32 @@
       - python-jobs
 
 - project:
+    name: oaktree
+    tarball-site: tarballs.openstack.org
+
+    jobs:
+      - pypi-jobs
+      - python-jobs
+      - 'gate-{name}-python35{suffix}':
+          suffix: ''
+      - '{pipeline}-oaktree-dsvm-functional{job-suffix}':
+          pipeline: gate
+          node: ubuntu-xenial
+          job-suffix: ''
+          branch-override: default
+
+- project:
+    name: oaktreemodel
+    tarball-site: tarballs.openstack.org
+
+    jobs:
+      - oaktreemodel-tarball
+      - '{name}-pypi-both-upload'
+      - '{name}-tarball-signing'
+      - '{name}-announce-release'
+      - python-jobs
+
+- project:
     name: octavia
     tarball-site: tarballs.openstack.org
     doc-publisher-site: docs.openstack.org
