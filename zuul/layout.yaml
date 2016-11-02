@@ -2945,10 +2945,14 @@ jobs:
     branch: ^(?!stable/(liberty|mitaka|newton)).*$
 
   # NOTE(amrith): This job should be run for trove-integration, and
-  #               trove's stable branches for liberty, mitaka and newton.
+  #               trove's and trove clients stable branches for
+  #               liberty, mitaka and newton.
   - name: ^gate-trove-legacy-functional-dsvm-.*$
     skip-if:
       - project: ^openstack/trove$
+        branch: ^(?!stable/(liberty|mitaka|newton)).*$
+    skip-if:
+      - project: ^openstack/python-troveclient$
         branch: ^(?!stable/(liberty|mitaka|newton)).*$
 
   - name: ^gate-trove-functional-dsvm-.*$
