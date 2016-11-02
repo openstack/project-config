@@ -95,6 +95,10 @@
           if [ $DEVSTACK_GATE_NEUTRON -ne 1 ]; then
               ENABLED_SERVICES+=n-net,n-api-meta,
           fi
+          if [ $DEVSTACK_GATE_NEUTRON -ne 0 ]; then
+              export PROJECTS="openstack/neutron $PROJECTS"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin neutron git://git.openstack.org/openstack/neutron"
+          fi
           if [ $DEVSTACK_GATE_IRONIC -ne 0 ]; then
               export PROJECTS="openstack/ironic $PROJECTS"
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ironic git://git.openstack.org/openstack/ironic"
