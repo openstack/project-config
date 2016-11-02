@@ -2939,7 +2939,20 @@ jobs:
     voting: false
 
   - name: ^gate-trove-legacy-scenario-functional-dsvm-.*$
-    branch: ^(?!stable/(liberty|mitaka)).*$
+    branch: ^stable/newton$
+
+  - name: ^gate-trove-scenario-functional-dsvm-.*$
+    branch: ^(?!stable/(liberty|mitaka|newton)).*$
+
+  # NOTE(amrith): This job should be run for trove-integration, and
+  #               trove's stable branches for liberty, mitaka and newton.
+  - name: ^gate-trove-legacy-functional-dsvm-.*$
+    skip-if:
+      - project: ^openstack/trove$
+        branch: ^(?!stable/(liberty|mitaka|newton)).*$
+
+  - name: ^gate-trove-functional-dsvm-.*$
+    branch: ^(?!stable/(liberty|mitaka|newton)).*$
 
   - name: gate-trove-python34-db
     branch: ^(?!stable/(liberty|mitaka)).*$
@@ -15399,8 +15412,10 @@ projects:
       - name: release-notes-jobs
     check:
       - gate-trove-functional-dsvm-mysql
+      - gate-trove-legacy-functional-dsvm-mysql
     gate:
       - gate-trove-functional-dsvm-mysql
+      - gate-trove-legacy-functional-dsvm-mysql
 
   - name: openstack/python-vitrageclient
     template:
@@ -17178,21 +17193,31 @@ projects:
       - name: api-ref-jobs
     check:
       - gate-trove-functional-dsvm-mysql
+      - gate-trove-legacy-functional-dsvm-mysql
       - gate-tempest-dsvm-trove
       - gate-trove-scenario-functional-dsvm-mariadb-nv
       - gate-trove-scenario-functional-dsvm-mysql
       - gate-trove-scenario-functional-dsvm-postgresql
       - gate-trove-scenario-functional-dsvm-pxc
       - gate-trove-scenario-functional-dsvm-redis
+      - gate-trove-legacy-scenario-functional-dsvm-mysql
+      - gate-trove-legacy-scenario-functional-dsvm-postgresql
+      - gate-trove-legacy-scenario-functional-dsvm-pxc
+      - gate-trove-legacy-scenario-functional-dsvm-redis
       - gate-trove-tox-db-fakemodetests-ubuntu-xenial
       - gate-trove-tox-db-apiexamples-ubuntu-xenial
       - gate-trove-tox-pylint-ubuntu-xenial
     gate:
       - gate-trove-functional-dsvm-mysql
+      - gate-trove-legacy-functional-dsvm-mysql
       - gate-trove-scenario-functional-dsvm-mysql
       - gate-trove-scenario-functional-dsvm-redis
       - gate-trove-scenario-functional-dsvm-postgresql
       - gate-trove-scenario-functional-dsvm-pxc
+      - gate-trove-legacy-scenario-functional-dsvm-mysql
+      - gate-trove-legacy-scenario-functional-dsvm-postgresql
+      - gate-trove-legacy-scenario-functional-dsvm-pxc
+      - gate-trove-legacy-scenario-functional-dsvm-redis
       - gate-trove-tox-db-fakemodetests-ubuntu-xenial
       - gate-trove-tox-db-apiexamples-ubuntu-xenial
       - gate-trove-tox-pylint-ubuntu-xenial
@@ -17248,7 +17273,7 @@ projects:
     template:
       - name: merge-check
     check:
-      - gate-trove-functional-dsvm-mysql
+      - gate-trove-legacy-functional-dsvm-mysql
       - gate-trove-legacy-functional-dsvm-mysql-liberty
       - gate-trove-legacy-functional-dsvm-mysql-mitaka
       - gate-trove-legacy-functional-dsvm-mysql-newton
@@ -17258,7 +17283,7 @@ projects:
       - gate-trove-legacy-scenario-functional-dsvm-postgresql
       - gate-trove-legacy-scenario-functional-dsvm-pxc
     gate:
-      - gate-trove-functional-dsvm-mysql
+      - gate-trove-legacy-functional-dsvm-mysql
       - gate-trove-legacy-functional-dsvm-mysql-liberty
       - gate-trove-legacy-functional-dsvm-mysql-mitaka
       - gate-trove-legacy-functional-dsvm-mysql-newton

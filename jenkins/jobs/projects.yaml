@@ -14708,19 +14708,8 @@
           branch-override: default
       - 'gate-trove-legacy-functional-dsvm-{datastore}{job-suffix}':
           datastore: 'mysql'
-          job-suffix: '-liberty'
-          branch-override: stable/liberty
-      - 'gate-trove-legacy-functional-dsvm-{datastore}{job-suffix}':
-          datastore: 'mysql'
-          job-suffix: '-mitaka'
-          branch-override: stable/mitaka
-      - 'gate-trove-legacy-functional-dsvm-{datastore}{job-suffix}':
-          datastore:
-            - mysql
-            - redis
-          job-suffix: '-newton'
-          node: ubuntu-xenial
-          branch-override: stable/newton
+          job-suffix: ''
+          branch-override: default
       - 'gate-trove-legacy-scenario-functional-dsvm-{datastore}{job-suffix}':
           job-suffix: ''
           branch-override: default
@@ -14757,12 +14746,6 @@
             - mariadb
             - mongodb
             - percona
-      - 'gate-trove-integration-buildimage-{datastore}{job-suffix}':
-          job-suffix: '-nv'
-          datastore:
-            - mysql
-            - percona
-            - mongodb
       - 'gate-trove-buildimage-{datastore}{job-suffix}':
           job-suffix: '-nv'
           datastore:
@@ -14775,7 +14758,6 @@
             - mariadb
             - cassandra
             - couchbase
-
       - api-ref-jobs:
           service: database
       - gate-{name}-tox-db-{envlist}-{node}:
@@ -14800,6 +14782,34 @@
       - translation-jobs-mitaka
       - translation-jobs-newton
       - openstack-releasenotes-jobs
+
+- project:
+    name: trove-integration
+    tarball-site: tarballs.openstack.org
+    doc-publisher-site: docs.openstack.org
+
+    jobs:
+      - 'gate-trove-legacy-functional-dsvm-{datastore}{job-suffix}':
+          datastore: 'mysql'
+          job-suffix: '-liberty'
+          branch-override: stable/liberty
+      - 'gate-trove-legacy-functional-dsvm-{datastore}{job-suffix}':
+          datastore: 'mysql'
+          job-suffix: '-mitaka'
+          branch-override: stable/mitaka
+      - 'gate-trove-legacy-functional-dsvm-{datastore}{job-suffix}':
+          datastore:
+            - mysql
+            - redis
+          job-suffix: '-newton'
+          node: ubuntu-xenial
+          branch-override: stable/newton
+      - 'gate-trove-integration-buildimage-{datastore}{job-suffix}':
+          job-suffix: '-nv'
+          datastore:
+            - mysql
+            - percona
+            - mongodb
 
 - project:
     name: trove-specs
