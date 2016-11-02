@@ -1787,8 +1787,14 @@ jobs:
   - name: ^gate-rsc-(docs|python|requirements).*$
     voting: false
 
+  # NOTE(mriedem): This job uses xenial nodes which restricts it to >= newton
+  # changes. It also uses nova-network which is deprecated and not the default
+  # in Ocata so we need to just restrict it to running on stable/newton
+  # changes. nova-network in ocata will still have coverage in the cells v1
+  # job.
   - name: gate-tempest-dsvm-full-ubuntu-xenial
     queue-name: integrated
+    branch: stable/newton
 
   - name: ^gate-rally-dsvm-rally-.*$
     voting: false
