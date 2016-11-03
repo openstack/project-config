@@ -346,9 +346,14 @@ project-templates:
     check:
       - 'gate-{name}-linters-ubuntu-trusty'
       - 'gate-{name}-linters-ubuntu-xenial'
+      - gate-fuel-ccp-validate
     gate:
       - 'gate-{name}-linters-ubuntu-trusty'
       - 'gate-{name}-linters-ubuntu-xenial'
+
+  - name: fuel-ccp-cross-repo-gate
+    check:
+        - gate-fuel-ccp-validate
 
   - name: python-jobs
     check:
@@ -3427,6 +3432,10 @@ jobs:
   - name: ^fuel-octane-coverage-ubuntu-xenial
     branch: ^(?!stable/(?:[456]\.[01]|[78]\.0|mitaka)).*$
     voting: false
+
+  - name: ^gate-fuel-ccp-validate$
+    voting: false
+    queue-name: fuel-ccp
 
   # Mutexes
   - name: reprepro-import-debian-openstack-jessie
@@ -8914,6 +8923,7 @@ projects:
       - name: python34-jobs
       - name: python35-jobs
       - name: docs-on-rtfd
+      - name: fuel-ccp-cross-repo-gate
 
   - name: openstack/fuel-ccp-ceph
     template:
@@ -8941,6 +8951,7 @@ projects:
       - name: python-jobs
       - name: python34-jobs
       - name: python35-jobs
+      - name: fuel-ccp-cross-repo-gate
 
   - name: openstack/fuel-ccp-etcd
     template:
