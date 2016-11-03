@@ -218,6 +218,11 @@
           #!/bin/bash -xe
           export PROJECTS="openstack/python-manilaclient openstack/rally $PROJECTS"
 
+          # Run only manila services, because only main manila functionality
+          # will be tested with 'dummy' share driver that does not use real
+          # storage back ends. Also, it will speed up devstack installation.
+          export OVERRIDE_ENABLED_SERVICES=key,mysql,rabbit
+
           export IDENTITY_API_VERSION=3
 
           export DEVSTACK_GATE_NEUTRON=1
@@ -263,7 +268,7 @@
       - devstack-manila-rally-gate-multibackend:
           scenario: 'rally-manila'
           dhss: '1'
-          driver: 'generic'
+          driver: 'dummy'
 
     publishers:
       - devstack-logs
@@ -284,7 +289,7 @@
       - devstack-manila-rally-gate-multibackend:
           scenario: 'rally-manila-no-ss'
           dhss: '0'
-          driver: 'zfsonlinux'
+          driver: 'dummy'
 
     publishers:
       - devstack-logs
