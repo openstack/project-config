@@ -3439,6 +3439,10 @@ jobs:
     voting: false
     queue-name: fuel-ccp
 
+  # Don't run nova-lxd tests on trusty.
+  - name: ^gate-nova-lxd-(docs|pep8|python27)-ubuntu-xenial
+    branch: ^(stable/(mitaka|newton)|master)$
+
   # Mutexes
   - name: reprepro-import-debian-openstack-jessie
     mutex: mirror.deb-openstack
@@ -3478,7 +3482,6 @@ jobs:
 
   - name: wheel-release-cent7x64
     mutex: mirror.wheel.cent7x64
-
 
 ########################################################################
 # The project list is sorted alphabetically.
@@ -12210,9 +12213,18 @@ projects:
   - name: openstack/nova-lxd
     template:
       - name: merge-check
-      - name: python-jobs
       - name: check-requirements
       - name: publish-to-pypi
+    check:
+      - gate-nova-lxd-docs-ubuntu-xenial
+      - gate-nova-lxd-pep8-ubuntu-xenial
+      - gate-nova-lxd-python27-ubuntu-xenial
+    gate:
+      - gate-nova-lxd-docs-ubuntu-xenial
+      - gate-nova-lxd-pep8-ubuntu-xenial
+      - gate-nova-lxd-python27-ubuntu-xenial
+    post:
+      - nova-lxd-branch-tarball
     experimental:
       - gate-tempest-dsvm-lxd-nv
 
