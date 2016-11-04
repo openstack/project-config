@@ -146,6 +146,9 @@
                  export DEVSTACK_GATE_REMOVE_STACK_SUDO=0
                  # enable enroll hook
                  export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_INSPECTOR_NODE_NOT_FOUND_HOOK=enroll"
+                 # we are deleting node from ironic for simulate node discovery,
+                 # so inspector has to sync cache asap
+                 export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_INSPECTOR_CLEAN_UP_PERIOD=5"
             fi
 
 - builder:
