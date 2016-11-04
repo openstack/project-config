@@ -126,3 +126,42 @@
       - devstack-logs
       - console-log
 
+- job-template:
+    name: '{pipeline}-neutron-fwaas-{fwaas-version}-dsvm-tempest-multinode{branch-designator}{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_TEMPEST_REGEX="^neutron_fwaas\."
+          export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
+          export DEVSTACK_GATE_NEUTRON=1
+          export BRANCH_OVERRIDE={branch-override}
+          export FWAAS_VERSION={fwaas-version}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          if [ "$FWAAS_VERSION" = "v2" ] ; then
+              export ENABLED_SERVICES="q-fwaas-v2"
+          elif [ "$FWAAS_VERSION" = "v1" ] ; then
+              export ENABLED_SERVICES="q-fwaas-v1"
+          fi
+          export DEVSTACK_GATE_TOPOLOGY="multinode"
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - test-results
+      - devstack-logs
+      - console-log
