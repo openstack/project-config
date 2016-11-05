@@ -6,7 +6,10 @@
       - zuul-release-git-prep-upper-constraints
       - install-distro-packages
       - shell: |
-          sudo pip install grpcio grpcio-tools
+          sudo pip install grpcio grpcio-tools pbr
+          export GOPATH=$HOME/go
+          export PATH=$GOPATH/bin:$PATH
+          ./install_proto3.sh
       - revoke-sudo
       - shell: |
           #!/bin/bash -xe
@@ -42,7 +45,10 @@
       - zuul-git-prep-upper-constraints
       - install-distro-packages
       - shell: |
-          sudo pip install grpcio grpcio-tools
+          sudo pip install grpcio grpcio-tools pbr
+          export GOPATH=$HOME/go
+          export PATH=$GOPATH/bin:$PATH
+          ./install_proto3.sh
       - revoke-sudo
       - shell: |
           #!/bin/bash -xe
