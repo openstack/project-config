@@ -1,0 +1,18 @@
+- job-template:
+    name: '{pipeline}-noop'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 30
+      - timestamps
+
+    builders:
+      - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
+      - shell: |
+          env
+
+    publishers:
+      - console-log
