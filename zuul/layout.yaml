@@ -3234,6 +3234,10 @@ jobs:
   - name: ^gate-openstack-ansible-os_ceilometer-ansible-gnocchi.*$
     branch: ^(?!(liberty|stable/(mitaka|newton))).*$
 
+  # Skip the os_keystone upgrade test on Newton and earlier branches.
+  - name: ^gate-openstack-ansible-os_keystone-ansible-upgrade.*$
+    branch: ^(?!(liberty|stable/(mitaka|newton))).*$
+
   # Skip any OpenStack-Ansible jobs for os_ repositories which run on CentOS7
   # except os_keystone, os_glance, os_cinder for stable/newton.
   - name: ^gate-openstack-ansible-os_(?!(keystone|glance|cinder)).*-ansible-.*-centos-7.*$
@@ -12715,6 +12719,8 @@ projects:
       - gate-openstack-ansible-os_keystone-ansible-uwsgi_nginx-centos-7
       - gate-openstack-ansible-os_keystone-ansible-uwsgi_nginx-ubuntu-trusty
       - gate-openstack-ansible-os_keystone-ansible-uwsgi_nginx-ubuntu-xenial
+    experimental:
+      - gate-openstack-ansible-os_keystone-ansible-upgrade-ubuntu-xenial
     gate:
       - gate-openstack-ansible-os_keystone-ansible-uwsgi_apache-centos-7
       - gate-openstack-ansible-os_keystone-ansible-uwsgi_apache-ubuntu-trusty
