@@ -3361,11 +3361,15 @@ jobs:
     branch: ^(?!stable/(?:juno|kilo|liberty|mitaka)).*$
 
   # Some projects do not have releasenotes until the Newton cycle
-  - name: ^gate-(manila-ui|networking-odl|oslo.(messaging|cache|concurrency|middleware|privsep|reports|rootwrap|service|context|vmware|policy)|tacker)-releasenotes$
+  - name: ^gate-(manila-ui|networking-odl|oslo.(messaging|cache|concurrency|middleware|privsep|rootwrap|service|context|vmware|policy)|tacker)-releasenotes$
     branch: ^(?!stable/(?:kilo|liberty|mitaka)).*$
 
   # Some python client projects do not have releasenotes until the Ocata cycle
   - name: ^gate-python-(tripleo)client-releasenotes$
+    branch: ^(?!stable/(?:kilo|liberty|mitaka|newton)).*$
+
+  # Some projects do not have releasenotes until the Ocata cycle
+  - name: ^gate-(automaton|debtcollector|futurist|osprofiler|oslo.(i18n|reports|serialization|utils|versionedobjects)|oslosphinx|oslotest|stevedore|taskflow|tooz)-releasenotes$
     branch: ^(?!stable/(?:kilo|liberty|mitaka|newton)).*$
 
     # Post job is run on liberty and newer branches only
@@ -5506,6 +5510,7 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
       - name: lib-forward-testing
+      - name: release-notes-jobs
 
   - name: openstack/bandit
     template:
@@ -8329,6 +8334,7 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
       - name: lib-forward-testing
+      - name: release-notes-jobs
 
   - name: openstack/defcore
     template:
@@ -9740,6 +9746,7 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
       - name: lib-forward-testing
+      - name: release-notes-jobs
 
   - name: openstack/fuxi
     template:
@@ -13472,6 +13479,7 @@ projects:
       - name: translation-jobs
       - name: lib-forward-testing
       - name: stable-compat-jobs
+      - name: release-notes-jobs
     post:
       - oslo.i18n-coverage-ubuntu-trusty
       - oslo.i18n-coverage-ubuntu-xenial
@@ -13553,6 +13561,7 @@ projects:
       - name: translation-jobs
       - name: lib-forward-testing
       - name: stable-compat-jobs
+      - name: release-notes-jobs
 
   - name: openstack/oslo.policy
     template:
@@ -13579,6 +13588,7 @@ projects:
       - name: publish-to-pypi
       - name: translation-jobs
       - name: lib-forward-testing
+      - name: release-notes-jobs
 
   - name: openstack/oslo.reports
     template:
@@ -13592,6 +13602,7 @@ projects:
       - name: translation-jobs
       - name: lib-forward-testing
       - name: stable-compat-jobs
+      - name: release-notes-jobs
 
   - name: openstack/oslo.rootwrap
     template:
@@ -13604,6 +13615,7 @@ projects:
       - name: publish-to-pypi
       - name: lib-forward-testing
       - name: stable-compat-jobs
+      - name: release-notes-jobs
 
   - name: openstack/oslo.serialization
     template:
@@ -13616,6 +13628,7 @@ projects:
       - name: publish-to-pypi
       - name: lib-forward-testing
       - name: stable-compat-jobs
+      - name: release-notes-jobs
 
   - name: openstack/oslo.service
     template:
@@ -13629,6 +13642,7 @@ projects:
       - name: translation-jobs
       - name: lib-forward-testing
       - name: stable-compat-jobs
+      - name: release-notes-jobs
 
   - name: openstack/oslo.tools
     template:
@@ -13647,6 +13661,7 @@ projects:
       - name: translation-jobs
       - name: lib-forward-testing
       - name: stable-compat-jobs
+      - name: release-notes-jobs
 
   - name: openstack/oslo.versionedobjects
     template:
@@ -13660,6 +13675,7 @@ projects:
       - name: translation-jobs
       - name: lib-forward-testing
       - name: stable-compat-jobs
+      - name: release-notes-jobs
     check:
       - gate-oslo.versionedobjects-src-grenade-dsvm-multinode
 
@@ -13683,6 +13699,7 @@ projects:
       - name: openstack-server-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
+      - name: release-notes-jobs
     check:
       - gate-oslosphinx-pep8-ubuntu-trusty
       - gate-oslosphinx-docs-ubuntu-trusty
@@ -13706,6 +13723,7 @@ projects:
       - name: openstack-server-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
+      - name: release-notes-jobs
     post:
       - oslotest-coverage-ubuntu-trusty
       - oslotest-coverage-ubuntu-xenial
@@ -13752,6 +13770,7 @@ projects:
       - name: check-requirements
       - name: openstack-server-publish-jobs
       - name: publish-to-pypi
+      - name: release-notes-jobs
       - name: lib-forward-testing
     check:
       - osprofiler-coverage-ubuntu-trusty
@@ -16508,6 +16527,7 @@ projects:
       - name: publish-to-pypi
       - name: lib-forward-testing
       - name: openstack-server-publish-jobs
+      - name: release-notes-jobs
 
   - name: openstack/sticks
     template:
@@ -16803,6 +16823,7 @@ projects:
       - name: openstack-server-publish-jobs
       - name: publish-to-pypi
       - name: lib-forward-testing
+      - name: release-notes-jobs
     post:
       - taskflow-coverage-db-ubuntu-trusty
       - taskflow-coverage-db-ubuntu-xenial
@@ -16961,6 +16982,7 @@ projects:
       - name: openstack-server-publish-jobs
       - name: publish-to-pypi
       - name: lib-forward-testing
+      - name: release-notes-jobs
     check:
       - gate-tooz-tox-db-py27-etcd-ubuntu-trusty
       - gate-tooz-tox-db-py27-etcd-ubuntu-xenial
