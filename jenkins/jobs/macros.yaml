@@ -777,6 +777,14 @@
       - shell: "/usr/local/jenkins/slave_scripts/run-tox.sh {envlist}"
 
 - builder:
+    name: tox-with-tmpdir-passed-in
+    builders:
+      - shell: |
+          #!/bin/bash
+          export TMPDIR={new_tmpdir_loc}
+          exit /usr/local/jenkins/slave_scripts/run-tox.sh {envlist}"
+
+- builder:
     name: assert-no-extra-files
     builders:
       - shell: |
@@ -1068,6 +1076,20 @@
           sudo dpkg -i elasticsearch-2.3.2.deb
           #Make 'elasticsearch' binary callable from within functional tests
           sudo ln -s /usr/share/elasticsearch/bin/elasticsearch /usr/local/bin/elasticsearch
+
+- builder:
+    name: mount-xfs-tmp-space
+    builders:
+      - shell: |
+          #!/bin/bash -xe
+          # create a large-ish file that we'll mount as a loopback
+          truncate -s 1GB {xfs_file}
+          # format the new file as xfs
+          mkfs.xfs {xfs_file}
+          # loopback mount the file
+          mkdir -p {xfs_mount_point}
+          sudo mount -o loop,noatime,nodiratime {xfs_file} {xfs_mount_point}
+          sudo chmod 777 {xfs_mount_point}
 
 # ======================================================================
 
