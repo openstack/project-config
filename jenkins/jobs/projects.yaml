@@ -1219,9 +1219,20 @@
             - compliance
           node:
             - ubuntu-xenial
-      - '{pipeline}-grenade-dsvm-cinder-multinode{job-suffix}':
+      - '{pipeline}-grenade-dsvm-cinder-multinode-{node-release}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty-2-node
+          node:
+            - ubuntu-trusty-2-node
+          node-release:
+            - ubuntu-trusty
+          job-suffix: ''
+          branch-override: default
+      - '{pipeline}-grenade-dsvm-cinder-multinode-{node-release}{job-suffix}':
+          pipeline: gate
+          node:
+            - ubuntu-xenial-2-node
+          node-release:
+            - ubuntu-xenial
           job-suffix: ''
           branch-override: default
       - api-ref-jobs:
