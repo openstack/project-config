@@ -90,7 +90,9 @@ deb $NODEPOOL_UBUNTU_MIRROR $LSBDISTCODENAME-security main universe"
 
 CEPH_SOURCES_LIST="deb $NODEPOOL_CEPH_MIRROR $LSBDISTCODENAME main"
 
-UCA_SOURCES_LIST="deb $NODEPOOL_UCA_MIRROR $LSBDISTCODENAME-updates main"
+UCA_SOURCES_LIST_LIBERTY="deb $NODEPOOL_UCA_MIRROR trusty-updates/liberty main"
+UCA_SOURCES_LIST_MITAKA="deb $NODEPOOL_UCA_MIRROR trusty-updates/mitaka main"
+UCA_SOURCES_LIST_NEWTON="deb $NODEPOOL_UCA_MIRROR xenial-updates/newton main"
 
 APT_CONF_UNAUTHENTICATED="APT::Get::AllowUnauthenticated \"true\";"
 
@@ -173,8 +175,14 @@ if [ "$LSBDISTID" == "Ubuntu" ] && [ "$LSBDISTCODENAME" != 'precise' ]; then
     sudo mv /tmp/ceph-deb-hammer.list /etc/apt/sources.list.available.d/
 
     # Ubuntu Cloud Archive
-    echo "$UCA_SOURCES_LIST" >/tmp/ubuntu-cloud-archive.list
-    sudo mv /tmp/ubuntu-cloud-archive.list /etc/apt/sources.list.available.d/
+    echo "$UCA_SOURCES_LIST_LIBERTY" >/tmp/ubuntu-cloud-archive-liberty.list
+    sudo mv /tmp/ubuntu-cloud-archive-liberty.list /etc/apt/sources.list.available.d/
+
+    echo "$UCA_SOURCES_LIST_MITAKA" >/tmp/ubuntu-cloud-archive-mitaka.list
+    sudo mv /tmp/ubuntu-cloud-archive-mitaka.list /etc/apt/sources.list.available.d/
+
+    echo "$UCA_SOURCES_LIST_NEWTON" >/tmp/ubuntu-cloud-archive-newton.list
+    sudo mv /tmp/ubuntu-cloud-archive-newton.list /etc/apt/sources.list.available.d/
 
     sudo chown root:root /etc/apt/sources.list.available.d/*
     sudo chmod 0644 /etc/apt/sources.list.available.d/*
