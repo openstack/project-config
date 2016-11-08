@@ -4892,10 +4892,15 @@
     tarball-site: tarballs.openstack.org
 
     jobs:
+      - coverage-jobs
       - python-jobs
       - 'gate-{name}-python35{suffix}':
           suffix: '-nv'
       - pypi-jobs
+      - 'gate-{name}-tox-{envlist}-{node}':
+          envlist: docs-linkcheck
+          node:
+            - ubuntu-xenial
 
 - project:
     name: gitdm
