@@ -53,7 +53,7 @@
           export PROJECTS="openstack/ceilometer $PROJECTS"
           export PROJECTS="openstack/aodh $PROJECTS"
           # panko exists for Newton+ only
-          if [[ "$ZUUL_BRANCH" != "stable/liberty" -a "$ZUUL_BRANCH" != "stable/mitaka" ]]; then
+          if [[ ! "stable/liberty stable/mitaka" =~ $ZUUL_BRANCH ]]; then
               export PROJECTS="openstack/panko $PROJECTS"
           fi
           export CEILOMETER_NOTIFICATION_TOPICS=notifications,profiler
@@ -78,7 +78,7 @@
           DEVSTACK_LOCAL_CONFIG="enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
           DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin aodh git://git.openstack.org/openstack/aodh"
           # panko exists for Newton+ only
-          if [[ "$ZUUL_BRANCH" != "stable/liberty" -a "$ZUUL_BRANCH" != "stable/mitaka" ]]; then
+          if [[ ! "stable/liberty stable/mitaka" =~ $ZUUL_BRANCH ]]; then
               DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin panko git://git.openstack.org/openstack/panko"
           fi
           DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin rally git://git.openstack.org/openstack/rally"
@@ -98,7 +98,7 @@
           ENABLED_SERVICES+=ceilometer-anotification,ceilometer-collector,
           ENABLED_SERVICES+=aodh-api,aodh-evaluator,aodh-notifier,
           # panko exists for Newton+ only
-          if [[ "$ZUUL_BRANCH" != "stable/liberty" -a "$ZUUL_BRANCH" != "stable/mitaka" ]]; then
+          if [[ ! "stable/liberty stable/mitaka" =~ $ZUUL_BRANCH ]]; then
               ENABLED_SERVICES+=panko-api,
           fi
           if [ $DEVSTACK_GATE_NEUTRON -ne 1 ]; then
