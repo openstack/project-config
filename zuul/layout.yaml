@@ -12314,22 +12314,36 @@ projects:
       - name: merge-check
       - name: python-jobs
       - name: python35-jobs
-      - name: publish-to-pypi
     check:
       - gate-oaktree-dsvm-functional
     gate:
       - gate-oaktree-dsvm-functional
+    pre-release:
+      - oaktree-tarball:
+          - oaktree-tarball-signing
+          - oaktree-pypi-both-upload
+    release:
+      - oaktree-tarball:
+          - oaktree-tarball-signing
+          - oaktree-pypi-both-upload
 
   - name: openstack/oaktreemodel
     template:
       - name: merge-check
-      - name: publish-to-pypi
     check:
       - gate-oaktree-dsvm-functional
       - oaktreemodel-distcheck
     gate:
       - gate-oaktree-dsvm-functional
       - oaktreemodel-distcheck
+    pre-release:
+      - oaktreemodel-tarball:
+          - oaktreemodel-tarball-signing
+          - oaktreemodel-pypi-both-upload
+    release:
+      - oaktreemodel-tarball:
+          - oaktreemodel-tarball-signing
+          - oaktreemodel-pypi-both-upload
 
   - name: openstack/octavia
     template:
