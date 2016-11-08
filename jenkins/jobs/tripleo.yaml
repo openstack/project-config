@@ -62,6 +62,27 @@
       - console-log
 
 - job-template:
+    name: '{pipeline}-tripleo-quickstart-extras-{scenario}-{node}{job-suffix}'
+    node: '{node}'
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - zuul-git-prep
+      - install-distro-packages
+      - shell: |
+          # Allow Jenkins user to ssh into localhost
+          ssh-keygen -f ~/.ssh/id_rsa -N ""
+          cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+          ssh-keyscan localhost >> ~/.ssh/known_hosts
+          ssh-keyscan 127.0.0.1 >> ~/.ssh/known_hosts
+      - tox:
+          envlist: "{scenario}"
+
+    publishers:
+      - console-log
+
+- job-template:
     name: 'gate-tripleo-buildimage-{image-name}-{node}{suffix}'
     node: '{node}'
 
@@ -195,6 +216,17 @@
     name: 'tripleo-quickstart-jobs'
     jobs:
       - '{pipeline}-tripleo-quickstart-{scenario}-{node}{job-suffix}':
+          job-suffix: '-nv'
+          node:
+            - centos-7
+          pipeline: gate
+          scenario:
+            - base
+
+- job-group:
+    name: 'tripleo-quickstart-extras-jobs'
+    jobs:
+      - '{pipeline}-tripleo-quickstart-extras-{scenario}-{node}{job-suffix}':
           job-suffix: '-nv'
           node:
             - centos-7
