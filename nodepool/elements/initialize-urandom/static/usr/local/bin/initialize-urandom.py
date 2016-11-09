@@ -223,7 +223,7 @@ class Pump(object):
             r = self.getrandom(1, nonblock=True)
             if len(r) != 1:
                 raise Exception("No data returned from getrandom")
-            print("Nonblocking pool initilaized")
+            print("Nonblocking pool initialized")
             return True
         except GeneratorNotInitializedError:
             return False

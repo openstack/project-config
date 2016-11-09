@@ -53,7 +53,7 @@ if [ -z "$ZUUL_REF" ]; then
         # use the origin since zuul mergers have outdated branches
         ZUUL_URL=$GIT_ORIGIN
     else
-        echo "Provide either ZUUL_REF or BRANCH in the calling enviromnent."
+        echo "Provide either ZUUL_REF or BRANCH in the calling environment."
         exit 1
     fi
 fi
