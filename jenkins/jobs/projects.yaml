@@ -7825,7 +7825,12 @@
       - translation-jobs
       - translation-jobs-mitaka
       - translation-jobs-newton
-      - gate-rally-dsvm-neutron-{name}
+      - gate-rally-dsvm-neutron-{name}-{node}{job-suffix}:
+          node: ubuntu-trusty
+          job-suffix: ''
+      - gate-rally-dsvm-neutron-{name}-{node}{job-suffix}:
+          node: ubuntu-xenial
+          job-suffix: '-nv'
       - '{pipeline}-grenade-dsvm-neutron-multinode-{node-release}{job-suffix}':
           pipeline: gate
           node-release: ubuntu-trusty
@@ -13170,7 +13175,9 @@
           node:
             - ubuntu-trusty
             - ubuntu-xenial
-      - gate-rally-dsvm-neutron-{name}:
+      - gate-rally-dsvm-neutron-{name}-{node}{job-suffix}:
+          node: ubuntu-trusty
+          job-suffix: '-nv'
           name: unstable
       - gate-rally-dsvm-rally-{service}:
           service: cinder
@@ -13187,7 +13194,9 @@
       - gate-rally-dsvm-monasca-{name}
       - gate-rally-dsvm-murano-{name}
       - gate-rally-dsvm-mistral-{name}
-      - gate-rally-dsvm-neutron-{name}
+      - gate-rally-dsvm-neutron-{name}-{node}{job-suffix}:
+          node: ubuntu-trusty
+          job-suffix: ''
       - gate-rally-dsvm-neutron-extensions-{name}
       - gate-rally-dsvm-neutron-existing-users-{name}
       - gate-rally-dsvm-zaqar-{name}
