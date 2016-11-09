@@ -60,6 +60,7 @@
           export DEVSTACK_GATE_SENLIN={senlin}
           export DEVSTACK_GATE_WATCHER={watcher}
           export DEVSTACK_GATE_MAGNUM={magnum}
+          export DEVSTACK_GATE_NEUTRON_EXTENSIONS={neutron_extensions}
           export DEVSTACK_GATE_TEMPEST_LARGE_OPS={large_ops}
           export DEVSTACK_GATE_EXERCISES=0
           export RALLY_SCENARIO={scenario}
@@ -98,6 +99,16 @@
           if [ $DEVSTACK_GATE_NEUTRON -ne 0 ]; then
               export PROJECTS="openstack/neutron $PROJECTS"
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin neutron git://git.openstack.org/openstack/neutron"
+          fi
+          if [ $DEVSTACK_GATE_NEUTRON -ne 0 -a $DEVSTACK_GATE_NEUTRON_EXTENSIONS -ne 0 ]; then
+              export PROJECTS="openstack/neutron-lbaas $PROJECTS"
+              export PROJECTS="openstack/octavia $PROJECTS"
+              export PROJECTS="openstack/neutron-vpnaas $PROJECTS"
+              export PROJECTS="openstack/neutron-fwaas $PROJECTS"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin neutron-lbaas git://git.openstack.org/openstack/neutron-lbaas"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin octavia https://git.openstack.org/openstack/octavia"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin neutron-vpnaas https://git.openstack.org/openstack/neutron-vpnaas"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin neutron-fwaas https://git.openstack.org/openstack/neutron-fwaas"
           fi
           if [ $DEVSTACK_GATE_IRONIC -ne 0 ]; then
               export PROJECTS="openstack/ironic $PROJECTS"
@@ -386,6 +397,7 @@
         - devstack-rally-gate:
             scenario: '{name}-ironic'
             neutron: '1'
+            neutron_extensions: '0'
             ironic: '1'
             zaqar: '0'
             large_ops: '0'
@@ -452,6 +464,7 @@
         - devstack-murano-rally-gate:
             scenario: '{name}-murano'
             neutron: '1'
+            neutron_extensions: '0'
             large_ops: '0'
 
     publishers:
@@ -536,6 +549,7 @@
           scenario: '{name}'
           ironic: '0'
           neutron: '0'
+          neutron_extensions: '0'
           zaqar: '0'
           large_ops: '0'
           keystone_use_v2api: '0'
@@ -564,6 +578,7 @@
           scenario: '{name}-neutron'
           ironic: '0'
           neutron: '1'
+          neutron_extensions: '0'
           zaqar: '0'
           large_ops: '0'
           keystone_use_v2api: '0'
@@ -577,6 +592,33 @@
       - rally-plot
       - console-log
 
+- job-template:
+    name: 'gate-rally-dsvm-neutron-extensions-{name}'
+    node: ubuntu-xenial
+
+    wrappers:
+      - build-timeout:
+          timeout: 130
+      - timestamps
+
+    builders:
+      - devstack-rally-gate:
+          scenario: '{name}-neutron'
+          ironic: '0'
+          neutron: '1'
+          neutron_extensions: '1'
+          zaqar: '0'
+          large_ops: '0'
+          keystone_use_v2api: '0'
+          senlin: '0'
+          magnum: '0'
+          prepopulate_users: '0'
+          watcher: '0'
+
+    publishers:
+      - devstack-logs
+      - rally-plot
+      - console-log
 
 - job-template:
     name: 'gate-rally-dsvm-neutron-existing-users-{name}'
@@ -592,6 +634,7 @@
           scenario: '{name}-neutron-existing-users'
           ironic: '0'
           neutron: '1'
+          neutron_extensions: '0'
           zaqar: '0'
           large_ops: '0'
           keystone_use_v2api: '0'
@@ -620,6 +663,7 @@
           scenario: '{name}-fakevirt'
           ironic: '0'
           neutron: '0'
+          neutron_extensions: '0'
           zaqar: '0'
           large_ops: '10'
           keystone_use_v2api: '0'
@@ -648,6 +692,7 @@
           scenario: '{name}-zaqar'
           ironic: '0'
           neutron: '0'
+          neutron_extensions: '0'
           zaqar: '1'
           large_ops: '0'
           keystone_use_v2api: '0'
@@ -675,6 +720,7 @@
           scenario: '{service}'
           ironic: '0'
           neutron: '{neutron}'
+          neutron_extensions: '0'
           zaqar: '0'
           large_ops: '0'
           keystone_use_v2api: '0'
@@ -977,6 +1023,7 @@
             scenario: 'rally-keystone-api-v2'
             ironic: '0'
             neutron: '0'
+            neutron_extensions: '0'
             zaqar: '0'
             large_ops: '0'
             keystone_use_v2api: '1'
@@ -1004,6 +1051,7 @@
           scenario: '{name}-senlin'
           ironic: '0'
           neutron: '1'
+          neutron_extensions: '0'
           zaqar: '0'
           large_ops: '0'
           keystone_use_v2api: '0'
@@ -1032,6 +1080,7 @@
           scenario: '{name}-watcher'
           ironic: '0'
           neutron: '0'
+          neutron_extensions: '0'
           zaqar: '0'
           large_ops: '0'
           keystone_use_v2api: '0'
@@ -1060,6 +1109,7 @@
           scenario: '{name}-magnum'
           ironic: '0'
           neutron: '1'
+          neutron_extensions: '0'
           zaqar: '0'
           large_ops: '0'
           keystone_use_v2api: '0'
