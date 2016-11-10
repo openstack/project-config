@@ -1794,6 +1794,12 @@ jobs:
     queue-name: integrated
     branch: stable/newton
 
+  # NOTE(mriedem): nova-network will only work in cells v1 configurations
+  # starting in Ocata, so all nova-network backed grenade jobs have to be
+  # restricted to <= Newton.
+  - name: ^gate-grenade-dsvm(?!-neutron).*
+    branch: ^stable/(liberty|mitaka|newton)$
+
   - name: ^gate-rally-dsvm-rally-.*$
     voting: false
 
