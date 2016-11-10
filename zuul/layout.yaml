@@ -1049,6 +1049,7 @@ project-templates:
       - gate-tripleo-ci-centos-7-scenario001-multinode-nv
       - gate-tripleo-ci-centos-7-scenario002-multinode
       - gate-tripleo-ci-centos-7-scenario003-multinode
+      - gate-tripleo-ci-centos-7-scenario004-multinode-nv
       - gate-tripleo-ci-centos-7-nonha-multinode-updates-nv
     gate:
       - gate-tripleo-ci-centos-7-nonha-multinode
@@ -1562,12 +1563,8 @@ jobs:
       - templates/scenario001-multinode-pingtest.yaml
   - name : ^gate-tripleo-ci-centos-7-scenario002-multinode.*$
     files:
-      - ^puppet/services/barbican.*$
-      - ^manifests/profile/base/barbican.*$
       - ^puppet/services/cinder.*$
       - ^manifests/profile/base/cinder.*$
-      - ^puppet/services/zaqar.*$
-      - ^manifests/profile/base/zaqar.*$
       - ^puppet/services/swift.*$
       - ^manifests/profile/base/swift.*$
       - test-environments/scenario002-multinode.yaml
@@ -1576,10 +1573,21 @@ jobs:
     files:
       - ^puppet/services/sahara.*$
       - ^manifests/profile/base/sahara.*$
-      - ^puppet/services/mistral.*$
-      - ^manifests/profile/base/mistral.*$
       - test-environments/scenario003-multinode.yaml
       - templates/scenario003-multinode-pingtest.yaml
+  # Barbican is not available in releases older than Ocata, so this scenario
+  # won't run on those. Same for Mistral and Zaqar.
+  - name : ^gate-tripleo-ci-centos-7-scenario004-multinode.*$
+    branch: ^(?!stable/(liberty|mitaka|newton)).*$
+    files:
+      - ^puppet/services/barbican.*$
+      - ^manifests/profile/base/barbican.*$
+      - ^puppet/services/mistral.*$
+      - ^manifests/profile/base/mistral.*$
+      - ^puppet/services/zaqar.*$
+      - ^manifests/profile/base/zaqar.*$
+      - test-environments/scenario004-multinode.yaml
+      - templates/scenario004-multinode-pingtest.yaml
 
   # Test TripleO stable/liberty in Puppet OpenStack CI
   - name: ^gate-tripleo-ci-centos-7-ovb-nonha-puppet-liberty$
