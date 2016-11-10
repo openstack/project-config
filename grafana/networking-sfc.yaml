@@ -1,0 +1,35 @@
+dashboard:
+  title: Networking SFC Failure Rates
+  rows:
+    - title: Description
+      height: 100px
+      panels:
+        - title: Description
+          content: |
+            **This dashboard is managed by [Grafyaml](http://docs.openstack.org/infra/system-config/grafyaml.html).**
+
+            If you would like to make changes to this dashboard, please see the grafana directory in [project-config](https://git.openstack.org/cgit/openstack-infra/project-config/tree/grafana/networking-sfc.yaml).
+          type: text
+    - title: Graphs
+      height: 320px
+      panels:
+        - title: Unit Test Failure Rates (Check queue)
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-networking-sfc-python27-db-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-networking-sfc-python27-db-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-networking-sfc-python27-db-ubuntu-xenial')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-networking-sfc-python34-db.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-networking-sfc-python34-db.{SUCCESS,FAILURE})),'24hours'), 'gate-networking-sfc-python34-db')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-networking-sfc-python35-db.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-networking-sfc-python35-db.{SUCCESS,FAILURE})),'24hours'), 'gate-networking-sfc-python35-db')
+          type: graph
+        - title: Unit Test Failure Rates (Gate queue)
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-networking-sfc-python27-db-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-networking-sfc-python27-db-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-networking-sfc-python27-db-ubuntu-xenial')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-networking-sfc-python34-db.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-networking-sfc-python34-db.{SUCCESS,FAILURE})),'24hours'), 'gate-networking-sfc-python34-db')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-networking-sfc-python35-db.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-networking-sfc-python35-db.{SUCCESS,FAILURE})),'24hours'), 'gate-networking-sfc-python35-db')
+          type: graph
+        - title: Integrated Failure Rates (Check queue)
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-tempest-dsvm-networking-sfc-nv.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-tempest-dsvm-networking-sfc-nv.{SUCCESS,FAILURE})),'24hours'), 'gate-tempest-dsvm-networking-sfc-nv')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-networking-sfc-functional-dvsm-nv.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-networking-sfc-functional-dvsm-nv.{SUCCESS,FAILURE})),'24hours'), 'gate-networking-sfc-functional-dvsm-nv')
+          type: graph
