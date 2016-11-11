@@ -17,11 +17,12 @@
           export BRANCH_OVERRIDE={branch-override}
           export PROJECTS="openstack/python-cinderclient $PROJECTS"
           export DEVSTACK_PROJECT_FROM_GIT=python-cinderclient
+          export DEVSTACK_LOCAL_CONFIG="VOLUME_BACKING_FILE_SIZE=16G"
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
           if [ "{special}" == "-identity-v3-only" ] ; then
-              export DEVSTACK_LOCAL_CONFIG="ENABLE_IDENTITY_V2=False"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"ENABLE_IDENTITY_V2=False"
           fi
           function post_test_hook {{
               # Configure and run functional tests
