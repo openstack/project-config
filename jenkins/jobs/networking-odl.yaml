@@ -219,3 +219,66 @@
     publishers:
       - devstack-logs
       - console-log
+
+- job-template:
+    name: '{pipeline}-dsvm-networking-odl-{odltest}-{odl-release-base}{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_UNSTACK=1
+          export DEVSTACK_GATE_TEMPEST=0
+          export DEVSTACK_GATE_EXERCISES=0
+          export DEVSTACK_GATE_NEUTRON=1
+          export DEVSTACK_GATE_INSTALL_TESTONLY=1
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+
+          export PROJECTS="openstack/networking-odl $PROJECTS"
+
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin networking-odl git://git.openstack.org/openstack/networking-odl"
+          # Fullstack test cases now assumes ODL available at this IP
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"HOST_IP=127.0.0.1"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"UNSTACK_KEEP_ODL=True"
+
+          # Keep localrc to be able to set some vars in pre_test_hook
+          export KEEP_LOCALRC=1
+
+          # specify ODL release to use
+          export ODL_RELEASE_BASE={odl-release-base}
+
+          function pre_test_hook {{
+              . $BASE/new/networking-odl/devstack/pre_test_hook.sh
+          }}
+          export -f pre_test_hook
+
+          function gate_hook {{
+              bash -xe $BASE/new/networking-odl/networking_odl/tests/contrib/gate_hook.sh dsvm-{odltest}
+          }}
+          export -f gate_hook
+
+          function post_test_hook {{
+             bash -xe $BASE/new/networking-odl/networking_odl/tests/contrib/post_test_hook.sh dsvm-{odltest}
+          }}
+          export -f post_test_hook
+
+          export DEVSTACK_GATE_SETTINGS=/opt/stack/new/networking-odl/devstack/devstackgaterc
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - test-results
+      - devstack-logs
+      - console-log
