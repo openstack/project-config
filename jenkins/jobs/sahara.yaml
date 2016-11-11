@@ -22,6 +22,7 @@
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_LOCAL_CONFIG="enable_plugin sahara git://git.openstack.org/openstack/sahara"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin sahara-dashboard git://git.openstack.org/openstack/sahara-dashboard"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
 
           function pre_test_hook {
               cd /opt/stack/new/sahara-dashboard/tools/gate/integration
@@ -162,6 +163,7 @@
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_TEMPEST_REGEX="sahara_tempest_plugin.tests.cli"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin sahara git://git.openstack.org/openstack/sahara"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"export TEMPEST_PLUGINS='/opt/stack/new/sahara-tests'"
           export KEEP_LOCALRC=1
           export PROJECTS="openstack/sahara-tests openstack/python-saharaclient $PROJECTS"
@@ -210,6 +212,7 @@
           export PROJECTS="openstack/sahara-tests $PROJECTS"
 
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin sahara git://git.openstack.org/openstack/sahara"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
@@ -250,14 +253,15 @@
           export PROJECTS="openstack-dev/grenade $PROJECTS"
           export PROJECTS="openstack/python-saharaclient $PROJECTS"
           export PYTHONUNBUFFERED=true
-          OVERRIDE_ENABLED_SERVICES=c-api,c-bak,c-sch,c-vol,cinder,dstat,g-api,g-reg,h-api,h-api-cfn,h-api-cw,h-eng,heat,key,mysql,n-api,n-cond,n-cpu,n-crt,n-sch,q-agt,q-dhcp,q-l3,q-meta,q-metering,q-svc,rabbit,s-account,s-container,s-object,s-proxy,ceilometer-acompute,ceilometer-acentral,ceilometer-collector,ceilometer-api,sahara
+          OVERRIDE_ENABLED_SERVICES=c-api,c-bak,c-sch,c-vol,cinder,dstat,g-api,g-reg,key,mysql,n-api,n-cond,n-cpu,n-crt,n-sch,q-agt,q-dhcp,q-l3,q-meta,q-metering,q-svc,rabbit,s-account,s-container,s-object,s-proxy,ceilometer-acompute,ceilometer-acentral,ceilometer-collector,ceilometer-api
           # n-obj has been removed from mitaka
           if [[ "stable/liberty" =~ $ZUUL_BRANCH ]]; then
               OVERRIDE_ENABLED_SERVICES+=,n-obj,
           fi
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin sahara https://git.openstack.org/openstack/sahara"
           export GRENADE_PLUGINRC="enable_grenade_plugin sahara https://git.openstack.org/openstack/sahara"
           export GRENADE_PLUGINRC+=$'\n'"enable_grenade_plugin heat https://git.openstack.org/openstack/heat"
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin neutron-vpnaas https://git.openstack.org/openstack/neutron-vpnaas"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin neutron-vpnaas https://git.openstack.org/openstack/neutron-vpnaas"
           export GRENADE_PLUGINRC+=$'\n'"enable_grenade_plugin neutron-vpnaas https://git.openstack.org/openstack/neutron-vpnaas"
           export OVERRIDE_ENABLED_SERVICES
           export DEVSTACK_GATE_NEUTRON=1
@@ -295,6 +299,7 @@
           export PYTHONUNBUFFERED=true
           export DEVSTACK_LOCAL_CONFIG="enable_plugin sahara git://git.openstack.org/openstack/sahara"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
           export DEVSTACK_GATE_TEMPEST=0
           export DEVSTACK_GATE_EXERCISES=0
           export DEVSTACK_GATE_INSTALL_TESTONLY=1
@@ -356,6 +361,7 @@
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export DEVSTACK_LOCAL_CONFIG="enable_plugin sahara git://git.openstack.org/openstack/sahara"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_TEMPEST_FULL=1
