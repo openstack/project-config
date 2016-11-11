@@ -2012,6 +2012,11 @@ jobs:
   - name: ^gate-novaclient-dsvm-functional-neutron
     branch: ^(?!stable/(liberty|mitaka)).*$
 
+  # NOTE(mriedem): This job requires nova-network which is not used in Ocata+
+  # except in cells v1 configurations, so restrict it to <= Newton.
+  - name: gate-novaclient-dsvm-functional
+    branch: ^stable/(liberty|mitaka|newton)$
+
   - name: gate-neutron-dsvm-tempest-vpnaas
     branch: ^(?!stable/liberty).*$
 
