@@ -2007,8 +2007,10 @@ jobs:
   - name: ^gate-novaclient-dsvm-functional-mitaka
     branch: ^(?!stable)
 
+  # NOTE(mriedem): novaclient functional tests didn't support a neutron
+  # configuration until Newton, so skip for liberty and mitaka.
   - name: ^gate-novaclient-dsvm-functional-neutron
-    branch: ^(?!stable)
+    branch: ^(?!stable/(liberty|mitaka)).*$
 
   - name: gate-neutron-dsvm-tempest-vpnaas
     branch: ^(?!stable/liberty).*$
