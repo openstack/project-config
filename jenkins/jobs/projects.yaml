@@ -5555,23 +5555,18 @@
       - 'partition'
 
     exclude:
-      # ipmitool jobs are not voting yet
-      - driver: 'pxe_ipmitool'
-        job-suffix: ''
-      - driver: 'agent_ipmitool'
-        job-suffix: ''
       # agent_* drivers with partitions are experimental
       - image-type: 'partition'
         driver: 'agent_ssh'
         job-suffix: ''
-      - image-type: 'partition'
-        driver: 'agent_ipmitool'
+      #- image-type: 'partition'
+      #  driver: 'agent_ipmitool'
       # pxe_* drivers with whole disk images are experimental
       - image-type: 'wholedisk'
         driver: 'pxe_ssh'
         job-suffix: ''
-      - image-type: 'wholedisk'
-        driver: 'pxe_ipmitool'
+      #- image-type: 'wholedisk'
+      #  driver: 'pxe_ipmitool'
       # coreos jobs are only run as source jobs
       - ramdisk-type: 'coreos'
         src: ''
@@ -5584,6 +5579,17 @@
         driver: 'agent_ssh'
         src: '-src'
         job-suffix: '-nv'
+      # exclude ipmitool jobs from running on trusty, stable branches
+      # should continue to run on pxe_ssh and trusty
+      - driver: 'pxe_ipmitool'
+        node: 'ubuntu-trusty'
+      - driver: 'agent_ipmitool'
+        node: 'ubuntu-trusty'
+      # exclude ssh jobs from running on xenial
+      - driver: 'pxe_ssh'
+        node: 'ubuntu-xenial'
+      - driver: 'agent_ssh'
+        node: 'ubuntu-xenial'
 
     jobs:
       - coverage-db-jobs
@@ -5601,11 +5607,13 @@
           suffix: ''
       - api-ref-jobs:
           service: baremetal
-      - '{pipeline}-tempest-dsvm-ironic-ipa-{image-type}-{driver}-{ramdisk-type}{src}{job-suffix}':
+      - '{pipeline}-tempest-dsvm-ironic-ipa-{image-type}-{driver}-{ramdisk-type}{src}-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           branch-override: default
-      - '{pipeline}-tempest-dsvm-ironic-ipa-{image-type}-{driver}-{ramdisk-type}{src}{job-suffix}':
+      - '{pipeline}-tempest-dsvm-ironic-ipa-{image-type}-{driver}-{ramdisk-type}{src}-{node}{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
           branch-override: default
