@@ -1,0 +1,23 @@
+- job-template:
+    name: '{pipeline}-kolla-ansible-dsvm-{action}-{distro}-{type}-{node}{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 90
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - zuul-git-prep-upper-constraints
+      - gerrit-git-prep
+      - install-distro-packages
+      - shell: |
+          #!/bin/bash -xe
+          tools/setup_gate.sh
+          tox -e {action}-{distro}-{type}
+
+    publishers:
+      - devstack-logs
+      - console-log

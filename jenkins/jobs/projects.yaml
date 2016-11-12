@@ -6198,6 +6198,51 @@
           job-suffix: "-nv"
 
 - project:
+    name: kolla-ansible
+    doc-publisher-site: docs.openstack.org
+    tarball-site: tarballs.openstack.org
+
+    jobs:
+      - python-jobs
+      - 'gate-{name}-python35{suffix}':
+          suffix: '-nv'
+      - pypi-jobs
+      - openstack-publish-jobs
+      - openstack-releasenotes-jobs
+      - '{pipeline}-kolla-ansible-dsvm-{action}-{distro}-{type}-{node}{job-suffix}':
+          action:
+            - build
+            - deploy
+          distro:
+            - centos
+            - oraclelinux
+          node: 'centos-7'
+          pipeline: gate
+          type:
+            - binary
+            - source
+          job-suffix: '-nv'
+      - '{pipeline}-kolla-ansible-dsvm-{action}-{distro}-{type}-{node}{job-suffix}':
+          action:
+            - build
+            - deploy
+          distro: ubuntu
+          node:
+            - ubuntu-xenial
+          pipeline: gate
+          type:
+            - binary
+            - source
+          job-suffix: "-nv"
+      - '{pipeline}-kolla-ansible-dsvm-{action}-{distro}-{type}-{node}{job-suffix}':
+          action: deploy-multinode
+          distro: ubuntu
+          node: 'ubuntu-xenial-2-node'
+          pipeline: gate
+          type: source
+          job-suffix: "-nv"
+
+- project:
     name: kolla-kubernetes
     doc-publisher-site: docs.openstack.org
     tarball-site: tarballs.openstack.org
