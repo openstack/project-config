@@ -17,6 +17,10 @@
             export DEVSTACK_GATE_TEMPEST_BAREMETAL_BUILD_TIMEOUT=1200
             export GRENADE_PLUGINRC="enable_grenade_plugin ironic https://git.openstack.org/openstack/ironic"
             export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_BUILD_DEPLOY_RAMDISK=False"
+            # NOTE(jlvillal): export not needed for this as used within devstack-virtual-ironic
+            # We disable the devstack plugin because the grenade code in Ironic
+            # enables it and enabling it twice causes errors.
+            IRONIC_DISABLE_DEVSTACK_PLUGIN=1
 
 - builder:
     name: ironic-client-from-source
@@ -223,15 +227,15 @@
             export DEVSTACK_LOCAL_CONFIG+=$'\n'"TEMPEST_PLUGINS=/opt/stack/new/ironic"
           fi
 
-          # devstack plugin didn't exist until mitaka
-          if [[ "$ZUUL_BRANCH" != "stable/liberty" ]] ; then
-              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ironic git://git.openstack.org/openstack/ironic"
-          fi
-
           # Ensure the ironic-extra-vars file exists
           touch ironic-extra-vars
           # Pull in the extra variables injected by the optional builders
           source ironic-extra-vars
+
+          # devstack plugin didn't exist until mitaka
+          if [[ -z "$IRONIC_DISABLE_DEVSTACK_PLUGIN" && "$ZUUL_BRANCH" != "stable/liberty" ]] ; then
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ironic git://git.openstack.org/openstack/ironic"
+          fi
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
