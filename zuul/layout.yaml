@@ -2332,6 +2332,10 @@ jobs:
     voting: false
     failure-message: WARNING broken links in docs
 
+  - name: gate-git-upstream-tox-docs-linkcheck-ubuntu-xenial
+    voting: false
+    failure-message: WARNING broken links in docs
+
   - name: gate-dsvm-nodepool
     voting: false
 
@@ -9877,20 +9881,13 @@ projects:
   - name: openstack/git-upstream
     template:
       - name: merge-check
+      - name: python-jobs
       - name: check-requirements
       - name: publish-to-pypi
       - name: python34-jobs
       - name: python35-jobs-nv
     check:
-      - gate-git-upstream-pep8-ubuntu-trusty
-      - gate-git-upstream-python27-ubuntu-trusty
-      - gate-git-upstream-pep8-ubuntu-xenial
-      - gate-git-upstream-python27-ubuntu-xenial
-    gate:
-      - gate-git-upstream-pep8-ubuntu-trusty
-      - gate-git-upstream-python27-ubuntu-trusty
-      - gate-git-upstream-pep8-ubuntu-xenial
-      - gate-git-upstream-python27-ubuntu-xenial
+      - gate-git-upstream-tox-docs-linkcheck-ubuntu-xenial
 
   - name: openstack/glance
     template:
