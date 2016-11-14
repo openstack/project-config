@@ -683,7 +683,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-tempest-dsvm-ironic-pxe_ipa-postgres-{node}{job-suffix}'
+    name: '{pipeline}-tempest-dsvm-ironic-{driver}-postgres-{node}{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -705,7 +705,7 @@
       - ironic-ipxe-disabled
       - devstack-virtual-ironic:
           build-ramdisk: ''
-          deploy_driver: pxe_ssh
+          deploy_driver: '{driver}'
           image-type: partition
           branch-override: '{branch-override}'
           bm-vm-count: 1
