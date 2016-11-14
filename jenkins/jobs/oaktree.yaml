@@ -56,6 +56,10 @@
           export PATH=$GOPATH/bin:$PATH
           ./bootstrap.sh
           ./configure
+          make
+          # There should be no changes to files as a result of running make.
+          # Most likely cause of changes is forgetting to update go files.
+          git diff --stat --exit-code HEAD
           make distcheck
 
     publishers:
