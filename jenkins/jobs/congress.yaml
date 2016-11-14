@@ -27,8 +27,10 @@
           export PROJECTS="openstack/python-congressclient $PROJECTS"
           export DEVSTACK_PROJECT_FROM_GIT=python-congressclient
           export PROJECTS="openstack/murano $PROJECTS"
+          export PROJECTS="openstack/aodh $PROJECTS"
           export PROJECTS="openstack/murano-dashboard $PROJECTS"
           export PROJECTS="openstack/python-muranoclient $PROJECTS"
+          export PROJECTS="openstack/python-aodhclient $PROJECTS"
 
           if [[ "$ZUUL_BRANCH" == "stable/liberty" ]]; then
               # Liberty version uses the older 'hooks' approach to adding
@@ -48,6 +50,7 @@
               DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin congress git://git.openstack.org/openstack/congress"
               # To be enabled for Mitaka and later
               DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin murano git://git.openstack.org/openstack/murano"
+              DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin aodh git://git.openstack.org/openstack/aodh"
               # To deploy congress as multi-process (api, pe, datasources)
               DEVSTACK_LOCAL_CONFIG+=$'\n'"CONGRESS_MULTIPROCESS_DEPLOYMENT=True"
           fi
@@ -95,9 +98,12 @@
           export DEVSTACK_GATE_NEUTRON=1
           export PROJECTS="openstack/congress $PROJECTS"
           export PROJECTS="openstack/python-congressclient $PROJECTS"
+          export PROJECTS="openstack/python-aodhclient $PROJECTS"
+          export PROJECTS="openstack/aodh $PROJECTS"
           export DEVSTACK_PROJECT_FROM_GIT=python-congressclient
           # Enable congress devstack plugin.
           DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin congress git://git.openstack.org/openstack/congress"
+          DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin aodh git://git.openstack.org/openstack/aodh"
           DEVSTACK_LOCAL_CONFIG+=$'\n'"CONGRESS_REPLICATED=True"
           DEVSTACK_LOCAL_CONFIG+=$'\n'"CONGRESS_MULTIPROCESS_DEPLOYMENT=True"
           export DEVSTACK_LOCAL_CONFIG
