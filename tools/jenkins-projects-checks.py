@@ -34,9 +34,9 @@ JOB = v.Schema({
     v.Required('builders'): v.All(list),
     v.Required('name'): v.All(str),
     v.Required('node'): v.All(str),
+    v.Required('publishers'): v.All(list),
     'description': v.All(str),
     'parameters': v.All(list),
-    'publishers': v.All(list),
     'wrappers': v.All(list)
 })
 
@@ -50,8 +50,8 @@ JOB_TEMPLATE = v.Schema({
     v.Required('builders'): v.All(list),
     v.Required('name'): v.All(str),
     v.Required('node'): v.All(str),
+    v.Required('publishers'): v.All(list),
     'description': v.All(str),
-    'publishers': v.All(list),
     'wrappers': v.All(list)
 })
 
