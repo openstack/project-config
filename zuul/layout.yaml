@@ -1418,7 +1418,7 @@ jobs:
   # Skip non-doc jobs for doc-only or translation-only neutron
   # changes. Since doc/source/conf.py is checked by
   # neutron-(pep8|pylint), those jobs should not be skipped.
-  - name: ^.*neutron-((dsvm-api|dsvm-fullstack|dsvm-functional|dsvm-functional-py34|python(27|34|35))(-ubuntu-.*)?|coverage-.+|lbaasv[12]-dsvm-(api|minimal))$
+  - name: ^.*neutron-((dsvm-api|dsvm-fullstack|dsvm-functional|python(27|34|35))(-ubuntu-.*)?|coverage-.+|lbaasv[12]-dsvm-(api|minimal))$
     skip-if:
       - project: ^openstack/neutron$
         all-files-match-any:
@@ -1908,18 +1908,11 @@ jobs:
   - name: ^neutron-lib-coverage-ubuntu-(trusty|xenial)
     voting: false
 
-  - name: gate-neutron-dsvm-functional-py34-ubuntu-trusty
-    branch: ^(?!stable/liberty).*$
-    voting: false
-
   - name: ^gate-neutron-dsvm-functional-ubuntu-trusty.*$
     branch: ^(master|stable/(liberty|mitaka|newton))$
 
   # NOTE(jlibosva) Run Xenial jobs only non-voting for Newton and forward
   - name: ^gate-neutron-dsvm-(functional|fullstack)-ubuntu-xenial
-    voting: false
-
-  - name: gate-neutron-dsvm-functional-py35-ubuntu-xenial
     voting: false
 
   - name: ^gate-tempest-dsvm-neutron-pg-full-ubuntu-(trusty|xenial)
@@ -12074,9 +12067,7 @@ projects:
       - neutron-coverage-ubuntu-trusty
       - neutron-coverage-ubuntu-xenial
     experimental:
-      - gate-neutron-dsvm-functional-py34-ubuntu-trusty
       - gate-neutron-dsvm-functional-ubuntu-xenial
-      - gate-neutron-dsvm-functional-py35-ubuntu-xenial
       - gate-neutron-dsvm-fullstack-ubuntu-xenial
       - gate-tempest-dsvm-neutron-scenario
       - gate-tempest-dsvm-neutron-scenario-linuxbridge
