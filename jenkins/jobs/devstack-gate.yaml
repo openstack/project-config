@@ -183,6 +183,55 @@
       - devstack-logs
       - console-log
 
+# This job is used in testing neutron-lib master changes with
+# neutron tip of master, and it provides an early feedback that
+# lib development does not break neutron. This is a clone of
+# the previous job, that is meant to go away at some point.
+- job-template:
+    name: '{pipeline}-tempest-dsvm-neutron-src-{name}-{node}{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 180
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          REPOSITORY="openstack/{name}"
+          if [ "{name}" = "pbr" ]; then
+              REPOSITORY="openstack-dev/pbr"
+          fi
+          export PROJECTS="$REPOSITORY $PROJECTS"
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_TEMPEST_FULL=1
+          export DEVSTACK_GATE_NEUTRON=1
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          export DEVSTACK_PROJECT_FROM_GIT={name}
+
+          # Even if the branch is overridden, make sure we use
+          # the correct branch using the OVERRIDE_*_PROJECT_BRANCH
+          # variable.
+          uc_project=`echo $DEVSTACK_PROJECT_FROM_GIT | tr [:lower:] [:upper:] | tr '-' '_' | sed 's/[^A-Z_]//'`
+          export "OVERRIDE_"$uc_project"_PROJECT_BRANCH"=$ZUUL_BRANCH
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
 - job-template:
     name: '{pipeline}-tempest-dsvm-neutron-src-{name}{job-suffix}-plugin'
     node: '{node}'
