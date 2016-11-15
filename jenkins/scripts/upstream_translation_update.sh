@@ -74,7 +74,6 @@ case "$PROJECT" in
         module_names=$(get_modulename $PROJECT python)
         if [ -n "$module_names" ]; then
             setup_project "$PROJECT" "$ZANATA_VERSION" $module_names
-            setup_loglevel_vars
             if [[ "$ZANATA_VERSION" == "master" && -f releasenotes/source/conf.py ]]; then
                 extract_messages_releasenotes
                 ALL_MODULES="releasenotes $ALL_MODULES"
