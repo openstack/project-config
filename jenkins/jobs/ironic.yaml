@@ -16,6 +16,7 @@
             export DEVSTACK_GATE_OS_TEST_TIMEOUT=2400
             export DEVSTACK_GATE_TEMPEST_BAREMETAL_BUILD_TIMEOUT=1200
             export GRENADE_PLUGINRC="enable_grenade_plugin ironic https://git.openstack.org/openstack/ironic"
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_BUILD_DEPLOY_RAMDISK=False"
 
 - builder:
     name: ironic-client-from-source
@@ -1053,7 +1054,7 @@
       - devstack-virtual-ironic:
           build-ramdisk: ''
           deploy_driver: pxe_ssh
-          image-type: wholedisk
+          image-type: partition
           branch-override: '{branch-override}'
           bm-vm-count: 7
 
