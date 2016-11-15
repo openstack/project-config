@@ -159,6 +159,7 @@ def validate_jobs():
             # NOTE(pabelanger): Make sure console-log is our last publisher
             # defined. We use the publisher to upload logs from zuul-launcher.
             result = _check_console_log_publisher(schema, entry)
+            result += _check_tox_builder(schema, entry)
             if result:
                 print(job_file)
                 count += result
@@ -177,6 +178,25 @@ def _check_console_log_publisher(schema, entry):
                 print("ERROR: The console-log publisher MUST be the last "
                       "publisher in '%s':" % entry['name'])
                 count += 1
+    return count
+
+
+def _check_tox_builder(schema, entry):
+    count = 0
+    if schema == JOB or schema == JOB_TEMPLATE:
+        if 'builders' in entry:
+            for b in entry['builders']:
+                # Test for dict, coming from "tox:"
+                if isinstance(b, dict):
+                    if 'tox' in b:
+                        print("ERROR: Use 'run-tox' instead of 'tox' "
+                              "builder in '%s':" % entry['name'])
+                        count += 1
+                # And test for "tox" without arguments
+                elif isinstance(b, str) and b == 'tox':
+                    print("ERROR: Use 'run-tox' instead of 'tox' "
+                          "builder in '%s':" % entry['name'])
+                    count += 1
     return count
 
 
