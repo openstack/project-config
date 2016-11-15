@@ -625,18 +625,16 @@
           template-name: "{template-name}"
       - gerrit-git-prep
       - install-distro-packages
-      - revoke-sudo
       - shell: |
           #!/bin/bash
 
           set -x
 
+          TOOLS_TMP=$WORKSPACE/release-tools
+          mkdir -p $TOOLS_TMP
+
           # Report on the ZUUL settings.
           env | grep '^ZUUL_'
-
-          # Save the version that was just tagged by parsing
-          # ref/tags/VALUE to get VALUE.
-          VERSION=$(echo $ZUUL_REF | cut -f3 -d/)
 
           # Check out the release-tools, ignoring any other ZUUL
           # variables that might confuse the cloner and cause it to
@@ -646,13 +644,34 @@
           for v in $(env | grep '^ZUUL_' | cut -f1 -d=); do
               unset $v
           done
-          TOOLS_TMP=$(mktemp -d)
+
           /usr/zuul-env/bin/zuul-cloner \
               --cache-dir /opt/git \
               --workspace $TOOLS_TMP \
               git://git.openstack.org \
               openstack-infra/release-tools
           TOOLS_DIR=$TOOLS_TMP/openstack-infra/release-tools
+
+          # Install the distro packages needed by the release
+          # tools. These won't necessarily be included in the set
+          # installed by the builder step above, so we have to do it
+          # explicitly by changing to the tools directory and then
+          # running the same script.
+          (cd $TOOLS_DIR &&
+           /usr/local/jenkins/slave_scripts/install-distro-packages.sh)
+
+      - revoke-sudo
+      - shell: |
+          #!/bin/bash
+
+          set -x
+
+          TOOLS_TMP=$WORKSPACE/release-tools
+          TOOLS_DIR=$TOOLS_TMP/openstack-infra/release-tools
+
+          # Save the version that was just tagged by parsing
+          # ref/tags/VALUE to get VALUE.
+          VERSION=$(echo $ZUUL_REF | cut -f3 -d/)
 
           # Run the announce script.
           $TOOLS_DIR/announce.sh $WORKSPACE $VERSION
