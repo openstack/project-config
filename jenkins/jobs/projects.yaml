@@ -5561,28 +5561,37 @@
       - 'partition'
 
     exclude:
-      # agent_* drivers with partitions are experimental
+      # agent_ssh driver with partitions is experimental
       - image-type: 'partition'
         driver: 'agent_ssh'
         job-suffix: ''
-      #- image-type: 'partition'
-      #  driver: 'agent_ipmitool'
-      # pxe_* drivers with whole disk images are experimental
+      # pxe_ssh driver with whole disk images is experimental
       - image-type: 'wholedisk'
         driver: 'pxe_ssh'
         job-suffix: ''
-      #- image-type: 'wholedisk'
-      #  driver: 'pxe_ipmitool'
       # coreos jobs are only run as source jobs
       - ramdisk-type: 'coreos'
         src: ''
-      # this job is always voting
+      # these jobs are always voting
       - image-type: 'partition'
         driver: 'pxe_ssh'
         job-suffix: '-nv'
-      # source variant of this job is always voting
+      - image-type: 'partition'
+        driver: 'pxe_ipmitool'
+        job-suffix: '-nv'
+      - image-type: 'partition'
+        driver: 'agent_ipmitool'
+        job-suffix: '-nv'
+      - image-type: 'wholedisk'
+        driver: 'pxe_ipmitool'
+        job-suffix: '-nv'
+      # source variants of these jobs are always voting
       - image-type: 'wholedisk'
         driver: 'agent_ssh'
+        src: '-src'
+        job-suffix: '-nv'
+      - image-type: 'wholedisk'
+        driver: 'agent_ipmitool'
         src: '-src'
         job-suffix: '-nv'
       # exclude ipmitool jobs from running on trusty, stable branches
@@ -5787,20 +5796,27 @@
             - 'wholedisk'
             - 'partition'
           exclude:
+            # all xenial jobs are voting
+            - node: 'ubuntu-xenial'
+              job-suffix: '-nv'
             # these jobs are not voting yet
             - image-type: 'partition'
               driver: 'agent_ipmitool'
               job-suffix: ''
+              node: 'ubuntu-trusty'
             - image-type: 'wholedisk'
               driver: 'pxe_ipmitool'
               job-suffix: ''
+              node: 'ubuntu-trusty'
             # these jobs are voting
             - image-type: 'partition'
               driver: 'pxe_ipmitool'
               job-suffix: '-nv'
+              node: 'ubuntu-trusty'
             - image-type: 'wholedisk'
               driver: 'agent_ipmitool'
               job-suffix: '-nv'
+              node: 'ubuntu-trusty'
           branch-override: default
 
 - project:
