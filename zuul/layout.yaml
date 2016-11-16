@@ -1807,11 +1807,25 @@ jobs:
     queue-name: integrated
     branch: stable/newton
 
-  # NOTE(mriedem): nova-network will only work in cells v1 configurations
-  # starting in Ocata, so all nova-network backed grenade jobs have to be
-  # restricted to <= Newton.
-  - name: ^gate-grenade-dsvm(?!-neutron).*
-    branch: ^stable/(liberty|mitaka|newton)$
+    # don't run any grenade jobs on the oldest supported stable
+    # branch, this lets us catch all jobs that don't otherwise have
+    # additional modifications.
+    # NOTE(mriedem): This must be defined before any more specific grenade
+    # job filters so that those can override the branch filter if necessary.
+  - name: ^gate-grenade-dsvm
+    branch: ^(?!stable/liberty).*$
+
+  # NOTE(mriedem): This job uses xenial nodes which restricts it to >= newton
+  # changes. It also uses nova-network which is deprecated and not the default
+  # in Ocata so we need to just restrict it to running on stable/newton
+  # changes.
+  - name: gate-grenade-dsvm-ubuntu-xenial
+    branch: stable/newton
+
+  # NOTE(mriedem): These jobs use nova-network specifically which won't work
+  # after newton so restrict them to just run on mitaka and newton changes.
+  - name: ^gate-grenade-dsvm-(forward|multinode).*$
+    branch: ^stable/(?:mitaka|newton)$
 
   - name: ^gate-rally-dsvm-rally-.*$
     voting: false
@@ -1939,12 +1953,6 @@ jobs:
     # all jobs. Disable until there is resolution.
   - name: ^gate-.*-pypy(-db)?$
     voting: false
-
-    # don't run any grenade jobs on the oldest supported stable
-    # branch, this lets us catch all jobs that don't otherwise have
-    # additional modifications.
-  - name: ^gate-grenade-dsvm
-    branch: ^(?!stable/liberty).*$
 
   # Grenade is tricky because we need it to start on old branch
   # then go up to new branch. This results in the following branch
