@@ -2655,10 +2655,6 @@ jobs:
   - name: gate-neutron-lbaas-dashboard-dsvm-integration
     voting: false
 
-  # direct engine only in stable/liberty
-  - name: ^gate-sahara-dsvm-scenario.*-direct$
-    branch: ^stable/liberty$
-
   - name: gate-sahara-tests-pylint
     voting: false
 
@@ -15563,7 +15559,7 @@ projects:
     check:
       - gate-python-saharaclient-python34
       - gate-sahara-cli-nv
-      - gate-python-saharaclient-dsvm-scenario-neutron-heat-nv
+      - gate-python-saharaclient-dsvm-scenario-neutron-nv
     post:
       - python-saharaclient-coverage-ubuntu-trusty
       - python-saharaclient-coverage-ubuntu-xenial
@@ -16115,15 +16111,11 @@ projects:
       - sahara-coverage-db-ubuntu-trusty
       - sahara-coverage-db-ubuntu-xenial
       - gate-grenade-dsvm-sahara
-      - gate-sahara-dsvm-scenario-neutron-heat
-      - gate-sahara-dsvm-scenario-nova-heat
-      - gate-sahara-dsvm-scenario-neutron-direct
-      - gate-sahara-dsvm-scenario-nova-direct
+      - gate-sahara-dsvm-scenario-neutron
+      - gate-sahara-dsvm-scenario-nova
     gate:
-      - gate-sahara-dsvm-scenario-neutron-heat
-      - gate-sahara-dsvm-scenario-nova-heat
-      - gate-sahara-dsvm-scenario-neutron-direct
-      - gate-sahara-dsvm-scenario-nova-direct
+      - gate-sahara-dsvm-scenario-neutron
+      - gate-sahara-dsvm-scenario-nova
       - gate-tempest-dsvm-sahara
     post:
       - sahara-coverage-db-ubuntu-trusty
@@ -16229,14 +16221,14 @@ projects:
     check:
       - gate-sahara-tests-pylint
       - gate-tempest-dsvm-sahara-nv
-      - gate-sahara-tests-dsvm-scenario-neutron-heat
-      - gate-sahara-tests-dsvm-scenario-nova-heat
+      - gate-sahara-tests-dsvm-scenario-neutron
+      - gate-sahara-tests-dsvm-scenario-nova
       - gate-sahara-cli-nv
       - sahara-tests-coverage-ubuntu-trusty
       - sahara-tests-coverage-ubuntu-xenial
     gate:
-      - gate-sahara-tests-dsvm-scenario-neutron-heat
-      - gate-sahara-tests-dsvm-scenario-nova-heat
+      - gate-sahara-tests-dsvm-scenario-neutron
+      - gate-sahara-tests-dsvm-scenario-nova
     post:
       - sahara-tests-coverage-ubuntu-trusty
       - sahara-tests-coverage-ubuntu-xenial

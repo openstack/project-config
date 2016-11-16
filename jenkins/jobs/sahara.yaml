@@ -282,7 +282,7 @@
 
 
 - job-template:
-    name: '{pipeline}-{name}-dsvm-scenario-{network}-{engine}{job-suffix}'
+    name: '{pipeline}-{name}-dsvm-scenario-{network}{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -322,19 +322,15 @@
               export DEVSTACK_GATE_NEUTRON=1
           fi
 
-          if [ "{engine}" == "heat" ] ; then
-              export DEVSTACK_GATE_HEAT=1
-          fi
-
           function pre_test_hook {{
               cd /opt/stack/new/sahara-tests/tools/gate/scenario
-              ./pre_test_hook.sh {network} {engine}
+              ./pre_test_hook.sh {network}
           }}
           export -f pre_test_hook
 
           function post_test_hook {{
               cd /opt/stack/new/sahara-tests/tools/gate/scenario
-              ./post_test_hook.sh {network} {engine}
+              ./post_test_hook.sh {network}
           }}
           export -f post_test_hook
 
