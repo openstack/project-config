@@ -44,7 +44,7 @@ shift
 DELIVERABLES="$@"
 
 $TOOLSDIR/list_deliverable_changes.py -r $RELEASES_REPO $DELIVERABLES \
-| while read deliverable series version diff_start repo hash announce_to pypi first_full; do
+| while read deliverable series version diff_start repo hash pypi first_full; do
     echo "$SERIES $repo $version"
     $TOOLSDIR/make_stable_branch.sh $SERIES $repo $version
 done

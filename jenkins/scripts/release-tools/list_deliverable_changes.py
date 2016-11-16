@@ -69,14 +69,6 @@ def get_modified_deliverable_file_content(reporoot, filenames):
         with open(filename, 'r') as f:
             deliverable_data = yaml.load(f.read())
 
-        # Determine where to send email announcements of
-        # releases. Default to the development list, to cut down on
-        # excessive emails to the announcement list.
-        send_announcements_to = deliverable_data.get(
-            'send-announcements-to',
-            'openstack-dev@lists.openstack.org',
-        )
-
         # Determine whether announcements should include a PyPI
         # link. Default to no, for service projects, because it is
         # less irksome to fail to include a link to a thing that
@@ -115,7 +107,6 @@ def get_modified_deliverable_file_content(reporoot, filenames):
             yield (deliverable_name, series_name, version,
                    diff_start,
                    project['repo'], project['hash'],
-                   send_announcements_to,
                    include_pypi_link,
                    first_full_release)
 
