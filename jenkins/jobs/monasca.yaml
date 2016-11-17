@@ -1,7 +1,6 @@
 - job-template:
-    name: 'gate-tempest-dsvm-monasca-python-full{job-suffix}'
-
-    node: ubuntu-trusty
+    name: 'gate-tempest-dsvm-monasca-python-full-{node}{job-suffix}'
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -48,8 +47,8 @@
       - console-log
 
 - job-template:
-    name: 'gate-tempest-dsvm-monasca-java-full{job-suffix}'
-    node: ubuntu-trusty
+    name: 'gate-tempest-dsvm-monasca-java-full-{node}{job-suffix}'
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -101,13 +100,23 @@
 - job-group:
     name: 'tempest-monasca-full-jobs'
     jobs:
-      - 'gate-tempest-dsvm-monasca-python-full{job-suffix}':
+      - 'gate-tempest-dsvm-monasca-python-full-{node}{job-suffix}':
+          node:
+            - 'ubuntu-trusty'
           job-suffix: ''
-      - 'gate-tempest-dsvm-monasca-python-full{job-suffix}':
+      - 'gate-tempest-dsvm-monasca-python-full-{node}{job-suffix}':
+          node:
+            - 'ubuntu-trusty'
+            - 'ubuntu-xenial'
           job-suffix: '-nv'
-      - 'gate-tempest-dsvm-monasca-java-full{job-suffix}':
+      - 'gate-tempest-dsvm-monasca-java-full-{node}{job-suffix}':
+          node:
+            - 'ubuntu-trusty'
           job-suffix: ''
-      - 'gate-tempest-dsvm-monasca-java-full{job-suffix}':
+      - 'gate-tempest-dsvm-monasca-java-full-{node}{job-suffix}':
+          node:
+            - 'ubuntu-trusty'
+            - 'ubuntu-xenial'
           job-suffix: '-nv'
 
 - job-template:

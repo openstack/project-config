@@ -3458,6 +3458,14 @@ jobs:
     branch: master
     voting: false
 
+  # Run Monasca tempest tests for trusty on all branches. New tests for xenial
+  # only on master.
+  - name: ^gate-tempest-dsvm-monasca-(python|java)-full-ubuntu-trusty.*$
+    branch: ^(stable/(mitaka|newton)|master)$
+
+  - name: ^gate-tempest-dsvm-monasca-(python|java)-full-ubuntu-xenial.*$
+    branch: master
+
   # Make sure we do not match openstack-ansible jobs, as they have their own
   # rules.
   - name: ^gate-(?!openstack-ansible).*(-dsvm)?-ansible-func-ubuntu-trusty(-nv)?$
@@ -11235,8 +11243,8 @@ projects:
       - gate-monasca-agent-python27-ubuntu-trusty
       - gate-monasca-agent-pep8-ubuntu-xenial
       - gate-monasca-agent-python27-ubuntu-xenial
-      - gate-tempest-dsvm-monasca-python-full-nv
-      - gate-tempest-dsvm-monasca-java-full-nv
+      - gate-tempest-dsvm-monasca-python-full-ubuntu-trusty-nv
+      - gate-tempest-dsvm-monasca-java-full-ubuntu-trusty-nv
     gate:
       - gate-monasca-agent-pep8-ubuntu-trusty
       - gate-monasca-agent-python27-ubuntu-trusty
@@ -11268,18 +11276,21 @@ projects:
       - gate-monasca-api-pep8-ubuntu-xenial
       - gate-monasca-api-python27-ubuntu-xenial
       - gate-monasca-api-build
-      - gate-tempest-dsvm-monasca-python-full
-      - gate-tempest-dsvm-monasca-java-full
+      - gate-tempest-dsvm-monasca-python-full-ubuntu-trusty
+      - gate-tempest-dsvm-monasca-java-full-ubuntu-trusty
     gate:
       - gate-monasca-api-pep8-ubuntu-trusty
       - gate-monasca-api-python27-ubuntu-trusty
       - gate-monasca-api-pep8-ubuntu-xenial
       - gate-monasca-api-python27-ubuntu-xenial
       - gate-monasca-api-build
-      - gate-tempest-dsvm-monasca-python-full
-      - gate-tempest-dsvm-monasca-java-full
+      - gate-tempest-dsvm-monasca-python-full-ubuntu-trusty
+      - gate-tempest-dsvm-monasca-java-full-ubuntu-trusty
     post:
       - monasca-api-localrepo-upload
+    experimental:
+      - gate-tempest-dsvm-monasca-python-full-ubuntu-xenial-nv
+      - gate-tempest-dsvm-monasca-java-full-ubuntu-xenial-nv
 
   - name: openstack/monasca-ceilometer
     template:
@@ -11306,8 +11317,8 @@ projects:
       - gate-monasca-common-pep8-ubuntu-xenial
       - gate-monasca-common-python27-ubuntu-xenial
       - gate-monasca-common-build
-      - gate-tempest-dsvm-monasca-python-full-nv
-      - gate-tempest-dsvm-monasca-java-full-nv
+      - gate-tempest-dsvm-monasca-python-full-ubuntu-trusty-nv
+      - gate-tempest-dsvm-monasca-java-full-ubuntu-trusty-nv
     gate:
       - gate-monasca-common-pep8-ubuntu-trusty
       - gate-monasca-common-python27-ubuntu-trusty
@@ -11366,8 +11377,8 @@ projects:
       - gate-monasca-notification-python27-ubuntu-trusty
       - gate-monasca-notification-pep8-ubuntu-xenial
       - gate-monasca-notification-python27-ubuntu-xenial
-      - gate-tempest-dsvm-monasca-python-full-nv
-      - gate-tempest-dsvm-monasca-java-full-nv
+      - gate-tempest-dsvm-monasca-python-full-ubuntu-trusty-nv
+      - gate-tempest-dsvm-monasca-java-full-ubuntu-trusty-nv
     gate:
       - gate-monasca-notification-pep8-ubuntu-trusty
       - gate-monasca-notification-python27-ubuntu-trusty
@@ -11385,15 +11396,15 @@ projects:
       - gate-monasca-persister-pep8-ubuntu-xenial
       - gate-monasca-persister-python27-ubuntu-xenial
       - gate-monasca-persister-build
-      - gate-tempest-dsvm-monasca-python-full
-      - gate-tempest-dsvm-monasca-java-full-nv
+      - gate-tempest-dsvm-monasca-python-full-ubuntu-trusty
+      - gate-tempest-dsvm-monasca-java-full-ubuntu-trusty-nv
     gate:
       - gate-monasca-persister-pep8-ubuntu-trusty
       - gate-monasca-persister-python27-ubuntu-trusty
       - gate-monasca-persister-pep8-ubuntu-xenial
       - gate-monasca-persister-python27-ubuntu-xenial
       - gate-monasca-persister-build
-      - gate-tempest-dsvm-monasca-python-full
+      - gate-tempest-dsvm-monasca-python-full-ubuntu-trusty
     post:
       - monasca-persister-localrepo-upload
 
@@ -11407,8 +11418,8 @@ projects:
       - gate-monasca-statsd-python27-ubuntu-trusty
       - gate-monasca-statsd-pep8-ubuntu-xenial
       - gate-monasca-statsd-python27-ubuntu-xenial
-      - gate-tempest-dsvm-monasca-python-full-nv
-      - gate-tempest-dsvm-monasca-java-full-nv
+      - gate-tempest-dsvm-monasca-python-full-ubuntu-trusty-nv
+      - gate-tempest-dsvm-monasca-java-full-ubuntu-trusty-nv
     gate:
       - gate-monasca-statsd-pep8-ubuntu-trusty
       - gate-monasca-statsd-python27-ubuntu-trusty
@@ -11420,8 +11431,8 @@ projects:
       - name: merge-check
     check:
       - gate-monasca-thresh-build
-      - gate-tempest-dsvm-monasca-python-full-nv
-      - gate-tempest-dsvm-monasca-java-full-nv
+      - gate-tempest-dsvm-monasca-python-full-ubuntu-trusty-nv
+      - gate-tempest-dsvm-monasca-java-full-ubuntu-trusty-nv
     gate:
       - gate-monasca-thresh-build
     post:
