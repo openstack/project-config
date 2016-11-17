@@ -22,6 +22,7 @@ fi
 
 script_path=/usr/local/jenkins/slave_scripts
 
+set +x
 oslo_libs="automaton"
 oslo_libs="$oslo_libs debtcollector"
 oslo_libs="$oslo_libs futurist"
@@ -48,26 +49,44 @@ oslo_libs="$oslo_libs oslotest"
 oslo_libs="$oslo_libs taskflow"
 oslo_libs="$oslo_libs tooz"
 oslo_libs_count=$(echo $oslo_libs | awk '{print NF}')
+set -x
 
 # NOTE(dims): tox barfs when there are {posargs} references
 # in the commands we reference
 sed -ri 's/\{posargs\}//g' tox.ini
 
+# This is the actual script tox will run...
 cat << EOF > oslo-from-master.sh
 #!/bin/bash
 
+# Since this will be triggered by run_tox.sh and run_tox.sh
+# has settings for this, we shouldn't typically enter this block
+# but just incase we do...
+if [ -z "\${UPPER_CONSTRAINTS_FILE}" ]; then
+    wget -q https://git.openstack.org/cgit/openstack/requirements/plain/upper-constraints.txt -O "\${PWD}/upper-constraints.txt"
+    UPPER_CONSTRAINTS_FILE="\${PWD}/upper-constraints.txt"
+fi
+
+echo "Adjusting and creating a new upper constraints file, please wait..."
+oslo_upper_constraints_file=\${PWD}/oslo-upper-constraints.txt
+tmp_oslo_upper_constraints_file=\${PWD}/oslo-upper-constraints.txt.bak
+cp \${UPPER_CONSTRAINTS_FILE} \${oslo_upper_constraints_file}
+for lib in $oslo_libs; do
+    cat \${oslo_upper_constraints_file} | grep -v "\${lib}" > "\${tmp_oslo_upper_constraints_file}"
+    mv \${tmp_oslo_upper_constraints_file} \${oslo_upper_constraints_file}
+done
+rm \${tmp_oslo_upper_constraints_file}
+
 echo "Installing $oslo_libs_count oslo libraries (from git), please wait..."
 pip freeze > pip_freeze_before.txt
+set +x
+install_what=""
 for lib in $oslo_libs; do
-    pip install -q -U \
-        -e git+https://git.openstack.org/openstack/\${lib}.git#egg=\${lib}
+    install_what="\${install_what} -e git+https://git.openstack.org/openstack/\${lib}.git#egg=\${lib}"
 done
+set -x
+pip install \${install_what} -c \${oslo_upper_constraints_file}
 pip freeze > pip_freeze_after.txt
-
-echo "Installed:"
-for lib in $oslo_libs; do
-    grep \${lib} pip_freeze_after.txt
-done
 
 echo "Full freeze diff:"
 diff -u pip_freeze_before.txt pip_freeze_after.txt
