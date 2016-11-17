@@ -1060,33 +1060,6 @@
               sudo service ssh restart
           fi
 
-
-# Install specific elasticsearch version(1.7.5) as needed for searchlight.
-- builder:
-    name: elasticsearch-install-1
-    builders:
-      - shell: |
-          #!/bin/bash -xe
-          sudo apt-get update
-          sudo apt-get install -y default-jre
-          wget https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.7.5.deb
-          sudo dpkg -i elasticsearch-1.7.5.deb
-          #Make 'elasticsearch' binary callable from within functional tests
-          sudo ln -s /usr/share/elasticsearch/bin/elasticsearch /usr/local/bin/elasticsearch
-
-# Install specific elasticsearch version(2.x) as needed for searchlight.
-- builder:
-    name: elasticsearch-install
-    builders:
-      - shell: |
-          #!/bin/bash -xe
-          sudo apt-get update
-          sudo apt-get install -y default-jre
-          wget https://download.elastic.co/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch/2.3.2/elasticsearch-2.3.2.deb
-          sudo dpkg -i elasticsearch-2.3.2.deb
-          #Make 'elasticsearch' binary callable from within functional tests
-          sudo ln -s /usr/share/elasticsearch/bin/elasticsearch /usr/local/bin/elasticsearch
-
 - builder:
     name: mount-xfs-tmp-space
     builders:

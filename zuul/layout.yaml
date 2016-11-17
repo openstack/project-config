@@ -394,28 +394,6 @@ project-templates:
     post:
       - '{name}-branch-tarball'
 
-  # Invokes the same targets as python-jobs with one change:
-  # python27-searchlight is used instead of python27.
-  # The job python27-searchlight installs extra packages.
-  # The job python27-searchlight-es1 installs extra packages.
-  - name: python-jobs-searchlight
-    check:
-      - 'gate-{name}-docs-ubuntu-trusty'
-      - 'gate-{name}-pep8-ubuntu-trusty'
-      - 'gate-{name}-docs-ubuntu-xenial'
-      - 'gate-{name}-pep8-ubuntu-xenial'
-      - 'gate-{name}-python27-searchlight'
-      - 'gate-{name}-python27-searchlight-es1'
-    gate:
-      - 'gate-{name}-docs-ubuntu-trusty'
-      - 'gate-{name}-pep8-ubuntu-trusty'
-      - 'gate-{name}-docs-ubuntu-xenial'
-      - 'gate-{name}-pep8-ubuntu-xenial'
-      - 'gate-{name}-python27-searchlight'
-      - 'gate-{name}-python27-searchlight-es1'
-    post:
-      - '{name}-branch-tarball'
-
   - name: python-charm-jobs
     check:
       - 'gate-{name}-pep8-ubuntu-trusty'
@@ -542,14 +520,6 @@ project-templates:
     gate:
       - 'gate-{name}-python34-db'
 
-  # Invokes the same targets as python34-jobs, but sets up extra packages.
-  # The job python34-searchlight installs extra packages.
-  - name: python34-jobs-searchlight
-    check:
-      - 'gate-{name}-python34-searchlight'
-    gate:
-      - 'gate-{name}-python34-searchlight'
-
   - name: python35-jobs-nv
     check:
       - 'gate-{name}-python35-nv'
@@ -571,12 +541,6 @@ project-templates:
       - 'gate-{name}-python35-db'
     gate:
       - 'gate-{name}-python35-db'
-
-  # Invokes the same targets as python35-jobs, but sets up extra packages.
-  # The job python35-searchlight installs extra packages.
-  - name: python35-jobs-searchlight
-    check:
-      - 'gate-{name}-python35-searchlight-nv'
 
   - name: osc-plugin-jobs
     check:
@@ -2878,11 +2842,6 @@ jobs:
 
   - name: gate-manila-tempest-minimal-dsvm-lvm-ubuntu-trusty
     branch: ^(?:stable/mitaka).*$
-
-  # Broken by a recent client update; marking non-voting while we
-  # determine whether or not to keep this test job
-  - name: gate-searchlight-python27-searchlight-es1
-    voting: false
 
   # for devstack-plugin-amqp1
   - name: gate-tempest-dsvm-full-amqp1
@@ -15769,9 +15728,9 @@ projects:
   - name: openstack/python-searchlightclient
     template:
       - name: merge-check
-      - name: python-jobs-searchlight
-      - name: python34-jobs-searchlight
-      - name: python35-jobs-searchlight
+      - name: python-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-client-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
@@ -16480,9 +16439,9 @@ projects:
   - name: openstack/searchlight
     template:
       - name: merge-check
-      - name: python-jobs-searchlight
-      - name: python34-jobs-searchlight
-      - name: python35-jobs-searchlight
+      - name: python-jobs
+      - name: python34-jobs
+      - name: python35-jobs-nv
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
       - name: check-requirements
