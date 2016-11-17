@@ -2910,10 +2910,13 @@ jobs:
   - name: ^gate-oslo.db-tox-db-sqla_09-ubuntu-trusty$
     branch: ^(stable/liberty).*$
 
+  # Rally jobs for Manila should run only on ocata+ branches
   - name: gate-rally-dsvm-manila-multibackend
+    branch: ^(?!stable/(?:liberty|mitaka|newton)).*$
     voting: false
 
   - name: gate-rally-dsvm-manila-multibackend-no-ss
+    branch: ^(?!stable/(?:liberty|mitaka|newton)).*$
     voting: false
 
   - name: gate-blazar-devstack-dsvm
@@ -11035,6 +11038,8 @@ projects:
       - gate-manila-tempest-minimal-dsvm-lvm-ubuntu-trusty
       - gate-manila-tempest-minimal-dsvm-lvm-ubuntu-xenial
       - gate-grenade-dsvm-manila-ubuntu-xenial-nv
+      - gate-rally-dsvm-manila-multibackend
+      - gate-rally-dsvm-manila-multibackend-no-ss
     gate:
       - gate-manila-tox-genconfig-ubuntu-trusty
       - gate-manila-tox-genconfig-ubuntu-xenial
@@ -11046,8 +11051,6 @@ projects:
       - manila-coverage-db-ubuntu-trusty
       - manila-coverage-db-ubuntu-xenial
     experimental:
-      - gate-rally-dsvm-manila-multibackend
-      - gate-rally-dsvm-manila-multibackend-no-ss
       - gate-manila-tempest-dsvm-glusterfs-nfs-ubuntu-xenial-nv
       - gate-manila-tempest-dsvm-glusterfs-native-ubuntu-xenial-nv
       - gate-manila-tempest-dsvm-glusterfs-nfs-heketi-ubuntu-xenial-nv
