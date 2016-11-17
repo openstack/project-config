@@ -1,5 +1,5 @@
 - job-template:
-    name: '{pipeline}-tempest-dsvm-networking-bagpipe-{which}{job-suffix}'
+    name: '{pipeline}-tempest-dsvm-networking-bagpipe{which}{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -34,7 +34,7 @@
           export DEVSTACK_LOCAL_CONFIG="enable_plugin networking-bagpipe git://git.openstack.org/openstack/networking-bagpipe"
 
           function gate_hook {{
-              bash -xe $BASE/new/networking-bagpipe/devstack/gate_hook.sh full-{which}
+              bash -xe $BASE/new/networking-bagpipe/devstack/gate_hook.sh {which}
           }}
           export -f gate_hook
 
