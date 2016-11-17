@@ -1,6 +1,6 @@
 - job:
     name: gate-heat-templates-dsvm
-    node: ubuntu-trusty
+    node: ubuntu-xenial
 
     wrappers:
       - build-timeout:
@@ -32,7 +32,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-heat-dsvm-functional-{engine}-{datastore}-{lbaasversion}{special}{job-suffix}'
+    name: '{pipeline}-heat-dsvm-functional-{engine}-{datastore}-{lbaasversion}-{node}{special}{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -205,7 +205,7 @@
 
 
 - job-template:
-    name: '{pipeline}-grenade-dsvm-heat{job-suffix}'
+    name: '{pipeline}-grenade-dsvm-heat-{node}{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -262,7 +262,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-tempest-dsvm-heat-apache{job-suffix}'
+    name: '{pipeline}-tempest-dsvm-heat-apache-{node}{job-suffix}'
     node: '{node}'
 
     wrappers:
