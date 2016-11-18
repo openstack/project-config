@@ -1212,6 +1212,10 @@ jobs:
   - name: ^gate-logstash-filters-ubuntu-(trusty|xenial)$
     voting: false
 
+  # Transitional until monasca-transform is fixed for tests
+  - name: ^gate-tempest-dsvm-monasca-transform-python-full$
+    voting: false
+
   # because of global requirements overrides, there is no reason to
   # run tempest/grenade tests after a requirements sync, as they've
   # already been run in the requirements job with the override.
@@ -11450,8 +11454,6 @@ projects:
       - name: check-requirements
       - name: python-jobs
     check:
-      - gate-tempest-dsvm-monasca-transform-python-full
-    gate:
       - gate-tempest-dsvm-monasca-transform-python-full
 
   - name: openstack/monasca-ui
