@@ -507,6 +507,34 @@
       - console-log
 
 - job-template:
+    name: 'gate-{name}-tox-xfs-tmp-{envlist}-{node}'
+    description: 'Same job as gate-{name}-tox-{envlist}, but with TMPDIR set to an xfs mount point.'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 40
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - zuul-git-prep-upper-constraints
+      - install-distro-packages
+      - mount-xfs-tmp-space:
+          xfs_mount_point: "$HOME/xfstmp"
+          xfs_file: "$HOME/1G_xfs_file"
+      - revoke-sudo
+      - tox-with-tmpdir-passed-in:
+          new_tmpdir_loc: "$HOME/xfstmp"
+          envlist: '{envlist}'
+      - assert-no-extra-files
+
+    publishers:
+      - test-results
+      - console-log
+
+- job-template:
     name: 'gate-{name}-tox-db-{envlist}-{node}'
     description: 'Same job as gate-{name}-tox-db-{envlist} but on node {node}'
     node: '{node}'

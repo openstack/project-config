@@ -113,7 +113,9 @@ export PYTHON=$bin_path/python
 export NOSE_WITH_XUNIT=1
 export NOSE_WITH_HTML_OUTPUT=1
 export NOSE_HTML_OUT_FILE='nose_results.html'
-export TMPDIR=$(/bin/mktemp -d)
+if [[ -z "$TMPDIR" ]]; then
+    export TMPDIR=$(/bin/mktemp -d)
+fi
 export UPPER_CONSTRAINTS_FILE=$(pwd)/upper-constraints.txt
 trap "rm -rf $TMPDIR" EXIT
 
