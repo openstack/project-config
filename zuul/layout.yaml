@@ -2659,6 +2659,9 @@ jobs:
   - name: gate-grenade-dsvm-sahara
     voting: false
 
+  - name: gate-python-saharaclient-dsvm-scenario-neutron
+    branch: ^(?!stable/(liberty|mitaka))$
+
   - name: ^(gate|post)-sahara-extra-artifacts$
     branch: ^(?!stable/(mitaka|liberty|icehouse)).*$
 
@@ -15714,10 +15717,11 @@ projects:
     check:
       - gate-python-saharaclient-python34
       - gate-sahara-cli-nv
-      - gate-python-saharaclient-dsvm-scenario-neutron-nv
+      - gate-python-saharaclient-dsvm-scenario-neutron
     post:
       - python-saharaclient-coverage-ubuntu-trusty
       - python-saharaclient-coverage-ubuntu-xenial
+      - gate-python-saharaclient-dsvm-scenario-neutron
     experimental:
       - gate-python-saharaclient-pypy
 
@@ -16375,13 +16379,11 @@ projects:
       - gate-sahara-tests-pylint
       - gate-tempest-dsvm-sahara-nv
       - gate-sahara-tests-dsvm-scenario-neutron
-      - gate-sahara-tests-dsvm-scenario-nova
       - gate-sahara-cli-nv
       - sahara-tests-coverage-ubuntu-trusty
       - sahara-tests-coverage-ubuntu-xenial
     gate:
       - gate-sahara-tests-dsvm-scenario-neutron
-      - gate-sahara-tests-dsvm-scenario-nova
     post:
       - sahara-tests-coverage-ubuntu-trusty
       - sahara-tests-coverage-ubuntu-xenial
