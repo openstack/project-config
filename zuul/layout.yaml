@@ -627,6 +627,14 @@ project-templates:
     post:
       - '{name}-api-guide'
 
+  - name: deploy-guide-jobs
+    check:
+      - gate-{name}-deploy-guide
+    gate:
+      - gate-{name}-deploy-guide
+    post:
+      - '{name}-deploy-guide'
+
   - name: install-guide-jobs
     check:
       - gate-{name}-install-guide
@@ -2512,6 +2520,16 @@ jobs:
       - 'bindep.txt'
       - other-requirements.txt
 
+  - name: ^gate-.*-deploy-guide$
+    success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/deploy-guide/build/html/
+    # This is only available in Ocata.
+    branch: ^(?!stable/(mitaka|newton)).*$
+    files:
+      - '^tox.ini$'
+      - '^deploy-guide/.*'
+      - 'bindep.txt'
+      - other-requirements.txt
+
   - name: ^(?!gate-).*-api-guide$
     # Only publish from master
     branch: master
@@ -2523,6 +2541,8 @@ jobs:
   - name: ^(?!gate-).*-install-guide$
     branch: ^(?!stable/(liberty|mitaka)).*$
 
+  - name: ^(?!gate-).*-deploy-guide$
+    branch: ^(?!stable/(mitaka|newton)).*$
 
   - name: gate-murano-firstapp-docs
     # Only publish from master
@@ -3240,6 +3260,7 @@ jobs:
       - project: ^openstack/openstack-ansible(?!-specs).*$
         all-files-match-any:
           - ^.*\.rst$
+          - ^deploy-guide/.*
           - ^doc/.*
           - ^releasenotes/.*
 
@@ -3274,6 +3295,10 @@ jobs:
   # except os_keystone, os_glance, os_cinder for stable/newton.
   - name: ^gate-openstack-ansible-os_(?!(keystone|glance|cinder)).*-ansible-.*-centos-7.*$
     branch: ^(?!(liberty|stable/(mitaka|newton))).*$
+
+  # Skip any deploy guide publish jobs for any branch other than master
+  - name: ^gate-openstack-ansible-deploy-guide$
+    branch: ^(?!(liberty|stable/(mitaka/newton))).*$
 
   # Ignore requirements on the keystoneclient/keystoneauth integration branch
   - name: gate-python-keystoneclient-requirements
@@ -12635,6 +12660,7 @@ projects:
       - name: check-requirements
       - name: openstack-server-publish-jobs
       - name: release-notes-jobs
+      - name: deploy-guide-jobs
     check:
       - gate-openstack-ansible-docs-ubuntu-trusty
       - gate-openstack-ansible-docs-ubuntu-xenial
