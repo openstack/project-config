@@ -41,18 +41,8 @@
     publishers:
       - test-results
       - devstack-logs
-      - publish-sahara-screenshots
       - console-log
 
-- publisher:
-    name: publish-sahara-screenshots
-    publishers:
-      - scp:
-          site: 'static.openstack.org'
-          files:
-            - target: 'logs/$LOG_PATH/screenshots'
-              source: 'integration_tests_screenshots/**'
-              copy-after-failure: true
 
 - job-template:
     name: 'gate-sahara-buildimages-{plugin}'
