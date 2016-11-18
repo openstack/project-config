@@ -5231,7 +5231,7 @@
       - translation-jobs-newton
       - 'gate-{name}-python35-db{suffix}':
           suffix: ''
-      - '{pipeline}-heat-dsvm-functional-{engine}-{datastore}-{lbaasversion}{special}{job-suffix}':
+      - '{pipeline}-heat-dsvm-functional-{engine}-{datastore}-{lbaasversion}-{node}{special}{job-suffix}':
           datastore: mysql
           pipeline: gate
           node: ubuntu-trusty
@@ -5240,17 +5240,19 @@
           branch-override: default
           engine: orig
           lbaasversion: lbaasv1
-      - '{pipeline}-heat-dsvm-functional-{engine}-{datastore}-{lbaasversion}{special}{job-suffix}':
+      - '{pipeline}-heat-dsvm-functional-{engine}-{datastore}-{lbaasversion}-{node}{special}{job-suffix}':
           datastore: mysql
           pipeline: gate
-          node: ubuntu-trusty
+          node:
+              - ubuntu-trusty
+              - ubuntu-xenial
           special: ''
           job-suffix: ''
           branch-designator: ''
           branch-override: default
           engine: orig
           lbaasversion: lbaasv2
-      - '{pipeline}-heat-dsvm-functional-{engine}-{datastore}-{lbaasversion}{special}{job-suffix}':
+      - '{pipeline}-heat-dsvm-functional-{engine}-{datastore}-{lbaasversion}-{node}{special}{job-suffix}':
           datastore: postgres
           pipeline: gate
           node: ubuntu-trusty
@@ -5259,7 +5261,7 @@
           branch-override: default
           engine: orig
           lbaasversion: lbaasv1
-      - '{pipeline}-heat-dsvm-functional-{engine}-{datastore}-{lbaasversion}{special}{job-suffix}':
+      - '{pipeline}-heat-dsvm-functional-{engine}-{datastore}-{lbaasversion}-{node}{special}{job-suffix}':
           datastore: mysql
           pipeline: gate
           node: ubuntu-trusty
@@ -5268,16 +5270,18 @@
           branch-override: default
           engine: convg
           lbaasversion: lbaasv1
-      - '{pipeline}-heat-dsvm-functional-{engine}-{datastore}-{lbaasversion}{special}{job-suffix}':
+      - '{pipeline}-heat-dsvm-functional-{engine}-{datastore}-{lbaasversion}-{node}{special}{job-suffix}':
           datastore: mysql
           pipeline: gate
-          node: ubuntu-trusty
+          node:
+              - ubuntu-trusty
+              - ubuntu-xenial
           special: ''
           job-suffix: ''
           branch-override: default
           engine: convg
           lbaasversion: lbaasv2
-      - '{pipeline}-heat-dsvm-functional-{engine}-{datastore}-{lbaasversion}{special}{job-suffix}':
+      - '{pipeline}-heat-dsvm-functional-{engine}-{datastore}-{lbaasversion}-{node}{special}{job-suffix}':
           datastore: mysql
           pipeline: gate
           node: ubuntu-trusty
@@ -5298,19 +5302,25 @@
           special: '-identity-v3-only'
           job-suffix: '-nv'
           branch-override: default
-      - '{pipeline}-tempest-dsvm-heat-apache{job-suffix}':
+      - '{pipeline}-tempest-dsvm-heat-apache-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node:
+              - ubuntu-trusty
+              - ubuntu-xenial
           job-suffix: ''
           branch-override: default
-      - '{pipeline}-grenade-dsvm-heat{job-suffix}':
+      - '{pipeline}-grenade-dsvm-heat-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node:
+              - ubuntu-trusty
+              - ubuntu-xenial
           job-suffix: ''
           branch-override: default
-      - '{pipeline}-grenade-dsvm-heat{job-suffix}':
+      - '{pipeline}-grenade-dsvm-heat-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node:
+              - ubuntu-trusty
+              - ubuntu-xenial
           job-suffix: '-nv'
           branch-override: default
       - gate-rally-dsvm-fakevirt-{name}
