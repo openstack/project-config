@@ -5,22 +5,32 @@
 # directory, stable/X will be published to the X directory. For
 # example stable/newton documents will life in the newton directory.
 
-venv=deploy-guide
+# You need to pass in the following variables:
+# VENV - virtual env to use
+# GUIDEDIR - directory for building
+
+if [ -z "$VENV" ] ; then
+    echo "The variable VENV is not set."
+    exit 1
+fi
+if [ -z "$GUIDEDIR" ] ; then
+    echo "The variable GUIDEDIR is not set."
+    exit 1
+fi
 
 export UPPER_CONSTRAINTS_FILE=$(pwd)/upper-constraints.txt
 
-tox -e $venv
-result=$?
+tox -e $VENV
 
-[ -e .tox/$venv/bin/pbr ] && freezecmd=pbr || freezecmd=pip
+[ -e .tox/$VENV/bin/pbr ] && freezecmd=pbr || freezecmd=pip
 
 echo "Begin pbr freeze output from test virtualenv:"
 echo "======================================================================"
-.tox/${venv}/bin/${freezecmd} freeze
+.tox/${VENV}/bin/${freezecmd} freeze
 echo "======================================================================"
 
 MARKER_TEXT="Project: $ZUUL_PROJECT Ref: $ZUUL_REFNAME Build: $ZUUL_UUID Revision: $ZUUL_NEWREV"
-echo $MARKER_TEXT > deploy-guide/build/html/.root-marker
+echo $MARKER_TEXT > $GUIDEDIR/build/html/.root-marker
 
 if [ -z "$ZUUL_REFNAME" ]; then
     TARGET=""
@@ -43,9 +53,9 @@ fi
 if [ ! -z $TARGET ] ; then
     # Move the docs into subdir based on branch
     TOP=`dirname $TARGET`
-    mv deploy-guide/build/html deploy-guide/build/tmp
-    mkdir -p deploy-guide/build/html/$TOP
-    mv deploy-guide/build/tmp deploy-guide/build/html/$TARGET
+    mv $GUIDEDIR/build/html $GUIDEDIR/build/tmp
+    mkdir -p $GUIDEDIR/build/html/$TOP
+    mv $GUIDEDIR/build/tmp $GUIDEDIR/build/html/$TARGET
 fi
 
-exit $result
+exit
