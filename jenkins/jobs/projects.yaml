@@ -1396,9 +1396,11 @@
       - openstack-publish-jobs
       - openstack-releasenotes-jobs
       - openstack-server-release-jobs
-      - '{pipeline}-congress-dsvm-api{job-suffix}':
+      - '{pipeline}-congress-dsvm-api-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           job-suffix: ''
           branch-override: default
       - '{pipeline}-congress-pe-replicated{job-suffix}':
