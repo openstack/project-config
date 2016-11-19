@@ -76,6 +76,21 @@
       - revoke-sudo
       - shell: |
           #!/bin/bash -xe
+          NOSE_WITH_XUNIT=1 tox -e selenium-headless
+
+    publishers:
+      - console-log
+
+- job-template:
+    name: gate-horizon-selenium-headless-legacy-{node}
+    node: '{node}'
+
+    builders:
+      - zuul-git-prep-upper-constraints
+      - install-distro-packages
+      - revoke-sudo
+      - shell: |
+          #!/bin/bash -xe
           NOSE_WITH_XUNIT=1 tox -evenv -- /bin/bash run_tests.sh -N --only-selenium --selenium-headless
 
     publishers:

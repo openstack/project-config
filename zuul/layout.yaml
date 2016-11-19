@@ -2998,11 +2998,17 @@ jobs:
   - name: gate-zaqar-ui-nodejs4-npm-run-test
     voting: false
 
-  - name: ^gate-horizon-selenium-headless-ubuntu-trusty
-    branch: ^(stable/mitaka).*$
-
   - name: ^gate-horizon-dsvm-integration-.*-ubuntu-trusty
     branch: ^(stable/mitaka).*$
+
+  - name: ^gate-horizon-selenium-headless-legacy-ubuntu-trusty
+    branch: ^(stable/mitaka).*$
+
+  - name: ^gate-horizon-selenium-headless-legacy-ubuntu-xenial
+    branch: ^(stable/newton).*$
+
+  - name: gate-horizon-selenium-headless-ubuntu-xenial
+    branch: ^(?!stable/(mitaka|newton)).*$
 
   # TODO(kragniz): Enable voting for each driver when the jobs are
   # functioning for that driver
@@ -10254,7 +10260,8 @@ projects:
     check:
       - gate-horizon-tox-py27dj19-ubuntu-xenial
       - gate-horizon-tox-py27dj110-ubuntu-xenial
-      - gate-horizon-selenium-headless-ubuntu-trusty
+      - gate-horizon-selenium-headless-legacy-ubuntu-trusty
+      - gate-horizon-selenium-headless-legacy-ubuntu-xenial
       - gate-horizon-selenium-headless-ubuntu-xenial
       - gate-horizon-dsvm-tempest-plugin-ubuntu-trusty
       - gate-horizon-dsvm-tempest-plugin-ubuntu-xenial
@@ -10265,7 +10272,8 @@ projects:
     gate:
       - gate-horizon-tox-py27dj19-ubuntu-xenial
       - gate-horizon-tox-py27dj110-ubuntu-xenial
-      - gate-horizon-selenium-headless-ubuntu-trusty
+      - gate-horizon-selenium-headless-legacy-ubuntu-trusty
+      - gate-horizon-selenium-headless-legacy-ubuntu-xenial
       - gate-horizon-selenium-headless-ubuntu-xenial
       - gate-horizon-dsvm-tempest-plugin-ubuntu-trusty
       - gate-horizon-dsvm-tempest-plugin-ubuntu-xenial
