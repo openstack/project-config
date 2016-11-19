@@ -27,6 +27,11 @@ dashboard:
             - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-networking-sfc-python34-db.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-networking-sfc-python34-db.{SUCCESS,FAILURE})),'24hours'), 'gate-networking-sfc-python34-db')
             - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-networking-sfc-python35-db.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-networking-sfc-python35-db.{SUCCESS,FAILURE})),'24hours'), 'gate-networking-sfc-python35-db')
           type: graph
+        - title: Periodic Job Failure Rates
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.periodic.job.periodic-networking-sfc-py35-with-neutron-lib-master.FAILURE),sum(stats_counts.zuul.pipeline.periodic.job.periodic-networking-sfc-py35-with-neutron-lib-master.{SUCCESS,FAILURE})),'24hours'), 'periodic-networking-sfc-py35-with-neutron-lib-master')
+          type: graph
         - title: Integrated Failure Rates (Check queue)
           span: 4
           targets:
