@@ -8603,6 +8603,7 @@
             - magnum
             - sahara
             - swift
+            - upgrade
 
 - project:
     name: openstack-ansible-apt_package_pinning
@@ -8776,6 +8777,14 @@
       - gate-{name}-requirements
       - openstack-publish-jobs
       - openstack-releasenotes-jobs
+      - '{pipeline}-{name}-ansible-{scenario}-{ostype}{job-suffix}':
+          job-suffix: ''
+          ostype:
+            - centos-7
+            - ubuntu-xenial
+          pipeline: gate
+          scenario:
+            - upgrade
 
 - project:
     name: openstack-ansible-os_cloudkitty
@@ -8806,6 +8815,14 @@
       - gate-{name}-requirements
       - openstack-publish-jobs
       - openstack-releasenotes-jobs
+      - '{pipeline}-{name}-ansible-{scenario}-{ostype}{job-suffix}':
+          job-suffix: ''
+          ostype:
+            - centos-7
+            - ubuntu-xenial
+          pipeline: gate
+          scenario:
+            - upgrade
 
 - project:
     name: openstack-ansible-os_gnocchi
@@ -8919,10 +8936,13 @@
       - '{pipeline}-{name}-ansible-{scenario}-{ostype}{job-suffix}':
           job-suffix: ''
           ostype:
+            - centos-7
             - ubuntu-trusty
             - ubuntu-xenial
           pipeline: gate
-          scenario: func_ovs
+          scenario:
+            - func_ovs
+            - upgrade
 
 - project:
     name: openstack-ansible-os_nova
@@ -8936,10 +8956,13 @@
       - '{pipeline}-{name}-ansible-{scenario}-{ostype}{job-suffix}':
           job-suffix: ''
           ostype:
+            - centos-7
             - ubuntu-trusty
             - ubuntu-xenial
           pipeline: gate
-          scenario: func_lxd
+          scenario:
+            - func_lxd
+            - upgrade
 
 - project:
     name: openstack-ansible-os_rally
@@ -8980,6 +9003,15 @@
           scenario:
             - func_pypy
             - multi_reg
+      - '{pipeline}-{name}-ansible-{scenario}-{ostype}{job-suffix}':
+          job-suffix: ''
+          ostype:
+            - centos-7
+            - ubuntu-trusty
+            - ubuntu-xenial
+          pipeline: gate
+          scenario:
+            - upgrade
 
 - project:
     name: openstack-ansible-os_tempest
