@@ -24,9 +24,9 @@ TOOLSDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $TOOLSDIR/functions
 
 function usage {
-    echo "Usage: release.sh [-a] repository series version diff_start SHA announce include_pypi first-full-release extra-metadata"
+    echo "Usage: release.sh [-a] repository series version diff_start SHA include_pypi first-full-release extra-metadata"
     echo
-    echo "Example: release.sh openstack/oslo.rootwrap mitaka 3.0.3 '' gerrit/master openstack-dev@lists.openstack.org yes no 'meta:release:Workflow+1: Doug Hellmann <doug@doughellmann.com>'"
+    echo "Example: release.sh openstack/oslo.rootwrap mitaka 3.0.3 '' gerrit/master yes no 'meta:release:Workflow+1: Doug Hellmann <doug@doughellmann.com>'"
 }
 
 if [ $# -lt 5 ]; then
@@ -39,10 +39,9 @@ SERIES=$2
 VERSION=$3
 DIFF_START=$4
 SHA=$5
-ANNOUNCE=$6
-INCLUDE_PYPI=${7:-no}
-FIRST_FULL=${8:-no}
-EXTRA_METADATA="$9"
+INCLUDE_PYPI=${6:-no}
+FIRST_FULL=${7:-no}
+EXTRA_METADATA="$8"
 
 SHORTNAME=`basename $REPO`
 
@@ -82,7 +81,6 @@ meta:version: $VERSION
 meta:diff-start: $DIFF_START
 meta:series: $SERIES
 meta:release-type: $RELEASETYPE
-meta:announce: $ANNOUNCE
 meta:pypi: $INCLUDE_PYPI
 meta:first: $FIRST_FULL
 $EXTRA_METADATA
