@@ -15,8 +15,10 @@
       - install-distro-packages
       - shell: |
           #!/bin/bash -xe
+          export ACTION={action}
+          export BASE_DISTRO={distro}
+          export INSTALL_TYPE={type}
           tools/setup_gate.sh
-          tox -e {action}-{distro}-{type}
 
     publishers:
       - devstack-logs
