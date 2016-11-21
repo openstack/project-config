@@ -51,6 +51,7 @@ install_from_source python-saharaclient
 install_from_source python-searchlightclient
 install_from_source python-senlinclient
 install_from_source python-tripleoclient
+install_from_source python-vitrageclient
 install_from_source python-watcherclient
 install_from_source python-zaqarclient
 
