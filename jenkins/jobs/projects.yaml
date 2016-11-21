@@ -15174,10 +15174,15 @@
       - install-guide-jobs:
           service: database
       - periodic-python-jobs-with-oslo-master
-      - 'gate-trove-functional-dsvm-{datastore}{job-suffix}':
-          datastore:
-            - 'mysql'
+      - 'gate-trove-functional-dsvm-{datastore}-{node}{job-suffix}':
+          datastore: 'mysql'
           job-suffix: ''
+          node: 'ubuntu-trusty'
+          branch-override: default
+      - 'gate-trove-functional-dsvm-{datastore}-{node}{job-suffix}':
+          datastore: 'mysql'
+          job-suffix: '-nv'
+          node: 'ubuntu-xenial'
           branch-override: default
       - 'gate-trove-legacy-functional-dsvm-{datastore}{job-suffix}':
           datastore: 'mysql'
