@@ -3277,8 +3277,20 @@ jobs:
 
   # Run all OpenStack-Ansible trusty jobs except the docs and linters jobs
   # for Newton as this is still a supported platform for OpenStack-Ansible.
+  # Trusty support is removed after Newton, so don't run any ubuntu-trusty
+  # jobs against branches > stable/newton.
   - name: ^gate-openstack-ansible.*-((?!(docs|linters)).)*-ubuntu-trusty.*$
-    branch: ^(liberty|stable/(mitaka|newton)|master)$
+    branch: ^(liberty|stable/(mitaka|newton))$
+
+  # For OpenStack-Ansible, skip the xenial voting job on all branches before
+  # Ocata. Specifically for the AIO on the integrated build.
+  - name: ^gate-openstack-ansible-openstack-ansible-aio-ubuntu-xenial
+    branch: ^(?!(liberty|stable/(mitaka|newton))).*$
+
+  # For OpenStack-Ansible, skip the xenial non-voting job on all branches
+  # after Ocata. Specifically for the AIO on the integrated build.
+  - name: ^gate-openstack-ansible-openstack-ansible-aio-ubuntu-xenial-nv
+    branch: ^(liberty|stable/(mitaka|newton))$
 
   # Skip any OpenStack-Ansible jobs which aren't the following scenario's
   # for liberty and stable/mitaka: aio, func, docs, linters, releasenotes
@@ -12701,6 +12713,7 @@ projects:
       - gate-openstack-ansible-linters-ubuntu-trusty
       - gate-openstack-ansible-linters-ubuntu-xenial
       - gate-openstack-ansible-openstack-ansible-aio-ubuntu-trusty
+      - gate-openstack-ansible-openstack-ansible-aio-ubuntu-xenial
       - gate-openstack-ansible-openstack-ansible-aio-ubuntu-xenial-nv
     gate:
       - gate-openstack-ansible-docs-ubuntu-trusty
@@ -12708,6 +12721,7 @@ projects:
       - gate-openstack-ansible-linters-ubuntu-trusty
       - gate-openstack-ansible-linters-ubuntu-xenial
       - gate-openstack-ansible-openstack-ansible-aio-ubuntu-trusty
+      - gate-openstack-ansible-openstack-ansible-aio-ubuntu-xenial
     experimental:
       - gate-openstack-ansible-openstack-ansible-aio-centos-7-nv
       - gate-openstack-ansible-openstack-ansible-compute-ubuntu-xenial-nv
