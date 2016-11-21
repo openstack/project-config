@@ -2901,7 +2901,7 @@ jobs:
   - name: gate-tempest-dsvm-full-zmq
     voting: false
 
-  - name: gate-oslo.messaging-src-dsvm-full-amqp1-centos7
+  - name: ^gate-oslo.messaging-src-dsvm-full-amqp1.*$
     branch: ^(?!stable/liberty).*$
 
   - name: gate-oslo.messaging-src-dsvm-full-zmq
@@ -2910,11 +2910,15 @@ jobs:
   - name: gate-oslo.messaging-src-dsvm-full-pika
     branch: ^(?!stable/liberty).*$
 
-  - name: gate-oslo.messaging-telemetry-dsvm-integration-zmq
+  - name: ^gate-oslo.messaging-telemetry-dsvm-integration-zmq.*$
     branch: ^(?!stable/liberty).*$
     voting: false
 
-  - name: gate-oslo.messaging-telemetry-dsvm-integration-pika
+  - name: ^gate-oslo.messaging-telemetry-dsvm-integration-pika.*$
+    branch: ^(?!stable/liberty).*$
+    voting: false
+
+  - name: ^gate-oslo.messaging-telemetry-dsvm-integration-amqp1.*$
     branch: ^(?!stable/liberty).*$
     voting: false
 
@@ -13849,27 +13853,30 @@ projects:
       - gate-oslo.messaging-dsvm-functional-py27-rabbit-nv
       - gate-oslo.messaging-dsvm-functional-py34-rabbit-nv
       - gate-oslo.messaging-dsvm-functional-py27-qpid-nv
-      - gate-oslo.messaging-dsvm-functional-py27-amqp1-centos7
-      - gate-oslo.messaging-dsvm-functional-py34-amqp1-centos7-nv
+      - gate-oslo.messaging-dsvm-functional-py27-amqp1
+      - gate-oslo.messaging-dsvm-functional-py27-amqp1-centos7-nv
+      - gate-oslo.messaging-dsvm-functional-py34-amqp1-nv
       - gate-oslo.messaging-dsvm-functional-py27-pika
       - gate-oslo.messaging-dsvm-functional-py27-zeromq
       - gate-oslo.messaging-dsvm-functional-py27-zeromq-proxy-nv
       - gate-oslo.messaging-dsvm-functional-py27-zeromq-pub-sub-nv
-      - gate-oslo.messaging-src-dsvm-full-amqp1-centos7
+      - gate-oslo.messaging-src-dsvm-full-amqp1
+      - gate-oslo.messaging-src-dsvm-full-amqp1-centos7-nv
       - gate-oslo.messaging-src-dsvm-full-pika
       - gate-oslo.messaging-src-dsvm-full-zmq
       - gate-oslo.messaging-src-grenade-dsvm
       - gate-oslo.messaging-src-grenade-dsvm-multinode
       - gate-telemetry-dsvm-integration-oslo.messaging-ubuntu-trusty
       - gate-telemetry-dsvm-integration-oslo.messaging-ubuntu-xenial
+      - gate-oslo.messaging-telemetry-dsvm-integration-amqp1-nv
       - gate-oslo.messaging-telemetry-dsvm-integration-pika
       - gate-oslo.messaging-telemetry-dsvm-integration-zmq
       - gate-tempest-neutron-dsvm-src-oslo.messaging-amqp1-nv
       - gate-tempest-neutron-dsvm-src-oslo.messaging-pika
       - gate-tempest-neutron-dsvm-src-oslo.messaging-zmq
     gate:
-      - gate-oslo.messaging-dsvm-functional-py27-amqp1-centos7
-      - gate-oslo.messaging-src-dsvm-full-amqp1-centos7
+      - gate-oslo.messaging-dsvm-functional-py27-amqp1
+      - gate-oslo.messaging-src-dsvm-full-amqp1
       - gate-oslo.messaging-dsvm-functional-py27-zeromq
       - gate-oslo.messaging-src-dsvm-full-zmq
       - gate-tempest-neutron-dsvm-src-oslo.messaging-zmq
