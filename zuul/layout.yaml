@@ -1884,8 +1884,8 @@ jobs:
 
   # NOTE(aweyl) tempest test for vitrage was introduced in the mitaka cycle,
   # so testing the earlier branches doesn't make sense.
-  - name: ^gate-vitrage-dsvm-datasources$
-    branch: ^(?!stable/liberty).*$
+  - name: ^gate-vitrage-dsvm-datasources-ubuntu-trusty$
+    branch: ^stable/mitaka$
 
   # NOTE(markvan) (heat) functional lbaas v2 testing was introduced in the mitaka
   # cycle as experimental, so testing it there and earlier branches doesn't make sense.
@@ -17818,11 +17818,15 @@ projects:
       - name: publish-to-pypi
       - name: openstack-server-publish-jobs
     check:
-      - gate-vitrage-dsvm-api
-      - gate-vitrage-dsvm-datasources
+      - gate-vitrage-dsvm-api-ubuntu-trusty
+      - gate-vitrage-dsvm-api-ubuntu-xenial
+      - gate-vitrage-dsvm-datasources-ubuntu-trusty
+      - gate-vitrage-dsvm-datasources-ubuntu-xenial
     gate:
-      - gate-vitrage-dsvm-api
-      - gate-vitrage-dsvm-datasources
+      - gate-vitrage-dsvm-api-ubuntu-trusty
+      - gate-vitrage-dsvm-api-ubuntu-xenial
+      - gate-vitrage-dsvm-datasources-ubuntu-trusty
+      - gate-vitrage-dsvm-datasources-ubuntu-xenial
 
   - name: openstack/vitrage-dashboard
     template:
