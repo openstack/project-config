@@ -641,7 +641,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-tempest-dsvm-postgres-zeromq-full{job-suffix}'
+    name: '{pipeline}-tempest-dsvm-zeromq-multibackend{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -660,8 +660,8 @@
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_TEMPEST_FULL=1
-          export DEVSTACK_GATE_POSTGRES=1
-          export DEVSTACK_GATE_MQ_DRIVER="zeromq"
+          export DEVSTACK_GATE_ZEROMQ=1
+          export DEVSTACK_LOCAL_CONFIG="CINDER_ENABLED_BACKENDS=lvm:lvmdriver-1,lvm:lvmdriver-2"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -2254,6 +2254,7 @@
       - '{pipeline}-tempest-dsvm-cells-{node}{job-suffix}'
       - '{pipeline}-tempest-dsvm-full-lio{job-suffix}'
       - '{pipeline}-tempest-dsvm-lvm-multibackend{job-suffix}'
+      - '{pipeline}-tempest-dsvm-zeromq-multibackend{job-suffix}'
       - '{pipeline}-tempest-dsvm-full-test-accounts{job-suffix}'
       - '{pipeline}-tempest-dsvm-full-{node}{job-suffix}'
       - '{pipeline}-tempest-dsvm-ironic-ipa-wholedisk-agent_ssh-tinyipa-src{job-suffix}'
