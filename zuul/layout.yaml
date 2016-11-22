@@ -1793,10 +1793,10 @@ jobs:
       - '^tox.ini'
       - '^upper-constraints.txt'
 
-  # TODO(lin-a-yang): To start with empty repository, mark all rsc jobs
+  # TODO(lin-a-yang): To start with empty repository, mark all valence jobs
   # non-voting to not block any changes. Once the jobs all run fine, change
   # back to voting.
-  - name: ^gate-rsc-(docs|python|requirements).*$
+  - name: ^gate-valence-(docs|python|requirements).*$
     voting: false
 
   # NOTE(mriedem): This job uses xenial nodes which restricts it to >= newton
@@ -16253,23 +16253,6 @@ projects:
       - name: merge-check
       - name: noop-jobs
 
-  - name: openstack/rsc
-    template:
-      - name: merge-check
-    check:
-      - gate-rsc-docs-ubuntu-trusty
-      - gate-rsc-pep8-ubuntu-trusty
-      - gate-rsc-python27-ubuntu-trusty
-      - gate-rsc-docs-ubuntu-xenial
-      - gate-rsc-pep8-ubuntu-xenial
-      - gate-rsc-python27-ubuntu-xenial
-      - gate-rsc-python34
-      - gate-rsc-python35-nv
-      - gate-rsc-requirements
-    gate:
-      - gate-rsc-pep8-ubuntu-trusty
-      - gate-rsc-pep8-ubuntu-xenial
-
   - name: openstack/sahara
     template:
       - name: merge-check
@@ -17818,6 +17801,23 @@ projects:
     template:
       - name: merge-check
       - name: noop-jobs
+
+  - name: openstack/valence
+    template:
+      - name: merge-check
+    check:
+      - gate-valence-docs-ubuntu-trusty
+      - gate-valence-pep8-ubuntu-trusty
+      - gate-valence-python27-ubuntu-trusty
+      - gate-valence-docs-ubuntu-xenial
+      - gate-valence-pep8-ubuntu-xenial
+      - gate-valence-python27-ubuntu-xenial
+      - gate-valence-python34
+      - gate-valence-python35-nv
+      - gate-valence-requirements
+    gate:
+      - gate-valence-pep8-ubuntu-trusty
+      - gate-valence-pep8-ubuntu-xenial
 
   - name: openstack/valence-specs
     template:
