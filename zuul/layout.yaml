@@ -2471,7 +2471,12 @@ jobs:
   - name: ^gate-.*-tox-doc-publish-checkbuild.*$
     success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/publish-docs/
 
-  - name: ^gate-.*-tox-checklang.*$
+  - name: ^gate-.*-tox-checklang.*ubuntu-xenial$
+    # run this on all branches. The default ubuntu-xenial condition
+    # will not run this on older branches. We do not have a kilo
+    # branch but this allows to match all branches.
+    # TODO(jaegerandi): Remove branch condition once mitaka is retired.
+    branch: ^(?!stable/kilo).*$
     # Only run job if at least one po or pot file was changed
     files:
       - '^.*\.po$'
