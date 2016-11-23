@@ -1,3 +1,47 @@
+- job:
+    name: gate-manila-ui-dsvm-nv
+    node: 'ubuntu-xenial'
+
+    wrappers:
+      - build-timeout:
+          timeout: 100
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - firefox-install
+      - xvfb-install
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TEMPEST=0
+          export DEVSTACK_GATE_EXERCISES=0
+          export DEVSTACK_GATE_INSTALL_TESTONLY=1
+          export DEVSTACK_GATE_NEUTRON=1
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin manila git://git.openstack.org/openstack/manila"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin manila-ui git://git.openstack.org/openstack/manila-ui"
+
+          # Keep localrc to be able to set some vars in pre_test_hook
+          export KEEP_LOCALRC=1
+          # Enable dummy driver in Manila
+          function pre_test_hook {
+              source $BASE/new/manila/contrib/ci/pre_test_hook.sh \
+                      True \
+                      dummy \
+                      multibackend
+          }
+          export -f pre_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+    publishers:
+      - test-results
+      - devstack-logs
+      - console-log
+
+
 - job-template:
     name: 'gate-manila-tempest-dsvm-{description}-{node}{suffix}'
     node: '{node}'
