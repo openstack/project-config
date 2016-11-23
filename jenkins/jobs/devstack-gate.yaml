@@ -660,8 +660,9 @@
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_TEMPEST_FULL=1
-          export DEVSTACK_GATE_ZEROMQ=1
-          export DEVSTACK_LOCAL_CONFIG="CINDER_ENABLED_BACKENDS=lvm:lvmdriver-1,lvm:lvmdriver-2"
+          export PROJECTS="openstack/devstack-plugin-zmq $PROJECTS"
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin devstack-plugin-zmq git://git.openstack.org/openstack/devstack-plugin-zmq"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"CINDER_ENABLED_BACKENDS=lvm:lvmdriver-1,lvm:lvmdriver-2"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
