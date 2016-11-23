@@ -58,13 +58,14 @@
           export DEVSTACK_GATE_SENLIN={senlin}
           export DEVSTACK_GATE_WATCHER={watcher}
           export DEVSTACK_GATE_MAGNUM={magnum}
-          # TODO(andreykurilin): make it configurable someday
-          export DEVSTACK_GATE_TELEMETRY=0
+          export DEVSTACK_GATE_HEAT={heat}
+          export DEVSTACK_GATE_SWIFT={swift}
+          export DEVSTACK_GATE_TELEMETRY={telemetry}
           export DEVSTACK_GATE_TEMPEST_LARGE_OPS={large_ops}
           export DEVSTACK_GATE_EXERCISES=0
-          export RALLY_SCENARIO={scenario}
           export DEVSTACK_GATE_USE_KEYSTONE_V2API={keystone_use_v2api}
           export DEVSTACK_GATE_PREPOPULATE_USERS={prepopulate_users}
+          export RALLY_SCENARIO={scenario}
 
           if [ $DEVSTACK_GATE_USE_KEYSTONE_V2API -eq 1 ]; then
               export IDENTITY_API_VERSION=2.0
@@ -75,16 +76,22 @@
           DEVSTACK_LOCAL_CONFIG="enable_plugin rally git://git.openstack.org/openstack/rally"
           DEVSTACK_LOCAL_CONFIG+=$'\n'"CINDER_ENABLE_V1_API=True"
 
-          ENABLED_SERVICES=sahara,key,horizon,
+          ENABLED_SERVICES=key,horizon,
           ENABLED_SERVICES+=cinder,c-api,c-vol,c-sch,c-bak,
           ENABLED_SERVICES+=g-api,g-reg,
-          ENABLED_SERVICES+=heat,h-api,h-api-cfn,h-api-cw,h-eng,
           ENABLED_SERVICES+=n-api,n-crt,n-cpu,n-sch,n-cond,
+
           # n-obj has been removed from mitaka
           if [[ "$ZUUL_BRANCH" == "stable/liberty" ]]; then
               ENABLED_SERVICES+=n-obj,
           fi
-          ENABLED_SERVICES+=s-proxy,s-account,s-container,s-object,
+          if [ $DEVSTACK_GATE_SWIFT -ne 1 ]; then
+            ENABLED_SERVICES+=s-proxy,s-account,s-container,s-object,
+          fi
+
+          if [ $DEVSTACK_GATE_HEAT -ne 1 ]; then
+            ENABLED_SERVICES+=heat,h-api,h-api-cfn,h-api-cw,h-eng,
+           fi
 
           if [ $DEVSTACK_GATE_NEUTRON -ne 1 ]; then
               ENABLED_SERVICES+=n-net,n-api-meta,
@@ -138,7 +145,7 @@
               fi
               export CEILOMETER_NOTIFICATION_TOPICS=notifications,profiler
 
-              export DEVSTACK_LOCAL_CONFIG+=$"enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin aodh git://git.openstack.org/openstack/aodh"
               # panko exists for Newton+ only
               if [[ ! "stable/liberty stable/mitaka" =~ $ZUUL_BRANCH ]]; then
@@ -423,6 +430,9 @@
             magnum: '0'
             prepopulate_users: '0'
             watcher: '0'
+            telemetry: '0'
+            swift: '0'
+            heat: '0'
 
     publishers:
       - devstack-logs
@@ -469,8 +479,8 @@
 
 
 - job-template:
-    name: 'gate-rally-dsvm-murano-{name}'
-    node: ubuntu-xenial
+    name: 'gate-rally-dsvm-murano-{name}-{node}{job-suffix}'
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -491,8 +501,8 @@
 
 
 - job-template:
-    name: 'gate-rally-dsvm-mistral-{name}'
-    node: ubuntu-xenial
+    name: 'gate-rally-dsvm-mistral-{name}-{node}{job-suffix}'
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -512,8 +522,8 @@
 
 
 - job-template:
-    name: 'gate-rally-dsvm-cue-{broker}'
-    node: ubuntu-xenial
+    name: 'gate-rally-dsvm-cue-{broker}-{node}{job-suffix}'
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -532,8 +542,8 @@
 
 
 - job-template:
-    name: 'gate-rally-dsvm-designate-{name}'
-    node: ubuntu-xenial
+    name: 'gate-rally-dsvm-designate-{name}-{node}{job-suffix}'
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -553,8 +563,8 @@
 
 
 - job-template:
-    name: 'gate-rally-dsvm-{name}'
-    node: ubuntu-xenial
+    name: 'gate-rally-dsvm-{name}-{node}{job-suffix}'
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -574,6 +584,9 @@
           magnum: '0'
           prepopulate_users: '0'
           watcher: '0'
+          telemetry: '0'
+          swift: '{swift}'
+          heat: '0'
 
     publishers:
       - devstack-logs
@@ -603,6 +616,9 @@
           magnum: '0'
           prepopulate_users: '0'
           watcher: '0'
+          telemetry: '{telemetry}'
+          swift: '0'
+          heat: '0'
 
     publishers:
       - devstack-logs
@@ -631,6 +647,9 @@
           magnum: '0'
           prepopulate_users: '0'
           watcher: '0'
+          telemetry: '0'
+          swift: '0'
+          heat: '0'
 
     publishers:
       - devstack-logs
@@ -659,6 +678,9 @@
           magnum: '0'
           prepopulate_users: '1'
           watcher: '0'
+          telemetry: '0'
+          swift: '0'
+          heat: '0'
 
     publishers:
       - devstack-logs
@@ -667,8 +689,8 @@
 
 
 - job-template:
-    name: 'gate-rally-dsvm-fakevirt-{name}'
-    node: ubuntu-xenial
+    name: 'gate-rally-dsvm-fakevirt-{name}-{node}{job-suffix}'
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -688,6 +710,9 @@
           magnum: '0'
           prepopulate_users: '0'
           watcher: '0'
+          telemetry: '0'
+          swift: '0'
+          heat: '0'
 
     publishers:
       - devstack-logs
@@ -696,8 +721,8 @@
 
 
 - job-template:
-    name: 'gate-rally-dsvm-zaqar-{name}'
-    node: ubuntu-xenial
+    name: 'gate-rally-dsvm-zaqar-{name}-{node}{job-suffix}'
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -717,6 +742,9 @@
           magnum: '0'
           prepopulate_users: '0'
           watcher: '0'
+          telemetry: '0'
+          swift: '0'
+          heat: '0'
 
     publishers:
       - devstack-logs
@@ -745,23 +773,9 @@
           magnum: '0'
           prepopulate_users: '0'
           watcher: '0'
-
-    publishers:
-      - devstack-logs
-      - rally-plot
-      - console-log
-
-- job-template:
-    name: 'gate-{name}-integrate-dsvm-rally'
-    node: ubuntu-xenial
-
-    wrappers:
-      - build-timeout:
-          timeout: 130
-      - timestamps
-
-    builders:
-      - devstack-{name}-rally-gate
+          telemetry: '0'
+          swift: '0'
+          heat: '{heat}'
 
     publishers:
       - devstack-logs
@@ -1015,8 +1029,8 @@
 
 
 - job-template:
-    name: 'gate-rally-dsvm-monasca-{name}'
-    node: ubuntu-xenial
+    name: 'gate-rally-dsvm-monasca-{name}-{node}{job-suffix}'
+    node: '{name}'
 
     wrappers:
       - build-timeout:
@@ -1054,6 +1068,9 @@
             magnum: '0'
             prepopulate_users: '0'
             watcher: '0'
+            telemetry: '0'
+            swift: '0'
+            heat: '0'
 
     publishers:
       - devstack-logs
@@ -1061,8 +1078,8 @@
       - console-log
 
 - job-template:
-    name: 'gate-rally-dsvm-senlin-{name}'
-    node: ubuntu-xenial
+    name: 'gate-rally-dsvm-senlin-{name}-{node}{job-suffix}'
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -1082,6 +1099,9 @@
           magnum: '0'
           prepopulate_users: '0'
           watcher: '0'
+          telemetry: '0'
+          swift: '0'
+          heat: '0'
 
     publishers:
       - devstack-logs
@@ -1090,8 +1110,8 @@
 
 
 - job-template:
-    name: 'gate-rally-dsvm-watcher-{name}'
-    node: ubuntu-xenial
+    name: 'gate-rally-dsvm-watcher-{name}-{node}{job-suffix}'
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -1111,6 +1131,9 @@
           magnum: '0'
           prepopulate_users: '0'
           watcher: '1'
+          telemetry: '0'
+          swift: '0'
+          heat: '0'
 
     publishers:
       - devstack-logs
@@ -1140,6 +1163,9 @@
           magnum: '1'
           prepopulate_users: '0'
           watcher: '0'
+          telemetry: '0'
+          swift: '0'
+          heat: '0'
 
     publishers:
       - devstack-logs

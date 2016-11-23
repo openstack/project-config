@@ -1095,7 +1095,8 @@ project-templates:
       - gate-tempest-dsvm-designate-bind9
       - gate-tempest-dsvm-designate-powerdns-postgres-nv
       - gate-tempest-dsvm-designate-powerdns-worker-model-nv
-      - gate-rally-dsvm-designate-designate
+      - gate-rally-dsvm-designate-designate-ubuntu-trusty-nv
+      - gate-rally-dsvm-designate-designate-ubuntu-xenial-nv
       - gate-grenade-dsvm-designate-powerdns
       - gate-tempest-dsvm-designate-pdns4-nv
       - gate-tempest-dsvm-designate-powerdns-identity-v3-only-nv
@@ -1830,19 +1831,7 @@ jobs:
   - name: ^gate-rally-dsvm-rally-.*$
     voting: false
 
-  - name: gate-rally-dsvm-fakevirt-heat
-    voting: false
-
   - name: ^gate-rally-tox-self-ubuntu-(trusty|xenial)$
-    voting: false
-
-  - name: gate-rally-dsvm-designate-designate
-    voting: false
-
-  - name: gate-rally-dsvm-senlin-senlin
-    voting: false
-
-  - name: gate-rally-dsvm-senlin-rally
     voting: false
 
   - name: ^senlin-coverage-ubuntu-(trusty|xenial)
@@ -1866,9 +1855,6 @@ jobs:
       - ^tests/ci/.*verify.*$
 
   - name: gate-rally-dsvm-verify-light-create-resources
-    voting: false
-
-  - name: gate-rally-dsvm-zaqar-zaqar
     voting: false
 
   # NOTE(wangxiyuan) As the tempest test has been enabled and the functional
@@ -2320,9 +2306,6 @@ jobs:
     branch: ^(?!stable/liberty).*$
     voting: false
 
-  - name: gate-rally-dsvm-cinder
-    voting: false
-
   - name: gate-cinder-dsvm-apache
     voting: false
 
@@ -2651,9 +2634,6 @@ jobs:
   - name: gate-congress-pe-replicated-nv
     branch: ^(?!stable/(liberty|mitaka)).*$
 
-  - name: gate-rally-dsvm-cue-rabbitmq
-    voting: false
-
   - name: gate-hacking-integration-nova
     voting: false
 
@@ -2739,17 +2719,7 @@ jobs:
   - name: ^gate-python-keystoneclient-tox-bandit-ubuntu-trusty$
     branch: ^stable/liberty$
 
-  - name: gate-rally-dsvm-keystone
-    branch: ^master$
-    voting: false
-
-  - name: gate-rally-dsvm-glance
-    voting: false
-
   - name: gate-python-troveclient-pypy
-    voting: false
-
-  - name: gate-rally-dsvm-mistral-task
     voting: false
 
   # python3 support was fully implemented only in mitaka
@@ -2793,9 +2763,6 @@ jobs:
 
   - name: gate-murano-devstack-dsvm
     branch: ^(stable/liberty).*$
-
-  - name: gate-rally-dsvm-murano-task
-    voting: false
 
   - name: gate-murano-congress-devstack-dsvm
     voting: false
@@ -3487,12 +3454,6 @@ jobs:
     voting: false
 
   - name: ^python-watcherclient-coverage-ubuntu-(trusty|xenial)
-    voting: false
-
-  - name: gate-rally-dsvm-watcher-watcher
-    voting: false
-
-  - name: gate-rally-dsvm-watcher-rally
     voting: false
 
   - name: gate-tooz-tox-db-py27-consul-ubuntu-trusty
@@ -5917,7 +5878,7 @@ projects:
     experimental:
       - gate-ceilometer-dsvm-tempest-plugin-es
       - gate-grenade-dsvm-forward
-      - gate-rally-dsvm-fakevirt-ceilometer
+      - gate-rally-dsvm-fakevirt-ceilometer-ubuntu-xenial
 
   - name: openstack/ceilometer-powervm
     template:
@@ -6321,7 +6282,8 @@ projects:
       - name: api-ref-jobs
     check:
       - gate-cinder-pylint
-      - gate-rally-dsvm-cinder
+      - gate-rally-dsvm-cinder-ubuntu-trusty-nv
+      - gate-rally-dsvm-cinder-ubuntu-xenial-nv
       - gate-tempest-dsvm-full-devstack-plugin-ceph-ubuntu-trusty
       - gate-tempest-dsvm-full-devstack-plugin-ceph-ubuntu-xenial
       - gate-cinder-dsvm-apache
@@ -6705,7 +6667,8 @@ projects:
       - cue-coverage-ubuntu-trusty
       - cue-coverage-ubuntu-xenial
       - gate-cue-integration-dsvm-rabbitmq
-      - gate-rally-dsvm-cue-rabbitmq
+      - gate-rally-dsvm-cue-rabbitmq-ubuntu-trusty-nv
+      - gate-rally-dsvm-cue-rabbitmq-ubuntu-xenial-nv
     gate:
       - gate-cue-integration-dsvm-rabbitmq
     pre-release:
@@ -10009,7 +9972,8 @@ projects:
       - gate-tempest-dsvm-full-devstack-plugin-ceph-ubuntu-trusty
       - gate-tempest-dsvm-full-devstack-plugin-ceph-ubuntu-xenial
       - gate-tempest-dsvm-neutron-identity-v3-only-full-ubuntu-xenial-nv
-      - gate-rally-dsvm-glance
+      - gate-rally-dsvm-glance-ubuntu-trusty-nv
+      - gate-rally-dsvm-glance-ubuntu-xenial-nv
     gate:
       - gate-tempest-dsvm-full-devstack-plugin-ceph-ubuntu-trusty
       - gate-tempest-dsvm-full-devstack-plugin-ceph-ubuntu-xenial
@@ -10246,10 +10210,12 @@ projects:
       - heat-coverage-db-ubuntu-trusty
       - heat-coverage-db-ubuntu-xenial
     periodic:
-      - gate-rally-dsvm-fakevirt-heat
+      - gate-rally-dsvm-fakevirt-heat-ubuntu-trusty-nv
+      - gate-rally-dsvm-fakevirt-heat-ubuntu-xenial-nv
     experimental:
       - gate-heat-dsvm-functional-orig-mysql-lbaasv1-ubuntu-trusty-identity-v3-only-nv
-      - gate-rally-dsvm-fakevirt-heat
+      - gate-rally-dsvm-fakevirt-heat-ubuntu-trusty-nv
+      - gate-rally-dsvm-fakevirt-heat-ubuntu-xenial-nv
       - gate-heat-dsvm-functional-orig-postgres-lbaasv1-ubuntu-trusty
       - gate-tripleo-ci-centos-7-nonha-multinode
 
@@ -10811,7 +10777,7 @@ projects:
       - gate-keystone-tox-bandit-ubuntu-trusty
     experimental:
       - gate-grenade-dsvm-forward
-      - gate-rally-dsvm-keystone
+      - gate-rally-dsvm-keystone-ubuntu-xenial-nv
       - gate-keystone-tox-patch_cover-ubuntu-trusty
       - gate-keystone-tox-patch_cover-ubuntu-xenial
 
@@ -11272,7 +11238,8 @@ projects:
       - name: check-requirements
       - name: release-notes-jobs
     check:
-      - gate-rally-dsvm-mistral-task
+      - gate-rally-dsvm-mistral-task-ubuntu-trusty-nv
+      - gate-rally-dsvm-mistral-task-ubuntu-xenial-nv
       - gate-mistral-devstack-dsvm
       - gate-mistral-tox-db-unit-mysql-ubuntu-xenial
       - gate-mistral-tox-db-unit-postgresql-ubuntu-trusty
@@ -11621,7 +11588,8 @@ projects:
       - gate-murano-tox-py27-mitaka-ubuntu-xenial
       - gate-murano-devstack-dsvm
       - gate-murano-congress-devstack-dsvm
-      - gate-rally-dsvm-murano-task
+      - gate-rally-dsvm-murano-task-ubuntu-trusty-nv
+      - gate-rally-dsvm-murano-task-ubuntu-xenial-nv
       - gate-tempest-dsvm-murano-api
       - gate-tempest-dsvm-murano-cfapi
       - gate-tempest-dsvm-murano-glare-backend
@@ -16008,16 +15976,16 @@ projects:
       - rally-coverage-ubuntu-xenial
       - gate-rally-install-centos-7
       - gate-rally-install-ubuntu-trusty
-      - gate-rally-dsvm-rally
+      - gate-rally-dsvm-rally-ubuntu-xenial
       - gate-rally-dsvm-keystone-v2api-rally
       - gate-rally-dsvm-rally-cinder
       - gate-rally-dsvm-rally-heat
       - gate-rally-dsvm-rally-nova
       - gate-rally-dsvm-manila-multibackend
       - gate-rally-dsvm-manila-multibackend-no-ss
-      - gate-rally-dsvm-neutron-rally-ubuntu-trusty
+      - gate-rally-dsvm-neutron-rally-ubuntu-xenial
+      - gate-rally-dsvm-neutron-unstable-ubuntu-xenial-nv
       - gate-rally-dsvm-neutron-existing-users-rally
-      - gate-rally-dsvm-neutron-unstable-ubuntu-trusty-nv
       - gate-rally-dsvm-magnum-rally-nv
       - gate-rally-dsvm-cli
       - gate-rally-dsvm-verify-light-discover-resources
@@ -16029,9 +15997,9 @@ projects:
     gate:
       - gate-rally-install-centos-7
       - gate-rally-install-ubuntu-trusty
-      - gate-rally-dsvm-rally
+      - gate-rally-dsvm-rally-ubuntu-xenial
       - gate-rally-dsvm-keystone-v2api-rally
-      - gate-rally-dsvm-neutron-rally-ubuntu-trusty
+      - gate-rally-dsvm-neutron-rally-ubuntu-xenial
       - gate-rally-dsvm-neutron-existing-users-rally
       - gate-rally-dsvm-cli
       - gate-rally-dsvm-verify-light-discover-resources
@@ -16041,13 +16009,13 @@ projects:
       - rally-coverage-ubuntu-xenial
     experimental:
       - gate-rally-dsvm-ironic-rally
-      - gate-rally-dsvm-monasca-rally
-      - gate-rally-dsvm-murano-rally
-      - gate-rally-dsvm-mistral-rally
-      - gate-rally-dsvm-designate-rally
-      - gate-rally-dsvm-zaqar-rally
-      - gate-rally-dsvm-senlin-rally
-      - gate-rally-dsvm-watcher-rally
+      - gate-rally-dsvm-monasca-rally-ubuntu-xenial
+      - gate-rally-dsvm-murano-rally-ubuntu-xenial
+      - gate-rally-dsvm-mistral-rally-ubuntu-xenial
+      - gate-rally-dsvm-designate-rally-ubuntu-xenial
+      - gate-rally-dsvm-zaqar-rally-ubuntu-xenial
+      - gate-rally-dsvm-senlin-rally-ubuntu-xenial-nv
+      - gate-rally-dsvm-watcher-rally-ubuntu-xenial-nv
       - gate-rally-dsvm-certification-with-keystone-v2-nv
       - gate-rally-dsvm-certification-with-keystone-v3-nv
       - gate-rally-dsvm-neutron-extensions-rally
@@ -16567,7 +16535,8 @@ projects:
       - gate-senlin-dsvm-tempest-api
       - gate-senlin-dsvm-tempest-functional
     experimental:
-      - gate-rally-dsvm-senlin-senlin
+      - gate-rally-dsvm-senlin-senlin-ubuntu-trusty-nv
+      - gate-rally-dsvm-senlin-senlin-ubuntu-xenial-nv
 
   - name: openstack/senlin-dashboard
     template:
@@ -17917,7 +17886,8 @@ projects:
     check:
       - watcher-coverage-ubuntu-trusty
       - watcher-coverage-ubuntu-xenial
-      - gate-rally-dsvm-watcher-watcher
+      - gate-rally-dsvm-watcher-watcher-ubuntu-trusty-nv
+      - gate-rally-dsvm-watcher-watcher-ubuntu-xenial-nv
       - gate-watcher-dsvm-multinode-nv
 
   - name: openstack/watcher-dashboard
@@ -18170,7 +18140,8 @@ projects:
       - gate-zaqar-tox-integration-ubuntu-xenial
       - gate-dsvm-mongodb-zaqar
       - gate-dsvm-redis-zaqar
-      - gate-rally-dsvm-zaqar-zaqar
+      - gate-rally-dsvm-zaqar-zaqar-ubuntu-trusty-nv
+      - gate-rally-dsvm-zaqar-zaqar-ubuntu-xenial-nv
       - gate-tempest-dsvm-mongodb-zaqar
       - gate-tempest-dsvm-redis-zaqar
     gate:
