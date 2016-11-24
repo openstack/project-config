@@ -110,21 +110,15 @@
       - 'gate-{name}-docs-{node}'
       - 'gate-{name}-linters-{node}'
       - '{pipeline}-{name}-ansible-{scenario}-{ostype}{job-suffix}':
-          job-suffix: '-nv'
           ostype:
             - centos-7
             - ubuntu-trusty
             - ubuntu-xenial
           pipeline: gate
           scenario: func
-      - '{pipeline}-{name}-ansible-{scenario}-{ostype}{job-suffix}':
-          job-suffix: ''
-          ostype:
-            - centos-7
-            - ubuntu-trusty
-            - ubuntu-xenial
-          pipeline: gate
-          scenario: func
+          job-suffix:
+            - '-nv'
+            - ''
       - '{name}-announce-release'
 
 - job-group:
@@ -136,19 +130,13 @@
       - 'gate-{name}-docs-{node}'
       - 'gate-{name}-linters-{node}'
       - '{pipeline}-{name}-dsvm-ansible-func-{ostype}{job-suffix}':
-          job-suffix: '-nv'
           branch-override: default
           ostype:
             - centos-7
             - ubuntu-trusty
             - ubuntu-xenial
           pipeline: gate
-      - '{pipeline}-{name}-dsvm-ansible-func-{ostype}{job-suffix}':
-          job-suffix: ''
-          branch-override: default
-          ostype:
-            - centos-7
-            - ubuntu-trusty
-            - ubuntu-xenial
-          pipeline: gate
+          job-suffix:
+            - '-nv'
+            - ''
       - '{name}-announce-release'
