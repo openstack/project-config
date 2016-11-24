@@ -13090,7 +13090,7 @@
       - pypi-jobs
       - openstack-client-publish-jobs
       - openstack-releasenotes-jobs
-      - '{pipeline}-{name}-dsvm-scenario-{network}{job-suffix}':
+      - '{pipeline}-{name}-dsvm-scenario-{network}-{node}{job-suffix}':
           pipeline: gate
           node: ubuntu-xenial
           job-suffix: ''
@@ -13688,13 +13688,16 @@
           node: ubuntu-trusty
           job-suffix: '-nv'
           branch-override: default
-      - '{pipeline}-{name}-dsvm-scenario-{network}{job-suffix}':
+      - '{pipeline}-{name}-dsvm-scenario-{network}-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node:
+            - ubuntu-xenial
+            - ubuntu-trusty
           job-suffix: ''
           branch-override: default
           network: neutron
-      - '{pipeline}-{name}-dsvm-scenario-{network}{job-suffix}':
+      # only for mitaka branch
+      - '{pipeline}-{name}-dsvm-scenario-{network}-{node}{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
           job-suffix: ''
@@ -13786,7 +13789,7 @@
       - python-jobs
       - gate-{name}-pylint
       - openstack-releasenotes-jobs
-      - '{pipeline}-{name}-dsvm-scenario-{network}{job-suffix}':
+      - '{pipeline}-{name}-dsvm-scenario-{network}-{node}{job-suffix}':
           pipeline: gate
           node: ubuntu-xenial
           job-suffix: ''

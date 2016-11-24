@@ -2677,8 +2677,8 @@ jobs:
   - name: gate-grenade-dsvm-sahara
     voting: false
 
-  - name: gate-python-saharaclient-dsvm-scenario-neutron
-    branch: ^(?!stable/(liberty|mitaka)).*$
+  - name: ^gate-sahara-dsvm-scenario-(nova|neutron)-ubuntu-trusty$
+    branch: ^stable/mitaka$
 
   - name: ^(gate|post)-sahara-extra-artifacts$
     branch: ^(?!stable/(mitaka|liberty|icehouse)).*$
@@ -15767,11 +15767,12 @@ projects:
     check:
       - gate-python-saharaclient-python34
       - gate-sahara-cli-nv
-      - gate-python-saharaclient-dsvm-scenario-neutron
+      - gate-python-saharaclient-dsvm-scenario-neutron-ubuntu-xenial
     post:
       - python-saharaclient-coverage-ubuntu-trusty
       - python-saharaclient-coverage-ubuntu-xenial
-      - gate-python-saharaclient-dsvm-scenario-neutron
+    gate:
+      - gate-python-saharaclient-dsvm-scenario-neutron-ubuntu-xenial
     experimental:
       - gate-python-saharaclient-pypy
 
@@ -16301,11 +16302,13 @@ projects:
       - sahara-coverage-db-ubuntu-trusty
       - sahara-coverage-db-ubuntu-xenial
       - gate-grenade-dsvm-sahara
-      - gate-sahara-dsvm-scenario-neutron
-      - gate-sahara-dsvm-scenario-nova
+      - gate-sahara-dsvm-scenario-neutron-ubuntu-xenial
+      - gate-sahara-dsvm-scenario-neutron-ubuntu-trusty
+      - gate-sahara-dsvm-scenario-nova-ubuntu-trusty
     gate:
-      - gate-sahara-dsvm-scenario-neutron
-      - gate-sahara-dsvm-scenario-nova
+      - gate-sahara-dsvm-scenario-neutron-ubuntu-xenial
+      - gate-sahara-dsvm-scenario-neutron-ubuntu-trusty
+      - gate-sahara-dsvm-scenario-nova-ubuntu-trusty
       - gate-tempest-dsvm-sahara
     post:
       - sahara-coverage-db-ubuntu-trusty
@@ -16411,12 +16414,12 @@ projects:
     check:
       - gate-sahara-tests-pylint
       - gate-tempest-dsvm-sahara-nv
-      - gate-sahara-tests-dsvm-scenario-neutron
+      - gate-sahara-tests-dsvm-scenario-neutron-ubuntu-xenial
       - gate-sahara-cli-nv
       - sahara-tests-coverage-ubuntu-trusty
       - sahara-tests-coverage-ubuntu-xenial
     gate:
-      - gate-sahara-tests-dsvm-scenario-neutron
+      - gate-sahara-tests-dsvm-scenario-neutron-ubuntu-xenial
     post:
       - sahara-tests-coverage-ubuntu-trusty
       - sahara-tests-coverage-ubuntu-xenial
