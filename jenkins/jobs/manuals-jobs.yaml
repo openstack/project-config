@@ -102,7 +102,10 @@
       - zuul-git-prep-upper-constraints
       - install-distro-packages
       - revoke-sudo
-      - shell:
+      - shell: |
+          #!/bin/bash -xe
+          VENV="deploy-guide"
+          GUIDEDIR="deploy-guide"
           !include-raw-escape: include/run-deploy-guide.sh
 
     publishers:
@@ -150,7 +153,10 @@
       - zuul-git-prep-upper-constraints
       - install-distro-packages
       - revoke-sudo
-      - shell:
+      - shell: |
+          #!/bin/bash -xe
+          VENV="deploy-guide"
+          GUIDEDIR="deploy-guide"
           !include-raw-escape: include/run-deploy-guide.sh
       - add-docs-root-marker:
           docsrootdir: deploy-guide/build/html/
