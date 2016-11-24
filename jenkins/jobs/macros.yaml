@@ -1029,6 +1029,16 @@
           bundle exec rake
 
 
+  # This builder runs tools/test-setup.sh if its exists. This allows
+  # projects to setup unit tests in a specific way.
+- builder:
+    name: extra-test-setup
+    builders:
+      - shell: |
+          if [ -x tools/test-setup.sh ] ; then
+            tools/test-setup.sh
+          fi
+
 - builder:
     name: allow-local-ssh-root
     builders:
