@@ -599,7 +599,11 @@
       - translation-jobs
       - translation-jobs-mitaka
       - translation-jobs-newton
-      - gate-rally-dsvm-fakevirt-{name}
+      - gate-rally-dsvm-fakevirt-{name}-{node}{job-suffix}:
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
+          job-suffix: ''
       - 'gate-ceilometer-dsvm-tempest-plugin-{backend}{special}{network}{job-suffix}':
           backend: 'mongodb'
           special: ''
@@ -1209,7 +1213,12 @@
       - translation-jobs-mitaka
       - translation-jobs-newton
       - gate-{name}-pylint
-      - gate-rally-dsvm-{name}
+      - gate-rally-dsvm-{name}-{node}{job-suffix}:
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
+          job-suffix: '-nv'
+          swift: '0'
       - '{pipeline}-cinder-dsvm-apache{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
@@ -1604,8 +1613,12 @@
       - '{name}-tarball'
       - '{name}-tarball-signing'
       - periodic-python-jobs-with-oslo-master
-      - 'gate-rally-dsvm-cue-{broker}':
+      - 'gate-rally-dsvm-cue-{broker}-{node}{job-suffix}':
           broker: 'rabbitmq'
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
+          job-suffix: '-nv'
       - 'gate-cue-integration-dsvm-{broker}':
           broker: 'rabbitmq'
 
@@ -3580,7 +3593,11 @@
       - openstack-releasenotes-jobs
       - openstack-server-release-jobs
       - translation-jobs
-      - gate-rally-dsvm-designate-{name}
+      - gate-rally-dsvm-designate-{name}-{node}{job-suffix}:
+          node:
+          - ubuntu-trusty
+          - ubuntu-xenial
+          job-suffix: '-nv'
       - 'gate-tempest-dsvm-designate-{designate-driver}{special}{job-suffix}':
           node: ubuntu-trusty
           branch-override: default
@@ -4952,7 +4969,12 @@
       - translation-jobs
       - translation-jobs-mitaka
       - translation-jobs-newton
-      - gate-rally-dsvm-{name}
+      - gate-rally-dsvm-{name}-{node}{job-suffix}:
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
+          job-suffix: '-nv'
+          swift: '0'
       - periodic-python-jobs-with-oslo-master
       - api-ref-jobs:
           service: image
@@ -5353,7 +5375,11 @@
               - ubuntu-xenial
           job-suffix: '-nv'
           branch-override: default
-      - gate-rally-dsvm-fakevirt-{name}
+      - gate-rally-dsvm-fakevirt-{name}-{node}{job-suffix}:
+          node:
+              - ubuntu-trusty
+              - ubuntu-xenial
+          job-suffix: '-nv'
       - api-ref-jobs:
           service: orchestration
       - install-guide-jobs:
@@ -6110,7 +6136,10 @@
       - translation-jobs
       - translation-jobs-mitaka
       - translation-jobs-newton
-      - gate-rally-dsvm-{name}
+      - gate-rally-dsvm-{name}-{node}{job-suffix}:
+          node: ubuntu-xenial
+          job-suffix: '-nv'
+          swift: '0'
       - api-ref-jobs:
           service: identity
       - 'gate-{name}-tox-{envlist}-{node}':
@@ -6904,8 +6933,12 @@
           pipeline: gate
           node: ubuntu-trusty
           component: mistral
-      - gate-rally-dsvm-mistral-{name}:
+      - gate-rally-dsvm-mistral-{name}-{node}{job-suffix}:
           name: task
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
+          job-suffix: '-nv'
       - gate-{name}-tox-db-{envlist}-{node}:
           envlist:
             - unit-postgresql
@@ -7117,8 +7150,12 @@
       - python-newton-bitrot-db-jobs
       - openstack-releasenotes-jobs
       - periodic-python-jobs-with-oslo-master
-      - gate-rally-dsvm-murano-{name}:
+      - gate-rally-dsvm-murano-{name}-{node}{job-suffix}:
           name: task
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
+          job-suffix: '-nv'
       - 'gate-tempest-dsvm-murano-{mode}{job-suffix}':
           mode: 'cfapi'
           node: ubuntu-trusty
@@ -7955,11 +7992,11 @@
       - translation-jobs-mitaka
       - translation-jobs-newton
       - gate-rally-dsvm-neutron-{name}-{node}{job-suffix}:
-          node: ubuntu-trusty
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           job-suffix: ''
-      - gate-rally-dsvm-neutron-{name}-{node}{job-suffix}:
-          node: ubuntu-xenial
-          job-suffix: ''
+          telemetry: '0'
       - '{pipeline}-grenade-dsvm-neutron-multinode-{node-release}{job-suffix}':
           pipeline: gate
           node-release: ubuntu-trusty
@@ -13400,32 +13437,55 @@
             - ubuntu-trusty
             - ubuntu-xenial
       - gate-rally-dsvm-neutron-{name}-{node}{job-suffix}:
-          node: ubuntu-trusty
+          node: ubuntu-xenial
+          job-suffix: ''
+          name: 'rally'
+          telemetry: '0'
+      - gate-rally-dsvm-neutron-{name}-{node}{job-suffix}:
+          node: ubuntu-xenial
           job-suffix: '-nv'
-          name: unstable
+          name: 'unstable'
+          telemetry: '1'
       - gate-rally-dsvm-rally-{service}:
           service: cinder
+          heat: 0
           neutron: 0
       - gate-rally-dsvm-rally-{service}:
           service: heat
+          heat: 1
           neutron: 1
       - gate-rally-dsvm-rally-{service}:
           neutron: 0
+          heat: 0
           service: nova
-      - gate-rally-dsvm-{name}
-      - gate-rally-dsvm-designate-{name}
+      - gate-rally-dsvm-{name}-{node}{job-suffix}:
+          node: ubuntu-xenial
+          job-suffix: ''
+          swift: '1'
+      - gate-rally-dsvm-designate-{name}-{node}{job-suffix}:
+          node: ubuntu-xenial
+          job-suffix: ''
       - gate-rally-dsvm-ironic-{name}
-      - gate-rally-dsvm-monasca-{name}
-      - gate-rally-dsvm-murano-{name}
-      - gate-rally-dsvm-mistral-{name}
-      - gate-rally-dsvm-neutron-{name}-{node}{job-suffix}:
-          node: ubuntu-trusty
+      - gate-rally-dsvm-monasca-{name}-{node}{job-suffix}:
+          node: ubuntu-xenial
+          job-suffix: ''
+      - gate-rally-dsvm-murano-{name}-{node}{job-suffix}:
+          node: ubuntu-xenial
+          job-suffix: ''
+      - gate-rally-dsvm-mistral-{name}-{node}{job-suffix}:
+          node: ubuntu-xenial
           job-suffix: ''
       - gate-rally-dsvm-neutron-extensions-{name}
       - gate-rally-dsvm-neutron-existing-users-{name}
-      - gate-rally-dsvm-zaqar-{name}
-      - gate-rally-dsvm-senlin-{name}
-      - gate-rally-dsvm-watcher-{name}
+      - gate-rally-dsvm-zaqar-{name}-{node}{job-suffix}:
+          node: ubuntu-xenial
+          job-suffix: ''
+      - gate-rally-dsvm-senlin-{name}-{node}{job-suffix}:
+          node: ubuntu-xenial
+          job-suffix: '-nv'
+      - gate-rally-dsvm-watcher-{name}-{node}{job-suffix}:
+          node: ubuntu-xenial
+          job-suffix: '-nv'
       - gate-rally-dsvm-magnum-{name}{job-suffix}:
           job-suffix: '-nv'
 
@@ -13954,7 +14014,11 @@
       - python-jobs
       - 'gate-{name}-python35{suffix}':
           suffix: ''
-      - gate-rally-dsvm-senlin-{name}
+      - gate-rally-dsvm-senlin-{name}-{node}{job-suffix}:
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
+          job-suffix: '-nv'
       - '{pipeline}-senlin-dsvm-tempest-{test_type}{job-suffix}':
           pipeline: gate
           node: ubuntu-xenial
@@ -15465,7 +15529,11 @@
       - translation-jobs
       - pypi-jobs
       - openstack-releasenotes-jobs
-      - gate-rally-dsvm-watcher-{name}
+      - gate-rally-dsvm-watcher-{name}-{node}{job-suffix}:
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
+          job-suffix: '-nv'
       - '{pipeline}-watcher-dsvm-multinode{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty-2-node
@@ -15746,7 +15814,11 @@
           node:
             - ubuntu-trusty
             - ubuntu-xenial
-      - gate-rally-dsvm-zaqar-{name}
+      - 'gate-rally-dsvm-zaqar-{name}-{node}{job-suffix}':
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
+          job-suffix: '-nv'
       - '{pipeline}-dsvm-{backend}-zaqar{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
