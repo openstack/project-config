@@ -150,7 +150,7 @@
 
 - job-template:
     description: This job uses image elements in the trove repository.
-    name: 'gate-trove-scenario-dsvm-{datastore}-{node}{job-suffix}'
+    name: 'gate-trove-scenario-dsvm-{datastore}-{group}-{node}{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -183,7 +183,7 @@
               export DEST=$BASE/new
               export PATH_DEVSTACK_SRC=$DEST/devstack
               cd /opt/stack/new/trove/integration/scripts
-              ./trovestack dsvm-gate-tests {datastore} {datastore}_supported
+              ./trovestack dsvm-gate-tests {datastore} {datastore}-supported-{group}
           }}
           export -f post_test_hook
 
