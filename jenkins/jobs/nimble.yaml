@@ -15,15 +15,26 @@
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
-          export DEVSTACK_GATE_TEMPEST_REGEX="^nimble\."
           export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
+          # Run only nimble tests
+          export DEVSTACK_GATE_TEMPEST_REGEX="^nimble\."
+          export DEVSTACK_GATE_IRONIC=1
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_VIRT_DRIVER=ironic
+          export DEVSTACK_GATE_CONFIGDRIVE=1
+          export DEVSTACK_GATE_IRONIC_BUILD_RAMDISK=0
+          export DEVSTACK_GATE_IRONIC_DRIVER=agent_ssh
           export PROJECTS="openstack/nimble $PROJECTS"
           export PROJECTS="openstack/python-nimbleclient $PROJECTS"
           export PROJECTS="openstack/ironic $PROJECTS"
+          export PROJECTS="openstack/ironic-lib $PROJECTS"
+          export PROJECTS="openstack/ironic-python-agent $PROJECTS"
+          export PROJECTS="openstack/python-ironicclient $PROJECTS"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin ironic git://git.openstack.org/openstack/ironic"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin nimble git://git.openstack.org/openstack/nimble"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_TEMPEST_WHOLE_DISK_IMAGE=False"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_VM_EPHEMERAL_DISK=1"
+
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
 
