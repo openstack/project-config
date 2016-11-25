@@ -14630,10 +14630,15 @@
       - translation-jobs
       - openstack-releasenotes-jobs
       - openstack-publish-jobs
-      - '{pipeline}-tacker-dsvm-functional{job-suffix}':
+      - '{pipeline}-tacker-dsvm-functional-{node}{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
-          job-suffix: ''
+          job-suffix: '-nv'
+          branch-override: default
+      - '{pipeline}-tacker-dsvm-functional-{node}{job-suffix}':
+          pipeline: gate
+          node: ubuntu-xenial
+          job-suffix: '-nv'
           branch-override: default
       - api-ref-jobs:
           service: nfv-orchestration
