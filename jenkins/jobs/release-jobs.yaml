@@ -1,6 +1,6 @@
 - job:
     name: tag-releases
-    description: Apply tags to repositories based on changes in deliverables files.
+    description: Apply tags to repositories based on changes in deliverables files, then create requested branches.
     node: signing
 
     builders:
@@ -17,6 +17,9 @@
           # release_from_yaml.sh explicitly so it knows where to scan to
           # look for modified files.
           /usr/local/jenkins/slave_scripts/release-tools/release_from_yaml.sh $(pwd)
+
+          # After we have tagged, create any new branches.
+          /usr/local/jenkins/slave_scripts/release-tools/branch_from_yaml.sh $(pwd)
 
     publishers:
       - scp:
