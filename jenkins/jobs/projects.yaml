@@ -14871,14 +14871,21 @@
 - project:
     name: tricircle
     tarball-site: tarballs.openstack.org
+    doc-publisher-site: docs.openstack.org
 
     jobs:
       - python-jobs
       - pypi-jobs
-      - '{pipeline}-tricircle-dsvm-functional{job-suffix}':
+      - openstack-publish-jobs
+      - '{pipeline}-tricircle-dsvm-functional-{node}{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
           job-suffix: ''
+          branch-override: default
+      - '{pipeline}-tricircle-dsvm-functional-{node}{job-suffix}':
+          pipeline: gate
+          node: ubuntu-xenial
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
