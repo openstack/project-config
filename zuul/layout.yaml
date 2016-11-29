@@ -3237,6 +3237,14 @@ jobs:
           - ^tox.ini$
           - ^Vagrantfile
 
+  # Run only the following scenario jobs for liberty and stable/mitaka:
+  # aio, func, docs, linters, releasenotes
+  # Also only execute jobs on ubuntu-trusty for the same as that
+  # is the only platform supported for those branches.
+  # Any other jobs are scenario tests which were only introduced in Newton
+  - name: ^gate-openstack-ansible-.*-ansible-((aio|func|docs|linters)-ubuntu-trusty|releasenotes)$
+    branch: ^(liberty|stable/mitaka).*$
+
   # Run all OpenStack-Ansible trusty jobs except the docs and linters jobs
   # for Newton as this is still a supported platform for OpenStack-Ansible.
   # Trusty support is removed after Newton, so don't run any ubuntu-trusty
@@ -3244,23 +3252,15 @@ jobs:
   - name: ^gate-openstack-ansible.*-((?!(docs|linters)).)*-ubuntu-trusty.*$
     branch: ^(liberty|stable/(mitaka|newton))$
 
-  # For OpenStack-Ansible, skip the xenial voting job on all branches before
-  # Ocata. Specifically for the AIO on the integrated build.
+  # Run the OpenStack-Ansible non-voting aio scenario job on xenial for the
+  # openstack-ansible repository if the branch is stable/newton.
+  - name: ^gate-openstack-ansible-openstack-ansible-aio-ubuntu-xenial-nv$
+    branch: ^stable/newton$
+
+  # Skip the OpenStack-Ansible voting aio scenario job on xenial for the
+  # openstack-ansible repository if the branch is anything before ocata.
   - name: ^gate-openstack-ansible-openstack-ansible-aio-ubuntu-xenial$
     branch: ^(?!(liberty|stable/(mitaka|newton))).*$
-
-  # For OpenStack-Ansible, skip the xenial non-voting job on all branches
-  # after Ocata. Specifically for the AIO on the integrated build.
-  - name: ^gate-openstack-ansible-openstack-ansible-aio-ubuntu-xenial-nv$
-    branch: ^(liberty|stable/(mitaka|newton))$
-
-  # Skip any OpenStack-Ansible jobs which aren't the following scenario's
-  # for liberty and stable/mitaka: aio, func, docs, linters, releasenotes
-  # Also skip any platform other than ubuntu-trusty for the same as that
-  # is the only platform supported for those branches.
-  # Any other jobs are scenario tests which were only introduced in Newton
-  - name: ^gate-openstack-ansible-.*-ansible-(?!((aio|func|docs|linters)-ubuntu-trusty|releasenotes)).*$
-    branch: ^(?!(liberty|stable/mitaka)).*$
 
   # Skip the functional tests against the RHEL 7 STIG content on Newton branch
   # and earlier branches.
