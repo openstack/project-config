@@ -16,7 +16,6 @@
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_TEMPEST=0
-          export SFC_UPDATE_OVS=False
           export BRANCH_OVERRIDE={branch-override}
           export PROJECTS="openstack/tacker $PROJECTS"
           export PROJECTS="openstack/tacker-horizon $PROJECTS"
@@ -26,6 +25,7 @@
               stable/liberty|stable/mitaka) break;;
               *)
 
+                export DEVSTACK_LOCAL_CONFIG+=$'\n'"SFC_UPDATE_OVS=False"
                 export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
                 export PROJECTS="openstack/heat $PROJECTS"
                 export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin aodh git://git.openstack.org/openstack/aodh"
