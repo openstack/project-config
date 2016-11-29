@@ -1428,7 +1428,7 @@ jobs:
           - ^doc/.*$
           - ^releasenotes/.*$
   # Skip non docs jobs for doc-only neutronclient changes
-  - name: ^gate-(python-neutronclient-(python27|python3[45](-nv)?|pypy)|neutronclient-test-dsvm-functional|neutronclient-test-dsvm-functional-adv-svcs|tempest-dsvm-neutron-src-python-neutronclient)$
+  - name: ^gate-(python-neutronclient-(python27|python3[45](-nv)?|pypy)|neutronclient-test-dsvm-functional(-ubuntu-.*)?|neutronclient-test-dsvm-functional-adv-svcs(-ubuntu-.*)?|tempest-dsvm-neutron-src-python-neutronclient)$
     skip-if:
       - project: ^openstack/python-neutronclient$
         all-files-match-any:
@@ -3330,11 +3330,6 @@ jobs:
   # Only run the unit cross tests for cliff against master.
   - name: ^gate-cliff-tox-(openstackclient|neutronclient)-tip-ubuntu-xenial$
     branch: ^master$
-
-  # Skip Liberty for
-  # neutronclient-test-dsvm-functional-adv-svcs
-  - name: ^gate-neutronclient-test-dsvm-functional-adv-svcs$
-    branch: ^(?!stable/liberty).*$
 
   # Old dsvm jobs are running on liberty and mitaka, new tempest one - from
   # newton on
@@ -15589,18 +15584,22 @@ projects:
       - name: release-notes-jobs
       - name: osc-plugin-jobs
     check:
-      - gate-neutronclient-test-dsvm-functional
-      - gate-neutronclient-test-dsvm-functional-adv-svcs
+      - gate-neutronclient-test-dsvm-functional-ubuntu-trusty
+      - gate-neutronclient-test-dsvm-functional-ubuntu-xenial
+      - gate-neutronclient-test-dsvm-functional-adv-svcs-ubuntu-trusty
+      - gate-neutronclient-test-dsvm-functional-adv-svcs-ubuntu-xenial
     gate:
-      - gate-neutronclient-test-dsvm-functional
-      - gate-neutronclient-test-dsvm-functional-adv-svcs
+      - gate-neutronclient-test-dsvm-functional-ubuntu-trusty
+      - gate-neutronclient-test-dsvm-functional-ubuntu-xenial
+      - gate-neutronclient-test-dsvm-functional-adv-svcs-ubuntu-trusty
+      - gate-neutronclient-test-dsvm-functional-adv-svcs-ubuntu-xenial
     post:
       - python-neutronclient-coverage-ubuntu-trusty
       - python-neutronclient-coverage-ubuntu-xenial
     experimental:
       - gate-grenade-dsvm-forward
       - gate-grenade-dsvm-neutron-libs-ubuntu-trusty-nv
-      - gate-neutronclient-test-dsvm-functional-mitaka-nv
+      - gate-neutronclient-test-dsvm-functional-ubuntu-trusty-mitaka-nv
 
   - name: openstack/python-nimbleclient
     template:
