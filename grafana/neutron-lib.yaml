@@ -1,0 +1,47 @@
+dashboard:
+  title: Neutron Lib Failure Rate
+  rows:
+    - title: Description
+      height: 100px
+      panels:
+        - title: Description
+          content: |
+            **This dashboard is managed by [Grafyaml](http://docs.openstack.org/infra/system-config/grafyaml.html).**
+
+            If you would like to make changes to this dashboard, please see the grafana directory in [project-config](https://git.openstack.org/cgit/openstack-infra/project-config/tree/grafana/neutron-lib-lib.yaml).
+          type: text
+    - title: Graphs
+      height: 320px
+      panels:
+        - title: Unit Tests Failure Rates (Check queue)
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-neutron-lib-python27-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-neutron-lib-python27-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-lib-python27-ubuntu-xenial')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-neutron-lib-python34.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-neutron-lib-python34.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-lib-python34')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-neutron-lib-python35.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-neutron-lib-python35.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-lib-python35')
+          type: graph
+        - title: Unit Tests Failure Rates (Gate queue)
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-neutron-lib-python27-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-neutron-lib-python27-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-lib-python27-ubuntu-xenial')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-neutron-lib-python34.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-neutron-lib-python34.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-lib-python34')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-neutron-lib-python35.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-neutron-lib-python35.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-lib-python35')
+          type: graph
+        - title: Periodic jobs
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.periodic.job.periodic-neutron-py35-with-neutron-lib-master.FAILURE),sum(stats_counts.zuul.pipeline.periodic.job.periodic-neutron-py35-with-neutron-lib-master.{SUCCESS,FAILURE})),'24hours'), 'periodic-neutron-py35-with-neutron-lib-master')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.periodic.job.periodic-networking-bagpipe-py35-with-neutron-lib-master.FAILURE),sum(stats_counts.zuul.pipeline.periodic.job.periodic-networking-bagpipe-py35-with-neutron-lib-master.{SUCCESS,FAILURE})),'24hours'), 'periodic-networking-bagpipe-py35-with-neutron-lib-master')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.periodic.job.periodic-networking-bgpvpn-py35-with-neutron-lib-master.FAILURE),sum(stats_counts.zuul.pipeline.periodic.job.periodic-networking-bgpvpn-py35-with-neutron-lib-master.{SUCCESS,FAILURE})),'24hours'), 'periodic-networking-bgpvpn-py35-with-neutron-lib-master')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.periodic.job.periodic-networking-midonet-py35-with-neutron-lib-master.FAILURE),sum(stats_counts.zuul.pipeline.periodic.job.periodic-networking-midonet-py35-with-neutron-lib-master.{SUCCESS,FAILURE})),'24hours'), 'periodic-networking-midonet-py35-with-neutron-lib-master')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.periodic.job.periodic-networking-odl-py35-with-neutron-lib-master.FAILURE),sum(stats_counts.zuul.pipeline.periodic.job.periodic-networking-odl-py35-with-neutron-lib-master.{SUCCESS,FAILURE})),'24hours'), 'periodic-networking-odl-py35-with-neutron-lib-master')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.periodic.job.periodic-networking-ovn-py35-with-neutron-lib-master.FAILURE),sum(stats_counts.zuul.pipeline.periodic.job.periodic-networking-ovn-py35-with-neutron-lib-master.{SUCCESS,FAILURE})),'24hours'), 'periodic-networking-ovn-py35-with-neutron-lib-master')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.periodic.job.periodic-networking-sfc-py35-with-neutron-lib-master.FAILURE),sum(stats_counts.zuul.pipeline.periodic.job.periodic-networking-sfc-py35-with-neutron-lib-master.{SUCCESS,FAILURE})),'24hours'), 'periodic-networking-sfc-py35-with-neutron-lib-master')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.periodic.job.periodic-neutron-dynamic-routing-py35-with-neutron-lib-master.FAILURE),sum(stats_counts.zuul.pipeline.periodic.job.periodic-neutron-dynamic-routing-py35-with-neutron-lib-master.{SUCCESS,FAILURE})),'24hours'), 'periodic-neutron-dynamic-routing-py35-with-neutron-lib-master')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.periodic.job.periodic-neutron-fwaas-py35-with-neutron-lib-master.FAILURE),sum(stats_counts.zuul.pipeline.periodic.job.periodic-neutron-fwaas-py35-with-neutron-lib-master.{SUCCESS,FAILURE})),'24hours'), 'periodic-neutron-fwaas-py35-with-neutron-lib-master')
+          type: graph
+        - title: Integrated Tempest Failure Rates (Gate queue)
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-tempest-dsvm-neutron-src-neutron-lib-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-tempest-dsvm-neutron-src-neutron-lib-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-tempest-dsvm-neutron-src-neutron-lib-ubuntu-xenial')
+          type: graph
