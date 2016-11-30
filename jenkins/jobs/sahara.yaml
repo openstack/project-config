@@ -1,6 +1,6 @@
-- job:
-    name: gate-sahara-dashboard-dsvm-integration
-    node: ubuntu-trusty
+- job-template:
+    name: 'gate-sahara-dashboard-dsvm-integration-{node}'
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -24,16 +24,16 @@
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin sahara-dashboard git://git.openstack.org/openstack/sahara-dashboard"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
 
-          function pre_test_hook {
+          function pre_test_hook {{
               cd /opt/stack/new/sahara-dashboard/tools/gate/integration
               ./pre_test_hook.sh
-          }
+          }}
           export -f pre_test_hook
 
-          function post_test_hook {
+          function post_test_hook {{
               cd /opt/stack/new/sahara-dashboard/tools/gate/integration
               ./post_test_hook.sh
-          }
+          }}
           export -f post_test_hook
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
@@ -45,8 +45,8 @@
 
 
 - job-template:
-    name: 'gate-sahara-buildimages-{plugin}'
-    node: ubuntu-trusty
+    name: 'gate-sahara-buildimages-{plugin}-{node}'
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -92,9 +92,9 @@
               copy-after-failure: false
 
 
-- job:
+- job-template:
     name: 'gate-sahara-extra-artifacts'
-    node: ubuntu-xenial
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -112,9 +112,9 @@
       - console-log
 
 
-- job:
+- job-template:
     name: 'post-sahara-extra-artifacts'
-    node: ubuntu-xenial
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -134,7 +134,7 @@
 
 
 - job-template:
-    name: '{pipeline}-{name}-cli{job-suffix}'
+    name: '{pipeline}-{name}-cli-{node}{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -179,7 +179,7 @@
 
 
 - job-template:
-    name: '{pipeline}-tempest-dsvm-sahara{job-suffix}'
+    name: '{pipeline}-tempest-dsvm-sahara-{node}{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -333,7 +333,7 @@
 
 
 - job-template:
-    name: '{pipeline}-tempest-dsvm-neutron-src-python-saharaclient{job-suffix}'
+    name: '{pipeline}-tempest-dsvm-neutron-src-python-saharaclient-{node}{job-suffix}'
     node: '{node}'
 
     wrappers:
