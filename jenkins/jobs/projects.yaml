@@ -13224,9 +13224,11 @@
           job-suffix: ''
           branch-override: default
           network: neutron
-      - '{pipeline}-tempest-dsvm-neutron-src-python-saharaclient{job-suffix}':
+      - '{pipeline}-tempest-dsvm-neutron-src-python-saharaclient-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           job-suffix: ''
           branch-override: default
 
@@ -13818,19 +13820,25 @@
       - translation-jobs
       - translation-jobs-mitaka
       - gate-{name}-pylint
-      - '{pipeline}-tempest-dsvm-sahara{job-suffix}':
+      - '{pipeline}-tempest-dsvm-sahara-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           job-suffix: ''
           branch-override: default
-      - '{pipeline}-tempest-dsvm-sahara{job-suffix}':
+      - '{pipeline}-tempest-dsvm-sahara-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           job-suffix: '-nv'
           branch-override: default
-      - '{pipeline}-{name}-cli{job-suffix}':
+      - '{pipeline}-{name}-cli-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           job-suffix: '-nv'
           branch-override: default
       - '{pipeline}-{name}-dsvm-scenario-{network}-{node}{job-suffix}':
@@ -13881,6 +13889,10 @@
             - py27dj110
           node:
             - ubuntu-xenial
+      - 'gate-sahara-dashboard-dsvm-integration-{node}':
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: sahara-extra
@@ -13891,6 +13903,10 @@
       - python-jobs
       - openstack-publish-jobs
       - openstack-server-release-jobs
+      - 'gate-sahara-extra-artifacts':
+          node: ubuntu-xenial
+      - 'post-sahara-extra-artifacts':
+          node: ubuntu-xenial
 
 - project:
     name: sahara-image-elements
@@ -13899,20 +13915,18 @@
     jobs:
       - python-jobs
       - pypi-jobs
-      - 'gate-sahara-buildimages-{plugin}':
-          plugin: vanilla
-      - 'gate-sahara-buildimages-{plugin}':
-          plugin: cloudera
-      - 'gate-sahara-buildimages-{plugin}':
-          plugin: spark
-      - 'gate-sahara-buildimages-{plugin}':
-          plugin: storm
-      - 'gate-sahara-buildimages-{plugin}':
-          plugin: mapr
-      - 'gate-sahara-buildimages-{plugin}':
-          plugin: ambari
-      - 'gate-sahara-buildimages-{plugin}':
-          plugin: plain
+      - 'gate-sahara-buildimages-{plugin}-{node}':
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
+          plugin:
+            - vanilla
+            - cloudera
+            - spark
+            - storm
+            - mapr
+            - ambari
+            - plain
 
 - project:
     name: sahara-specs

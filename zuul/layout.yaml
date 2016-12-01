@@ -2604,7 +2604,7 @@ jobs:
   - name: ^sahara-coverage-db-ubuntu-(trusty|xenial)
     voting: false
 
-  - name: gate-sahara-dashboard-dsvm-integration
+  - name: ^gate-sahara-dashboard-dsvm-integration.*$
     voting: false
 
   - name: ^gate-sahara-dashboard-tox-py27dj110-ubuntu-xenial$
@@ -15733,18 +15733,22 @@ projects:
       - name: openstack-client-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
-      - name: lib-forward-testing
       - name: release-notes-jobs
       - name: osc-plugin-jobs
     check:
       - gate-python-saharaclient-python34
-      - gate-sahara-cli-nv
+      - gate-sahara-cli-ubuntu-trusty-nv
+      - gate-sahara-cli-ubuntu-xenial-nv
       - gate-python-saharaclient-dsvm-scenario-neutron-ubuntu-xenial
+      - gate-tempest-dsvm-neutron-src-python-saharaclient-ubuntu-trusty
+      - gate-tempest-dsvm-neutron-src-python-saharaclient-ubuntu-xenial
     post:
       - python-saharaclient-coverage-ubuntu-trusty
       - python-saharaclient-coverage-ubuntu-xenial
     gate:
       - gate-python-saharaclient-dsvm-scenario-neutron-ubuntu-xenial
+      - gate-tempest-dsvm-neutron-src-python-saharaclient-ubuntu-trusty
+      - gate-tempest-dsvm-neutron-src-python-saharaclient-ubuntu-xenial
     experimental:
       - gate-python-saharaclient-pypy
 
@@ -16274,7 +16278,8 @@ projects:
       - name: api-ref-jobs
     check:
       - gate-sahara-pylint
-      - gate-tempest-dsvm-sahara
+      - gate-tempest-dsvm-sahara-ubuntu-trusty
+      - gate-tempest-dsvm-sahara-ubuntu-xenial
       - sahara-coverage-db-ubuntu-trusty
       - sahara-coverage-db-ubuntu-xenial
       - gate-grenade-dsvm-sahara
@@ -16285,7 +16290,8 @@ projects:
       - gate-sahara-dsvm-scenario-neutron-ubuntu-xenial
       - gate-sahara-dsvm-scenario-neutron-ubuntu-trusty
       - gate-sahara-dsvm-scenario-nova-ubuntu-trusty
-      - gate-tempest-dsvm-sahara
+      - gate-tempest-dsvm-sahara-ubuntu-trusty
+      - gate-tempest-dsvm-sahara-ubuntu-xenial
     post:
       - sahara-coverage-db-ubuntu-trusty
       - sahara-coverage-db-ubuntu-xenial
@@ -16316,7 +16322,8 @@ projects:
       - gate-sahara-dashboard-python27-ubuntu-trusty
       - gate-sahara-dashboard-pep8-ubuntu-xenial
       - gate-sahara-dashboard-python27-ubuntu-xenial
-      - gate-sahara-dashboard-dsvm-integration
+      - gate-sahara-dashboard-dsvm-integration-ubuntu-xenial
+      - gate-sahara-dashboard-dsvm-integration-ubuntu-trusty
       - gate-sahara-dashboard-tox-py27dj19-ubuntu-xenial
       - gate-sahara-dashboard-tox-py27dj110-ubuntu-xenial
     gate:
@@ -16355,17 +16362,25 @@ projects:
     check:
       - gate-sahara-image-elements-pep8-ubuntu-trusty
       - gate-sahara-image-elements-pep8-ubuntu-xenial
-      - gate-sahara-buildimages-vanilla
-      - gate-sahara-buildimages-cloudera
-      - gate-sahara-buildimages-spark
-      - gate-sahara-buildimages-storm
-      - gate-sahara-buildimages-mapr
-      - gate-sahara-buildimages-ambari
-      - gate-sahara-buildimages-plain
+      - gate-sahara-buildimages-vanilla-ubuntu-trusty
+      - gate-sahara-buildimages-cloudera-ubuntu-trusty
+      - gate-sahara-buildimages-spark-ubuntu-trusty
+      - gate-sahara-buildimages-storm-ubuntu-trusty
+      - gate-sahara-buildimages-mapr-ubuntu-trusty
+      - gate-sahara-buildimages-ambari-ubuntu-trusty
+      - gate-sahara-buildimages-plain-ubuntu-trusty
+      - gate-sahara-buildimages-vanilla-ubuntu-xenial
+      - gate-sahara-buildimages-cloudera-ubuntu-xenial
+      - gate-sahara-buildimages-spark-ubuntu-xenial
+      - gate-sahara-buildimages-storm-ubuntu-xenial
+      - gate-sahara-buildimages-mapr-ubuntu-xenial
+      - gate-sahara-buildimages-ambari-ubuntu-xenial
+      - gate-sahara-buildimages-plain-ubuntu-xenial
     gate:
       - gate-sahara-image-elements-pep8-ubuntu-trusty
       - gate-sahara-image-elements-pep8-ubuntu-xenial
-      - gate-sahara-buildimages-vanilla
+      - gate-sahara-buildimages-vanilla-ubuntu-trusty
+      - gate-sahara-buildimages-vanilla-ubuntu-xenial
     post:
       - sahara-image-elements-branch-tarball
 
@@ -16389,9 +16404,11 @@ projects:
       - name: release-notes-jobs
     check:
       - gate-sahara-tests-pylint
-      - gate-tempest-dsvm-sahara-nv
+      - gate-tempest-dsvm-sahara-ubuntu-trusty-nv
+      - gate-tempest-dsvm-sahara-ubuntu-xenial-nv
       - gate-sahara-tests-dsvm-scenario-neutron-ubuntu-xenial
-      - gate-sahara-cli-nv
+      - gate-sahara-cli-ubuntu-xenial-nv
+      - gate-sahara-cli-ubuntu-trusty-nv
       - sahara-tests-coverage-ubuntu-trusty
       - sahara-tests-coverage-ubuntu-xenial
     gate:
