@@ -59,17 +59,6 @@ def access_gerrit_check():
             print("ERROR: %s is missing from accessbot" % channel)
             errors = True
 
-    # IRC has a limit of 120 channels that we unfortunately hit with
-    # gerritbot. If we try connect to more, it will not connect to
-    # all. Avoid this situation.
-    if len(gerrit_config) > 120:
-        print("ERROR: gerritbot can only handle 120 channels but found %s."
-              % len(gerrit_config))
-        print("Sorry, we're at our limit and cannot add more for now.")
-        print("If you want to help set up another instance contact the "
-              "infra team in #openstack-infra.\n")
-        errors = True
-
     return errors
 
 
