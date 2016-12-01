@@ -7,8 +7,23 @@
           EOF
 
 - builder:
+    name: ironic-vars-early
+    builders:
+      - shell: |
+          cat << 'EOF' >> ironic-vars-early
+            {script}
+          EOF
+
+- builder:
     name: ironic-grenade
     builders:
+      - ironic-vars-early:
+          script: |
+            # NOTE(jlvillal): export not needed for this as used within devstack-virtual-ironic
+            # We disable the devstack plugin because the grenade code in Ironic
+            # enables it and enabling it twice causes errors.
+            IRONIC_DISABLE_DEVSTACK_PLUGIN=1
+
       - ironic-extra-vars:
           script: |
             export PROJECTS="openstack-dev/grenade $PROJECTS"
@@ -223,14 +238,19 @@
             export DEVSTACK_LOCAL_CONFIG+=$'\n'"TEMPEST_PLUGINS=/opt/stack/new/ironic"
           fi
 
+          # Ensure the ironic-vars-EARLY file exists
+          touch ironic-vars-early
+          # Pull in the EARLY variables injected by the optional builders
+          source ironic-vars-early
+
           # devstack plugin didn't exist until mitaka
-          if [[ "$ZUUL_BRANCH" != "stable/liberty" ]] ; then
+          if [[ -z "$IRONIC_DISABLE_DEVSTACK_PLUGIN" && "$ZUUL_BRANCH" != "stable/liberty" ]] ; then
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ironic git://git.openstack.org/openstack/ironic"
           fi
 
-          # Ensure the ironic-extra-vars file exists
+          # Ensure the ironic-EXTRA-vars file exists
           touch ironic-extra-vars
-          # Pull in the extra variables injected by the optional builders
+          # Pull in the EXTRA variables injected by the optional builders
           source ironic-extra-vars
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
