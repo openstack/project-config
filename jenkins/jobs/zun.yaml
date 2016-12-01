@@ -1,6 +1,6 @@
-- job:
-    name: 'gate-zun-devstack-dsvm'
-    node: ubuntu-xenial
+- job-template:
+    name: '{pipeline}-zun-devstack-dsvm-{driver}'
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -28,17 +28,17 @@
           # Keep localrc to be able to set some vars in post_test_hook
           export KEEP_LOCALRC=1
 
-          function gate_hook {
+          function gate_hook {{
                cd /opt/stack/new/zun/
-              ./devstack/gate_hook.sh
-          }
+              ./devstack/gate_hook.sh {driver}
+          }}
           export -f gate_hook
 
-          function post_test_hook {
+          function post_test_hook {{
               source $BASE/new/devstack/accrc/admin/admin
               cd /opt/stack/new/zun/
-              ./zun/tests/contrib/post_test_hook.sh
-          }
+              ./zun/tests/contrib/post_test_hook.sh {driver}
+          }}
           export -f post_test_hook
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
