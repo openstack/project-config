@@ -2816,6 +2816,10 @@ jobs:
   - name: gate-tempest-neutron-dsvm-src-oslo.messaging-pika-ubuntu-trusty
     branch: ^stable/mitaka$
 
+  - name: ^gate-oslo.messaging-tox-.*$
+    branch: ^(?!stable/(?:liberty|mitaka|newton))$
+    voting: false
+
   # NOTE(rpodolyaka): since Ic7ab3b9e6dc8354861be1af46210269f74c04333 we require
   # SQLAlchemy >= 1.0.10, so this job is not needed for Mitaka+
   - name: ^gate-oslo.db-tox-db-sqla_09-ubuntu-trusty$
@@ -13993,6 +13997,15 @@ projects:
       - name: stable-compat-jobs
       - name: release-notes-jobs
     check:
+      - gate-oslo.messaging-tox-py27-func-amqp1-ubuntu-xenial
+      - gate-oslo.messaging-tox-py27-func-kafka-ubuntu-xenial
+      - gate-oslo.messaging-tox-py27-func-pika-ubuntu-xenial
+      - gate-oslo.messaging-tox-py27-func-rabbit-ubuntu-xenial
+      - gate-oslo.messaging-tox-py27-func-zeromq-proxy-ubuntu-xenial
+      - gate-oslo.messaging-tox-py27-func-zeromq-pub-sub-ubuntu-xenial
+      - gate-oslo.messaging-tox-py27-func-zeromq-ubuntu-xenial
+      - gate-oslo.messaging-tox-py35-func-amqp1-ubuntu-xenial
+      - gate-oslo.messaging-tox-py35-func-rabbit-ubuntu-xenial
       - gate-oslo.messaging-dsvm-functional-py27-rabbit-ubuntu-trusty-nv
       - gate-oslo.messaging-dsvm-functional-py27-rabbit-ubuntu-xenial-nv
       - gate-oslo.messaging-dsvm-functional-py34-rabbit-ubuntu-trusty-nv
