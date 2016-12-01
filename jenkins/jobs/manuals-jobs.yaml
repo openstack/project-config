@@ -81,7 +81,10 @@
       - zuul-git-prep-upper-constraints
       - install-distro-packages
       - revoke-sudo
-      - shell: "/usr/local/jenkins/slave_scripts/run-install-guide.sh"
+      - shell:
+          !include-raw-escape:
+              - include/install-guide-pre.sh
+              - include/run-project-guide.sh
 
     publishers:
       - scp:
@@ -105,7 +108,7 @@
       - shell:
           !include-raw-escape:
               - include/deploy-guide-pre.sh
-              - include/run-deploy-guide.sh
+              - include/run-project-guide.sh
 
     publishers:
       - scp:
@@ -126,7 +129,10 @@
       - zuul-git-prep-upper-constraints
       - install-distro-packages
       - revoke-sudo
-      - shell: "/usr/local/jenkins/slave_scripts/run-install-guide.sh"
+      - shell:
+          !include-raw-escape:
+              - include/install-guide-pre.sh
+              - include/run-project-guide.sh
       - add-docs-root-marker:
           docsrootdir: install-guide/build/html/
 
@@ -155,7 +161,7 @@
       - shell:
           !include-raw-escape:
               - include/deploy-guide-pre.sh
-              - include/run-deploy-guide.sh
+              - include/run-project-guide.sh
       - add-docs-root-marker:
           docsrootdir: deploy-guide/build/html/
 
