@@ -1,0 +1,65 @@
+dashboard:
+  title: Neutron VPNaaS Failure Rates
+  rows:
+    - title: Description
+      height: 100px
+      panels:
+        - title: Description
+          content: |
+            **This dashboard is managed by [Grafyaml](http://docs.openstack.org/infra/system-config/grafyaml.html).**
+
+            If you would like to make changes to this dashboard, please see the grafana directory in [project-config](https://git.openstack.org/cgit/openstack-infra/project-config/tree/grafana/neutron-vpnaas.yaml).
+          type: text
+    - title: Check Queue
+      height: 320px
+      panels:
+        - title: Unit Test Failure Rates (check)
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-neutron-vpnaas-python27-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-neutron-vpnaas-python27-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-vpnaas-python27-ubuntu-xenial')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-neutron-vpnaas-python34.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-neutron-vpnaas-python34.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-vpnaas-python34')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-neutron-vpnaas-python35.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-neutron-vpnaas-python35.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-vpnaas-python35')
+          type: graph
+        - title: Docs/Pep8/Functional Failure Rates (check)
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-neutron-vpnaas-docs-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-neutron-vpnaas-docs-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-vpnaas-docs-ubuntu-xenial')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-neutron-vpnaas-releasenotes.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-neutron-vpnaas-releasenotes.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-vpnaas-releasenotes')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-neutron-vpnaas-pep8-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-pep8-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-vpnaas-pep8-ubuntu-xenial')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-neutron-vpnaas-dsvm-functional.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-neutron-vpnaas-dsvm-functional.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-vpnaas-dsvm-functional')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-neutron-vpnaas-dsvm-functional-sswan.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-neutron-vpnaas-dsvm-functional-sswan.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-vpnaas-dsvm-functional-sswan')
+          type: graph
+        - title: Tempest Failure Rates (check)
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-neutron-vpnaas-dsvm-api-nv.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-neutron-vpnaas-dsvm-api-nv.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-vpnaas-dsvm-api-nv')
+          type: graph
+    - title: Gate Queue
+      height: 320px
+      panels:
+        - title: Unit Test Failure Rates (gate)
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-neutron-vpnaas-python27-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-neutron-vpnaas-python27-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-vpnaas-python27-ubuntu-xenial')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-neutron-vpnaas-python34.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-neutron-vpnaas-python34.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-vpnaas-python34')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-neutron-vpnaas-python35.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-neutron-vpnaas-python35.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-vpnaas-python35')
+          type: graph
+        - title: Docs/Pep8/Functional Failure Rates (gate)
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-neutron-vpnaas-docs-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-neutron-vpnaas-docs-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-vpnaas-docs-ubuntu-xenial')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-neutron-vpnaas-releasenotes.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-neutron-vpnaas-releasenotes.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-vpnaas-releasenotes')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-neutron-vpnaas-pep8-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-pep8-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-vpnaas-pep8-ubuntu-xenial')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-neutron-vpnaas-dsvm-functional.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-neutron-vpnaas-dsvm-functional.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-vpnaas-dsvm-functional')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-neutron-vpnaas-dsvm-functional-sswan.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-neutron-vpnaas-dsvm-functional-sswan.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-vpnaas-dsvm-functional-sswan')
+          type: graph
+    - title: Other Jobs
+      height: 320px
+      panels:
+        - title: Periodic jobs
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.periodic.job.periodic-neutron-vpnaas-python27-liberty.FAILURE),sum(stats_counts.zuul.pipeline.periodic.job.periodic-neutron-vpnaas-python27-liberty.{SUCCESS,FAILURE})),'24hours'), 'periodic-neutron-vpnaas-python27-liberty')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.periodic.job.periodic-neutron-vpnaas-python27-mitaka.FAILURE),sum(stats_counts.zuul.pipeline.periodic.job.periodic-neutron-vpnaas-python27-mitaka.{SUCCESS,FAILURE})),'24hours'), 'periodic-neutron-vpnaas-python27-mitaka')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.periodic.job.periodic-neutron-vpnaas-python27-newton.FAILURE),sum(stats_counts.zuul.pipeline.periodic.job.periodic-neutron-vpnaas-python27-newton.{SUCCESS,FAILURE})),'24hours'), 'periodic-neutron-vpnaas-python27-newton')
+          type: graph
