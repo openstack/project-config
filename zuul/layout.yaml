@@ -840,6 +840,18 @@ project-templates:
     check-tripleo:
       - gate-tripleo-ci-centos-7-ovb-nonha-puppet-mitaka
 
+  - name: tripleo-scenario-jobs-scenario001
+    check:
+      - gate-tripleo-ci-centos-7-scenario001-multinode-puppet
+    gate:
+      - gate-tripleo-ci-centos-7-scenario001-multinode-puppet
+
+  - name: tripleo-scenario-jobs-scenario004
+    check:
+      - gate-tripleo-ci-centos-7-scenario004-multinode-puppet
+    gate:
+      - gate-tripleo-ci-centos-7-scenario004-multinode-puppet
+
   - name: puppet-openstack-integration-jobs-all
     check:
       - gate-puppet-openstack-integration-3-scenario001-tempest-ubuntu-trusty
@@ -1515,6 +1527,10 @@ jobs:
           - ^.*\.rst$
           - ^doc/.*$
 
+  # tripleo multinode jobs run in Puppet CI are only supported from Ocata.
+  - name : ^gate-tripleo-ci-centos-7-scenario.*-multinode-puppet.*$
+    branch: ^(?!stable/(liberty|mitaka|newton)).*$
+
   # tripleo multinode and undercloud jobs were introduced during Newton cycle.
   - name: ^gate-tripleo-ci-.*(multinode|undercloud).*$
     branch: ^(?!stable/(liberty|mitaka)).*$
@@ -1566,6 +1582,10 @@ jobs:
   # Test TripleO stable/mitaka in Puppet OpenStack CI
   - name: ^gate-tripleo-ci-centos-7-ovb-nonha-puppet-mitaka$
     branch: ^(stable/mitaka).*$
+
+  # Test TripleO stable/newton in Puppet OpenStack CI
+  - name: ^gate-tripleo-ci-centos-7-ovb-nonha-puppet-newton$
+    branch: ^(stable/newton).*$
 
   # Skip non-doc jobs for doc-only networking-midonet changes.  Since
   # doc/source/conf.py is checked by networking-midonet-pep8, that job
@@ -14425,14 +14445,17 @@ projects:
       - name: puppet-beaker-jobs
       - name: puppet-beaker-jobs-xenial
       - name: release-notes-jobs
-      # ceph is deployed on scenario001 and scenario004
+      # ceph is deployed on scenario001 and scenario004 (both Puppet and TripleO CIs)
       # https://git.openstack.org/cgit/openstack/puppet-openstack-integration/tree/README.md
       - name: puppet-openstack-integration-jobs-scenario001
       - name: puppet-openstack-integration-jobs-scenario004
+      - name: tripleo-scenario-jobs-scenario001
+      - name: tripleo-scenario-jobs-scenario004
       - name: puppet-branch-tarball-jobs
       - name: openstack-server-release-jobs
     check-tripleo:
-      - gate-tripleo-ci-centos-7-ovb-nonha
+      - gate-tripleo-ci-centos-7-ovb-nonha-puppet-mitaka
+      - gate-tripleo-ci-centos-7-ovb-nonha-puppet-newton
 
   - name: openstack/puppet-cinder
     template:
