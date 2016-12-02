@@ -69,6 +69,10 @@ def get_modified_deliverable_file_content(reporoot, filenames):
         with open(filename, 'r') as f:
             deliverable_data = yaml.load(f.read())
 
+        # If there are no releases listed in this file, skip it.
+        if not deliverable_data.get('releases'):
+            continue
+
         # Determine whether announcements should include a PyPI
         # link. Default to no, for service projects, because it is
         # less irksome to fail to include a link to a thing that
