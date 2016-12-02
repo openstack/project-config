@@ -243,16 +243,9 @@
           export PROJECTS="openstack-dev/grenade $PROJECTS"
           export PROJECTS="openstack/python-saharaclient $PROJECTS"
           export PYTHONUNBUFFERED=true
-          OVERRIDE_ENABLED_SERVICES=c-api,c-bak,c-sch,c-vol,cinder,dstat,g-api,g-reg,key,mysql,n-api,n-cond,n-cpu,n-crt,n-sch,q-agt,q-dhcp,q-l3,q-meta,q-metering,q-svc,rabbit,s-account,s-container,s-object,s-proxy,ceilometer-acompute,ceilometer-acentral,ceilometer-collector,ceilometer-api
-          # n-obj has been removed from mitaka
-          if [[ "stable/liberty" =~ $ZUUL_BRANCH ]]; then
-              OVERRIDE_ENABLED_SERVICES+=,n-obj,
-          fi
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin sahara https://git.openstack.org/openstack/sahara"
+          OVERRIDE_ENABLED_SERVICES=c-api,c-bak,c-sch,c-vol,cinder,dstat,g-api,g-reg,key,mysql,n-api,n-cond,n-cpu,n-crt,n-sch,q-agt,q-dhcp,q-l3,q-meta,q-metering,q-svc,rabbit,s-account,s-container,s-object,s-proxy,ceilometer-acompute,ceilometer-acentral,ceilometer-collector,ceilometer-api,sahara,h-api,h-api-cfn,h-api-cw,h-eng,heat
           export GRENADE_PLUGINRC="enable_grenade_plugin sahara https://git.openstack.org/openstack/sahara"
           export GRENADE_PLUGINRC+=$'\n'"enable_grenade_plugin heat https://git.openstack.org/openstack/heat"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin neutron-vpnaas https://git.openstack.org/openstack/neutron-vpnaas"
-          export GRENADE_PLUGINRC+=$'\n'"enable_grenade_plugin neutron-vpnaas https://git.openstack.org/openstack/neutron-vpnaas"
           export OVERRIDE_ENABLED_SERVICES
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_TEMPEST=0
