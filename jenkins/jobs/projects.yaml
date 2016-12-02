@@ -8276,79 +8276,152 @@
       - translation-jobs
       - 'gate-{name}-python35{suffix}':
           suffix: ''
-      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}{job-suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
-          job-suffix: ''
-          branch-override: default
-          lbaasversion: lbaasv2
-          lbaastest: scenario
-      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}{job-suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
-          job-suffix: '-nv'
-          branch-override: default
-          lbaasversion: lbaasv2
-          lbaastest: 'scenario-namespace'
-      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}{job-suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
-          job-suffix: ''
-          branch-override: default
-          lbaasversion: lbaasv2
-          lbaastest: minimal
-      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}{job-suffix}':
+      # Legacy trusty jobs (liberty|mitaka) - remove after mitaka EOL
+      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}-{node}{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
           job-suffix: ''
           branch-override: default
           lbaasversion: lbaasv1
           lbaastest: api
-      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}{job-suffix}':
+      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}-{node}{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
           job-suffix: ''
           branch-override: default
           lbaasversion: lbaasv2
           lbaastest: healthmonitor
-      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}{job-suffix}':
+      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}-{node}{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
           job-suffix: ''
           branch-override: default
           lbaasversion: lbaasv2
           lbaastest: listener
-      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}{job-suffix}':
+      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}-{node}{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
           job-suffix: ''
           branch-override: default
           lbaasversion: lbaasv2
           lbaastest: loadbalancer
-      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}{job-suffix}':
+      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}-{node}{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
           job-suffix: ''
           branch-override: default
           lbaasversion: lbaasv2
           lbaastest: member
-      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}{job-suffix}':
+      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}-{node}{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
           job-suffix: ''
           branch-override: default
           lbaasversion: lbaasv2
           lbaastest: pool
-      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}{job-suffix}':
+      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}-{node}{job-suffix}':
+          pipeline: gate
+          node: ubuntu-trusty
+          job-suffix: '-nv'
+          branch-override: default
+          lbaasversion: lbaasv2
+          lbaastest: scenario
+      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}-{node}{job-suffix}':
+          pipeline: gate
+          node: ubuntu-trusty
+          job-suffix: '-nv'
+          branch-override: default
+          lbaasversion: lbaasv2
+          lbaastest: 'scenario-namespace'
+      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}-{node}{job-suffix}':
+          pipeline: gate
+          node: ubuntu-trusty
+          job-suffix: ''
+          branch-override: default
+          lbaasversion: lbaasv2
+          lbaastest: minimal
+      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}-{node}{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
           job-suffix: '-nv'
           branch-override: default
           lbaasversion: lbaasv2
           lbaastest: 'api-namespace'
-      - '{pipeline}-neutron-lbaas-dsvm-functional{job-suffix}':
+      # Legacy xenial jobs (newton) - Remove after newton EOL
+      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node: ubuntu-xenial
+          job-suffix: ''
+          branch-override: default
+          lbaasversion: lbaasv2
+          lbaastest: healthmonitor
+      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}-{node}{job-suffix}':
+          pipeline: gate
+          node: ubuntu-xenial
+          job-suffix: ''
+          branch-override: default
+          lbaasversion: lbaasv2
+          lbaastest: listener
+      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}-{node}{job-suffix}':
+          pipeline: gate
+          node: ubuntu-xenial
+          job-suffix: ''
+          branch-override: default
+          lbaasversion: lbaasv2
+          lbaastest: loadbalancer
+      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}-{node}{job-suffix}':
+          pipeline: gate
+          node: ubuntu-xenial
+          job-suffix: ''
+          branch-override: default
+          lbaasversion: lbaasv2
+          lbaastest: member
+      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}-{node}{job-suffix}':
+          pipeline: gate
+          node: ubuntu-xenial
+          job-suffix: ''
+          branch-override: default
+          lbaasversion: lbaasv2
+          lbaastest: pool
+      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}-{node}{job-suffix}':
+          pipeline: gate
+          node: ubuntu-xenial
+          job-suffix: ''
+          branch-override: default
+          lbaasversion: lbaasv2
+          lbaastest: minimal
+      # Current xenial jobs (newton|ocata|>)
+      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}-{node}{job-suffix}':
+          pipeline: gate
+          node: ubuntu-xenial
+          job-suffix: ''
+          branch-override: default
+          lbaasversion: lbaasv2
+          lbaastest: api
+      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}-{node}{job-suffix}':
+          pipeline: gate
+          node: ubuntu-xenial
+          job-suffix: '-nv'
+          branch-override: default
+          lbaasversion: lbaasv2
+          lbaastest: scenario
+      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}-{node}{job-suffix}':
+          pipeline: gate
+          node: ubuntu-xenial
+          job-suffix: '-nv'
+          branch-override: default
+          lbaasversion: lbaasv2
+          lbaastest: 'scenario-namespace'
+      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}-{node}{job-suffix}':
+          pipeline: gate
+          node: ubuntu-xenial
+          job-suffix: '-nv'
+          branch-override: default
+          lbaasversion: lbaasv2
+          lbaastest: 'api-namespace'
+      - '{pipeline}-neutron-lbaas-dsvm-functional-{node}{job-suffix}':
+          pipeline: gate
+          node: ubuntu-xenial
           job-suffix: '-nv'
           branch-override: default
 
