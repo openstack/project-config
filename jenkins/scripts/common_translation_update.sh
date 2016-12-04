@@ -248,7 +248,7 @@ function setup_review {
 Imported Translations from Zanata
 
 For more information about this automatic import see:
-https://wiki.openstack.org/wiki/Translations/Infrastructure
+http://docs.openstack.org/developer/i18n/reviewing-translation-import.html
 EOF
     set -e
     git review -s
