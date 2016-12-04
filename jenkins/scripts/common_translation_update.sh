@@ -303,7 +303,9 @@ function check_empty_pot {
     trans=$(msgfmt --statistics -o /dev/null ${pot} 2>&1)
     if [ "$trans" = "0 translated messages." ] ; then
         rm $pot
-        # Remove file from git if it's under version control.
+        # Remove file from git if it's under version control. We previously
+        # had all pot files under version control, so remove file also
+        # from git if needed.
         git rm --ignore-unmatch $pot
     fi
 }
@@ -522,11 +524,13 @@ function cleanup_log_files {
 # Remove all pot files, we publish them to
 # http://tarballs.openstack.org/translation-source/{name}/VERSION ,
 # let's not store them in git at all.
+# Previously, we had those files in git, remove them now if there
+# are still there.
 function cleanup_pot_files {
     local modulename=$1
 
     for i in $(find $modulename -name *.pot) ; do
-        # Remove file, it might be a new file unknown to git.
+        # Remove file; both local and from git if needed.
         rm $i
         git rm -f --ignore-unmatch $i
     done

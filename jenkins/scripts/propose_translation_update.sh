@@ -63,10 +63,10 @@ function propose_manuals {
     for FILE in ${DocFolder}/*; do
         DOCNAME=${FILE#${DocFolder}/}
         if [ -d ${DocFolder}/${DOCNAME}/locale ] ; then
-            git add ${DocFolder}/${DOCNAME}/locale/*
+            git add ${DocFolder}/${DOCNAME}/locale/*/*
         fi
         if [ -d ${DocFolder}/${DOCNAME}/source/locale ] ; then
-            git add ${DocFolder}/${DOCNAME}/source/locale/*
+            git add ${DocFolder}/${DOCNAME}/source/locale/*/*
         fi
     done
 }
@@ -81,7 +81,7 @@ function propose_training_guides {
     cleanup_module "doc/upstream-training"
 
     # Add all changed files to git
-    git add doc/upstream-training/source/locale/*
+    git add doc/upstream-training/source/locale/*/*
 }
 
 
@@ -100,7 +100,7 @@ function propose_python_django {
     # Now add all changed files to git.
     # Note we add them here to not have to differentiate in the functions
     # between new files and files already under git control.
-    git add $modulename/locale/*
+    git add $modulename/locale/*/*
 
     # Cleanup po and pot files
     cleanup_module "$modulename"
@@ -116,7 +116,7 @@ function propose_python_django {
 
         # Some files were changed, add changed files again to git, so
         # that we can run git diff properly.
-        git add $modulename/locale/
+        git add $modulename/locale/*/*
     fi
 }
 
@@ -176,7 +176,7 @@ function propose_releasenotes {
         # Add all changed files to git - if there are
         # translated files at all.
         if [ -d releasenotes/source/locale/ ] ; then
-            git add releasenotes/source/locale/
+            git add releasenotes/source/locale/*/*
         fi
     fi
 
