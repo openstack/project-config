@@ -619,8 +619,8 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-tempest-dsvm-lxc-ubuntu-trusty{job-suffix}'
-    node: ubuntu-trusty
+    name: '{pipeline}-tempest-dsvm-lxc-{node}{job-suffix}'
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -2295,6 +2295,7 @@
       - '{pipeline}-tempest-dsvm-zeromq-multibackend-{node}{job-suffix}'
       - '{pipeline}-tempest-dsvm-full-test-accounts-{node}{job-suffix}'
       - '{pipeline}-tempest-dsvm-neutron-full-test-accounts-{node}{job-suffix}'
+      - '{pipeline}-tempest-dsvm-lxc-{node}{job-suffix}'
       # NOTE(mriedem): gate-grenade-dsvm-ubuntu-xenial is intentionally omitted
       # from this list as stable/newton grenade jobs upgrade from trusty nodes
       # and ocata changes only run with nova-network in cells v1 configurations
@@ -2318,7 +2319,6 @@
       - '{pipeline}-tempest-dsvm-full-{node}{job-suffix}'
       - '{pipeline}-tempest-dsvm-ironic-pxe_ssh-{node}{job-suffix}'
       - '{pipeline}-tempest-dsvm-layer4-{node}{job-suffix}'
-      - '{pipeline}-tempest-dsvm-lxc-ubuntu-trusty{job-suffix}'
       - '{pipeline}-tempest-dsvm-lvm{job-suffix}'
       - '{pipeline}-tempest-dsvm-neutron-dvr-ovs-native{job-suffix}'
       - '{pipeline}-tempest-dsvm-neutron-dvr-{node}{job-suffix}'
