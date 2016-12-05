@@ -694,10 +694,12 @@
       - 'gate-{name}-python35{suffix}':
           suffix: ''
       - pypi-jobs
-      - '{pipeline}-tempest-dsvm-neutron-src-{name}{job-suffix}-plugin':
+      - '{pipeline}-tempest-dsvm-neutron-src-{name}-plugin-{node}{job-suffix}':
           project-repo: ceilometer
           pipeline: gate
-          node: ubuntu-trusty
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           job-suffix: ''
           branch-override: default
 
@@ -12574,10 +12576,12 @@
           suffix: ''
       - openstack-client-publish-jobs
       - pypi-jobs
-      - '{pipeline}-tempest-dsvm-neutron-src-{name}{job-suffix}-plugin':
+      - '{pipeline}-tempest-dsvm-neutron-src-{name}-plugin-{node}{job-suffix}':
           project-repo: ceilometer
           pipeline: gate
-          node: ubuntu-trusty
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           job-suffix: ''
           branch-override: default
       - '{pipeline}-ceilometerclient-dsvm-functional{special}{job-suffix}':
