@@ -1996,7 +1996,7 @@ jobs:
     branch: ^(?!stable)
     voting: false
 
-  - name: ^gate-novaclient-dsvm-functional-mitaka
+  - name: ^gate-novaclient-dsvm-functional-mitaka.*$
     branch: ^(?!stable)
 
   # NOTE(mriedem): novaclient functional tests didn't support a neutron
@@ -2005,9 +2005,9 @@ jobs:
     branch: ^(?!stable/(liberty|mitaka)).*$
 
   # NOTE(mriedem): This job requires nova-network which is not used in Ocata+
-  # except in cells v1 configurations, so restrict it to <= Newton.
-  - name: gate-novaclient-dsvm-functional
-    branch: ^stable/(liberty|mitaka|newton)$
+  # except in cells v1 configurations, so restrict it to Newton for Xenial.
+  - name: gate-novaclient-dsvm-functional-ubuntu-xenial
+    branch: ^stable/newton$
 
   - name: gate-neutron-dsvm-tempest-vpnaas
     branch: ^(?!stable/liberty).*$
@@ -15695,13 +15695,15 @@ projects:
       - name: translation-jobs
       - name: release-notes-jobs
     check:
-      - gate-novaclient-dsvm-functional
-      - gate-novaclient-dsvm-functional-mitaka-nv
-      - gate-novaclient-dsvm-functional-identity-v3-only-nv
-      - gate-novaclient-dsvm-functional-neutron
+      - gate-novaclient-dsvm-functional-ubuntu-trusty
+      - gate-novaclient-dsvm-functional-ubuntu-xenial
+      - gate-novaclient-dsvm-functional-mitaka-ubuntu-trusty-nv
+      - gate-novaclient-dsvm-functional-identity-v3-only-ubuntu-xenial-nv
+      - gate-novaclient-dsvm-functional-neutron-ubuntu-xenial
     gate:
-      - gate-novaclient-dsvm-functional
-      - gate-novaclient-dsvm-functional-neutron
+      - gate-novaclient-dsvm-functional-ubuntu-trusty
+      - gate-novaclient-dsvm-functional-ubuntu-xenial
+      - gate-novaclient-dsvm-functional-neutron-ubuntu-xenial
     post:
       - python-novaclient-coverage-ubuntu-trusty
       - python-novaclient-coverage-ubuntu-xenial
