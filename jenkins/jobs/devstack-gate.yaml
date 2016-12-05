@@ -268,7 +268,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-tempest-dsvm-full-test-accounts{job-suffix}'
+    name: '{pipeline}-tempest-dsvm-full-test-accounts-{node}{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -300,7 +300,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-tempest-dsvm-neutron-full-test-accounts{job-suffix}'
+    name: '{pipeline}-tempest-dsvm-neutron-full-test-accounts-{node}{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -2259,9 +2259,9 @@
     name: devstack-periodic-master-jobs
     jobs:
       - '{pipeline}-tempest-dsvm-all{job-suffix}'
-      - '{pipeline}-tempest-dsvm-full-test-accounts{job-suffix}'
+      - '{pipeline}-tempest-dsvm-full-test-accounts-{node}{job-suffix}'
       - '{pipeline}-tempest-dsvm-neutron-full-non-admin{job-suffix}'
-      - '{pipeline}-tempest-dsvm-neutron-full-test-accounts{job-suffix}'
+      - '{pipeline}-tempest-dsvm-neutron-full-test-accounts-{node}{job-suffix}'
       - '{pipeline}-tempest-dsvm-neutron-identity-v3-only-full-{node}{job-suffix}'
       - '{pipeline}-tempest-dsvm-oslo-latest-full{job-suffix}'
       - '{pipeline}-tempest-dsvm-neutron-full-ssh{job-suffix}'
@@ -2293,6 +2293,8 @@
       - '{pipeline}-tempest-dsvm-full-lio-{node}{job-suffix}'
       - '{pipeline}-tempest-dsvm-lvm-multibackend-{node}{job-suffix}'
       - '{pipeline}-tempest-dsvm-zeromq-multibackend-{node}{job-suffix}'
+      - '{pipeline}-tempest-dsvm-full-test-accounts-{node}{job-suffix}'
+      - '{pipeline}-tempest-dsvm-neutron-full-test-accounts-{node}{job-suffix}'
       # NOTE(mriedem): gate-grenade-dsvm-ubuntu-xenial is intentionally omitted
       # from this list as stable/newton grenade jobs upgrade from trusty nodes
       # and ocata changes only run with nova-network in cells v1 configurations
@@ -2312,7 +2314,7 @@
       - '{pipeline}-grenade-dsvm-{node}{job-suffix}'
       - '{pipeline}-tempest-dsvm-cells-{node}{job-suffix}'
       - '{pipeline}-tempest-dsvm-full-lio-{node}{job-suffix}'
-      - '{pipeline}-tempest-dsvm-full-test-accounts{job-suffix}'
+      - '{pipeline}-tempest-dsvm-full-test-accounts-{node}{job-suffix}'
       - '{pipeline}-tempest-dsvm-full-{node}{job-suffix}'
       - '{pipeline}-tempest-dsvm-ironic-ipa-wholedisk-agent_ssh-tinyipa-src{job-suffix}'
       - '{pipeline}-tempest-dsvm-ironic-ipa-wholedisk-agent_ssh-tinyipa{job-suffix}'
@@ -2327,7 +2329,7 @@
       - '{pipeline}-tempest-dsvm-neutron-dvr-ovs-native{job-suffix}'
       - '{pipeline}-tempest-dsvm-neutron-dvr-{node}{job-suffix}'
       - '{pipeline}-tempest-dsvm-neutron-full-non-admin{job-suffix}'
-      - '{pipeline}-tempest-dsvm-neutron-full-test-accounts{job-suffix}'
+      - '{pipeline}-tempest-dsvm-neutron-full-test-accounts-{node}{job-suffix}'
       - '{pipeline}-tempest-dsvm-neutron-full-{node}{job-suffix}'
       - '{pipeline}-tempest-dsvm-neutron-ovs-native{job-suffix}'
       - '{pipeline}-tempest-dsvm-neutron-pg-full-{node}{job-suffix}'
