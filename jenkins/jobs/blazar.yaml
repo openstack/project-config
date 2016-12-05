@@ -19,6 +19,7 @@
           export PROJECTS="openstack/blazar $PROJECTS"
           export PROJECTS="openstack/blazar-nova $PROJECTS"
           export PROJECTS="openstack/python-blazarclient $PROJECTS"
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin blazar git://git.openstack.org/openstack/blazar"
 
           # Construct a regex to limiting scope of tempest
           r="^(?:tempest\.cli\.simple_read_only\.test_resource_.*)"
@@ -26,16 +27,9 @@
           export DEVSTACK_GATE_TEMPEST_REGEX="$r"
 
           function pre_test_hook {
-              # Install blazar devstack integration
-              BLAZAR_BASE=/opt/stack/new/blazar
-              BLAZAR_DEVSTACK_BASE=$BLAZAR_BASE/contrib/devstack
-              DEVSTACK_BASE=/opt/stack/new/devstack
-              cp $BLAZAR_DEVSTACK_BASE/lib/* $DEVSTACK_BASE/lib
-              cp $BLAZAR_DEVSTACK_BASE/extras.d/* $DEVSTACK_BASE/extras.d
-
               # Install blazar tempest integration
               # Copying Tempest test suites
-              BLAZAR_TEMPEST_DIR=$BLAZAR_BASE/contrib/tempest
+              BLAZAR_TEMPEST_DIR=/opt/stack/new/blazar/contrib/tempest
               TEMPEST_DIR=${TEMPEST_DIR:-/opt/stack/new/tempest}
               cp -R $BLAZAR_TEMPEST_DIR/tempest/* $TEMPEST_DIR/tempest
           }
