@@ -1,16 +1,18 @@
 - job-group:
     name: 'lib-forward-testing-{name}'
     jobs:
-      - '{pipeline}-tempest-dsvm-neutron-src-{name}{job-suffix}':
+      - '{pipeline}-tempest-dsvm-neutron-src-{name}-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           job-suffix: ''
           branch-override: default
 
 - job-group:
     name: 'stable-compat-jobs-{name}'
     jobs:
-      - '{pipeline}-tempest-dsvm-neutron-src-{name}{job-suffix}':
+      - '{pipeline}-tempest-dsvm-neutron-src-{name}-{node}{job-suffix}':
           pipeline: gate
           node: ubuntu-xenial
           job-suffix: '-newton'

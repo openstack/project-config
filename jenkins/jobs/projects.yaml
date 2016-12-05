@@ -8407,13 +8407,9 @@
       - '{pipeline}-tempest-dsvm-neutron-src-{name}-{node}{job-suffix}':
           name: neutron-lib
           pipeline: gate
-          node: ubuntu-xenial
-          job-suffix: ''
-          branch-override: default
-      - '{pipeline}-tempest-dsvm-neutron-src-{name}-{node}{job-suffix}':
-          name: neutron-lib
-          pipeline: gate
-          node: ubuntu-trusty
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           job-suffix: ''
           branch-override: default
       # networking api-ref is maintained in neutron-lib repo.
@@ -13411,9 +13407,11 @@
       - openstack-client-publish-jobs
       - pypi-jobs
       - openstack-releasenotes-jobs
-      - '{pipeline}-tempest-dsvm-neutron-src-python-troveclient{job-suffix}':
+      - '{pipeline}-tempest-dsvm-neutron-src-python-troveclient-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           job-suffix: ''
           branch-override: default
 
