@@ -1950,6 +1950,10 @@ jobs:
   - name: ^gate-tempest-dsvm-neutron-pg-full-ubuntu-(trusty|xenial)
     voting: false
 
+  # scenario tests for neutron-dynamic-routing can be run on ocata and later
+  - name: ^gate-neutron-dynamic-routing-dsvm-tempest-scenario.*$
+    branch: ^(?!stable/newton).*$
+
   # LBaaS v1 should run on mitaka only
   - name: ^gate-neutron-lbaasv1-dsvm-api-ubuntu-trusty
     branch: ^stable/mitaka
@@ -12052,10 +12056,13 @@ projects:
       - name: periodic-jobs-with-neutron-lib-master
     check:
       - gate-neutron-dynamic-routing-dsvm-functional
-      - gate-neutron-dynamic-routing-dsvm-tempest
+      - gate-neutron-dynamic-routing-dsvm-tempest-api
+      - gate-neutron-dynamic-routing-dsvm-tempest-scenario-ipv4-nv
+      - gate-neutron-dynamic-routing-dsvm-tempest-scenario-ipv6-nv
+      - gate-neutron-dynamic-routing-dsvm-tempest-scenario-basic-nv
     gate:
       - gate-neutron-dynamic-routing-dsvm-functional
-      - gate-neutron-dynamic-routing-dsvm-tempest
+      - gate-neutron-dynamic-routing-dsvm-tempest-api
     post:
       - neutron-dynamic-routing-coverage-ubuntu-xenial
 
