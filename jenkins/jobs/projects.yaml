@@ -8947,7 +8947,7 @@
       - openstack-publish-jobs
       - openstack-releasenotes-jobs
       - '{pipeline}-{name}-ansible-{scenario}-{ostype}{job-suffix}':
-          job-suffix: ''
+          job-suffix: '-nv'
           ostype:
             - centos-7
             - ubuntu-xenial
@@ -8985,7 +8985,7 @@
       - openstack-publish-jobs
       - openstack-releasenotes-jobs
       - '{pipeline}-{name}-ansible-{scenario}-{ostype}{job-suffix}':
-          job-suffix: ''
+          job-suffix: '-nv'
           ostype:
             - centos-7
             - ubuntu-xenial
@@ -9042,6 +9042,14 @@
       - gate-{name}-requirements
       - openstack-publish-jobs
       - openstack-releasenotes-jobs
+      - '{pipeline}-{name}-ansible-{scenario}-{ostype}{job-suffix}':
+          job-suffix: '-nv'
+          ostype:
+            - centos-7
+            - ubuntu-xenial
+          pipeline: gate
+          scenario:
+            - upgrade
       - '{pipeline}-{name}-ansible-{scenario}-{ostype}{job-suffix}':
           job-suffix: ''
           ostype:
@@ -9106,12 +9114,14 @@
       - '{pipeline}-{name}-ansible-{scenario}-{ostype}{job-suffix}':
           job-suffix: '-nv'
           ostype:
+            - centos-7
             - ubuntu-trusty
             - ubuntu-xenial
           pipeline: gate
           scenario:
             - calico
             - dragonflow
+            - upgrade
       - '{pipeline}-{name}-ansible-{scenario}-{ostype}{job-suffix}':
           job-suffix: ''
           ostype:
@@ -9121,7 +9131,6 @@
           pipeline: gate
           scenario:
             - func_ovs
-            - upgrade
 
 - project:
     name: openstack-ansible-os_nova
@@ -9133,6 +9142,14 @@
       - openstack-publish-jobs
       - openstack-releasenotes-jobs
       - '{pipeline}-{name}-ansible-{scenario}-{ostype}{job-suffix}':
+          job-suffix: '-nv'
+          ostype:
+            - centos-7
+            - ubuntu-xenial
+          pipeline: gate
+          scenario:
+            - upgrade
+      - '{pipeline}-{name}-ansible-{scenario}-{ostype}{job-suffix}':
           job-suffix: ''
           ostype:
             - centos-7
@@ -9141,7 +9158,6 @@
           pipeline: gate
           scenario:
             - func_lxd
-            - upgrade
 
 - project:
     name: openstack-ansible-os_octavia
@@ -9202,14 +9218,6 @@
           scenario:
             - func_pypy
             - multi_reg
-      - '{pipeline}-{name}-ansible-{scenario}-{ostype}{job-suffix}':
-          job-suffix: ''
-          ostype:
-            - centos-7
-            - ubuntu-trusty
-            - ubuntu-xenial
-          pipeline: gate
-          scenario:
             - upgrade
 
 - project:
