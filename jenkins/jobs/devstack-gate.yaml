@@ -2008,7 +2008,12 @@
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
-          export DEVSTACK_GATE_TEMPEST_FULL=1
+          export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
+          # As we are setting DEVSTACK_GATE_TEMPEST_ALL_PLUGINS, we need to add
+          # the regex to limit the tests to the same as a tempest -efull would
+          # run.
+          export DEVSTACK_GATE_TEMPEST_REGEX='(?!.*\[.*\bslow\b.*\])(^tempest\.(api|scenario)|(^cinder\.tests.tempest))'
+
           export DEVSTACK_LOCAL_CONFIG="CINDER_ISCSI_HELPER=lioadm"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"CINDER_LVM_TYPE=thin"
           export BRANCH_OVERRIDE={branch-override}
@@ -2081,7 +2086,12 @@
           export PROJECTS="openstack/{name} $PROJECTS"
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
-          export DEVSTACK_GATE_TEMPEST_FULL=1
+          export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
+          # As we are setting DEVSTACK_GATE_TEMPEST_ALL_PLUGINS, we need to add
+          # the regex to limit the tests to the same as a tempest -efull would
+          # run.
+          export DEVSTACK_GATE_TEMPEST_REGEX='(?!.*\[.*\bslow\b.*\])(^tempest\.(api|scenario)|(^cinder\.tests.tempest))'
+
           export DEVSTACK_LOCAL_CONFIG="CINDER_ISCSI_HELPER=lioadm"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"CINDER_LVM_TYPE=thin"
           export BRANCH_OVERRIDE={branch-override}
