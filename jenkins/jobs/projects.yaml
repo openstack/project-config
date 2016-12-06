@@ -6949,10 +6949,13 @@
       - pypi-jobs
       - 'gate-{name}-python35{suffix}':
           suffix: '-nv'
-      - '{pipeline}-{component}-devstack-dsvm':
+      - '{pipeline}-{component}-devstack-dsvm-{node}{suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           component: mistral
+          suffix: '-nv'
       - gate-rally-dsvm-mistral-{name}-{node}{job-suffix}:
           name: task
           node:
@@ -13053,9 +13056,12 @@
       - 'gate-{name}-python35{suffix}':
           suffix: '-nv'
       - pypi-jobs
-      - '{pipeline}-{component}-devstack-dsvm':
+      - '{pipeline}-{component}-devstack-dsvm-{node}{suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
+          suffix: ''
           component: python-mistralclient
 
 - project:
