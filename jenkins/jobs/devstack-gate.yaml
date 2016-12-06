@@ -2097,39 +2097,6 @@
       - devstack-logs
       - console-log
 
-- job-template:
-    name: '{pipeline}-tempest-dsvm-smoke-tlsproxy{job-suffix}'
-    node: '{node}'
-
-    wrappers:
-      - build-timeout:
-          timeout: 180
-      - timestamps
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - link-logs
-      - print-node-uuid
-      - net-info
-      - devstack-checkout
-      - shell: |
-          #!/bin/bash -xe
-          export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_TEMPEST=1
-          export DEVSTACK_GATE_TLSPROXY=1
-          export DEVSTACK_LOCAL_CONFIG="KEYSTONE_DEPLOY=mod_wsgi"
-
-          export BRANCH_OVERRIDE={branch-override}
-          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
-              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
-          fi
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
-
-    publishers:
-      - devstack-logs
-
 
 - job-template:
     name: 'gate-dsvm-os-loganalyze{job-suffix}'
@@ -2278,5 +2245,4 @@
       - '{pipeline}-tempest-dsvm-neutron-pg-full-{node}{job-suffix}'
       - '{pipeline}-tempest-dsvm-nova-v20-api-{node}{job-suffix}'
       - '{pipeline}-tempest-dsvm-nova-wsgi-full-{node}{job-suffix}'
-      - '{pipeline}-tempest-dsvm-smoke-tlsproxy{job-suffix}'
       - '{pipeline}-tempest-dsvm-trove{job-suffix}'
