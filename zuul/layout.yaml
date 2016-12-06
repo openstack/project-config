@@ -1845,17 +1845,6 @@ jobs:
   - name: gate-rally-dsvm-verify-light-create-resources
     voting: false
 
-  # NOTE(wangxiyuan) As the tempest test has been enabled and the functional
-  # test may cause the interdependent issue, this check is unnecessary now. So
-  # switch the zaqar client functional test to non-voting.
-  - name: ^gate-dsvm-.*-zaqar$
-    voting: false
-
-  # NOTE(wangxiyuan) tempest test for zaqar was introduced in the newton cycle,
-  # so testing the earlier branches doesn't make sense.
-  - name: ^gate-tempest-dsvm-.*-zaqar$
-    branch: ^(?!stable/(liberty|mitaka)).*$
-
   # NOTE(aweyl) tempest test for vitrage was introduced in the mitaka cycle,
   # so testing the earlier branches doesn't make sense.
   - name: ^gate-vitrage-dsvm-datasources-ubuntu-trusty$
@@ -3575,7 +3564,7 @@ projects:
       - gate-tempest-dsvm-neutron-placement-full-ubuntu-xenial-nv
       - gate-tempest-dsvm-cells-ubuntu-trusty
       - gate-tempest-dsvm-cells-ubuntu-xenial
-      - gate-dsvm-mongodb-zaqar
+      - gate-dsvm-mongodb-zaqar-ubuntu-trusty-nv
       - gate-grenade-dsvm-forward
       - gate-tempest-dsvm-lvm-multibackend-ubuntu-xenial
     periodic:
@@ -18288,17 +18277,17 @@ projects:
     check:
       - gate-zaqar-tox-integration-ubuntu-trusty
       - gate-zaqar-tox-integration-ubuntu-xenial
-      - gate-dsvm-mongodb-zaqar
-      - gate-dsvm-redis-zaqar
+      - gate-dsvm-mongodb-zaqar-ubuntu-trusty-nv
+      - gate-dsvm-redis-zaqar-ubuntu-trusty-nv
       - gate-rally-dsvm-zaqar-zaqar-ubuntu-trusty-nv
       - gate-rally-dsvm-zaqar-zaqar-ubuntu-xenial-nv
-      - gate-tempest-dsvm-mongodb-zaqar
-      - gate-tempest-dsvm-redis-zaqar
+      - gate-tempest-dsvm-mongodb-zaqar-ubuntu-xenial
+      - gate-tempest-dsvm-redis-zaqar-ubuntu-xenial
     gate:
       - gate-zaqar-tox-integration-ubuntu-trusty
       - gate-zaqar-tox-integration-ubuntu-xenial
-      - gate-tempest-dsvm-mongodb-zaqar
-      - gate-tempest-dsvm-redis-zaqar
+      - gate-tempest-dsvm-mongodb-zaqar-ubuntu-xenial
+      - gate-tempest-dsvm-redis-zaqar-ubuntu-xenial
 
   - name: openstack/zaqar-specs
     template:
