@@ -2287,13 +2287,13 @@ jobs:
     branch: ^(?!stable/liberty).*$
     voting: false
 
-  - name: ^gate-cinder-pylint$
+  - name: ^gate-cinder-pylint.*$
     voting: false
 
-  - name: ^gate-python-cinderclient-pylint$
+  - name: ^gate-python-cinderclient-pylint.*$
     voting: false
 
-  - name: ^gate-os-brick-pylint$
+  - name: ^gate-os-brick-pylint.*$
     voting: false
 
   - name: ^gate-cinder-tox-db-functional-ubuntu-trusty$
@@ -2606,7 +2606,7 @@ jobs:
   - name: gate-elastic-recheck-linters-ubuntu-xenial
     voting: false
 
-  - name: gate-sahara-pylint
+  - name: ^gate-sahara-pylint.*$
     voting: false
 
   - name: ^gate-sahara-buildimages.*$
@@ -2636,7 +2636,7 @@ jobs:
   - name: gate-neutron-lbaas-dashboard-dsvm-integration
     voting: false
 
-  - name: gate-sahara-tests-pylint
+  - name: ^gate-sahara-tests-pylint.*
     voting: false
 
   # run tempest tests for sahara-tests only when the directory
@@ -2736,7 +2736,7 @@ jobs:
     branch: ^(?!stable/(?:liberty|mitaka)).*$
     voting: false
 
-  - name: gate-murano-pylint
+  - name: ^gate-murano-pylint.*$
     voting: false
 
   - name: ^gate-murano-tox-py27-mitaka-ubuntu-xenial$
@@ -2797,7 +2797,7 @@ jobs:
   - name: ^gate-sqlalchemy-migrate-pep8-ubuntu-(trusty|xenial)
     voting: false
 
-  - name: gate-manila-pylint
+  - name: ^gate-manila-pylint.*$
     voting: false
 
   - name: gate-manila-buildimage-docker
@@ -2874,7 +2874,7 @@ jobs:
   - name: gate-blazar-devstack-dsvm
     voting: false
 
-  - name: gate-blazar-pylint
+  - name: ^gate-blazar-pylint.*$
     voting: false
 
   - name: gate-tempest-dsvm-docker
@@ -5298,7 +5298,8 @@ projects:
       - gate-anvil-venv-ubuntu-trusty
       - gate-anvil-venv-ubuntu-xenial
       - gate-anvil-rpms-dsvm-centos-7
-      - gate-anvil-pylint
+      - gate-anvil-pylint-ubuntu-trusty
+      - gate-anvil-pylint-ubuntu-xenial
     gate:
       - gate-anvil-pep8-ubuntu-trusty
       - gate-anvil-pep8-ubuntu-xenial
@@ -5307,7 +5308,8 @@ projects:
       - gate-anvil-venv-ubuntu-trusty
       - gate-anvil-venv-ubuntu-xenial
       - gate-anvil-rpms-dsvm-centos-7
-      - gate-anvil-pylint
+      - gate-anvil-pylint-ubuntu-trusty
+      - gate-anvil-pylint-ubuntu-xenial
 
   - name: openstack/aodh
     template:
@@ -5675,7 +5677,7 @@ projects:
       - name: check-requirements
     check:
       - gate-blazar-devstack-dsvm
-      - gate-blazar-pylint
+      - gate-blazar-pylint-ubuntu-xenial
     pre-release:
       - blazar-tarball
     release:
@@ -6226,7 +6228,8 @@ projects:
       - name: release-notes-jobs
       - name: api-ref-jobs
     check:
-      - gate-cinder-pylint
+      - gate-cinder-pylint-ubuntu-trusty
+      - gate-cinder-pylint-ubuntu-xenial
       - gate-rally-dsvm-cinder-ubuntu-trusty-nv
       - gate-rally-dsvm-cinder-ubuntu-xenial-nv
       - gate-tempest-dsvm-full-devstack-plugin-ceph-ubuntu-trusty
@@ -8913,11 +8916,13 @@ projects:
     check:
       - gate-osbackup-freezer-dsvm-ubuntu-trusty
       - gate-osbackup-freezer-dsvm-ubuntu-xenial
-      - gate-freezer-pylint
+      - gate-freezer-pylint-ubuntu-trusty
+      - gate-freezer-pylint-ubuntu-xenial
     gate:
       - gate-osbackup-freezer-dsvm-ubuntu-trusty
       - gate-osbackup-freezer-dsvm-ubuntu-xenial
-      - gate-freezer-pylint
+      - gate-freezer-pylint-ubuntu-trusty
+      - gate-freezer-pylint-ubuntu-xenial
 
   - name: openstack/freezer-api
     template:
@@ -8930,11 +8935,13 @@ projects:
     check:
       - gate-osbackup-freezer-api-dsvm-ubuntu-trusty
       - gate-osbackup-freezer-api-dsvm-ubuntu-xenial
-      - gate-freezer-api-pylint
+      - gate-freezer-api-pylint-ubuntu-trusty
+      - gate-freezer-api-pylint-ubuntu-xenial
     gate:
       - gate-osbackup-freezer-api-dsvm-ubuntu-trusty
       - gate-osbackup-freezer-api-dsvm-ubuntu-xenial
-      - gate-freezer-api-pylint
+      - gate-freezer-api-pylint-ubuntu-trusty
+      - gate-freezer-api-pylint-ubuntu-xenial
 
   - name: openstack/freezer-dr
     template:
@@ -8945,9 +8952,9 @@ projects:
       - name: python35-jobs
       - name: check-requirements
     check:
-      - gate-freezer-dr-pylint
+      - gate-freezer-dr-pylint-ubuntu-xenial
     gate:
-      - gate-freezer-dr-pylint
+      - gate-freezer-dr-pylint-ubuntu-xenial
 
   - name: openstack/freezer-specs
     template:
@@ -8970,11 +8977,13 @@ projects:
     check:
       - gate-osbackup-freezer-web-ui-dsvm-ubuntu-trusty
       - gate-osbackup-freezer-web-ui-dsvm-ubuntu-xenial
-      - gate-freezer-web-ui-pylint
+      - gate-freezer-web-ui-pylint-ubuntu-trusty
+      - gate-freezer-web-ui-pylint-ubuntu-xenial
     gate:
       - gate-osbackup-freezer-web-ui-dsvm-ubuntu-trusty
       - gate-osbackup-freezer-web-ui-dsvm-ubuntu-xenial
-      - gate-freezer-web-ui-pylint
+      - gate-freezer-web-ui-pylint-ubuntu-trusty
+      - gate-freezer-web-ui-pylint-ubuntu-xenial
 
   - name: openstack/fuel-agent
     template:
@@ -9169,7 +9178,8 @@ projects:
       - name: python35-jobs
       - name: python-jobs
     check:
-      - gate-fuel-devops-pylint
+      - gate-fuel-devops-pylint-ubuntu-trusty
+      - gate-fuel-devops-pylint-ubuntu-xenial
       - fuel-devops-coverage-ubuntu-xenial
     gate:
       - fuel-devops-coverage-ubuntu-xenial
@@ -9790,13 +9800,15 @@ projects:
       - gate-fuel-qa-pep8-ubuntu-trusty
       - gate-fuel-qa-python27-ubuntu-xenial
       - gate-fuel-qa-pep8-ubuntu-xenial
-      - gate-fuel-qa-pylint
+      - gate-fuel-qa-pylint-ubuntu-trusty
+      - gate-fuel-qa-pylint-ubuntu-xenial
     gate:
       - gate-fuel-qa-python27-ubuntu-trusty
       - gate-fuel-qa-pep8-ubuntu-trusty
       - gate-fuel-qa-python27-ubuntu-xenial
       - gate-fuel-qa-pep8-ubuntu-xenial
-      - gate-fuel-qa-pylint
+      - gate-fuel-qa-pylint-ubuntu-trusty
+      - gate-fuel-qa-pylint-ubuntu-xenial
 
   - name: openstack/fuel-specs
     template:
@@ -11069,7 +11081,8 @@ projects:
       - manila-coverage-db-ubuntu-xenial
       - gate-manila-tox-genconfig-ubuntu-trusty
       - gate-manila-tox-genconfig-ubuntu-xenial
-      - gate-manila-pylint
+      - gate-manila-pylint-ubuntu-trusty
+      - gate-manila-pylint-ubuntu-xenial
       - gate-manila-tempest-dsvm-mysql-generic-ubuntu-trusty
       - gate-manila-tempest-dsvm-mysql-generic-ubuntu-xenial-nv
       - gate-manila-tempest-dsvm-postgres-container-ubuntu-xenial-nv
@@ -11570,7 +11583,8 @@ projects:
     check:
       - murano-coverage-db-ubuntu-trusty
       - murano-coverage-db-ubuntu-xenial
-      - gate-murano-pylint
+      - gate-murano-pylint-ubuntu-trusty
+      - gate-murano-pylint-ubuntu-xenial
       - gate-murano-tox-py27-mitaka-ubuntu-xenial
       - gate-murano-devstack-dsvm
       - gate-murano-congress-devstack-dsvm
@@ -13618,7 +13632,8 @@ projects:
       - gate-tempest-dsvm-full-lio-src-os-brick-ubuntu-xenial
     experimental:
       - gate-tempest-dsvm-full-head-os-brick
-      - gate-os-brick-pylint
+      - gate-os-brick-pylint-ubuntu-trusty
+      - gate-os-brick-pylint-ubuntu-xenial
 
   - name: openstack/os-client-config
     template:
@@ -15187,7 +15202,8 @@ projects:
       - gate-cinderclient-dsvm-functional-ubuntu-trusty-nv
       - gate-cinderclient-dsvm-functional-ubuntu-xenial-nv
       - gate-cinderclient-dsvm-functional-identity-v3-only-ubuntu-xenial-nv
-      - gate-python-cinderclient-pylint
+      - gate-python-cinderclient-pylint-ubuntu-trusty
+      - gate-python-cinderclient-pylint-ubuntu-xenial
     post:
       - python-cinderclient-coverage-ubuntu-trusty
       - python-cinderclient-coverage-ubuntu-xenial
@@ -15307,9 +15323,11 @@ projects:
       - name: python35-jobs
       - name: check-requirements
     check:
-      - gate-python-freezerclient-pylint
+      - gate-python-freezerclient-pylint-ubuntu-trusty
+      - gate-python-freezerclient-pylint-ubuntu-xenial
     gate:
-      - gate-python-freezerclient-pylint
+      - gate-python-freezerclient-pylint-ubuntu-trusty
+      - gate-python-freezerclient-pylint-ubuntu-xenial
 
   - name: openstack/python-fuelclient
     template:
@@ -16359,7 +16377,8 @@ projects:
       - name: release-notes-jobs
       - name: api-ref-jobs
     check:
-      - gate-sahara-pylint
+      - gate-sahara-pylint-ubuntu-trusty
+      - gate-sahara-pylint-ubuntu-xenial
       - gate-tempest-dsvm-sahara-ubuntu-trusty
       - gate-tempest-dsvm-sahara-ubuntu-xenial
       - sahara-coverage-db-ubuntu-trusty
@@ -16483,7 +16502,8 @@ projects:
       - name: publish-to-pypi
       - name: release-notes-jobs
     check:
-      - gate-sahara-tests-pylint
+      - gate-sahara-tests-pylint-ubuntu-trusty
+      - gate-sahara-tests-pylint-ubuntu-xenial
       - gate-tempest-dsvm-sahara-ubuntu-trusty-nv
       - gate-tempest-dsvm-sahara-ubuntu-xenial-nv
       - gate-sahara-tests-dsvm-scenario-neutron-ubuntu-xenial
@@ -17153,7 +17173,8 @@ projects:
       - name: merge-check
       - name: python-jobs
     check:
-      - gate-swift3-pylint
+      - gate-swift3-pylint-ubuntu-trusty
+      - gate-swift3-pylint-ubuntu-xenial
       - gate-swift3-tox-tempauth-ubuntu-trusty
       - gate-swift3-tox-tempauth-ubuntu-xenial
       - gate-swift3-tox-keystone-ubuntu-trusty
@@ -17161,7 +17182,8 @@ projects:
       - gate-swift3-tox-s3acl-ubuntu-trusty
       - gate-swift3-tox-s3acl-ubuntu-xenial
     gate:
-      - gate-swift3-pylint
+      - gate-swift3-pylint-ubuntu-trusty
+      - gate-swift3-pylint-ubuntu-xenial
       - gate-swift3-tox-tempauth-ubuntu-trusty
       - gate-swift3-tox-tempauth-ubuntu-xenial
       - gate-swift3-tox-keystone-ubuntu-trusty
