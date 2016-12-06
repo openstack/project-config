@@ -36,7 +36,7 @@
           ./safe-devstack-vm-gate-wrap.sh
 
 - job-template:
-    name: '{pipeline}-functional-dsvm-astara{job-suffix}'
+    name: '{pipeline}-functional-dsvm-astara-{node}{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -57,7 +57,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-functional-dsvm-astara-appliance-src{job-suffix}'
+    name: '{pipeline}-functional-dsvm-astara-appliance-src-{node}{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -77,9 +77,9 @@
       - devstack-logs
       - console-log
 
-- job:
-    name: 'astara-appliance-buildimage'
-    node: ubuntu-trusty
+- job-template:
+    name: 'astara-appliance-buildimage-{node}'
+    node: '{node}'
 
     builders:
       - link-logs

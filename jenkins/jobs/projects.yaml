@@ -271,16 +271,24 @@
       - python-jobs
       - openstack-server-release-jobs
       - hook-{name}-rtfd
-      - '{pipeline}-functional-dsvm-astara{job-suffix}':
+      - '{pipeline}-functional-dsvm-astara-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           job-suffix: ''
           branch-override: default
-      - '{pipeline}-functional-dsvm-astara-appliance-src{job-suffix}':
+      - '{pipeline}-functional-dsvm-astara-appliance-src-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           job-suffix: ''
           branch-override: default
+      - astara-appliance-buildimage-{node}:
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: astara-appliance
