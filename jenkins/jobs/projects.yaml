@@ -3895,11 +3895,14 @@
 
     jobs:
       - gate-{name}-bashate
-      - '{pipeline}-tempest-dsvm-full-{plugin}{job-suffix}':
+      - '{pipeline}-tempest-dsvm-full-{plugin}-{node}{job-suffix}':
           pipeline: gate
           plugin: amqp1
           plugin-repo: openstack/devstack-plugin-amqp1
-          job-suffix: ''
+          job-suffix: '-nv'
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: devstack-plugin-bdd
@@ -3942,23 +3945,28 @@
 
     jobs:
       - gate-{name}-bashate
-      - '{pipeline}-tempest-dsvm-full-{plugin}{job-suffix}':
-          node: ubuntu-trusty
+      - '{pipeline}-tempest-dsvm-full-{plugin}-{node}{job-suffix}':
           pipeline: gate
           plugin: hdfs
           plugin-repo: openstack/devstack-plugin-hdfs
           job-suffix: ''
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: devstack-plugin-kafka
 
     jobs:
       - gate-{name}-bashate
-      - '{pipeline}-tempest-dsvm-full-{plugin}{job-suffix}':
+      - '{pipeline}-tempest-dsvm-full-{plugin}-{node}{job-suffix}':
           pipeline: gate
           plugin: kafka
           plugin-repo: openstack/devstack-plugin-kafka
           job-suffix: ''
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: devstack-plugin-libvirt-qemu
@@ -3995,17 +4003,23 @@
 
     jobs:
       - gate-{name}-bashate
-      - '{pipeline}-tempest-dsvm-full-{plugin}{job-suffix}':
+      - '{pipeline}-tempest-dsvm-full-{plugin}-{node}{job-suffix}':
           pipeline: gate
           plugin: sheepdog
           plugin-repo: openstack/devstack-plugin-sheepdog
           job-suffix: '-nv'
-      - '{pipeline}-tempest-dsvm-full-{plugin}-src-{srcname}{job-suffix}':
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
+      - '{pipeline}-tempest-dsvm-full-{plugin}-src-{srcname}-{node}{job-suffix}':
           pipeline: gate
           plugin: sheepdog
           plugin-repo: openstack/devstack-plugin-sheepdog
           srcname: os-brick
           job-suffix: '-nv'
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: devstack-plugin-tar-installer
@@ -4018,11 +4032,14 @@
 
     jobs:
       - gate-{name}-bashate
-      - '{pipeline}-tempest-dsvm-full-{plugin}{job-suffix}':
+      - '{pipeline}-tempest-dsvm-full-{plugin}-{node}{job-suffix}':
           pipeline: gate
           plugin: zmq
           plugin-repo: openstack/devstack-plugin-zmq
-          job-suffix: ''
+          job-suffix: '-nv'
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: dib-utils

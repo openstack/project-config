@@ -2871,14 +2871,6 @@ jobs:
   - name: gate-manila-tempest-minimal-dsvm-lvm-ubuntu-trusty
     branch: ^(?:stable/mitaka).*$
 
-  # for devstack-plugin-amqp1
-  - name: gate-tempest-dsvm-full-amqp1
-    voting: false
-
-  # for devstack-plugin-zmq
-  - name: gate-tempest-dsvm-full-zmq
-    voting: false
-
   - name: ^gate-oslo.messaging-src-dsvm-full-amqp1.*$
     branch: ^(?!stable/liberty).*$
 
@@ -6274,7 +6266,8 @@ projects:
       - gate-grenade-dsvm-cinder-multinode-ubuntu-xenial
       # These jobs test open source plugins and must remain with the -nv branch
       # designator unless cinder gives permission.
-      - gate-tempest-dsvm-full-sheepdog-nv
+      - gate-tempest-dsvm-full-sheepdog-ubuntu-trusty-nv
+      - gate-tempest-dsvm-full-sheepdog-ubuntu-xenial-nv
       - gate-tempest-dsvm-full-drbd-devstack-nv
       - gate-tempest-dsvm-full-lio-ubuntu-trusty
       - gate-tempest-dsvm-full-lio-ubuntu-xenial
@@ -6288,7 +6281,8 @@ projects:
       - gate-grenade-dsvm-cinder-multinode-ubuntu-xenial
     experimental:
       - gate-grenade-dsvm-forward
-      - gate-tempest-dsvm-full-sheepdog-src-os-brick-nv
+      - gate-tempest-dsvm-full-sheepdog-src-os-brick-ubuntu-trusty-nv
+      - gate-tempest-dsvm-full-sheepdog-src-os-brick-ubuntu-xenial-nv
       - gate-tempest-dsvm-full-devstack-plugin-nfs-nv
       - gate-tempest-dsvm-lvm-multibackend-ubuntu-xenial
       - gate-tempest-dsvm-zeromq-multibackend-ubuntu-xenial
@@ -8538,7 +8532,8 @@ projects:
       - name: merge-check
     check:
       - gate-devstack-plugin-amqp1-bashate
-      - gate-tempest-dsvm-full-amqp1
+      - gate-tempest-dsvm-full-amqp1-ubuntu-trusty-nv
+      - gate-tempest-dsvm-full-amqp1-ubuntu-xenial-nv
     gate:
       - gate-devstack-plugin-amqp1-bashate
 
@@ -8587,22 +8582,26 @@ projects:
       - name: merge-check
     check:
       - gate-devstack-plugin-hdfs-bashate
-      - gate-tempest-dsvm-full-hdfs
+      - gate-tempest-dsvm-full-hdfs-ubuntu-trusty
+      - gate-tempest-dsvm-full-hdfs-ubuntu-xenial
       - gate-manila-tempest-dsvm-hdfs-ubuntu-trusty-nv
       - gate-manila-tempest-dsvm-hdfs-ubuntu-xenial-nv
     gate:
       - gate-devstack-plugin-hdfs-bashate
-      - gate-tempest-dsvm-full-hdfs
+      - gate-tempest-dsvm-full-hdfs-ubuntu-trusty
+      - gate-tempest-dsvm-full-hdfs-ubuntu-xenial
 
   - name: openstack/devstack-plugin-kafka
     template:
       - name: merge-check
     check:
       - gate-devstack-plugin-kafka-bashate
-      - gate-tempest-dsvm-full-kafka
+      - gate-tempest-dsvm-full-kafka-ubuntu-trusty
+      - gate-tempest-dsvm-full-kafka-ubuntu-xenial
     gate:
       - gate-devstack-plugin-kafka-bashate
-      - gate-tempest-dsvm-full-kafka
+      - gate-tempest-dsvm-full-kafka-ubuntu-trusty
+      - gate-tempest-dsvm-full-kafka-ubuntu-xenial
 
   - name: openstack/devstack-plugin-libvirt-qemu
     template:
@@ -8643,7 +8642,8 @@ projects:
       - name: merge-check
     check:
       - gate-devstack-plugin-sheepdog-bashate
-      - gate-tempest-dsvm-full-sheepdog-nv
+      - gate-tempest-dsvm-full-sheepdog-ubuntu-trusty-nv
+      - gate-tempest-dsvm-full-sheepdog-ubuntu-xenial-nv
     gate:
       - gate-devstack-plugin-sheepdog-bashate
 
@@ -8660,7 +8660,8 @@ projects:
       - name: merge-check
     check:
       - gate-devstack-plugin-zmq-bashate
-      - gate-tempest-dsvm-full-zmq
+      - gate-tempest-dsvm-full-zmq-ubuntu-trusty-nv
+      - gate-tempest-dsvm-full-zmq-ubuntu-xenial-nv
     gate:
       - gate-devstack-plugin-zmq-bashate
 
@@ -9995,7 +9996,8 @@ projects:
     check:
       - gate-tempest-dsvm-full-ceph-plugin-src-glance_store-ubuntu-trusty
       - gate-tempest-dsvm-full-ceph-plugin-src-glance_store-ubuntu-xenial
-      - gate-tempest-dsvm-full-sheepdog-nv
+      - gate-tempest-dsvm-full-sheepdog-ubuntu-trusty-nv
+      - gate-tempest-dsvm-full-sheepdog-ubuntu-xenial-nv
     gate:
       - gate-tempest-dsvm-full-ceph-plugin-src-glance_store-ubuntu-trusty
       - gate-tempest-dsvm-full-ceph-plugin-src-glance_store-ubuntu-xenial
