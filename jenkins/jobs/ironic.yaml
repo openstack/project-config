@@ -228,6 +228,13 @@
             fi
 
 - builder:
+    name: ironic-resource-classes
+    builders:
+      - ironic-extra-vars:
+          script: |
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_USE_RESOURCE_CLASSES=True"
+
+- builder:
     # NOTE(adam_g): This is a temporary macro until we can define the Ironic d-s-g job in a
     # standard, minimal fashion.
     name: devstack-virtual-ironic
@@ -664,6 +671,38 @@
           image-type: wholedisk
           branch-override: '{branch-override}'
           bm-vm-count: 1
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-tempest-dsvm-ironic-ipa-resourceclasses-partition-pxe_ipmitool-tinyipa{src}-{node}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 75
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - ironic-resource-classes
+      - ironic-deploy-with-IPA:
+          ramdisk-type: 'tinyipa'
+      - ironic-tempest-regex:
+          tempest-regex: ironic
+      - ironic-tempest-plugin
+      - devstack-virtual-ironic:
+          build-ramdisk: '{src}'
+          deploy_driver: 'pxe_ipmitool'
+          image-type: 'partition'
+          branch-override: '{branch-override}'
+          bm-vm-count: 2
 
     publishers:
       - devstack-logs
