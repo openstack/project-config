@@ -491,13 +491,15 @@ project-templates:
 
   - name: lib-forward-testing
     check:
-      - 'gate-tempest-dsvm-neutron-src-{name}'
+      - 'gate-tempest-dsvm-neutron-src-{name}-ubuntu-trusty'
+      - 'gate-tempest-dsvm-neutron-src-{name}-ubuntu-xenial'
     gate:
-      - 'gate-tempest-dsvm-neutron-src-{name}'
+      - 'gate-tempest-dsvm-neutron-src-{name}-ubuntu-trusty'
+      - 'gate-tempest-dsvm-neutron-src-{name}-ubuntu-xenial'
 
   - name: stable-compat-jobs
     check:
-      - 'gate-tempest-dsvm-neutron-src-{name}-newton'
+      - 'gate-tempest-dsvm-neutron-src-{name}-ubuntu-xenial-newton'
 
   - name: lib-forward-testing-plugin
     check:
@@ -1422,7 +1424,7 @@ jobs:
           - ^doc/.*$
           - ^releasenotes/.*$
   # Skip non docs jobs for doc-only neutronclient changes
-  - name: ^gate-(python-neutronclient-(python27|python3[45](-nv)?|pypy)|neutronclient-test-dsvm-functional(-ubuntu-.*)?|neutronclient-test-dsvm-functional-adv-svcs(-ubuntu-.*)?|tempest-dsvm-neutron-src-python-neutronclient)$
+  - name: ^gate-(python-neutronclient-(python27|python3[45](-nv)?|pypy)|neutronclient-test-dsvm-functional(-ubuntu-.*)?|neutronclient-test-dsvm-functional-adv-svcs(-ubuntu-.*)?|tempest-dsvm-neutron-src-python-neutronclient(-ubuntu-.*)?)$
     skip-if:
       - project: ^openstack/python-neutronclient$
         all-files-match-any:
@@ -6335,11 +6337,9 @@ projects:
     check:
       - gate-cliff-tox-neutronclient-tip-ubuntu-xenial
       - gate-cliff-tox-openstackclient-tip-ubuntu-xenial
-      - gate-tempest-dsvm-neutron-src-cliff
     gate:
       - gate-cliff-tox-neutronclient-tip-ubuntu-xenial
       - gate-cliff-tox-openstackclient-tip-ubuntu-xenial
-      - gate-tempest-dsvm-neutron-src-cliff
 
   - name: openstack/cloud-init
     template:
@@ -12380,17 +12380,13 @@ projects:
       - name: python-jobs
       - name: python34-jobs
       - name: python35-jobs
+      - name: lib-forward-testing
       - name: translation-jobs
       - name: api-ref-jobs
       - name: release-notes-jobs
     check:
-      - gate-tempest-dsvm-neutron-src-neutron-lib-ubuntu-trusty
-      - gate-tempest-dsvm-neutron-src-neutron-lib-ubuntu-xenial
       - neutron-lib-coverage-ubuntu-trusty
       - neutron-lib-coverage-ubuntu-xenial
-    gate:
-      - gate-tempest-dsvm-neutron-src-neutron-lib-ubuntu-trusty
-      - gate-tempest-dsvm-neutron-src-neutron-lib-ubuntu-xenial
 
   - name: openstack/neutron-specs
     template:
@@ -12527,7 +12523,8 @@ projects:
       - gate-tempest-dsvm-ironic-pxe_ipa-full-nv
       - gate-tempest-dsvm-lxc-ubuntu-xenial
       - gate-tempest-dsvm-lvm
-      - gate-tempest-dsvm-neutron-src-oslo.versionedobjects
+      - gate-tempest-dsvm-neutron-src-oslo.versionedobjects-ubuntu-trusty
+      - gate-tempest-dsvm-neutron-src-oslo.versionedobjects-ubuntu-xenial
       - gate-tempest-dsvm-nova-os-vif-nv
       - gate-tempest-dsvm-nova-libvirt-kvm-apr
       - gate-tempest-dsvm-ironic-multitenant-network-ubuntu-xenial
