@@ -12908,14 +12908,18 @@
       - openstack-client-publish-jobs
       - pypi-jobs
       - openstack-releasenotes-jobs
-      - '{pipeline}-ironicclient-dsvm-functional{job-suffix}':
+      - '{pipeline}-ironicclient-dsvm-functional-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           job-suffix: ''
           branch-override: default
-      - '{pipeline}-tempest-dsvm-python-ironicclient-src{job-suffix}':
+      - '{pipeline}-tempest-dsvm-python-ironicclient-src-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           job-suffix: ''
           branch-override: default
 
