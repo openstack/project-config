@@ -2719,9 +2719,6 @@ jobs:
   - name: gate-mistral-python34
     branch: ^(?!stable/(?:juno|liberty)).*$
 
-  - name: gate-mistral-devstack-dsvm
-    voting: false
-
   - name: gate-mistral-devstack-dsvm-kombu-nv
     branch: ^(?!stable/(?:liberty|mitaka|newton)).*$
 
@@ -11238,7 +11235,8 @@ projects:
     check:
       - gate-rally-dsvm-mistral-task-ubuntu-trusty-nv
       - gate-rally-dsvm-mistral-task-ubuntu-xenial-nv
-      - gate-mistral-devstack-dsvm
+      - gate-mistral-devstack-dsvm-ubuntu-trusty-nv
+      - gate-mistral-devstack-dsvm-ubuntu-xenial-nv
       - gate-mistral-tox-db-unit-mysql-ubuntu-xenial
       - gate-mistral-tox-db-unit-postgresql-ubuntu-trusty
       - gate-mistral-tox-db-unit-postgresql-ubuntu-xenial
@@ -15607,9 +15605,11 @@ projects:
       - name: check-requirements
       - name: osc-plugin-jobs
     check:
-      - gate-python-mistralclient-devstack-dsvm
+      - gate-python-mistralclient-devstack-dsvm-ubuntu-trusty
+      - gate-python-mistralclient-devstack-dsvm-ubuntu-xenial
     gate:
-      - gate-python-mistralclient-devstack-dsvm
+      - gate-python-mistralclient-devstack-dsvm-ubuntu-trusty
+      - gate-python-mistralclient-devstack-dsvm-ubuntu-xenial
 
   - name: openstack/python-monascaclient
     template:
