@@ -4871,15 +4871,19 @@
     jobs:
       - python-jobs
       - pypi-jobs
-      - '{pipeline}-functional-neutron-dsvm-gceapi{job-suffix}':
+      - '{pipeline}-functional-neutron-dsvm-gceapi-{node}{job-suffix}':
             pipeline: gate
-            node: ubuntu-trusty
-            job-suffix: ''
+            node:
+              - ubuntu-trusty
+              - ubuntu-xenial
+            job-suffix: '-nv'
             branch-override: default
-      - '{pipeline}-functional-nova-network-dsvm-gceapi{job-suffix}':
+      - '{pipeline}-functional-nova-network-dsvm-gceapi-{node}{job-suffix}':
             pipeline: gate
-            node: ubuntu-trusty
-            job-suffix: ''
+            node:
+              - ubuntu-trusty
+              - ubuntu-xenial
+            job-suffix: '-nv'
             branch-override: default
 
 - project:
