@@ -1317,6 +1317,41 @@
       - console-log
 
 - job-template:
+    name: '{pipeline}-keystone-dsvm-grenade-multinode-{node-release}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 180
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_CONFIGDRIVE=0
+          export DEVSTACK_GATE_NEUTRON=1
+          export DEVSTACK_GATE_GRENADE=pullup
+          export PROJECTS="openstack-dev/grenade $PROJECTS"
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          export DEVSTACK_GATE_TOPOLOGY="multinode"
+          export MULTI_KEYSTONE=1
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin keystone git://git.openstack.org/openstack/keystone"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"MULTI_KEYSTONE=1"
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
     name: '{pipeline}-tempest-dsvm-multinode-full-{node-release}{suffix}'
     node: '{node}'
 
