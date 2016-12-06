@@ -1510,7 +1510,7 @@ jobs:
           - ^doc/.*$
   # Skip non-doc jobs for doc-only python-ironicclient changes. Since documents
   # are checked by python-ironicclient-pep8 it should not be skipped.
-  - name: ^gate-(python-ironicclient-(python27|python3[45](-nv)?|pypy)|ironicclient-dsvm-functional|tempest-dsvm-python-ironicclient-src)$
+  - name: ^gate-(python-ironicclient-(python27|python3[45](-nv)?|pypy)|ironicclient-dsvm-functional|tempest-dsvm-python-ironicclient-src)(-ubuntu-.*)?$
     skip-if:
       - project: ^openstack/python-ironicclient$
         all-files-match-any:
@@ -15460,13 +15460,17 @@ projects:
       - name: release-notes-jobs
       - name: osc-plugin-jobs
     check:
-      - gate-tempest-dsvm-python-ironicclient-src
-      - gate-ironicclient-dsvm-functional
+      - gate-tempest-dsvm-python-ironicclient-src-ubuntu-trusty
+      - gate-tempest-dsvm-python-ironicclient-src-ubuntu-xenial
+      - gate-ironicclient-dsvm-functional-ubuntu-trusty
+      - gate-ironicclient-dsvm-functional-ubuntu-xenial
       - python-ironicclient-coverage-ubuntu-trusty
       - python-ironicclient-coverage-ubuntu-xenial
     gate:
-      - gate-tempest-dsvm-python-ironicclient-src
-      - gate-ironicclient-dsvm-functional
+      - gate-tempest-dsvm-python-ironicclient-src-ubuntu-trusty
+      - gate-tempest-dsvm-python-ironicclient-src-ubuntu-xenial
+      - gate-ironicclient-dsvm-functional-ubuntu-trusty
+      - gate-ironicclient-dsvm-functional-ubuntu-xenial
     post:
       - python-ironicclient-coverage-ubuntu-trusty
       - python-ironicclient-coverage-ubuntu-xenial
