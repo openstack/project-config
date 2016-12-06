@@ -3641,7 +3641,7 @@
           - ubuntu-trusty
           - ubuntu-xenial
           job-suffix: '-nv'
-      - 'gate-tempest-dsvm-designate-{designate-driver}{special}{job-suffix}':
+      - 'gate-tempest-dsvm-designate-{designate-driver}{special}-{node}{job-suffix}':
           node: ubuntu-trusty
           branch-override: default
           special: ''
@@ -3649,7 +3649,15 @@
           designate-driver:
             - powerdns
             - bind9
-      - 'gate-tempest-dsvm-designate-{designate-driver}{special}{job-suffix}':
+      - 'gate-tempest-dsvm-designate-{designate-driver}{special}-{node}{job-suffix}':
+          node: ubuntu-xenial
+          branch-override: default
+          special: ''
+          job-suffix: ''
+          designate-driver:
+            - pdns4
+            - bind9
+      - 'gate-tempest-dsvm-designate-{designate-driver}{special}-{node}{job-suffix}':
           node: ubuntu-trusty
           branch-override: stable/mitaka
           special: ''
@@ -3657,49 +3665,55 @@
           designate-driver:
             - powerdns
             - bind9
-      - 'gate-tempest-dsvm-designate-{designate-driver}{special}{job-suffix}':
-          node: ubuntu-trusty
+      # This job is xenial only because it is pinned to >= newton.
+      - 'gate-tempest-dsvm-designate-{designate-driver}{special}-{node}{job-suffix}':
+          node: ubuntu-xenial
           branch-override: default
           special: '-postgres'
           job-suffix: '-nv'
           designate-driver:
-            - powerdns
-      - 'gate-tempest-dsvm-designate-{designate-driver}{special}{job-suffix}':
-          node: ubuntu-trusty
+            - pdns4
+      # This job is xenial only because it is pinned to >= newton.
+      - 'gate-tempest-dsvm-designate-{designate-driver}{special}-{node}{job-suffix}':
+          node: ubuntu-xenial
           branch-override: default
           special: '-worker-model'
           job-suffix: '-nv'
           designate-driver:
-            - powerdns
-      - 'gate-tempest-dsvm-designate-agent-{designate-driver}{job-suffix}':
-          node: ubuntu-trusty
+            - pdns4
+      - 'gate-tempest-dsvm-designate-agent-{designate-driver}-{node}{job-suffix}':
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           branch-override: default
           job-suffix: ''
           designate-driver:
             - knot2
             - djbdns
             - gdnsd
-      - 'gate-grenade-dsvm-designate-{designate-driver}{job-suffix}':
+      - 'gate-grenade-dsvm-designate-{designate-driver}-{node}{job-suffix}':
           node: ubuntu-trusty
           branch-override: default
           job-suffix: ''
           designate-driver:
             - powerdns
-      # Legacy Job
-      - 'gate-designate-dsvm-{designate-driver}':
+      - 'gate-grenade-dsvm-designate-{designate-driver}-{node}{job-suffix}':
+          node: ubuntu-xenial
+          branch-override: default
+          job-suffix: ''
+          designate-driver:
+            - pdns4
+      # Legacy Jobs that only run against liberty and mitaka (no xenial).
+      - 'gate-designate-dsvm-{designate-driver}-{node}':
           node: ubuntu-trusty
           designate-driver:
             - powerdns
             - bind9
-      - 'gate-tempest-dsvm-designate-{designate-driver}{special}{job-suffix}':
-          node: ubuntu-trusty
-          special: '-identity-v3-only'
-          job-suffix: '-nv'
-          designate-driver: 'powerdns'
-          branch-override: default
-      - 'gate-tempest-dsvm-designate-{designate-driver}{special}{job-suffix}':
+      # identity-v3-only only started running in newton/ocata timeframe so is
+      # xenial only, not trusty.
+      - 'gate-tempest-dsvm-designate-{designate-driver}{special}-{node}{job-suffix}':
           node: ubuntu-xenial
-          special: ''
+          special: '-identity-v3-only'
           job-suffix: '-nv'
           designate-driver: 'pdns4'
           branch-override: default
