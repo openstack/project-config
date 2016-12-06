@@ -1240,10 +1240,12 @@
             - ubuntu-xenial
           job-suffix: '-nv'
           swift: '0'
-      - '{pipeline}-cinder-dsvm-apache{job-suffix}':
+      - '{pipeline}-cinder-dsvm-apache-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
-          job-suffix: ''
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
+          job-suffix: '-nv'
           branch-override: default
       - gate-{name}-tox-db-{envlist}-{node}:
           envlist: functional
