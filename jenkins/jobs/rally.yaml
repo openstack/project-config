@@ -87,12 +87,12 @@
               ENABLED_SERVICES+=n-obj,
           fi
           if [ $DEVSTACK_GATE_SWIFT -ne 1 ]; then
-            ENABLED_SERVICES+=s-proxy,s-account,s-container,s-object,
+              ENABLED_SERVICES+=s-proxy,s-account,s-container,s-object,
           fi
 
-          if [ $DEVSTACK_GATE_HEAT -ne 1 ]; then
-            ENABLED_SERVICES+=heat,h-api,h-api-cfn,h-api-cw,h-eng,
-           fi
+          if [ $DEVSTACK_GATE_HEAT -ne 0 ]; then
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat https://git.openstack.org/openstack/heat"
+          fi
 
           if [ $DEVSTACK_GATE_NEUTRON -ne 1 ]; then
               ENABLED_SERVICES+=n-net,n-api-meta,
@@ -1069,7 +1069,7 @@
             watcher: '0'
             telemetry: '0'
             swift: '0'
-            heat: '0'
+            heat: '1'
 
     publishers:
       - devstack-logs
