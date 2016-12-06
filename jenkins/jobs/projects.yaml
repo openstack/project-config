@@ -4183,12 +4183,18 @@
 
     jobs:
       - gate-{name}-bashate
-      - '{pipeline}-tempest-dsvm-full-drbd-devstack{job-suffix}':
+      - '{pipeline}-tempest-dsvm-full-drbd-devstack-{node}{job-suffix}':
           pipeline: gate
           job-suffix: '-nv'
-      - '{pipeline}-tempest-dsvm-full-drbd-devstack{job-suffix}':
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
+      - '{pipeline}-tempest-dsvm-full-drbd-devstack-{node}{job-suffix}':
           pipeline: gate
           job-suffix: ''
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
 
 - project:
     name: driverlog
