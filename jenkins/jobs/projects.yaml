@@ -15816,9 +15816,16 @@
             - ubuntu-trusty
             - ubuntu-xenial
           job-suffix: '-nv'
-      - '{pipeline}-watcher-dsvm-multinode{job-suffix}':
+      - '{pipeline}-watcher-dsvm-multinode-{node-release}{job-suffix}':
           pipeline: gate
+          node-release: ubuntu-trusty
           node: ubuntu-trusty-2-node
+          job-suffix: '-nv'
+          branch-override: default
+      - '{pipeline}-watcher-dsvm-multinode-{node-release}{job-suffix}':
+          pipeline: gate
+          node-release: ubuntu-xenial
+          node: ubuntu-xenial-2-node
           job-suffix: '-nv'
           branch-override: default
 
