@@ -4221,19 +4221,25 @@
           suffix: '-nv'
       - pypi-jobs
       - openstack-publish-jobs
-      - '{pipeline}-tempest-dsvm-dragonflow{job-suffix}':
+      - '{pipeline}-tempest-dsvm-dragonflow-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
-          job-suffix: ''
-          branch-override: default
-      - '{pipeline}-dragonflow-dsvm-rally{job-suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           job-suffix: '-nv'
           branch-override: default
-      - '{pipeline}-dragonflow-dsvm-fullstack{job-suffix}':
+      - '{pipeline}-dragonflow-dsvm-rally-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-xenial
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
+          job-suffix: '-nv'
+          branch-override: default
+      - '{pipeline}-dragonflow-dsvm-fullstack-{node}{job-suffix}':
+          pipeline: gate
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           job-suffix: '-nv'
           branch-override: default
 
