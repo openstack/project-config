@@ -1519,7 +1519,7 @@ jobs:
           - ^releasenotes/.*$
   # Skip non-doc jobs for doc-only bifrost changes. Since documents
   # are checked by bifrost-pep8, that job should not be skipped.
-  - name: ^.*bifrost-(python27|integration-tinyipa|integration-dibipa-debian-nv|integration-dhcp-nv)$
+  - name: ^.*bifrost-(python27|integration-tinyipa|integration-dibipa-debian|integration-dhcp)-ubuntu-(trusty|xenial)(-nv)?$
     skip-if:
       - project: ^openstack/bifrost$
         all-files-match-any:
@@ -5683,11 +5683,15 @@ projects:
       - name: openstack-server-release-jobs
       - name: release-notes-jobs
     check:
-      - gate-bifrost-integration-tinyipa
-      - gate-bifrost-integration-dibipa-debian-nv
-      - gate-bifrost-integration-dhcp-nv
+      - gate-bifrost-integration-tinyipa-ubuntu-trusty
+      - gate-bifrost-integration-tinyipa-ubuntu-xenial
+      - gate-bifrost-integration-dibipa-debian-ubuntu-trusty-nv
+      - gate-bifrost-integration-dibipa-debian-ubuntu-xenial-nv
+      - gate-bifrost-integration-dhcp-ubuntu-trusty-nv
+      - gate-bifrost-integration-dhcp-ubuntu-xenial-nv
     gate:
-      - gate-bifrost-integration-tinyipa
+      - gate-bifrost-integration-tinyipa-ubuntu-trusty
+      - gate-bifrost-integration-tinyipa-ubuntu-xenial
 
   - name: openstack/bilean
     template:

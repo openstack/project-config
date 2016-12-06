@@ -1,6 +1,6 @@
-- job:
-    name: 'gate-bifrost-integration-tinyipa'
-    node: ubuntu-trusty
+- job-template:
+    name: 'gate-bifrost-integration-tinyipa-{node}'
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -34,9 +34,9 @@
       - devstack-logs
       - console-log
 
-- job:
-    name: 'gate-bifrost-integration-dibipa-debian-nv'
-    node: ubuntu-trusty
+- job-template:
+    name: 'gate-bifrost-integration-dibipa-debian-{node}-nv'
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -71,9 +71,9 @@
       - devstack-logs
       - console-log
 
-- job:
-    name: 'gate-bifrost-integration-dhcp-nv'
-    node: ubuntu-trusty
+- job-template:
+    name: 'gate-bifrost-integration-dhcp-{node}-nv'
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -107,3 +107,14 @@
     publishers:
       - devstack-logs
       - console-log
+
+
+- job-group:
+    name: bifrost-integration-jobs
+    node:
+      - ubuntu-trusty
+      - ubuntu-xenial
+    jobs:
+      - gate-bifrost-integration-tinyipa-{node}
+      - gate-bifrost-integration-dibipa-debian-{node}-nv
+      - gate-bifrost-integration-dhcp-{node}-nv
