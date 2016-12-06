@@ -183,6 +183,21 @@
             export DEVSTACK_GATE_POSTGRES=1
 
 - builder:
+    name: ironic-tempest-plugin
+    builders:
+      - ironic-extra-vars:
+          script: |
+            # use tempest plugin
+            if [[ "$ZUUL_BRANCH" != "master" ]] ; then
+              # NOTE(jroll) if this isn't a patch against master, then
+              # fetch master to install the plugin
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"TEMPEST_PLUGINS=git+git://git.openstack.org/openstack/ironic"
+            else
+              # on master, use the local change, so we can pick up any changes to the plugin
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"TEMPEST_PLUGINS=/opt/stack/new/ironic"
+            fi
+
+- builder:
     # NOTE(adam_g): This is a temporary macro until we can define the Ironic d-s-g job in a
     # standard, minimal fashion.
     name: devstack-virtual-ironic
@@ -227,16 +242,6 @@
 
           export DEVSTACK_PROJECT_FROM_GIT=""
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_VM_COUNT={bm-vm-count}"
-
-          # use tempest plugin
-          if [[ "$ZUUL_BRANCH" != "master" ]] ; then
-            # NOTE(jroll) if this isn't a patch against master, then
-            # fetch master to install the plugin
-            export DEVSTACK_LOCAL_CONFIG+=$'\n'"TEMPEST_PLUGINS=git+git://git.openstack.org/openstack/ironic"
-          else
-            # on master, use the local change, so we can pick up any changes to the plugin
-            export DEVSTACK_LOCAL_CONFIG+=$'\n'"TEMPEST_PLUGINS=/opt/stack/new/ironic"
-          fi
 
           # Ensure the ironic-vars-EARLY file exists
           touch ironic-vars-early
@@ -570,6 +575,7 @@
       - ironic-ipxe-disabled
       - ironic-tempest-regex:
           tempest-regex: ironic
+      - ironic-tempest-plugin
       - devstack-virtual-ironic:
           build-ramdisk: 'yes'
           deploy_driver: pxe_ssh
@@ -600,6 +606,7 @@
           ramdisk-type: '{ramdisk-type}'
       - ironic-tempest-regex:
           tempest-regex: ironic
+      - ironic-tempest-plugin
       - devstack-virtual-ironic:
           build-ramdisk: '{src}'
           deploy_driver: '{driver}'
@@ -631,6 +638,7 @@
       - ironic-tempest-regex:
           tempest-regex: ironic
       - ironic-lib-from-source
+      - ironic-tempest-plugin
       - devstack-virtual-ironic:
           build-ramdisk: ''
           deploy_driver: '{driver}'
@@ -663,6 +671,7 @@
           tempest-regex: ironic
       - ironic-multinode
       - ironic-multitenant
+      - ironic-tempest-plugin
       - devstack-virtual-ironic:
           build-ramdisk: '{src}'
           deploy_driver: '{driver}'
@@ -692,6 +701,7 @@
       - ironic-deploy-with-IPA:
           ramdisk-type: 'tinyipa'
       - ironic-tempest-full
+      - ironic-tempest-plugin
       - devstack-virtual-ironic:
           build-ramdisk: ''
           deploy_driver: pxe_ssh
@@ -724,6 +734,7 @@
           tempest-regex: ironic
       - ironic-postgres-enabled
       - ironic-ipxe-disabled
+      - ironic-tempest-plugin
       - devstack-virtual-ironic:
           build-ramdisk: ''
           deploy_driver: '{driver}'
@@ -800,6 +811,7 @@
       - ironic-tempest-regex:
           tempest-regex: ironic
       - ironic-pygmi-from-source
+      - ironic-tempest-plugin
       - devstack-virtual-ironic:
           build-ramdisk: ''
           deploy_driver: pxe_ipmitool
@@ -832,6 +844,7 @@
           tempest-regex: ironic
       - ironic-virtualbmc-from-source
       - ironic-pygmi-from-source
+      - ironic-tempest-plugin
       - devstack-virtual-ironic:
           build-ramdisk: ''
           deploy_driver: pxe_ipmitool
@@ -863,6 +876,7 @@
       - ironic-tempest-regex:
           tempest-regex: ironic
       - ironic-client-from-source
+      - ironic-tempest-plugin
       - devstack-virtual-ironic:
           build-ramdisk: ''
           deploy_driver: pxe_ssh
@@ -894,6 +908,7 @@
       - ironic-tempest-regex:
           tempest-regex: ironic
       - ironic-multitenant
+      - ironic-tempest-plugin
       - devstack-virtual-ironic:
           build-ramdisk: ''
           deploy_driver: agent_ssh
@@ -926,6 +941,7 @@
           tempest-regex: InspectorBasicTest
       - ironic-inspector-enabled:
           inspector-auto-discovery: 0
+      - ironic-tempest-plugin
       - devstack-virtual-ironic:
           build-ramdisk: '{src}'
           deploy_driver: agent_ssh
@@ -959,6 +975,7 @@
       - ironic-inspector-enabled:
           inspector-auto-discovery: 0
       - ironic-inspector-client-from-source
+      - ironic-tempest-plugin
       - devstack-virtual-ironic:
           build-ramdisk: ''
           deploy_driver: agent_ssh
@@ -991,6 +1008,7 @@
           tempest-regex: InspectorDiscoveryTest
       - ironic-inspector-enabled:
           inspector-auto-discovery: 1
+      - ironic-tempest-plugin
       - devstack-virtual-ironic:
           build-ramdisk: ''
           deploy_driver: agent_ssh
@@ -1017,6 +1035,7 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - ironic-tempest-plugin
       - shell: |
           #!/bin/bash -xe
           export PROJECTS="openstack/ironic $PROJECTS"
@@ -1046,6 +1065,12 @@
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
           export GRENADE_PLUGINRC="enable_grenade_plugin ironic https://git.openstack.org/openstack/ironic"
+
+          # Ensure the ironic-EXTRA-vars file exists
+          touch ironic-extra-vars
+          # Pull in the EXTRA variables injected by the optional builders
+          source ironic-extra-vars
+
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
 
@@ -1072,6 +1097,7 @@
       - ironic-multitenant
       - ironic-deploy-with-IPA:
           ramdisk-type: 'tinyipa'
+      - ironic-tempest-plugin
       - devstack-virtual-ironic:
           build-ramdisk: ''
           deploy_driver: pxe_ssh
