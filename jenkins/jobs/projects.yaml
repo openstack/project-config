@@ -5089,23 +5089,29 @@
       - pypi-jobs
       - translation-jobs
       - 'lib-forward-testing-{name}'
-      - '{pipeline}-glance_store-dsvm-functional-{driver}':
+      - '{pipeline}-glance_store-dsvm-functional-{driver}-{node}{job-suffix}':
           driver: filesystem
           pipeline: gate
-          node: ubuntu-trusty
-          job-suffix: ''
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
+          job-suffix: '-nv'
           branch-override: default
-      - '{pipeline}-glance_store-dsvm-functional-{driver}':
+      - '{pipeline}-glance_store-dsvm-functional-{driver}-{node}{job-suffix}':
           driver: swift
           pipeline: gate
-          node: ubuntu-trusty
-          job-suffix: ''
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
+          job-suffix: '-nv'
           branch-override: default
-      - '{pipeline}-glance_store-dsvm-functional-{driver}':
+      - '{pipeline}-glance_store-dsvm-functional-{driver}-{node}{job-suffix}':
           driver: cinder
           pipeline: gate
-          node: ubuntu-trusty
-          job-suffix: ''
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
+          job-suffix: '-nv'
           branch-override: default
       - '{pipeline}-tempest-dsvm-full-ceph-plugin-src-{name}-{node}{job-suffix}':
           node: ubuntu-trusty
