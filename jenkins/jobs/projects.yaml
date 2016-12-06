@@ -4265,18 +4265,32 @@
       - 'gate-{name}-python35{suffix}':
           suffix: '-nv'
       - pypi-jobs
-      - '{pipeline}-functional-{network}-dsvm-ec2api{job-suffix}':
+      - '{pipeline}-functional-{network}-dsvm-ec2api-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           job-suffix: ''
           branch-override: default
           network: 'neutron'
-      - '{pipeline}-functional-{network}-dsvm-ec2api{job-suffix}':
+      - '{pipeline}-functional-{network}-dsvm-ec2api-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           job-suffix: ''
           branch-override: default
           network: 'nova-network'
+      - 'ec2-api-functional-neutron-dsvm-full-{node}{job-suffix}':
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
+          job-suffix: '-nv'
+      - 'ec2-api-rally-dsvm-fakevirt-{node}{job-suffix}':
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
+          job-suffix: '-nv'
 
 - project:
     name: ekko

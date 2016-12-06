@@ -1,5 +1,5 @@
 - job-template:
-    name: '{pipeline}-functional-{network}-dsvm-ec2api{job-suffix}'
+    name: '{pipeline}-functional-{network}-dsvm-ec2api-{node}{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -40,9 +40,9 @@
       - devstack-logs
       - console-log
 
-- job:
-    name: 'ec2-api-functional-neutron-dsvm-full'
-    node: ubuntu-trusty
+- job-template:
+    name: 'ec2-api-functional-neutron-dsvm-full-{node}{job-suffix}'
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -65,11 +65,11 @@
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"RUN_LONG_TESTS=1"
           export ENABLED_SERVICES+=,swift3
 
-          function post_test_hook {
+          function post_test_hook {{
               source $BASE/new/devstack/accrc/admin/admin
               cd /opt/stack/new/ec2-api/
               ./ec2api/tests/contrib/post_test_hook.sh
-          }
+          }}
           export -f post_test_hook
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
@@ -79,9 +79,9 @@
       - devstack-logs
       - console-log
 
-- job:
-    name: 'ec2-api-rally-dsvm-fakevirt'
-    node: ubuntu-trusty
+- job-template:
+    name: 'ec2-api-rally-dsvm-fakevirt-{node}{job-suffix}'
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -105,13 +105,13 @@
           export RALLY_SCENARIO=ec2-api-fakevirt
           export CEILOMETER_NOTIFICATION_TOPICS=notifications,profiler
 
-          function post_test_hook {
+          function post_test_hook {{
               # run needed preparation steps for third-party project
               if [ -f $BASE/new/ec2-api/rally-scenarios/post_test_hook.sh ] ; then
                   $BASE/new/ec2-api/rally-scenarios/post_test_hook.sh
               fi
               $BASE/new/rally/tests/ci/rally-gate.sh
-          }
+          }}
           export -f post_test_hook
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
