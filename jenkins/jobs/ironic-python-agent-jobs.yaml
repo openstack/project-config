@@ -1,21 +1,6 @@
-- job:
-    name: 'gate-ironic-python-agent-buildimage-coreos'
-    node: ubuntu-trusty
-
-    builders:
-      - link-logs
-      - net-info
-      - gerrit-git-prep
-      - install-distro-packages
-      - shell: |
-          imagebuild/coreos/full_trusty_build.sh
-
-    publishers:
-      - console-log
-
 - job-template:
-    name: 'ironic-python-agent-buildimage-{image-type}'
-    node: ubuntu-trusty
+    name: 'ironic-python-agent-buildimage-{image-type}-{node}'
+    node: '{node}'
 
     builders:
       - link-logs
