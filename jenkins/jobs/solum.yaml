@@ -1,6 +1,6 @@
-- job:
-    name: 'gate-solum-devstack-dsvm'
-    node: ubuntu-trusty
+- job-template:
+    name: 'gate-solum-devstack-dsvm-{node}{suffix}'
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -25,71 +25,22 @@
 
           export KEEP_LOCALRC=1
 
-          function pre_test_hook {
+          function pre_test_hook {{
               cd /opt/stack/new/solum/functionaltests
               ./pre_test_hook.sh
-          }
+          }}
           export -f pre_test_hook
 
-          function gate_hook {
+          function gate_hook {{
               cd /opt/stack/new/solum/functionaltests
               ./gate_hook.sh
-          }
+          }}
           export -f gate_hook
 
-          function post_test_hook {
+          function post_test_hook {{
               cd /opt/stack/new/solum/functionaltests
               ./post_test_hook.sh
-          }
-          export -f post_test_hook
-
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
-
-    publishers:
-      - devstack-logs
-      - console-log
-
-- job:
-    name: 'gate-solum-devstack-dsvm-centos7'
-    node: centos-7
-
-    wrappers:
-      - build-timeout:
-          timeout: 70
-      - timestamps
-
-    builders:
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - shell: |
-          #!/bin/bash -xe
-          export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_NEUTRON=1
-          export ENABLED_SERVICES=solum,solum-api,solum-conductor,solum-deployer,solum-worker,tempest,zaqar,barbican,mistral
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin solum git://git.openstack.org/openstack/solum"
-          export PROJECTS="openstack/solum $PROJECTS"
-          # TODO(ravips): Workaround until barbican, mistral gets into devstack
-          export PROJECTS="openstack/barbican openstack/mistral $PROJECTS"
-          export PROJECTS="openstack/solum-dashboard $PROJECTS"
-
-          function pre_test_hook {
-              cd /opt/stack/new/solum/functionaltests
-              ./pre_test_hook.sh
-          }
-          export -f pre_test_hook
-
-          function gate_hook {
-              cd /opt/stack/new/solum/functionaltests
-              ./gate_hook.sh
-          }
-          export -f gate_hook
-
-          function post_test_hook {
-              cd /opt/stack/new/solum/functionaltests
-              ./post_test_hook.sh
-          }
+          }}
           export -f post_test_hook
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
