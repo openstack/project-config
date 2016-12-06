@@ -12645,15 +12645,17 @@
       - pypi-jobs
       - openstack-releasenotes-jobs
       - 'lib-forward-testing-{name}'
-      - '{pipeline}-cinderclient-dsvm-functional{special}{job-suffix}':
+      - '{pipeline}-cinderclient-dsvm-functional{special}-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           special: ''
-          job-suffix: ''
+          job-suffix: '-nv'
           branch-override: default
-      - '{pipeline}-cinderclient-dsvm-functional{special}{job-suffix}':
+      - '{pipeline}-cinderclient-dsvm-functional{special}-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node: ubuntu-xenial
           special: '-identity-v3-only'
           job-suffix: '-nv'
           branch-override: default
