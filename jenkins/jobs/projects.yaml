@@ -5820,14 +5820,18 @@
           ramdisk-type: 'tinyipa'
           image-type: 'partition'
           src: ''
-      - '{pipeline}-ironic-dsvm-functional{job-suffix}':
+      - '{pipeline}-ironic-dsvm-functional-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           job-suffix: ''
           branch-override: default
-      - '{pipeline}-tempest-dsvm-ironic-pxe_ipa-full{job-suffix}':
+      - '{pipeline}-tempest-dsvm-ironic-pxe_ipa-full-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           job-suffix: '-nv'
           branch-override: default
       - '{pipeline}-tempest-dsvm-ironic-{driver}-postgres-{node}{job-suffix}':
@@ -5841,18 +5845,18 @@
           job-suffix: '-nv'
           branch-override: default
 
-      - '{pipeline}-tempest-dsvm-ironic-parallel{job-suffix}':
+      - '{pipeline}-tempest-dsvm-ironic-parallel-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node: ubuntu-xenial
           job-suffix: '-nv'
           branch-override: default
-      - '{pipeline}-ironic-inspector-dsvm-{ramdisk}{job-suffix}':
+      - '{pipeline}-ironic-inspector-dsvm-{ramdisk}-{node}{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
           job-suffix: '-nv'
           branch-override: default
           ramdisk: ipa
-      - '{pipeline}-tempest-dsvm-ironic-inspector{src}{job-suffix}':
+      - '{pipeline}-tempest-dsvm-ironic-inspector{src}-{node}{job-suffix}':
           pipeline: gate
           node: ubuntu-xenial
           job-suffix: '-nv'
@@ -5863,17 +5867,21 @@
           node: ubuntu-xenial
           job-suffix: ''
           branch-override: default
-      - '{pipeline}-grenade-dsvm-ironic{job-suffix}':
+      - '{pipeline}-grenade-dsvm-ironic-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           job-suffix: '-nv'
           branch-override: default
-      - '{pipeline}-grenade-dsvm-ironic-multitenant{job-suffix}':
+      - '{pipeline}-grenade-dsvm-ironic-multitenant-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-xenial
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           job-suffix: '-nv'
           branch-override: default
-      - '{pipeline}-ironic-dsvm-multitest{job-suffix}':
+      - '{pipeline}-ironic-dsvm-multitest-{node}{job-suffix}':
           pipeline: gate
           node: ubuntu-xenial
           job-suffix: '-nv'
@@ -5901,37 +5909,39 @@
       - 'gate-{name}-tox-{envlist}-{node}':
           envlist: func3
           node: ubuntu-xenial
-      - '{pipeline}-ironic-inspector-dsvm-{ramdisk}{job-suffix}':
+      - '{pipeline}-ironic-inspector-dsvm-{ramdisk}-{node}{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
           job-suffix: ''
           branch-override: default
           ramdisk: 'dib'
-      - '{pipeline}-ironic-inspector-dsvm-{ramdisk}{job-suffix}':
+      - '{pipeline}-ironic-inspector-dsvm-{ramdisk}-{node}{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
           job-suffix: ''
           branch-override: default
           ramdisk: 'ipa'
-      - '{pipeline}-ironic-inspector-dsvm-discovery{job-suffix}':
+      - '{pipeline}-ironic-inspector-dsvm-discovery-{node}{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
           job-suffix: ''
           branch-override: default
-      - '{pipeline}-tempest-dsvm-ironic-inspector{src}{job-suffix}':
+      - '{pipeline}-tempest-dsvm-ironic-inspector{src}-{node}{job-suffix}':
           pipeline: gate
           node: ubuntu-xenial
           job-suffix: ''
           branch-override: default
           src: ''
-      - '{pipeline}-tempest-dsvm-ironic-inspector-discovery{job-suffix}':
+      - '{pipeline}-tempest-dsvm-ironic-inspector-discovery-{node}{job-suffix}':
           pipeline: gate
           node: ubuntu-xenial
           job-suffix: ''
           branch-override: default
-      - '{pipeline}-grenade-dsvm-ironic-inspector{job-suffix}':
+      - '{pipeline}-grenade-dsvm-ironic-inspector-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           job-suffix: ''
           branch-override: default
 
@@ -6018,13 +6028,13 @@
       - openstack-publish-jobs
       - pypi-jobs
       - openstack-releasenotes-jobs
-      - '{pipeline}-ironic-inspector-dsvm-{ramdisk}{job-suffix}':
+      - '{pipeline}-ironic-inspector-dsvm-{ramdisk}-{node}{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
           job-suffix: '-nv'
           branch-override: default
           ramdisk: 'ipa-src'
-      - '{pipeline}-tempest-dsvm-ironic-inspector{src}{job-suffix}':
+      - '{pipeline}-tempest-dsvm-ironic-inspector{src}-{node}{job-suffix}':
           pipeline: gate
           node: ubuntu-xenial
           job-suffix: '-nv'
@@ -6059,9 +6069,9 @@
           suffix: ''
       - pypi-jobs
       - hook-{name}-rtfd
-      - '{pipeline}-ironic-staging-drivers-dsvm{job-suffix}':
+      - '{pipeline}-ironic-staging-drivers-dsvm-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node: ubuntu-xenial
           job-suffix: '-nv'
           branch-override: default
 
@@ -12569,9 +12579,9 @@
     jobs:
       - python-jobs
       - pypi-jobs
-      - '{pipeline}-tempest-dsvm-ironic-pxe_ipmitool-pyghmi-src{job-suffix}':
+      - '{pipeline}-tempest-dsvm-ironic-pxe_ipmitool-pyghmi-src-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node: ubuntu-xenial
           job-suffix: '-nv'
           branch-override: default
 
@@ -12971,12 +12981,12 @@
           node:
             - ubuntu-trusty
             - ubuntu-xenial
-      - '{pipeline}-python-ironic-inspector-client-dsvm{job-suffix}':
+      - '{pipeline}-python-ironic-inspector-client-dsvm-{node}{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
           job-suffix: ''
           branch-override: default
-      - '{pipeline}-tempest-dsvm-python-ironic-inspector-client{job-suffix}':
+      - '{pipeline}-tempest-dsvm-python-ironic-inspector-client-{node}{job-suffix}':
           pipeline: gate
           node: ubuntu-xenial
           job-suffix: ''
@@ -15748,9 +15758,9 @@
     jobs:
       - python-jobs
       - pypi-jobs
-      - '{pipeline}-tempest-dsvm-ironic-pxe_ipmitool-virtualbmc-src{job-suffix}':
+      - '{pipeline}-tempest-dsvm-ironic-pxe_ipmitool-virtualbmc-src-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node: ubuntu-xenial
           job-suffix: '-nv'
           branch-override: default
 
