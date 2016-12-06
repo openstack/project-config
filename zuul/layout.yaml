@@ -2592,9 +2592,6 @@ jobs:
           - ^.*\.rst$
           - ^doc/.*$
 
-  - name: gate-barbican-kmip-devstack-dsvm-nv
-    branch: ^(?!stable/(liberty|mitaka)).*$
-
   - name: gate-designate-python34-db
     branch: ^(?!stable/liberty).*$
 
@@ -5608,15 +5605,18 @@ projects:
       - name: api-guide-jobs
       - name: install-guide-jobs
     check:
-      - gate-barbican-simple-crypto-devstack-dsvm
       - barbican-coverage-ubuntu-trusty
       - barbican-coverage-ubuntu-xenial
-      - gate-barbican-dogtag-devstack-dsvm-nv
-      - gate-barbican-simple-crypto-devstack-dsvm-postgres-nv
-    experimental:
-      - gate-barbican-kmip-devstack-dsvm-nv
+      - gate-barbican-simple-crypto-devstack-ubuntu-trusty
+      - gate-barbican-simple-crypto-devstack-ubuntu-xenial
+      - gate-barbican-dogtag-devstack-fedora-23-nv
+      - gate-barbican-simple-crypto-devstack-postgres-ubuntu-trusty-nv
+      - gate-barbican-simple-crypto-devstack-postgres-ubuntu-xenial-nv
     gate:
-      - gate-barbican-simple-crypto-devstack-dsvm
+      - gate-barbican-simple-crypto-devstack-ubuntu-trusty
+      - gate-barbican-simple-crypto-devstack-ubuntu-xenial
+    experimental:
+      - gate-barbican-kmip-devstack-ubuntu-xenial-nv
 
   - name: openstack/barbican-specs
     template:
