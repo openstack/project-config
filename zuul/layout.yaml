@@ -2021,8 +2021,13 @@ jobs:
           - ^.*\.rst$
           - ^doc/.*$
 
-  - name: gate-functional-dsvm-magnum-k8s
-    branch: ^(?!stable/liberty).*$
+  - name: ^gate-functional-dsvm-magnum-k8s.*-ubuntu-trusty(-nv)?
+    branch: ^stable/mitaka$
+
+  # Fall through to handle skip if for both trusty and xenial
+  # NOTE(yuanying): ironic isn't supported in liberty or mitaka.
+  # We only have a xenial job for it which doesn't run on liberty or mitaka.
+  - name: ^gate-functional-dsvm-magnum-k8s.*
     skip-if:
       - project: ^openstack/magnum$
         all-files-match-any:
@@ -2031,19 +2036,13 @@ jobs:
           - ^magnum/drivers/swarm.*$
           - ^magnum/drivers/mesos.*$
 
-  # NOTE(yuanying): ironic isn't supported in liberty or mitaka
-  - name: ^gate-functional-dsvm-magnum-k8s-ironic.*
-    branch: ^(?!stable/(liberty|mitaka)).*$
-    skip-if:
-      - project: ^openstack/magnum$
-        all-files-match-any:
-          - ^.*\.rst$
-          - ^doc/.*$
-          - ^magnum/drivers/swarm.*$
-          - ^magnum/drivers/mesos.*$
+  - name: ^gate-functional-dsvm-magnum-swarm.*-ubuntu-trusty(-nv)?
+    branch: ^stable/mitaka$
 
-  - name: gate-functional-dsvm-magnum-swarm
-    branch: ^(?!stable/liberty).*$
+  # Fall through to handle skip if for both trusty and xenial
+  # NOTE(yuanying): ironic isn't supported in liberty or mitaka
+  # We only have a xenial job for it which doesn't run on liberty or mitaka.
+  - name: ^gate-functional-dsvm-magnum-swarm.*
     skip-if:
       - project: ^openstack/magnum$
         all-files-match-any:
@@ -2052,19 +2051,11 @@ jobs:
           - ^magnum/drivers/k8s.*$
           - ^magnum/drivers/mesos.*$
 
-  # NOTE(yuanying): ironic isn't supported in liberty or mitaka
-  - name: ^gate-functional-dsvm-magnum-swarm-ironic.*
-    branch: ^(?!stable/(liberty|mitaka)).*$
-    skip-if:
-      - project: ^openstack/magnum$
-        all-files-match-any:
-          - ^.*\.rst$
-          - ^doc/.*$
-          - ^magnum/drivers/k8s.*$
-          - ^magnum/drivers/mesos.*$
+  - name: ^gate-functional-dsvm-magnum-mesos.*-ubuntu-trusty(-nv)?
+    branch: ^stable/mitaka$
 
-  - name: gate-functional-dsvm-magnum-mesos
-    branch: ^(?!stable/liberty).*$
+  # Fall through to handle skip if for both trusty and xenial
+  - name: ^gate-functional-dsvm-magnum-mesos.*
     skip-if:
       - project: ^openstack/magnum$
         all-files-match-any:
@@ -11005,23 +10996,32 @@ projects:
       - name: install-guide-jobs
       - name: api-ref-jobs
     check:
-      - gate-functional-dsvm-magnum-api
-      - gate-functional-dsvm-magnum-k8s
-      - gate-functional-dsvm-magnum-swarm
-      - gate-functional-dsvm-magnum-mesos
-      - gate-functional-dsvm-magnum-api-identity-v3-only-nv
-      - gate-functional-dsvm-magnum-k8s-ironic-nv
-      - gate-functional-dsvm-magnum-swarm-ironic-nv
+      - gate-functional-dsvm-magnum-api-ubuntu-trusty
+      - gate-functional-dsvm-magnum-api-ubuntu-xenial
+      - gate-functional-dsvm-magnum-k8s-ubuntu-trusty
+      - gate-functional-dsvm-magnum-k8s-ubuntu-xenial
+      - gate-functional-dsvm-magnum-swarm-ubuntu-trusty
+      - gate-functional-dsvm-magnum-swarm-ubuntu-xenial
+      - gate-functional-dsvm-magnum-mesos-ubuntu-trusty
+      - gate-functional-dsvm-magnum-mesos-ubuntu-xenial
+      - gate-functional-dsvm-magnum-api-identity-v3-only-ubuntu-trusty-nv
+      - gate-functional-dsvm-magnum-api-identity-v3-only-ubuntu-xenial-nv
+      - gate-functional-dsvm-magnum-k8s-ironic-ubuntu-xenial-nv
+      - gate-functional-dsvm-magnum-swarm-ironic-ubuntu-xenial-nv
       - magnum-coverage-ubuntu-trusty
       - magnum-coverage-ubuntu-xenial
     gate:
-      - gate-functional-dsvm-magnum-api
-      - gate-functional-dsvm-magnum-k8s
-      - gate-functional-dsvm-magnum-swarm
-      - gate-functional-dsvm-magnum-mesos
+      - gate-functional-dsvm-magnum-api-ubuntu-trusty
+      - gate-functional-dsvm-magnum-api-ubuntu-xenial
+      - gate-functional-dsvm-magnum-k8s-ubuntu-trusty
+      - gate-functional-dsvm-magnum-k8s-ubuntu-xenial
+      - gate-functional-dsvm-magnum-swarm-ubuntu-trusty
+      - gate-functional-dsvm-magnum-swarm-ubuntu-xenial
+      - gate-functional-dsvm-magnum-mesos-ubuntu-trusty
+      - gate-functional-dsvm-magnum-mesos-ubuntu-xenial
     periodic:
-      - periodic-magnum-dib-buildimage-fedora-atomic-24
-      - periodic-magnum-dib-buildimage-ubuntu-mesos
+      - periodic-magnum-dib-buildimage-fedora-atomic-24-ubuntu-xenial
+      - periodic-magnum-dib-buildimage-ubuntu-mesos-ubuntu-xenial
 
   - name: openstack/magnum-specs
     template:
