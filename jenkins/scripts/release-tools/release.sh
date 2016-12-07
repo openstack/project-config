@@ -66,11 +66,8 @@ PREVIOUS=$(get_last_tag $TARGETSHA)
 
 echo "Tagging $TARGETSHA as $VERSION"
 if git show-ref "$VERSION"; then
-    echo "$REPO already has a version $VERSION tag"
-    # Reset the notion of "previous" to the version associated with
-    # the parent of the commit being tagged, since the tag we're
-    # applying already exists.
-    PREVIOUS=$(get_last_tag ${TARGETSHA}^1)
+    echo "$REPO already has a version $VERSION tag, skipping further processing"
+    exit 0
 else
     # WARNING(dhellmann): announce.sh expects to be able to parse this
     # commit message, so if you change the format you may have to
