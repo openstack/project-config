@@ -2,8 +2,8 @@
 # https://issues.jenkins-ci.org/browse/JENKINS-14193
 
 - job-template:
-    name: '{name}-localrepo-upload'
-    node: ubuntu-trusty
+    name: '{name}-localrepo-upload-{node}'
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -52,7 +52,10 @@
 
 - job-group:
     name: maven-plugin-jobs
+    node:
+      - ubuntu-trusty
+      - ubuntu-xenial
     jobs:
-      - 'gate-{name}-build'
-      - '{name}-localrepo-upload'
+      - 'gate-{name}-maven-build-{node}'
+      - '{name}-localrepo-upload-{node}'
       - '{name}-mavencentral-upload'

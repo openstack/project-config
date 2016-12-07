@@ -2,8 +2,8 @@
 # https://issues.jenkins-ci.org/browse/JENKINS-14193
 
 - job-template:
-    name: 'gate-{name}-build'
-    node: ubuntu-trusty
+    name: 'gate-{name}-maven-build-{node}'
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -75,7 +75,8 @@
 
 - job-group:
     name: jenkins-plugin-jobs
+    node: ubuntu-trusty
     jobs:
-      - 'gate-{name}-build'
+      - 'gate-{name}-maven-build-{node}'
       - '{name}-hpi-artifact'
       - '{name}-jenkinsci-upload'
