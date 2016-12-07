@@ -51,7 +51,6 @@
           #!/bin/bash -xe
           export PROJECTS="openstack/rally $PROJECTS"
 
-          export DEVSTACK_GATE_NEUTRON={neutron}
           export DEVSTACK_GATE_NEUTRON_EXTENSIONS={neutron_extensions}
           export DEVSTACK_GATE_IRONIC={ironic}
           export DEVSTACK_GATE_ZAQAR={zaqar}
@@ -94,14 +93,9 @@
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat https://git.openstack.org/openstack/heat"
           fi
 
-          if [ $DEVSTACK_GATE_NEUTRON -ne 1 ]; then
-              ENABLED_SERVICES+=n-net,n-api-meta,
-          fi
-          if [ $DEVSTACK_GATE_NEUTRON -ne 0 ]; then
-              export PROJECTS="openstack/neutron $PROJECTS"
-              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin neutron git://git.openstack.org/openstack/neutron"
-          fi
-          if [ $DEVSTACK_GATE_NEUTRON -ne 0 -a $DEVSTACK_GATE_NEUTRON_EXTENSIONS -ne 0 ]; then
+          export PROJECTS="openstack/neutron $PROJECTS"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin neutron git://git.openstack.org/openstack/neutron"
+          if [ $DEVSTACK_GATE_NEUTRON_EXTENSIONS -ne 0 ]; then
               export PROJECTS="openstack/neutron-lbaas $PROJECTS"
               export PROJECTS="openstack/octavia $PROJECTS"
               export PROJECTS="openstack/neutron-fwaas $PROJECTS"
@@ -343,7 +337,6 @@
           export PROJECTS="openstack/murano-dashboard $PROJECTS"
           export PROJECTS="openstack/python-muranoclient $PROJECTS"
 
-          export DEVSTACK_GATE_NEUTRON={neutron}
           export DEVSTACK_GATE_TEMPEST_LARGE_OPS={large_ops}
           export DEVSTACK_GATE_EXERCISES=0
           export RALLY_SCENARIO={scenario}
@@ -387,7 +380,6 @@
           export PROJECTS="openstack/mistral-dashboard $PROJECTS"
           export PROJECTS="openstack/python-mistralclient $PROJECTS"
 
-          export DEVSTACK_GATE_NEUTRON={neutron}
           export DEVSTACK_GATE_TEMPEST_LARGE_OPS={large_ops}
           export DEVSTACK_GATE_EXERCISES=0
           export RALLY_SCENARIO={scenario}
@@ -419,7 +411,6 @@
     builders:
         - devstack-rally-gate:
             scenario: '{name}-ironic'
-            neutron: '1'
             neutron_extensions: '0'
             ironic: '1'
             zaqar: '0'
@@ -489,7 +480,6 @@
     builders:
         - devstack-murano-rally-gate:
             scenario: '{name}-murano'
-            neutron: '1'
             neutron_extensions: '0'
             large_ops: '0'
 
@@ -511,7 +501,6 @@
     builders:
         - devstack-mistral-rally-gate:
             scenario: '{name}-mistral'
-            neutron: '0'
             large_ops: '0'
 
     publishers:
@@ -574,7 +563,6 @@
       - devstack-rally-gate:
           scenario: '{name}'
           ironic: '0'
-          neutron: '0'
           neutron_extensions: '0'
           zaqar: '0'
           large_ops: '0'
@@ -606,7 +594,6 @@
       - devstack-rally-gate:
           scenario: '{name}-neutron'
           ironic: '0'
-          neutron: '1'
           neutron_extensions: '0'
           zaqar: '0'
           large_ops: '0'
@@ -637,7 +624,6 @@
       - devstack-rally-gate:
           scenario: '{name}-neutron'
           ironic: '0'
-          neutron: '1'
           neutron_extensions: '1'
           zaqar: '0'
           large_ops: '0'
@@ -668,7 +654,6 @@
       - devstack-rally-gate:
           scenario: '{name}-neutron-existing-users'
           ironic: '0'
-          neutron: '1'
           neutron_extensions: '0'
           zaqar: '0'
           large_ops: '0'
@@ -700,7 +685,6 @@
       - devstack-rally-gate:
           scenario: '{name}-fakevirt'
           ironic: '0'
-          neutron: '0'
           neutron_extensions: '0'
           zaqar: '0'
           large_ops: '10'
@@ -732,7 +716,6 @@
       - devstack-rally-gate:
           scenario: '{name}-zaqar'
           ironic: '0'
-          neutron: '0'
           neutron_extensions: '0'
           zaqar: '1'
           large_ops: '0'
@@ -763,7 +746,6 @@
       - devstack-rally-gate:
           scenario: '{service}'
           ironic: '0'
-          neutron: '{neutron}'
           neutron_extensions: '0'
           zaqar: '0'
           large_ops: '0'
@@ -890,7 +872,6 @@
           compare: '{compare}'
           ceilometer: '{ceilometer}'
           heat: '{heat}'
-          neutron: '{neutron}'
           sahara: '{sahara}'
 
     publishers:
@@ -909,7 +890,6 @@
 
           export DEVSTACK_GATE_CEILOMETER={ceilometer}
           export DEVSTACK_GATE_HEAT={heat}
-          export DEVSTACK_GATE_NEUTRON={neutron}
           export DEVSTACK_GATE_SAHARA={sahara}
           export DEVSTACK_GATE_EXERCISES=0
 
@@ -931,12 +911,10 @@
               ENABLED_SERVICES+=n-obj,
           fi
           ENABLED_SERVICES+=s-proxy,s-account,s-container,s-object,
-          if [ $DEVSTACK_GATE_NEUTRON -ne 1 ]; then
-              ENABLED_SERVICES+=n-net,n-api-meta,
-          else
-              ENABLED_SERVICES+=q-svc,q-dhcp,q-meta,q-agt,q-l3,
-              export DISABLED_SERVICES=n-net
-          fi
+
+          export PROJECTS="openstack/neutron $PROJECTS"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin neutron git://git.openstack.org/openstack/neutron"
+
           if [ $DEVSTACK_GATE_CEILOMETER -ne 0 ]; then
               export CEILOMETER_NOTIFICATION_TOPICS=notifications,profiler
 
@@ -1058,7 +1036,6 @@
         - devstack-rally-gate:
             scenario: 'rally-keystone-api-v2'
             ironic: '0'
-            neutron: '0'
             neutron_extensions: '0'
             zaqar: '0'
             large_ops: '0'
@@ -1089,7 +1066,6 @@
       - devstack-rally-gate:
           scenario: '{name}-senlin'
           ironic: '0'
-          neutron: '1'
           neutron_extensions: '0'
           zaqar: '0'
           large_ops: '0'
@@ -1121,7 +1097,6 @@
       - devstack-rally-gate:
           scenario: '{name}-watcher'
           ironic: '0'
-          neutron: '0'
           neutron_extensions: '0'
           zaqar: '0'
           large_ops: '0'
@@ -1153,7 +1128,6 @@
       - devstack-rally-gate:
           scenario: '{name}-magnum'
           ironic: '0'
-          neutron: '1'
           neutron_extensions: '0'
           zaqar: '0'
           large_ops: '0'
