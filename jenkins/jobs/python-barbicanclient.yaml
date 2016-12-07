@@ -1,6 +1,6 @@
-- job:
-    name: gate-python-barbicanclient-devstack-dsvm
-    node: ubuntu-trusty
+- job-template:
+    name: 'gate-python-barbicanclient-devstack-dsvm-{node}'
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -18,15 +18,15 @@
           export PROJECTS="openstack/barbican $PROJECTS"
           export PROJECTS="openstack/python-barbicanclient $PROJECTS"
 
-          function gate_hook {
+          function gate_hook {{
               $BASE/new/barbican/devstack/gate_hook.sh
-          }
+          }}
           export -f gate_hook
 
-          function post_test_hook {
+          function post_test_hook {{
               cd /opt/stack/new/python-barbicanclient/functionaltests
               ./post_test_hook.sh
-          }
+          }}
           export -f post_test_hook
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
