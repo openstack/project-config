@@ -2699,22 +2699,14 @@ jobs:
   - name: python-muranoclient-coverage-ubuntu-xenial
     voting: false
 
-  - name: gate-murano-devstack-dsvm
+  - name: gate-murano-devstack-dsvm-ubuntu-trusty
     branch: ^(stable/liberty).*$
 
-  - name: gate-murano-congress-devstack-dsvm
-    voting: false
+  - name: ^gate-tempest-dsvm-murano-cfapi-ubuntu-trusty(-nv)?
+    branch: stable/mitaka
 
-  - name: gate-tempest-dsvm-murano-cfapi
-    branch: ^(?!stable/liberty).*$
-    voting: false
-
-  - name: gate-tempest-dsvm-murano-api
-    branch: ^(?!stable/liberty).*$
-
-  - name: gate-tempest-dsvm-murano-glare-backend
-    branch: ^(?!stable/(?:liberty|mitaka)).*$
-    voting: false
+  - name: ^gate-tempest-dsvm-murano-api-ubuntu-trusty(-nv)?
+    branch: stable/mitaka
 
   - name: gate-murano-pylint
     voting: false
@@ -6426,7 +6418,8 @@ projects:
       - gate-congress-dsvm-api-ubuntu-trusty
       - gate-congress-dsvm-api-ubuntu-xenial
       - gate-congress-pe-replicated-nv
-      - gate-murano-congress-devstack-dsvm
+      - gate-murano-congress-devstack-dsvm-ubuntu-trusty-nv
+      - gate-murano-congress-devstack-dsvm-ubuntu-xenial-nv
     gate:
       - gate-congress-dsvm-api-ubuntu-trusty
       - gate-congress-dsvm-api-ubuntu-xenial
@@ -11589,17 +11582,21 @@ projects:
       - murano-coverage-db-ubuntu-xenial
       - gate-murano-pylint
       - gate-murano-tox-py27-mitaka-ubuntu-xenial
-      - gate-murano-devstack-dsvm
-      - gate-murano-congress-devstack-dsvm
+      - gate-murano-devstack-dsvm-ubuntu-trusty
+      - gate-murano-congress-devstack-dsvm-ubuntu-trusty-nv
+      - gate-murano-congress-devstack-dsvm-ubuntu-xenial-nv
       - gate-rally-dsvm-murano-task-ubuntu-trusty-nv
       - gate-rally-dsvm-murano-task-ubuntu-xenial-nv
-      - gate-tempest-dsvm-murano-api
-      - gate-tempest-dsvm-murano-cfapi
-      - gate-tempest-dsvm-murano-glare-backend
+      - gate-tempest-dsvm-murano-api-ubuntu-trusty
+      - gate-tempest-dsvm-murano-api-ubuntu-xenial
+      - gate-tempest-dsvm-murano-cfapi-ubuntu-trusty-nv
+      - gate-tempest-dsvm-murano-cfapi-ubuntu-xenial-nv
+      - gate-tempest-dsvm-murano-glare-backend-ubuntu-xenial-nv
       - gate-murano-firstapp-docs
     gate:
-      - gate-tempest-dsvm-murano-api
-      - gate-murano-devstack-dsvm
+      - gate-tempest-dsvm-murano-api-ubuntu-trusty
+      - gate-tempest-dsvm-murano-api-ubuntu-xenial
+      - gate-murano-devstack-dsvm-ubuntu-trusty
       - gate-murano-firstapp-docs
     post:
       - murano-coverage-db-ubuntu-trusty
@@ -11646,13 +11643,13 @@ projects:
       - gate-murano-dashboard-pep8-ubuntu-xenial
       - gate-murano-dashboard-python27-ubuntu-xenial
       - gate-murano-dashboard-tox-py27-mitaka-ubuntu-xenial
-      - gate-murano-devstack-dsvm
+      - gate-murano-devstack-dsvm-ubuntu-trusty
     gate:
       - gate-murano-dashboard-pep8-ubuntu-trusty
       - gate-murano-dashboard-python27-ubuntu-trusty
       - gate-murano-dashboard-pep8-ubuntu-xenial
       - gate-murano-dashboard-python27-ubuntu-xenial
-      - gate-murano-devstack-dsvm
+      - gate-murano-devstack-dsvm-ubuntu-trusty
     post:
       - murano-dashboard-branch-tarball
       - murano-dashboard-coverage-ubuntu-xenial
