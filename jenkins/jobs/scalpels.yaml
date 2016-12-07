@@ -1,6 +1,6 @@
 - job-template:
-    name: '{pipeline}-scalpels-dsvm-neutron{job-suffix}-{ostype}'
-    node: '{ostype}'
+    name: '{pipeline}-scalpels-dsvm-neutron-{node}{job-suffix}'
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -37,6 +37,7 @@
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
+
     publishers:
       - devstack-logs
       - console-log
