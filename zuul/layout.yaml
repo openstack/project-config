@@ -1961,20 +1961,11 @@ jobs:
   - name: gate-grenade-dsvm-neutron-dvr-multinode-ubuntu-trusty
     branch: ^stable/newton$
 
-  - name: ^gate-tempest-dsvm-ironic-parallel-nv$
+  - name: ^gate-tempest-dsvm-ironic-parallel-ubuntu-xenial-nv$
     branch: ^(?!stable)
-
-  - name: ^gate-tempest-dsvm-ironic-pxe_ipmitool-pyghmi-src-nv$
-    branch: ^(?!stable/liberty).*$
-
-  - name: ^gate-tempest-dsvm-ironic-pxe_ipmitool-virtualbmc-src-nv$
-    branch: ^(?!stable/liberty).*$
 
   - name: ^gate-ironic-python-agent-tox-func-ubuntu-(trusty|xenial)$
     voting: false
-
-  - name: ^gate-ironic-inspector-dsvm-dib$
-    branch: ^stable/(liberty|mitaka).*$
 
   - name: ^gate-ironic-inspector-tox-func3.*$
     branch: ^(?!stable/(liberty|mitaka)).*$
@@ -3265,27 +3256,15 @@ jobs:
 
   # Old dsvm jobs are running on liberty and mitaka, new tempest one - from
   # newton on
-  - name: ^gate-ironic-inspector-dsvm-ipa.*$
-    branch: ^stable/(liberty|mitaka).*$
-
-  - name: ^gate-ironic-inspector-dsvm-discovery$
+  - name: ^gate-ironic-inspector-dsvm-discovery-ubuntu-trusty$
     branch: ^stable/mitaka.*$
-
-  - name: ^gate-python-ironic-inspector-client-dsvm$
-    branch: ^stable/(liberty|mitaka).*$
-
-  - name: ^gate-tempest-dsvm-ironic-inspector.*$
-    branch: ^(?!stable/(liberty|mitaka)).*$
-
-  - name: ^gate-tempest-dsvm-python-ironic-inspector-client.*$
-    branch: ^(?!stable/(liberty|mitaka)).*$
 
   - name: ^gate-python-ironic-inspector-client-docs.*$
     branch: ^(?!stable/(liberty|mitaka|newton)).*$
 
   # NOTE(jlvilla): Ironic and Inspector Grenade do not work until after mitaka
-  - name: ^gate-grenade-dsvm-ironic.*$
-    branch: ^(?!stable/(liberty|mitaka)).*$
+  - name: ^gate-grenade-dsvm-ironic.*-ubuntu-trusty(-nv)?$
+    branch: ^stable/newton$
 
   - name: ^gate-senlin-dsvm-tempest-(functional|api|integration)
     branch: ^(?!stable/mitaka).*$
@@ -3559,7 +3538,8 @@ projects:
       - gate-grenade-dsvm-neutron-multinode-ubuntu-trusty
       - gate-grenade-dsvm-neutron-multinode-ubuntu-xenial
       - gate-grenade-publish-docs
-      - gate-grenade-dsvm-ironic-nv
+      - gate-grenade-dsvm-ironic-ubuntu-trusty-nv
+      - gate-grenade-dsvm-ironic-ubuntu-xenial-nv
     gate:
       - gate-grenade-dsvm-ubuntu-trusty
       - gate-grenade-dsvm-neutron-ubuntu-trusty
@@ -10445,9 +10425,10 @@ projects:
       - gate-tempest-dsvm-ironic-ipa-partition-pxe_ssh-tinyipa-ubuntu-trusty
       - gate-tempest-dsvm-ironic-ipa-partition-pxe_ipmitool-tinyipa-ubuntu-xenial
       - gate-tempest-dsvm-ironic-ipa-wholedisk-agent_ipmitool-tinyipa-multinode-ubuntu-xenial-nv
-      - gate-ironic-inspector-dsvm-ipa-nv
-      - gate-tempest-dsvm-ironic-inspector-nv
-      - gate-grenade-dsvm-ironic
+      - gate-ironic-inspector-dsvm-ipa-ubuntu-trusty-nv
+      - gate-tempest-dsvm-ironic-inspector-ubuntu-xenial-nv
+      - gate-grenade-dsvm-ironic-ubuntu-trusty
+      - gate-grenade-dsvm-ironic-ubuntu-xenial
       - gate-tempest-dsvm-ironic-multitenant-network-ubuntu-xenial
       - ironic-coverage-db-ubuntu-trusty
       - ironic-coverage-db-ubuntu-xenial
@@ -10458,7 +10439,8 @@ projects:
       - gate-tempest-dsvm-ironic-ipa-partition-agent_ipmitool-tinyipa-ubuntu-xenial
       - gate-tempest-dsvm-ironic-ipa-wholedisk-pxe_ipmitool-tinyipa-ubuntu-xenial
       - gate-tempest-dsvm-ironic-ipa-wholedisk-agent_ipmitool-tinyipa-ubuntu-xenial
-      - gate-grenade-dsvm-ironic
+      - gate-grenade-dsvm-ironic-ubuntu-trusty
+      - gate-grenade-dsvm-ironic-ubuntu-xenial
       - ironic-coverage-db-ubuntu-trusty
       - ironic-coverage-db-ubuntu-xenial
       - gate-tempest-dsvm-ironic-multitenant-network-ubuntu-xenial
@@ -10466,11 +10448,14 @@ projects:
       - ironic-coverage-db-ubuntu-trusty
       - ironic-coverage-db-ubuntu-xenial
     experimental:
-      - gate-ironic-dsvm-functional
-      - gate-tempest-dsvm-ironic-parallel-nv
-      - gate-tempest-dsvm-ironic-pxe_ipa-full-nv
-      - gate-grenade-dsvm-ironic-multitenant-nv
-      - gate-ironic-dsvm-multitest-nv
+      - gate-ironic-dsvm-functional-ubuntu-trusty
+      - gate-ironic-dsvm-functional-ubuntu-xenial
+      - gate-tempest-dsvm-ironic-parallel-ubuntu-xenial-nv
+      - gate-tempest-dsvm-ironic-pxe_ipa-full-ubuntu-trusty-nv
+      - gate-tempest-dsvm-ironic-pxe_ipa-full-ubuntu-xenial-nv
+      - gate-grenade-dsvm-ironic-multitenant-ubuntu-trusty-nv
+      - gate-grenade-dsvm-ironic-multitenant-ubuntu-xenial-nv
+      - gate-ironic-dsvm-multitest-ubuntu-xenial-nv
       - gate-tempest-dsvm-ironic-ipa-partition-pxe_snmp-tinyipa-ubuntu-xenial-nv
 
   - name: openstack/ironic-inspector
@@ -10488,20 +10473,23 @@ projects:
       - gate-ironic-inspector-tox-func-ubuntu-trusty
       - gate-ironic-inspector-tox-func-ubuntu-xenial
       - gate-ironic-inspector-tox-func3-ubuntu-xenial
-      - gate-ironic-inspector-dsvm-dib
-      - gate-ironic-inspector-dsvm-ipa
-      - gate-ironic-inspector-dsvm-discovery
-      - gate-grenade-dsvm-ironic-inspector
-      - gate-tempest-dsvm-ironic-inspector
-      - gate-tempest-dsvm-ironic-inspector-discovery
+      - gate-ironic-inspector-dsvm-dib-ubuntu-trusty
+      - gate-ironic-inspector-dsvm-ipa-ubuntu-trusty
+      - gate-ironic-inspector-dsvm-discovery-ubuntu-trusty
+      - gate-grenade-dsvm-ironic-inspector-ubuntu-trusty
+      - gate-grenade-dsvm-ironic-inspector-ubuntu-xenial
+      - gate-tempest-dsvm-ironic-inspector-ubuntu-xenial
+      - gate-tempest-dsvm-ironic-inspector-discovery-ubuntu-xenial
     gate:
       - gate-ironic-inspector-tox-func-ubuntu-trusty
       - gate-ironic-inspector-tox-func-ubuntu-xenial
-      - gate-ironic-inspector-dsvm-ipa
-      - gate-ironic-inspector-dsvm-discovery
-      - gate-grenade-dsvm-ironic-inspector
-      - gate-tempest-dsvm-ironic-inspector
-      - gate-tempest-dsvm-ironic-inspector-discovery
+      - gate-ironic-inspector-dsvm-ipa-ubuntu-trusty
+      - gate-ironic-inspector-dsvm-discovery-ubuntu-trusty
+      - gate-grenade-dsvm-ironic-inspector-ubuntu-trusty
+      - gate-grenade-dsvm-ironic-inspector-ubuntu-xenial
+      - gate-tempest-dsvm-ironic-inspector-ubuntu-xenial
+      - gate-tempest-dsvm-ironic-inspector-ubuntu-xenial
+      - gate-tempest-dsvm-ironic-inspector-discovery-ubuntu-xenial
 
   - name: openstack/ironic-inspector-specs
     template:
@@ -10583,8 +10571,8 @@ projects:
       - gate-tempest-dsvm-ironic-ipa-partition-pxe_ipmitool-coreos-src-ubuntu-xenial
       - gate-tempest-dsvm-ironic-ipa-wholedisk-pxe_ssh-coreos-src-ubuntu-trusty-nv
       - gate-tempest-dsvm-ironic-ipa-wholedisk-pxe_ipmitool-coreos-src-ubuntu-xenial
-      - gate-ironic-inspector-dsvm-ipa-src-nv
-      - gate-tempest-dsvm-ironic-inspector-src-nv
+      - gate-ironic-inspector-dsvm-ipa-src-ubuntu-trusty-nv
+      - gate-tempest-dsvm-ironic-inspector-src-ubuntu-xenial-nv
     gate:
       - gate-tempest-dsvm-ironic-ipa-wholedisk-agent_ssh-coreos-src-ubuntu-trusty
       - gate-tempest-dsvm-ironic-ipa-wholedisk-agent_ssh-tinyipa-src-ubuntu-trusty
@@ -10625,7 +10613,7 @@ projects:
       - name: publish-to-pypi
       - name: docs-on-rtfd
     check:
-      - gate-ironic-staging-drivers-dsvm-nv
+      - gate-ironic-staging-drivers-dsvm-ubuntu-xenial-nv
 
   - name: openstack/ironic-tempest-plugin
     template:
@@ -12517,7 +12505,8 @@ projects:
       - gate-tempest-dsvm-neutron-dvr-multinode-full-ubuntu-trusty
       - gate-tempest-dsvm-neutron-dvr-multinode-full-ubuntu-xenial
       - gate-tempest-dsvm-neutron-full-ssh
-      - gate-tempest-dsvm-ironic-pxe_ipa-full-nv
+      - gate-tempest-dsvm-ironic-pxe_ipa-full-ubuntu-trusty-nv
+      - gate-tempest-dsvm-ironic-pxe_ipa-full-ubuntu-xenial-nv
       - gate-tempest-dsvm-lxc-ubuntu-xenial
       - gate-tempest-dsvm-lvm-ubuntu-trusty
       - gate-tempest-dsvm-lvm-ubuntu-xenial
@@ -15045,7 +15034,7 @@ projects:
     check:
       - gate-pyghmi-pep8-ubuntu-trusty
       - gate-pyghmi-pep8-ubuntu-xenial
-      - gate-tempest-dsvm-ironic-pxe_ipmitool-pyghmi-src-nv
+      - gate-tempest-dsvm-ironic-pxe_ipmitool-pyghmi-src-ubuntu-xenial-nv
     gate:
       - gate-pyghmi-pep8-ubuntu-trusty
       - gate-pyghmi-pep8-ubuntu-xenial
@@ -15440,13 +15429,13 @@ projects:
     check:
         - gate-python-ironic-inspector-client-tox-func-ubuntu-trusty
         - gate-python-ironic-inspector-client-tox-func-ubuntu-xenial
-        - gate-python-ironic-inspector-client-dsvm
-        - gate-tempest-dsvm-python-ironic-inspector-client
+        - gate-python-ironic-inspector-client-dsvm-ubuntu-trusty
+        - gate-tempest-dsvm-python-ironic-inspector-client-ubuntu-xenial
     gate:
         - gate-python-ironic-inspector-client-tox-func-ubuntu-trusty
         - gate-python-ironic-inspector-client-tox-func-ubuntu-xenial
-        - gate-python-ironic-inspector-client-dsvm
-        - gate-tempest-dsvm-python-ironic-inspector-client
+        - gate-python-ironic-inspector-client-dsvm-ubuntu-trusty
+        - gate-tempest-dsvm-python-ironic-inspector-client-ubuntu-xenial
 
   - name: openstack/python-ironicclient
     template:
@@ -17942,7 +17931,7 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
     check:
-      - gate-tempest-dsvm-ironic-pxe_ipmitool-virtualbmc-src-nv
+      - gate-tempest-dsvm-ironic-pxe_ipmitool-virtualbmc-src-ubuntu-xenial-nv
 
   - name: openstack/virtualpdu
     template:
