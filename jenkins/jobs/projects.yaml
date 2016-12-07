@@ -5468,7 +5468,7 @@
       - '{pipeline}-heat-dsvm-functional-{engine}-{datastore}-{lbaasversion}-{node}{special}{job-suffix}':
           datastore: mysql
           pipeline: gate
-          node: ubuntu-trusty
+          node: ubuntu-xenial
           special: '-identity-v3-only'
           job-suffix: '-nv'
           branch-override: default
@@ -5483,15 +5483,16 @@
           branch-override: default
           engine: convg
           lbaasversion: lbaasv2
-      - '{pipeline}-tempest-dsvm-heat{special}{job-suffix}':
+      - '{pipeline}-tempest-dsvm-heat{special}-{node}{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
           special: ''
           job-suffix: ''
           branch-override: default
-      - '{pipeline}-tempest-dsvm-heat{special}{job-suffix}':
+      - '{pipeline}-tempest-dsvm-heat{special}-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node:
+            - ubuntu-xenial
           special: '-identity-v3-only'
           job-suffix: '-nv'
           branch-override: default
