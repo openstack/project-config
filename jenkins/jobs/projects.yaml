@@ -6684,64 +6684,44 @@
       - translation-jobs
       - install-guide-jobs:
           service: container-infrastructure-management
-      - '{pipeline}-functional-dsvm-magnum-{coe}{special}{job-suffix}':
+      - '{pipeline}-functional-dsvm-magnum-{coe}{special}-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
-          coe: 'api'
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
+          coe:
+            - 'api'
+            - 'k8s'
+            - 'swarm'
+            - 'mesos'
           special: ''
           job-suffix: ''
           branch-override: default
-      - '{pipeline}-functional-dsvm-magnum-{coe}{special}{job-suffix}':
+      - '{pipeline}-functional-dsvm-magnum-{coe}{special}-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
-          coe: 'k8s'
-          special: ''
-          job-suffix: ''
-          branch-override: default
-      - '{pipeline}-functional-dsvm-magnum-{coe}{special}{job-suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
-          coe: 'swarm'
-          special: ''
-          job-suffix: ''
-          branch-override: default
-      - '{pipeline}-functional-dsvm-magnum-{coe}{special}{job-suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
-          coe: 'mesos'
-          special: ''
-          job-suffix: ''
-          branch-override: default
-      - '{pipeline}-functional-dsvm-magnum-{coe}{special}{job-suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           coe: 'api'
           special: '-identity-v3-only'
           job-suffix: '-nv'
           branch-override: default
-      - '{pipeline}-functional-dsvm-magnum-{coe}{special}{job-suffix}':
+      - '{pipeline}-functional-dsvm-magnum-{coe}{special}-{node}{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
-          coe: 'k8s'
+          node: ubuntu-xenial
+          coe:
+            - 'k8s'
+            - 'swarm'
           special: '-ironic'
           job-suffix: '-nv'
           branch-override: default
-      - '{pipeline}-functional-dsvm-magnum-{coe}{special}{job-suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
-          coe: 'swarm'
-          special: '-ironic'
-          job-suffix: '-nv'
-          branch-override: default
-      - '{pipeline}-magnum-dib-buildimage-{image-name}':
+      - '{pipeline}-magnum-dib-buildimage-{image-name}-{node}':
           pipeline: periodic
-          node: ubuntu-trusty
-          image-name: 'fedora-atomic-24'
-          branch-override: default
-      - '{pipeline}-magnum-dib-buildimage-{image-name}':
-          pipeline: periodic
-          node: ubuntu-trusty
-          image-name: 'ubuntu-mesos'
+          node: ubuntu-xenial
+          image-name:
+            - 'fedora-atomic-24'
+            - 'ubuntu-mesos'
           branch-override: default
       - api-ref-jobs:
           service: container-infrastructure-management
