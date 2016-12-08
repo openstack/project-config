@@ -1561,6 +1561,12 @@ jobs:
   # tripleo multinode jobs run in Puppet CI are only supported from Ocata.
   - name : ^gate-tripleo-ci-centos-7-scenario.*-multinode-puppet.*$
     branch: ^(?!stable/(liberty|mitaka|newton)).*$
+    skip-if:
+      - project: ^openstack/puppet-.*$
+        all-files-match-any:
+          - ^.*\.md$
+          - ^releasenotes/.*$
+          - ^metadata.json$
 
   # tripleo multinode and undercloud jobs were introduced during Newton cycle.
   - name: ^gate-tripleo-ci-.*(multinode|undercloud).*$
@@ -1699,6 +1705,7 @@ jobs:
         all-files-match-any:
           - ^.*\.md$
           - ^releasenotes/.*$
+          - ^metadata.json$
       - project: ^openstack/tempest$
         all-files-match-any:
           - ^.*\.rst$
