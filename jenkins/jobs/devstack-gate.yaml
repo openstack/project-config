@@ -862,7 +862,11 @@
 
 
 - job-template:
-    name: '{pipeline}-grenade-dsvm-forward{job-suffix}'
+    # Note this job runs with nova net so it only needs to run on trusty
+    # and for liberty and mitaka. It cannot run on newton because
+    # nova net doesn't exist in ocata. For this reason we don't have a xenial
+    # version of the job.
+    name: '{pipeline}-grenade-dsvm-forward-{node}{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -977,7 +981,7 @@
 
 
 - job-template:
-    name: '{pipeline}-grenade-dsvm-neutron-forward{job-suffix}'
+    name: '{pipeline}-grenade-dsvm-neutron-forward-{node}{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -2159,6 +2163,7 @@
     name: devstack-jobs-xenial
     jobs:
       - '{pipeline}-grenade-dsvm-neutron-{node}{job-suffix}'
+      - '{pipeline}-grenade-dsvm-neutron-forward-{node}{job-suffix}'
       - '{pipeline}-grenade-dsvm-ironic-{node}{job-suffix}'
       - '{pipeline}-tempest-dsvm-full-{node}{job-suffix}'
       - '{pipeline}-tempest-dsvm-neutron-full-{node}{job-suffix}'
@@ -2191,9 +2196,9 @@
     name: devstack-jobs
     jobs:
       - '{pipeline}-grenade-dsvm-ceilometer{job-suffix}'
-      - '{pipeline}-grenade-dsvm-forward{job-suffix}'
+      - '{pipeline}-grenade-dsvm-forward-{node}{job-suffix}'
+      - '{pipeline}-grenade-dsvm-neutron-forward-{node}{job-suffix}'
       - '{pipeline}-grenade-dsvm-ironic-{node}{job-suffix}'
-      - '{pipeline}-grenade-dsvm-neutron-forward{job-suffix}'
       - '{pipeline}-grenade-dsvm-neutron-{node}{job-suffix}'
       - '{pipeline}-grenade-dsvm-sahara{job-suffix}'
       - '{pipeline}-grenade-dsvm-trove{job-suffix}'
