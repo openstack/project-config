@@ -7981,12 +7981,12 @@
       - openstack-releasenotes-jobs
       - '{pipeline}-tempest-dsvm-networking-ovn{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node: ubuntu-xenial
           job-suffix: ''
           branch-override: default
       - '{pipeline}-tempest-dsvm-networking-ovn-native-services{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node: ubuntu-xenial
           job-suffix: ''
           branch-override: default
       - '{pipeline}-tempest-dsvm-networking-ovn-native-services-multinode{job-suffix}':
@@ -7996,23 +7996,27 @@
           branch-override: default
       - '{pipeline}-rally-dsvm-networking-ovn{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node: ubuntu-xenial
           job-suffix: ''
           branch-override: default
       - '{pipeline}-install-dsvm-networking-ovn-kuryr{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node: ubuntu-xenial
           job-suffix: ''
           branch-override: default
       - '{pipeline}-networking-ovn-dsvm-{ovntest}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node: ubuntu-xenial
           ovntest: functional
           job-suffix: ''
           branch-override: default
-      - '{pipeline}-grenade-dsvm-networking-ovn{job-suffix}':
+      # networking-ovn doesn't have branches older than newton. By running
+      # grenade with ubuntu-xenial in the name we automatically pin
+      # grenade against this project to run starting with master which
+      # should be fine beacuse there is nothing before newton to upgrade from.
+      - '{pipeline}-grenade-dsvm-networking-ovn-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node: ubuntu-xenial
           job-suffix: '-nv'
           branch-override: default
       - periodic-python-jobs-with-neutron-lib-master
