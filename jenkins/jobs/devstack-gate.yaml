@@ -1155,7 +1155,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-grenade-dsvm-ceilometer{job-suffix}'
+    name: '{pipeline}-grenade-dsvm-ceilometer-{node}{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -2165,6 +2165,7 @@
       - '{pipeline}-grenade-dsvm-neutron-{node}{job-suffix}'
       - '{pipeline}-grenade-dsvm-neutron-forward-{node}{job-suffix}'
       - '{pipeline}-grenade-dsvm-ironic-{node}{job-suffix}'
+      - '{pipeline}-grenade-dsvm-ceilometer-{node}{job-suffix}'
       - '{pipeline}-tempest-dsvm-full-{node}{job-suffix}'
       - '{pipeline}-tempest-dsvm-neutron-full-{node}{job-suffix}'
       - '{pipeline}-tempest-dsvm-neutron-pg-full-{node}{job-suffix}'
@@ -2195,7 +2196,7 @@
 - job-group:
     name: devstack-jobs
     jobs:
-      - '{pipeline}-grenade-dsvm-ceilometer{job-suffix}'
+      - '{pipeline}-grenade-dsvm-ceilometer-{node}{job-suffix}'
       - '{pipeline}-grenade-dsvm-forward-{node}{job-suffix}'
       - '{pipeline}-grenade-dsvm-neutron-forward-{node}{job-suffix}'
       - '{pipeline}-grenade-dsvm-ironic-{node}{job-suffix}'
