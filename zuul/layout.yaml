@@ -2803,26 +2803,14 @@ jobs:
   - name: ^gate-oslo.messaging-src-dsvm-full-pika-ubuntu-trusty
     branch: ^stable/mitaka$
 
-  - name: ^gate-oslo.messaging-telemetry-dsvm-integration-zmq.*$
-    branch: ^(?!stable/liberty).*$
-    voting: false
+  - name: ^gate-oslo.messaging-telemetry-dsvm-integration-.*ubuntu-trusty(-nv)?$
+    branch: ^stable/mitaka$
 
-  - name: ^gate-oslo.messaging-telemetry-dsvm-integration-pika.*$
-    branch: ^(?!stable/liberty).*$
-    voting: false
+  - name: gate-tempest-neutron-dsvm-src-oslo.messaging-zmq-ubuntu-trusty
+    branch: ^stable/mitaka$
 
-  - name: ^gate-oslo.messaging-telemetry-dsvm-integration-amqp1.*$
-    branch: ^(?!stable/liberty).*$
-    voting: false
-
-  - name: gate-tempest-neutron-dsvm-src-oslo.messaging-zmq
-    branch: ^(?!stable/liberty).*$
-
-  - name: gate-tempest-neutron-dsvm-src-oslo.messaging-pika
-    branch: ^(?!stable/liberty).*$
-
-  - name: gate-tempest-neutron-dsvm-src-oslo.messaging-amqp1-nv
-    branch: ^(?!stable/liberty).*$
+  - name: gate-tempest-neutron-dsvm-src-oslo.messaging-pika-ubuntu-trusty
+    branch: ^stable/mitaka$
 
   # NOTE(rpodolyaka): since Ic7ab3b9e6dc8354861be1af46210269f74c04333 we require
   # SQLAlchemy >= 1.0.10, so this job is not needed for Mitaka+
@@ -13979,12 +13967,17 @@ projects:
       - gate-oslo.messaging-src-grenade-dsvm-multinode
       - gate-telemetry-dsvm-integration-oslo.messaging-ubuntu-trusty
       - gate-telemetry-dsvm-integration-oslo.messaging-ubuntu-xenial
-      - gate-oslo.messaging-telemetry-dsvm-integration-amqp1-nv
-      - gate-oslo.messaging-telemetry-dsvm-integration-pika
-      - gate-oslo.messaging-telemetry-dsvm-integration-zmq
-      - gate-tempest-neutron-dsvm-src-oslo.messaging-amqp1-nv
-      - gate-tempest-neutron-dsvm-src-oslo.messaging-pika
-      - gate-tempest-neutron-dsvm-src-oslo.messaging-zmq
+      - gate-oslo.messaging-telemetry-dsvm-integration-amqp1-ubuntu-trusty-nv
+      - gate-oslo.messaging-telemetry-dsvm-integration-amqp1-ubuntu-xenial-nv
+      - gate-oslo.messaging-telemetry-dsvm-integration-pika-ubuntu-trusty-nv
+      - gate-oslo.messaging-telemetry-dsvm-integration-pika-ubuntu-xenial-nv
+      - gate-oslo.messaging-telemetry-dsvm-integration-zmq-ubuntu-trusty-nv
+      - gate-oslo.messaging-telemetry-dsvm-integration-zmq-ubuntu-xenial-nv
+      - gate-tempest-neutron-dsvm-src-oslo.messaging-amqp1-ubuntu-xenial-nv
+      - gate-tempest-neutron-dsvm-src-oslo.messaging-pika-ubuntu-trusty
+      - gate-tempest-neutron-dsvm-src-oslo.messaging-pika-ubuntu-xenial
+      - gate-tempest-neutron-dsvm-src-oslo.messaging-zmq-ubuntu-trusty
+      - gate-tempest-neutron-dsvm-src-oslo.messaging-zmq-ubuntu-xenial
     gate:
       - gate-oslo.messaging-dsvm-functional-py27-pika-ubuntu-trusty
       - gate-oslo.messaging-dsvm-functional-py27-pika-ubuntu-xenial
@@ -13994,8 +13987,10 @@ projects:
       - gate-oslo.messaging-src-dsvm-full-pika-ubuntu-xenial
       - gate-oslo.messaging-src-dsvm-full-zmq-ubuntu-trusty
       - gate-oslo.messaging-src-dsvm-full-zmq-ubuntu-xenial
-      - gate-tempest-neutron-dsvm-src-oslo.messaging-zmq
-      - gate-tempest-neutron-dsvm-src-oslo.messaging-pika
+      - gate-tempest-neutron-dsvm-src-oslo.messaging-pika-ubuntu-trusty
+      - gate-tempest-neutron-dsvm-src-oslo.messaging-pika-ubuntu-xenial
+      - gate-tempest-neutron-dsvm-src-oslo.messaging-zmq-ubuntu-trusty
+      - gate-tempest-neutron-dsvm-src-oslo.messaging-zmq-ubuntu-xenial
     post:
       - oslo.messaging-coverage-ubuntu-trusty
       - oslo.messaging-coverage-ubuntu-xenial
