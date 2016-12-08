@@ -7851,86 +7851,42 @@
       - translation-jobs
       - openstack-releasenotes-jobs
       - pypi-jobs
-      # tempest-dsvm-networking-odl-{odl-release-base}-nv is for stable/(liberty|mitaka)
-      - '{pipeline}-tempest-dsvm-networking-odl-{odl-release-base}{job-suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
-          job-suffix: '-nv'
-          odl-release-base: 'beryllium-snapshot'
-          branch-override: default
-      - '{pipeline}-tempest-dsvm-networking-odl-{odl-release-base}{job-suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
-          job-suffix: '-nv'
-          odl-release-base: 'boron-snapshot'
-          branch-override: default
-      - '{pipeline}-tempest-dsvm-networking-odl-{odl-release-base}{job-suffix}':
-          pipeline: gate
-          node: ubuntu-xenial
-          job-suffix: '-nv'
-          odl-release-base: 'carbon-snapshot'
-          branch-override: default
-      # tempest-dsvm-networking-odl-{odl-release-base} is for newton+
+      # tempest-dsvm-networking-odl-{odl-release-base}-{liberty|mitaka}-nv
+      # is for stable/(liberty|mitaka)
       - '{pipeline}-tempest-dsvm-networking-odl-{odl-release-base}{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
           job-suffix: '-liberty-nv'
-          odl-release-base: 'beryllium-snapshot'
+          odl-release-base:
+            - 'beryllium-snapshot'
+            - 'boron-snapshot'
+            - 'carbon-snapshot'
           branch-override: stable/liberty
       - '{pipeline}-tempest-dsvm-networking-odl-{odl-release-base}{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
           job-suffix: '-mitaka-nv'
-          odl-release-base: 'beryllium-snapshot'
+          odl-release-base:
+            - 'beryllium-snapshot'
+            - 'boron-snapshot'
+            - 'carbon-snapshot'
           branch-override: stable/mitaka
-      - '{pipeline}-tempest-dsvm-networking-odl-{odl-release-base}{job-suffix}':
-          pipeline: gate
-          node: ubuntu-xenial
-          job-suffix: ''
-          odl-release-base: 'beryllium-snapshot'
-          branch-override: default
-      - '{pipeline}-tempest-dsvm-networking-odl-{odl-release-base}{job-suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
-          job-suffix: '-liberty-nv'
-          odl-release-base: 'boron-snapshot'
-          branch-override: stable/liberty
-      - '{pipeline}-tempest-dsvm-networking-odl-{odl-release-base}{job-suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
-          job-suffix: '-mitaka-nv'
-          odl-release-base: 'boron-snapshot'
-          branch-override: stable/mitaka
-      - '{pipeline}-tempest-dsvm-networking-odl-{odl-release-base}{job-suffix}':
-          pipeline: gate
-          node: ubuntu-xenial
-          job-suffix: ''
-          odl-release-base: 'boron-snapshot'
-          branch-override: default
-      - '{pipeline}-tempest-dsvm-networking-odl-{odl-release-base}{job-suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
-          job-suffix: '-liberty-nv'
-          odl-release-base: 'carbon-snapshot'
-          branch-override: default
-      - '{pipeline}-tempest-dsvm-networking-odl-{odl-release-base}{job-suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
-          job-suffix: '-mitaka-nv'
-          odl-release-base: 'carbon-snapshot'
-          branch-override: default
-      - '{pipeline}-tempest-dsvm-networking-odl-{odl-release-base}{job-suffix}':
-          pipeline: gate
-          node: ubuntu-xenial
-          job-suffix: ''
-          odl-release-base: 'carbon-snapshot'
-          branch-override: default
       - '{pipeline}-tempest-dsvm-networking-odl-{odl-release-base}{job-suffix}':
           pipeline: periodic
           node: ubuntu-trusty
           job-suffix: '-mitaka'
           odl-release-base: 'boron-snapshot'
           branch-override: stable/mitaka
+      # tempest-dsvm-networking-odl-{odl-release-base} is for newton+
+      - '{pipeline}-tempest-dsvm-networking-odl-{odl-release-base}{job-suffix}':
+          pipeline: gate
+          node: ubuntu-xenial
+          job-suffix: ''
+          odl-release-base:
+            - 'beryllium-snapshot'
+            - 'boron-snapshot'
+            - 'carbon-snapshot'
+          branch-override: default
       - '{pipeline}-tempest-dsvm-networking-odl-multinode-{odl-release-base}{job-suffix}':
           pipeline: gate
           node: ubuntu-xenial-2-node
@@ -7941,19 +7897,10 @@
           pipeline: gate
           node: ubuntu-xenial
           job-suffix: ''
-          odl-release-base: 'beryllium-snapshot'
-          branch-override: default
-      - '{pipeline}-rally-dsvm-networking-odl-{odl-release-base}{job-suffix}':
-          pipeline: gate
-          node: ubuntu-xenial
-          job-suffix: ''
-          odl-release-base: 'boron-snapshot'
-          branch-override: default
-      - '{pipeline}-rally-dsvm-networking-odl-{odl-release-base}{job-suffix}':
-          pipeline: gate
-          node: ubuntu-xenial
-          job-suffix: ''
-          odl-release-base: 'carbon-snapshot'
+          odl-release-base:
+            - 'beryllium-snapshot'
+            - 'boron-snapshot'
+            - 'carbon-snapshot'
           branch-override: default
       - '{pipeline}-grenade-dsvm-networking-odl{job-suffix}':
           pipeline: gate
