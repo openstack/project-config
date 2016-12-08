@@ -10148,30 +10148,26 @@
           node:
             - ubuntu-trusty
             - ubuntu-xenial
-      # TODO(jaegerandi): Convert these to xenial
-      - 'gate-oslo.messaging-telemetry-dsvm-integration-{plugin}{job-suffix}':
-          node: ubuntu-trusty
-          plugin: pika
-          job-suffix: ''
-      - 'gate-oslo.messaging-telemetry-dsvm-integration-{plugin}{job-suffix}':
-          node: ubuntu-trusty
-          plugin: zmq
-          job-suffix: ''
-      - 'gate-oslo.messaging-telemetry-dsvm-integration-{plugin}{job-suffix}':
-          node: ubuntu-trusty
-          plugin: amqp1
+      - 'gate-oslo.messaging-telemetry-dsvm-integration-{plugin}-{node}{job-suffix}':
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
+          plugin:
+            - amqp1
+            - pika
+            - zmq
           job-suffix: '-nv'
-      - 'gate-tempest-neutron-dsvm-src-oslo.messaging-{plugin}{job-suffix}':
+      - 'gate-tempest-neutron-dsvm-src-oslo.messaging-{plugin}-{node}{job-suffix}':
           node: ubuntu-xenial
           plugin: amqp1
           job-suffix: '-nv'
-      - 'gate-tempest-neutron-dsvm-src-oslo.messaging-{plugin}{job-suffix}':
-          node: ubuntu-trusty
-          plugin: pika
-          job-suffix: ''
-      - 'gate-tempest-neutron-dsvm-src-oslo.messaging-{plugin}{job-suffix}':
-          node: ubuntu-trusty
-          plugin: zmq
+      - 'gate-tempest-neutron-dsvm-src-oslo.messaging-{plugin}-{node}{job-suffix}':
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
+          plugin:
+            - pika
+            - zmq
           job-suffix: ''
 
 - project:
