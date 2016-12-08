@@ -1818,24 +1818,44 @@ jobs:
     queue-name: integrated
     branch: stable/newton
 
-    # don't run any grenade jobs on the oldest supported stable
-    # branch, this lets us catch all jobs that don't otherwise have
-    # additional modifications.
-    # NOTE(mriedem): This must be defined before any more specific grenade
-    # job filters so that those can override the branch filter if necessary.
+  # don't run any grenade jobs on the oldest supported stable
+  # branch, this lets us catch all jobs that don't otherwise have
+  # additional modifications.
+  # NOTE(mriedem): This must be defined before any more specific grenade
+  # job filters so that those can override the branch filter if necessary.
   - name: ^gate-grenade-dsvm
     branch: ^(?!stable/liberty).*$
 
-  # NOTE(mriedem): This job uses nova-network which is deprecated and not the
-  # default in Ocata so we need to just restrict it to running on stable/newton
-  # changes.
-  - name: gate-grenade-dsvm-ubuntu-trusty
-    branch: stable/newton
+  # Grenade is tricky because we need it to start on old branch
+  # then go up to new branch. This results in the following branch
+  # to test node type mapping:
+  # old -> new (new is the branch that determines what we want because
+  # these are pullup jobs): distro release
+  # liberty -> mitaka: trusty
+  # mitaka -> newton: trusty
+  # newton -> master/ocata: xenial
+  - name: ^.*grenade-.*-ubuntu-trusty$
+    branch: ^(stable/(mitaka|newton))$
+  - name: ^.*grenade-.*-ubuntu-xenial$
+    branch: ^(?!stable/(liberty|mitaka|newton)).*$
 
   # NOTE(mriedem): These jobs use nova-network specifically which won't work
   # after newton so restrict them to just run on mitaka and newton changes.
   - name: ^gate-grenade-dsvm-(forward|multinode).*$
     branch: ^stable/(?:mitaka|newton)$
+
+  - name: gate-grenade-dsvm-neutron-dvr-multinode-ubuntu-trusty
+    branch: ^stable/newton$
+
+  # only here until stable is votable, then merge
+  # back to a single job
+  - name: ^gate-grenade-dsvm-forward$
+    branch: ^(stable/).*$
+    voting: false
+
+  - name: ^gate-grenade-dsvm-neutron-forward
+    branch: ^(stable/).*$
+    voting: false
 
   - name: ^gate-rally-dsvm-rally-.*$
     voting: false
@@ -1956,22 +1976,6 @@ jobs:
   - name: ^gate-.*-pypy(-db)?$
     voting: false
 
-  # Grenade is tricky because we need it to start on old branch
-  # then go up to new branch. This results in the following branch
-  # to test node type mapping:
-  # old -> new (new is the branch that determines what we want because
-  # these are pullup jobs): distro release
-  # liberty -> mitaka: trusty
-  # mitaka -> newton: trusty
-  # newton -> master/ocata: xenial
-  - name: ^.*grenade-.*-ubuntu-trusty$
-    branch: ^(stable/(mitaka|newton))$
-  - name: ^.*grenade-.*-ubuntu-xenial$
-    branch: ^(?!stable/(liberty|mitaka|newton)).*$
-
-  - name: gate-grenade-dsvm-neutron-dvr-multinode-ubuntu-trusty
-    branch: ^stable/newton$
-
   - name: ^gate-tempest-dsvm-ironic-parallel-ubuntu-xenial-nv$
     branch: ^(?!stable)
 
@@ -1980,16 +1984,6 @@ jobs:
 
   - name: ^gate-ironic-inspector-tox-func3.*$
     branch: ^(?!stable/(liberty|mitaka)).*$
-    voting: false
-
-    # only here until stable is votable, then merge
-    # back to a single job
-  - name: ^gate-grenade-dsvm-forward$
-    branch: ^(stable/).*$
-    voting: false
-
-  - name: ^gate-grenade-dsvm-neutron-forward
-    branch: ^(stable/).*$
     voting: false
 
   - name: ^gate-devstack-dsvm-updown.*$
