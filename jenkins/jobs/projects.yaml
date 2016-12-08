@@ -10024,39 +10024,41 @@
           node: ubuntu-xenial
           job-suffix: '-nv'
           branch-override: default
-      # TODO(jaegerandi): Convert these to xenial
-      - '{pipeline}-oslo.messaging-src-dsvm-full-{plugin}{ostype}{job-suffix}':
+      - '{pipeline}-oslo.messaging-src-dsvm-full-{plugin}-{node}{job-suffix}':
           pipeline: gate
           plugin: zmq
-          node: ubuntu-trusty
-          ostype: ''
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           plugin-repo: openstack/devstack-plugin-zmq
           job-suffix: ''
-      - '{pipeline}-oslo.messaging-src-dsvm-full-{plugin}{ostype}{job-suffix}':
+      - '{pipeline}-oslo.messaging-src-dsvm-full-{plugin}-{node}{job-suffix}':
           pipeline: gate
           plugin: amqp1
           node: centos-7
-          ostype: '-centos7'
           plugin-repo: openstack/devstack-plugin-amqp1
           job-suffix: '-nv'
-      - '{pipeline}-oslo.messaging-src-dsvm-full-{plugin}{ostype}{job-suffix}':
+      - '{pipeline}-oslo.messaging-src-dsvm-full-{plugin}-{node}{job-suffix}':
           pipeline: gate
           plugin: amqp1
-          node: ubuntu-trusty
-          ostype: ''
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           plugin-repo: openstack/devstack-plugin-amqp1
           job-suffix: '-nv'
-      - '{pipeline}-oslo.messaging-src-dsvm-full-{plugin}{ostype}{job-suffix}':
+      - '{pipeline}-oslo.messaging-src-dsvm-full-{plugin}-{node}{job-suffix}':
           pipeline: gate
           plugin: pika
-          node: ubuntu-trusty
-          ostype: ''
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           plugin-repo: openstack/devstack-plugin-pika
           job-suffix: ''
       - 'gate-telemetry-dsvm-integration-{name}-{node}':
           node:
             - ubuntu-trusty
             - ubuntu-xenial
+      # TODO(jaegerandi): Convert these to xenial
       - 'gate-oslo.messaging-telemetry-dsvm-integration-{plugin}{job-suffix}':
           node: ubuntu-trusty
           plugin: pika
