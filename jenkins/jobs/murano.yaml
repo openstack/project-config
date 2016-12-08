@@ -1,5 +1,6 @@
 - job:
-    name: gate-murano-devstack-dsvm
+    name: gate-murano-devstack-dsvm-ubuntu-trusty
+    # This job only runs against liberty
     node: ubuntu-trusty
 
     wrappers:
@@ -48,9 +49,9 @@
       - console-log
 
 # Murano and Congress integration functional tests
-- job:
-    name: gate-murano-congress-devstack-dsvm
-    node: ubuntu-trusty
+- job-template:
+    name: 'gate-murano-congress-devstack-dsvm-{node}{job-suffix}'
+    node: '{node}'
 
     wrappers:
       - build-timeout:
@@ -87,18 +88,18 @@
           # and below provided link should not be used.
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin murano git://git.openstack.org/openstack/murano"
 
-          function pre_test_hook {
+          function pre_test_hook {{
               cd /opt/stack/new/murano/functionaltests
               ./pre_test_hook_congress.sh
               ./pre_test_hook_mistral.sh
               ./pre_test_hook.sh
-          }
+          }}
           export -f pre_test_hook
 
-          function post_test_hook {
+          function post_test_hook {{
               cd /opt/stack/new/murano/functionaltests
               ./post_test_hook.sh congress_mistral
-          }
+          }}
           export -f post_test_hook
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
@@ -172,7 +173,7 @@
       - console-log
 
 - job-template:
-    name: 'gate-tempest-dsvm-murano-{mode}{job-suffix}'
+    name: 'gate-tempest-dsvm-murano-{mode}-{node}{job-suffix}'
     node: '{node}'
 
     wrappers:
