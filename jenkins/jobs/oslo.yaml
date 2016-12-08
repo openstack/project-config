@@ -1,52 +1,5 @@
 - job-template:
-    name: '{pipeline}-{injectedlib}-dsvm-{name}{job-suffix}'
-    node: '{node}'
-
-    wrappers:
-      - build-timeout:
-          timeout: 100
-      - timestamps
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - shell: |
-          #!/bin/bash -xe
-          export PYTHONUNBUFFERED=true
-          export PROJECTS="{injectedrepo} $PROJECTS"
-          export BRANCH_OVERRIDE={branch-override}
-          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
-              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
-          fi
-
-          function gate_hook {{
-              cd /opt/stack/new/$(basename {injectedrepo})
-              remaining_time
-              timeout -s 9 ${{REMAINING_TIME}}m ./tools/run_cross_tests.sh /opt/stack/new/{name} py27
-          }}
-          export -f gate_hook
-
-          function post_test_hook {{
-              cd /opt/stack/new/{name}
-              mv nose_results.html $WORKSPACE/logs
-              mv testr_results.html.gz $WORKSPACE/logs
-              mv .testrepository/tmp* $WORKSPACE/logs
-              mv testrepository.subunit $WORKSPACE/logs
-          }}
-          export -f post_test_hook
-
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
-
-    publishers:
-      - devstack-logs
-      - console-log
-
-- job-template:
-    name: '{pipeline}-oslo.messaging-dsvm-functional-{version}-{driver}{ostype}{job-suffix}'
+    name: '{pipeline}-oslo.messaging-dsvm-functional-{version}-{driver}-{node}{job-suffix}'
     node: '{node}'
 
     wrappers:
@@ -78,23 +31,35 @@
       - devstack-logs
       - console-log
 
-# NOTE(dhellmann): This job group is not used, but I retained it as an
-# example of properly using the template defined above.
-#
-# - job-group:
-#     name: oslotest-cross-test
-#
-#     injectedlib: oslotest
-#     injectedrepo: openstack/oslotest
-#
-#     jobs:
-#       - '{pipeline}-{injectedlib}-dsvm-{name}{job-suffix}':
-#           pipeline: check
-#           node: ubuntu-trusty
-#           job-suffix: ''
-#           branch-override: default
-#       - '{pipeline}-{injectedlib}-dsvm-{name}{job-suffix}':
-#           pipeline: gate
-#           node: ubuntu-trusty
-#           job-suffix: ''
-#           branch-override: default
+# A Template to run a oslo.messaging devstack-plugin with oslo.messaging
+# code picked up from source
+- job-template:
+    name: '{pipeline}-oslo.messaging-src-dsvm-full-{plugin}{ostype}{job-suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 180
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_TEMPEST_FULL=1
+          export PROJECTS="{plugin-repo} openstack/oslo.messaging $PROJECTS"
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin devstack-plugin-{plugin} git://git.openstack.org/{plugin-repo}"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"LIBS_FROM_GIT=oslo.messaging"
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
