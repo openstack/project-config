@@ -326,6 +326,9 @@
           export PROJECTS="openstack/ironic openstack/python-ironicclient $PROJECTS"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin ironic git://git.openstack.org/openstack/ironic"
 
+          # neutron isn't enabled here
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_ENABLED_NETWORK_INTERFACES=noop"
+
           function post_test_hook {{
               # Configure and run functional tests
               $BASE/new/python-ironicclient/ironicclient/tests/functional/hooks/post_test_hook.sh
