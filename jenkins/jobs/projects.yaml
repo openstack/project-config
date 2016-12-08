@@ -3922,15 +3922,17 @@
           job-suffix: '-nv'
           branch-override: default
       # Experimental job for testing Nova with os-vif library
-      - '{pipeline}-tempest-dsvm-nova-os-vif{job-suffix}':
+      - '{pipeline}-tempest-dsvm-nova-os-vif-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           job-suffix: '-nv'
           branch-override: default
-      - '{pipeline}-tempest-dsvm-nova-libvirt-kvm-apr{job-suffix}':
+      - '{pipeline}-tempest-dsvm-nova-libvirt-kvm-apr-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
-          job-suffix: ''
+          node: ubuntu-xenial
+          job-suffix: '-nv'
           branch-override: default
       - '{pipeline}-tempest-dsvm-platform-{name}{job-suffix}':
           name: centos7
@@ -6313,9 +6315,9 @@
           node:
             - ubuntu-trusty
             - ubuntu-xenial
-      - '{pipeline}-tempest-dsvm-keystone-eventlet-full{job-suffix}':
+      - '{pipeline}-tempest-dsvm-keystone-eventlet-full-{node}{job-suffix}':
           pipeline: gate
-          job-suffix: ''
+          job-suffix: '-nv'
           branch-override: default
           node: ubuntu-trusty
       - '{pipeline}-tempest-dsvm-keystone-uwsgi-full-{node}{job-suffix}':
