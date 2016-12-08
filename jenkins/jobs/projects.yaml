@@ -8148,7 +8148,8 @@
       - '{pipeline}-grenade-dsvm-neutron-multinode-{node-release}{job-suffix}':
           pipeline: gate
           node-release: ubuntu-trusty
-          node: ubuntu-trusty-2-node
+          node:
+            - ubuntu-trusty-2-node
           job-suffix: ''
           branch-override: default
       - '{pipeline}-grenade-dsvm-neutron-multinode-{node-release}{job-suffix}':
@@ -8160,7 +8161,8 @@
       - '{pipeline}-grenade-dsvm-neutron-dvr-multinode-{node-release}{job-suffix}':
           pipeline: gate
           node-release: ubuntu-trusty
-          node: ubuntu-trusty-2-node
+          node:
+            - ubuntu-trusty-2-node
           job-suffix: ''
           branch-override: default
       - '{pipeline}-grenade-dsvm-neutron-dvr-multinode-{node-release}{job-suffix}':
@@ -8178,78 +8180,57 @@
       - '{pipeline}-neutron-dsvm-functional{python}-{node}{job-suffix}':
           pipeline: gate
           python: ''
-          node: ubuntu-trusty
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           job-suffix: ''
           branch-override: default
+      # This job is for cross testing with devstack-gate
       - '{pipeline}-neutron-dsvm-functional{python}-{node}{job-suffix}':
           pipeline: gate
           python: ''
-          node: ubuntu-trusty
+          node: ubuntu-xenial
           job-suffix: '-nv'
           branch-override: default
-      - '{pipeline}-neutron-dsvm-functional{python}-{node}{job-suffix}':
-          pipeline: gate
-          python: ''
-          node: ubuntu-xenial
-          job-suffix: ''
-          branch-override: default
       - '{pipeline}-neutron-dsvm-fullstack-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
-          job-suffix: ''
-          branch-override: default
-      - '{pipeline}-neutron-dsvm-fullstack-{node}{job-suffix}':
-          pipeline: gate
-          node: ubuntu-xenial
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           job-suffix: ''
           branch-override: default
       - '{pipeline}-neutron-dsvm-api{which}-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           job-suffix: ''
           branch-override: default
-          which: ''
-      - '{pipeline}-neutron-dsvm-api{which}-{node}{job-suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
-          job-suffix: ''
-          branch-override: default
-          which: '-pecan'
-      - '{pipeline}-neutron-dsvm-api{which}-{node}{job-suffix}':
-          pipeline: gate
-          node: ubuntu-xenial
-          job-suffix: ''
-          branch-override: default
-          which: ''
-      - '{pipeline}-neutron-dsvm-api{which}-{node}{job-suffix}':
-          pipeline: gate
-          node: ubuntu-xenial
-          job-suffix: ''
-          branch-override: default
-          which: '-pecan'
+          which:
+            - ''
+            - '-pecan'
       - '{pipeline}-tempest-dsvm-neutron-linuxbridge-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
-          job-suffix: ''
-          branch-override: default
-      - '{pipeline}-tempest-dsvm-neutron-linuxbridge-{node}{job-suffix}':
-          pipeline: gate
-          node: ubuntu-xenial
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           job-suffix: ''
           branch-override: default
       - '{pipeline}-tempest-dsvm-neutron-ipv6only{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
-          job-suffix: ''
+          node: ubuntu-xenial
+          job-suffix: '-nv'
           branch-override: default
       - '{pipeline}-tempest-dsvm-neutron-serviceipv6{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
-          job-suffix: ''
+          node: ubuntu-xenial
+          job-suffix: '-nv'
           branch-override: default
-      - '{pipeline}-tempest-dsvm-neutron-{which}{job-suffix}':
+      - '{pipeline}-tempest-dsvm-neutron-{which}-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           job-suffix: ''
           branch-override: default
           which: pecan
