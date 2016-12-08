@@ -10045,6 +10045,7 @@
       - 'lib-forward-testing-{name}'
       - 'stable-compat-jobs-{name}'
       - openstack-releasenotes-jobs
+      # TODO(jaegerandi): convert these to Xenial:
       - '{pipeline}-{name}-src-grenade-dsvm{job-suffix}':
           pipeline: gate
           node: ubuntu-trusty
@@ -10055,86 +10056,65 @@
           node: ubuntu-trusty-2-node
           job-suffix: ''
           branch-override: default
-      - '{pipeline}-oslo.messaging-dsvm-functional-{version}-{driver}{ostype}{job-suffix}':
-          version: 'py27'
-          driver: rabbit
+      # TODO(jaegerandi): oslo.messaging-dsvm-functional is converted to xenial.
+      - '{pipeline}-oslo.messaging-dsvm-functional-{version}-{driver}-{node}{job-suffix}':
+          version: py27
+          driver:
+            - pika
+            - zeromq
           pipeline: gate
-          node: ubuntu-trusty
-          ostype: ''
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
+          job-suffix: ''
+          branch-override: default
+      - '{pipeline}-oslo.messaging-dsvm-functional-{version}-{driver}-{node}{job-suffix}':
+          version: py27
+          driver:
+            - amqp1
+            - rabbit
+            - zeromq-proxy
+            - zeromq-pub-sub
+          pipeline: gate
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           job-suffix: '-nv'
           branch-override: default
-      - '{pipeline}-oslo.messaging-dsvm-functional-{version}-{driver}{ostype}{job-suffix}':
-          version: 'py34'
-          driver: rabbit
-          pipeline: gate
-          node: ubuntu-trusty
-          ostype: ''
-          job-suffix: '-nv'
-          branch-override: default
-      - '{pipeline}-oslo.messaging-dsvm-functional-{version}-{driver}{ostype}{job-suffix}':
-          version: 'py27'
+      # This driver is only tested on liberty.
+      - '{pipeline}-oslo.messaging-dsvm-functional-{version}-{driver}-{node}{job-suffix}':
+          version: py27
           driver: qpid
           pipeline: gate
           node: ubuntu-trusty
-          ostype: ''
           job-suffix: '-nv'
           branch-override: default
-      - '{pipeline}-oslo.messaging-dsvm-functional-{version}-{driver}{ostype}{job-suffix}':
-          version: 'py27'
-          driver: zeromq
-          pipeline: gate
-          node: ubuntu-trusty
-          ostype: ''
-          job-suffix: ''
-          branch-override: default
-      - '{pipeline}-oslo.messaging-dsvm-functional-{version}-{driver}{ostype}{job-suffix}':
-          version: 'py27'
-          driver: zeromq-proxy
-          pipeline: gate
-          node: ubuntu-trusty
-          ostype: ''
-          job-suffix: '-nv'
-          branch-override: default
-      - '{pipeline}-oslo.messaging-dsvm-functional-{version}-{driver}{ostype}{job-suffix}':
-          version: 'py27'
-          driver: zeromq-pub-sub
-          pipeline: gate
-          node: ubuntu-trusty
-          ostype: ''
-          job-suffix: '-nv'
-          branch-override: default
-      - '{pipeline}-oslo.messaging-dsvm-functional-{version}-{driver}{ostype}{job-suffix}':
-          version: 'py27'
-          driver: pika
-          pipeline: gate
-          node: ubuntu-trusty
-          ostype: ''
-          job-suffix: ''
-          branch-override: default
-      - '{pipeline}-oslo.messaging-dsvm-functional-{version}-{driver}{ostype}{job-suffix}':
+      - '{pipeline}-oslo.messaging-dsvm-functional-{version}-{driver}-{node}{job-suffix}':
           version: 'py27'
           driver: amqp1
           pipeline: gate
           node: centos-7
-          ostype: '-centos7'
           job-suffix: '-nv'
           branch-override: default
-      - '{pipeline}-oslo.messaging-dsvm-functional-{version}-{driver}{ostype}{job-suffix}':
-          version: 'py27'
-          driver: amqp1
+      - '{pipeline}-oslo.messaging-dsvm-functional-{version}-{driver}-{node}{job-suffix}':
+          version: py34
+          driver:
+            - amqp1
+            - rabbit
           pipeline: gate
           node: ubuntu-trusty
-          ostype: ''
           job-suffix: '-nv'
           branch-override: default
-      - '{pipeline}-oslo.messaging-dsvm-functional-{version}-{driver}{ostype}{job-suffix}':
-          version: 'py34'
-          driver: amqp1
+      - '{pipeline}-oslo.messaging-dsvm-functional-{version}-{driver}-{node}{job-suffix}':
+          version: py35
+          driver:
+            - amqp1
+            - rabbit
           pipeline: gate
-          node: ubuntu-trusty
-          ostype: ''
+          node: ubuntu-xenial
           job-suffix: '-nv'
           branch-override: default
+      # TODO(jaegerandi): Convert these to xenial
       - '{pipeline}-oslo.messaging-src-dsvm-full-{plugin}{ostype}{job-suffix}':
           pipeline: gate
           plugin: zmq
