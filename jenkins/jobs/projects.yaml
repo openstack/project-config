@@ -9921,10 +9921,12 @@
       - openstack-releasenotes-jobs
       - 'lib-forward-testing-{name}'
       - 'stable-compat-jobs-{name}'
-      - '{pipeline}-{name}-src-grenade-dsvm{job-suffix}':
+      - '{pipeline}-{name}-src-grenade-dsvm-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
-          job-suffix: ''
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
@@ -9943,16 +9945,24 @@
       - 'lib-forward-testing-{name}'
       - 'stable-compat-jobs-{name}'
       - openstack-releasenotes-jobs
-      # TODO(jaegerandi): convert these to Xenial:
-      - '{pipeline}-{name}-src-grenade-dsvm{job-suffix}':
+      - '{pipeline}-{name}-src-grenade-dsvm-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
-          job-suffix: ''
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
+          job-suffix: '-nv'
           branch-override: default
-      - '{pipeline}-{name}-src-grenade-dsvm-multinode{job-suffix}':
+      - '{pipeline}-{name}-src-grenade-dsvm-multinode-{node-release}{job-suffix}':
           pipeline: gate
+          node-release: ubuntu-trusty
           node: ubuntu-trusty-2-node
-          job-suffix: ''
+          job-suffix: '-nv'
+          branch-override: default
+      - '{pipeline}-{name}-src-grenade-dsvm-multinode-{node-release}{job-suffix}':
+          pipeline: gate
+          node-release: ubuntu-xenial
+          node: ubuntu-xenial-2-node
+          job-suffix: '-nv'
           branch-override: default
       # TODO(jaegerandi): oslo.messaging-dsvm-functional is converted to xenial.
       - '{pipeline}-oslo.messaging-dsvm-functional-{version}-{driver}-{node}{job-suffix}':
@@ -10206,10 +10216,17 @@
       - openstack-releasenotes-jobs
       - 'lib-forward-testing-{name}'
       - 'stable-compat-jobs-{name}'
-      - '{pipeline}-{name}-src-grenade-dsvm-multinode{job-suffix}':
+      - '{pipeline}-{name}-src-grenade-dsvm-multinode-{node-release}{job-suffix}':
           pipeline: gate
+          node-release: ubuntu-trusty
           node: ubuntu-trusty-2-node
-          job-suffix: ''
+          job-suffix: '-nv'
+          branch-override: default
+      - '{pipeline}-{name}-src-grenade-dsvm-multinode-{node-release}{job-suffix}':
+          pipeline: gate
+          node-release: ubuntu-xenial
+          node: ubuntu-xenial-2-node
+          job-suffix: '-nv'
           branch-override: default
 
 - project:
