@@ -1,5 +1,5 @@
 - job-template:
-    name: '{pipeline}-kolla-dsvm-{action}-{distro}-{type}-{node}{job-suffix}'
+    name: '{pipeline}-kolla-dsvm-{action}-{distro}-{type}-{node}{suffix}'
     node: '{node}'
 
     wrappers:
@@ -23,7 +23,7 @@
       - console-log
 
 - job-template:
-    name: 'kolla-dsvm-build-{distro}-{type}-{node}{job-suffix}'
+    name: 'kolla-dsvm-build-{distro}-{type}-{node}{suffix}'
     node: '{node}'
 
     wrappers:
@@ -53,17 +53,17 @@
 
 - job-group:
     name: 'kolla-publish-image-jobs'
-    job-suffix: ''
+    suffix: ''
     type:
       - binary
       - source
     jobs:
-      - 'kolla-dsvm-build-{distro}-{type}-{node}{job-suffix}':
+      - 'kolla-dsvm-build-{distro}-{type}-{node}{suffix}':
           distro: ubuntu
           node:
             - ubuntu-trusty
             - ubuntu-xenial
-      - 'kolla-dsvm-build-{distro}-{type}-{node}{job-suffix}':
+      - 'kolla-dsvm-build-{distro}-{type}-{node}{suffix}':
           distro:
             - centos
             - oraclelinux

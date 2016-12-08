@@ -41,7 +41,7 @@
             openstack/tripleo-puppet-elements
 
 - job-template:
-    name: '{pipeline}-tripleo-quickstart-{scenario}-{node}{job-suffix}'
+    name: '{pipeline}-tripleo-quickstart-{scenario}-{node}{suffix}'
     node: '{node}'
 
     builders:
@@ -62,7 +62,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-tripleo-quickstart-extras-{scenario}-{node}{job-suffix}'
+    name: '{pipeline}-tripleo-quickstart-extras-{scenario}-{node}{suffix}'
     node: '{node}'
 
     builders:
@@ -218,8 +218,8 @@
 - job-group:
     name: 'tripleo-quickstart-jobs'
     jobs:
-      - '{pipeline}-tripleo-quickstart-{scenario}-{node}{job-suffix}':
-          job-suffix: '-nv'
+      - '{pipeline}-tripleo-quickstart-{scenario}-{node}{suffix}':
+          suffix: '-nv'
           node:
             - centos-7
           pipeline: gate
@@ -229,8 +229,8 @@
 - job-group:
     name: 'tripleo-quickstart-extras-jobs'
     jobs:
-      - '{pipeline}-tripleo-quickstart-extras-{scenario}-{node}{job-suffix}':
-          job-suffix: '-nv'
+      - '{pipeline}-tripleo-quickstart-extras-{scenario}-{node}{suffix}':
+          suffix: '-nv'
           node:
             - centos-7
           pipeline: gate

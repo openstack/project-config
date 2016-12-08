@@ -17,7 +17,7 @@
               git://git.openstack.org openstack/windmill
 
 - job-template:
-    name: '{pipeline}-windmill-{scenario}-{ostype}{job-suffix}'
+    name: '{pipeline}-windmill-{scenario}-{ostype}{suffix}'
     node: '{ostype}'
 
     builders:
@@ -33,8 +33,8 @@
 - job-group:
     name: 'windmill-jobs'
     jobs:
-      - '{pipeline}-windmill-{scenario}-{ostype}{job-suffix}':
-          job-suffix: '-nv'
+      - '{pipeline}-windmill-{scenario}-{ostype}{suffix}':
+          suffix: '-nv'
           ostype:
             - centos-7
             - fedora-24
@@ -43,8 +43,8 @@
           pipeline: gate
           scenario:
             - deploy
-      - '{pipeline}-windmill-{scenario}-{ostype}{job-suffix}':
-          job-suffix: ''
+      - '{pipeline}-windmill-{scenario}-{ostype}{suffix}':
+          suffix: ''
           ostype:
             - ubuntu-trusty
             - ubuntu-xenial
