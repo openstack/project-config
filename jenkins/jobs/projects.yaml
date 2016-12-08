@@ -8497,31 +8497,35 @@
       - 'gate-{name}-releasenotes'
       - 'gate-{name}-python35{suffix}':
           suffix: ''
-      - '{pipeline}-neutron-vpnaas-dsvm-{vpnaastest}{job-suffix}':
+      - '{pipeline}-neutron-vpnaas-dsvm-{vpnaastest}-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
-          vpnaastest: functional
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
+          vpnaastest:
+            - functional
+            - functional-sswan
           job-suffix: ''
           branch-override: default
-      - '{pipeline}-neutron-vpnaas-dsvm-{vpnaastest}{job-suffix}':
+      - '{pipeline}-neutron-vpnaas-dsvm-rally-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
-          vpnaastest: functional-sswan
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           job-suffix: ''
           branch-override: default
-      - '{pipeline}-neutron-vpnaas-dsvm-rally{job-suffix}':
+      - '{pipeline}-neutron-dsvm-tempest-vpnaas-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           job-suffix: ''
           branch-override: default
-      - '{pipeline}-neutron-dsvm-tempest-vpnaas{job-suffix}':
+      - '{pipeline}-neutron-vpnaas-dsvm-api{which}-{node}{job-suffix}':
           pipeline: gate
-          node: ubuntu-trusty
-          job-suffix: ''
-          branch-override: default
-      - '{pipeline}-neutron-vpnaas-dsvm-api{which}{job-suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           job-suffix: '-nv'
           branch-override: default
           which: ''
