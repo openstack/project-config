@@ -4305,15 +4305,9 @@
             - ubuntu-xenial
           suffix: ''
           branch-override: default
-          network: 'neutron'
-      - '{pipeline}-functional-{network}-dsvm-ec2api-{node}{suffix}':
-          pipeline: gate
-          node:
-            - ubuntu-trusty
-            - ubuntu-xenial
-          suffix: ''
-          branch-override: default
-          network: 'nova-network'
+          network:
+            - 'neutron'
+            - 'nova-network'
       - 'ec2-api-functional-neutron-dsvm-full-{node}{suffix}':
           node:
             - ubuntu-trusty
@@ -4920,20 +4914,16 @@
     jobs:
       - python-jobs
       - pypi-jobs
-      - '{pipeline}-functional-neutron-dsvm-gceapi-{node}{suffix}':
+      - '{pipeline}-functional-{network}-dsvm-gceapi-{node}{suffix}':
             pipeline: gate
             node:
               - ubuntu-trusty
               - ubuntu-xenial
             suffix: '-nv'
             branch-override: default
-      - '{pipeline}-functional-nova-network-dsvm-gceapi-{node}{suffix}':
-            pipeline: gate
-            node:
-              - ubuntu-trusty
-              - ubuntu-xenial
-            suffix: '-nv'
-            branch-override: default
+            network:
+              - 'neutron'
+              - 'nova-network'
 
 - project:
     name: gear
