@@ -16409,11 +16409,18 @@
       - python-jobs
       - 'gate-{name}-python35{suffix}':
           suffix: '-nv'
-      - '{pipeline}-zun-devstack-dsvm-{driver}':
+      - '{pipeline}-zun-devstack-dsvm-{driver}{suffix}':
           pipeline: gate
           node: ubuntu-xenial
           driver: 'docker'
           branch-override: default
+          suffix: ''
+      - '{pipeline}-zun-devstack-dsvm-{driver}{suffix}':
+          pipeline: gate
+          node: ubuntu-xenial
+          driver: 'nova-docker'
+          branch-override: default
+          suffix: '-nv'
 
 - project:
     name: zun-ui
