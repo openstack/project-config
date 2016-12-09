@@ -3336,6 +3336,9 @@ jobs:
   - name: ^gate-nova-lxd-(docs|pep8|python27)-ubuntu-xenial
     branch: ^(stable/(mitaka|newton)|master)$
 
+  - name: ^gate-swift3-tox-s3tests_
+    voting: false
+
   # Mutexes
   - name: reprepro-import-debian-openstack-jessie
     mutex: mirror.deb-openstack
@@ -17261,25 +17264,18 @@ projects:
       - name: merge-check
       - name: python-jobs
     check:
-      - gate-swift3-pylint-ubuntu-trusty
       - gate-swift3-pylint-ubuntu-xenial
-      - gate-swift3-tox-tempauth-ubuntu-trusty
       - gate-swift3-tox-tempauth-ubuntu-xenial
-      - gate-swift3-tox-keystone-ubuntu-trusty
       - gate-swift3-tox-keystone-ubuntu-xenial
-      - gate-swift3-tox-s3acl-ubuntu-trusty
       - gate-swift3-tox-s3acl-ubuntu-xenial
+      - gate-swift3-tox-s3tests_tempauth-ubuntu-xenial
+      - gate-swift3-tox-s3tests_keystone-ubuntu-xenial
     gate:
-      - gate-swift3-pylint-ubuntu-trusty
       - gate-swift3-pylint-ubuntu-xenial
-      - gate-swift3-tox-tempauth-ubuntu-trusty
       - gate-swift3-tox-tempauth-ubuntu-xenial
-      - gate-swift3-tox-keystone-ubuntu-trusty
       - gate-swift3-tox-keystone-ubuntu-xenial
-      - gate-swift3-tox-s3acl-ubuntu-trusty
       - gate-swift3-tox-s3acl-ubuntu-xenial
     post:
-      - swift3-coverage-ubuntu-trusty
       - swift3-coverage-ubuntu-xenial
     release:
       - swift3-tarball
