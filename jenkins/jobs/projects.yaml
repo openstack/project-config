@@ -5765,6 +5765,7 @@
       - 'agent_ssh'
       - 'pxe_ipmitool'
       - 'agent_ipmitool'
+      - 'pxe_snmp'
 
     ramdisk-type:
       - 'coreos'
@@ -5782,6 +5783,9 @@
       # pxe_ssh driver with whole disk images is experimental
       - image-type: 'wholedisk'
         driver: 'pxe_ssh'
+        suffix: ''
+      # pxe_snmp driver is non-voting
+      - driver: 'pxe_snmp'
         suffix: ''
       # coreos jobs are only run as source jobs
       - ramdisk-type: 'coreos'
@@ -5819,6 +5823,9 @@
         node: 'ubuntu-xenial'
       - driver: 'agent_ssh'
         node: 'ubuntu-xenial'
+      # run new pxe_snmp jobs only on xenial
+      - driver: 'pxe_snmp'
+        node: 'ubuntu-trusty'
 
     jobs:
       - coverage-db-jobs
@@ -5859,15 +5866,6 @@
           suffix: '-nv'
           ramdisk-type: 'tinyipa'
           image-type: 'wholedisk'
-          src: ''
-      - '{pipeline}-tempest-dsvm-ironic-ipa-{image-type}-{driver}-{ramdisk-type}{src}-{node}{suffix}':
-          pipeline: gate
-          node: ubuntu-xenial
-          branch-override: default
-          driver: 'pxe_snmp'
-          suffix: '-nv'
-          ramdisk-type: 'tinyipa'
-          image-type: 'partition'
           src: ''
       - '{pipeline}-ironic-dsvm-functional-{node}{suffix}':
           pipeline: gate
