@@ -13860,34 +13860,38 @@
           node:
             - centos-7
             - ubuntu-xenial
-      - gate-rally-dsvm-verify-{job-mode}-{ctx-mode}:
+      - gate-rally-dsvm-verify-{job-mode}-{ctx-mode}{suffix}:
           job-mode: light
           ctx-mode: discover-resources
           compare: 1
           ceilometer: 0
           heat: 0
           sahara: 0
-      - gate-rally-dsvm-verify-{job-mode}-{ctx-mode}:
+          suffix: ''
+      - gate-rally-dsvm-verify-{job-mode}-{ctx-mode}{suffix}:
           job-mode: full
           ctx-mode: discover-resources
           compare: 0
           ceilometer: 1
           heat: 1
           sahara: 1
-      - gate-rally-dsvm-verify-{job-mode}-{ctx-mode}:
+          suffix: ''
+      - gate-rally-dsvm-verify-{job-mode}-{ctx-mode}{suffix}:
           job-mode: light
           ctx-mode: create-resources
           compare: 1
           ceilometer: 1
           heat: 1
           sahara: 1
-      - gate-rally-dsvm-verify-{job-mode}-{ctx-mode}:
+          suffix: '-nv'
+      - gate-rally-dsvm-verify-{job-mode}-{ctx-mode}{suffix}:
           job-mode: full
           ctx-mode: create-resources
           compare: 0
           ceilometer: 1
           heat: 1
           sahara: 1
+          suffix: '-nv'
       - gate-rally-dsvm-certification-with-keystone-{keystone-version}{suffix}:
           keystone-version: v2
           suffix: '-nv'
@@ -13909,15 +13913,18 @@
           suffix: '-nv'
           name: 'unstable'
           telemetry: '1'
-      - gate-rally-dsvm-rally-{service}:
+      - gate-rally-dsvm-rally-{service}{suffix}:
           service: cinder
           heat: 0
-      - gate-rally-dsvm-rally-{service}:
+          suffix: '-nv'
+      - gate-rally-dsvm-rally-{service}{suffix}:
           service: heat
           heat: 1
-      - gate-rally-dsvm-rally-{service}:
+          suffix: '-nv'
+      - gate-rally-dsvm-rally-{service}{suffix}:
           heat: 0
           service: nova
+          suffix: '-nv'
       - gate-rally-dsvm-{name}-{node}{suffix}:
           node: ubuntu-xenial
           suffix: ''
