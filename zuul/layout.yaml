@@ -2252,13 +2252,40 @@ jobs:
   - name: ^gate-oslo.messaging-dsvm-functional-.*-zeromq-.*-ubuntu-trusty.*$
     branch: ^stable/mitaka$
 
-  - name: ^gate-cinder-pylint.*$
-    voting: false
-
   - name: ^gate-python-cinderclient-pylint.*$
     voting: false
 
   - name: ^gate-os-brick-pylint.*$
+    voting: false
+
+  # Special handling for cinder driverfixes branches:
+  # Only pep8 should run on it, nothing else.
+  # We do not need to handle any trusty jobs, those have already
+  # an explicit branch condition that avoids running on driverfixes.
+
+  - name: ^gate-cinder-(api-ref|python34-db|requirements)$
+    branch: ^(?!driverfixes/).*$
+
+  # Xenial jobs
+  - name: ^gate-cinder-(docs|python27-db|pylint)-ubuntu-xenial$
+    branch: ^(?!(stable/(liberty|mitaka)|driverfixes/)).*$
+
+  - name: ^gate-cinder-python35-db
+    branch: ^(?!(stable/(liberty|mitaka)|driverfixes/)).*$
+
+  # This job should run on driverfixes/mitaka branch
+  - name: ^gate-cinder-pep8-ubuntu-trusty
+    branch: ^((stable/(liberty|mitaka)|driverfixes/mitaka))$
+
+  # This job should run on future driverfixes/ branches
+  - name: ^gate-cinder-pep8-ubuntu-xenial
+    branch: ^(?!(stable/(liberty|mitaka)|(driverfixes/mitaka))).*$
+
+  # Skip post job for driverfixes
+  - name: ^cinder-.*$
+    branch: ^(?!driverfixes/).*$
+
+  - name: ^gate-cinder-pylint.*$
     voting: false
 
   - name: ^gate-cinder-tox-db-functional-ubuntu-trusty$
@@ -2269,7 +2296,7 @@ jobs:
     voting: false
 
   - name: ^gate-cinder-tox-compliance-ubuntu-xenial$
-    branch: ^(?!stable/(liberty|mitaka)).*$
+    branch: ^(?!(stable/(liberty|mitaka)|driverfixes/)).*$
 
   - name: gate-grenade-dsvm-cinder-multinode-ubuntu-trusty
     branch: ^stable/mitaka.*$
