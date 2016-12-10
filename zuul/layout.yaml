@@ -3350,6 +3350,11 @@ jobs:
   - name: ^gate-swift3-tox-s3tests_
     voting: false
 
+  # Trusty job needs to run on master as well for now since
+  # storyboard is deployed currently on trusty from master.
+  - name: gate-storyboard-js-integration-ubuntu-trusty
+    branch: ^master$
+
   # Mutexes
   - name: reprepro-import-debian-openstack-jessie
     mutex: mirror.deb-openstack
@@ -4962,7 +4967,8 @@ projects:
     release:
       - storyboard-infra-docs
     experimental:
-      - gate-storyboard-js-integration
+      - gate-storyboard-js-integration-ubuntu-trusty
+      - gate-storyboard-js-integration-ubuntu-xenial
 
   - name: openstack-infra/storyboard-webclient
     template:
@@ -4983,7 +4989,8 @@ projects:
     release:
       - storyboard-webclient-js-release-master
     experimental:
-      - gate-storyboard-js-integration
+      - gate-storyboard-js-integration-ubuntu-trusty
+      - gate-storyboard-js-integration-ubuntu-xenial
 
   - name: openstack-infra/subunit2sql
     template:
