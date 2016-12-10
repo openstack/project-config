@@ -2274,7 +2274,7 @@ jobs:
   - name: gate-grenade-dsvm-cinder-multinode-ubuntu-trusty
     branch: ^stable/mitaka.*$
 
-  - name: dev-zuul-coverage
+  - name: ^zuul-coverage.*$
     voting: false
 
   - name: ^gate-jenkins-job-builder-tox-docs-linkcheck-ubuntu-(trusty|xenial)$
@@ -5102,12 +5102,9 @@ projects:
       - name: python-jobs
       - name: infra-publish-jobs
     check:
-      - dev-zuul-coverage
-    post:
-      - zuul-coverage-ubuntu-trusty
       - zuul-coverage-ubuntu-xenial
-    periodic:
-      - periodic-test
+    post:
+      - zuul-coverage-ubuntu-xenial
 
   - name: openstack-infra/zuul-packaging
     template:
