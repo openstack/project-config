@@ -709,10 +709,8 @@ project-templates:
 
   - name: infra-publish-jobs
     check:
-      - 'gate-{name}-docs-ubuntu-trusty'
       - 'gate-{name}-docs-ubuntu-xenial'
     gate:
-      - 'gate-{name}-docs-ubuntu-trusty'
       - 'gate-{name}-docs-ubuntu-xenial'
     post:
       - '{name}-infra-docs'
@@ -2353,7 +2351,7 @@ jobs:
       - 'tools/jenkins-projects-checks.py'
       - 'tox.ini'
 
-  - name: ^gate-project-config-linters-ubuntu-(trusty|xenial)$
+  - name: ^gate-project-config-linters-ubuntu-xenial$
     files:
       - '^.*\.sh$'
       - '^.*\.py$'
@@ -2762,9 +2760,6 @@ jobs:
     voting: false
 
   - name: gate-solum-requirements
-    voting: false
-
-  - name: gate-reviewstats-python34
     voting: false
 
   - name: gate-refstack-python34
@@ -3694,10 +3689,8 @@ projects:
       - name: publish-to-pypi
       - name: pypy-jobs
       - name: python-jobs
-      - name: python34-jobs
       - name: python35-jobs
     post:
-      - bindep-coverage-ubuntu-trusty
       - bindep-coverage-ubuntu-xenial
     release:
       - bindep-infra-docs-tags-only
@@ -3707,10 +3700,8 @@ projects:
       - name: merge-check
       - name: publish-to-pypi
     check:
-      - gate-bugdaystats-pep8-ubuntu-trusty
       - gate-bugdaystats-pep8-ubuntu-xenial
     gate:
-      - gate-bugdaystats-pep8-ubuntu-trusty
       - gate-bugdaystats-pep8-ubuntu-xenial
     post:
       - bugdaystats-branch-tarball
@@ -3782,7 +3773,6 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python34-jobs
       - name: python35-jobs
       - name: publish-to-pypi
       - name: docs-on-rtfd
@@ -3805,7 +3795,7 @@ projects:
       - name: merge-check
       - name: publish-to-pypi
       - name: python-jobs
-      - name: python34-jobs
+      - name: python35-jobs
 
   - name: openstack-infra/gerrit
     template:
@@ -3827,10 +3817,8 @@ projects:
       - name: merge-check
       - name: publish-to-pypi
     check:
-      - gate-gerritbot-pep8-ubuntu-trusty
       - gate-gerritbot-pep8-ubuntu-xenial
     gate:
-      - gate-gerritbot-pep8-ubuntu-trusty
       - gate-gerritbot-pep8-ubuntu-xenial
     post:
       - gerritbot-branch-tarball
@@ -3839,7 +3827,6 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python34-jobs
       - name: python35-jobs
       - name: publish-to-pypi
 
@@ -3847,11 +3834,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python34-jobs
       - name: python35-jobs
       - name: publish-to-pypi
-    check:
-      - gate-git-restack-python34
     release:
       - git-restack-infra-docs-tags-only
 
@@ -3859,11 +3843,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python34-jobs
       - name: python35-jobs
       - name: publish-to-pypi
-    check:
-      - gate-git-review-python34
     release:
       - git-review-infra-docs-tags-only
 
@@ -3882,7 +3863,6 @@ projects:
       - name: merge-check
       - name: publish-to-pypi
       - name: python-jobs
-      - name: python34-jobs
       - name: python35-jobs
       - name: infra-publish-jobs
 
@@ -3891,14 +3871,11 @@ projects:
       - name: merge-check
       - name: publish-to-pypi
       - name: python-jobs
-      - name: python34-jobs
       - name: python35-jobs
       - name: infra-publish-jobs
     check:
-      - grafyaml-coverage-ubuntu-trusty
       - grafyaml-coverage-ubuntu-xenial
     post:
-      - grafyaml-coverage-ubuntu-trusty
       - grafyaml-coverage-ubuntu-xenial
 
   - name: openstack-infra/groups
@@ -3940,11 +3917,9 @@ projects:
     template:
       - name: merge-check
     check:
-      - gate-irc-meetings-pep8-ubuntu-trusty
       - gate-irc-meetings-pep8-ubuntu-xenial
       - gate-irc-meetings-tox-ical
     gate:
-      - gate-irc-meetings-pep8-ubuntu-trusty
       - gate-irc-meetings-pep8-ubuntu-xenial
       - gate-irc-meetings-tox-ical
     post:
@@ -3955,24 +3930,20 @@ projects:
       - name: merge-check
       - name: publish-to-pypi
     check:
-      - gate-jeepyb-pep8-ubuntu-trusty
       - gate-jeepyb-pep8-ubuntu-xenial
     gate:
-      - gate-jeepyb-pep8-ubuntu-trusty
       - gate-jeepyb-pep8-ubuntu-xenial
 
   - name: openstack-infra/jenkins-job-builder
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python34-jobs
       - name: python35-jobs
       - name: publish-to-pypi
       - name: infra-publish-jobs
     check:
       - jenkins-job-builder-coverage-ubuntu-trusty
       - jenkins-job-builder-coverage-ubuntu-xenial
-      - gate-jenkins-job-builder-tox-docs-linkcheck-ubuntu-trusty
       - gate-jenkins-job-builder-tox-docs-linkcheck-ubuntu-xenial
     post:
       - jenkins-job-builder-coverage-ubuntu-trusty
@@ -4005,13 +3976,9 @@ projects:
     template:
       - name: merge-check
     check:
-      - gate-lodgeit-pep8-ubuntu-trusty
-      - gate-lodgeit-python27-ubuntu-trusty
       - gate-lodgeit-pep8-ubuntu-xenial
       - gate-lodgeit-python27-ubuntu-xenial
     gate:
-      - gate-lodgeit-pep8-ubuntu-trusty
-      - gate-lodgeit-python27-ubuntu-trusty
       - gate-lodgeit-pep8-ubuntu-xenial
       - gate-lodgeit-python27-ubuntu-xenial
 
@@ -4075,10 +4042,10 @@ projects:
       - name: infra-publish-jobs
     check:
       - gate-openstackid-unittests
-      - gate-openstackid-docs-ubuntu-trusty
       - gate-openstackid-docs-ubuntu-xenial
     gate:
       - gate-openstackid-unittests
+      - gate-openstackid-docs-ubuntu-xenial
     post:
       - openstackid-release-branch
     release:
@@ -4098,13 +4065,9 @@ projects:
     template:
       - name: merge-check
     check:
-      - gate-os-loganalyze-pep8-ubuntu-trusty
-      - gate-os-loganalyze-python27-ubuntu-trusty
       - gate-os-loganalyze-pep8-ubuntu-xenial
       - gate-os-loganalyze-python27-ubuntu-xenial
     gate:
-      - gate-os-loganalyze-pep8-ubuntu-trusty
-      - gate-os-loganalyze-python27-ubuntu-trusty
       - gate-os-loganalyze-pep8-ubuntu-xenial
       - gate-os-loganalyze-python27-ubuntu-xenial
     experimental:
@@ -4118,7 +4081,6 @@ projects:
       - gate-project-config-gerrit
       - gate-project-config-grafyaml
       - gate-project-config-layout
-      - gate-project-config-linters-ubuntu-trusty
       - gate-project-config-linters-ubuntu-xenial
       - gate-project-config-irc-access
       - gate-project-config-jenkins-project
@@ -4130,7 +4092,6 @@ projects:
       - gate-project-config-gerrit
       - gate-project-config-grafyaml
       - gate-project-config-layout
-      - gate-project-config-linters-ubuntu-trusty
       - gate-project-config-linters-ubuntu-xenial
       - gate-project-config-irc-access
       - gate-project-config-nodepool
@@ -4150,12 +4111,10 @@ projects:
       - name: merge-check
     check:
       - gate-project-config-layout
-      - gate-project-config-example-linters-ubuntu-trusty
       - gate-project-config-example-linters-ubuntu-xenial
       - gate-project-config-jenkins-project
     gate:
       - gate-project-config-layout
-      - gate-project-config-example-linters-ubuntu-trusty
       - gate-project-config-example-linters-ubuntu-xenial
       - gate-project-config-jenkins-project
 
@@ -4855,12 +4814,10 @@ projects:
       - name: merge-check
       - name: publish-to-pypi
     check:
-      - gate-pypi-mirror-pep8-ubuntu-trusty
       - gate-pypi-mirror-pep8-ubuntu-xenial
       - gate-requirements-integration-dsvm-ubuntu-trusty
       - gate-requirements-integration-dsvm-ubuntu-xenial
     gate:
-      - gate-pypi-mirror-pep8-ubuntu-trusty
       - gate-pypi-mirror-pep8-ubuntu-xenial
       - gate-requirements-integration-dsvm-ubuntu-trusty
       - gate-requirements-integration-dsvm-ubuntu-xenial
@@ -4870,7 +4827,6 @@ projects:
       - name: merge-check
       - name: publish-to-pypi
       - name: python-jobs
-      - name: python34-jobs
       - name: python35-jobs
       - name: infra-publish-jobs
     post:
@@ -4884,14 +4840,10 @@ projects:
     template:
       - name: merge-check
     check:
-      - gate-release-tools-pep8-ubuntu-trusty
-      - gate-release-tools-python27-ubuntu-trusty
       - gate-release-tools-pep8-ubuntu-xenial
       - gate-release-tools-python27-ubuntu-xenial
       - gate-release-tools-bashate
     gate:
-      - gate-release-tools-pep8-ubuntu-trusty
-      - gate-release-tools-python27-ubuntu-trusty
       - gate-release-tools-pep8-ubuntu-xenial
       - gate-release-tools-python27-ubuntu-xenial
       - gate-release-tools-bashate
@@ -4906,10 +4858,8 @@ projects:
       - name: merge-check
       - name: publish-to-pypi
     check:
-      - gate-requestsexceptions-pep8-ubuntu-trusty
       - gate-requestsexceptions-pep8-ubuntu-xenial
     gate:
-      - gate-requestsexceptions-pep8-ubuntu-trusty
       - gate-requestsexceptions-pep8-ubuntu-xenial
 
   - name: openstack-infra/reviewday
@@ -4917,10 +4867,8 @@ projects:
       - name: merge-check
       - name: publish-to-pypi
     check:
-      - gate-reviewday-pep8-ubuntu-trusty
       - gate-reviewday-pep8-ubuntu-xenial
     gate:
-      - gate-reviewday-pep8-ubuntu-trusty
       - gate-reviewday-pep8-ubuntu-xenial
     post:
       - reviewday-branch-tarball
@@ -4930,8 +4878,7 @@ projects:
       - name: merge-check
       - name: publish-to-pypi
       - name: python-jobs
-    check:
-      - gate-reviewstats-python34
+      - name: python35-jobs-nv
 
   - name: openstack-infra/shade
     template:
@@ -4962,10 +4909,8 @@ projects:
       - name: merge-check
       - name: publish-to-pypi
     check:
-      - gate-statusbot-pep8-ubuntu-trusty
       - gate-statusbot-pep8-ubuntu-xenial
     gate:
-      - gate-statusbot-pep8-ubuntu-trusty
       - gate-statusbot-pep8-ubuntu-xenial
     post:
       - statusbot-branch-tarball
@@ -4975,21 +4920,15 @@ projects:
       - name: infra-publish-jobs
       - name: merge-check
       - name: publish-to-pypi
-      - name: python34-db-jobs
       - name: python35-db-jobs-nv
     check:
-      - gate-storyboard-pep8-ubuntu-trusty
-      - gate-storyboard-python27-db-ubuntu-trusty
       - gate-storyboard-pep8-ubuntu-xenial
       - gate-storyboard-python27-db-ubuntu-xenial
     gate:
-      - gate-storyboard-pep8-ubuntu-trusty
-      - gate-storyboard-python27-db-ubuntu-trusty
       - gate-storyboard-pep8-ubuntu-xenial
       - gate-storyboard-python27-db-ubuntu-xenial
     post:
       - storyboard-branch-tarball
-      - storyboard-coverage-db-ubuntu-trusty
       - storyboard-coverage-db-ubuntu-xenial
     pre-release:
       - storyboard-infra-docs
@@ -5026,11 +4965,9 @@ projects:
       - name: merge-check
       - name: publish-to-pypi
       - name: python-db-jobs
-      - name: python34-db-jobs
       - name: python35-db-jobs
       - name: release-notes-jobs
     post:
-      - subunit2sql-docs-ubuntu-trusty
       - subunit2sql-docs-ubuntu-xenial
 
   - name: openstack-infra/system-config
@@ -5040,11 +4977,9 @@ projects:
       - name: infra-publish-jobs
       - name: infra-logstash-filter-jobs
     check:
-      - gate-system-config-linters-ubuntu-trusty
       - gate-system-config-linters-ubuntu-xenial
       - gate-system-config-puppet-syntax
     gate:
-      - gate-system-config-linters-ubuntu-trusty
       - gate-system-config-linters-ubuntu-xenial
       - gate-system-config-puppet-syntax
 
@@ -5109,13 +5044,10 @@ projects:
     template:
       - name: merge-check
       - name: publish-to-pypi
-      - name: python34-jobs
       - name: python35-jobs
     check:
-      - gate-yaml2ical-pep8-ubuntu-trusty
       - gate-yaml2ical-pep8-ubuntu-xenial
     gate:
-      - gate-yaml2ical-pep8-ubuntu-trusty
       - gate-yaml2ical-pep8-ubuntu-xenial
 
   - name: openstack-infra/zmq-event-publisher
