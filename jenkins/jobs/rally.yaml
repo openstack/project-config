@@ -156,6 +156,13 @@
           export ENABLED_SERVICES
           export DEVSTACK_LOCAL_CONFIG
 
+          if [[ "$ZUUL_PROJECT" = "openstack/neutron" ]]; then
+              function gate_hook {{
+                  bash -xe $BASE/new/neutron/neutron/tests/contrib/gate_hook.sh rally {scenario}
+              }}
+              export -f gate_hook
+          fi
+
           function post_test_hook {{
               $BASE/new/rally/tests/ci/rally-gate.sh
           }}
