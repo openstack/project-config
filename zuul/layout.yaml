@@ -1873,9 +1873,6 @@ jobs:
   - name: gate-grenade-dsvm-neutron-dvr-multinode-ubuntu-trusty
     branch: ^stable/newton$
 
-  - name: ^gate-rally-dsvm-rally-.*$
-    voting: false
-
   - name: ^gate-rally-tox-self-ubuntu-(trusty|xenial)$
     voting: false
 
@@ -1890,17 +1887,13 @@ jobs:
       - ^rally/verification.*$
       - ^tests/ci/.*verify.*$
 
-  - name: gate-rally-dsvm-verify-full-create-resources
-    voting: false
+  - name: ^gate-rally-dsvm-verify-full-create-resources.*$
     files:
       - ^rally/cli/commands/verify.py$
       - ^rally/common/io/subunit_v2.py$
       - ^rally/ui/templates/verification.*$
       - ^rally/verification.*$
       - ^tests/ci/.*verify.*$
-
-  - name: gate-rally-dsvm-verify-light-create-resources
-    voting: false
 
   # NOTE(aweyl) tempest test for vitrage was introduced in the mitaka cycle,
   # so testing the earlier branches doesn't make sense.
@@ -16215,9 +16208,9 @@ projects:
       - gate-rally-install-ubuntu-xenial
       - gate-rally-dsvm-rally-ubuntu-xenial
       - gate-rally-dsvm-keystone-v2api-rally
-      - gate-rally-dsvm-rally-cinder
-      - gate-rally-dsvm-rally-heat
-      - gate-rally-dsvm-rally-nova
+      - gate-rally-dsvm-rally-cinder-nv
+      - gate-rally-dsvm-rally-heat-nv
+      - gate-rally-dsvm-rally-nova-nv
       - gate-rally-dsvm-manila-multibackend
       - gate-rally-dsvm-manila-multibackend-no-ss
       - gate-rally-dsvm-neutron-rally-ubuntu-xenial
@@ -16227,8 +16220,8 @@ projects:
       - gate-rally-dsvm-cli
       - gate-rally-dsvm-verify-light-discover-resources
       - gate-rally-dsvm-verify-full-discover-resources
-      - gate-rally-dsvm-verify-light-create-resources
-      - gate-rally-dsvm-verify-full-create-resources
+      - gate-rally-dsvm-verify-light-create-resources-nv
+      - gate-rally-dsvm-verify-full-create-resources-nv
       - gate-rally-tox-self-ubuntu-xenial
     gate:
       - gate-rally-install-centos-7
