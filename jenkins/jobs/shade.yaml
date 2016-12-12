@@ -19,6 +19,14 @@
           export DEVSTACK_GATE_HEAT=1
           export DEVSTACK_LOCAL_CONFIG="enable_plugin designate git://git.openstack.org/openstack/designate"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service horizon"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-acentral"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-acompute"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-alarm-evaluator"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-alarm-notifier"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-anotification"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-api"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-collector"
           export PROJECTS="openstack/designate $PROJECTS"
           export PROJECTS="openstack/designate-dashboard $PROJECTS"
           export PROJECTS="openstack/designate-tempest-plugin $PROJECTS"
@@ -59,12 +67,70 @@
           export DEVSTACK_GATE_HEAT=1
           export DEVSTACK_LOCAL_CONFIG="enable_plugin designate git://git.openstack.org/openstack/designate"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin magnum git://git.openstack.org/openstack/magnum"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"MAGNUM_GUEST_IMAGE_URL='http://tarballs.openstack.org/magnum/images/fedora-atomic-f23-dib.qcow2'"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"MAGNUM_IMAGE_NAME='fedora-atomic-f23-dib'"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service horizon"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-acentral"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-acompute"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-alarm-evaluator"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-alarm-notifier"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-anotification"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-api"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-collector"
           export PROJECTS="openstack/designate $PROJECTS"
           export PROJECTS="openstack/designate-dashboard $PROJECTS"
           export PROJECTS="openstack/designate-tempest-plugin $PROJECTS"
+          export PROJECTS="openstack-infra/shade $PROJECTS"
+
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+
+          function post_test_hook {{
+              $BASE/new/shade/shade/tests/functional/hooks/post_test_hook.sh
+          }}
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+
+- job-template:
+    name: '{pipeline}-shade-dsvm-functional-magnum{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 70
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_NEUTRON=1
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin magnum git://git.openstack.org/openstack/magnum"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"MAGNUM_GUEST_IMAGE_URL='http://tarballs.openstack.org/magnum/images/fedora-atomic-f23-dib.qcow2'"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"MAGNUM_IMAGE_NAME='fedora-atomic-f23-dib'"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service horizon"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-account"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-container"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-object"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-proxy"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-acentral"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-acompute"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-alarm-evaluator"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-alarm-notifier"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-anotification"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-api"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-collector"
+
           export PROJECTS="openstack/magnum $PROJECTS"
           export PROJECTS="openstack/python-magnumclient $PROJECTS"
           export PROJECTS="openstack-infra/shade $PROJECTS"
@@ -106,14 +172,9 @@
           export DEVSTACK_GATE_HEAT=1
           export DEVSTACK_LOCAL_CONFIG="enable_plugin designate git://git.openstack.org/openstack/designate"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin magnum git://git.openstack.org/openstack/magnum"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"MAGNUM_GUEST_IMAGE_URL='http://tarballs.openstack.org/magnum/images/fedora-atomic-f23-dib.qcow2'"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"MAGNUM_IMAGE_NAME='fedora-atomic-f23-dib'"
           export PROJECTS="openstack/designate $PROJECTS"
           export PROJECTS="openstack/designate-dashboard $PROJECTS"
           export PROJECTS="openstack/designate-tempest-plugin $PROJECTS"
-          export PROJECTS="openstack/magnum $PROJECTS"
-          export PROJECTS="openstack/python-magnumclient $PROJECTS"
           export PROJECTS="openstack-infra/shade $PROJECTS"
           export PROJECTS="openstack/os-client-config $PROJECTS"
           export PROJECTS="openstack/keystoneauth $PROJECTS"
@@ -164,6 +225,14 @@
           export DEVSTACK_GATE_HEAT=1
           export DEVSTACK_LOCAL_CONFIG="enable_plugin designate git://git.openstack.org/openstack/designate"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service horizon"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-acentral"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-acompute"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-alarm-evaluator"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-alarm-notifier"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-anotification"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-api"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-collector"
           export PROJECTS="openstack/designate $PROJECTS"
           export PROJECTS="openstack/designate-dashboard $PROJECTS"
           export PROJECTS="openstack/designate-tempest-plugin $PROJECTS"
@@ -205,14 +274,17 @@
           export DEVSTACK_GATE_HEAT=1
           export DEVSTACK_LOCAL_CONFIG="enable_plugin designate git://git.openstack.org/openstack/designate"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin magnum git://git.openstack.org/openstack/magnum"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"MAGNUM_GUEST_IMAGE_URL='http://tarballs.openstack.org/magnum/images/fedora-atomic-f23-dib.qcow2'"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"MAGNUM_IMAGE_NAME='fedora-atomic-f23-dib'"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service horizon"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-acentral"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-acompute"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-alarm-evaluator"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-alarm-notifier"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-anotification"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-api"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-collector"
           export PROJECTS="openstack/designate $PROJECTS"
           export PROJECTS="openstack/designate-dashboard $PROJECTS"
           export PROJECTS="openstack/designate-tempest-plugin $PROJECTS"
-          export PROJECTS="openstack/magnum $PROJECTS"
-          export PROJECTS="openstack/python-magnumclient $PROJECTS"
           export PROJECTS="openstack-infra/shade $PROJECTS"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
@@ -251,14 +323,17 @@
           export DEVSTACK_GATE_HEAT=1
           export DEVSTACK_LOCAL_CONFIG="enable_plugin designate git://git.openstack.org/openstack/designate"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin magnum git://git.openstack.org/openstack/magnum"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"MAGNUM_GUEST_IMAGE_URL='http://tarballs.openstack.org/magnum/images/fedora-atomic-f23-dib.qcow2'"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"MAGNUM_IMAGE_NAME='fedora-atomic-f23-dib'"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service horizon"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-acentral"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-acompute"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-alarm-evaluator"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-alarm-notifier"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-anotification"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-api"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-collector"
           export PROJECTS="openstack/designate $PROJECTS"
           export PROJECTS="openstack/designate-dashboard $PROJECTS"
           export PROJECTS="openstack/designate-tempest-plugin $PROJECTS"
-          export PROJECTS="openstack/magnum $PROJECTS"
-          export PROJECTS="openstack/python-magnumclient $PROJECTS"
           export PROJECTS="openstack-infra/shade $PROJECTS"
 
           export BRANCH_OVERRIDE={branch-override}
