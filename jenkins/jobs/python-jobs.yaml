@@ -338,7 +338,7 @@
     node: ubuntu-trusty
 
 - job-template:
-    name: 'gate-{name}-python35{suffix}'
+    name: 'gate-{name}-python35-nv'
 
     wrappers:
       - build-timeout:
@@ -362,8 +362,62 @@
     node: ubuntu-xenial
 
 - job-template:
-    name: 'gate-{name}-python35-db{suffix}'
-    description: 'Same job as gate-{name}-python35{suffix} but sets up databases.'
+    name: 'gate-{name}-python35'
+
+    wrappers:
+      - build-timeout:
+          timeout: 40
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - zuul-git-prep-upper-constraints
+      - install-distro-packages
+      - extra-test-setup
+      - revoke-sudo
+      - python35
+      - assert-no-extra-files
+
+    publishers:
+      - test-results
+      - console-log
+
+    node: ubuntu-xenial
+
+- job-template:
+    name: 'gate-{name}-python35-db-nv'
+    description: 'Same job as gate-{name}-python35-nv but sets up databases.'
+
+    wrappers:
+      - build-timeout:
+          timeout: 40
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - zuul-git-prep-upper-constraints
+      - install-distro-packages
+      - mysql-prep
+      - pgsql-prep
+      - mysql-db:
+          db_name: openstack_citest
+      - pgsql-db:
+          db_name: openstack_citest
+      - revoke-sudo
+      - python35
+      - assert-no-extra-files
+
+    publishers:
+      - test-results
+      - console-log
+
+    node: ubuntu-xenial
+
+- job-template:
+    name: 'gate-{name}-python35-db'
+    description: 'Same job as gate-{name}-python35 but sets up databases.'
 
     wrappers:
       - build-timeout:
@@ -724,6 +778,7 @@
       - 'gate-{name}-pep8-{node}'
       - 'gate-{name}-python27-{node}'
       - 'gate-{name}-python34'
+      - 'gate-{name}-python35'
       - 'gate-{name}-docs-{node}'
       - 'gate-{name}-requirements'
       - '{name}-branch-tarball'
@@ -752,6 +807,7 @@
       - 'gate-{name}-pep8-{node}'
       - 'gate-{name}-python27-db-{node}'
       - 'gate-{name}-python34-db'
+      - 'gate-{name}-python35-db'
       - 'gate-{name}-docs-{node}'
       - 'gate-{name}-requirements'
       - '{name}-branch-tarball'
