@@ -7137,26 +7137,37 @@
       - translation-jobs
       - openstack-releasenotes-jobs
       - pypi-jobs
-      - '{pipeline}-tempest-dsvm-networking-odl-{odl-release-base}{suffix}':
+      - '{pipeline}-tempest-dsvm-networking-odl-{odl-release-base}-{driver-version}{suffix}':
           pipeline: gate
           node: ubuntu-trusty
           suffix: '-mitaka-nv'
+          driver-version: 'v1driver'
           odl-release-base:
             - 'beryllium-snapshot'
             - 'boron-snapshot'
             - 'carbon-snapshot'
           branch-override: stable/mitaka
-      - '{pipeline}-tempest-dsvm-networking-odl-{odl-release-base}{suffix}':
+      - '{pipeline}-tempest-dsvm-networking-odl-{odl-release-base}-{driver-version}{suffix}':
           pipeline: periodic
           node: ubuntu-trusty
           suffix: '-mitaka'
+          driver-version: 'v1driver'
           odl-release-base: 'boron-snapshot'
           branch-override: stable/mitaka
       # tempest-dsvm-networking-odl-{odl-release-base} is for newton+
-      - '{pipeline}-tempest-dsvm-networking-odl-{odl-release-base}{suffix}':
+      - '{pipeline}-tempest-dsvm-networking-odl-{odl-release-base}-{driver-version}{suffix}':
+          pipeline: gate
+          node: ubuntu-xenial
+          suffix: '-nv'
+          driver-version: 'v2driver'
+          odl-release-base:
+            - 'carbon-snapshot'
+          branch-override: default
+      - '{pipeline}-tempest-dsvm-networking-odl-{odl-release-base}-{driver-version}{suffix}':
           pipeline: gate
           node: ubuntu-xenial
           suffix: ''
+          driver-version: 'v1driver'
           odl-release-base:
             - 'beryllium-snapshot'
             - 'boron-snapshot'
