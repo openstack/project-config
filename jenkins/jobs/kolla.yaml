@@ -15,8 +15,12 @@
       - install-distro-packages
       - shell: |
           #!/bin/bash -xe
-          tools/setup_gate.sh
-          tox -e {action}-{distro}-{type}
+
+          export ACTION={action}
+          export BASE_DISTRO={distro}
+          export INSTALL_TYPE={type}
+
+          tools/gate_run.sh
 
     publishers:
       - devstack-logs
@@ -39,8 +43,12 @@
       - install-distro-packages
       - shell: |
           #!/bin/bash -xe
-          tools/setup_gate.sh
-          tox -e build-{distro}-{type}
+          export ACTION=build
+          export BASE_DISTRO={distro}
+          export INSTALL_TYPE={type}
+          export PACK_REGISTRY=1
+
+          tools/gate_run.sh
 
     publishers:
       - devstack-logs
