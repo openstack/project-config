@@ -2167,10 +2167,6 @@ jobs:
   - name: gate-networking-odl-python34
     branch: ^(?!stable/(icehouse|juno)).*$
 
-  - name: gate-vmware-nsx-python34-db
-    # support did not exist until after mitaka
-    branch: ^(?!stable/(icehouse|juno|liberty|mitaka)).*$
-
   - name: ^gate-tempest-dsvm-trove-ubuntu-(trusty|xenial)
     voting: false
 
@@ -2541,9 +2537,6 @@ jobs:
       - '^.*requirements.txt$'
       - '^.*requirements-py[2,3].txt$'
 
-  - name: gate-app-catalog-python34
-    voting: false
-
   - name: gate-app-catalog-ui-nodejs4-npm-run-lint
     voting: false
 
@@ -2572,7 +2565,7 @@ jobs:
           - ^doc/.*$
 
   - name: gate-designate-python34-db
-    branch: ^(?!stable/liberty).*$
+    branch: ^stable/mitaka$
 
   - name: ^gate-tempest-dsvm-designate-.*-ubuntu-trusty(-nv)?$
     branch: ^stable/mitaka$
@@ -2587,7 +2580,7 @@ jobs:
     branch: ^stable/newton$
 
   - name: gate-congress-python34
-    branch: ^(?!stable/liberty).*$
+    branch: ^stable/mitaka$
 
   - name: gate-congress-pe-replicated-nv
     branch: ^(?!stable/(liberty|mitaka)).*$
@@ -2621,9 +2614,6 @@ jobs:
 
   - name: ^gate-sahara-dashboard-tox-py27dj110-ubuntu-xenial$
     voting: false
-
-  - name: gate-sahara-dashboard-python34
-    branch: ^(?!stable/(mitaka)).*$
 
   - name: ^gate-sahara-tests-pylint.*
     voting: false
@@ -2671,7 +2661,7 @@ jobs:
 
   # python3 support was fully implemented only in mitaka
   - name: gate-mistral-python34
-    branch: ^(?!stable/(?:juno|liberty)).*$
+    branch: ^stable/mitaka$
 
   - name: gate-mistral-devstack-dsvm-kombu-nv
     branch: ^(?!stable/(?:liberty|mitaka|newton)).*$
@@ -2693,7 +2683,7 @@ jobs:
 
   - name: gate-python-muranoclient-python34
     # python3 support was implemented in mitaka
-    branch: ^(?!stable/liberty).*$
+    branch: ^stable/mitaka$
 
   - name: ^gate-python-muranoclient-tox-py27-mitaka-ubuntu-xenial$
     voting: false
@@ -2843,13 +2833,13 @@ jobs:
     branch: ^(stable/(liberty|mitaka))$
 
   - name: gate-tacker-python34-db
-    branch: ^(?!stable/liberty).*$
+    branch: ^stable/mitaka$
 
   - name: gate-tacker-horizon-python34
-    branch: ^(?!stable/liberty).*$
+    branch: ^stable/mitaka$
 
   - name: gate-python-tackerclient-python34
-    branch: ^(?!stable/liberty).*$
+    branch: ^stable/mitaka$
     voting: false
 
   - name: gate-tempest-dsvm-neutron-ipv6only-nv
@@ -3078,25 +3068,19 @@ jobs:
     branch: ^(?!stable/liberty).*$
 
   - name: gate-keystone-python34-db
-    branch: ^(?!stable/liberty).*$
+    branch: ^stable/mitaka$
 
   - name: ^gate-swift-tox-xfs-tmp-bandit-ubuntu-(trusty|xenial)$
     voting: false
 
   - name: gate-swift-python34
-    branch: ^(?!stable/liberty).*$
+    branch: ^stable/mitaka$
 
   - name: ^gate-glance-python34-db$
-    branch: ^(?!stable/liberty).*$
-
-  - name: gate-murano-python34-db
-    branch: ^(?!stable/(?:liberty|mitaka)).*$
+    branch: ^stable/mitaka$
 
   - name: gate-murano-dashboard-python34
-    branch: ^(?!stable/liberty).*$
-
-  - name: gate-murano-agent-python34
-    branch: ^(?!stable/(?:liberty|mitaka)).*$
+    branch: ^stable/mitaka$
 
   - name: ^gate-murano-apps-linters-ubuntu-(trusty|xenial)$
     voting: false
@@ -3106,7 +3090,7 @@ jobs:
       - 'RefStackClient/.*'
 
   - name: gate-networking-nec-python34
-    branch: ^(?!stable/liberty).*$
+    branch: ^stable/mitaka$
 
   - name: gate-quark-python34
     voting: false
@@ -3304,7 +3288,7 @@ jobs:
     branch: ^(?!stable/(?:juno|kilo)).*$
 
   - name: gate-python-fuelclient-python34
-    branch: ^(?!stable/(?:6\.1|7.0)).*$
+    branch: ^stable/(8\.0|mitaka).*$
 
   - name: ^gate-python-fuelclient-python27-ubuntu-trusty
     branch: ^(stable/(7\.0|8\.0|mitaka)).*$
@@ -5349,8 +5333,8 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
+      - name: python35-jobs-nv
     check:
-      - gate-app-catalog-python34
       - gate-app-catalog-nodejs4-npm-run-lint
     gate:
       - gate-app-catalog-nodejs4-npm-run-lint
@@ -11640,7 +11624,6 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python34-jobs
       - name: python35-jobs-nv
       - name: publish-to-pypi
       - name: check-requirements
@@ -11663,7 +11646,6 @@ projects:
       - name: publish-to-pypi
       - name: check-requirements
       - name: release-notes-jobs
-      - name: python34-jobs
       - name: python35-jobs-nv
       - name: translation-jobs
       - name: translation-jobs-mitaka
@@ -16483,7 +16465,6 @@ projects:
     template:
       - name: merge-check
       - name: check-requirements
-      - name: python34-jobs
       - name: python35-jobs
       - name: publish-to-pypi
       - name: translation-jobs
@@ -17842,7 +17823,6 @@ projects:
     template:
       - name: merge-check
       - name: python-db-jobs
-      - name: python34-db-jobs
       - name: python35-db-jobs
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
@@ -17918,12 +17898,12 @@ projects:
       - name: translation-jobs-mitaka
       - name: translation-jobs-newton
       - name: release-notes-jobs
+      - name: python35-jobs-nv
     check:
       - gate-trove-dashboard-pep8-ubuntu-trusty
       - gate-trove-dashboard-python27-ubuntu-trusty
       - gate-trove-dashboard-pep8-ubuntu-xenial
       - gate-trove-dashboard-python27-ubuntu-xenial
-      - gate-trove-dashboard-python34
     gate:
       - gate-trove-dashboard-pep8-ubuntu-trusty
       - gate-trove-dashboard-python27-ubuntu-trusty
@@ -18057,7 +18037,6 @@ projects:
       - name: python-db-jobs
       - name: check-requirements
       - name: publish-to-pypi
-      - name: python34-db-jobs
       - name: python35-db-jobs
 
   - name: openstack/vmware-nsxlib
