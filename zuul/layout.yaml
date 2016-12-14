@@ -1813,13 +1813,13 @@ jobs:
     branch: ^(stable/(liberty|mitaka|newton)|master)$
 
   - name: ^gate-requirements-tox-validate-ubuntu-xenial$
-    branch: ^(?!stable/(kilo|liberty|mitaka)).*$
+    branch: ^(?!stable/mitaka).*$
 
   - name: ^gate-requirements-tox-validate-projects-ubuntu-xenial$
     branch: master
 
   - name: gate-requirements-tox-babel-ubuntu-xenial
-    branch: ^(?!stable/(?:kilo|liberty|mitaka)).*$
+    branch: ^(?!stable/mitaka).*$
     files:
       - '^babel-test/.*'
       - '^tox.ini'
@@ -2417,10 +2417,11 @@ jobs:
 
   - name: ^gate-.*-tox-checklang.*ubuntu-xenial$
     # run this on all branches. The default ubuntu-xenial condition
-    # will not run this on older branches. We do not have a kilo
-    # branch but this allows to match all branches.
+    # will not run this on older branches. We do not have a
+    # thisbranchnamewillneverexist branch but this allows to match all
+    # branches.
     # TODO(jaegerandi): Remove branch condition once mitaka is retired.
-    branch: ^(?!stable/kilo).*$
+    branch: ^(?!stable/thisbranchnamewillneverexist).*$
     # Only run job if at least one po or pot file was changed
     files:
       - '^.*\.po$'
@@ -3252,15 +3253,15 @@ jobs:
 
   # Some projects do not have releasenotes until the Newton cycle
   - name: ^gate-(manila-ui|networking-odl|oslo.(messaging|cache|concurrency|middleware|privsep|rootwrap|service|context|vmware|policy)|tacker)-releasenotes$
-    branch: ^(?!stable/(?:kilo|liberty|mitaka)).*$
+    branch: ^(?!stable/mitaka).*$
 
   # Some python client projects do not have releasenotes until the Ocata cycle
   - name: ^gate-python-(tripleo)client-releasenotes$
-    branch: ^(?!stable/(?:kilo|liberty|mitaka|newton)).*$
+    branch: ^(?!stable/(?:mitaka|newton)).*$
 
   # Some projects do not have releasenotes until the Ocata cycle
   - name: ^gate-(automaton|debtcollector|futurist|networking-sfc|osprofiler|oslo.(i18n|reports|serialization|utils|versionedobjects)|oslosphinx|oslotest|stevedore|taskflow|tooz)-releasenotes$
-    branch: ^(?!stable/(?:kilo|liberty|mitaka|newton)).*$
+    branch: ^(?!stable/(?:mitaka|newton)).*$
 
   - name: gate-python-fuelclient-python34
     branch: ^stable/(8\.0|mitaka).*$
