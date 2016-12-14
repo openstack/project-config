@@ -982,6 +982,9 @@ project-templates:
     gate:
       - gate-{name}-puppet-lint
       - gate-{name}-puppet-syntax
+    experimental:
+      - gate-{name}-puppet-syntax-3-centos-7
+      - gate-{name}-puppet-syntax-4-centos-7
 
   - name: puppet-check-jobs
     check:
@@ -1016,25 +1019,28 @@ project-templates:
 
   - name: infra-puppet-apply-jobs
     check:
-      - gate-infra-puppet-apply-centos-7
-      - gate-infra-puppet-apply-debian-jessie
-      - gate-infra-puppet-apply-ubuntu-precise
-      - gate-infra-puppet-apply-ubuntu-trusty
-      - gate-infra-puppet-apply-ubuntu-xenial
-      - gate-infra-puppet-apply-fedora-23
-      - gate-infra-puppet-apply-fedora-24
+      - gate-infra-puppet-apply-3-centos-7
+      - gate-infra-puppet-apply-3-debian-jessie
+      - gate-infra-puppet-apply-3-ubuntu-precise
+      - gate-infra-puppet-apply-3-ubuntu-trusty
+      - gate-infra-puppet-apply-3-ubuntu-xenial
+      - gate-infra-puppet-apply-3-fedora-23
+      - gate-infra-puppet-apply-3-fedora-24
       - gate-openstackci-beaker-centos-7
       - gate-openstackci-beaker-ubuntu-trusty
       - gate-openstackci-beaker-ubuntu-xenial
     gate:
-      - gate-infra-puppet-apply-centos-7
-      - gate-infra-puppet-apply-debian-jessie
-      - gate-infra-puppet-apply-ubuntu-precise
-      - gate-infra-puppet-apply-ubuntu-trusty
-      - gate-infra-puppet-apply-ubuntu-xenial
-      - gate-infra-puppet-apply-fedora-23
+      - gate-infra-puppet-apply-3-centos-7
+      - gate-infra-puppet-apply-3-debian-jessie
+      - gate-infra-puppet-apply-3-ubuntu-precise
+      - gate-infra-puppet-apply-3-ubuntu-trusty
+      - gate-infra-puppet-apply-3-ubuntu-xenial
+      - gate-infra-puppet-apply-3-fedora-23
+      - gate-infra-puppet-apply-3-fedora-24
       - gate-openstackci-beaker-centos-7
       - gate-openstackci-beaker-ubuntu-trusty
+    experimental:
+      - gate-infra-puppet-apply-4-centos-7
 
   - name: infra-logstash-filter-jobs
     check:
@@ -1212,11 +1218,11 @@ jobs:
     branch: ^(?!stable/(liberty|mitaka)).*$
 
   # Make sure we run ubuntu-trusty on master for puppet-apply.
-  - name: ^gate-infra-puppet-apply-ubuntu-trusty$
+  - name: ^gate-infra-puppet-apply-.*-ubuntu-trusty$
     branch: master
 
   # Transitional as we remove Fedora 23
-  - name: ^gate-infra-puppet-apply-fedora-24$
+  - name: ^gate-infra-puppet-apply-.*-fedora-24$
     voting: false
 
   # TODO(jaegerandi): Make voting once it passes everywhere

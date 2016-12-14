@@ -146,7 +146,7 @@
       - console-log
 
 - job-template:
-    name: 'gate-infra-puppet-apply-{node}'
+    name: 'gate-infra-puppet-apply-{puppet_version}-{node}'
     node: '{node}'
 
     builders:
@@ -158,6 +158,10 @@
           #!/bin/bash -xe
           cd openstack-infra/system-config
           /usr/local/jenkins/slave_scripts/install-distro-packages.sh
+          if [ "{puppet_version}" == "4" ]; then
+              # TODO:
+              echo "TODO: add logic to deploy puppet4"
+          fi
           ./tools/apply-test.sh
 
     publishers:
