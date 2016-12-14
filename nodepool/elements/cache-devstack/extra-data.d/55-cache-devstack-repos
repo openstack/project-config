@@ -74,19 +74,6 @@ def git_branches():
     return branches
 
 
-def tokenize(fn, tokens, distribution, comment=None):
-    for line in open(fn):
-        if 'dist:' in line and ('dist:%s' % distribution not in line):
-            continue
-        if 'qpid' in line:
-            continue  # TODO: explain why this is here
-        if comment and comment in line:
-            line = line[:line.find(comment)]
-        line = line.strip()
-        if line and line not in tokens:
-            tokens.append(line)
-
-
 def _legacy_find_images(basedir):
     """Divine what images we should use based on parsing stackrc."""
     images = []
@@ -143,34 +130,6 @@ def local_prep(distribution):
         run_local(['sudo', 'git', 'checkout', branch], cwd=DEVSTACK)
         run_local(['sudo', 'git', 'pull', '--ff-only', 'origin'], cwd=DEVSTACK)
 
-        if os.path.exists(os.path.join(TMP_MOUNT_PATH, 'usr/bin/apt-get')):
-            debs = []
-            debdir = os.path.join(DEVSTACK, 'files', 'debs')
-            if not os.path.exists(debdir):
-                debdir = os.path.join(DEVSTACK, 'files', 'apts')
-            for fn in os.listdir(debdir):
-                fn = os.path.join(debdir, fn)
-                tokenize(fn, debs, distribution, comment='#')
-            branch_data['debs'] = debs
-
-        if os.path.exists(os.path.join(TMP_MOUNT_PATH, 'usr/bin/yum')):
-            rpms = []
-            rpmdir = os.path.join(DEVSTACK, 'files', 'rpms')
-            for fn in os.listdir(rpmdir):
-                fn = os.path.join(rpmdir, fn)
-                tokenize(fn, rpms, distribution, comment='#')
-            branch_data['rpms'] = rpms
-
-        if os.path.exists(os.path.join(TMP_MOUNT_PATH, 'usr/bin/emerge')):
-            ebuilds = []
-            ebuilddir = os.path.join(DEVSTACK, 'files', 'ebuilds')
-            if not os.path.exists(ebuilddir):
-                ebuilddir = os.path.join(DEVSTACK, 'files', 'ebuilds')
-            for fn in os.listdir(ebuilddir):
-                fn = os.path.join(ebuilddir, fn)
-                tokenize(fn, ebuilds, distribution, comment='#')
-            branch_data['ebuilds'] = ebuilds
-
         images = _find_images(DEVSTACK)
         if not images:
             images = _legacy_find_images(DEVSTACK)
@@ -183,17 +142,6 @@ def local_prep(distribution):
 def main():
 
     branches = local_prep(RELEASE)
-
-    with open(os.path.join(CACHEDIR, 'pkgs-to-install'), 'w') as pkgs:
-        for branch_data in branches:
-            if branch_data.get('debs'):
-                pkgs.write(" ".join(branch_data['debs']) + "\n")
-            elif branch_data.get('rpms'):
-                pkgs.write(" ".join(branch_data['rpms']) + "\n")
-            elif branch_data.get('ebuilds'):
-                pkgs.write(" ".join(branch_data['ebuilds']) + "\n")
-            else:
-                sys.exit('No supported package data found.')
 
     image_filenames = []
     line_template = "%(name)s file %(location)s %(url)s\n"
