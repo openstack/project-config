@@ -1515,7 +1515,7 @@ jobs:
   # Skip non-doc jobs for doc-only or translation-only horizon
   # changes. Since doc/source/* is checked by horizon-pep8, this job
   # should not be skipped.
-  - name: ^.*horizon-(python(27|34|35)|tox-py27dj.*|nodejs4-npm-run-.*|selenium-headless|dsvm-integration.*|dsvm-tempest-plugin)(-ubuntu-.*)?(-nv)?$
+  - name: ^.*horizon-(python(27|34|35)|tox-py27dj.*|nodejs4-npm-run-.*|selenium-headless|dsvm-tempest-plugin)(-ubuntu-.*)?(-nv)?$
     skip-if:
       - project: ^openstack/horizon$
         all-files-match-any:
@@ -2902,14 +2902,6 @@ jobs:
   - name: ^gate-django_openstack_auth-tox-py27dj19-ubuntu-trusty$
     branch: ^stable/mitaka.*$
 
-  # TODO(robcresswell): Make voting once tests are passing reliably
-  - name: gate-horizon-dsvm-integration-current-ubuntu-xenial
-    voting: false
-
-  # TODO(robcresswell): Make voting once tests are passing reliably
-  - name: gate-horizon-dsvm-integration-deprecated-ubuntu-xenial
-    voting: false
-
   # TODO(doug-fish): Make voting once tests are proven to pass reliably
   - name: gate-neutron-lbaas-dashboard-nodejs4-npm-run-lint
     voting: false
@@ -2932,11 +2924,6 @@ jobs:
 
   # TODO(shu-mutou): Make voting once tests are proven to pass reliably
   - name: gate-zaqar-ui-nodejs4-npm-run-test
-    voting: false
-
-  # TODO(jhesketh): Make voting once tests are passing reliably
-  - name: ^gate-horizon-dsvm-integration-.*-ubuntu-trusty
-    branch: ^(stable/mitaka).*$
     voting: false
 
   - name: ^gate-horizon-selenium-headless-legacy-ubuntu-trusty
@@ -10252,10 +10239,6 @@ projects:
       - gate-horizon-selenium-headless-ubuntu-xenial
       - gate-horizon-dsvm-tempest-plugin-ubuntu-trusty
       - gate-horizon-dsvm-tempest-plugin-ubuntu-xenial
-      - gate-horizon-dsvm-integration-current-ubuntu-trusty
-      - gate-horizon-dsvm-integration-current-ubuntu-xenial
-      - gate-horizon-dsvm-integration-deprecated-ubuntu-trusty
-      - gate-horizon-dsvm-integration-deprecated-ubuntu-xenial
     gate:
       - gate-horizon-tox-py27dj19-ubuntu-xenial
       - gate-horizon-tox-py27dj110-ubuntu-xenial
