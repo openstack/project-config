@@ -242,7 +242,7 @@
           source ironic-vars-early
 
           # devstack plugin didn't exist until mitaka
-          if [[ -z "$IRONIC_DISABLE_DEVSTACK_PLUGIN" && "$ZUUL_BRANCH" != "stable/liberty" ]] ; then
+          if [[ -z "$IRONIC_DISABLE_DEVSTACK_PLUGIN" ]] ; then
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ironic git://git.openstack.org/openstack/ironic"
           fi
 
@@ -279,13 +279,8 @@
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
-          # tempest-lib support was added in Mitaka. Fall back to tempest for other stable branches.
-          if [ "$ZUUL_BRANCH" == "stable/liberty" ] ; then
-              export DEVSTACK_GATE_TEMPEST_REGEX='baremetal'
-          else
-              export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
-              export DEVSTACK_GATE_TEMPEST_REGEX='ironic'
-          fi
+          export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
+          export DEVSTACK_GATE_TEMPEST_REGEX='ironic'
           export PROJECTS="openstack/ironic $PROJECTS"
           export PROJECTS="openstack/ironic-python-agent $PROJECTS"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin ironic git://git.openstack.org/openstack/ironic"
@@ -369,12 +364,7 @@
           fi
 
           export PROJECTS="openstack/ironic openstack/ironic-inspector $PROJECTS"
-          # devstack plugin didn't exist until mitaka
-          if [[ "$ZUUL_BRANCH" != "stable/liberty" ]] ; then
-              export DEVSTACK_LOCAL_CONFIG="enable_plugin ironic git://git.openstack.org/openstack/ironic"
-          else
-              export DEVSTACK_LOCAL_CONFIG=""
-          fi
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin ironic git://git.openstack.org/openstack/ironic"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ironic-inspector https://git.openstack.org/openstack/ironic-inspector"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_AUTOMATED_CLEAN_ENABLED=False"
 
@@ -488,12 +478,7 @@
           export DEVSTACK_PROJECT_FROM_GIT="python-ironic-inspector-client"
 
           export PROJECTS="openstack/ironic openstack/python-ironic-inspector-client openstack/ironic-inspector $PROJECTS"
-          # devstack plugin didn't exist until mitaka
-          if [[ "$ZUUL_BRANCH" != "stable/liberty" ]] ; then
-              export DEVSTACK_LOCAL_CONFIG="enable_plugin ironic git://git.openstack.org/openstack/ironic"
-          else
-              export DEVSTACK_LOCAL_CONFIG=""
-          fi
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin ironic git://git.openstack.org/openstack/ironic"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ironic-inspector https://git.openstack.org/openstack/ironic-inspector"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_AUTOMATED_CLEAN_ENABLED=False"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_DEPLOY_DRIVER_ISCSI_WITH_IPA=True"

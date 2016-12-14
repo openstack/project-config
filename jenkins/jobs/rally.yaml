@@ -83,10 +83,6 @@
           ENABLED_SERVICES+=g-api,g-reg,
           ENABLED_SERVICES+=n-api,n-crt,n-cpu,n-sch,n-cond,
 
-          # n-obj has been removed from mitaka
-          if [[ "$ZUUL_BRANCH" == "stable/liberty" ]]; then
-              ENABLED_SERVICES+=n-obj,
-          fi
           if [ $DEVSTACK_GATE_SWIFT -ne 1 ]; then
               ENABLED_SERVICES+=s-proxy,s-account,s-container,s-object,
           fi
@@ -138,7 +134,7 @@
               export PROJECTS="openstack/aodh $PROJECTS"
 
               # panko exists for Newton+ only
-              if [[ ! "stable/liberty stable/mitaka" =~ $ZUUL_BRANCH ]]; then
+              if [[ ! "stable/mitaka" =~ $ZUUL_BRANCH ]]; then
                   export PROJECTS="openstack/panko $PROJECTS"
               fi
               export CEILOMETER_NOTIFICATION_TOPICS=notifications,profiler
@@ -146,14 +142,14 @@
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin aodh git://git.openstack.org/openstack/aodh"
               # panko exists for Newton+ only
-              if [[ ! "stable/liberty stable/mitaka" =~ $ZUUL_BRANCH ]]; then
+              if [[ ! "stable/mitaka" =~ $ZUUL_BRANCH ]]; then
                   export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin panko git://git.openstack.org/openstack/panko"
               fi
               export ENABLED_SERVICES+=ceilometer-acompute,ceilometer-acentral,ceilometer-api,
               export ENABLED_SERVICES+=ceilometer-anotification,ceilometer-collector,
               export ENABLED_SERVICES+=aodh-api,aodh-evaluator,aodh-notifier,
               # panko exists for Newton+ only
-              if [[ ! "stable/liberty stable/mitaka" =~ $ZUUL_BRANCH ]]; then
+              if [[ ! "stable/mitaka" =~ $ZUUL_BRANCH ]]; then
                   export ENABLED_SERVICES+=panko-api,
               fi
           fi
@@ -201,43 +197,20 @@
           DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin rally git://git.openstack.org/openstack/rally"
           export DEVSTACK_LOCAL_CONFIG
 
-          if [[ "$ZUUL_BRANCH" == "stable/liberty" ]]; then
-              # Liberty version uses the older 'hooks' approach to adding
-              # the Designate plugin
+          # Otherwise, enable the Designate devstack plugin.
+          DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin designate git://git.openstack.org/openstack/designate"
+          export DEVSTACK_LOCAL_CONFIG
 
-              function gate_hook {{
-                  cd /opt/stack/new/designate/contrib/devstack
-                  ./gate_hook.sh
-              }}
-              export -f gate_hook
+          function gate_hook {{
+              cd /opt/stack/new/designate/devstack/gate
+              ./gate_hook.sh
+          }}
+          export -f gate_hook
 
-              function pre_test_hook {{
-                  cd /opt/stack/new/designate/contrib/devstack
-                  ./pre_test_hook.sh
-              }}
-              export -f pre_test_hook
-
-              function post_test_hook {{
-                  $BASE/new/rally/tests/ci/rally-gate.sh
-              }}
-              export -f post_test_hook
-
-          else
-              # Otherwise, enable the Designate devstack plugin.
-              DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin designate git://git.openstack.org/openstack/designate"
-              export DEVSTACK_LOCAL_CONFIG
-
-              function gate_hook {{
-                  cd /opt/stack/new/designate/devstack/gate
-                  ./gate_hook.sh
-              }}
-              export -f gate_hook
-
-              function post_test_hook {{
-                  $BASE/new/rally/tests/ci/rally-gate.sh
-              }}
-              export -f post_test_hook
-          fi
+          function post_test_hook {{
+              $BASE/new/rally/tests/ci/rally-gate.sh
+          }}
+          export -f post_test_hook
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
@@ -911,10 +884,6 @@
           ENABLED_SERVICES+=cinder,c-api,c-vol,c-sch,c-bak,
           ENABLED_SERVICES+=g-api,g-reg,
           ENABLED_SERVICES+=n-api,n-crt,n-cpu,n-sch,n-cond,
-          # n-obj has been removed from mitaka
-          if [[ "$ZUUL_BRANCH" == "stable/liberty" ]]; then
-              ENABLED_SERVICES+=n-obj,
-          fi
           ENABLED_SERVICES+=s-proxy,s-account,s-container,s-object,
 
           export PROJECTS="openstack/neutron $PROJECTS"
@@ -972,10 +941,6 @@
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           services=key,mysql,rabbit,n-api,n-cond,n-cpu,n-crt,n-sch,g-api,g-reg,q-agt,q-dhcp,q-l3,q-meta,q-svc
-          # n-obj has been removed from mitaka
-          if [[ "$ZUUL_BRANCH" == "stable/liberty" ]]; then
-              services+=,n-obj,
-          fi
           export OVERRIDE_ENABLED_SERVICES=$services
           export PROJECTS="openstack/rally $PROJECTS"
           export PROJECTS="openstack/monasca-api $PROJECTS"
