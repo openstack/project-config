@@ -13,18 +13,6 @@ dashboard:
     - title: Graphs
       height: 320px
       panels:
-        - title: Integrated Failure Rates (Check queue)
-          span: 4
-          targets:
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-horizon-dsvm-integration-current{,-ubuntu-trusty,-ubuntu-xenial}.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-horizon-dsvm-integration-current{,-ubuntu-trusty,-ubuntu-xenial}.{SUCCESS,FAILURE})),'24hours'), 'dsvm-integration-current')
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-horizon-dsvm-integration-deprecated{,-ubuntu-trusty,-ubuntu-xenial}.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-horizon-dsvm-integration-deprecated{,-ubuntu-trusty,-ubuntu-xenial}.{SUCCESS,FAILURE})),'24hours'), 'dsvm-integration-deprecated')
-          type: graph
-        - title: Integrated Failure Rates (Gate queue)
-          span: 4
-          targets:
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-horizon-dsvm-integration-current{,-ubuntu-trusty,-ubuntu-xenial}.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-horizon-dsvm-integration-current{,-ubuntu-trusty,-ubuntu-xenial}.{SUCCESS,FAILURE})),'24hours'), 'dsvm-integration-current')
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-horizon-dsvm-integration-deprecated{,-ubuntu-trusty,-ubuntu-xenial}.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-horizon-dsvm-integration-deprecated{,-ubuntu-trusty,-ubuntu-xenial}.{SUCCESS,FAILURE})),'24hours'), 'dsvm-integration-deprecated')
-          type: graph
         - title: npm test Failure Rates (Gate queue)
           span: 4
           targets:
