@@ -3241,23 +3241,14 @@ jobs:
 
   - name: ^gate-.*-releasenotes$
     success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/releasenotes/build/html/
-    branch: ^(?!stable/(?:juno|kilo)).*$
     files:
       - '^releasenotes/.*'
       - '^tox.ini'
       - '^.*requirements.txt$'
 
-  # Some projects do not have releasenotes until the Mitaka cycle
-  - name: ^gate-(keystoneauth|keystonemiddleware|networking-midonet|openstack-manuals|os-client-config|packstack|os-brick|puppet-.*)-releasenotes$
-    branch: ^(?!stable/(?:juno|kilo|liberty)).*$
-
-  # Some python client projects do not have releasenotes until the Mitaka cycle
-  - name: ^gate-python-(ironic|keystone|neutron|openstack|sahara|cinder)client-releasenotes$
-    branch: ^(?!stable/(?:juno|kilo|liberty)).*$
-
   # Some python client projects do not have releasenotes until the Newton cycle
   - name: ^gate-python-(manila|tacker|trove|glance)client-releasenotes$
-    branch: ^(?!stable/(?:juno|kilo|liberty|mitaka)).*$
+    branch: ^(?!stable/mitaka).*$
 
   # Some projects do not have releasenotes until the Newton cycle
   - name: ^gate-(manila-ui|networking-odl|oslo.(messaging|cache|concurrency|middleware|privsep|rootwrap|service|context|vmware|policy)|tacker)-releasenotes$
@@ -3270,10 +3261,6 @@ jobs:
   # Some projects do not have releasenotes until the Ocata cycle
   - name: ^gate-(automaton|debtcollector|futurist|networking-sfc|osprofiler|oslo.(i18n|reports|serialization|utils|versionedobjects)|oslosphinx|oslotest|stevedore|taskflow|tooz)-releasenotes$
     branch: ^(?!stable/(?:kilo|liberty|mitaka|newton)).*$
-
-    # Post job is run on liberty and newer branches only
-  - name: ^(?!gate).*-releasenotes$
-    branch: ^(?!stable/(?:juno|kilo)).*$
 
   - name: gate-python-fuelclient-python34
     branch: ^stable/(8\.0|mitaka).*$
