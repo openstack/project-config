@@ -2010,12 +2010,7 @@
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_TEMPEST_REGEX="database"
-          if [[ "stable/kilo" =~ $ZUUL_BRANCH ]]; then
-              # Trove was moved out of DevStack as plugin after Kilo
-              export DEVSTACK_GATE_TROVE=1
-          else
-              export DEVSTACK_LOCAL_CONFIG="enable_plugin trove git://git.openstack.org/openstack/trove"
-          fi
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin trove git://git.openstack.org/openstack/trove"
 
           # use tempest plugin (copied from ironic.yaml)
           if [[ "$ZUUL_BRANCH" != "master" ]] ; then

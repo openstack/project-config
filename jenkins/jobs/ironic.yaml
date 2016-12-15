@@ -67,30 +67,23 @@
       - ironic-extra-vars:
           script: |
             export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_DEPLOY_DRIVER_ISCSI_WITH_IPA=True"
-            # Support for non-CoreOS IPA ramdisks was added in Mitaka
-            if [ "$ZUUL_BRANCH" != "stable/liberty" ] ; then
-                # Standardize VM size for each supported ramdisk
-                case "{ramdisk-type}" in
-                    'tinyipa')
-                        export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_VM_SPECS_RAM=384"
-                        export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_RAMDISK_TYPE=tinyipa"
-                        ;;
-                    'tinyipa256')
-                        export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_VM_SPECS_RAM=256"
-                        export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_RAMDISK_TYPE=tinyipa"
-                        ;;
-                    'coreos')
-                        export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_VM_SPECS_RAM=1280"
-                        export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_RAMDISK_TYPE=coreos"
-                        ;;
-                # if using a ramdisk without a known good value, use the devstack
-                # default by not exporting any value for IRONIC_VM_SPECS_RAM
-                esac
-            else
-                # For kilo and liberty, we still need 1280mb of ram as
-                # we only have the CoreOS ramdisk.
-                export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_VM_SPECS_RAM=1280"
-            fi
+            # Standardize VM size for each supported ramdisk
+            case "{ramdisk-type}" in
+                'tinyipa')
+                    export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_VM_SPECS_RAM=384"
+                    export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_RAMDISK_TYPE=tinyipa"
+                    ;;
+                'tinyipa256')
+                    export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_VM_SPECS_RAM=256"
+                    export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_RAMDISK_TYPE=tinyipa"
+                    ;;
+                'coreos')
+                    export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_VM_SPECS_RAM=1280"
+                    export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_RAMDISK_TYPE=coreos"
+                    ;;
+            # if using a ramdisk without a known good value, use the devstack
+            # default by not exporting any value for IRONIC_VM_SPECS_RAM
+            esac
 
 - builder:
     name: ironic-ipxe-disabled
