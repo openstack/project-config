@@ -605,7 +605,6 @@
             - py27-mongodb
             - py27-mysql
             - py27-postgresql
-      - python-liberty-bitrot-jobs
       - python-mitaka-bitrot-jobs
       - python-newton-bitrot-jobs
       - openstack-publish-jobs
@@ -1216,7 +1215,6 @@
     jobs:
       - python-db-jobs
       - cross-python-db-jobs
-      - python-liberty-bitrot-db-jobs
       - python-mitaka-bitrot-db-jobs
       - python-newton-bitrot-db-jobs
       - openstack-publish-jobs
@@ -3577,7 +3575,6 @@
     jobs:
       - coverage-db-jobs
       - python-db-jobs
-      - python-liberty-bitrot-db-jobs
       - python-mitaka-bitrot-db-jobs
       - python-newton-bitrot-db-jobs
       - openstack-publish-jobs
@@ -3651,7 +3648,7 @@
           suffix: ''
           designate-driver:
             - pdns4
-      # Legacy Jobs that only run against liberty and mitaka (no xenial).
+      # Legacy Jobs that only run against mitaka (no xenial).
       - 'gate-designate-dsvm-{designate-driver}-{node}':
           node: ubuntu-trusty
           designate-driver:
@@ -3730,45 +3727,23 @@
           node: ubuntu-xenial
           suffix: ''
           branch-override: default
-      # Stable gate jobs for branchless tempest
-      - devstack-stable-jobs:
-          pipeline: gate
-          node: ubuntu-trusty
-          suffix: '-liberty'
-          branch-override: stable/liberty
-      - devstack-stable-jobs:
-          pipeline: gate
-          node: ubuntu-trusty
-          suffix: '-mitaka'
-          branch-override: stable/mitaka
-      - devstack-stable-jobs:
-          pipeline: gate
-          node: ubuntu-xenial
-          suffix: '-newton'
-          branch-override: stable/newton
       # Stable check jobs for testing devstack gate
       # tempest also uses these job definitions
       - devstack-stable-jobs:
           pipeline: gate
           node: ubuntu-trusty
-          suffix: '-liberty-nv'
-          branch-override: stable/liberty
-      - devstack-stable-jobs:
-          pipeline: gate
-          node: ubuntu-trusty
-          suffix: '-mitaka-nv'
+          suffix:
+            - '-mitaka'
+            - '-mitaka-nv'
           branch-override: stable/mitaka
       - devstack-stable-jobs:
           pipeline: gate
           node: ubuntu-xenial
-          suffix: '-newton-nv'
+          suffix:
+            - '-newton'
+            - '-newton-nv'
           branch-override: stable/newton
       # Periodic jobs for various branches
-      - devstack-stable-jobs:
-          pipeline: periodic
-          node: ubuntu-trusty
-          suffix: '-liberty'
-          branch-override: stable/liberty
       - devstack-stable-jobs:
           pipeline: periodic
           node: ubuntu-trusty
@@ -4984,7 +4959,6 @@
       - python-db-jobs
       - cross-python-db-jobs
       - 'gate-{name}-python35-db-nv'
-      - python-liberty-bitrot-db-jobs
       - python-mitaka-bitrot-db-jobs
       - python-newton-bitrot-db-jobs
       - openstack-publish-jobs
@@ -5291,7 +5265,6 @@
     jobs:
       - coverage-db-jobs
       - python-db-jobs
-      - python-liberty-bitrot-db-jobs
       - python-mitaka-bitrot-db-jobs
       - python-newton-bitrot-db-jobs
       - openstack-releasenotes-jobs
@@ -5467,7 +5440,6 @@
     jobs:
       - python-jobs
       - cross-python-jobs
-      - python-liberty-bitrot-jobs
       - python-mitaka-bitrot-jobs
       - python-newton-bitrot-jobs
       - openstack-publish-jobs
@@ -5697,7 +5669,6 @@
     jobs:
       - coverage-db-jobs
       - python-db-jobs
-      - python-liberty-bitrot-db-jobs
       - python-mitaka-bitrot-db-jobs
       - python-newton-bitrot-db-jobs
       - openstack-publish-jobs
@@ -6148,7 +6119,6 @@
       - coverage-db-jobs
       - python-db-jobs
       - cross-python-db-jobs
-      - python-liberty-bitrot-db-jobs
       - python-mitaka-bitrot-db-jobs
       - python-newton-bitrot-db-jobs
       - openstack-publish-jobs
@@ -6163,9 +6133,6 @@
           swift: '0'
       - api-ref-jobs:
           service: identity
-      - 'gate-{name}-tox-{envlist}-{node}':
-          envlist: bandit
-          node: ubuntu-trusty
       - 'gate-{name}-tox-{envlist}-{node}':
           envlist: patch_cover
           node:
@@ -6244,10 +6211,6 @@
       - openstack-releasenotes-jobs
       - translation-jobs
       - 'lib-forward-testing-{name}'
-      - 'gate-{name}-tox-{envlist}-{node}':
-          envlist: bandit
-          node:
-            - ubuntu-trusty
 
 - project:
     name: kiloeyes
@@ -6633,7 +6596,6 @@
       - coverage-db-jobs
       - python-db-jobs
       - 'gate-{name}-python35-db-nv'
-      - python-liberty-bitrot-jobs
       - python-mitaka-bitrot-jobs
       - python-newton-bitrot-jobs
       - openstack-publish-jobs
@@ -7130,7 +7092,6 @@
             - ubuntu-xenial
       - pypi-jobs
       - openstack-publish-jobs
-      - python-liberty-bitrot-db-jobs
       - python-mitaka-bitrot-db-jobs
       - python-newton-bitrot-db-jobs
       - openstack-releasenotes-jobs
@@ -7288,7 +7249,6 @@
       - openstack-releasenotes-jobs
       - pypi-jobs
       - coverage-db-jobs
-      - python-liberty-bitrot-db-jobs
       - python-mitaka-bitrot-db-jobs
       - python-newton-bitrot-db-jobs
       - periodic-python-jobs-with-neutron-lib-master
@@ -7311,7 +7271,6 @@
       - openstack-releasenotes-jobs
       - pypi-jobs
       - coverage-db-jobs
-      - python-liberty-bitrot-db-jobs
       - python-mitaka-bitrot-db-jobs
       - python-newton-bitrot-db-jobs
       - periodic-python-jobs-with-neutron-lib-master
@@ -7543,7 +7502,6 @@
     jobs:
       - coverage-db-jobs
       - python-db-jobs
-      - python-liberty-bitrot-jobs
       - python-mitaka-bitrot-jobs
       - python-newton-bitrot-jobs
       - pypi-jobs
@@ -7580,12 +7538,6 @@
           node: ubuntu-trusty
           suffix: '-mitaka'
           branch-override: stable/mitaka
-      - '{pipeline}-tempest-dsvm-networking-midonet-{midonet-plugin}-{node}{suffix}':
-          pipeline: periodic
-          midonet-plugin: v2
-          node: ubuntu-trusty
-          suffix: '-liberty'
-          branch-override: stable/liberty
       - '{pipeline}-tempest-dsvm-networking-midonet-{midonet-plugin}-{node}{suffix}':
           pipeline: gate
           midonet-plugin: ml2
@@ -7643,24 +7595,12 @@
     jobs:
       - coverage-jobs
       - python-jobs
-      - python-liberty-bitrot-jobs
       - python-mitaka-bitrot-jobs
       - python-newton-bitrot-jobs
       - openstack-publish-jobs
       - translation-jobs
       - openstack-releasenotes-jobs
       - pypi-jobs
-      # tempest-dsvm-networking-odl-{odl-release-base}-{liberty|mitaka}-nv
-      # is for stable/(liberty|mitaka)
-      - '{pipeline}-tempest-dsvm-networking-odl-{odl-release-base}{suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
-          suffix: '-liberty-nv'
-          odl-release-base:
-            - 'beryllium-snapshot'
-            - 'boron-snapshot'
-            - 'carbon-snapshot'
-          branch-override: stable/liberty
       - '{pipeline}-tempest-dsvm-networking-odl-{odl-release-base}{suffix}':
           pipeline: gate
           node: ubuntu-trusty
@@ -7729,7 +7669,7 @@
 
     jobs:
       # This project stopped being developed in the newton cycle. The jobs for
-      # it only run against liberty and mitaka.
+      # it only run against mitaka.
       - python-jobs
       - openstack-publish-jobs
       - pypi-jobs
@@ -7743,11 +7683,6 @@
           node: ubuntu-trusty
           suffix: '-mitaka'
           branch-override: stable/mitaka
-      - '{pipeline}-tempest-dsvm-networking-ofagent{suffix}':
-          pipeline: periodic
-          node: ubuntu-trusty
-          suffix: '-liberty'
-          branch-override: stable/liberty
 
 - project:
     name: networking-onos
@@ -7922,7 +7857,6 @@
       - coverage-jobs
       - python-jobs
       - cross-python-jobs
-      - python-liberty-bitrot-jobs
       - python-mitaka-bitrot-jobs
       - python-newton-bitrot-jobs
       - openstack-publish-jobs
@@ -8077,7 +8011,6 @@
     jobs:
       - coverage-jobs
       - python-jobs
-      - python-liberty-bitrot-jobs
       - python-mitaka-bitrot-jobs
       - python-newton-bitrot-jobs
       - openstack-publish-jobs
@@ -8138,14 +8071,13 @@
 
     jobs:
       - python-jobs
-      - python-liberty-bitrot-jobs
       - python-mitaka-bitrot-jobs
       - python-newton-bitrot-jobs
       - openstack-publish-jobs
       - openstack-server-release-jobs
       - openstack-releasenotes-jobs
       - translation-jobs
-      # Legacy trusty jobs (liberty|mitaka) - remove after mitaka EOL
+      # Legacy trusty job mitaka - remove after mitaka EOL
       - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}-{node}{suffix}':
           pipeline: gate
           node: ubuntu-trusty
@@ -8269,7 +8201,6 @@
       - coverage-jobs
       - python-jobs
       - pypi-jobs
-      - python-liberty-bitrot-jobs
       - python-mitaka-bitrot-jobs
       - python-newton-bitrot-jobs
       - 'gate-{name}-releasenotes'
@@ -8377,7 +8308,6 @@
       - coverage-db-jobs
       - python-db-jobs
       - cross-python-db-jobs
-      - python-liberty-bitrot-db-jobs
       - python-mitaka-bitrot-db-jobs
       - python-newton-bitrot-db-jobs
       - openstack-publish-jobs
@@ -8527,7 +8457,6 @@
 
     jobs:
       - openstack-publish-jobs
-      - python-liberty-bitrot-jobs
       - python-mitaka-bitrot-jobs
       - python-newton-bitrot-jobs
       - pypi-jobs
@@ -9624,11 +9553,6 @@
       - translation-jobs
       - gate-{name}-tox-db-{envlist}-{node}:
           envlist:
-            - sqla_09
-          node:
-            - ubuntu-trusty
-      - gate-{name}-tox-db-{envlist}-{node}:
-          envlist:
             - mysql-python
           node:
             - ubuntu-trusty
@@ -9742,14 +9666,6 @@
           node:
             - ubuntu-trusty
             - ubuntu-xenial
-          suffix: '-nv'
-          branch-override: default
-      # This driver is only tested on liberty.
-      - '{pipeline}-oslo.messaging-dsvm-functional-{version}-{driver}-{node}{suffix}':
-          version: py27
-          driver: qpid
-          pipeline: gate
-          node: ubuntu-trusty
           suffix: '-nv'
           branch-override: default
       - '{pipeline}-oslo.messaging-dsvm-functional-{version}-{driver}-{node}{suffix}':
@@ -12950,11 +12866,6 @@
           node: ubuntu-xenial
           suffix: ''
           branch-override: default
-      - 'gate-{name}-tox-{envlist}-{node}':
-          envlist: bandit
-          node:
-            - ubuntu-trusty
-            - ubuntu-xenial
 
 - project:
     name: python-keystoneclient-kerberos
@@ -13824,7 +13735,6 @@
     jobs:
       - coverage-db-jobs
       - python-db-jobs
-      - python-liberty-bitrot-db-jobs
       - python-mitaka-bitrot-db-jobs
       - python-newton-bitrot-db-jobs
       - openstack-publish-jobs
@@ -14553,7 +14463,6 @@
       - coverage-jobs
       - python-jobs
       - cross-python-jobs
-      - python-liberty-bitrot-jobs
       - python-mitaka-bitrot-jobs
       - python-newton-bitrot-jobs
       - openstack-server-release-jobs
@@ -15384,7 +15293,6 @@
     jobs:
       - coverage-db-jobs
       - python-db-jobs
-      - python-liberty-bitrot-db-jobs
       - python-mitaka-bitrot-db-jobs
       - python-newton-bitrot-db-jobs
       - openstack-server-release-jobs
@@ -15485,10 +15393,6 @@
     doc-publisher-site: docs.openstack.org
 
     jobs:
-      - 'gate-trove-legacy-functional-dsvm-{datastore}{suffix}':
-          datastore: 'mysql'
-          suffix: '-liberty'
-          branch-override: stable/liberty
       - 'gate-trove-legacy-functional-dsvm-{datastore}{suffix}':
           datastore: 'mysql'
           suffix: '-mitaka'
@@ -15925,7 +15829,6 @@
 
     jobs:
       - python-jobs
-      - python-liberty-bitrot-jobs
       - python-mitaka-bitrot-jobs
       - python-newton-bitrot-jobs
       - openstack-publish-jobs

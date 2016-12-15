@@ -64,10 +64,6 @@
               services+=,h-api,h-api-cfn,h-api-cw,h-eng
           fi
 
-          # n-obj has been removed from mitaka
-          if [[ "$ZUUL_BRANCH" == "stable/liberty" ]]; then
-              services+=,n-obj
-          fi
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_TEMPEST_NOTESTS=1
@@ -251,11 +247,6 @@
           # enable heat services for mitaka (no devstack plugin available)
           if [[ "$ZUUL_BRANCH" == "stable/mitaka" ]]; then
               ENABLED_SERVICES+=,h-api,h-api-cfn,h-api-cw,h-eng
-          fi
-
-          # n-obj has been removed from mitaka
-          if [[ "$ZUUL_BRANCH" == "stable/liberty" ]]; then
-              ENABLED_SERVICES+=,n-obj
           fi
 
           export ENABLED_SERVICES

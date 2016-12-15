@@ -627,11 +627,6 @@ project-templates:
     gate:
       - 'gate-{name}-requirements'
 
-  - name: periodic-liberty
-    periodic-stable:
-      - 'periodic-{name}-docs-liberty'
-      - 'periodic-{name}-python27-liberty'
-
   - name: periodic-mitaka
     periodic-stable:
       - 'periodic-{name}-docs-mitaka'
@@ -641,11 +636,6 @@ project-templates:
     periodic-stable:
       - 'periodic-{name}-docs-newton'
       - 'periodic-{name}-python27-newton'
-
-  - name: periodic-db-liberty
-    periodic-stable:
-      - 'periodic-{name}-docs-liberty'
-      - 'periodic-{name}-python27-db-liberty'
 
   - name: periodic-db-mitaka
     periodic-stable:
@@ -1088,7 +1078,7 @@ project-templates:
   - name: designate-dsvm-jobs
     check:
       # Remove the two jobs below when Mitaka is EOL (they only run against
-      # liberty and mitaka.
+      # mitaka.
       - gate-designate-dsvm-powerdns-ubuntu-trusty
       - gate-designate-dsvm-bind9-ubuntu-trusty
       - gate-tempest-dsvm-designate-powerdns-ubuntu-trusty
@@ -1104,7 +1094,7 @@ project-templates:
       - gate-tempest-dsvm-designate-pdns4-identity-v3-only-ubuntu-xenial
     gate:
       # Remove the two jobs below when Mitaka is EOL (they only run against
-      # liberty and mitaka.
+      # mitaka.
       - gate-designate-dsvm-powerdns-ubuntu-trusty
       - gate-designate-dsvm-bind9-ubuntu-trusty
       - gate-tempest-dsvm-designate-powerdns-ubuntu-trusty
@@ -1194,7 +1184,8 @@ jobs:
   - name: ^.*-nv$
     voting: false
   # Restrict explicit ubuntu-trusty jobs to < Newton
-  # and xenial to >= Newton.
+  # and xenial to >= Newton. Note we keep liberty here to be defensive
+  # in our defaults even though liberty is largely eol and non existant.
   - name: ^.*-ubuntu-trusty(-nv)?$
     branch: ^stable/(liberty|mitaka)$
   - name: ^.*-ubuntu-xenial(-nv)?$
@@ -1701,9 +1692,6 @@ jobs:
   - name: propose-openstack-manuals-updates
     branch: master
 
-  - name: gate-openstack-manuals-tox-checksyntax-ubuntu-xenial
-    branch: ^(stable/liberty).*$
-
   # Packstack integration jobs should only run on master and stable/mitaka
   # onwards
   - name: ^gate-packstack-integration-.*-tempest-centos-7$
@@ -1810,7 +1798,7 @@ jobs:
   # This overrides the above "looser" match above, while we work through the
   # py34 -> py35 transition
   - name: gate-requirements-integration-dsvm-ubuntu-trusty
-    branch: ^(stable/(liberty|mitaka|newton)|master)$
+    branch: ^(stable/(mitaka|newton)|master)$
 
   - name: ^gate-requirements-tox-validate-ubuntu-xenial$
     branch: ^(?!stable/mitaka).*$
@@ -1840,36 +1828,35 @@ jobs:
   # NOTE(mriedem): This must be defined before any more specific grenade
   # job filters so that those can override the branch filter if necessary.
   - name: ^gate-grenade-dsvm
-    branch: ^(?!stable/liberty).*$
+    branch: ^(?!stable/mitaka).*$
 
   # Grenade is tricky because we need it to start on old branch
   # then go up to new branch. This results in the following branch
   # to test node type mapping:
   # old -> new (new is the branch that determines what we want because
   # these are pullup jobs): distro release
-  # liberty -> mitaka: trusty
   # mitaka -> newton: trusty
   # newton -> master/ocata: xenial
   - name: ^.*grenade-.*-ubuntu-trusty$
-    branch: ^(stable/(mitaka|newton))$
+    branch: ^(stable/newton)$
   - name: ^.*grenade-.*-ubuntu-xenial$
-    branch: ^(?!stable/(liberty|mitaka|newton)).*$
+    branch: ^(?!stable/(mitaka|newton)).*$
   # For the forward grenade jobs we have the same mapping but the
   # branch on the left hand side is the one zuul is operating so is
   # the one that determines our selection here
   # only here until stable is votable, then merge
   # back to a single job
   - name: ^.*grenade-dsvm-.*-forward-ubuntu-trusty$
-    branch: ^stable/(liberty|mitaka)$
+    branch: ^stable/mitaka$
     voting: false
   - name: ^.*grenade-dsvm-.*-forward-ubuntu-xenial$
-    branch: ^stable/(?!(liberty|mitaka)).*$
+    branch: ^stable/(?!mitaka).*$
     voting: false
 
   # NOTE(mriedem): These jobs use nova-network specifically which won't work
   # after newton so restrict them to just run on mitaka and newton changes.
   - name: ^gate-grenade-dsvm-multinode.*$
-    branch: ^stable/(?:mitaka|newton)$
+    branch: ^stable/newton$
 
   - name: gate-grenade-dsvm-neutron-dvr-multinode-ubuntu-trusty
     branch: ^stable/newton$
@@ -1904,12 +1891,12 @@ jobs:
   # NOTE(markvan) (heat) functional lbaas v2 testing was introduced in the mitaka
   # cycle as experimental, so testing it there and earlier branches doesn't make sense.
   - name: ^gate-heat-dsvm-functional-.*-lbaasv2-ubuntu-xenial$
-    branch: ^(?!stable/(liberty|mitaka)).*$
+    branch: ^(?!stable/mitaka).*$
 
   # NOTE(therve) (heat) functional lbaas v1 testing is deprecated in newton and
   # forward.
   - name: ^gate-heat-dsvm-functional-.*-lbaasv1-ubuntu-trusty$
-    branch: ^(stable/(liberty|mitaka)).*$
+    branch: ^(stable/mitaka).*$
 
   # NOTE(therve) (heat) only run convergence lbaasv1 on mitaka
   - name: ^gate-heat-dsvm-functional-convg-mysql-lbaasv1-ubuntu-trusty$
@@ -1917,14 +1904,11 @@ jobs:
 
   # NOTE(therve) (heat) run convergence lbaasv2 newton and forward
   - name: ^gate-heat-dsvm-functional-convg-mysql-lbaasv2-ubuntu-xenial$
-    branch: ^(?!stable/(liberty|mitaka)).*$
+    branch: ^(?!stable/mitaka).*$
 
   # NOTE(therve) (heat) run amqp1 ocata and forward
   - name: ^gate-heat-dsvm-functional-convg-mysql-lbaasv2-centos-7-amqp1-nv$
-    branch: ^(?!stable/(liberty|mitaka|newton)).*$
-
-  - name: gate-tempest-dsvm-heat-ubuntu-trusty
-    branch: ^(stable/liberty).*$
+    branch: ^(?!stable/(mitaka|newton)).*$
 
   - name: gate-tempest-dsvm-heat-apache-ubuntu-trusty
     branch: ^(stable/mitaka).*$
@@ -1946,7 +1930,7 @@ jobs:
     voting: false
 
   - name: ^gate-tempest-dsvm-networking-bagpipe$
-    branch: ^(?!stable/(liberty|mitaka|newton)).*$
+    branch: ^(?!stable/(mitaka|newton)).*$
 
   # NOTE(jlibosva) Run fullstack jobs only non-voting
   - name: ^gate-neutron-dsvm-fullstack-ubuntu-(trusty|xenial)
@@ -1955,9 +1939,9 @@ jobs:
   - name: ^gate-tempest-dsvm-neutron-pg-full-ubuntu-(trusty|xenial)
     voting: false
 
-  # LBaaS v1 should run on liberty and mitaka only
+  # LBaaS v1 should run on mitaka only
   - name: ^gate-neutron-lbaasv1-dsvm-api-ubuntu-trusty
-    branch: ^stable/(liberty|mitaka)
+    branch: ^stable/mitaka
 
   # Legacy api tests xenial - remove after newton EOL
   - name: ^gate-neutron-lbaasv2-dsvm-loadbalancer-ubuntu-xenial
@@ -1975,11 +1959,11 @@ jobs:
 
   # This is a new test for Ocata forward
   - name: ^gate-neutron-lbaasv2-dsvm-api-ubuntu-xenial
-    branch: ^(?!stable/(liberty|mitaka|newton)).*$
+    branch: ^(?!stable/(mitaka|newton)).*$
 
   # Octavia functional tests
   - name: ^gate-octavia-tox-functional-ubuntu-xenial
-    branch: ^(?!stable/(liberty|mitaka|newton)).*$
+    branch: ^(?!stable/(mitaka|newton)).*$
 
     # BUG #1290562 pypy does not work with new setuptools, so is breaking
     # all jobs. Disable until there is resolution.
@@ -1993,7 +1977,7 @@ jobs:
     voting: false
 
   - name: ^gate-ironic-inspector-tox-func3.*$
-    branch: ^(?!stable/(liberty|mitaka)).*$
+    branch: ^(?!stable/mitaka).*$
     voting: false
 
   - name: ^gate-devstack-dsvm-updown.*$
@@ -2006,9 +1990,9 @@ jobs:
     branch: ^(?!stable)
 
   # NOTE(mriedem): novaclient functional tests didn't support a neutron
-  # configuration until Newton, so skip for liberty and mitaka.
+  # configuration until Newton, so skip for mitaka.
   - name: ^gate-novaclient-dsvm-functional-neutron
-    branch: ^(?!stable/(liberty|mitaka)).*$
+    branch: ^(?!stable/mitaka).*$
 
   # NOTE(mriedem): This job requires nova-network which is not used in Ocata+
   # except in cells v1 configurations, so restrict it to Newton for Xenial.
@@ -2017,12 +2001,6 @@ jobs:
 
   - name: gate-neutron-dsvm-tempest-vpnaas-ubuntu-trusty
     branch: ^stable/mitaka$
-
-  - name: gate-python-magnumclient-python34
-    branch: ^(?!stable/liberty).*$
-
-  - name: gate-magnum-python34
-    branch: ^(?!stable/liberty).*$
 
   - name: ^gate-functional-dsvm-magnum-api.*
     skip-if:
@@ -2035,8 +2013,8 @@ jobs:
     branch: ^stable/mitaka$
 
   # Fall through to handle skip if for both trusty and xenial
-  # NOTE(yuanying): ironic isn't supported in liberty or mitaka.
-  # We only have a xenial job for it which doesn't run on liberty or mitaka.
+  # NOTE(yuanying): ironic isn't supported in mitaka.
+  # We only have a xenial job for it which doesn't run on mitaka.
   - name: ^gate-functional-dsvm-magnum-k8s.*
     skip-if:
       - project: ^openstack/magnum$
@@ -2050,8 +2028,8 @@ jobs:
     branch: ^stable/mitaka$
 
   # Fall through to handle skip if for both trusty and xenial
-  # NOTE(yuanying): ironic isn't supported in liberty or mitaka
-  # We only have a xenial job for it which doesn't run on liberty or mitaka.
+  # NOTE(yuanying): ironic isn't supported in mitaka
+  # We only have a xenial job for it which doesn't run on mitaka.
   - name: ^gate-functional-dsvm-magnum-swarm.*
     skip-if:
       - project: ^openstack/magnum$
@@ -2082,7 +2060,7 @@ jobs:
           - ^doc/.*$
 
   - name: gate-tempest-dsvm-multinode-live-migration-ubuntu-xenial
-    branch: ^(?!stable/(liberty|mitaka)).*$
+    branch: ^(?!stable/mitaka).*$
     skip-if:
       - project: ^openstack/nova$
         all-files-match-any:
@@ -2105,7 +2083,7 @@ jobs:
     branch: ^stable/newton$
 
   - name: gate-grenade-dsvm-neutron-multinode-live-migration-nv
-    branch: ^(?!stable/(liberty|mitaka|newton)).*$
+    branch: ^(?!stable/(mitaka|newton)).*$
     skip-if:
       - project: ^openstack/nova$
         all-files-match-any:
@@ -2141,28 +2119,25 @@ jobs:
           - ^tox.ini$
 
   - name: ^gate-.*-identity-v3-only.*
-    branch: ^(?!stable/(liberty|mitaka)).*$
+    branch: ^(?!stable/mitaka).*$
 
   - name: ^networking-midonet-coverage-db-ubuntu-(trusty|xenial)
     voting: false
 
   - name: ^gate-tempest-dsvm-networking-midonet-.+-full-ubuntu-xenial-nv
-    branch: ^(?!stable/(liberty|mitaka|newton)).*$
-
-  - name: ^gate-tempest-dsvm-networking-odl-.+-snapshot-liberty-nv$
-    branch: ^stable/liberty$
+    branch: ^(?!stable/(mitaka|newton)).*$
 
   - name: ^gate-tempest-dsvm-networking-odl-.+-snapshot-mitaka-nv$
     branch: ^stable/mitaka$
 
   - name: ^gate-tempest-dsvm-networking-odl-.+-snapshot$
-    branch: ^(?!stable/(liberty|mitaka)).*$
+    branch: ^(?!stable/mitaka).*$
 
   - name: ^gate-dsvm-networking-odl-.+$
-    branch: ^(?!stable/(liberty|mitaka|newton)).*$
+    branch: ^(?!stable/(mitaka|newton)).*$
 
   - name: ^gate-rally-dsvm-networking-odl-.+-snapshot
-    branch: ^(?!stable/(liberty|mitaka|newton)).*$
+    branch: ^(?!stable/(mitaka|newton)).*$
 
   - name: gate-networking-odl-python34
     branch: ^(?!stable/(icehouse|juno)).*$
@@ -2174,25 +2149,25 @@ jobs:
     voting: false
 
   - name: ^gate-grenade-dsvm-neutron-fwaas-multinode-nv
-    branch: ^(?!stable/(liberty|mitaka)).*$
+    branch: ^(?!stable/mitaka).*$
 
   - name: ^gate-neutron-fwaas-dsvm-functional$
-    branch: ^(?!stable/(liberty|mitaka)).*$
+    branch: ^(?!stable/mitaka).*$
 
   - name: ^gate-neutron-fwaas-legacy-dsvm-tempest$
-    branch: ^(stable/(liberty|mitaka)).*$
+    branch: ^(stable/mitaka).*$
 
   - name: ^gate-neutron-fwaas-v2-dsvm-tempest$
-    branch: ^(?!stable/(liberty|mitaka)).*$
+    branch: ^(?!stable/mitaka).*$
 
   - name: ^gate-neutron-fwaas-v1-dsvm-tempest$
-    branch: ^(?!stable/(liberty|mitaka)).*$
+    branch: ^(?!stable/mitaka).*$
 
   - name: ^gate-neutron-fwaas-v1-dsvm-tempest-multinode-nv$
-    branch: ^(?!stable/(liberty|mitaka|newton)).*$
+    branch: ^(?!stable/(mitaka|newton)).*$
 
   - name: ^gate-neutron-fwaas-v2-dsvm-tempest-multinode-nv$
-    branch: ^(?!stable/(liberty|mitaka|newton)).*$
+    branch: ^(?!stable/(mitaka|newton)).*$
 
   - name: ^gate-networking-sfc-functional-dsvm-ubuntu-trusty$
     branch: ^(stable/mitaka).*$
@@ -2201,7 +2176,7 @@ jobs:
     branch: ^(stable/mitaka).*$
 
   - name: ^gate-networking-l2gw-dsvm-functional-nv$
-    branch: ^(?!stable/(liberty|mitaka)).*$
+    branch: ^(?!stable/mitaka).*$
 
 # For Gerrit ver 2.8.x and later (using buck)
   - name: ^.*gerrit.*buck$
@@ -2209,11 +2184,8 @@ jobs:
 
     # For stable compat jobs.
   - name: ^gate-tempest-dsvm-neutron-src-.*-newton$
-    branch: ^(?!stable/(liberty|mitaka|newton)).*$
+    branch: ^(?!stable/(mitaka|newton)).*$
     voting: false
-
-  - name: ^gate-oslo.messaging-dsvm-functional-.*-qpid-ubuntu-trusty-nv$
-    branch: ^stable/liberty$
 
   - name: ^gate-oslo.messaging-dsvm-functional-.*-amqp1-ubuntu-trusty.*$
     branch: ^stable/mitaka$
@@ -2243,18 +2215,18 @@ jobs:
 
   # Xenial jobs
   - name: ^gate-cinder-(docs|python27-db|pylint)-ubuntu-xenial$
-    branch: ^(?!(stable/(liberty|mitaka)|driverfixes/)).*$
+    branch: ^(?!(stable/mitaka|driverfixes/)).*$
 
   - name: ^gate-cinder-python35-db
-    branch: ^(?!(stable/(liberty|mitaka)|driverfixes/)).*$
+    branch: ^(?!(stable/mitaka|driverfixes/)).*$
 
   # This job should run on driverfixes/mitaka branch
   - name: ^gate-cinder-pep8-ubuntu-trusty
-    branch: ^((stable/(liberty|mitaka)|driverfixes/mitaka))$
+    branch: ^((stable/mitaka|driverfixes/mitaka))$
 
   # This job should run on future driverfixes/ branches
   - name: ^gate-cinder-pep8-ubuntu-xenial
-    branch: ^(?!(stable/(liberty|mitaka)|(driverfixes/mitaka))).*$
+    branch: ^(?!(stable/mitaka|(driverfixes/mitaka))).*$
 
   # Skip post job for driverfixes
   - name: ^cinder-.*$
@@ -2268,35 +2240,35 @@ jobs:
     voting: false
 
   - name: ^gate-cinder-tox-db-functional-ubuntu-xenial$
-    branch: ^(?!(stable/(liberty|mitaka)|driverfixes/)).*$
+    branch: ^(?!(stable/mitaka|driverfixes/)).*$
     voting: false
 
   - name: ^gate-cinder-tox-compliance-ubuntu-xenial$
-    branch: ^(?!(stable/(liberty|mitaka)|driverfixes/)).*$
+    branch: ^(?!(stable/mitaka|driverfixes/)).*$
 
   - name: ^gate-cinder-dsvm-apache-ubuntu-xenial.*$
-    branch: ^(?!(stable/(liberty|mitaka)|driverfixes/)).*$
+    branch: ^(?!(stable/mitaka|driverfixes/)).*$
 
   - name: ^gate-rally-dsvm-cinder-ubuntu-xenial.*$
-    branch: ^(?!(stable/(liberty|mitaka)|driverfixes/)).*$
+    branch: ^(?!(stable/mitaka|driverfixes/)).*$
 
   - name: ^gate-tempest-dsvm-full-bdd.*$
-    branch: ^(?!(stable/(liberty|mitaka)|driverfixes/)).*$
+    branch: ^(?!(stable/mitaka|driverfixes/)).*$
 
   - name: ^gate-tempest-dsvm-full-devstack-plugin-ceph-ubuntu-xenial.*$
-    branch: ^(?!(stable/(liberty|mitaka)|driverfixes/)).*$
+    branch: ^(?!(stable/mitaka|driverfixes/)).*$
 
   - name: ^gate-tempest-dsvm-full-drbd-devstack-ubuntu-xenial.*$
-    branch: ^(?!(stable/(liberty|mitaka)|driverfixes/)).*$
+    branch: ^(?!(stable/mitaka|driverfixes/)).*$
 
   - name: ^gate-tempest-dsvm-full-lio-ubuntu-xenial.*$
-    branch: ^(?!(stable/(liberty|mitaka)|driverfixes/)).*$
+    branch: ^(?!(stable/mitaka|driverfixes/)).*$
 
   - name: ^gate-tempest-dsvm-full-sheepdog-ubuntu-xenial.*$
-    branch: ^(?!(stable/(liberty|mitaka)|driverfixes/)).*$
+    branch: ^(?!(stable/mitaka|driverfixes/)).*$
 
   - name: gate-tempest-dsvm-neutron-full-ubuntu-xenial
-    branch: ^(?!(stable/(liberty|mitaka)|driverfixes/)).*$
+    branch: ^(?!(stable/mitaka|driverfixes/)).*$
 
   - name: ^zuul-coverage.*$
     voting: false
@@ -2470,7 +2442,7 @@ jobs:
   - name: ^gate-.*-install-guide$
     success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/install-guide/build/html/
     # This is only available in Newton.
-    branch: ^(?!stable/(liberty|mitaka)).*$
+    branch: ^(?!stable/mitaka).*$
     files:
       - '^tox.ini$'
       - '^install-guide/.*'
@@ -2480,7 +2452,7 @@ jobs:
   - name: ^gate-.*-deploy-guide$
     success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/deploy-guide/build/html/
     # This is only available in Newton.
-    branch: ^(?!stable/(liberty|mitaka)).*$
+    branch: ^(?!stable/mitaka).*$
     files:
       - '^tox.ini$'
       - '^deploy-guide/.*'
@@ -2496,10 +2468,10 @@ jobs:
     branch: master
 
   - name: ^(?!gate-).*-install-guide$
-    branch: ^(?!stable/(liberty|mitaka)).*$
+    branch: ^(?!stable/mitaka).*$
 
   - name: ^(?!gate-).*-deploy-guide$
-    branch: ^(?!stable/(liberty|mitaka)).*$
+    branch: ^(?!stable/mitaka).*$
 
   - name: gate-murano-firstapp-docs
     # Only publish from master
@@ -2576,7 +2548,7 @@ jobs:
     branch: ^stable/mitaka$
 
   - name: gate-congress-pe-replicated-nv
-    branch: ^(?!stable/(liberty|mitaka)).*$
+    branch: ^(?!stable/mitaka).*$
 
   - name: gate-hacking-integration-nova
     voting: false
@@ -2597,7 +2569,7 @@ jobs:
     branch: ^stable/mitaka$
 
   - name: ^(gate|post)-sahara-extra-artifacts$
-    branch: ^(?!stable/(mitaka|liberty|icehouse)).*$
+    branch: ^(?!stable/(mitaka|icehouse)).*$
 
   - name: ^sahara-coverage-db-ubuntu-(trusty|xenial)
     voting: false
@@ -2630,9 +2602,6 @@ jobs:
   - name: gate-app-catalog-ui-dsvm-integration
     voting: false
 
-  - name: ^gate-keystone-tox-bandit-ubuntu-trusty$
-    branch: ^stable/liberty$
-
   - name: ^gate-keystone-tox-patch_cover-ubuntu-(trusty|xenial)$
     voting: false
 
@@ -2640,14 +2609,7 @@ jobs:
     branch: ^stable/mitaka$
 
   - name: check-osc-plugins
-    branch: ^(?!stable/liberty).*$
     voting: false
-
-  - name: ^gate-keystonemiddleware-tox-bandit-ubuntu-trusty$
-    branch: ^stable/liberty$
-
-  - name: ^gate-python-keystoneclient-tox-bandit-ubuntu-trusty$
-    branch: ^stable/liberty$
 
   - name: gate-python-troveclient-pypy
     voting: false
@@ -2657,7 +2619,7 @@ jobs:
     branch: ^stable/mitaka$
 
   - name: gate-mistral-devstack-dsvm-kombu-nv
-    branch: ^(?!stable/(?:liberty|mitaka|newton)).*$
+    branch: ^(?!stable/(?:mitaka|newton)).*$
 
   - name: gate-mistral-dashboard-python34
     voting: false
@@ -2687,9 +2649,6 @@ jobs:
   - name: python-muranoclient-coverage-ubuntu-xenial
     voting: false
 
-  - name: gate-murano-devstack-dsvm-ubuntu-trusty
-    branch: ^(stable/liberty).*$
-
   - name: ^gate-tempest-dsvm-murano-cfapi-ubuntu-trusty(-nv)?
     branch: stable/mitaka
 
@@ -2707,7 +2666,7 @@ jobs:
 
   # NOTE(kzaitsev): nodejs4-npm-run-test was added in ocata
   - name: ^gate-murano-dashboard-nodejs4-npm-run-test$
-    branch: ^(?!stable/(?:liberty|mitaka|newton)).*$
+    branch: ^(?!stable/(?:mitaka|newton)).*$
 
   - name: ^murano-dashboard-coverage-ubuntu-xenial
     voting: false
@@ -2767,13 +2726,13 @@ jobs:
   # job until both on stable and master branches until xenial
   # variant stablizes.
   - name: gate-manila-tempest-dsvm-glusterfs-nfs-ubuntu-trusty-nv
-    branch: ^(?:stable/(?:liberty|mitaka|newton).*|master)$
+    branch: ^(?:stable/(?:mitaka|newton).*|master)$
 
   # NOTE(chenk): We enforce the trusty variant of following
   # job until both on stable and master branches until xenial
   # variant stablizes.
   - name: gate-manila-tempest-dsvm-glusterfs-native-ubuntu-trusty-nv
-    branch: ^(?:stable/(?:liberty|mitaka|newton).*|master)$
+    branch: ^(?:stable/(?:mitaka|newton).*|master)$
 
   - name: gate-manila-tempest-dsvm-cephfs-native-ubuntu-trusty-nv
     branch: ^(?:stable/mitaka).*$
@@ -2800,25 +2759,20 @@ jobs:
     branch: ^stable/mitaka$
 
   - name: ^gate-oslo.messaging-tox-.*$
-    branch: ^(?!stable/(?:liberty|mitaka|newton)).*$
+    branch: ^(?!stable/(?:mitaka|newton)).*$
     voting: false
-
-  # NOTE(rpodolyaka): since Ic7ab3b9e6dc8354861be1af46210269f74c04333 we require
-  # SQLAlchemy >= 1.0.10, so this job is not needed for Mitaka+
-  - name: ^gate-oslo.db-tox-db-sqla_09-ubuntu-trusty$
-    branch: ^(stable/liberty).*$
 
   # Rally jobs for Manila should run only on ocata+ branches
   - name: gate-rally-dsvm-manila-multibackend
-    branch: ^(?!stable/(?:liberty|mitaka|newton)).*$
+    branch: ^(?!stable/(?:mitaka|newton)).*$
     voting: false
 
   - name: gate-rally-dsvm-manila-multibackend-no-ss
-    branch: ^(?!stable/(?:liberty|mitaka|newton)).*$
+    branch: ^(?!stable/(?:mitaka|newton)).*$
     voting: false
 
   - name: gate-manila-ui-dsvm-nv
-    branch: ^(?!stable/(?:liberty|mitaka|newton)).*$
+    branch: ^(?!stable/(?:mitaka|newton)).*$
 
   - name: gate-blazar-devstack-dsvm
     voting: false
@@ -2827,7 +2781,7 @@ jobs:
     voting: false
 
   - name: gate-neutron-dsvm-api-ubuntu-trusty
-    branch: ^(stable/(liberty|mitaka))$
+    branch: ^(stable/mitaka)$
 
   - name: gate-tacker-python34-db
     branch: ^stable/mitaka$
@@ -2849,21 +2803,21 @@ jobs:
     branch: ^stable/newton$
 
   - name: ^gate-trove-scenario-dsvm-.*$
-    branch: ^(?!stable/(liberty|mitaka|newton)).*$
+    branch: ^(?!stable/(mitaka|newton)).*$
 
   # NOTE(amrith): This job should be run for trove-integration, and
   #               trove's and trove clients stable branches for
-  #               liberty, mitaka and newton.
+  #               mitaka and newton.
   - name: ^gate-trove-legacy-functional-dsvm-.*$
     skip-if:
       - project: ^openstack/(trove|python-troveclient)$
-        branch: ^(?!stable/(liberty|mitaka|newton)).*$
+        branch: ^(?!stable/(mitaka|newton)).*$
 
   - name: ^gate-trove-functional-dsvm-.*$
-    branch: ^(?!stable/(liberty|mitaka|newton)).*$
+    branch: ^(?!stable/(mitaka|newton)).*$
 
   - name: gate-trove-python34-db
-    branch: ^(?!stable/(liberty|mitaka)).*$
+    branch: ^(?!stable/mitaka).*$
 
   - name: gate-trove-dashboard-python34
     branch: ^(?!stable/(mitaka)).*$
@@ -2879,16 +2833,13 @@ jobs:
     branch: ^stable/(mitaka|newton)
 
   - name: gate-aodh-dsvm-functional-mongodb-ubuntu-trusty
-    branch: ^stable/(liberty|mitaka|newton)
+    branch: ^stable/(mitaka|newton)
 
   - name: gate-aodh-dsvm-tempest-plugin-hbase
     branch: ^stable/(mitaka|newton)
 
   - name: gate-aodh-dsvm-tempest-plugin-mongodb
     branch: ^stable/(mitaka|newton)
-
-  - name: ^gate-aodh-dsvm-tempest-plugin-.*
-    branch: ^(?!stable/liberty).*$
 
   # TODO(lcastell): Make voting once tests are fixed
   - name: ^gate-craton-dashboard-nodejs4-npm-run-test$
@@ -2939,13 +2890,10 @@ jobs:
   - name: ^(gate-)?devstack-docs
     branch: ^master
 
-  - name: ^gate-tempest-dsvm-lxc
-    branch: ^(?!stable/liberty).*$
-
   # TODO(yamamoto): Revisit when Neutron driver API become more stable.
   # OFAgent will be removed in the Newton cycle.
   - name: ^gate-networking-ofagent-.*$
-    branch: ^stable/(liberty|mitaka).*$
+    branch: ^stable/mitaka$
 
   - name: ^gate-networking-ofagent-python27-ubuntu-trusty
     voting: false
@@ -2957,7 +2905,7 @@ jobs:
     tags: neutron
 
   - name: gate-tempest-dsvm-networking-ofagent
-    branch: ^stable/(liberty|mitaka).*$
+    branch: ^stable/mitaka$
     voting: false
 
   - name: ^gate-tempest-dsvm-neutron.*-ovs.*$
@@ -3045,11 +2993,7 @@ jobs:
     branch: ^stable/newton$
 
   - name: ^gate-ceilometer-tox-db-.*
-    branch: ^(?!stable/(liberty|mitaka|newton))
-
-  # Freezer specific gate settings
-  - name: ^gate-freezer(-api|-web-ui)?-docs.*$
-    branch: ^(?!stable/liberty).*$
+    branch: ^(?!stable/(mitaka|newton))
 
   - name: gate-keystone-python34-db
     branch: ^stable/mitaka$
@@ -3154,9 +3098,9 @@ jobs:
   - name: ^gate-openstack-ansible-os_(?!(keystone|glance|cinder)).*-ansible-.*-centos-7.*$
     branch: ^(?!(liberty|stable/(mitaka|newton))).*$
 
-  # Skip any deploy guide publish jobs for liberty/mitaka
+  # Skip any deploy guide publish jobs for mitaka
   - name: ^gate-openstack-ansible-deploy-guide$
-    branch: ^(?!(liberty|stable/mitaka)).*$
+    branch: ^(?!stable/mitaka).*$
 
   # Ignore requirements on the keystoneclient/keystoneauth integration branch
   - name: gate-python-keystoneclient-requirements
@@ -3204,13 +3148,13 @@ jobs:
   - name: ^gate-cliff-tox-(openstackclient|neutronclient)-tip-ubuntu-xenial$
     branch: ^master$
 
-  # Old dsvm jobs are running on liberty and mitaka, new tempest one - from
+  # Old dsvm jobs are running on mitaka, new tempest one - from
   # newton on
   - name: ^gate-ironic-inspector-dsvm-discovery-ubuntu-trusty$
     branch: ^stable/mitaka.*$
 
   - name: ^gate-python-ironic-inspector-client-docs.*$
-    branch: ^(?!stable/(liberty|mitaka|newton)).*$
+    branch: ^(?!stable/(mitaka|newton)).*$
 
   # NOTE(jlvilla): Ironic and Inspector Grenade do not work until after mitaka
   - name: ^gate-grenade-dsvm-ironic.*-ubuntu-trusty(-nv)?$
@@ -3291,7 +3235,7 @@ jobs:
     branch: ^stable/mitaka.*$
 
   - name: ^gate-tooz-tox-db-py35-.+-ubuntu-xenial
-    branch: ^(?!stable/(liberty|mitaka|newton)).*$
+    branch: ^(?!stable/(mitaka|newton)).*$
 
     # Requirements project publishes documents from master only.
   - name: ^(?:gate-)requirements-docs-ubuntu-xenial$
@@ -3676,8 +3620,6 @@ projects:
       - gate-grenade-dsvm-neutron-multinode-ubuntu-xenial
       - gate-neutron-dsvm-functional-ubuntu-xenial-nv
       - gate-swift-dsvm-functional-ubuntu-xenial-nv
-      - gate-tempest-dsvm-full-ubuntu-trusty-liberty-nv
-      - gate-tempest-dsvm-neutron-full-ubuntu-trusty-liberty-nv
       - gate-tempest-dsvm-full-ubuntu-trusty-mitaka-nv
       - gate-tempest-dsvm-neutron-full-ubuntu-trusty-mitaka-nv
       - gate-tempest-dsvm-full-ubuntu-xenial-newton-nv
@@ -5680,7 +5622,6 @@ projects:
       - name: python35-jobs
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
-      - name: periodic-liberty
       - name: periodic-mitaka
       - name: periodic-newton
       - name: periodic-jobs-with-oslo-master
@@ -6136,7 +6077,6 @@ projects:
       - name: python35-db-jobs
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
-      - name: periodic-db-liberty
       - name: periodic-db-mitaka
       - name: periodic-db-newton
       - name: periodic-jobs-with-oslo-master
@@ -8354,7 +8294,6 @@ projects:
       - name: python35-db-jobs
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
-      - name: periodic-db-liberty
       - name: periodic-db-mitaka
       - name: periodic-db-newton
       - name: check-requirements
@@ -9866,7 +9805,6 @@ projects:
       - name: python-db-jobs
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
-      - name: periodic-db-liberty
       - name: periodic-db-mitaka
       - name: periodic-db-newton
       - name: periodic-jobs-with-oslo-master
@@ -10089,7 +10027,6 @@ projects:
       - name: python35-db-jobs
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
-      - name: periodic-db-liberty
       - name: periodic-db-mitaka
       - name: periodic-db-newton
       - name: periodic-jobs-with-oslo-master
@@ -10109,7 +10046,6 @@ projects:
       - gate-heat-dsvm-functional-convg-mysql-lbaasv2-ubuntu-trusty
       - gate-heat-dsvm-functional-convg-mysql-lbaasv2-ubuntu-xenial
       - gate-heat-dsvm-functional-convg-mysql-lbaasv2-centos-7-amqp1-nv
-      - gate-tempest-dsvm-heat-ubuntu-trusty
       - gate-tempest-dsvm-heat-apache-ubuntu-trusty
       - gate-tempest-dsvm-heat-apache-ubuntu-xenial
       - gate-grenade-dsvm-heat-ubuntu-trusty
@@ -10122,7 +10058,6 @@ projects:
       - gate-heat-dsvm-functional-orig-mysql-lbaasv2-ubuntu-xenial
       - gate-heat-dsvm-functional-convg-mysql-lbaasv2-ubuntu-trusty
       - gate-heat-dsvm-functional-convg-mysql-lbaasv2-ubuntu-xenial
-      - gate-tempest-dsvm-heat-ubuntu-trusty
       - gate-tempest-dsvm-heat-apache-ubuntu-trusty
       - gate-tempest-dsvm-heat-apache-ubuntu-xenial
       - gate-grenade-dsvm-heat-ubuntu-trusty
@@ -10211,7 +10146,6 @@ projects:
       - name: python35-jobs
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
-      - name: periodic-liberty
       - name: periodic-mitaka
       - name: periodic-newton
       - name: check-requirements
@@ -10352,7 +10286,6 @@ projects:
       - name: python35-db-jobs
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
-      - name: periodic-db-liberty
       - name: periodic-db-mitaka
       - name: periodic-db-newton
       - name: periodic-jobs-with-oslo-master
@@ -10678,7 +10611,6 @@ projects:
       - name: python35-db-jobs
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
-      - name: periodic-db-liberty
       - name: periodic-db-mitaka
       - name: periodic-db-newton
       - name: periodic-jobs-with-oslo-master
@@ -10691,7 +10623,6 @@ projects:
       - name: api-ref-jobs
     check:
       - gate-keystoneclient-dsvm-functional-ubuntu-xenial-nv
-      - gate-keystone-tox-bandit-ubuntu-trusty
       - gate-keystone-dsvm-functional-ubuntu-xenial
       - gate-keystone-dsvm-functional-v3-only-ubuntu-xenial-nv
       - gate-tempest-dsvm-keystone-eventlet-full-ubuntu-trusty-nv
@@ -10702,7 +10633,6 @@ projects:
       - keystone-coverage-db-ubuntu-xenial
     gate:
       - gate-keystone-dsvm-functional-ubuntu-xenial
-      - gate-keystone-tox-bandit-ubuntu-trusty
     experimental:
       - gate-grenade-dsvm-forward-ubuntu-trusty
       - gate-rally-dsvm-keystone-ubuntu-xenial-nv
@@ -10742,10 +10672,6 @@ projects:
       - name: publish-to-pypi
       - name: release-notes-jobs
       - name: translation-jobs
-    check:
-      - gate-keystonemiddleware-tox-bandit-ubuntu-trusty
-    gate:
-      - gate-keystonemiddleware-tox-bandit-ubuntu-trusty
     post:
       - keystonemiddleware-coverage-ubuntu-trusty
       - keystonemiddleware-coverage-ubuntu-xenial
@@ -11013,7 +10939,6 @@ projects:
       - name: check-requirements
       - name: translation-jobs
       - name: release-notes-jobs
-      - name: periodic-liberty
       - name: periodic-mitaka
       - name: periodic-newton
       - name: api-ref-jobs
@@ -11537,7 +11462,6 @@ projects:
       - name: publish-to-pypi
       - name: openstack-server-publish-jobs
       - name: check-requirements
-      - name: periodic-db-liberty
       - name: periodic-db-mitaka
       - name: periodic-db-newton
       - name: release-notes-jobs
@@ -11549,7 +11473,6 @@ projects:
       - gate-murano-pylint-ubuntu-trusty
       - gate-murano-pylint-ubuntu-xenial
       - gate-murano-tox-py27-mitaka-ubuntu-xenial
-      - gate-murano-devstack-dsvm-ubuntu-trusty
       - gate-murano-congress-devstack-dsvm-ubuntu-trusty-nv
       - gate-murano-congress-devstack-dsvm-ubuntu-xenial-nv
       - gate-rally-dsvm-murano-task-ubuntu-trusty-nv
@@ -11563,7 +11486,6 @@ projects:
     gate:
       - gate-tempest-dsvm-murano-api-ubuntu-trusty
       - gate-tempest-dsvm-murano-api-ubuntu-xenial
-      - gate-murano-devstack-dsvm-ubuntu-trusty
       - gate-murano-firstapp-docs
     post:
       - murano-coverage-db-ubuntu-trusty
@@ -11608,13 +11530,11 @@ projects:
       - gate-murano-dashboard-pep8-ubuntu-xenial
       - gate-murano-dashboard-python27-ubuntu-xenial
       - gate-murano-dashboard-tox-py27-mitaka-ubuntu-xenial
-      - gate-murano-devstack-dsvm-ubuntu-trusty
     gate:
       - gate-murano-dashboard-pep8-ubuntu-trusty
       - gate-murano-dashboard-python27-ubuntu-trusty
       - gate-murano-dashboard-pep8-ubuntu-xenial
       - gate-murano-dashboard-python27-ubuntu-xenial
-      - gate-murano-devstack-dsvm-ubuntu-trusty
     post:
       - murano-dashboard-branch-tarball
       - murano-dashboard-coverage-ubuntu-xenial
@@ -11707,7 +11627,6 @@ projects:
       - name: publish-to-pypi
       - name: release-notes-jobs
       - name: check-requirements
-      - name: periodic-db-liberty
       - name: periodic-db-mitaka
       - name: periodic-db-newton
       - name: periodic-jobs-with-neutron-lib-master
@@ -11730,7 +11649,6 @@ projects:
       - name: openstack-server-publish-jobs
       - name: publish-to-pypi
       - name: release-notes-jobs
-      - name: periodic-db-liberty
       - name: periodic-db-mitaka
       - name: periodic-db-newton
       - name: check-requirements
@@ -11912,7 +11830,6 @@ projects:
       - name: python-db-jobs
       - name: python34-db-jobs
       - name: python35-db-jobs
-      - name: periodic-liberty
       - name: periodic-mitaka
       - name: periodic-jobs-with-neutron-lib-master
       - name: publish-to-pypi
@@ -11941,7 +11858,6 @@ projects:
       - gate-networking-midonet-v2-rally-dsvm-ubuntu-xenial-nv
       - gate-grenade-dsvm-networking-midonet-ubuntu-xenial-nv
     periodic:
-      - periodic-tempest-dsvm-networking-midonet-v2-ubuntu-trusty-liberty
       - periodic-tempest-dsvm-networking-midonet-v2-ubuntu-trusty-mitaka
 
   - name: openstack/networking-mlnx
@@ -11963,7 +11879,6 @@ projects:
       - name: python-jobs
       - name: python34-jobs
       - name: python35-jobs
-      - name: periodic-liberty
       - name: periodic-mitaka
       - name: periodic-newton
       - name: periodic-jobs-with-neutron-lib-master
@@ -11974,13 +11889,10 @@ projects:
       - name: translation-jobs
     check:
       - gate-grenade-dsvm-networking-odl-nv
-      - gate-tempest-dsvm-networking-odl-beryllium-snapshot-liberty-nv
       - gate-tempest-dsvm-networking-odl-beryllium-snapshot-mitaka-nv
       - gate-tempest-dsvm-networking-odl-beryllium-snapshot
-      - gate-tempest-dsvm-networking-odl-boron-snapshot-liberty-nv
       - gate-tempest-dsvm-networking-odl-boron-snapshot-mitaka-nv
       - gate-tempest-dsvm-networking-odl-boron-snapshot
-      - gate-tempest-dsvm-networking-odl-carbon-snapshot-liberty-nv
       - gate-tempest-dsvm-networking-odl-carbon-snapshot-mitaka-nv
       - gate-tempest-dsvm-networking-odl-carbon-snapshot
       - gate-tempest-dsvm-networking-odl-multinode-carbon-snapshot-nv
@@ -12020,7 +11932,6 @@ projects:
       - gate-networking-ofagent-docs-ubuntu-trusty
     periodic:
       - periodic-tempest-dsvm-networking-ofagent-mitaka
-      - periodic-tempest-dsvm-networking-ofagent-liberty
     post:
       - networking-ofagent-branch-tarball
 
@@ -12142,7 +12053,6 @@ projects:
       - name: python35-jobs
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
-      - name: periodic-liberty
       - name: periodic-mitaka
       - name: periodic-newton
       - name: periodic-jobs-with-oslo-master
@@ -12246,7 +12156,6 @@ projects:
     template:
       - name: check-requirements
       - name: merge-check
-      - name: periodic-liberty
       - name: periodic-mitaka
       - name: periodic-newton
       - name: python-jobs
@@ -12278,7 +12187,6 @@ projects:
     template:
       - name: check-requirements
       - name: merge-check
-      - name: periodic-liberty
       - name: periodic-mitaka
       - name: periodic-newton
       - name: python-jobs
@@ -12370,7 +12278,6 @@ projects:
       - name: check-requirements
       - name: merge-check
       - name: publish-to-pypi
-      - name: periodic-liberty
       - name: periodic-mitaka
       - name: periodic-newton
       - name: python-jobs
@@ -12438,7 +12345,6 @@ projects:
       - name: periodic-jobs-with-oslo-master
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
-      - name: periodic-db-liberty
       - name: periodic-db-mitaka
       - name: periodic-db-newton
       - name: check-requirements
@@ -12637,7 +12543,6 @@ projects:
     template:
       - name: check-requirements
       - name: merge-check
-      - name: periodic-liberty
       - name: periodic-mitaka
       - name: periodic-newton
       - name: periodic-jobs-with-oslo-master
@@ -12648,7 +12553,7 @@ projects:
       - name: publish-to-pypi
       - name: release-notes-jobs
     check:
-      # legacy trusty gates (liberty|mitaka) - remove after mitaka EOL
+      # legacy trusty gates mitaka - remove after mitaka EOL
       - gate-neutron-lbaasv2-dsvm-minimal-ubuntu-trusty
       - gate-neutron-lbaasv2-dsvm-loadbalancer-ubuntu-trusty
       - gate-neutron-lbaasv2-dsvm-listener-ubuntu-trusty
@@ -12669,7 +12574,7 @@ projects:
       - gate-octavia-v1-dsvm-scenario-ubuntu-xenial-nv
       - gate-octavia-v1-dsvm-scenario-multinode-nv
     gate:
-      # legacy trusty gates (liberty|mitaka) - remove after mitaka EOL
+      # legacy trusty gates mitaka - remove after mitaka EOL
       - gate-neutron-lbaasv2-dsvm-loadbalancer-ubuntu-trusty
       - gate-neutron-lbaasv2-dsvm-listener-ubuntu-trusty
       - gate-neutron-lbaasv2-dsvm-pool-ubuntu-trusty
@@ -13469,10 +13374,6 @@ projects:
       - name: translation-jobs-mitaka
       - name: translation-jobs-newton
       - name: release-notes-jobs
-    check:
-      - gate-openstack-manuals-tox-checksyntax-ubuntu-xenial
-    gate:
-      - gate-openstack-manuals-tox-checksyntax-ubuntu-xenial
     post:
       - openstack-manuals-tox-doc-publishdocs
       - propose-openstack-manuals-updates
@@ -13866,11 +13767,9 @@ projects:
       - name: stable-compat-jobs
       - name: release-notes-jobs
     check:
-      - gate-oslo.db-tox-db-sqla_09-ubuntu-trusty
       - gate-oslo.db-tox-db-mysql-python-ubuntu-trusty
       - gate-oslo.db-tox-db-mysql-python-ubuntu-xenial
     gate:
-      - gate-oslo.db-tox-db-sqla_09-ubuntu-trusty
       - gate-oslo.db-tox-db-mysql-python-ubuntu-trusty
       - gate-oslo.db-tox-db-mysql-python-ubuntu-xenial
 
@@ -13935,7 +13834,6 @@ projects:
       - gate-oslo.messaging-dsvm-functional-py27-rabbit-ubuntu-xenial-nv
       - gate-oslo.messaging-dsvm-functional-py34-rabbit-ubuntu-trusty-nv
       - gate-oslo.messaging-dsvm-functional-py35-rabbit-ubuntu-xenial-nv
-      - gate-oslo.messaging-dsvm-functional-py27-qpid-ubuntu-trusty-nv
       - gate-oslo.messaging-dsvm-functional-py27-amqp1-ubuntu-trusty-nv
       - gate-oslo.messaging-dsvm-functional-py27-amqp1-ubuntu-xenial-nv
       - gate-oslo.messaging-dsvm-functional-py27-amqp1-centos-7-nv
@@ -15543,13 +15441,9 @@ projects:
     check:
       - gate-keystoneclient-dsvm-functional-ubuntu-trusty
       - gate-keystoneclient-dsvm-functional-ubuntu-xenial
-      - gate-python-keystoneclient-tox-bandit-ubuntu-trusty
-      - gate-python-keystoneclient-tox-bandit-ubuntu-xenial
     gate:
       - gate-keystoneclient-dsvm-functional-ubuntu-trusty
       - gate-keystoneclient-dsvm-functional-ubuntu-xenial
-      - gate-python-keystoneclient-tox-bandit-ubuntu-trusty
-      - gate-python-keystoneclient-tox-bandit-ubuntu-xenial
     post:
       - python-keystoneclient-coverage-ubuntu-trusty
       - python-keystoneclient-coverage-ubuntu-xenial
@@ -16378,7 +16272,6 @@ projects:
       - name: python-db-jobs
       - name: python34-db-jobs
       - name: python35-db-jobs
-      - name: periodic-db-liberty
       - name: periodic-db-mitaka
       - name: periodic-db-newton
       - name: openstack-server-publish-jobs
@@ -17084,7 +16977,6 @@ projects:
       - name: python35-jobs
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
-      - name: periodic-liberty
       - name: periodic-mitaka
       - name: periodic-newton
       - name: check-requirements
@@ -17387,9 +17279,6 @@ projects:
       # mitaka compat jobs for tempest master
       - gate-tempest-dsvm-full-ubuntu-trusty-mitaka
       - gate-tempest-dsvm-neutron-full-ubuntu-trusty-mitaka
-      # liberty compat jobs for tempest master
-      - gate-tempest-dsvm-full-ubuntu-trusty-liberty
-      - gate-tempest-dsvm-neutron-full-ubuntu-trusty-liberty
     gate:
       - gate-tempest-dsvm-layer4-ubuntu-trusty
       - gate-tempest-dsvm-layer4-ubuntu-xenial
@@ -17425,8 +17314,6 @@ projects:
     periodic-stable:
       # add periodic tempest jobs even when they run as compat jobs
       # on each tempest master check for stable-maint visiblity
-      - periodic-tempest-dsvm-full-ubuntu-trusty-liberty
-      - periodic-tempest-dsvm-neutron-full-ubuntu-trusty-liberty
       - periodic-tempest-dsvm-full-ubuntu-trusty-mitaka
       - periodic-tempest-dsvm-neutron-full-ubuntu-trusty-mitaka
       - periodic-tempest-dsvm-full-ubuntu-xenial-newton
@@ -17782,7 +17669,6 @@ projects:
       - name: python35-db-jobs
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
-      - name: periodic-db-liberty
       - name: periodic-db-mitaka
       - name: periodic-db-newton
       - name: check-requirements
@@ -18265,7 +18151,6 @@ projects:
       - name: python34-jobs
       - name: python35-jobs
       - name: python-jobs
-      - name: periodic-liberty
       - name: periodic-mitaka
       - name: periodic-newton
       - name: check-requirements
