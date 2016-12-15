@@ -282,6 +282,43 @@
       - devstack-logs
       - console-log
 
+- job-template:
+    name: '{pipeline}-tempest-dsvm-identity-v3-test-accounts-{node}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 180
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_TEMPEST_FULL=1
+          export DEVSTACK_GATE_NEUTRON=1
+          export DEVSTACK_LOCAL_CONFIG="ENABLE_IDENTITY_V2=False"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"SERVICE_DOMAIN_NAME=service"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"TEMPEST_USE_TEST_ACCOUNTS=True"
+          export DEVSTACK_GATE_TLSPROXY=1
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+
 
 - job-template:
     name: '{pipeline}-tempest-dsvm-neutron-full-non-admin-{node}{suffix}'
@@ -2181,6 +2218,7 @@
       - '{pipeline}-tempest-dsvm-full-test-accounts-{node}{suffix}'
       - '{pipeline}-tempest-dsvm-neutron-full-non-admin-{node}{suffix}'
       - '{pipeline}-tempest-dsvm-neutron-full-test-accounts-{node}{suffix}'
+      - '{pipeline}-tempest-dsvm-identity-v3-test-accounts-{node}{suffix}'
       - '{pipeline}-tempest-dsvm-neutron-scenario-{node}{suffix}'
       - '{pipeline}-tempest-dsvm-neutron-scenario-linuxbridge-{node}{suffix}'
       - '{pipeline}-tempest-dsvm-lxc-{node}{suffix}'
