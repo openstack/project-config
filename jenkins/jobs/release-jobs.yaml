@@ -23,3 +23,32 @@
 
     publishers:
       - console-log
+
+
+# This job runs after a repository has been tagged to update the
+# upper-constraints.txt list in the openstack/requirements repository.
+- job-template:
+    name: '{name}-update-constraints'
+    node: signing
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - gerrit-git-prep
+      - revoke-sudo
+      - shell: |
+          #!/bin/bash
+
+          set -x
+
+          SERIES="blah"
+
+          # Save the version that was just tagged by parsing
+          # ref/tags/VALUE to get VALUE.
+          VERSION=$(echo $ZUUL_REF | cut -f3 -d/)
+
+          /usr/local/jenkins/slave_scripts/release-tools/update_constraints.sh $VERSION
+
+    publishers:
+      - test-results
+      - console-log
