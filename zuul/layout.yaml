@@ -1896,11 +1896,6 @@ jobs:
       - ^rally/verification.*$
       - ^tests/ci/.*verify.*$
 
-  # NOTE(aweyl) tempest test for vitrage was introduced in the mitaka cycle,
-  # so testing the earlier branches doesn't make sense.
-  - name: ^gate-vitrage-dsvm-datasources-ubuntu-trusty$
-    branch: ^stable/mitaka$
-
   # NOTE(markvan) (heat) functional lbaas v2 testing was introduced in the mitaka
   # cycle as experimental, so testing it there and earlier branches doesn't make sense.
   - name: ^gate-heat-dsvm-functional-.*-lbaasv2-ubuntu-xenial$
@@ -15902,15 +15897,10 @@ projects:
     template:
       - name: merge-check
     check:
-      - rack-coverage-db-ubuntu-trusty
       - rack-coverage-db-ubuntu-xenial
-      - gate-rack-pep8-ubuntu-trusty
-      - gate-rack-python27-db-ubuntu-trusty
       - gate-rack-pep8-ubuntu-xenial
       - gate-rack-python27-db-ubuntu-xenial
     gate:
-      - gate-rack-pep8-ubuntu-trusty
-      - gate-rack-python27-db-ubuntu-trusty
       - gate-rack-pep8-ubuntu-xenial
       - gate-rack-python27-db-ubuntu-xenial
 
@@ -15923,7 +15913,6 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python34-jobs
       - name: python35-jobs
       - name: openstack-server-publish-jobs
       - name: publish-to-pypi
@@ -16001,17 +15990,12 @@ projects:
     template:
       - name: merge-check
     check:
-      - gate-refstack-client-pep8-ubuntu-trusty
-      - gate-refstack-client-python27-ubuntu-trusty
       - gate-refstack-client-pep8-ubuntu-xenial
       - gate-refstack-client-python27-ubuntu-xenial
     gate:
-      - gate-refstack-client-pep8-ubuntu-trusty
-      - gate-refstack-client-python27-ubuntu-trusty
       - gate-refstack-client-pep8-ubuntu-xenial
       - gate-refstack-client-python27-ubuntu-xenial
     post:
-      - refstack-client-coverage-ubuntu-trusty
       - refstack-client-coverage-ubuntu-xenial
 
   - name: openstack/release-schedule-generator
@@ -16030,19 +16014,13 @@ projects:
       - name: merge-check
     check:
       - gate-releases-python27-ubuntu-xenial
-      - gate-releases-tox-validate-ubuntu-trusty
       - gate-releases-tox-validate-ubuntu-xenial
-      - gate-releases-tox-list-changes-ubuntu-trusty
       - gate-releases-tox-list-changes-ubuntu-xenial
-      - gate-releases-pep8-ubuntu-trusty
-      - gate-releases-docs-ubuntu-trusty
       - gate-releases-pep8-ubuntu-xenial
       - gate-releases-docs-ubuntu-xenial
     gate:
       - gate-releases-python27-ubuntu-xenial
-      - gate-releases-tox-validate-ubuntu-trusty
       - gate-releases-tox-validate-ubuntu-xenial
-      - gate-releases-docs-ubuntu-trusty
       - gate-releases-docs-ubuntu-xenial
     release-post:
       - tag-releases:
@@ -16052,8 +16030,7 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python34-jobs
-      - name: python35-jobs-nv
+      - name: python35-jobs
       - name: openstack-server-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
@@ -16062,7 +16039,6 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python34-jobs
       - name: python35-jobs
       - name: openstack-server-publish-jobs
       - name: publish-to-pypi
@@ -16071,20 +16047,15 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python34-jobs
-      - name: python35-jobs-nv
+      - name: python35-jobs
       - name: pypy-jobs
       - name: publish-to-pypi
       - name: docs-on-rtfd
     check:
-      - gate-requests-mock-tox-keystoneclient-tip-ubuntu-trusty
       - gate-requests-mock-tox-keystoneclient-tip-ubuntu-xenial
-      - gate-requests-mock-tox-novaclient-tip-ubuntu-trusty
       - gate-requests-mock-tox-novaclient-tip-ubuntu-xenial
     gate:
-      - gate-requests-mock-tox-keystoneclient-tip-ubuntu-trusty
       - gate-requests-mock-tox-keystoneclient-tip-ubuntu-xenial
-      - gate-requests-mock-tox-novaclient-tip-ubuntu-trusty
       - gate-requests-mock-tox-novaclient-tip-ubuntu-xenial
 
   - name: openstack/requirements
@@ -16318,24 +16289,18 @@ projects:
       - name: merge-check
       - name: python-jobs
       - name: openstack-server-publish-jobs
-      - name: python34-jobs
       - name: python35-jobs
       - name: publish-to-pypi
       - name: release-notes-jobs
     check:
-      - gate-sahara-tests-pylint-ubuntu-trusty
       - gate-sahara-tests-pylint-ubuntu-xenial
-      - gate-tempest-dsvm-sahara-ubuntu-trusty-nv
       - gate-tempest-dsvm-sahara-ubuntu-xenial-nv
       - gate-sahara-tests-dsvm-scenario-neutron-ubuntu-xenial
       - gate-sahara-cli-ubuntu-xenial-nv
-      - gate-sahara-cli-ubuntu-trusty-nv
-      - sahara-tests-coverage-ubuntu-trusty
       - sahara-tests-coverage-ubuntu-xenial
     gate:
       - gate-sahara-tests-dsvm-scenario-neutron-ubuntu-xenial
     post:
-      - sahara-tests-coverage-ubuntu-trusty
       - sahara-tests-coverage-ubuntu-xenial
 
   - name: openstack/salt-formula-ceilometer
@@ -16402,8 +16367,7 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python34-jobs
-      - name: python35-jobs-nv
+      - name: python35-jobs
       - name: check-requirements
       - name: publish-to-pypi
     experimental:
@@ -16453,10 +16417,8 @@ projects:
       - name: merge-check
       - name: openstack-server-publish-jobs
     check:
-      - gate-security-analysis-docs-ubuntu-trusty
       - gate-security-analysis-docs-ubuntu-xenial
     gate:
-      - gate-security-analysis-docs-ubuntu-trusty
       - gate-security-analysis-docs-ubuntu-xenial
 
   - name: openstack/security-doc
@@ -16521,8 +16483,7 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python34-jobs
-      - name: python35-jobs-nv
+      - name: python35-jobs
       - name: publish-to-pypi
 
   - name: openstack/shotgun
@@ -16665,8 +16626,7 @@ projects:
   - name: openstack/stackalytics
     template:
       - name: merge-check
-      - name: python34-jobs
-      - name: python35-jobs-nv
+      - name: python35-jobs
       - name: docs-on-rtfd
       - name: python-jobs
     pre-release:
@@ -16679,23 +16639,17 @@ projects:
     template:
       - name: merge-check
     check:
-      - gate-stacklight-integration-tests-pep8-ubuntu-trusty
       - gate-stacklight-integration-tests-pep8-ubuntu-xenial
     gate:
-      - gate-stacklight-integration-tests-pep8-ubuntu-trusty
       - gate-stacklight-integration-tests-pep8-ubuntu-xenial
 
   - name: openstack/stacktach
     template:
       - name: merge-check
     check:
-      - gate-stacktach-pep8-ubuntu-trusty
-      - gate-stacktach-python27-ubuntu-trusty
       - gate-stacktach-pep8-ubuntu-xenial
       - gate-stacktach-python27-ubuntu-xenial
     gate:
-      - gate-stacktach-pep8-ubuntu-trusty
-      - gate-stacktach-python27-ubuntu-trusty
       - gate-stacktach-pep8-ubuntu-xenial
       - gate-stacktach-python27-ubuntu-xenial
 
@@ -16703,13 +16657,9 @@ projects:
     template:
       - name: merge-check
     check:
-      - gate-stacktach-klugman-pep8-ubuntu-trusty
-      - gate-stacktach-klugman-python27-ubuntu-trusty
       - gate-stacktach-klugman-pep8-ubuntu-xenial
       - gate-stacktach-klugman-python27-ubuntu-xenial
     gate:
-      - gate-stacktach-klugman-pep8-ubuntu-trusty
-      - gate-stacktach-klugman-python27-ubuntu-trusty
       - gate-stacktach-klugman-pep8-ubuntu-xenial
       - gate-stacktach-klugman-python27-ubuntu-xenial
 
@@ -16717,13 +16667,9 @@ projects:
     template:
       - name: merge-check
     check:
-      - gate-stacktach-notification-utils-pep8-ubuntu-trusty
-      - gate-stacktach-notification-utils-python27-ubuntu-trusty
       - gate-stacktach-notification-utils-pep8-ubuntu-xenial
       - gate-stacktach-notification-utils-python27-ubuntu-xenial
     gate:
-      - gate-stacktach-notification-utils-pep8-ubuntu-trusty
-      - gate-stacktach-notification-utils-python27-ubuntu-trusty
       - gate-stacktach-notification-utils-pep8-ubuntu-xenial
       - gate-stacktach-notification-utils-python27-ubuntu-xenial
 
@@ -16736,13 +16682,9 @@ projects:
     template:
       - name: merge-check
     check:
-      - gate-stacktach-quince-pep8-ubuntu-trusty
-      - gate-stacktach-quince-python27-ubuntu-trusty
       - gate-stacktach-quince-pep8-ubuntu-xenial
       - gate-stacktach-quince-python27-ubuntu-xenial
     gate:
-      - gate-stacktach-quince-pep8-ubuntu-trusty
-      - gate-stacktach-quince-python27-ubuntu-trusty
       - gate-stacktach-quince-pep8-ubuntu-xenial
       - gate-stacktach-quince-python27-ubuntu-xenial
 
@@ -16750,13 +16692,9 @@ projects:
     template:
       - name: merge-check
     check:
-      - gate-stacktach-quincy-pep8-ubuntu-trusty
-      - gate-stacktach-quincy-python27-ubuntu-trusty
       - gate-stacktach-quincy-pep8-ubuntu-xenial
       - gate-stacktach-quincy-python27-ubuntu-xenial
     gate:
-      - gate-stacktach-quincy-pep8-ubuntu-trusty
-      - gate-stacktach-quincy-python27-ubuntu-trusty
       - gate-stacktach-quincy-pep8-ubuntu-xenial
       - gate-stacktach-quincy-python27-ubuntu-xenial
 
@@ -16769,13 +16707,9 @@ projects:
     template:
       - name: merge-check
     check:
-      - gate-stacktach-shoebox-pep8-ubuntu-trusty
-      - gate-stacktach-shoebox-python27-ubuntu-trusty
       - gate-stacktach-shoebox-pep8-ubuntu-xenial
       - gate-stacktach-shoebox-python27-ubuntu-xenial
     gate:
-      - gate-stacktach-shoebox-pep8-ubuntu-trusty
-      - gate-stacktach-shoebox-python27-ubuntu-trusty
       - gate-stacktach-shoebox-pep8-ubuntu-xenial
       - gate-stacktach-shoebox-python27-ubuntu-xenial
 
@@ -16783,13 +16717,9 @@ projects:
     template:
       - name: merge-check
     check:
-      - gate-stacktach-simport-pep8-ubuntu-trusty
-      - gate-stacktach-simport-python27-ubuntu-trusty
       - gate-stacktach-simport-pep8-ubuntu-xenial
       - gate-stacktach-simport-python27-ubuntu-xenial
     gate:
-      - gate-stacktach-simport-pep8-ubuntu-trusty
-      - gate-stacktach-simport-python27-ubuntu-trusty
       - gate-stacktach-simport-pep8-ubuntu-xenial
       - gate-stacktach-simport-python27-ubuntu-xenial
 
@@ -16797,13 +16727,9 @@ projects:
     template:
       - name: merge-check
     check:
-      - gate-stacktach-stackdistiller-pep8-ubuntu-trusty
-      - gate-stacktach-stackdistiller-python27-ubuntu-trusty
       - gate-stacktach-stackdistiller-pep8-ubuntu-xenial
       - gate-stacktach-stackdistiller-python27-ubuntu-xenial
     gate:
-      - gate-stacktach-stackdistiller-pep8-ubuntu-trusty
-      - gate-stacktach-stackdistiller-python27-ubuntu-trusty
       - gate-stacktach-stackdistiller-pep8-ubuntu-xenial
       - gate-stacktach-stackdistiller-python27-ubuntu-xenial
 
@@ -16811,13 +16737,9 @@ projects:
     template:
       - name: merge-check
     check:
-      - gate-stacktach-timex-pep8-ubuntu-trusty
-      - gate-stacktach-timex-python27-ubuntu-trusty
       - gate-stacktach-timex-pep8-ubuntu-xenial
       - gate-stacktach-timex-python27-ubuntu-xenial
     gate:
-      - gate-stacktach-timex-pep8-ubuntu-trusty
-      - gate-stacktach-timex-python27-ubuntu-trusty
       - gate-stacktach-timex-pep8-ubuntu-xenial
       - gate-stacktach-timex-python27-ubuntu-xenial
 
@@ -16825,13 +16747,9 @@ projects:
     template:
       - name: merge-check
     check:
-      - gate-stacktach-winchester-pep8-ubuntu-trusty
-      - gate-stacktach-winchester-python27-ubuntu-trusty
       - gate-stacktach-winchester-pep8-ubuntu-xenial
       - gate-stacktach-winchester-python27-ubuntu-xenial
     gate:
-      - gate-stacktach-winchester-pep8-ubuntu-trusty
-      - gate-stacktach-winchester-python27-ubuntu-trusty
       - gate-stacktach-winchester-pep8-ubuntu-xenial
       - gate-stacktach-winchester-python27-ubuntu-xenial
 
@@ -16898,8 +16816,7 @@ projects:
       - name: publish-to-pypi
       - name: docs-on-rtfd
       - name: python-jobs
-      - name: python34-jobs
-      - name: python35-jobs-nv
+      - name: python35-jobs
       - name: pypy-jobs
 
   - name: openstack/surveil-specs
@@ -16977,13 +16894,9 @@ projects:
       - name: merge-check
       - name: publish-to-pypi
     check:
-      - gate-swift-bench-pep8-ubuntu-trusty
-      - gate-swift-bench-python27-ubuntu-trusty
       - gate-swift-bench-pep8-ubuntu-xenial
       - gate-swift-bench-python27-ubuntu-xenial
     gate:
-      - gate-swift-bench-pep8-ubuntu-trusty
-      - gate-swift-bench-python27-ubuntu-trusty
       - gate-swift-bench-pep8-ubuntu-xenial
       - gate-swift-bench-python27-ubuntu-xenial
     post:
@@ -17004,13 +16917,9 @@ projects:
     template:
       - name: merge-check
     check:
-      - gate-swift-ceph-backend-pep8-ubuntu-trusty
-      - gate-swift-ceph-backend-python27-ubuntu-trusty
       - gate-swift-ceph-backend-pep8-ubuntu-xenial
       - gate-swift-ceph-backend-python27-ubuntu-xenial
     gate:
-      - gate-swift-ceph-backend-pep8-ubuntu-trusty
-      - gate-swift-ceph-backend-python27-ubuntu-trusty
       - gate-swift-ceph-backend-pep8-ubuntu-xenial
       - gate-swift-ceph-backend-python27-ubuntu-xenial
 
@@ -17198,16 +17107,13 @@ projects:
       - name: integrated-gate-nova-net
       - name: grenade-nova-net
       - name: python-jobs
-      - name: python34-jobs
       - name: python35-jobs
       - name: publish-to-pypi
       - name: release-notes-jobs
     check:
       - gate-grenade-dsvm-multinode
-      - gate-grenade-dsvm-neutron-multinode-ubuntu-trusty
       - gate-grenade-dsvm-neutron-multinode-ubuntu-xenial
       - gate-grenade-dsvm-neutron-ubuntu-xenial
-      - gate-tempest-dsvm-ironic-ipa-wholedisk-agent_ssh-tinyipa-ubuntu-trusty-nv
       - gate-tempest-dsvm-ironic-ipa-wholedisk-agent_ipmitool-tinyipa-ubuntu-xenial-nv
       - gate-tempest-dsvm-neutron-full-ssh
       - gate-tempest-dsvm-neutron-identity-v3-only-full-ubuntu-xenial-nv
@@ -17216,7 +17122,6 @@ projects:
       - gate-puppet-openstack-integration-4-scenario002-tempest-centos-7-nv
       - gate-puppet-openstack-integration-4-scenario003-tempest-centos-7-nv
       # jobs for other configs
-      - gate-tempest-dsvm-layer4-ubuntu-trusty
       - gate-tempest-dsvm-layer4-ubuntu-xenial
       - gate-tempest-dsvm-neutron-dvr-ubuntu-xenial
       # newton compat jobs for tempest master
@@ -17226,10 +17131,8 @@ projects:
       - gate-tempest-dsvm-full-ubuntu-trusty-mitaka
       - gate-tempest-dsvm-neutron-full-ubuntu-trusty-mitaka
     gate:
-      - gate-tempest-dsvm-layer4-ubuntu-trusty
       - gate-tempest-dsvm-layer4-ubuntu-xenial
       - gate-grenade-dsvm-multinode
-      - gate-grenade-dsvm-neutron-multinode-ubuntu-trusty
       - gate-grenade-dsvm-neutron-multinode-ubuntu-xenial
       - gate-tempest-dsvm-full-devstack-plugin-ceph-ubuntu-xenial
     experimental:
@@ -17238,16 +17141,11 @@ projects:
       - gate-tempest-dsvm-neutron-multinode-full-ubuntu-xenial-nv
       - gate-tempest-dsvm-neutron-dvr-multinode-full-ubuntu-xenial-nv
       - gate-tempest-dsvm-multinode-live-migration-ubuntu-xenial
-      - gate-grenade-dsvm-forward-ubuntu-trusty
       - gate-tempest-dsvm-cells-ubuntu-xenial
-      - gate-tempest-dsvm-full-test-accounts-ubuntu-trusty
       - gate-tempest-dsvm-full-test-accounts-ubuntu-xenial
-      - gate-tempest-dsvm-neutron-full-test-accounts-ubuntu-trusty
       - gate-tempest-dsvm-neutron-full-test-accounts-ubuntu-xenial
       - gate-tempest-dsvm-identity-v3-test-accounts-ubuntu-xenial
-      - gate-tempest-dsvm-neutron-full-non-admin-ubuntu-trusty
       - gate-tempest-dsvm-neutron-full-non-admin-ubuntu-xenial
-      - gate-tempest-dsvm-nova-v20-api-ubuntu-trusty
       - gate-tempest-dsvm-nova-v20-api-ubuntu-xenial
       - gate-tempest-dsvm-lvm-multibackend-ubuntu-xenial-nv
     post:
@@ -17279,10 +17177,8 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
     check:
-      - gate-horizon-dsvm-tempest-plugin-ubuntu-trusty
       - gate-horizon-dsvm-tempest-plugin-ubuntu-xenial
     gate:
-      - gate-horizon-dsvm-tempest-plugin-ubuntu-trusty
       - gate-horizon-dsvm-tempest-plugin-ubuntu-xenial
 
   - name: openstack/tempest-lib
@@ -17292,11 +17188,9 @@ projects:
       - name: publish-to-pypi
       - name: lib-forward-testing
       - name: python-jobs
-      - name: python34-jobs
-      - name: python35-jobs-nv
+      - name: python35-jobs
       - name: release-notes-jobs
     post:
-      - tempest-lib-docs-ubuntu-trusty
       - tempest-lib-docs-ubuntu-xenial
 
   - name: openstack/tempest-plugin-cookiecutter
@@ -17406,13 +17300,11 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python34-jobs
       - name: python35-jobs
       - name: publish-to-pypi
       - name: openstack-server-publish-jobs
       - name: check-requirements
     post:
-      - tosca-parser-coverage-ubuntu-trusty
       - tosca-parser-coverage-ubuntu-xenial
 
   - name: openstack/training-guides
@@ -17530,19 +17422,14 @@ projects:
       - name: check-tripleo-jobs
       - name: experimental-tripleo-jobs
     check:
-      - gate-tripleo-incubator-docs-ubuntu-trusty
       - gate-tripleo-incubator-docs-ubuntu-xenial
     gate:
-      - gate-tripleo-incubator-docs-ubuntu-trusty
       - gate-tripleo-incubator-docs-ubuntu-xenial
     post:
-      - tripleo-incubator-docs-ubuntu-trusty
       - tripleo-incubator-docs-ubuntu-xenial
     pre-release:
-      - tripleo-incubator-docs-ubuntu-trusty
       - tripleo-incubator-docs-ubuntu-xenial
     release:
-      - tripleo-incubator-docs-ubuntu-trusty
       - tripleo-incubator-docs-ubuntu-xenial
 
   - name: openstack/tripleo-puppet-elements
@@ -17785,28 +17672,22 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python34-jobs
       - name: python35-jobs
       - name: check-requirements
       - name: publish-to-pypi
       - name: openstack-server-publish-jobs
     check:
-      - gate-vitrage-dsvm-api-ubuntu-trusty
       - gate-vitrage-dsvm-api-ubuntu-xenial
-      - gate-vitrage-dsvm-datasources-ubuntu-trusty
       - gate-vitrage-dsvm-datasources-ubuntu-xenial
     gate:
-      - gate-vitrage-dsvm-api-ubuntu-trusty
       - gate-vitrage-dsvm-api-ubuntu-xenial
-      - gate-vitrage-dsvm-datasources-ubuntu-trusty
       - gate-vitrage-dsvm-datasources-ubuntu-xenial
 
   - name: openstack/vitrage-dashboard
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python34-jobs
-      - name: python35-jobs-nv
+      - name: python35-jobs
       - name: check-requirements
       - name: publish-to-pypi
 
@@ -17842,7 +17723,6 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python34-jobs
       - name: python35-jobs
       - name: openstack-server-publish-jobs
       - name: translation-jobs
@@ -17850,19 +17730,15 @@ projects:
       - name: publish-to-pypi
       - name: release-notes-jobs
     check:
-      - watcher-coverage-ubuntu-trusty
       - watcher-coverage-ubuntu-xenial
-      - gate-rally-dsvm-watcher-watcher-ubuntu-trusty-nv
       - gate-rally-dsvm-watcher-watcher-ubuntu-xenial-nv
-      - gate-watcher-dsvm-multinode-ubuntu-trusty-nv
       - gate-watcher-dsvm-multinode-ubuntu-xenial-nv
 
   - name: openstack/watcher-dashboard
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python34-jobs
-      - name: python35-jobs-nv
+      - name: python35-jobs
       - name: openstack-server-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
@@ -17894,17 +17770,12 @@ projects:
   - name: openstack/wsme
     template:
       - name: merge-check
-      - name: python34-jobs
-      - name: python35-jobs-nv
+      - name: python35-jobs
       - name: publish-to-pypi
     check:
-      - gate-wsme-python27-ubuntu-trusty
-      - gate-wsme-pep8-ubuntu-trusty
       - gate-wsme-python27-ubuntu-xenial
       - gate-wsme-pep8-ubuntu-xenial
     gate:
-      - gate-wsme-python27-ubuntu-trusty
-      - gate-wsme-pep8-ubuntu-trusty
       - gate-wsme-python27-ubuntu-xenial
       - gate-wsme-pep8-ubuntu-xenial
     post:
@@ -18148,8 +18019,7 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python34-jobs
-      - name: python35-jobs-nv
+      - name: python35-jobs
       - name: check-requirements
     check:
       - gate-zun-devstack-dsvm-docker
