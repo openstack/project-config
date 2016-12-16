@@ -1,5 +1,5 @@
 - builder:
-    name: tripleo-quickstart-checkout
+    name: tripleo-quickstart-and-extras-checkout
     builders:
       - shell: |
           #!/bin/bash -xe
@@ -12,9 +12,11 @@
           clonemap:
             - name: openstack/tripleo-quickstart
               dest: .
+            - name: openstack/tripleo-quickstart-extras
+              dest: .
           EOF
           /usr/zuul-env/bin/zuul-cloner -m $CLONEMAP --cache-dir /opt/git \
-              git://git.openstack.org openstack/tripleo-quickstart
+              git://git.openstack.org openstack/tripleo-quickstart openstack/tripleo-quickstart-extras
 
 - builder:
     name: python-tripleoclient-buildimage-checkout
@@ -47,7 +49,7 @@
     builders:
       - print-template-name:
           template-name: "{template-name}"
-      - tripleo-quickstart-checkout
+      - tripleo-quickstart-and-extras-checkout
       - install-distro-packages
       - shell: |
           # Allow Jenkins user to ssh into localhost
@@ -68,7 +70,7 @@
     builders:
       - print-template-name:
           template-name: "{template-name}"
-      - zuul-git-prep
+      - tripleo-quickstart-and-extras-checkout
       - install-distro-packages
       - shell: |
           # Allow Jenkins user to ssh into localhost
@@ -187,7 +189,8 @@
           export PROJECTS="openstack/python-tripleoclient $PROJECTS"
           export PROJECTS="openstack/tripleo-common $PROJECTS"
           export PROJECTS="openstack/tripleo-puppet-elements $PROJECTS"
-          export PROJECTS="openstack/tripleo-quickstart $PROJECTS"
+          export PROJECTS="openstack/tripleo-quickstart $PROJECTS
+          export PROJECTS="openstack/tripleo-quickstart-extras $PROJECTS"
 
           # some projects are not in devstack-gate, we need them to grab logs:
           export PROJECTS="openstack/aodh $PROJECTS"
