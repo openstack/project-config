@@ -1575,6 +1575,10 @@ jobs:
           - ^.*\.rst$
           - ^doc/.*$
 
+  # tripleo multinode and undercloud jobs were introduced during Newton cycle.
+  - name: ^gate-tripleo-ci-.*(multinode|undercloud).*$
+    branch: ^(?!stable/(liberty|mitaka)).*$
+
   # tripleo multinode jobs run in Puppet CI are only supported from Ocata.
   - name : ^gate-tripleo-ci-centos-7-scenario.*-multinode-puppet.*$
     branch: ^(?!stable/(hammer|liberty|mitaka|newton)).*$
@@ -1584,10 +1588,6 @@ jobs:
           - ^.*\.md$
           - ^releasenotes/.*$
           - ^metadata.json$
-
-  # tripleo multinode and undercloud jobs were introduced during Newton cycle.
-  - name: ^gate-tripleo-ci-.*(multinode|undercloud).*$
-    branch: ^(?!stable/(liberty|mitaka)).*$
 
   # NOTE(emilien): zuul v2 does not allow us to specify files rules for specific projects
   # and are global to the jobname.
