@@ -2720,9 +2720,6 @@ jobs:
   - name: gate-refstack-python34
     voting: false
 
-  - name: gate-dox-python34
-    voting: false
-
   - name: ^gate-sqlalchemy-migrate-pep8-ubuntu-(trusty|xenial)
     voting: false
 
@@ -6184,11 +6181,9 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python34-jobs
-      - name: python35-jobs-nv
+      - name: python35-jobs
       - name: publish-to-pypi
     post:
-      - cloudbase-init-coverage-ubuntu-trusty
       - cloudbase-init-coverage-ubuntu-xenial
 
   - name: openstack/cloudcafe
@@ -6270,13 +6265,9 @@ projects:
     template:
       - name: merge-check
     check:
-      - gate-compass-core-pep8-ubuntu-trusty
-      - gate-compass-core-python27-ubuntu-trusty
       - gate-compass-core-pep8-ubuntu-xenial
       - gate-compass-core-python27-ubuntu-xenial
     gate:
-      - gate-compass-core-pep8-ubuntu-trusty
-      - gate-compass-core-python27-ubuntu-trusty
       - gate-compass-core-pep8-ubuntu-xenial
       - gate-compass-core-python27-ubuntu-xenial
 
@@ -8328,13 +8319,11 @@ projects:
       - name: publish-to-pypi
       - name: designate-dsvm-jobs
     check:
-      - gate-designate-tempest-plugin-pep8-ubuntu-trusty
       - gate-designate-tempest-plugin-pep8-ubuntu-xenial
       # Stable Compat Jobs
       - gate-tempest-dsvm-designate-powerdns-ubuntu-trusty-mitaka
       - gate-tempest-dsvm-designate-bind9-ubuntu-trusty-mitaka
     gate:
-      - gate-designate-tempest-plugin-pep8-ubuntu-trusty
       - gate-designate-tempest-plugin-pep8-ubuntu-xenial
       # Stable Compat Jobs
       - gate-tempest-dsvm-designate-powerdns-ubuntu-trusty-mitaka
@@ -8354,7 +8343,6 @@ projects:
       - name: merge-check
     check:
       - gate-devstack-plugin-amqp1-bashate
-      - gate-tempest-dsvm-full-amqp1-ubuntu-trusty-nv
       - gate-tempest-dsvm-full-amqp1-ubuntu-xenial-nv
     gate:
       - gate-devstack-plugin-amqp1-bashate
@@ -8373,13 +8361,10 @@ projects:
       - name: merge-check
     check:
       - gate-devstack-plugin-ceph-bashate
-      - gate-tempest-dsvm-full-devstack-plugin-ceph-ubuntu-trusty
       - gate-tempest-dsvm-full-devstack-plugin-ceph-ubuntu-xenial
-      - gate-manila-tempest-dsvm-cephfs-native-ubuntu-trusty-nv
       - gate-manila-tempest-dsvm-cephfs-native-ubuntu-xenial-nv
     gate:
       - gate-devstack-plugin-ceph-bashate
-      - gate-tempest-dsvm-full-devstack-plugin-ceph-ubuntu-trusty
       - gate-tempest-dsvm-full-devstack-plugin-ceph-ubuntu-xenial
 
   - name: openstack/devstack-plugin-glusterfs
@@ -8404,13 +8389,10 @@ projects:
       - name: merge-check
     check:
       - gate-devstack-plugin-hdfs-bashate
-      - gate-tempest-dsvm-full-hdfs-ubuntu-trusty
       - gate-tempest-dsvm-full-hdfs-ubuntu-xenial
-      - gate-manila-tempest-dsvm-hdfs-ubuntu-trusty-nv
       - gate-manila-tempest-dsvm-hdfs-ubuntu-xenial-nv
     gate:
       - gate-devstack-plugin-hdfs-bashate
-      - gate-tempest-dsvm-full-hdfs-ubuntu-trusty
       - gate-tempest-dsvm-full-hdfs-ubuntu-xenial
 
   - name: openstack/devstack-plugin-kafka
@@ -8418,11 +8400,9 @@ projects:
       - name: merge-check
     check:
       - gate-devstack-plugin-kafka-bashate
-      - gate-tempest-dsvm-full-kafka-ubuntu-trusty
       - gate-tempest-dsvm-full-kafka-ubuntu-xenial
     gate:
       - gate-devstack-plugin-kafka-bashate
-      - gate-tempest-dsvm-full-kafka-ubuntu-trusty
       - gate-tempest-dsvm-full-kafka-ubuntu-xenial
 
   - name: openstack/devstack-plugin-libvirt-qemu
@@ -8450,7 +8430,6 @@ projects:
     gate:
       - gate-devstack-plugin-nfs-bashate
 
-
   - name: openstack/devstack-plugin-pika
     template:
       - name: merge-check
@@ -8464,7 +8443,6 @@ projects:
       - name: merge-check
     check:
       - gate-devstack-plugin-sheepdog-bashate
-      - gate-tempest-dsvm-full-sheepdog-ubuntu-trusty-nv
       - gate-tempest-dsvm-full-sheepdog-ubuntu-xenial-nv
     gate:
       - gate-devstack-plugin-sheepdog-bashate
@@ -8482,7 +8460,6 @@ projects:
       - name: merge-check
     check:
       - gate-devstack-plugin-zmq-bashate
-      - gate-tempest-dsvm-full-zmq-ubuntu-trusty-nv
       - gate-tempest-dsvm-full-zmq-ubuntu-xenial-nv
     gate:
       - gate-devstack-plugin-zmq-bashate
@@ -8512,8 +8489,7 @@ projects:
       - name: openstack-server-publish-jobs
       - name: publish-to-pypi
       - name: python-jobs
-      - name: python34-jobs
-      - name: python35-jobs-nv
+      - name: python35-jobs
       - name: release-notes-jobs
     check:
       - gate-dib-dsvm-functests-ubuntu-trusty
@@ -8533,13 +8509,9 @@ projects:
     template:
       - name: merge-check
     check:
-      - gate-distil-python27-ubuntu-trusty
-      - gate-distil-pep8-ubuntu-trusty
       - gate-distil-python27-ubuntu-xenial
       - gate-distil-pep8-ubuntu-xenial
     gate:
-      - gate-distil-python27-ubuntu-trusty
-      - gate-distil-pep8-ubuntu-trusty
       - gate-distil-python27-ubuntu-xenial
       - gate-distil-pep8-ubuntu-xenial
 
@@ -8573,8 +8545,7 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python34-jobs
-      - name: python35-jobs-nv
+      - name: python35-jobs
       - name: publish-to-pypi
 
   - name: openstack/docs-specs
@@ -8592,14 +8563,9 @@ projects:
       - name: publish-to-pypi
       - name: python35-jobs-nv
     check:
-      - gate-dox-pep8-ubuntu-trusty
-      - gate-dox-python27-ubuntu-trusty
       - gate-dox-pep8-ubuntu-xenial
       - gate-dox-python27-ubuntu-xenial
-      - gate-dox-python34
     gate:
-      - gate-dox-pep8-ubuntu-trusty
-      - gate-dox-python27-ubuntu-trusty
       - gate-dox-pep8-ubuntu-xenial
       - gate-dox-python27-ubuntu-xenial
 
@@ -8625,7 +8591,6 @@ projects:
       - name: merge-check
     check:
       - gate-drbd-devstack-bashate
-      - gate-tempest-dsvm-full-drbd-devstack-ubuntu-trusty
       - gate-tempest-dsvm-full-drbd-devstack-ubuntu-xenial
     gate:
       - gate-drbd-devstack-bashate
@@ -8634,13 +8599,9 @@ projects:
     template:
       - name: merge-check
     check:
-      - gate-driverlog-pep8-ubuntu-trusty
-      - gate-driverlog-python27-ubuntu-trusty
       - gate-driverlog-pep8-ubuntu-xenial
       - gate-driverlog-python27-ubuntu-xenial
     gate:
-      - gate-driverlog-pep8-ubuntu-trusty
-      - gate-driverlog-python27-ubuntu-trusty
       - gate-driverlog-pep8-ubuntu-xenial
       - gate-driverlog-python27-ubuntu-xenial
     post:
