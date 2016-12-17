@@ -30,6 +30,25 @@
     publishers:
       - console-log
 
+- job-template:
+    name: 'windmill-buildimages-{ostype}{suffix}'
+    node: '{ostype}'
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - windmill-checkout
+      - run-tox:
+          envlist: 'build-images'
+
+    publishers:
+      - scp:
+          site: 'tarballs.openstack.org'
+          files:
+            - source: 'images/*.tgz'
+              target: 'tarballs/windmill/images/'
+      - console-log
+
 - job-group:
     name: 'windmill-jobs'
     jobs:
@@ -51,3 +70,6 @@
           pipeline: gate
           scenario:
             - deploy
+      - 'windmill-buildimages-{ostype}{suffix}':
+          suffix: ''
+          ostype: ubuntu-trusty
