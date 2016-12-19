@@ -10,9 +10,9 @@ Additional reviews
 ==================
 
 For changes to projects, there should be support by the project team
-that is affected. A couple of projects have listed infra liasons at
+that is affected. A couple of projects have listed infra liaisons at
 https://wiki.openstack.org/wiki/CrossProjectLiaisons#Infra . Changes
-should only merge when at least one of the infra liasons has given a
+should only merge when at least one of the infra liaisons has given a
 +1. For not-listed projects, there are no rules but it might be good
 to ask for review by PTL or cores of the repo depending on the change.
 
