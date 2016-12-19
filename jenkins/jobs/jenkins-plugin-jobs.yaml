@@ -45,7 +45,6 @@
 
     publishers:
       - war:
-          site: '{tarball-site}'
           warfile: 'target/{name}-*.hpi'
           target: 'tarballs/ci/{name}'
       - console-log
@@ -63,7 +62,7 @@
 
           # copy plugin artifacts from tarballs to local workspace
           rm -rf *.hpi
-          curl -o $FILENAME_HPI http://{tarball-site}/ci/{name}/$FILENAME_HPI
+          curl -o $FILENAME_HPI http://tarballs.openstack.org/ci/{name}/$FILENAME_HPI
 
           # deploy to maven repository
           FILENAME_POM="{name}-$TAG.pom"

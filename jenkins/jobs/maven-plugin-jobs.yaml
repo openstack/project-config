@@ -22,7 +22,6 @@
 
     publishers:
       - war:
-          site: '{tarball-site}'
           warfile: 'target/{name}-*.jar'
           target: 'tarballs/ci/{name}'
       - console-log
@@ -40,7 +39,7 @@
 
           # copy plugin artifacts from tarballs to local workspace
           rm -rf *.jar
-          curl -o $FILENAME_BIN http://{tarball-site}/ci/{name}/$FILENAME_BIN
+          curl -o $FILENAME_BIN http://tarballs.openstack.org/ci/{name}/$FILENAME_BIN
 
           # deploy to maven repository
           FILENAME_POM="{name}-$TAG.pom"
