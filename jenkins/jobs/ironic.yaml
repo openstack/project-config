@@ -147,7 +147,16 @@
           script: |
             export PROJECTS="openstack/ironic-inspector $PROJECTS"
             export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ironic-inspector git://git.openstack.org/openstack/ironic-inspector"
-            export DEVSTACK_LOCAL_CONFIG+=$'\n'"TEMPEST_PLUGINS+=' /opt/stack/new/ironic-inspector'"
+
+            # use tempest plugin
+            if [[ "$ZUUL_BRANCH" != "master" ]] ; then
+              # NOTE(jroll) if this isn't a patch against master, then
+              # fetch master to install the plugin
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"TEMPEST_PLUGINS+=' git+git://git.openstack.org/openstack/ironic-inspector'"
+            else
+              # on master, use the local change, so we can pick up any changes to the plugin
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"TEMPEST_PLUGINS+=' /opt/stack/new/ironic-inspector'"
+            fi
 
             export IRONIC_INSPECTOR_AUTO_DISCOVERY={inspector-auto-discovery}
             if [ "$IRONIC_INSPECTOR_AUTO_DISCOVERY" == "1" ]; then
@@ -184,10 +193,10 @@
             if [[ "$ZUUL_BRANCH" != "master" ]] ; then
               # NOTE(jroll) if this isn't a patch against master, then
               # fetch master to install the plugin
-              export DEVSTACK_LOCAL_CONFIG+=$'\n'"TEMPEST_PLUGINS=git+git://git.openstack.org/openstack/ironic"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"TEMPEST_PLUGINS+=' git+git://git.openstack.org/openstack/ironic'"
             else
               # on master, use the local change, so we can pick up any changes to the plugin
-              export DEVSTACK_LOCAL_CONFIG+=$'\n'"TEMPEST_PLUGINS=/opt/stack/new/ironic"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"TEMPEST_PLUGINS+=' /opt/stack/new/ironic'"
             fi
 
 - builder:
