@@ -1048,6 +1048,14 @@
           fi
           export GRENADE_PLUGINRC="enable_grenade_plugin ironic https://git.openstack.org/openstack/ironic"
 
+          # NOTE(jroll) yes, this looks silly right before ironic-extra-vars,
+          # but we don't have anything to do between them, and need both of
+          # them for builders we include
+          # Ensure the ironic-vars-EARLY file exists
+          touch ironic-vars-early
+          # Pull in the EARLY variables injected by the optional builders
+          source ironic-vars-early
+
           # Ensure the ironic-EXTRA-vars file exists
           touch ironic-extra-vars
           # Pull in the EXTRA variables injected by the optional builders
