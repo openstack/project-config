@@ -55,6 +55,10 @@ fi
 ## This will get dib to drop you into a shell on error, useful for debugging
 # export break="after-error"
 
+## If you need to debug the boot, setting this longer might help you
+## break into the grub console.  Or set it to 0 for fast boot.
+# export DIB_GRUB_TIMEOUT=10
+
 # The list of elements here should match nodepool/nodepool.yaml
 disk-image-create -x --no-tmpfs -o $IMAGE_NAME \
     $DISTRO \
