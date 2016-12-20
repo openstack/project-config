@@ -2498,9 +2498,6 @@ jobs:
   - name: ^gate-.*-js-draft
     success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/dist/
 
-  - name: ^.*-npm-publish-draft$
-    success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/dist/
-
   - name: ^gate-.*-npm-docs$
     success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/doc/build/html/
 
@@ -10458,13 +10455,7 @@ projects:
   - name: openstack/ironic-webclient
     template:
       - name: merge-check
-      - name: nodejs4-jobs
-    check:
-      - ironic-webclient-nodejs4-npm-publish-draft
-    post:
-      - ironic-webclient-nodejs4-npm-publish-tarball
-    release:
-      - ironic-webclient-nodejs4-npm-publish-tarball
+      - name: noop-jobs
 
   - name: openstack/jacket
     template:
