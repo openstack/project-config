@@ -84,6 +84,7 @@
           # Because we are testing a non standard project, add the
           # our project repository. This makes zuul do the right
           # reference magic for testing changes.
+          export PROJECTS="openstack-infra/glean $PROJECTS"
           export PROJECTS="openstack-infra/nodepool $PROJECTS"
           export PROJECTS="openstack-infra/shade $PROJECTS"
           export PROJECTS="openstack/diskimage-builder $PROJECTS"
@@ -91,7 +92,7 @@
           # caches in nodepool, however make it a valid url for
           # documentation purposes.
           export DEVSTACK_LOCAL_CONFIG="enable_plugin nodepool git://git.openstack.org/openstack-infra/nodepool"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"LIBS_FROM_GIT=diskimage-builder,shade"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"LIBS_FROM_GIT=diskimage-builder,glean,shade"
 
           function post_test_hook {{
               /opt/stack/new/nodepool/tools/check_devstack_plugin.sh
