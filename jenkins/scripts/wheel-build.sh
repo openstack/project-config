@@ -13,5 +13,8 @@ for BRANCH in $BRANCHES; do
         2>/dev/null > /tmp/upper-constraints.txt  || true
     rm -rf build_env
     virtualenv -p $PYTHON_VERSION build_env
-    build_env/bin/pip --verbose wheel -r /tmp/upper-constraints.txt -w $WHEELHOUSE_DIR || true
+    for pkg in $(cat /tmp/upper-constraints.txt); do
+        build_env/bin/pip --log $WORKSPACE/pip.log -w $WHEELHOUSE_DIR "${pkg}" || \
+            echo "*** WHEEL BUILD FAILURE: ${pkg}"
+    done
 done
