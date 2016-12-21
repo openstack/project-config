@@ -548,7 +548,7 @@ def create_folder_metadata_object(folder_hash, folder_name,
 def build_metadata_object_list(file_list, destination_prefix=''):
     """Build a separate list of file_datils to be uploaded containing metadata.
 
-    Only upload metadata for psuedo folders for now. Actual files can have
+    Only upload metadata for pseudo folders for now. Actual files can have
     their metadata stored directly in swift."""
 
     # key: hash of path, value: file_details (as above)
