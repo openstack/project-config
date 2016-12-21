@@ -1,0 +1,22 @@
+- job-template:
+    name: 'gate-{name}-fmt-{node}'
+    node: '{node}'
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - install-distro-packages
+      - revoke-sudo
+      - shell: |
+          #!/bin/bash -xe
+          make fmt
+
+    publishers:
+      - console-log
+
+- job-group:
+    name: golang-jobs
+    node:
+      - ubuntu-xenial
+    jobs:
+      - 'gate-{name}-fmt-{node}'
