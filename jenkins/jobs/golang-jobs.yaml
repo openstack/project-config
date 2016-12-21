@@ -5,11 +5,13 @@
     builders:
       - print-template-name:
           template-name: "{template-name}"
+      - link-logs
+      - zuul-git-prep
       - install-distro-packages
       - revoke-sudo
       - shell: |
           #!/bin/bash -xe
-          make fmt
+          make env fmt
 
     publishers:
       - console-log
