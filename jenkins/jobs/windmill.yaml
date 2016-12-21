@@ -46,6 +46,24 @@
           timeout: 60
 
     publishers:
+      - console-log
+
+- job-template:
+    name: 'windmill-publishimages-{ostype}{suffix}'
+    node: '{ostype}'
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - windmill-checkout
+      - run-tox:
+          envlist: 'publish-images'
+
+    wrappers:
+      - build-timeout:
+          timeout: 60
+
+    publishers:
       - scp:
           site: 'tarballs.openstack.org'
           files:
@@ -75,5 +93,8 @@
           scenario:
             - deploy
       - 'windmill-buildimages-{ostype}{suffix}':
+          suffix: ''
+          ostype: ubuntu-trusty
+      - 'windmill-publishimages-{ostype}{suffix}':
           suffix: ''
           ostype: ubuntu-trusty
