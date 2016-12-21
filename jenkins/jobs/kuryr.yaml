@@ -38,6 +38,43 @@
       - console-log
 
 - job-template:
+    name: '{pipeline}-install-dsvm-kuryr-kubernetes{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_NEUTRON=1
+
+          export DEVSTACK_GATE_TEMPEST=0
+
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+
+          # Keep localrc to be able to set some vars in pre_test_hook
+          export KEEP_LOCALRC=1
+
+          export DEVSTACK_GATE_SETTINGS=/opt/stack/new/kuryr-kubernetes/devstack/devstackgaterc
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
     name: '{pipeline}-kuryr-libnetwork{kuryr_lib-src}-dsvm-fullstack-{node}{suffix}'
     node: '{node}'
 
