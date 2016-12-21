@@ -122,8 +122,16 @@ function clone_repo {
     $zc $branch git://git.openstack.org $repo
 
     # Configure git-review so we can propose patches to the repo if
-    # needed.
-    (cd $repo && git review -s)
+    # needed. Some of the release scripts are still run by hand to
+    # recover from failure, in which case we don't want to set the git
+    # review user. So try to make git review work by itself first, and
+    # only if that fails update the git configuration.
+    #
+    # NOTE(dhellmann): configure_git_review is in ../common.sh, which
+    # must be sourced by the script calling this function.
+    if ! (cd $repo && git review -s); then
+        (cd $repo && configure_git_review && git review -s)
+    fi
 
     # Make sure we have all of the existing tags so we can refer to
     # them for building the release notes.
