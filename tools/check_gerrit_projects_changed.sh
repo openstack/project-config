@@ -14,3 +14,5 @@ git checkout $GITHEAD
 
 python tools/check_gerrit_projects_changed.py gerrit/projects-old.yaml \
     gerrit/projects.yaml
+
+rm gerrit/projects-old.yaml
