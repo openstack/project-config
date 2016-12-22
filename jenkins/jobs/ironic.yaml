@@ -1123,39 +1123,26 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - ironic-grenade
+      - ironic-deploy-with-IPA:
+          ramdisk-type: 'tinyipa'
+      - devstack-virtual-ironic:
+          build-ramdisk: ''
+          deploy_driver: pxe_ssh
+          image-type: partition
+          branch-override: '{branch-override}'
+          bm-vm-count: 7
+      - ironic-tempest-plugin
+      - ironic-inspector-enabled
       - shell: |
           #!/bin/bash -xe
-          export PROJECTS="openstack/ironic $PROJECTS"
-          export PROJECTS="openstack/ironic-lib $PROJECTS"
-          export PROJECTS="openstack/ironic-python-agent $PROJECTS"
-          export PROJECTS="openstack/python-ironicclient $PROJECTS"
-          export PROJECTS="openstack/ironic-inspector $PROJECTS"
+          # ironic-inspector is already in PROJECTS, see ironic-inspector-enabled builder
           export PROJECTS="openstack/python-ironic-inspector-client $PROJECTS"
-          export PROJECTS="openstack-dev/grenade $PROJECTS"
-          export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_TEMPEST=1
-          export DEVSTACK_GATE_GRENADE=pullup
-          export DEVSTACK_GATE_IRONIC=1
-          export DEVSTACK_GATE_NEUTRON=1
-          export DEVSTACK_GATE_VIRT_DRIVER=ironic
-          export DEVSTACK_GATE_CONFIGDRIVE=1
-          export TEMPEST_CONCURRENCY=1
-          export DEVSTACK_GATE_OS_TEST_TIMEOUT=2400
-          export DEVSTACK_GATE_TEMPEST_BAREMETAL_BUILD_TIMEOUT=1200
-          export DEVSTACK_LOCAL_CONFIG="IRONIC_VM_SPECS_RAM=384"$'\n'"IRONIC_VM_COUNT=7"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_DEPLOY_DRIVER_ISCSI_WITH_IPA=True"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_RAMDISK_TYPE=tinyipa"
           # Make IPXE configuration consistent between Mitaka and Master
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_IPXE_ENABLED=True"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_INSPECTOR_RAMDISK_ELEMENT=ironic-agent"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_INSPECTOR_MANAGE_FIREWALL=True"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_BUILD_DEPLOY_RAMDISK=False"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_INSPECTOR_BUILD_RAMDISK=False"
-          export BRANCH_OVERRIDE={branch-override}
-          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
-              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
-          fi
-          export GRENADE_PLUGINRC+=$'\n'"enable_grenade_plugin ironic https://git.openstack.org/openstack/ironic"
+
           export GRENADE_PLUGINRC+=$'\n'"enable_grenade_plugin ironic-inspector https://git.openstack.org/openstack/ironic-inspector"
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
