@@ -51,7 +51,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-dsvm-nodepool-src{suffix}'
+    name: '{pipeline}-dsvm-nodepool{images}-src{suffix}'
     node: '{node}'
 
     wrappers:
@@ -93,6 +93,20 @@
           # documentation purposes.
           export DEVSTACK_LOCAL_CONFIG="enable_plugin nodepool git://git.openstack.org/openstack-infra/nodepool"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"LIBS_FROM_GIT=diskimage-builder,glean,shade"
+
+          if [ "{images}" == "-redhat" ] ; then
+              export NODEPOOL_PAUSE_CENTOS_7_DIB=false
+              export NODEPOOL_PAUSE_FEDORA_24_DIB=false
+              export NODEPOOL_PAUSE_UBUNTU_PRECISE_DIB=true
+              export NODEPOOL_PAUSE_UBUNTU_TRUSTY_DIB=true
+              export NODEPOOL_PAUSE_UBUNTU_XENIAL_DIB=true
+          elif [ "{images}" == "-debian" ] ; then
+              export NODEPOOL_PAUSE_CENTOS_7_DIB=true
+              export NODEPOOL_PAUSE_FEDORA_24_DIB=true
+              export NODEPOOL_PAUSE_UBUNTU_PRECISE_DIB=false
+              export NODEPOOL_PAUSE_UBUNTU_TRUSTY_DIB=false
+              export NODEPOOL_PAUSE_UBUNTU_XENIAL_DIB=false
+          fi
 
           function post_test_hook {{
               /opt/stack/new/nodepool/tools/check_devstack_plugin.sh
