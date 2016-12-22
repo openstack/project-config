@@ -1819,6 +1819,11 @@ jobs:
     branch: master
     voting: false
 
+  # For some projects, python35 is not passing on stable/newton
+  # but passing on master, thus do not run it on newton.
+  - name: ^gate-(requirements|murano-agent)-python35
+    branch: ^(?!stable/(liberty|mitaka|newton)).*$
+
   # This overrides the above "looser" match above, while we work through the
   # py34 -> py35 transition
   - name: gate-requirements-integration-dsvm-ubuntu-trusty
