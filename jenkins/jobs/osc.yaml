@@ -28,16 +28,15 @@
           export DEVSTACK_LOCAL_CONFIG="enable_plugin neutron https://git.openstack.org/openstack/neutron"
           export ENABLED_SERVICES=q-qos
 
-          # NOTE(stevemar): After the newton release was tagged the file was moved.
-          # But, we run functional tests for various stable releases
-          # (mitaka, and newton).
-          # TODO(stevemar): Remove this check when Newton is EOL'ed.
-          hook_location=$BASE/new/python-openstackclient/openstackclient/tests/functional/post_test_hook.sh
-          if [ ! -f "$hook_location" ]; then
-            hook_location=$BASE/new/python-openstackclient/openstackclient/post_test_hook.sh
-          fi
-
           function post_test_hook {{
+              # NOTE(stevemar): After the newton release was tagged the file was moved.
+              # But, we run functional tests for various stable releases
+              # (mitaka, and newton).
+              # TODO(stevemar): Remove this check when Newton is EOL'ed.
+              hook_location=$BASE/new/python-openstackclient/openstackclient/tests/functional/post_test_hook.sh
+              if [ ! -f "$hook_location" ]; then
+                  hook_location=$BASE/new/python-openstackclient/openstackclient/post_test_hook.sh
+              fi
               bash -xe $hook_location
           }}
           export -f post_test_hook
