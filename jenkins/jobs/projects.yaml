@@ -9272,9 +9272,13 @@
     name: ospurge
 
     jobs:
+      - coverage-jobs
+      - 'gate-{name}-python35'
       - gate-{name}-pep8-{node}:
-          node: ubuntu-xenial
-      - gate-{name}-python27-{node}:
+          node:
+            - ubuntu-xenial
+      - gate-{name}-requirements
+      - gate-{name}-docs-{node}:
           node: ubuntu-xenial
 
 - project:
