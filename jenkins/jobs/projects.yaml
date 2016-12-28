@@ -14750,16 +14750,25 @@
 
     jobs:
       - python-jobs
-      - '{pipeline}-zun-devstack-dsvm-{driver}{suffix}':
+      - '{pipeline}-zun-devstack-dsvm-{driver}-{db}{suffix}':
           pipeline: gate
           node: ubuntu-xenial
           driver: 'docker'
+          db: 'sql'
           branch-override: default
           suffix: ''
-      - '{pipeline}-zun-devstack-dsvm-{driver}{suffix}':
+      - '{pipeline}-zun-devstack-dsvm-{driver}-{db}{suffix}':
           pipeline: gate
           node: ubuntu-xenial
           driver: 'nova-docker'
+          db: 'sql'
+          branch-override: default
+          suffix: '-nv'
+      - '{pipeline}-zun-devstack-dsvm-{driver}-{db}{suffix}':
+          pipeline: gate
+          node: ubuntu-xenial
+          driver: 'docker'
+          db: 'etcd'
           branch-override: default
           suffix: '-nv'
 
