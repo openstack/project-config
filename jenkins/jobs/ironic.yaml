@@ -34,6 +34,20 @@
             export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_BUILD_DEPLOY_RAMDISK=False"
 
 - builder:
+    name: ironic-inspector-grenade
+    builders:
+      - ironic-vars-early:
+          script: |
+            # export not needed for this as used within ironic-inspector-enabled
+            # We disable the devstack plugin because the grenade code in Inspector
+            # enables it and enabling it twice causes errors.
+            IRONIC_INSPECTOR_DISABLE_DEVSTACK_PLUGIN=1
+      - ironic-extra-vars:
+          script: |
+            export GRENADE_PLUGINRC+=$'\n'"enable_grenade_plugin ironic-inspector https://git.openstack.org/openstack/ironic-inspector"
+
+
+- builder:
     name: ironic-client-from-source
     builders:
       - ironic-extra-vars:
@@ -146,7 +160,12 @@
       - ironic-extra-vars:
           script: |
             export PROJECTS="openstack/ironic-inspector $PROJECTS"
-            export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ironic-inspector git://git.openstack.org/openstack/ironic-inspector"
+            export PROJECTS="openstack/python-ironic-inspector-client $PROJECTS"
+
+            # grenade enables devstack plugin
+            if [[ -z "IRONIC_INSPECTOR_DISABLE_DEVSTACK_PLUGIN" ]] ; then
+                export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ironic-inspector git://git.openstack.org/openstack/ironic-inspector"
+            fi
 
             # use tempest plugin
             if [[ "$ZUUL_BRANCH" != "master" ]] ; then
@@ -168,6 +187,11 @@
                  # so inspector has to sync cache asap
                  export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_INSPECTOR_CLEAN_UP_PERIOD=5"
             fi
+
+            # Make IPXE configuration consistent between Mitaka and Master
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_IPXE_ENABLED=True"
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_INSPECTOR_RAMDISK_ELEMENT=ironic-agent"
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_INSPECTOR_MANAGE_FIREWALL=True"
 
 - builder:
     name: ironic-inspector-client-from-source
@@ -1124,28 +1148,17 @@
       - net-info
       - devstack-checkout
       - ironic-grenade
+      - ironic-inspector-grenade
       - ironic-deploy-with-IPA:
           ramdisk-type: 'tinyipa'
+      - ironic-tempest-plugin
+      - ironic-inspector-enabled
       - devstack-virtual-ironic:
           build-ramdisk: ''
           deploy_driver: pxe_ssh
           image-type: partition
           branch-override: '{branch-override}'
           bm-vm-count: 7
-      - ironic-tempest-plugin
-      - ironic-inspector-enabled
-      - shell: |
-          #!/bin/bash -xe
-          # ironic-inspector is already in PROJECTS, see ironic-inspector-enabled builder
-          export PROJECTS="openstack/python-ironic-inspector-client $PROJECTS"
-          # Make IPXE configuration consistent between Mitaka and Master
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_IPXE_ENABLED=True"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_INSPECTOR_RAMDISK_ELEMENT=ironic-agent"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_INSPECTOR_MANAGE_FIREWALL=True"
-
-          export GRENADE_PLUGINRC+=$'\n'"enable_grenade_plugin ironic-inspector https://git.openstack.org/openstack/ironic-inspector"
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
 
     publishers:
       - devstack-logs
