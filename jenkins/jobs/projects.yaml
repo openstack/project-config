@@ -6030,10 +6030,17 @@
       - python-jobs
       - openstack-publish-jobs
       - pypi-jobs
-      - '{pipeline}-install-dsvm-kuryr-kubernetes{suffix}':
+      - '{pipeline}-install-dsvm-{variant}-kuryr-kubernetes{suffix}':
           pipeline: gate
           node: ubuntu-xenial
           suffix: ''
+          variant: 'default'
+          branch-override: default
+      - '{pipeline}-install-dsvm-{variant}-kuryr-kubernetes{suffix}':
+          pipeline: gate
+          node: ubuntu-xenial
+          suffix: '-nv'
+          variant: 'dragonflow'
           branch-override: default
 
 - project:
