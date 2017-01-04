@@ -541,9 +541,7 @@
       - translation-jobs-mitaka
       - translation-jobs-newton
       - gate-rally-dsvm-fakevirt-{name}-{node}{suffix}:
-          node:
-            - ubuntu-trusty
-            - ubuntu-xenial
+          node: ubuntu-xenial
           suffix: ''
       - 'gate-ceilometer-dsvm-tempest-plugin-{backend}{special}{network}-{node}{suffix}':
           backend: 'mongodb'
@@ -3343,7 +3341,6 @@
     name: defcore
 
     jobs:
-      - openstack-publish-jobs
       - 'gate-{name}-docs-{node}':
           node:
             - ubuntu-xenial
@@ -3480,7 +3477,6 @@
 
     jobs:
       - python-jobs
-      - openstack-publish-jobs
       - pypi-jobs
 
 - project:
@@ -4632,7 +4628,6 @@
     name: git-upstream
 
     jobs:
-      - coverage-jobs
       - python-jobs
       - pypi-jobs
       - 'gate-{name}-tox-{envlist}-{node}':
@@ -5023,12 +5018,6 @@
           branch-override: default
           engine: convg
           lbaasversion: lbaasv2
-      - '{pipeline}-tempest-dsvm-heat{special}-{node}{suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
-          special: ''
-          suffix: ''
-          branch-override: default
       - '{pipeline}-tempest-dsvm-heat{special}-{node}{suffix}':
           pipeline: gate
           node:
@@ -5502,7 +5491,6 @@
 
     jobs:
       - python-jobs
-      - openstack-publish-jobs
 
 - project:
     name: ironic-lib
@@ -5607,7 +5595,6 @@
 
     jobs:
       - python-jobs
-      - openstack-publish-jobs
 
 - project:
     name: ironic-ui
@@ -5773,17 +5760,7 @@
           pipeline: gate
           suffix: ''
           branch-override: default
-          node: ubuntu-trusty
-      - '{pipeline}-keystone-dsvm-functional-{node}{suffix}':
-          pipeline: gate
-          suffix: ''
-          branch-override: default
           node: ubuntu-xenial
-      - '{pipeline}-keystone-dsvm-functional-v3-only-{node}{suffix}':
-          pipeline: gate
-          suffix: '-nv'
-          branch-override: default
-          node: ubuntu-trusty
       - '{pipeline}-keystone-dsvm-functional-v3-only-{node}{suffix}':
           pipeline: gate
           suffix: '-nv'
@@ -6379,7 +6356,6 @@
       - coverage-jobs
       - python-jobs
       - pypi-jobs
-      - openstack-publish-jobs
       - translation-jobs
       - translation-jobs-newton
       - openstack-releasenotes-jobs
@@ -6814,17 +6790,13 @@
       - '{pipeline}-networking-bgpvpn-dsvm-{bgpvpntest}-{node}{suffix}':
           pipeline: gate
           bgpvpntest: install
-          node:
-            - ubuntu-trusty
-            - ubuntu-xenial
+          node: ubuntu-xenial
           suffix: ''
           branch-override: default
       - '{pipeline}-networking-bgpvpn-bagpipe-dsvm-{bgpvpntest}-{node}{suffix}':
           pipeline: gate
           bgpvpntest: install
-          node:
-            - ubuntu-trusty
-            - ubuntu-xenial
+          node: ubuntu-xenial
           suffix: ''
           branch-override: default
       - '{pipeline}-networking-bgpvpn-dsvm-{bgpvpntest}-{node}{suffix}':
@@ -6838,9 +6810,7 @@
       - '{pipeline}-networking-bgpvpn-bagpipe-dsvm-{bgpvpntest}-{node}{suffix}':
           pipeline: gate
           bgpvpntest: functional
-          node:
-            - ubuntu-trusty
-            - ubuntu-xenial
+          node: ubuntu-xenial
           suffix: ''
           branch-override: default
       - '{pipeline}-tempest-dsvm-networking-bgpvpn-bagpipe-{node}{suffix}':
@@ -7473,7 +7443,6 @@
 
     jobs:
       - python-jobs
-      - openstack-publish-jobs
 
 - project:
     name: neutron-dynamic-routing
@@ -12601,9 +12570,7 @@
           envlist:
             - keystoneclient-tip
             - novaclient-tip
-          node:
-            - ubuntu-trusty
-            - ubuntu-xenial
+          node: ubuntu-xenial
 
 - project:
     name: requestsexceptions
@@ -12752,7 +12719,6 @@
       - '{pipeline}-tempest-dsvm-sahara-{node}{suffix}':
           pipeline: gate
           node:
-            - ubuntu-trusty
             - ubuntu-xenial
           suffix: '-nv'
           branch-override: default
@@ -12821,7 +12787,6 @@
 
     jobs:
       - python-jobs
-      - openstack-publish-jobs
       - openstack-server-release-jobs
       - 'gate-sahara-extra-artifacts':
           node: ubuntu-xenial
@@ -13443,13 +13408,17 @@
           envlist:
             - py27
             - py34
+            - func
+            - func-fast-post
+          node: ubuntu-trusty
+      - 'gate-{name}-tox-xfs-tmp-{envlist}-{node}':
+          envlist:
+            - py27
             - py35
             - func
             - func-fast-post
             - func-encryption
-          node:
-            - ubuntu-trusty
-            - ubuntu-xenial
+          node: ubuntu-xenial
       - '{pipeline}-swift-dsvm-functional{special}-{node}{suffix}':
           pipeline: gate
           node: ubuntu-trusty
@@ -13486,7 +13455,6 @@
 
     jobs:
       - python-jobs
-      - openstack-publish-jobs
       - pypi-jobs
 
 - project:
@@ -14252,16 +14220,6 @@
             - redis
             - pxc
             - postgresql
-      - 'gate-trove-legacy-scenario-dsvm-{datastore}{suffix}':
-          suffix: '-nv'
-          branch-override: default
-          datastore:
-            - cassandra
-            - couchbase
-            - couchdb
-            - mariadb
-            - mongodb
-            - percona
       - 'gate-trove-scenario-dsvm-{datastore}-{group}-{node}{suffix}':
           suffix: ''
           branch-override: default
