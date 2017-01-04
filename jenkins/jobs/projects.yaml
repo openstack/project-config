@@ -142,7 +142,9 @@
       - translation-jobs
       - openstack-releasenotes-jobs
       - '{pipeline}-aodh-dsvm-functional-{backend}-{node}':
-          node: ubuntu-trusty
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           pipeline: gate
           backend: hbase
       - '{pipeline}-aodh-dsvm-functional-{backend}-{node}':
@@ -158,19 +160,33 @@
           pipeline: gate
           backend: postgresql
       - '{pipeline}-aodh-dsvm-functional-{backend}-{node}':
-          node: ubuntu-trusty
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           pipeline: gate
           backend: mongodb
-      - 'gate-aodh-dsvm-tempest-plugin-{backend}{network}':
+      - 'gate-aodh-dsvm-tempest-plugin-{backend}{network}-{node}':
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           backend: hbase
           network: ''
-      - 'gate-aodh-dsvm-tempest-plugin-{backend}{network}':
+      - 'gate-aodh-dsvm-tempest-plugin-{backend}{network}-{node}':
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           backend: mongodb
           network: ''
-      - 'gate-aodh-dsvm-tempest-plugin-{backend}{network}':
+      - 'gate-aodh-dsvm-tempest-plugin-{backend}{network}-{node}':
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           backend: mysql
           network: ''
-      - 'gate-aodh-dsvm-tempest-plugin-{backend}{network}':
+      - 'gate-aodh-dsvm-tempest-plugin-{backend}{network}-{node}':
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           backend: postgresql
           network: ''
       - 'gate-telemetry-dsvm-integration-{name}-{node}':
