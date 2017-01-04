@@ -1602,6 +1602,7 @@ jobs:
           - ^.*\.md$
           - ^releasenotes/.*$
           - ^metadata.json$
+          - ^spec/.*$
 
   # NOTE(emilien): zuul v2 does not allow us to specify files rules for specific projects
   # and are global to the jobname.
@@ -1729,8 +1730,18 @@ jobs:
           - ^docs/.*$
     branch: ^(?!stable/liberty).*$
 
+  # no need to run integration jobs when patching unit or beaker tests
+  - name: ^gate-(puppet-.*-integration)-.*$
+    skip-if:
+      - project: ^openstack/puppet-.*$
+        all-files-match-any:
+          - ^.*\.md$
+          - ^releasenotes/.*$
+          - ^spec/.*$
+          - ^metadata.json$
+
   # no need to run the jobs for doc / releasenotes / unittests patches
-  - name: ^gate-(puppet-.*-(syntax|unit|beaker|tempest)-|tripleo-ci-centos-7-).*$
+  - name: ^gate-(puppet-.*-(syntax|unit|beaker)-|tripleo-ci-centos-7-).*$
     skip-if:
       - project: ^openstack/puppet-.*$
         all-files-match-any:
