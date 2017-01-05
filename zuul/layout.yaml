@@ -11246,6 +11246,28 @@ projects:
       - name: python35-jobs
       - name: publish-to-pypi
 
+  - name: openstack/mogan
+    template:
+      - name: merge-check
+      - name: python-jobs
+      - name: python35-jobs
+      - name: check-requirements
+    check:
+      - gate-mogan-tox-db-functional-ubuntu-xenial
+      - gate-mogan-dsvm-tempest-plugin
+    gate:
+      - gate-mogan-tox-db-functional-ubuntu-xenial
+      - gate-mogan-dsvm-tempest-plugin
+
+  - name: openstack/mogan-specs
+    template:
+      - name: merge-check
+      - name: build-only-specs-jobs
+    check:
+      - gate-mogan-specs-python27-ubuntu-xenial
+    gate:
+      - gate-mogan-specs-python27-ubuntu-xenial
+
   - name: openstack/molteniron
     template:
       - name: merge-check
@@ -12403,28 +12425,6 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-
-  - name: openstack/nimble
-    template:
-      - name: merge-check
-      - name: python-jobs
-      - name: python35-jobs
-      - name: check-requirements
-    check:
-      - gate-nimble-tox-db-functional-ubuntu-xenial
-      - gate-nimble-dsvm-tempest-plugin
-    gate:
-      - gate-nimble-tox-db-functional-ubuntu-xenial
-      - gate-nimble-dsvm-tempest-plugin
-
-  - name: openstack/nimble-specs
-    template:
-      - name: merge-check
-      - name: build-only-specs-jobs
-    check:
-      - gate-nimble-specs-python27-ubuntu-xenial
-    gate:
-      - gate-nimble-specs-python27-ubuntu-xenial
 
   - name: openstack/nova
     template:
@@ -15578,6 +15578,14 @@ projects:
       - gate-python-mistralclient-devstack-dsvm-ubuntu-trusty
       - gate-python-mistralclient-devstack-dsvm-ubuntu-xenial
 
+  - name: openstack/python-moganclient
+    template:
+      - name: merge-check
+      - name: python-jobs
+      - name: python35-jobs
+      - name: check-requirements
+      - name: publish-to-pypi
+
   - name: openstack/python-monascaclient
     template:
       - name: merge-check
@@ -15658,14 +15666,6 @@ projects:
       - gate-grenade-dsvm-neutron-libs-ubuntu-trusty-nv
       - gate-grenade-dsvm-neutron-libs-ubuntu-xenial-nv
       - gate-neutronclient-test-dsvm-functional-ubuntu-trusty-mitaka-nv
-
-  - name: openstack/python-nimbleclient
-    template:
-      - name: merge-check
-      - name: python-jobs
-      - name: python35-jobs
-      - name: check-requirements
-      - name: publish-to-pypi
 
   - name: openstack/python-novaclient
     template:
