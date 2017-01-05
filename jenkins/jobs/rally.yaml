@@ -65,6 +65,7 @@
           export DEVSTACK_GATE_EXERCISES=0
           export DEVSTACK_GATE_PREPOPULATE_USERS={prepopulate_users}
 
+          export DEVSTACK_GATE_USE_PYTHON3={py35}
           export USE_KEYSTONE_V2API={keystone_use_v2api}
           export RALLY_SCENARIO={scenario}
 
@@ -408,6 +409,7 @@
             telemetry: '0'
             swift: '0'
             heat: '0'
+            py35: 'False'
 
     publishers:
       - devstack-logs
@@ -559,6 +561,7 @@
           telemetry: '0'
           swift: '{swift}'
           heat: '0'
+          py35: 'False'
 
     publishers:
       - devstack-logs
@@ -590,6 +593,7 @@
           telemetry: '{telemetry}'
           swift: '0'
           heat: '0'
+          py35: 'False'
 
     publishers:
       - devstack-logs
@@ -620,6 +624,7 @@
           telemetry: '0'
           swift: '0'
           heat: '0'
+          py35: 'False'
 
     publishers:
       - devstack-logs
@@ -650,6 +655,7 @@
           telemetry: '0'
           swift: '0'
           heat: '0'
+          py35: 'False'
 
     publishers:
       - devstack-logs
@@ -681,6 +687,7 @@
           telemetry: '0'
           swift: '0'
           heat: '0'
+          py35: 'False'
 
     publishers:
       - devstack-logs
@@ -712,6 +719,7 @@
           telemetry: '0'
           swift: '0'
           heat: '0'
+          py35: 'False'
 
     publishers:
       - devstack-logs
@@ -742,6 +750,7 @@
           telemetry: '0'
           swift: '0'
           heat: '{heat}'
+          py35: 'False'
 
     publishers:
       - devstack-logs
@@ -1024,6 +1033,7 @@
             telemetry: '0'
             swift: '0'
             heat: '1'
+            py35: 'False'
 
     publishers:
       - devstack-logs
@@ -1054,6 +1064,7 @@
           telemetry: '0'
           swift: '0'
           heat: '0'
+          py35: 'False'
 
     publishers:
       - devstack-logs
@@ -1085,6 +1096,7 @@
           telemetry: '0'
           swift: '0'
           heat: '0'
+          py35: 'False'
 
     publishers:
       - devstack-logs
@@ -1116,6 +1128,39 @@
           telemetry: '0'
           swift: '0'
           heat: '1'
+          py35: 'False'
+
+    publishers:
+      - devstack-logs
+      - rally-plot
+      - console-log
+
+
+- job-template:
+    name: 'gate-rally-dsvm-py35-{name}{suffix}'
+    node: ubuntu-xenial
+
+    wrappers:
+      - build-timeout:
+          timeout: 130
+      - timestamps
+
+    builders:
+      - devstack-rally-gate:
+          scenario: '{name}'
+          ironic: '0'
+          neutron_extensions: '0'
+          zaqar: '0'
+          large_ops: '0'
+          keystone_use_v2api: '0'
+          senlin: '0'
+          magnum: '0'
+          prepopulate_users: '0'
+          watcher: '0'
+          telemetry: '0'
+          swift: '0'
+          heat: '1'
+          py35: 'True'
 
     publishers:
       - devstack-logs
