@@ -1173,6 +1173,12 @@ project-templates:
     gate:
       - 'gate-{name}-nodejs6-npm-docs'
 
+  - name: windmill-buildimages-trusty
+    check:
+      - 'gate-windmill-buildimages-ubuntu-trusty'
+    gate:
+      - 'gate-windmill-buildimages-ubuntu-trusty'
+
   - name: windmill-jobs-centos7-nv
     check:
       - 'gate-windmill-deploy-centos-7-nv'
@@ -3277,10 +3283,10 @@ jobs:
   - name: ^gate-(?!openstack-ansible).*(-dsvm)?-ansible-func-ubuntu-trusty(-nv)?$
     branch: master
 
-  - name: ^gate-windmill-deploy-ubuntu-trusty(-nv)?$
+  - name: ^gate-windmill-(buildimages|deploy)-ubuntu-trusty(-nv)?$
     branch: master
 
-  - name: windmill-buildimages-ubuntu-trusty
+  - name: windmill-publishimages-ubuntu-trusty
     branch: master
 
   - name: ^gate-fuel-octane-puppet.*$
@@ -17769,12 +17775,11 @@ projects:
       - name: merge-check
       - name: ansible-role-jobs
       - name: docs-on-rtfd
+      - name: windmill-buildimages-trusty
       - name: windmill-jobs-centos7-nv
       - name: windmill-jobs-fedora-24-nv
       - name: windmill-jobs-trusty
       - name: windmill-jobs-xenial
-    experimental:
-      - windmill-buildimages-ubuntu-trusty
     periodic:
       - windmill-publishimages-ubuntu-trusty
 

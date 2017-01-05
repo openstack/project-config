@@ -27,20 +27,6 @@
       - run-tox:
           envlist: "{scenario}"
 
-    publishers:
-      - console-log
-
-- job-template:
-    name: 'windmill-buildimages-{ostype}{suffix}'
-    node: '{ostype}'
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - windmill-checkout
-      - run-tox:
-          envlist: 'build-images'
-
     wrappers:
       - build-timeout:
           timeout: 60
@@ -91,10 +77,8 @@
             - ubuntu-xenial
           pipeline: gate
           scenario:
+            - buildimages
             - deploy
-      - 'windmill-buildimages-{ostype}{suffix}':
-          suffix: ''
-          ostype: ubuntu-trusty
       - 'windmill-publishimages-{ostype}{suffix}':
           suffix: ''
           ostype: ubuntu-trusty
