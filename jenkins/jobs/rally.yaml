@@ -169,6 +169,17 @@
           }}
           export -f post_test_hook
 
+          if [[ "$DEVSTACK_GATE_USE_PYTHON3" = "True" ]]; then
+              # Switch off glance->swift communication as swift fails under py3.x
+              function pre_test_hook {{
+                  local localconf=$BASE/new/devstack/local.conf
+                  echo "[[post-config|\$GLANCE_API_CONF]]" >> $localconf
+                  echo "[glance_store]" >> $localconf
+                  echo "default_store=file" >> $localconf
+              }}
+              export -f pre_test_hook
+          fi
+
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
 
