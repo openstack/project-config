@@ -307,6 +307,10 @@
           export DEVSTACK_GATE_TEMPEST_REGEX="orchestration"
           export DEVSTACK_GATE_HEAT=1
           export DEVSTACK_LOCAL_CONFIG="HEAT_USE_MOD_WSGI=True"
+
+          # disable novnc which does not work for mitaka
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service novnc"
+
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
