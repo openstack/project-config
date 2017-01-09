@@ -15,6 +15,13 @@
           EOF
 
 - builder:
+    name: ironic-python3
+    builders:
+      - ironic-extra-vars:
+          script: |
+            export DEVSTACK_GATE_USE_PYTHON3=True
+
+- builder:
     name: ironic-grenade
     builders:
       - ironic-vars-early:
@@ -626,6 +633,38 @@
           build-ramdisk: '{src}'
           deploy_driver: '{driver}'
           image-type: '{image-type}'
+          branch-override: '{branch-override}'
+          bm-vm-count: 1
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-tempest-dsvm-ironic-ipa-partition-agent_ipmitool-tinyipa-python3-{node}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 75
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - ironic-deploy-with-IPA:
+          ramdisk-type: 'tinyipa'
+      - ironic-tempest-regex:
+          tempest-regex: ironic
+      - ironic-tempest-plugin
+      - ironic-python3
+      - devstack-virtual-ironic:
+          build-ramdisk: ''
+          deploy_driver: 'agent_ipmitool'
+          image-type: 'partition'
           branch-override: '{branch-override}'
           bm-vm-count: 1
 
