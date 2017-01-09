@@ -1073,6 +1073,7 @@ project-templates:
     experimental:
       - gate-tripleo-ci-centos-7-multinode-upgrades-nv
       - gate-tripleo-ci-centos-7-nonha-multinode-oooq-nv
+      - gate-tripleo-ci-centos-7-scenario005-multinode
 
   - name: check-tripleo-undercloud-jobs
     check:
@@ -1656,6 +1657,16 @@ jobs:
       - ^manifests/profile/base/ceph.*$
       - ci/environments/scenario004-multinode.yaml
       - ci/pingtests/scenario004-multinode.yaml
+  - name : ^gate-tripleo-ci-centos-7-scenario005-multinode$
+    branch: ^(?!stable/(hammer|liberty|mitaka|newton)).*$
+    files:
+      - ^puppet/services/pacemaker.*$
+      - ^manifests/pacemaker/.*$
+      - ^manifests/profile/pacemaker.*$
+      - manifests/profile/base/pacemaker.pp
+      - ci/environments/scenario005-multinode.yaml
+      - ci/pingtests/scenario005-multinode.yaml
+
 
   # Test TripleO stable/mitaka in Puppet OpenStack CI
   - name: ^gate-tripleo-ci-centos-7-ovb-nonha-puppet-mitaka$
