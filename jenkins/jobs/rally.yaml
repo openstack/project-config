@@ -1177,3 +1177,35 @@
       - devstack-logs
       - rally-plot
       - console-log
+
+
+- job-template:
+    name: 'gate-rally-dsvm-py35-neutron-{name}-{node}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 130
+      - timestamps
+
+    builders:
+      - devstack-rally-gate:
+          scenario: '{name}-neutron'
+          ironic: '0'
+          neutron_extensions: '0'
+          zaqar: '0'
+          large_ops: '0'
+          keystone_use_v2api: '0'
+          senlin: '0'
+          magnum: '0'
+          prepopulate_users: '0'
+          watcher: '0'
+          telemetry: '{telemetry}'
+          swift: '0'
+          heat: '0'
+          py35: 'True'
+
+    publishers:
+      - devstack-logs
+      - rally-plot
+      - console-log
