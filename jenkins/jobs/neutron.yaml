@@ -603,53 +603,6 @@
 
 
 - job-template:
-    name: '{pipeline}-tempest-dsvm-neutron-scenario-{node}{suffix}'
-    node: '{node}'
-
-    wrappers:
-      - build-timeout:
-          timeout: 130
-      - timestamps
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - shell: |
-          #!/bin/bash -xe
-          export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_TEMPEST=1
-          export DEVSTACK_GATE_NEUTRON=1
-          export DEVSTACK_GATE_EXERCISES=0
-          export BRANCH_OVERRIDE={branch-override}
-          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
-              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
-          fi
-          export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
-          export DEVSTACK_GATE_TEMPEST_REGEX="^neutron.tests.tempest.scenario\."
-
-          function gate_hook {{
-              bash -xe $BASE/new/neutron/neutron/tests/contrib/gate_hook.sh dsvm-scenario
-          }}
-          export -f gate_hook
-
-          function post_test_hook {{
-              bash -xe $BASE/new/neutron/neutron/tests/contrib/post_test_hook.sh dsvm-scenario
-          }}
-          export -f post_test_hook
-
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
-
-    publishers:
-      - test-results
-      - devstack-logs
-      - console-log
-
-
-- job-template:
     name: '{pipeline}-tempest-dsvm-neutron-dvr-multinode-scenario-{node-release}{suffix}'
     node: '{node}'
 
