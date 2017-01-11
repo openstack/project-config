@@ -1,5 +1,5 @@
 - job-template:
-    name: '{pipeline}-tempest-dsvm-networking-odl-{odl-release-base}{suffix}'
+    name: '{pipeline}-tempest-dsvm-networking-odl-{odl-release-base}-{driver-version}{suffix}'
     node: '{node}'
 
     wrappers:
@@ -40,6 +40,8 @@
 
           # specify ODL release to use
           export ODL_RELEASE_BASE={odl-release-base}
+          export ODL_GATE_V2DRIVER={driver-version}
+          export ODL_TEST_SUFFIX={suffix}
 
           function pre_test_hook {{
               if [ -f $BASE/new/networking-odl/devstack/pre_test_hook.sh ] ; then
