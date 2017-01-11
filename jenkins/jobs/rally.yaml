@@ -769,6 +769,38 @@
       - console-log
 
 
+- job-template:
+    name: 'gate-rally-dsvm-py35-rally-{service}{suffix}'
+    node: ubuntu-xenial
+
+    wrappers:
+      - build-timeout:
+          timeout: 130
+      - timestamps
+
+    builders:
+      - devstack-rally-gate:
+          scenario: '{service}'
+          ironic: '0'
+          neutron_extensions: '0'
+          zaqar: '0'
+          large_ops: '0'
+          keystone_use_v2api: '0'
+          senlin: '0'
+          magnum: '0'
+          prepopulate_users: '0'
+          watcher: '0'
+          telemetry: '0'
+          swift: '0'
+          heat: '{heat}'
+          py35: 'True'
+
+    publishers:
+      - devstack-logs
+      - rally-plot
+      - console-log
+
+
 - job:
     name: 'gate-rally-dsvm-cli'
     node: ubuntu-xenial
