@@ -76,7 +76,9 @@
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
           function post_test_hook {{
-              /opt/stack/new/nova/tools/hooks/post_test_hook.sh
+              if [ -f $BASE/new/nova/tools/hooks/post_test_hook.sh ]; then
+                  $BASE/new/nova/tools/hooks/post_test_hook.sh
+              fi
           }}
           export -f post_test_hook
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
