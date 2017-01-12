@@ -18,3 +18,25 @@
     publishers:
       - devstack-logs
       - console-log
+
+- job-template:
+    name: 'periodic-openstack-ansible-{action}-{scenario}-{branch-name}-{node}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 240
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - zuul-git-branch-prep-upper-constraints:
+          branch: '{branch}'
+      - shell: |
+          #!/bin/bash -xe
+          sudo scripts/gate-check-commit.sh "{scenario}" "{action}"
+
+    publishers:
+      - devstack-logs
+      - console-log
