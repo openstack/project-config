@@ -2617,6 +2617,12 @@ jobs:
           - ^.*\.rst$
           - ^doc/.*$
 
+  - name: ^karbor-coverage-ubuntu.*$
+    voting: false
+
+  - name: ^python-karborclient-coverage-ubuntu.*$
+    voting: false
+
   - name: gate-designate-python34-db
     branch: ^stable/mitaka$
 
@@ -10654,6 +10660,7 @@ projects:
       - name: openstack-server-publish-jobs
       - name: api-ref-jobs
     check:
+      - karbor-coverage-ubuntu-xenial
       - gate-karbor-dsvm-fullstack-nv
 
   - name: openstack/karbor-dashboard
@@ -15493,6 +15500,8 @@ projects:
       - name: python35-jobs
       - name: check-requirements
       - name: publish-to-pypi
+    check:
+      - python-karborclient-coverage-ubuntu-xenial
 
   - name: openstack/python-keystoneclient
     template:
