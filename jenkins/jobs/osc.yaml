@@ -49,6 +49,57 @@
       - devstack-logs
       - console-log
 
+- job-template:
+    name: '{pipeline}-osc-dsvm-functional-tips-{node}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 130
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_UNSTACK=0
+          export DEVSTACK_GATE_TEMPEST=0
+          export DEVSTACK_GATE_EXERCISES=0
+          export DEVSTACK_GATE_INSTALL_TESTONLY=1
+          export DEVSTACK_GATE_NEUTRON=1
+          export BRANCH_OVERRIDE={branch-override}
+          export PROJECTS="openstack/os-client-config $PROJECTS"
+          export PROJECTS="openstack/osc-lib $PROJECTS"
+          export PROJECTS="openstack/python-openstackclient $PROJECTS"
+          export PROJECTS="openstack/python-openstacksdk $PROJECTS"
+          export DEVSTACK_PROJECT_FROM_GIT=python-openstackclient
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin neutron https://git.openstack.org/openstack/neutron"
+          export ENABLED_SERVICES=q-qos
+
+          function post_test_hook {{
+              # This test hook will install the master version of the following:
+              # - osc-lib
+              # - openstacksdk
+              # - os-client-config
+              hook_location=$BASE/new/python-openstackclient/openstackclient/tests/functional/post_test_hook_tips.sh
+              bash -xe $hook_location
+          }}
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - test-results
+      - devstack-logs
+      - console-log
+
 - job:
     name: check-osc-plugins
     node: ubuntu-trusty
