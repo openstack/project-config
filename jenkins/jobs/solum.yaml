@@ -50,3 +50,60 @@
     publishers:
       - devstack-logs
       - console-log
+
+- job-template:
+    name: 'gate-solum-devstack-dsvm-py35-{node}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 70
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export DEVSTACK_GATE_USE_PYTHON3=True
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_NEUTRON=1
+          export ENABLED_SERVICES=solum,solum-api,solum-conductor,solum-deployer,solum-worker,tempest,zaqar,barbican,mistral
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin solum git://git.openstack.org/openstack/solum"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"SOLUM_PROJ_DIR=/opt/stack/new/solum"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin zun git://git.openstack.org/openstack/zun"
+          export PROJECTS="openstack/solum  $PROJECTS"
+          export PROJECTS="openstack/solum-dashboard $PROJECTS"
+          export PROJECTS="openstack/python-solumclient $PROJECTS"
+          export PROJECTS="openstack/barbican $PROJECTS"
+          export PROJECTS="openstack/mistral $PROJECTS"
+          export PROJECTS="openstack/zun $PROJECTS"
+          export PROJECTS="openstack/python-zunclient $PROJECTS"
+
+          export KEEP_LOCALRC=1
+
+          function pre_test_hook {{
+              cd /opt/stack/new/solum/functionaltests
+              ./pre_test_hook.sh
+          }}
+          export -f pre_test_hook
+
+          function gate_hook {{
+              cd /opt/stack/new/solum/functionaltests
+              ./gate_hook.sh
+          }}
+          export -f gate_hook
+
+          function post_test_hook {{
+              cd /opt/stack/new/solum/functionaltests
+              ./post_test_hook.sh
+          }}
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
