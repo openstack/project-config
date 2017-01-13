@@ -91,7 +91,8 @@
           export PROJECTS="openstack/networking-midonet $PROJECTS"
           export PROJECTS="openstack/tap-as-a-service $PROJECTS"
 
-          if [[ ! "stable/mitaka" =~ $ZUUL_BRANCH ]]; then
+          BRANCH=${{OVERRIDE_ZUUL_BRANCH:-$ZUUL_BRANCH}}
+          if [[ ! "stable/mitaka" =~ $BRANCH ]]; then
               function gate_hook {{
                   bash -xe $BASE/new/networking-midonet/devstack/ci/gate_hook.sh {midonet-plugin}
               }}
