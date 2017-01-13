@@ -6027,17 +6027,28 @@
       - pypi-jobs
       - openstack-publish-jobs
       - openstack-releasenotes-jobs
-      - '{pipeline}-kolla-kubernetes-{action}-{distro}-{type}-{config}{suffix}':
+      - '{pipeline}-kolla-kubernetes-{action}-{distro}-{type}-{ver}-{config}{suffix}':
           action: deploy
-          config:
-            - ceph-multi
-            - ceph-reboot
+          config: ceph-multi
           distro: centos
           node: 'centos-7-2-node'
           pipeline: gate
           type: binary
+          ver:
+            - '2'
+            - '3'
+            - 't'
           suffix: '-nv'
-      - '{pipeline}-kolla-kubernetes-{action}-{distro}-{type}-{config}{suffix}':
+      - '{pipeline}-kolla-kubernetes-{action}-{distro}-{type}-{ver}-{config}{suffix}':
+          action: deploy
+          config: ceph-reboot
+          distro: centos
+          node: 'centos-7-2-node'
+          pipeline: gate
+          type: binary
+          ver: '2'
+          suffix: '-nv'
+      - '{pipeline}-kolla-kubernetes-{action}-{distro}-{type}-{ver}-{config}{suffix}':
           action: deploy
           config:
             - helm-entrypoint
@@ -6049,8 +6060,9 @@
           node: 'centos-7'
           pipeline: gate
           type: binary
+          ver: '2'
           suffix: '-nv'
-      - '{pipeline}-kolla-kubernetes-{action}-{distro}-{type}-{config}{suffix}':
+      - '{pipeline}-kolla-kubernetes-{action}-{distro}-{type}-{ver}-{config}{suffix}':
           action: deploy
           config:
             - ceph
@@ -6059,6 +6071,7 @@
           node: ubuntu-xenial
           pipeline: gate
           type: binary
+          ver: '2'
           suffix: '-nv'
 
 - project:

@@ -1,5 +1,5 @@
 - job-template:
-    name: '{pipeline}-kolla-kubernetes-{action}-{distro}-{type}-{config}{suffix}'
+    name: '{pipeline}-kolla-kubernetes-{action}-{distro}-{type}-{ver}-{config}{suffix}'
     node: '{node}'
 
     wrappers:
@@ -14,7 +14,7 @@
       - install-distro-packages
       - shell: |
           #!/bin/bash -xe
-          tools/setup_gate.sh {action} {distro} {type} {config} {node} shell
+          tools/setup_gate.sh {action} {distro} {type} {config} {node} shell {ver}
 
     publishers:
       - devstack-logs
