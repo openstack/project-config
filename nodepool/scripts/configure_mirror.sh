@@ -58,6 +58,7 @@ NODEPOOL_UBUNTU_MIRROR=${NODEPOOL_UBUNTU_MIRROR:-http://$NODEPOOL_MIRROR_HOST/ub
 NODEPOOL_CENTOS_MIRROR=${NODEPOOL_CENTOS_MIRROR:-http://$NODEPOOL_MIRROR_HOST/centos}
 NODEPOOL_DEBIAN_OPENSTACK_MIRROR=${NODEPOOL_DEBIAN_OPENSTACK_MIRROR:-http://$NODEPOOL_MIRROR_HOST/debian-openstack}
 NODEPOOL_EPEL_MIRROR=${NODEPOOL_EPEL_MIRROR:-http://$NODEPOOL_MIRROR_HOST/epel}
+NODEPOOL_FEDORA_MIRROR=${NODEPOOL_FEDORA_MIRROR:-http://$NODEPOOL_MIRROR_HOST/fedora}
 NODEPOOL_CEPH_MIRROR=${NODEPOOL_CEPH_MIRROR:-http://$NODEPOOL_MIRROR_HOST/ceph-deb-hammer}
 NODEPOOL_UCA_MIRROR=${NODEPOOL_UCA_MIRROR:-http://$NODEPOOL_MIRROR_HOST/ubuntu-cloud-archive}
 NODEPOOL_NPM_MIRROR=${NODEPOOL_NPM_MIRROR:-http://$NODEPOOL_MIRROR_HOST/npm/}
@@ -115,6 +116,28 @@ deb-src $NODEPOOL_DEBIAN_MIRROR $LSBDISTCODENAME-security main"
 DEBIAN_OPENSTACK_NEWTON_SOURCES_LIST="\
 deb $NODEPOOL_DEBIAN_OPENSTACK_MIRROR $LSBDISTCODENAME-newton main
 deb $NODEPOOL_DEBIAN_OPENSTACK_MIRROR $LSBDISTCODENAME-newton-backports main"
+
+YUM_REPOS_FEDORA="\
+[fedora]
+name=Fedora \$releasever - \$basearch
+failovermethod=priority
+baseurl=$NODEPOOL_FEDORA_MIRROR/releases/\$releasever/Everything/\$basearch/os/
+enabled=1
+metadata_expire=7d
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-\$releasever-\$basearch
+skip_if_unavailable=False"
+
+YUM_REPOS_FEDORA_UPDATES="\
+[updates]
+name=Fedora \$releasever - \$basearch - Updates
+failovermethod=priority
+baseurl=$NODEPOOL_FEDORA_MIRROR/updates/\$releasever/\$basearch/
+enabled=1
+gpgcheck=1
+metadata_expire=6h
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-\$releasever-\$basearch
+skip_if_unavailable=False"
 
 YUM_REPOS_CENTOS_BASE="\
 [base]
@@ -235,4 +258,13 @@ elif [ "$LSBDISTID" == "CentOS" ]; then
     sudo chown root:root /etc/yum.repos.d/*
     sudo chmod 0644 /etc/yum.repos.d/*
 
+# TODO(pabelanger): Remove 'TwentyFour' check when fedora-24 is removed from
+# nodepool.yaml.
+elif [ "$LSBDISTID" == "Fedora" ] && [ "$LSBDISTCODENAME" != 'TwentyFour' ]; then
+    echo "$YUM_REPOS_FEDORA" >/tmp/fedora.repo
+    sudo mv /tmp/fedora.repo /etc/yum.repos.d/
+    echo "$YUM_REPOS_FEDORA_UPDATES" >/tmp/fedora-updates.repo
+    sudo mv /tmp/fedora-updates.repo /etc/yum.repos.d/
+    sudo chown root:root /etc/yum.repos.d/*
+    sudo chmod 0644 /etc/yum.repos.d/*
 fi
