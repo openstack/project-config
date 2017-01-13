@@ -2345,8 +2345,11 @@ jobs:
   - name: ^gate-tempest-dsvm-full-bdd.*$
     branch: ^(?!(stable/mitaka|driverfixes/)).*$
 
+    # NOTE(jordanP): Non-voting is temporary until the job stabilizes in
+    # master (ocata).
   - name: ^gate-tempest-dsvm-full-devstack-plugin-ceph-ubuntu-xenial.*$
     branch: ^(?!(stable/mitaka|driverfixes/)).*$
+    voting: false
 
   - name: ^gate-tempest-dsvm-full-drbd-devstack-ubuntu-xenial.*$
     branch: ^(?!(stable/mitaka|driverfixes/)).*$
@@ -6240,8 +6243,6 @@ projects:
       - gate-tempest-dsvm-full-bdd-nv
       - gate-tempest-dsvm-neutron-identity-v3-only-full-ubuntu-xenial-nv
     gate:
-      - gate-tempest-dsvm-full-devstack-plugin-ceph-ubuntu-trusty
-      - gate-tempest-dsvm-full-devstack-plugin-ceph-ubuntu-xenial
       - gate-cinder-tox-compliance-ubuntu-xenial
       - gate-grenade-dsvm-cinder-multinode-ubuntu-xenial
     experimental:
@@ -8492,7 +8493,6 @@ projects:
       - gate-manila-tempest-dsvm-cephfs-native-ubuntu-xenial-nv
     gate:
       - gate-devstack-plugin-ceph-bashate
-      - gate-tempest-dsvm-full-devstack-plugin-ceph-ubuntu-xenial
 
   - name: openstack/devstack-plugin-glusterfs
     template:
@@ -9907,9 +9907,6 @@ projects:
       - gate-rally-dsvm-glance-ubuntu-trusty-nv
       - gate-rally-dsvm-glance-ubuntu-xenial-nv
       - gate-rally-dsvm-py35-glance-nv
-    gate:
-      - gate-tempest-dsvm-full-devstack-plugin-ceph-ubuntu-trusty
-      - gate-tempest-dsvm-full-devstack-plugin-ceph-ubuntu-xenial
     experimental:
       - gate-grenade-dsvm-forward-ubuntu-trusty
       - gate-glance-dsvm-grenade-multinode-ubuntu-xenial-nv
@@ -12483,8 +12480,6 @@ projects:
       - gate-grenade-dsvm-neutron-multinode-ubuntu-trusty
       - gate-tempest-dsvm-cells-ubuntu-trusty
       - gate-tempest-dsvm-cells-ubuntu-xenial
-      - gate-tempest-dsvm-full-devstack-plugin-ceph-ubuntu-trusty
-      - gate-tempest-dsvm-full-devstack-plugin-ceph-ubuntu-xenial
       - gate-tempest-dsvm-multinode-live-migration-ubuntu-xenial
     post:
       - nova-coverage-db-ubuntu-trusty
@@ -17292,7 +17287,6 @@ projects:
       - gate-tempest-dsvm-layer4-ubuntu-xenial
       - gate-grenade-dsvm-multinode
       - gate-grenade-dsvm-neutron-multinode-ubuntu-xenial
-      - gate-tempest-dsvm-full-devstack-plugin-ceph-ubuntu-xenial
     experimental:
       - periodic-tempest-dsvm-all-master
       - gate-tempest-dsvm-multinode-full-ubuntu-xenial-nv
