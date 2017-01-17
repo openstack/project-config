@@ -1293,15 +1293,25 @@
       - openstack-publish-jobs
       - openstack-releasenotes-jobs
       - openstack-server-release-jobs
-      - '{pipeline}-congress-dsvm-api-{node}{suffix}':
+      - '{pipeline}-congress-dsvm-api-{backend}-{node}{suffix}':
           pipeline: gate
+          backend: mysql
           node:
             - ubuntu-trusty
             - ubuntu-xenial
           suffix: ''
           branch-override: default
-      - '{pipeline}-congress-pe-replicated{suffix}':
+      - '{pipeline}-congress-dsvm-api-{backend}-{node}{suffix}':
           pipeline: gate
+          backend: postgresql
+          node: ubuntu-xenial
+          suffix: '-nv'
+          branch-override: default
+      - '{pipeline}-congress-pe-replicated-{backend}{suffix}':
+          pipeline: gate
+          backend:
+            - mysql
+            - postgresql
           node: ubuntu-xenial
           suffix: '-nv'
           branch-override: default

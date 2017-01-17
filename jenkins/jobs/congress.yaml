@@ -1,5 +1,5 @@
 - job-template:
-    name: '{pipeline}-congress-dsvm-api-{node}{suffix}'
+    name: '{pipeline}-congress-dsvm-api-{backend}-{node}{suffix}'
     node: '{node}'
 
     wrappers:
@@ -47,6 +47,9 @@
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
+          if [ "{backend}" = "postgresql" ] ; then
+              export DEVSTACK_GATE_POSTGRES=1
+          fi
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
@@ -57,7 +60,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-congress-pe-replicated{suffix}'
+    name: '{pipeline}-congress-pe-replicated-{backend}{suffix}'
     node: '{node}'
 
     wrappers:
@@ -97,6 +100,9 @@
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          if [ "{backend}" = "postgresql" ] ; then
+              export DEVSTACK_GATE_POSTGRES=1
           fi
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
