@@ -253,6 +253,8 @@ def main():
 
     # report the results
     if failed or head_reqs.failed or branch_reqs.failed:
+        print("*** Incompatible requirement found!")
+        print("*** See http://docs.openstack.org/developer/requirements")
         sys.exit(1)
     print("Updated requirements match openstack/requirements.")
 
