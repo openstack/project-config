@@ -17,9 +17,29 @@
     publishers:
       - console-log
 
+- job-template:
+    name: 'gate-{name}-unit-{node}'
+    node: '{node}'
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - zuul-git-prep
+      - install-distro-packages
+      - extra-test-setup
+      - revoke-sudo
+      - shell: |
+          #!/bin/bash -xe
+          make env test
+
+    publishers:
+      - console-log
+
 - job-group:
     name: golang-jobs
     node:
       - ubuntu-xenial
     jobs:
       - 'gate-{name}-fmt-{node}'
+      - 'gate-{name}-unit-{node}'
