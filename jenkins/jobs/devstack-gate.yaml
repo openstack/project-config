@@ -621,6 +621,46 @@
       - console-log
 
 - job-template:
+    name: '{pipeline}-tempest-dsvm-nova-py35-{node}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 180
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export DEVSTACK_GATE_USE_PYTHON3=True
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_TEMPEST_FULL=1
+          export DEVSTACK_GATE_NEUTRON=1
+
+          # swift is not ready for python3 yet
+          export DEVSTACK_LOCAL_CONFIG="disable_service s-account"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-container"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-object"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-proxy"
+
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
     name: '{pipeline}-tempest-dsvm-nova-libvirt-kvm-apr-{node}{suffix}'
     node: '{node}'
 
@@ -2386,6 +2426,7 @@
       - '{pipeline}-tempest-dsvm-lxc-{node}{suffix}'
       - '{pipeline}-tempest-dsvm-nova-v20-api-{node}{suffix}'
       - '{pipeline}-tempest-dsvm-nova-wsgi-full-{node}{suffix}'
+      - '{pipeline}-tempest-dsvm-nova-py35-{node}{suffix}'
       - '{pipeline}-tempest-dsvm-trove-{node}{suffix}'
       # NOTE(mriedem): gate-grenade-dsvm-ubuntu-xenial is intentionally omitted
       # from this list as stable/newton grenade jobs upgrade from trusty nodes
@@ -2414,4 +2455,5 @@
       - '{pipeline}-tempest-dsvm-neutron-pg-full-{node}{suffix}'
       - '{pipeline}-tempest-dsvm-nova-v20-api-{node}{suffix}'
       - '{pipeline}-tempest-dsvm-nova-wsgi-full-{node}{suffix}'
+      - '{pipeline}-tempest-dsvm-nova-py35-{node}{suffix}'
       - '{pipeline}-tempest-dsvm-trove-{node}{suffix}'
