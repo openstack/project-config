@@ -2699,6 +2699,20 @@ jobs:
           - ^tools/.*$
           - ^tox.ini$
 
+  # do not run sahara scenario tests for documentation changes only.
+  - name: ^gate-(sahara|sahara-tests)-dsvm-scenario.*$
+    skip-if:
+      - project: ^openstack/sahara$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+          - ^releasenotes/.*$
+      - project: ^openstack/sahara-tests$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+          - ^releasenotes/.*$
+
   - name: gate-app-catalog-ui-dsvm-integration
     voting: false
 
