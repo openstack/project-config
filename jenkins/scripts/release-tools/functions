@@ -85,7 +85,7 @@ function update_upper_constraints {
         echo "No tox.ini file, skipping constraints"
         return 0
     fi
-    sed -i~ -e "s,-c.*{\(env:UPPER_CONSTRAINTS_FILE\)[^ ]*},-c{\1:$uc_url}," tox.ini
+    sed -i~ -e "s,{\(env:UPPER_CONSTRAINTS_FILE\)[^ ]*},{\1:$uc_url}," tox.ini
     if ! git diff --exit-code >/dev/null 2>&1 ; then
         git add tox.ini
         git commit -m "Update UPPER_CONSTRAINTS_FILE for $branch"
