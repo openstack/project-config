@@ -442,3 +442,16 @@
               keep-hierarchy: true
               copy-after-failure: false
       - console-log
+
+- job:
+    name: gate-zuul-nodepool
+    node: ubuntu-xenial
+
+    builders:
+      - zuul-clone:
+          project: openstack-infra/zuul
+      - shell: openstack-infra/zuul/tools/nodepool-integration-test.sh
+
+    publishers:
+      - test-results
+      - console-log
