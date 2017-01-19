@@ -1994,6 +1994,10 @@ jobs:
   - name: ^gate-tempest-dsvm-neutron-pg-full-ubuntu-(trusty|xenial)
     voting: false
 
+  # non py35 rally xenial job should only run on newton. master is py35
+  - name: ^gate-rally-dsvm-neutron-neutron-ubuntu-xenial
+    branch: ^stable/newton
+
   # scenario tests for neutron-dynamic-routing can be run on ocata and later
   - name: ^gate-neutron-dynamic-routing-dsvm-tempest-scenario.*$
     branch: ^(?!stable/newton).*$
@@ -12251,7 +12255,7 @@ projects:
       - gate-neutron-dsvm-fullstack-ubuntu-xenial
       - gate-rally-dsvm-neutron-neutron-ubuntu-trusty
       - gate-rally-dsvm-neutron-neutron-ubuntu-xenial
-      - gate-rally-dsvm-py35-neutron-neutron-ubuntu-xenial-nv
+      - gate-rally-dsvm-py35-neutron-neutron-ubuntu-xenial
       - gate-tempest-dsvm-neutron-dvr-ubuntu-trusty
       - gate-tempest-dsvm-neutron-dvr-ubuntu-xenial
       - gate-tempest-dsvm-neutron-identity-v3-only-full-ubuntu-xenial-nv
