@@ -333,6 +333,8 @@
           export PROJECTS="openstack/murano $PROJECTS"
           export PROJECTS="openstack/murano-dashboard $PROJECTS"
           export PROJECTS="openstack/python-muranoclient $PROJECTS"
+          export PROJECTS="openstack/heat $PROJECTS"
+          export PROJECTS="openstack/python-heatclient $PROJECTS"
 
           export DEVSTACK_GATE_TEMPEST_LARGE_OPS={large_ops}
           export DEVSTACK_GATE_EXERCISES=0
@@ -340,8 +342,8 @@
 
           export IDENTITY_API_VERSION=3
 
-          ENABLED_SERVICES=h-api,h-api-cfn,h-api-cw,h-eng,heat,
           export DEVSTACK_LOCAL_CONFIG="enable_plugin rally git://git.openstack.org/openstack/rally"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
 
           # Enable murano devstack plugin. Provided repo should be cloned by zuul before devstack run
           # and below provided link should not be used.
