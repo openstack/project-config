@@ -1775,6 +1775,39 @@ jobs:
           - ^doc/.*$
           - ^releasenotes/.*$
 
+  # tripleo OVB jobs that do not run via tripleo-quickstart do not need to run
+  # on patches that only touch the scripts/quickstart directory. This will save
+  # a ton of resources while iterating on the tripleo-quickstart based CI.
+  # This also makes sure to skip these jobs for doc / releasenotes / unittests
+  # since it overwrites the rule above for these specific jobs
+  # NOTE(trown) This will be removed once the oooq based jobs are stable. (pike-2 at the latest)
+  # Note that this duplicates the lines above.
+  - name: ^gate-tripleo-ci-centos-7-ovb-(?:\w*(?!-oooq))-*\w*$
+    skip-if:
+      - project: ^openstack-infra/tripleo-ci$
+        all-files-match-any:
+          - ^scripts/quickstart/.*$
+          - ^toci_instack_oooq.sh$
+          - ^toci_instack_oooq_multinode.sh$
+      - project: ^openstack/puppet-.*$
+        all-files-match-any:
+          - ^.*\.md$
+          - ^releasenotes/.*$
+          - ^metadata.json$
+      - project: ^openstack/tempest$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+          - ^etc/.*$
+          - ^tempest/tests/.*$
+          - ^tempest/hacking/.*$
+          - ^releasenotes/.*$
+      - project: ^openstack/(python-tripleoclient|tripleo-.*)$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+          - ^releasenotes/.*$
+
   # no need to run the jobs for doc / releasenotes / unittests patches
   - name: ^gate-octavia-v1-dsvm-scenario-ubuntu-xenial.*$
     skip-if:
