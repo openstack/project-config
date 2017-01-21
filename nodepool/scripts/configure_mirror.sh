@@ -258,9 +258,7 @@ elif [ "$LSBDISTID" == "CentOS" ]; then
     sudo chown root:root /etc/yum.repos.d/*
     sudo chmod 0644 /etc/yum.repos.d/*
 
-# TODO(pabelanger): Remove 'TwentyFour' check when fedora-24 is removed from
-# nodepool.yaml.
-elif [ "$LSBDISTID" == "Fedora" ] && [ "$LSBDISTCODENAME" != 'TwentyFour' ]; then
+elif [ "$LSBDISTID" == "Fedora" ]; then
     echo "$YUM_REPOS_FEDORA" >/tmp/fedora.repo
     sudo mv /tmp/fedora.repo /etc/yum.repos.d/
     echo "$YUM_REPOS_FEDORA_UPDATES" >/tmp/fedora-updates.repo
