@@ -48,6 +48,17 @@ function git_add_po_files {
     fi
 }
 
+# Add all JSON files to the git repo (used in javascript translations)
+function git_add_json_files {
+    local target_dir=$1
+
+    local json_file_count=`find $1 -name '*.json' | wc -l`
+
+    if [ $json_file_count -ne 0 ]; then
+        git add $target_dir/*
+    fi
+}
+
 # Propose updates for manuals
 function propose_manuals {
 
@@ -199,6 +210,25 @@ function propose_releasenotes {
 }
 
 
+function propose_reactjs {
+    pull_from_zanata "$PROJECT"
+
+    # Clean up files (removes incomplete translations and untranslated strings)
+    cleanup_module "i18n"
+
+    # Convert po files to ReactJS i18n JSON format
+    for lang in `find i18n/*.po -printf "%f\n" | sed 's/\.po$//'`; do
+        npm run po2json -- ./i18n/$lang.po -o ./i18n/$lang.json
+        # The files are created as a one-line JSON file - expand them
+        python -m json.tool ./i18n/$lang.json ./i18n/locales/$lang.json
+        rm ./i18n/$lang.json
+    done
+
+    # Add JSON files to git
+    git_add_json_files i18n/locales
+}
+
+
 # Setup git repository for git review.
 setup_git
 
@@ -218,6 +248,10 @@ case "$PROJECT" in
     training-guides)
         setup_training_guides "$ZANATA_VERSION"
         propose_training_guides
+        ;;
+    tripleo-ui)
+        setup_reactjs_project "$PROJECT" "$ZANATA_VERSION"
+        propose_reactjs
         ;;
     *)
         # Common setup for python and django repositories
