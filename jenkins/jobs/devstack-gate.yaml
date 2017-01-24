@@ -1936,6 +1936,48 @@
       - devstack-logs
       - console-log
 
+- job-template:
+    name: '{pipeline}-tempest-dsvm-multibackend-matrix-{node}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 60
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_TEMPEST_NOTESTS=1
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+
+          export DEVSTACK_LOCAL_CONFIG="CINDER_ENABLED_BACKENDS=lvm:lvm,nfs:nfs,ceph:ceph"
+          export PROJECTS="openstack/devstack-plugin-nfs $PROJECTS"
+          export PROJECTS="openstack/devstack-plugin-ceph $PROJECTS"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin devstack-plugin-nfs https://git.openstack.org/openstack/devstack-plugin-nfs"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin devstack-plugin-ceph https://git.openstack.org/openstack/devstack-plugin-ceph"
+
+          function post_test_hook {{
+              /opt/stack/new/cinder/tools/hooks/run_multi_backend_matrix.sh
+          }}
+
+          export -f post_test_hook
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+        - devstack-logs
+        - console-log
 
 - job-template:
     name: '{pipeline}-tempest-dsvm-full-lio-{node}{suffix}'
