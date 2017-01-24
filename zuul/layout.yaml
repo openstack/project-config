@@ -3204,6 +3204,11 @@ jobs:
   - name: ^gate-openstack-ansible-openstack-ansible-aio-ubuntu-xenial$
     branch: ^(?!(liberty|stable/(mitaka|newton))).*$
 
+  # Skip the OpenStack-Ansible Ceph job for the openstack-ansible repository if
+  # the branch is anything before ocata.
+  - name: ^gate-openstack-ansible-openstack-ansible-ceph-ubuntu-xenial.*$
+    branch: ^(?!(liberty|stable/(mitaka|newton))).*$
+
   # Skip the functional tests for CentOS 7 in the security, keystone, glance
   # and cinder roles if the branch is Mitaka or earlier.
   - name: ^gate-openstack-ansible-(security|os_keystone|os_glance|os_cinder)-ansible-.*-centos-7.*$
@@ -12846,6 +12851,7 @@ projects:
       - gate-openstack-ansible-openstack-ansible-aio-ubuntu-trusty
       - gate-openstack-ansible-openstack-ansible-aio-ubuntu-xenial
       - gate-openstack-ansible-openstack-ansible-aio-ubuntu-xenial-nv
+      - gate-openstack-ansible-openstack-ansible-ceph-ubuntu-xenial-nv
     gate:
       - gate-openstack-ansible-docs-ubuntu-trusty
       - gate-openstack-ansible-docs-ubuntu-xenial
@@ -12855,7 +12861,6 @@ projects:
       - gate-openstack-ansible-openstack-ansible-aio-ubuntu-xenial
     experimental:
       - gate-openstack-ansible-openstack-ansible-aio-centos-7-nv
-      - gate-openstack-ansible-openstack-ansible-ceph-ubuntu-xenial-nv
       - gate-openstack-ansible-openstack-ansible-compute-ubuntu-xenial-nv
       - gate-openstack-ansible-openstack-ansible-ironic-ubuntu-xenial-nv
       - gate-openstack-ansible-openstack-ansible-magnum-ubuntu-xenial-nv
