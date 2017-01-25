@@ -1202,7 +1202,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-ironic-dsvm-multitest-{node}{suffix}'
+    name: '{pipeline}-ironic-dsvm-standalone-{node}{suffix}'
     node: '{node}'
 
     wrappers:
@@ -1214,6 +1214,9 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - ironic-tempest-plugin
+      - ironic-tempest-regex:
+          tempest-regex: ironic_standalone
       - shell: |
           #!/bin/bash -xe
           export PROJECTS="openstack/ironic $PROJECTS"
@@ -1225,25 +1228,15 @@
           export DEVSTACK_GATE_IRONIC=1
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_VIRT_DRIVER=ironic
-          export DEVSTACK_GATE_CONFIGDRIVE=1
           export DEVSTACK_GATE_IRONIC_BUILD_RAMDISK=0
-          export DEVSTACK_GATE_IRONIC_DRIVER=agent_ssh
-          # The tests will be launched by devstack/exercise.sh
-          export DEVSTACK_GATE_TEMPEST_NOTESTS=1
-          export DEVSTACK_GATE_REMOVE_STACK_SUDO=0
+          export OVERRIDE_ENABLED_SERVICES="g-api,g-reg,q-dhcp,q-l3,q-svc,key,mysql,rabbit,ir-api,ir-cond,s-account,s-container,s-object,s-proxy,tempest"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
 
           export DEVSTACK_LOCAL_CONFIG="enable_plugin ironic git://git.openstack.org/openstack/ironic"
-
-          function post_test_hook {{
-                source $BASE/new/devstack/openrc admin admin
-                cd /opt/stack/new/ironic
-                sudo -E -u stack ./devstack/exercise.sh
-          }}
-          export -f post_test_hook
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_VM_COUNT=6"
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
