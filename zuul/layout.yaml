@@ -1070,6 +1070,7 @@ project-templates:
       - gate-tripleo-ci-centos-7-scenario004-multinode
     experimental:
       - gate-tripleo-ci-centos-7-nonha-multinode-oooq-nv
+      - gate-tripleo-ci-centos-7-scenario001-multinode-oooq-nv
       - gate-tripleo-ci-centos-7-scenario005-multinode
 
   - name: check-tripleo-undercloud-jobs
@@ -1607,6 +1608,10 @@ jobs:
           - ^releasenotes/.*$
           - ^metadata.json$
           - ^spec/.*$
+
+  # tripleo multinode-oooq jobs are only supported from Ocata.
+  - name: ^gate-tripleo-ci-centos-7-.*-multinode-oooq.*$
+    branch: ^(?!stable/(hammer|liberty|mitaka|newton)).*$
 
   # NOTE(emilien): zuul v2 does not allow us to specify files rules for specific projects
   # and are global to the jobname.
@@ -5097,6 +5102,7 @@ projects:
       - periodic-tripleo-ci-centos-7-scenario004-multinode
     experimental:
       - gate-tripleo-ci-centos-7-multinode-upgrades-nv
+      - gate-tripleo-ci-centos-7-scenario001-multinode-oooq-nv
     experimental-tripleo:
       - gate-tripleo-ci-centos-7-ovb-nonha
       - gate-tripleo-ci-centos-7-ovb-ha-tempest
@@ -17816,6 +17822,7 @@ projects:
       - gate-tripleo-quickstart-docs-ubuntu-xenial
     experimental:
       - gate-tripleo-quickstart-base-centos-7-nv
+      - gate-tripleo-ci-centos-7-scenario001-multinode-oooq-nv
     experimental-tripleo:
       - gate-tripleo-ci-centos-7-ovb-nonha-oooq-nv
       - gate-tripleo-ci-centos-7-ovb-containers-oooq
@@ -17834,6 +17841,7 @@ projects:
       - gate-tripleo-quickstart-extras-linters-ubuntu-xenial
     experimental:
       - gate-tripleo-quickstart-extras-base-centos-7-nv
+      - gate-tripleo-ci-centos-7-scenario001-multinode-oooq-nv
     experimental-tripleo:
       - gate-tripleo-ci-centos-7-ovb-nonha-oooq-nv
       - gate-tripleo-ci-centos-7-ovb-containers-oooq
