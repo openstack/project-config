@@ -317,6 +317,24 @@
       - devstack-logs
       - console-log
 
+- job-template:
+    name: 'gate-{name}-puppet-module-build-nv'
+    node: '{node}'
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - zuul-clone:
+          project: $ZUUL_PROJECT
+      - install-distro-packages
+      - puppet-prepare-node
+      - allow-local-ssh-root
+      - shell: |
+          #!/bin/bash -xe
+          cd $ZUUL_PROJECT
+          puppet module build .
+
     wrappers:
       - build-timeout:
           timeout: 60
@@ -354,6 +372,7 @@
     jobs:
       - 'gate-{name}-puppet-lint'
       - 'gate-{name}-puppet-syntax'
+      - 'gate-{name}-puppet-module-build-nv'
       - 'gate-{name}-puppet-syntax-{puppet_version}-{node}'
 
 - job-group:
