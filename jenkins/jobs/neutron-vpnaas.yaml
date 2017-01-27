@@ -113,6 +113,16 @@
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
 
+          function gate_hook {{
+              bash -xe $BASE/new/neutron-vpnaas/neutron_vpnaas/tests/contrib/gate_hook.sh tempest
+          }}
+          export -f gate_hook
+
+          function post_test_hook {{
+              bash -xe $BASE/new/neutron-vpnaas/neutron_vpnaas/tests/contrib/post_test_hook.sh tempest
+          }}
+          export -f post_test_hook
+
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
 
