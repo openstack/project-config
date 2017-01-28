@@ -329,6 +329,22 @@
       - console-log
 
 - job-template:
+    name: 'gate-manila-test-image-build'
+    node: 'ubuntu-xenial'
+
+    builders:
+      - link-logs
+      - net-info
+      - gerrit-git-prep
+      - install-distro-packages
+      - shell: |
+          #!/bin/bash -xe
+          ./run-buildroot.sh
+
+    publishers:
+      - console-log
+
+- job-template:
     name: gate-manila-tempest-dsvm-glusterfs-{variant}-{node}{suffix}
     node: '{node}'
 
