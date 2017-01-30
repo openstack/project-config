@@ -1485,6 +1485,37 @@
       - devstack-logs
       - console-log
 
+# "platform" test -- run on an alternative node
+- job-template:
+    name: '{pipeline}-tempest-dsvm-platform-{name}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 180
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_TEMPEST_FULL=1
+          export DEVSTACK_GATE_NEUTRON={neutron}
+          export DEVSTACK_GATE_TLSPROXY=1
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
 - job-template:
     name: '{pipeline}-keystone-dsvm-grenade-multinode-{node-release}{suffix}'
     node: '{node}'
