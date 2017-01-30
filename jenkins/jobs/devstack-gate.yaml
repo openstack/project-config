@@ -2087,10 +2087,19 @@
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
-          export DEVSTACK_GATE_TEMPEST_FULL=1
           export PROJECTS="{plugin-repo} $PROJECTS"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin devstack-plugin-{plugin} git://git.openstack.org/{plugin-repo}"
           export DEVSTACK_PROJECT_FROM_GIT={srcname}
+
+          if [[ "{plugin}" = "sheepdog" ]]; then
+              export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
+              # As we are setting DEVSTACK_GATE_TEMPEST_ALL_PLUGINS, we need
+              # to add the regex to limit the tests to the same as a tempest
+              # -efull would run.
+              export DEVSTACK_GATE_TEMPEST_REGEX='(?!.*\[.*\bslow\b.*\])(^tempest\.(api|scenario)|(^cinder\.tests.tempest))'
+          else
+              export DEVSTACK_GATE_TEMPEST_FULL=1
+          fi
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
@@ -2121,9 +2130,18 @@
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
-          export DEVSTACK_GATE_TEMPEST_FULL=1
           export PROJECTS="{plugin-repo} $PROJECTS"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin devstack-plugin-{plugin} git://git.openstack.org/{plugin-repo}"
+
+          if [[ "{plugin}" = "sheepdog" ]]; then
+              export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
+              # As we are setting DEVSTACK_GATE_TEMPEST_ALL_PLUGINS, we need
+              # to add the regex to limit the tests to the same as a tempest
+              # -efull would run.
+              export DEVSTACK_GATE_TEMPEST_REGEX='(?!.*\[.*\bslow\b.*\])(^tempest\.(api|scenario)|(^cinder\.tests.tempest))'
+          else
+              export DEVSTACK_GATE_TEMPEST_FULL=1
+          fi
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
