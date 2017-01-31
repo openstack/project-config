@@ -3272,9 +3272,9 @@ jobs:
   - name: ^gate-openstack-ansible-(security|os_keystone|os_glance|os_cinder)-ansible-.*-centos-7.*$
     branch: ^(?!(liberty|stable/mitaka)).*$
 
-  # Skip the functional tests against the RHEL 7 STIG content on Newton branch
+  # Skip the functional tests against the RHEL 6 STIG content on Newton branch
   # and earlier branches.
-  - name: ^gate-openstack-ansible-security-ansible-func_rhel7.*$
+  - name: ^gate-openstack-ansible-security-ansible-func_rhel6.*$
     branch: ^(?!(liberty|stable/(mitaka|newton))).*$
 
   # Skip the os_ceilometer functional tests against gnocchi on Newton
@@ -13641,14 +13641,11 @@ projects:
       - name: openstack-server-publish-jobs
       - name: release-notes-jobs
       - name: ansible-role-functional-jobs-centos7
-      - name: ansible-role-functional-jobs-trusty
       - name: ansible-role-functional-jobs-xenial
     check:
-      - gate-openstack-ansible-security-ansible-func_rhel7-centos-7
-      - gate-openstack-ansible-security-ansible-func_rhel7-ubuntu-xenial
+      - gate-openstack-ansible-security-ansible-func_rhel6-ubuntu-trusty
     gate:
-      - gate-openstack-ansible-security-ansible-func_rhel7-centos-7
-      - gate-openstack-ansible-security-ansible-func_rhel7-ubuntu-xenial
+      - gate-openstack-ansible-security-ansible-func_rhel6-ubuntu-trusty
     release:
       - openstack-ansible-security-announce-release
 
