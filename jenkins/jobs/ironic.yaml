@@ -226,6 +226,7 @@
               # on master, use the local change, so we can pick up any changes to the plugin
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"TEMPEST_PLUGINS+=' /opt/stack/new/ironic'"
             fi
+            export TEMPEST_CONCURRENCY={concurrency}
 
 - builder:
     name: ironic-resource-classes
@@ -254,7 +255,6 @@
           export DEVSTACK_GATE_VIRT_DRIVER=ironic
           export DEVSTACK_GATE_CONFIGDRIVE=1
           export DEVSTACK_GATE_IRONIC_DRIVER={deploy_driver}
-          export TEMPEST_CONCURRENCY=1
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -601,7 +601,8 @@
       - ironic-ipxe-disabled
       - ironic-tempest-regex:
           tempest-regex: ironic
-      - ironic-tempest-plugin
+      - ironic-tempest-plugin:
+          concurrency: 1
       - devstack-virtual-ironic:
           build-ramdisk: 'yes'
           deploy_driver: pxe_ssh
@@ -632,7 +633,8 @@
           ramdisk-type: '{ramdisk-type}'
       - ironic-tempest-regex:
           tempest-regex: ironic
-      - ironic-tempest-plugin
+      - ironic-tempest-plugin:
+          concurrency: 1
       - devstack-virtual-ironic:
           build-ramdisk: '{src}'
           deploy_driver: '{driver}'
@@ -663,7 +665,8 @@
           ramdisk-type: 'tinyipa'
       - ironic-tempest-regex:
           tempest-regex: ironic
-      - ironic-tempest-plugin
+      - ironic-tempest-plugin:
+          concurrency: 1
       - ironic-python3
       - devstack-virtual-ironic:
           build-ramdisk: ''
@@ -696,7 +699,8 @@
           ramdisk-type: 'tinyipa'
       - ironic-tempest-regex:
           tempest-regex: ironic
-      - ironic-tempest-plugin
+      - ironic-tempest-plugin:
+          concurrency: 1
       - devstack-virtual-ironic:
           build-ramdisk: '{src}'
           deploy_driver: 'pxe_ipmitool'
@@ -728,7 +732,8 @@
       - ironic-tempest-regex:
           tempest-regex: ironic
       - ironic-lib-from-source
-      - ironic-tempest-plugin
+      - ironic-tempest-plugin:
+          concurrency: 1
       - devstack-virtual-ironic:
           build-ramdisk: ''
           deploy_driver: '{driver}'
@@ -759,7 +764,8 @@
           ramdisk-type: '{ramdisk-type}'
       - ironic-multinode
       - ironic-multitenant
-      - ironic-tempest-plugin
+      - ironic-tempest-plugin:
+          concurrency: 2
       - devstack-virtual-ironic:
           build-ramdisk: '{src}'
           deploy_driver: '{driver}'
@@ -789,7 +795,8 @@
       - ironic-deploy-with-IPA:
           ramdisk-type: 'tinyipa'
       - ironic-tempest-full
-      - ironic-tempest-plugin
+      - ironic-tempest-plugin:
+          concurrency: 1
       - devstack-virtual-ironic:
           build-ramdisk: ''
           deploy_driver: pxe_ssh
@@ -822,7 +829,8 @@
           tempest-regex: ironic
       - ironic-postgres-enabled
       - ironic-ipxe-disabled
-      - ironic-tempest-plugin
+      - ironic-tempest-plugin:
+          concurrency: 1
       - devstack-virtual-ironic:
           build-ramdisk: ''
           deploy_driver: '{driver}'
@@ -899,7 +907,8 @@
       - ironic-tempest-regex:
           tempest-regex: ironic
       - ironic-pygmi-from-source
-      - ironic-tempest-plugin
+      - ironic-tempest-plugin:
+          concurrency: 1
       - devstack-virtual-ironic:
           build-ramdisk: ''
           deploy_driver: pxe_ipmitool
@@ -932,7 +941,8 @@
           tempest-regex: ironic
       - ironic-virtualbmc-from-source
       - ironic-pygmi-from-source
-      - ironic-tempest-plugin
+      - ironic-tempest-plugin:
+          concurrency: 1
       - devstack-virtual-ironic:
           build-ramdisk: ''
           deploy_driver: pxe_ipmitool
@@ -964,7 +974,8 @@
       - ironic-tempest-regex:
           tempest-regex: ironic
       - ironic-client-from-source
-      - ironic-tempest-plugin
+      - ironic-tempest-plugin:
+          concurrency: 1
       - devstack-virtual-ironic:
           build-ramdisk: ''
           deploy_driver: pxe_ssh
@@ -996,7 +1007,8 @@
       - ironic-tempest-regex:
           tempest-regex: baremetal_multitenancy
       - ironic-multitenant
-      - ironic-tempest-plugin
+      - ironic-tempest-plugin:
+          concurrency: 1
       - devstack-virtual-ironic:
           build-ramdisk: ''
           deploy_driver: agent_ssh
@@ -1029,7 +1041,8 @@
           tempest-regex: InspectorBasicTest
       - ironic-inspector-enabled:
           inspector-auto-discovery: 0
-      - ironic-tempest-plugin
+      - ironic-tempest-plugin:
+          concurrency: 1
       - devstack-virtual-ironic:
           build-ramdisk: '{src}'
           deploy_driver: agent_ipmitool
@@ -1063,7 +1076,8 @@
       - ironic-inspector-enabled:
           inspector-auto-discovery: 0
       - ironic-inspector-client-from-source
-      - ironic-tempest-plugin
+      - ironic-tempest-plugin:
+          concurrency: 1
       - devstack-virtual-ironic:
           build-ramdisk: ''
           deploy_driver: agent_ipmitool
@@ -1096,7 +1110,8 @@
           tempest-regex: InspectorDiscoveryTest
       - ironic-inspector-enabled:
           inspector-auto-discovery: 1
-      - ironic-tempest-plugin
+      - ironic-tempest-plugin:
+          concurrency: 1
       - devstack-virtual-ironic:
           build-ramdisk: ''
           deploy_driver: agent_ipmitool
@@ -1124,7 +1139,8 @@
       - net-info
       - devstack-checkout
       - ironic-grenade
-      - ironic-tempest-plugin
+      - ironic-tempest-plugin:
+          concurrency: 1
       - ironic-deploy-with-IPA:
           ramdisk-type: 'tinyipa'
       - devstack-virtual-ironic:
@@ -1157,7 +1173,8 @@
       - ironic-multitenant
       - ironic-deploy-with-IPA:
           ramdisk-type: 'tinyipa'
-      - ironic-tempest-plugin
+      - ironic-tempest-plugin:
+          concurrency: 1
       - devstack-virtual-ironic:
           build-ramdisk: ''
           deploy_driver: agent_ssh
@@ -1188,7 +1205,8 @@
       - ironic-inspector-grenade
       - ironic-deploy-with-IPA:
           ramdisk-type: 'tinyipa'
-      - ironic-tempest-plugin
+      - ironic-tempest-plugin:
+          concurrency: 1
       - ironic-inspector-enabled
       - devstack-virtual-ironic:
           build-ramdisk: ''
@@ -1214,7 +1232,8 @@
       - link-logs
       - net-info
       - devstack-checkout
-      - ironic-tempest-plugin
+      - ironic-tempest-plugin:
+          concurrency: 2
       - ironic-tempest-regex:
           tempest-regex: ironic_standalone
       - shell: |
