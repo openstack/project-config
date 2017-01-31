@@ -38,11 +38,7 @@
           template-name: "{template-name}"
       - proposal-slave-cleanup
       - revoke-sudo
-      # TODO(jaegerandi): We cannot use zuul-cloner here since
-      # zuul-merge in a periodic job might not have the latest changes.
-      - branch-git-prep:
-          branch: '{branch}'
-      - constraints-branch-git-prep:
+      - zuul-git-branch-prep-upper-constraints:
           branch: '{branch}'
       - shell: |
           #!/bin/bash -xe
