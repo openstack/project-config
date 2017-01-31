@@ -2076,6 +2076,10 @@ jobs:
   - name: ^gate-heat-dsvm-functional-convg-mysql-lbaasv2-ubuntu-xenial$
     branch: ^(?!stable/mitaka).*$
 
+  # NOTE(rabi) (heat) run non-apache ocata and forward
+  - name: ^gate-heat-dsvm-functional-convg-mysql-lbaasv2-non-apache-ubuntu-xenial$
+    branch: ^(?!stable/(mitaka|newton)).*$
+
   # NOTE(therve) (heat) run amqp1 ocata and forward
   - name: ^gate-heat-dsvm-functional-convg-mysql-lbaasv2-amqp1-centos-7-nv$
     branch: ^(?!stable/(mitaka|newton)).*$
@@ -2083,9 +2087,6 @@ jobs:
   # NOTE(dims) (heat) run py3 compat jobs only on master
   - name: ^gate-heat-dsvm-functional-orig-mysql-lbaasv2-py35-ubuntu-xenial-nv$
     branch: master
-
-  - name: gate-tempest-dsvm-heat-apache-ubuntu-trusty
-    branch: ^(stable/mitaka).*$
 
   - name: ^gate-networking-cisco-compare-coverage-ubuntu-xenial$
     voting: false
@@ -10370,9 +10371,8 @@ projects:
       - gate-heat-dsvm-functional-convg-mysql-lbaasv2-ubuntu-trusty
       - gate-heat-dsvm-functional-convg-mysql-lbaasv2-ubuntu-xenial
       - gate-heat-dsvm-functional-convg-mysql-lbaasv2-amqp1-centos-7-nv
+      - gate-heat-dsvm-functional-convg-mysql-lbaasv2-non-apache-ubuntu-xenial
       - gate-heat-dsvm-functional-orig-mysql-lbaasv2-py35-ubuntu-xenial-nv
-      - gate-tempest-dsvm-heat-apache-ubuntu-trusty
-      - gate-tempest-dsvm-heat-apache-ubuntu-xenial
       - gate-grenade-dsvm-heat-ubuntu-trusty
       - gate-grenade-dsvm-heat-ubuntu-xenial
       - gate-tempest-dsvm-heat-identity-v3-only-ubuntu-xenial-nv
@@ -10383,8 +10383,7 @@ projects:
       - gate-heat-dsvm-functional-orig-mysql-lbaasv2-ubuntu-xenial
       - gate-heat-dsvm-functional-convg-mysql-lbaasv2-ubuntu-trusty
       - gate-heat-dsvm-functional-convg-mysql-lbaasv2-ubuntu-xenial
-      - gate-tempest-dsvm-heat-apache-ubuntu-trusty
-      - gate-tempest-dsvm-heat-apache-ubuntu-xenial
+      - gate-heat-dsvm-functional-convg-mysql-lbaasv2-non-apache-ubuntu-xenial
       - gate-grenade-dsvm-heat-ubuntu-trusty
       - gate-grenade-dsvm-heat-ubuntu-xenial
     post:
