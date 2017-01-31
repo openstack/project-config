@@ -3664,6 +3664,11 @@
           node: ubuntu-xenial-2-node
           suffix: '-nv'
           branch-override: default
+      - '{pipeline}-tempest-dsvm-neutron-full-{node}{suffix}':
+          pipeline: gate
+          node: centos-7
+          suffix: '-nv'
+          branch-override: default
       - '{pipeline}-tempest-dsvm-neutron-dvr-multinode-scenario-{node-release}{suffix}':
           pipeline: gate
           node-release: ubuntu-xenial
@@ -3700,16 +3705,24 @@
           node: ubuntu-xenial
           suffix: '-nv'
           branch-override: default
-      - '{pipeline}-tempest-dsvm-neutron-full-{node}{suffix}':
+      - '{pipeline}-tempest-dsvm-platform-{name}{suffix}':
+          name: centos7
           pipeline: gate
           node: centos-7
+          neutron: 1
           suffix: '-nv'
-          branch-override: default
-      - '{pipeline}-tempest-dsvm-neutron-full-{node}{suffix}':
+      - '{pipeline}-tempest-dsvm-platform-{name}{suffix}':
           pipeline: gate
+          name: fedora25
           suffix: '-nv'
           node: fedora-25
-          branch-override: default
+          neutron: 1
+      - '{pipeline}-tempest-dsvm-platform-{name}{suffix}':
+          pipeline: gate
+          name: ubuntu-trusty
+          suffix: ''
+          node: ubuntu-trusty
+          neutron: 1
       - '{pipeline}-tempest-dsvm-py35-{node}{suffix}':
           pipeline: gate
           node: ubuntu-xenial
