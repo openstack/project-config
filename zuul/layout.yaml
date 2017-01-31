@@ -2868,6 +2868,9 @@ jobs:
   - name: gate-mistral-docker-buildimage
     branch: master
 
+  - name: python-mistralclient-coverage-ubuntu-xenial
+    voting: false
+
   - name: ^python-jenkins-coverage-ubuntu-(trusty|xenial)
     voting: false
 
@@ -15848,13 +15851,12 @@ projects:
       - name: osc-plugin-jobs
       - name: openstack-client-publish-jobs
     check:
+      - python-mistralclient-coverage-ubuntu-xenial
       - gate-python-mistralclient-devstack-dsvm-ubuntu-trusty
       - gate-python-mistralclient-devstack-dsvm-ubuntu-xenial
     gate:
       - gate-python-mistralclient-devstack-dsvm-ubuntu-trusty
       - gate-python-mistralclient-devstack-dsvm-ubuntu-xenial
-    post:
-      - python-mistralclient-coverage-ubuntu-xenial
 
   - name: openstack/python-moganclient
     template:
