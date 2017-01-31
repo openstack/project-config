@@ -112,6 +112,17 @@ function setup_venv {
     $VENV/bin/pip install -U os-testr
 }
 
+# Setup nodejs within the python venv. Match the nodejs version with
+# the one used in the nodejs6-npm jobs.
+function setup_nodeenv {
+
+    $VENV/bin/pip install -U nodeenv
+    NODE_VENV=$VENV/node_venv
+    $VENV/bin/nodeenv --node 6.9.4 $NODE_VENV
+    source $NODE_VENV/bin/activate
+
+}
+
 # Setup a project for Zanata. This is used by both Python and Django projects.
 # syntax: setup_project <project> <zanata_version> <modulename> [<modulename> ...]
 function setup_project {
@@ -234,6 +245,27 @@ function setup_training_guides {
         --srcdir doc/upstream-training/source/locale \
         --txdir doc/upstream-training/source/locale \
         -f zanata.xml
+}
+
+# Setup a ReactJS project for Zanata
+function setup_reactjs_project {
+    local project=$1
+    local version=$2
+
+    local exclude='node_modules/**'
+
+    setup_nodeenv
+
+    # Extract messages
+    npm install
+    npm run build
+    # Transform them into .pot files
+    npm run json2pot
+
+    /usr/local/jenkins/slave_scripts/create-zanata-xml.py \
+        -p $project -v $version --srcdir . --txdir . \
+        -r '**/*.pot' '{path}/{locale}.po' \
+        -e "$exclude" -f zanata.xml
 }
 
 # Setup project so that git review works, sets global variable
