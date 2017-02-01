@@ -3,7 +3,7 @@ includes:
 
 pipelines:
   - name: check
-    description: Newly uploaded patchsets enter this pipeline to receive an initial +/-1 Verified vote from Jenkins.
+    description: Newly uploaded patchsets enter this pipeline to receive an initial +/-1 Verified vote from the "Jenkins" user.
     success-message: Build succeeded (check pipeline).
     failure-message: Build failed (check pipeline).  For information on how to proceed, see http://docs.openstack.org/infra/manual/developers.html#automated-testing
     manager: IndependentPipelineManager
@@ -32,7 +32,7 @@ pipelines:
         verified: -1
 
   - name: gate
-    description: Changes that have been approved by core developers are enqueued in order in this pipeline, and if they pass tests in Jenkins, will be merged.
+    description: Changes that have been approved by core developers are enqueued in order in this pipeline, and if they pass tests, will be merged.
     success-message: Build succeeded (gate pipeline).
     failure-message: Build failed (gate pipeline).  For information on how to proceed, see http://docs.openstack.org/infra/manual/developers.html#automated-testing
     manager: DependentPipelineManager
@@ -190,7 +190,7 @@ pipelines:
   - name: check-tripleo
     description: >
       Newly uploaded patchsets enter this pipeline to receive an initial +/-1
-      Verified vote from Jenkins. This is used for TripleO patchsets only so
+      Verified vote from the "Jenkins" user. This is used for TripleO patchsets only so
       that if the TripleO cloud suffers a failure, folk looking can tell that
       there isn't a system infra problem, only a TripleO specific problem.
       Once the TripleO test cloud is multi region and has some months of
