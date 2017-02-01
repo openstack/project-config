@@ -146,17 +146,25 @@
           export ENABLED_SERVICES=tempest
           export DEVSTACK_GATE_TEMPEST=0
           export DEVSTACK_LOCAL_CONFIG="enable_plugin zaqar git://git.openstack.org/openstack/zaqar"
+
           export DEVSTACK_GATE_GRENADE=pullup
+          export GRENADE_PLUGINRC="enable_grenade_plugin zaqar https://git.openstack.org/openstack/zaqar"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
 
-          function gate_hook {{
-              cd /opt/stack/new/zaqar/devstack/gate
-              ./gate_hook.sh tempest {backend}
+          function pre_test_hook {{
+              cd /opt/stack/new/zaqar/zaqar_upgradetests
+              ./pre_test_hook.sh
           }}
-          export -f gate_hook
+          export -f pre_test_hook
+
+          function post_test_hook {{
+              cd /opt/stack/new/zaqar/zaqar_upgradetests
+              ./post_test_hook.sh
+          }}
+          export -f post_test_hook
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
