@@ -21,35 +21,6 @@
     node: '{node}'
 
 - job-template:
-    name: 'periodic-{name}-python27-db{branch-name}'
-    description: 'Same job as periodic-{name}-python27 but sets up databases.'
-
-    wrappers:
-      - build-timeout:
-          timeout: 40
-      - timestamps
-
-    builders:
-      - zuul-git-branch-prep-upper-constraints:
-          branch: '{branch}'
-      - install-distro-packages
-      - mysql-prep
-      - pgsql-prep
-      - mysql-db:
-          db_name: openstack_citest
-      - pgsql-db:
-          db_name: openstack_citest
-      - revoke-sudo
-      - python27
-      - assert-no-extra-files
-
-    publishers:
-      - test-results
-      - console-log
-
-    node: '{node}'
-
-- job-template:
     name: 'periodic-{name}-docs{branch-name}'
 
     wrappers:
@@ -97,24 +68,4 @@
     node: ubuntu-xenial
     jobs:
       - 'periodic-{name}-python27{branch-name}'
-      - 'periodic-{name}-docs{branch-name}'
-
-
-- job-group:
-    name: python-mitaka-bitrot-db-jobs
-    branch: 'stable/mitaka'
-    branch-name: '-mitaka'
-    node: ubuntu-trusty
-    jobs:
-      - 'periodic-{name}-python27-db{branch-name}'
-      - 'periodic-{name}-docs{branch-name}'
-
-
-- job-group:
-    name: python-newton-bitrot-db-jobs
-    branch: 'stable/newton'
-    branch-name: '-newton'
-    node: ubuntu-xenial
-    jobs:
-      - 'periodic-{name}-python27-db{branch-name}'
       - 'periodic-{name}-docs{branch-name}'

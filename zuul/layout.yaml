@@ -390,27 +390,6 @@ project-templates:
     post:
       - '{name}-branch-tarball'
 
-  # Invokes the same targets as python-jobs with one change:
-  # python27-db is used instead of python27. The job
-  # python27-db sets up databases.
-  - name: python-db-jobs
-    check:
-      - 'gate-{name}-docs-ubuntu-trusty'
-      - 'gate-{name}-pep8-ubuntu-trusty'
-      - 'gate-{name}-python27-db-ubuntu-trusty'
-      - 'gate-{name}-docs-ubuntu-xenial'
-      - 'gate-{name}-pep8-ubuntu-xenial'
-      - 'gate-{name}-python27-db-ubuntu-xenial'
-    gate:
-      - 'gate-{name}-docs-ubuntu-trusty'
-      - 'gate-{name}-pep8-ubuntu-trusty'
-      - 'gate-{name}-python27-db-ubuntu-trusty'
-      - 'gate-{name}-docs-ubuntu-xenial'
-      - 'gate-{name}-pep8-ubuntu-xenial'
-      - 'gate-{name}-python27-db-ubuntu-xenial'
-    post:
-      - '{name}-branch-tarball'
-
   - name: python-charm-jobs
     check:
       - 'gate-{name}-pep8-ubuntu-trusty'
@@ -550,23 +529,11 @@ project-templates:
     check:
       - 'gate-{name}-python35-nv'
 
-  # Invokes the same targets as python35-jobs-nv, but sets up databases.
-  - name: python35-db-jobs-nv
-    check:
-      - 'gate-{name}-python35-db-nv'
-
   - name: python35-jobs
     check:
       - 'gate-{name}-python35'
     gate:
       - 'gate-{name}-python35'
-
-  # Invokes the same targets as python35-jobs, but sets up databases.
-  - name: python35-db-jobs
-    check:
-      - 'gate-{name}-python35-db'
-    gate:
-      - 'gate-{name}-python35-db'
 
   - name: osc-plugin-jobs
     check:
@@ -649,16 +616,6 @@ project-templates:
     periodic-stable:
       - 'periodic-{name}-docs-ocata'
       - 'periodic-{name}-python27-ocata'
-
-  - name: periodic-db-mitaka
-    periodic-stable:
-      - 'periodic-{name}-docs-mitaka'
-      - 'periodic-{name}-python27-db-mitaka'
-
-  - name: periodic-db-newton
-    periodic-stable:
-      - 'periodic-{name}-docs-newton'
-      - 'periodic-{name}-python27-db-newton'
 
   # Used for building documentation projects that contain
   # DocBook XML and RST files.
@@ -1235,10 +1192,10 @@ jobs:
   - name: ^gate-.*-ubuntu-trusty-(liberty|mitaka)(-nv)?$
     branch: master
   # Restrict python34 testing to <= Mitaka.
-  - name: ^gate-.*-python34(-db)?(-nv)?$
+  - name: ^gate-.*-python34(-nv)?$
     branch: ^stable/(liberty|mitaka)
   # Restrict python35 testing to >= Newton.
-  - name: ^gate-.*-python35(-db)?(-nv)?$
+  - name: ^gate-.*-python35(-nv)?$
     branch: ^(?!stable/(liberty|mitaka)).*$
 
   # Make sure we run ubuntu-trusty on master for puppet-apply.
@@ -2197,7 +2154,7 @@ jobs:
 
     # BUG #1290562 pypy does not work with new setuptools, so is breaking
     # all jobs. Disable until there is resolution.
-  - name: ^gate-.*-pypy(-db)?$
+  - name: ^gate-.*-pypy$
     voting: false
 
   - name: ^gate-tempest-dsvm-ironic-parallel-ubuntu-xenial-nv$
@@ -18115,12 +18072,12 @@ projects:
   - name: openstack/trove
     template:
       - name: merge-check
-      - name: python-db-jobs
-      - name: python35-db-jobs
+      - name: python-jobs
+      - name: python35-jobs
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
-      - name: periodic-db-mitaka
-      - name: periodic-db-newton
+      - name: periodic-mitaka
+      - name: periodic-newton
       - name: periodic-ocata
       - name: check-requirements
       - name: install-guide-jobs
@@ -18147,9 +18104,9 @@ projects:
       - gate-trove-legacy-scenario-dsvm-postgresql
       - gate-trove-legacy-scenario-dsvm-pxc
       - gate-trove-legacy-scenario-dsvm-redis-nv
-      - gate-trove-tox-db-fakemodetests-ubuntu-xenial
-      - gate-trove-tox-db-apiexamples-ubuntu-xenial
-      - gate-trove-tox-pylint-ubuntu-xenial
+      - gate-trove-tox-fakemodetests-ubuntu-xenial
+      - gate-trove-tox-apiexamples-ubuntu-xenial
+      - gate-trove-pylint-ubuntu-xenial
     gate:
       - gate-trove-functional-dsvm-mysql-ubuntu-xenial
       - gate-trove-legacy-functional-dsvm-mysql
@@ -18158,12 +18115,12 @@ projects:
       - gate-trove-legacy-scenario-dsvm-mysql
       - gate-trove-legacy-scenario-dsvm-postgresql
       - gate-trove-legacy-scenario-dsvm-pxc
-      - gate-trove-tox-db-fakemodetests-ubuntu-xenial
-      - gate-trove-tox-db-apiexamples-ubuntu-xenial
-      - gate-trove-tox-pylint-ubuntu-xenial
+      - gate-trove-tox-fakemodetests-ubuntu-xenial
+      - gate-trove-tox-apiexamples-ubuntu-xenial
+      - gate-trove-pylint-ubuntu-xenial
     post:
-      - trove-coverage-db-ubuntu-trusty
-      - trove-coverage-db-ubuntu-xenial
+      - trove-coverage-ubuntu-trusty
+      - trove-coverage-ubuntu-xenial
     experimental:
       - gate-trove-scenario-dsvm-cassandra-single-ubuntu-xenial-nv
       - gate-trove-scenario-dsvm-cassandra-multi-ubuntu-xenial-nv
