@@ -1776,6 +1776,14 @@ jobs:
   - name: ^kolla-dsvm-build.*$
     branch: ^(?!stable/(mitaka|newton)).*$
 
+  - name: ^kolla-coverage-ubuntu-xenial$
+    voting: false
+    skip-if:
+      - project: ^openstack/kolla$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+
   # Do not run the documentation publishing jobs ({name}-docs) from
   # "bug/" branches. The (?!gate-) prefix is used in the regex because
   # we *do* want the gate docs jobs to run, just not the jobs in the
@@ -11024,6 +11032,7 @@ projects:
       - gate-kolla-dsvm-deploy-oraclelinux-binary-centos-7-nv
       - gate-kolla-dsvm-build-oraclelinux-source-centos-7
       - gate-kolla-dsvm-deploy-oraclelinux-source-centos-7-nv
+      - kolla-coverage-ubuntu-xenial
     gate:
       - gate-kolla-dsvm-build-centos-source-centos-7
       - gate-kolla-dsvm-build-ubuntu-source-ubuntu-xenial
