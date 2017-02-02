@@ -591,7 +591,10 @@ function pull_from_zanata {
     # translated enough.
     zanata-cli -B -e pull
 
-    for i in $(find . -name '*.po' ! -path './.*' -prune | cut -b3-); do
+    # We skip directories starting with '.' because they never contain
+    # translations for the project (in particular, '.tox'). Likewise
+    # 'node_modules' only contains dependencies and should be ignored.
+    for i in $(find . -name '*.po' ! -path './.*' ! -path './node_modules/*' -prune | cut -b3-); do
         check_po_file "$i"
         # We want new files to be >75% translated. The
         # common documents in openstack-manuals have that relaxed to
