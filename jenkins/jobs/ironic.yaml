@@ -1246,9 +1246,9 @@
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_IRONIC=1
           export DEVSTACK_GATE_NEUTRON=1
-          export DEVSTACK_GATE_VIRT_DRIVER=ironic
           export DEVSTACK_GATE_IRONIC_BUILD_RAMDISK=0
-          export OVERRIDE_ENABLED_SERVICES="g-api,g-reg,q-dhcp,q-l3,q-svc,key,mysql,rabbit,ir-api,ir-cond,s-account,s-container,s-object,s-proxy,tempest"
+          export OVERRIDE_ENABLED_SERVICES="g-api,g-reg,q-agt,q-dhcp,q-l3,q-svc,key,mysql,rabbit,ir-api,ir-cond,s-account,s-container,s-object,s-proxy,tempest"
+
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -1256,6 +1256,19 @@
 
           export DEVSTACK_LOCAL_CONFIG="enable_plugin ironic git://git.openstack.org/openstack/ironic"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_VM_COUNT=6"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_DEPLOY_DRIVER=agent_ipmitool"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_ENABLED_DRIVERS=fake,agent_ipmitool,pxe_ipmitool"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_AUTOMATED_CLEAN_ENABLED=False"
+
+          # Ensure the ironic-vars-EARLY file exists
+          touch ironic-vars-early
+          # Pull in the EARLY variables injected by the optional builders
+          source ironic-vars-early
+
+          # Ensure the ironic-EXTRA-vars file exists
+          touch ironic-extra-vars
+          # Pull in the EXTRA variables injected by the optional builders
+          source ironic-extra-vars
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
