@@ -277,6 +277,10 @@
             export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_INSPECTOR_BUILD_RAMDISK=False"
           fi
 
+          if [ "{boot-mode}" == "uefi" ] ; then
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_BOOT_MODE=uefi"
+          fi
+
           export DEVSTACK_PROJECT_FROM_GIT=""
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_VM_COUNT={bm-vm-count}"
 
@@ -607,6 +611,7 @@
           build-ramdisk: 'yes'
           deploy_driver: pxe_ssh
           image-type: partition
+          boot-mode: bios
           branch-override: '{branch-override}'
           bm-vm-count: 1
 
@@ -615,7 +620,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-tempest-dsvm-ironic-ipa-{image-type}-{driver}-{ramdisk-type}{src}-{node}{suffix}'
+    name: '{pipeline}-tempest-dsvm-ironic-ipa-{image-type}-{boot-mode}-{driver}-{ramdisk-type}{src}-{node}{suffix}'
     node: '{node}'
 
     wrappers:
@@ -639,6 +644,7 @@
           build-ramdisk: '{src}'
           deploy_driver: '{driver}'
           image-type: '{image-type}'
+          boot-mode: '{boot-mode}'
           branch-override: '{branch-override}'
           bm-vm-count: 1
 
@@ -672,6 +678,7 @@
           build-ramdisk: ''
           deploy_driver: agent_ipmitool
           image-type: wholedisk
+          boot-mode: bios
           branch-override: '{branch-override}'
           bm-vm-count: 1
 
@@ -705,6 +712,7 @@
           build-ramdisk: '{src}'
           deploy_driver: 'pxe_ipmitool'
           image-type: 'partition'
+          boot-mode: 'bios'
           branch-override: '{branch-override}'
           bm-vm-count: 2
 
@@ -738,6 +746,7 @@
           build-ramdisk: ''
           deploy_driver: '{driver}'
           image-type: '{image-type}'
+          boot-mode: 'bios'
           branch-override: '{branch-override}'
           bm-vm-count: 1
 
@@ -770,6 +779,7 @@
           build-ramdisk: '{src}'
           deploy_driver: '{driver}'
           image-type: '{image-type}'
+          boot-mode: 'bios'
           branch-override: '{branch-override}'
           bm-vm-count: 7
 
@@ -801,6 +811,7 @@
           build-ramdisk: ''
           deploy_driver: pxe_ssh
           image-type: partition
+          boot-mode: bios
           branch-override: '{branch-override}'
           bm-vm-count: 7
 
@@ -835,6 +846,7 @@
           build-ramdisk: ''
           deploy_driver: '{driver}'
           image-type: partition
+          boot-mode: bios
           branch-override: '{branch-override}'
           bm-vm-count: 1
 
@@ -913,6 +925,7 @@
           build-ramdisk: ''
           deploy_driver: pxe_ipmitool
           image-type: partition
+          boot-mode: bios
           branch-override: '{branch-override}'
           bm-vm-count: 1
 
@@ -947,6 +960,7 @@
           build-ramdisk: ''
           deploy_driver: pxe_ipmitool
           image-type: partition
+          boot-mode: bios
           branch-override: '{branch-override}'
           bm-vm-count: 1
 
@@ -980,6 +994,7 @@
           build-ramdisk: ''
           deploy_driver: pxe_ssh
           image-type: partition
+          boot-mode: bios
           branch-override: '{branch-override}'
           bm-vm-count: 1
 
@@ -1013,6 +1028,7 @@
           build-ramdisk: ''
           deploy_driver: agent_ssh
           image-type: wholedisk
+          boot-mode: bios
           branch-override: '{branch-override}'
           bm-vm-count: 3
 
@@ -1047,6 +1063,7 @@
           build-ramdisk: '{src}'
           deploy_driver: agent_ipmitool
           image-type: wholedisk
+          boot-mode: bios
           branch-override: '{branch-override}'
           bm-vm-count: 1
 
@@ -1082,6 +1099,7 @@
           build-ramdisk: ''
           deploy_driver: agent_ipmitool
           image-type: wholedisk
+          boot-mode: bios
           branch-override: '{branch-override}'
           bm-vm-count: 1
 
@@ -1116,6 +1134,7 @@
           build-ramdisk: ''
           deploy_driver: agent_ipmitool
           image-type: wholedisk
+          boot-mode: bios
           branch-override: '{branch-override}'
           bm-vm-count: 1
 
@@ -1147,6 +1166,7 @@
           build-ramdisk: ''
           deploy_driver: pxe_ssh
           image-type: partition
+          boot-mode: bios
           branch-override: '{branch-override}'
           bm-vm-count: 7
 
@@ -1179,6 +1199,7 @@
           build-ramdisk: ''
           deploy_driver: agent_ssh
           image-type: wholedisk
+          boot-mode: bios
           branch-override: '{branch-override}'
           bm-vm-count: 7
 
@@ -1212,6 +1233,7 @@
           build-ramdisk: ''
           deploy_driver: pxe_ssh
           image-type: partition
+          boot-mode: bios
           branch-override: '{branch-override}'
           bm-vm-count: 7
 

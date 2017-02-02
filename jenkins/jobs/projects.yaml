@@ -5372,6 +5372,10 @@
       - 'wholedisk'
       - 'partition'
 
+    boot-mode:
+      - 'bios'
+      - 'uefi'
+
     exclude:
       # agent_ssh driver with partitions is experimental
       - image-type: 'partition'
@@ -5393,6 +5397,7 @@
         suffix: '-nv'
       - image-type: 'partition'
         driver: 'pxe_ipmitool'
+        boot-mode: 'bios'
         suffix: '-nv'
       - image-type: 'partition'
         driver: 'agent_ipmitool'
@@ -5437,7 +5442,7 @@
           service: baremetal
       - api-ref-jobs:
           service: baremetal
-      - '{pipeline}-tempest-dsvm-ironic-ipa-{image-type}-{driver}-{ramdisk-type}{src}-{node}{suffix}':
+      - '{pipeline}-tempest-dsvm-ironic-ipa-{image-type}-{boot-mode}-{driver}-{ramdisk-type}{src}-{node}{suffix}':
           pipeline: gate
           node:
             - ubuntu-trusty
@@ -5448,7 +5453,7 @@
           node: ubuntu-xenial
           branch-override: default
           suffix: '-nv'
-      - '{pipeline}-tempest-dsvm-ironic-ipa-{image-type}-{driver}-{ramdisk-type}{src}-{node}{suffix}':
+      - '{pipeline}-tempest-dsvm-ironic-ipa-{image-type}-{boot-mode}-{driver}-{ramdisk-type}{src}-{node}{suffix}':
           pipeline: gate
           node: ubuntu-xenial
           branch-override: default
