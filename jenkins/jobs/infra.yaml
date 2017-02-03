@@ -449,6 +449,10 @@
     builders:
       - zuul-clone-workspace:
           project: openstack-infra/zuul
+      - shell: |
+          #!/bin/bash -xe
+          cd openstack-infra/zuul
+          /usr/local/jenkins/slave_scripts/install-distro-packages.sh
       - shell: tools/nodepool-integration-setup.sh
       - run-tox:
           envlist: 'nodepool'
