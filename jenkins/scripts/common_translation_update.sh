@@ -431,10 +431,20 @@ function filter_commits {
 
     # Don't add new empty files.
     for f in $(git diff --cached --name-only --diff-filter=A); do
-        # Files should have at least one non-empty msgid string.
-        if ! grep -q 'msgid "[^"]' "$f" ; then
-            git reset -q "$f"
-            rm "$f"
+        if [[ $f =~ .po$ ]] ; then
+            # Files should have at least one non-empty msgid string.
+            if ! grep -q 'msgid "[^"]' "$f" ; then
+                git reset -q "$f"
+                rm "$f"
+            fi
+        fi
+        if [[ $f =~ .json$ ]] ; then
+            # Ignore the locale key and confirm there are string keys
+            # in the messages dictionary itself.
+            if ! grep -q '"[^"].*":\s*"' "$f" ; then
+                git reset -q "$f"
+                rm "$f"
+            fi
         fi
     done
 
