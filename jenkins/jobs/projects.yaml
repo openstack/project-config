@@ -7284,56 +7284,65 @@
       - translation-jobs
       - openstack-releasenotes-jobs
       - pypi-jobs
-      - '{pipeline}-tempest-dsvm-networking-odl-{odl-release-base}-{driver-version}{suffix}':
+      - '{pipeline}-tempest-dsvm-networking-odl-{odl-release-base}-{odl-provider}{driver-version}{suffix}':
           pipeline: gate
           node: ubuntu-trusty
           suffix: '-mitaka-nv'
+          odl-provider: ''
           driver-version: 'v1driver'
           odl-release-base:
             - 'beryllium-snapshot'
             - 'boron-snapshot'
             - 'carbon-snapshot'
           branch-override: stable/mitaka
-      - '{pipeline}-tempest-dsvm-networking-odl-{odl-release-base}-{driver-version}{suffix}':
+      - '{pipeline}-tempest-dsvm-networking-odl-{odl-release-base}-{odl-provider}{driver-version}{suffix}':
           pipeline: periodic
           node: ubuntu-trusty
           suffix: '-mitaka'
+          odl-provider: ''
           driver-version: 'v1driver'
           odl-release-base: 'boron-snapshot'
           branch-override: stable/mitaka
       # tempest-dsvm-networking-odl-{odl-release-base} is for newton+
-      - '{pipeline}-tempest-dsvm-networking-odl-{odl-release-base}-{driver-version}{suffix}':
+      - '{pipeline}-tempest-dsvm-networking-odl-{odl-release-base}-{odl-provider}{driver-version}{suffix}':
           pipeline: gate
           node: ubuntu-xenial
           suffix: '-nv'
+          odl-provider: ''
           driver-version: 'v2driver'
           odl-release-base:
             - 'carbon-snapshot'
           branch-override: default
       # NOTE(mkolesni): Keep this for checking latest ODL with V1 until we drop
       # the V1 driver support.
-      - '{pipeline}-tempest-dsvm-networking-odl-{odl-release-base}-{driver-version}{suffix}':
+      - '{pipeline}-tempest-dsvm-networking-odl-{odl-release-base}-{odl-provider}{driver-version}{suffix}':
           pipeline: gate
           node: ubuntu-xenial
           suffix: ''
+          odl-provider: ''
           driver-version: 'v1driver'
           odl-release-base:
             - 'carbon-snapshot'
           branch-override: default
-      - '{pipeline}-tempest-dsvm-networking-odl-{odl-release-base}-{driver-version}{suffix}':
+      - '{pipeline}-tempest-dsvm-networking-odl-{odl-release-base}-{odl-provider}{driver-version}{suffix}':
           pipeline: gate
           node: ubuntu-xenial
           suffix: ''
+          odl-provider: ''
           driver-version: 'v2driver'
           odl-release-base:
             - 'beryllium-snapshot'
             - 'boron-snapshot'
             - 'carbon-snapshot'
           branch-override: default
-      - '{pipeline}-tempest-dsvm-networking-odl-new-{odl-release-base}{suffix}':
+      - '{pipeline}-tempest-dsvm-networking-odl-{odl-release-base}-{odl-provider}{driver-version}{suffix}':
           pipeline: gate
           node: ubuntu-xenial
           suffix: '-nv'
+          odl-provider: 'vpnservice-'
+          driver-version:
+            - 'v1driver'
+            - 'v2driver'
           odl-release-base:
             - 'boron-snapshot'
             - 'carbon-snapshot'
