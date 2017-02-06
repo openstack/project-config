@@ -431,21 +431,28 @@ function filter_commits {
 
     # Don't add new empty files.
     for f in $(git diff --cached --name-only --diff-filter=A); do
-        if [[ $f =~ .po$ ]] ; then
-            # Files should have at least one non-empty msgid string.
-            if ! grep -q 'msgid "[^"]' "$f" ; then
+        case "$f" in
+            *.po)
+                # Files should have at least one non-empty msgid string.
+                if ! grep -q 'msgid "[^"]' "$f" ; then
+                    git reset -q "$f"
+                    rm "$f"
+                fi
+                ;;
+            *.json)
+                # JSON files fail msgid test. Ignore the locale key and confirm
+                # there are string keys in the messages dictionary itself.
+                if ! grep -q '"[^"].*":\s*"' "$f" ; then
+                    git reset -q "$f"
+                    rm "$f"
+                fi
+                ;;
+            *)
+                # Anything else is not a translation file, remove it.
                 git reset -q "$f"
                 rm "$f"
-            fi
-        fi
-        if [[ $f =~ .json$ ]] ; then
-            # Ignore the locale key and confirm there are string keys
-            # in the messages dictionary itself.
-            if ! grep -q '"[^"].*":\s*"' "$f" ; then
-                git reset -q "$f"
-                rm "$f"
-            fi
-        fi
+                ;;
+        esac
     done
 
     # Don't send files where the only things which have changed are
