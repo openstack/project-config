@@ -3283,20 +3283,19 @@ jobs:
           - ^tox.ini$
           - ^Vagrantfile
 
-  # Run only the following scenario jobs for liberty and stable/mitaka:
-  # aio, func, docs, linters, releasenotes
-  # Also only execute jobs on ubuntu-trusty for the same as that
-  # is the only platform supported for those branches.
-  # Any other jobs are scenario tests which were only introduced in Newton
-  - name: ^gate-openstack-ansible-.*-ansible-((aio|func|docs|linters)-ubuntu-trusty|releasenotes)$
-    branch: ^(liberty|stable/mitaka).*$
-
   # Run all OpenStack-Ansible trusty jobs except the docs and linters jobs
   # for Newton as this is still a supported platform for OpenStack-Ansible.
   # Trusty support is removed after Newton, so don't run any ubuntu-trusty
   # jobs against branches > stable/newton.
   - name: ^gate-openstack-ansible.*-((?!(docs|linters)).)*-ubuntu-trusty.*$
-    branch: ^(stable/newton)$
+    branch: ^stable/(mitaka|newton)$
+
+  # Skip any scenario job except the following for stable/mitaka:
+  # aio, func, docs, linters, releasenotes
+  # Also skip jobs on any platform other than ubuntu-trusty for the same as
+  # that is the only platform supported for those branches.
+  - name: ^gate-openstack-ansible-.*-ansible-(?!((aio|func|docs|linters)-ubuntu-trusty|releasenotes)).*$
+    branch: ^(?!(stable/mitaka)).*$
 
   # Run the OpenStack-Ansible non-voting aio scenario job on xenial for the
   # openstack-ansible repository if the branch is stable/newton.
@@ -3312,11 +3311,6 @@ jobs:
   # the branch is anything before ocata.
   - name: ^gate-openstack-ansible-openstack-ansible-ceph-ubuntu-xenial.*$
     branch: ^(?!(liberty|stable/(mitaka|newton))).*$
-
-  # Skip the functional tests for CentOS 7 in the security, keystone, glance,
-  # cinder and rabbitmq roles if the branch is Mitaka or earlier.
-  - name: ^gate-openstack-ansible-(security|os_keystone|os_glance|os_cinder|rabbitmq_server)-ansible-.*-centos-7.*$
-    branch: ^(?!(liberty|stable/mitaka)).*$
 
   # Skip the functional tests against the RHEL 6 STIG content on Newton branch
   # and earlier branches.
