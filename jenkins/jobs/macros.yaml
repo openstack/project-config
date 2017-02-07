@@ -474,6 +474,16 @@
           ./safe-devstack-vm-gate-wrap.sh
 
 - builder:
+    name: local_conf
+    builders:
+      - shell: |
+          #!/bin/bash -xe
+          cat << 'EOF' >>"/tmp/dg-local.conf"
+          {conf}
+          EOF
+
+
+- builder:
     name: xvfb-start
     builders:
       - shell: |
