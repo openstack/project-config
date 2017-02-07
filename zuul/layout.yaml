@@ -2091,6 +2091,11 @@ jobs:
   - name: ^gate-networking-cisco-compare-coverage-ubuntu-xenial$
     voting: false
 
+  # NOTE(sambetts) Make networking-cisco tests against neutron master
+  # non-voting so we aren't broken everytime neutron removes something
+  - name: ^gate-networking-cisco-tox-master-ubuntu-xenial$
+    voting: false
+
   - name: ^networking-ovn-coverage-ubuntu-(trusty|xenial)
     voting: false
 
@@ -12087,13 +12092,12 @@ projects:
       - gate-networking-cisco-compare-coverage-ubuntu-xenial
       - gate-networking-cisco-tox-newton-ubuntu-xenial
       - gate-networking-cisco-tox-newton-ubuntu-trusty
+      - gate-networking-cisco-tox-ocata-ubuntu-xenial
       - gate-networking-cisco-tox-master-ubuntu-xenial
-      - gate-networking-cisco-tox-master-ubuntu-trusty
     gate:
       - gate-networking-cisco-tox-newton-ubuntu-xenial
       - gate-networking-cisco-tox-newton-ubuntu-trusty
-      - gate-networking-cisco-tox-master-ubuntu-xenial
-      - gate-networking-cisco-tox-master-ubuntu-trusty
+      - gate-networking-cisco-tox-ocata-ubuntu-xenial
 
   - name: openstack/networking-cumulus
     template:
