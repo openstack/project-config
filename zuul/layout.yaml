@@ -1739,7 +1739,7 @@ jobs:
   # Skip non-doc jobs for doc-only networking-midonet changes.  Since
   # doc/source/conf.py is checked by networking-midonet-pep8, that job
   # should not be skipped.
-  - name: ^.*networking-midonet-(python27-db|python3[45]-db(-nv)?)$
+  - name: ^.*networking-midonet-(python27|python3[45](-nv)?)$
     skip-if:
       - project: ^openstack/networking-midonet$
         all-files-match-any:
@@ -2325,7 +2325,7 @@ jobs:
   - name: ^gate-.*-identity-v3-only.*
     branch: ^(?!stable/mitaka).*$
 
-  - name: ^networking-midonet-coverage-db-ubuntu-(trusty|xenial)
+  - name: ^networking-midonet-coverage-ubuntu-(trusty|xenial)
     voting: false
 
   - name: ^gate-tempest-dsvm-networking-midonet-.+-full-ubuntu-xenial-nv
@@ -12005,22 +12005,22 @@ projects:
   - name: openstack/networking-bagpipe
     template:
       - name: merge-check
-      - name: python-db-jobs
-      - name: python35-db-jobs
+      - name: python-jobs
+      - name: python35-jobs
       - name: openstack-server-publish-jobs
       - name: publish-to-pypi
       - name: release-notes-jobs
       - name: check-requirements
-      - name: periodic-db-mitaka
-      - name: periodic-db-newton
+      - name: periodic-mitaka
+      - name: periodic-newton
       - name: periodic-jobs-with-neutron-lib-master
     check:
-      - networking-bagpipe-coverage-db-ubuntu-xenial
+      - networking-bagpipe-coverage-ubuntu-xenial
       - gate-tempest-dsvm-networking-bagpipe
       - gate-tempest-dsvm-networking-bgpvpn-bagpipe-ubuntu-trusty
       - gate-tempest-dsvm-networking-bgpvpn-bagpipe-ubuntu-xenial
     gate:
-      - networking-bagpipe-coverage-db-ubuntu-xenial
+      - networking-bagpipe-coverage-ubuntu-xenial
       - gate-tempest-dsvm-networking-bagpipe
       - gate-tempest-dsvm-networking-bgpvpn-bagpipe-ubuntu-trusty
       - gate-tempest-dsvm-networking-bgpvpn-bagpipe-ubuntu-xenial
@@ -12028,25 +12028,25 @@ projects:
   - name: openstack/networking-bgpvpn
     template:
       - name: merge-check
-      - name: python-db-jobs
-      - name: python35-db-jobs
+      - name: python-jobs
+      - name: python35-jobs
       - name: openstack-server-publish-jobs
       - name: publish-to-pypi
       - name: release-notes-jobs
-      - name: periodic-db-mitaka
-      - name: periodic-db-newton
+      - name: periodic-mitaka
+      - name: periodic-newton
       - name: check-requirements
       - name: periodic-jobs-with-neutron-lib-master
     check:
       - gate-tempest-dsvm-networking-bgpvpn-bagpipe-ubuntu-trusty
       - gate-tempest-dsvm-networking-bgpvpn-bagpipe-ubuntu-xenial
-      - networking-bgpvpn-coverage-db-ubuntu-xenial
+      - networking-bgpvpn-coverage-ubuntu-xenial
       - gate-networking-bgpvpn-dsvm-functional-ubuntu-trusty
       - gate-networking-bgpvpn-dsvm-functional-ubuntu-xenial
     gate:
       - gate-tempest-dsvm-networking-bgpvpn-bagpipe-ubuntu-trusty
       - gate-tempest-dsvm-networking-bgpvpn-bagpipe-ubuntu-xenial
-      - networking-bgpvpn-coverage-db-ubuntu-xenial
+      - networking-bgpvpn-coverage-ubuntu-xenial
       - gate-networking-bgpvpn-dsvm-functional-ubuntu-trusty
       - gate-networking-bgpvpn-dsvm-functional-ubuntu-xenial
     experimental:
@@ -12198,9 +12198,9 @@ projects:
     template:
       - name: merge-check
       - name: check-requirements
-      - name: python-db-jobs
+      - name: python-jobs
       - name: publish-to-pypi
-      - name: python35-db-jobs
+      - name: python35-jobs
     experimental:
       - gate-networking-l2gw-dsvm-functional-nv
 
@@ -12214,9 +12214,9 @@ projects:
     template:
       - name: merge-check
       - name: check-requirements
-      - name: python-db-jobs
-      - name: python34-db-jobs
-      - name: python35-db-jobs
+      - name: python-jobs
+      - name: python34-jobs
+      - name: python35-jobs
       - name: periodic-mitaka
       - name: periodic-newton
       - name: periodic-jobs-with-neutron-lib-master
@@ -12236,8 +12236,8 @@ projects:
       - gate-tempest-dsvm-networking-midonet-ml2-full-ubuntu-xenial-nv
       - gate-tempest-dsvm-networking-midonet-ml2-ubuntu-trusty-nv
       - gate-networking-midonet-v2-rally-dsvm-ubuntu-trusty-nv
-      - networking-midonet-coverage-db-ubuntu-trusty
-      - networking-midonet-coverage-db-ubuntu-xenial
+      - networking-midonet-coverage-ubuntu-trusty
+      - networking-midonet-coverage-ubuntu-xenial
     gate:
       - gate-tempest-dsvm-networking-midonet-v2-ubuntu-xenial
       - gate-tempest-dsvm-networking-midonet-v2-ubuntu-trusty
