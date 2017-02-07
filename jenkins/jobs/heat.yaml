@@ -18,11 +18,6 @@
           export DEVSTACK_GATE_EXERCISES=0
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
 
-          # enable heat services for mitaka (no devstack plugin available)
-          if [[ "$ZUUL_BRANCH" == "stable/mitaka" ]]; then
-              export ENABLED_SERVICES+=,h-api,h-api-cfn,h-api-cw,h-eng
-          fi
-
           function post_test_hook {
               cd $BASE/new/heat-templates/tools
               ./post_test_hook.sh
