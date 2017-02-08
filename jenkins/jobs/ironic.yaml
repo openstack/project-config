@@ -53,6 +53,13 @@
           script: |
             export GRENADE_PLUGINRC+=$'\n'"enable_grenade_plugin ironic-inspector https://git.openstack.org/openstack/ironic-inspector"
 
+- builder:
+    name: ironic-grenade-multitenant
+    builders:
+      - ironic-extra-vars:
+          script: |
+            export GRENADE_PLUGINRC+=$'\n'"enable_grenade_plugin networking-generic-switch https://git.openstack.org/openstack/networking-generic-switch"
+
 
 - builder:
     name: ironic-client-from-source
@@ -1190,6 +1197,7 @@
       - net-info
       - devstack-checkout
       - ironic-grenade
+      - ironic-grenade-multitenant
       - ironic-multitenant
       - ironic-deploy-with-IPA:
           ramdisk-type: 'tinyipa'
