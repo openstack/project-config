@@ -47,8 +47,15 @@
       - console-log
 
 
+# This runs single-node full tempest with neutron plus cells v2 and
+# the placement-api service. The intent of this job is to test the latest
+# features in Nova which might be considered experimental in master.
+# Release specific notes:
+# -----------------------
+# Newton: Created job; placement and cells v2 were optional.
+# Ocata: placement and cells v2 are default and required.
 - job-template:
-    name: '{pipeline}-tempest-dsvm-neutron-placement-full-{node}{suffix}'
+    name: '{pipeline}-tempest-dsvm-neutron-nova-next-full-{node}{suffix}'
     node: '{node}'
 
     wrappers:
@@ -64,12 +71,13 @@
       - devstack-checkout
       - shell: |
           #!/bin/bash -xe
+          # NOTE(mriedem): placement is required starting in Ocata.
           export ENABLED_SERVICES=placement-api
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_TEMPEST_FULL=1
           export DEVSTACK_GATE_NEUTRON=1
-          # NOTE(mriedem): cells v2 should be the default after newton-eol
+          # NOTE(mriedem): cells v2 is required starting in Ocata.
           export DEVSTACK_LOCAL_CONFIG="NOVA_CONFIGURE_CELLSV2=True"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
