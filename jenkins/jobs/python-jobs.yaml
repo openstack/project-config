@@ -1,5 +1,5 @@
 - job-template:
-    name: '{name}-coverage-{node}'
+    name: '{name}-coverage-{node}{suffix}'
 
     wrappers:
       - build-timeout:
@@ -30,7 +30,7 @@
     node: '{node}'
 
 - job-template:
-    name: '{name}-coverage-db-{node}'
+    name: '{name}-coverage-db-{node}{suffix}'
     description: 'Same job as {name}-coverage but sets up databases.'
 
     wrappers:
@@ -67,7 +67,7 @@
     node: '{node}'
 
 - job-template:
-    name: 'gate-{name}-compare-coverage-{node}'
+    name: 'gate-{name}-compare-coverage-{node}{suffix}'
 
     wrappers:
       - build-timeout:
@@ -831,13 +831,19 @@
     node:
       - ubuntu-trusty
       - ubuntu-xenial
+    suffix:
+      - ''
+      - '-nv'
     jobs:
-      - '{name}-coverage-{node}'
+      - '{name}-coverage-{node}{suffix}'
 
 - job-group:
     name: coverage-db-jobs
     node:
       - ubuntu-trusty
       - ubuntu-xenial
+    suffix:
+      - ''
+      - '-nv'
     jobs:
-      - '{name}-coverage-db-{node}'
+      - '{name}-coverage-db-{node}{suffix}'
