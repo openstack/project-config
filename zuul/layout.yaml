@@ -1537,7 +1537,7 @@ jobs:
   # Skip non-doc jobs for doc-only or translation-only nova changes.
   # Since doc/source/conf.py is checked by nova-(pep8|pylint), those
   # jobs should not be skipped.
-  - name: ^.*nova-(tox-(db-)?functional|python27-db|python3[45]-db(-nv)?)
+  - name: ^.*nova-(tox-functional|python27|python3[45](-nv)?)
     skip-if:
       - project: ^openstack/nova$
         all-files-match-any:
@@ -3536,9 +3536,9 @@ jobs:
   - name: ^gate-nova-lxd-(docs|pep8|python27)-ubuntu-xenial
     branch: ^(stable/(mitaka|newton)|master)$
 
-  # Only run nova-tox-db-functional-py35-ubuntu tests on branch master
+  # Only run nova-tox-functional-py35-ubuntu tests on branch master
   # TODO(gcb): run these tests on future stable branches when the job is voting.
-  - name: ^gate-nova-tox-db-functional-py35-ubuntu-xenial
+  - name: ^gate-nova-tox-functional-py35-ubuntu-xenial
     branch: master
     voting: false
 
@@ -12752,13 +12752,13 @@ projects:
   - name: openstack/nova
     template:
       - name: merge-check
-      - name: python-db-jobs
-      - name: python35-db-jobs
+      - name: python-jobs
+      - name: python35-jobs
       - name: periodic-jobs-with-oslo-master
       - name: openstack-server-publish-jobs
       - name: openstack-server-release-jobs
-      - name: periodic-db-mitaka
-      - name: periodic-db-newton
+      - name: periodic-mitaka
+      - name: periodic-newton
       - name: check-requirements
       - name: integrated-gate
       - name: integrated-gate-nova-net
@@ -12770,9 +12770,9 @@ projects:
       - name: api-guide-jobs
       - name: api-ref-jobs
     check:
-      - gate-nova-tox-db-functional-ubuntu-trusty
-      - gate-nova-tox-db-functional-ubuntu-xenial
-      - gate-nova-tox-db-functional-py35-ubuntu-xenial
+      - gate-nova-tox-functional-ubuntu-trusty
+      - gate-nova-tox-functional-ubuntu-xenial
+      - gate-nova-tox-functional-py35-ubuntu-xenial
       - gate-grenade-dsvm-neutron-multinode-ubuntu-trusty
       - gate-grenade-dsvm-neutron-multinode-ubuntu-xenial
       - gate-grenade-dsvm-neutron-multinode-live-migration-nv
@@ -12790,15 +12790,15 @@ projects:
       - gate-tempest-dsvm-ironic-ipa-wholedisk-bios-agent_ssh-tinyipa-ubuntu-trusty-nv
       - gate-tempest-dsvm-ironic-ipa-wholedisk-bios-agent_ipmitool-tinyipa-ubuntu-xenial-nv
     gate:
-      - gate-nova-tox-db-functional-ubuntu-trusty
-      - gate-nova-tox-db-functional-ubuntu-xenial
+      - gate-nova-tox-functional-ubuntu-trusty
+      - gate-nova-tox-functional-ubuntu-xenial
       - gate-grenade-dsvm-neutron-multinode-ubuntu-trusty
       - gate-tempest-dsvm-cells-ubuntu-trusty
       - gate-tempest-dsvm-cells-ubuntu-xenial
       - gate-tempest-dsvm-multinode-live-migration-ubuntu-xenial
     post:
-      - nova-coverage-db-ubuntu-trusty
-      - nova-coverage-db-ubuntu-xenial
+      - nova-coverage-ubuntu-trusty
+      - nova-coverage-ubuntu-xenial
     experimental:
       - gate-tempest-dsvm-nova-v20-api-ubuntu-trusty
       - gate-tempest-dsvm-nova-v20-api-ubuntu-xenial
@@ -16549,7 +16549,7 @@ projects:
       - gate-cross-horizon-python27-ubuntu-xenial
       - gate-cross-keystone-python27-ubuntu-xenial
       - gate-cross-neutron-python27-ubuntu-xenial
-      - gate-cross-nova-python27-db-ubuntu-xenial
+      - gate-cross-nova-python27-ubuntu-xenial
       # TODO(ihrachys) uncomment when swift actually uses upper-constraints
       # - gate-cross-swift-python27-ubuntu-xenial
     gate:
@@ -16574,7 +16574,7 @@ projects:
       - gate-cross-horizon-python27-ubuntu-xenial
       - gate-cross-keystone-python27-ubuntu-xenial
       - gate-cross-neutron-python27-ubuntu-xenial
-      - gate-cross-nova-python27-db-ubuntu-xenial
+      - gate-cross-nova-python27-ubuntu-xenial
 
       # TODO(ihrachys) uncomment when swift actually uses upper-constraints
       # - gate-cross-swift-python27-ubuntu-xenial
