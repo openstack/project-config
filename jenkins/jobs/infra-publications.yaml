@@ -7,6 +7,8 @@
       - gerrit-git-prep
       - install-distro-packages
       - revoke-sudo
+      - add-docs-root-marker:
+          docsrootdir: '.'
       - shell: |
           #!/bin/bash -x
           # NAME will either be the branch name or the tag name
@@ -16,9 +18,9 @@
               if [ "_out" != "$FN" ] ; then
                   mv $FN _out/$NAME/
               fi
+          # Explicitly copy the root marker file
+          mv .root-marker _out/$NAME/
           done
-      - add-docs-root-marker:
-          docsrootdir: _out/
 
     publishers:
       - afs:
