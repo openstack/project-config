@@ -3415,9 +3415,18 @@ jobs:
   - name: ^gate-grenade-dsvm-ironic.*-ubuntu-trusty(-nv)?$
     branch: ^stable/newton$
 
-  # NOTE(vsaienko) Ironic multinode job do not work until after Ocata
-  - name: ^gate-tempest-dsvm-ironic-ipa-wholedisk-agent_ipmitool-tinyipa-multinode-ubuntu-xenial.*$
-    branch: ^(?!stable/(mitaka|newton)).*$
+  # NOTE(vsaienko) Ironic multinode job is voting starting from Pike
+  - name: ^gate-tempest-dsvm-ironic-ipa-wholedisk-agent_ipmitool-tinyipa-multinode-ubuntu-xenial$
+    branch: ^(?!stable/(mitaka|newton|ocata)).*$
+
+  # NOTE(vsaienko) Ironic multinode-nv job launched only on Newton and Ocata
+  - name: ^gate-tempest-dsvm-ironic-ipa-wholedisk-agent_ipmitool-tinyipa-multinode-ubuntu-xenial-nv$
+    branch: ^stable/(newton|ocata).*$
+
+  # NOTE(vsaienko) Ironic multitenant job launched only on Newton and Ocata, for Pike+ it replaced
+  # by multitenant-multinode.
+  - name: ^gate-tempest-dsvm-ironic-multitenant-network-ubuntu-xenial$
+    branch: ^stable/(newton|ocata).*$
 
   # NOTE(vsaienko) Ironic snmp job do not work until after Ocata
   - name: ^gate-tempest-dsvm-ironic-ipa-wholedisk-bios-pxe_snmp-tinyipa-ubuntu-xenial.*$
@@ -10674,6 +10683,7 @@ projects:
       - gate-tempest-dsvm-ironic-ipa-partition-uefi-pxe_ipmitool-tinyipa-ubuntu-xenial-nv
       - gate-tempest-dsvm-ironic-ipa-partition-bios-ipmi-tinyipa-ubuntu-xenial-nv
       - gate-tempest-dsvm-ironic-ipa-wholedisk-agent_ipmitool-tinyipa-multinode-ubuntu-xenial-nv
+      - gate-tempest-dsvm-ironic-ipa-wholedisk-agent_ipmitool-tinyipa-multinode-ubuntu-xenial
       - gate-ironic-inspector-dsvm-ipa-ubuntu-trusty-nv
       - gate-tempest-dsvm-ironic-inspector-ubuntu-xenial-nv
       - gate-grenade-dsvm-ironic-ubuntu-trusty
@@ -10693,6 +10703,7 @@ projects:
       - ironic-coverage-ubuntu-trusty
       - ironic-coverage-ubuntu-xenial
       - gate-tempest-dsvm-ironic-multitenant-network-ubuntu-xenial
+      - gate-tempest-dsvm-ironic-ipa-wholedisk-agent_ipmitool-tinyipa-multinode-ubuntu-xenial
     post:
       - ironic-coverage-ubuntu-trusty
       - ironic-coverage-ubuntu-xenial
