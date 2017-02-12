@@ -689,39 +689,6 @@
           fi
 
 - builder:
-    name: chef-cookbook-rubocop
-    builders:
-      - shell: |
-          #!/bin/bash -x
-          if grep rubocop: Strainerfile; then
-              bundle exec strainer test --cookbooks-path=.cookbooks --only=rubocop
-          else
-              bundle exec rubocop
-          fi
-
-- builder:
-    name: chef-cookbook-foodcritic
-    builders:
-      - shell: |
-          #!/bin/bash -x
-          if grep foodcritic: Strainerfile; then
-              bundle exec strainer test --cookbooks-path=.cookbooks --only=foodcritic
-          else
-              bundle exec foodcritic -f any -t ~FC003 -t ~FC023 .
-          fi
-
-- builder:
-    name: chef-cookbook-chefspec
-    builders:
-      - shell: |
-          #!/bin/bash -x
-          if grep chefspec: Strainerfile; then
-              bundle exec strainer test --cookbooks-path=.cookbooks --only=chefspec
-          else
-              bundle exec rspec --format documentation
-          fi
-
-- builder:
     name: run-tests
     builders:
       - shell: "./run-tests.sh"
