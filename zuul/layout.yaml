@@ -2231,10 +2231,16 @@ jobs:
   - name: gate-neutron-dsvm-tempest-vpnaas-ubuntu-trusty
     branch: ^stable/mitaka$
 
-  # Make magnum migration tests non-voting for now. Remove
+  # Do not run magnum migration tests on doc changes and
+  # keep magnum migration tests non-voting for now. Remove
   # this rule once we see some successful Jenkins runs.
   - name: ^gate-magnum-tox-migration-ubuntu-xenial$
     voting: false
+    skip-if:
+      - project: ^openstack/magnum$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
 
   - name: ^gate-functional-dsvm-magnum-api.*
     skip-if:
