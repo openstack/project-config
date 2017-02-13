@@ -1817,8 +1817,7 @@ jobs:
   - name: ^kolla-dsvm-build.*$
     branch: ^(?!stable/(mitaka|newton)).*$
 
-  - name: ^kolla-coverage-ubuntu-xenial$
-    voting: false
+  - name: ^kolla-coverage-ubuntu-xenial-nv$
     branch: ^(?!stable/(mitaka|newton)).*$
     skip-if:
       - project: ^openstack/kolla$
@@ -2066,9 +2065,6 @@ jobs:
   - name: ^gate-rally-tox-self-ubuntu-(trusty|xenial)$
     voting: false
 
-  - name: ^senlin-coverage-ubuntu-(trusty|xenial)
-    voting: false
-
   - name: gate-rally-dsvm-verify-full-discover-resources
     files:
       - ^rally/cli/commands/verify.py$
@@ -2115,22 +2111,13 @@ jobs:
   - name: ^gate-heat-dsvm-functional-orig-mysql-lbaasv2-py35-ubuntu-xenial-nv$
     branch: master
 
-  - name: ^gate-networking-cisco-compare-coverage-ubuntu-xenial$
-    voting: false
-
   # NOTE(sambetts) Make networking-cisco tests against neutron master
   # non-voting so we aren't broken everytime neutron removes something
   - name: ^gate-networking-cisco-tox-master-ubuntu-xenial$
     voting: false
 
-  - name: ^networking-ovn-coverage-ubuntu-(trusty|xenial)
-    voting: false
-
   - name: ^gate-tempest-dsvm-networking-ovn-native-services-multinode-nv
     branch: ^(?!stable/newton).*$
-
-  - name: ^neutron-lib-coverage-ubuntu-(trusty|xenial)
-    voting: false
 
   - name: ^gate-tempest-dsvm-networking-bagpipe$
     branch: ^(?!stable/(mitaka|newton)).*$
@@ -2363,9 +2350,6 @@ jobs:
   - name: ^gate-.*-identity-v3-only.*
     branch: ^(?!stable/mitaka).*$
 
-  - name: ^networking-midonet-coverage-ubuntu-(trusty|xenial)
-    voting: false
-
   - name: ^gate-tempest-dsvm-networking-midonet-.+-full-ubuntu-xenial-nv
     branch: ^(?!stable/(mitaka|newton)).*$
 
@@ -2534,9 +2518,6 @@ jobs:
     # queue-name works.
     queue-name: integrated
     branch: ^(?!(stable/mitaka|driverfixes/)).*$
-
-  - name: ^zuul-coverage.*$
-    voting: false
 
   - name: ^gate-jenkins-job-builder-tox-docs-linkcheck-ubuntu-(trusty|xenial)$
     voting: false
@@ -2764,38 +2745,16 @@ jobs:
   - name: gate-app-catalog-ui-nodejs4-npm-run-lint
     voting: false
 
-  - name: ^barbican-coverage-ubuntu-(trusty|xenial)
-    voting: false
-
-  - name: ^designate-coverage-ubuntu-(trusty|xenial)
-    voting: false
-
-  - name: ^manila-coverage-ubuntu-(trusty|xenial)
-    voting: false
-
-  - name: ^manila-ui-coverage-ubuntu-(trusty|xenial)
-    voting: false
-
   # TODO(tmazur): Make voting once tests are proven to pass reliably
   - name: gate-manila-ui-tox-py27dj110-ubuntu-xenial
     voting: false
 
-  - name: ^magnum-coverage-ubuntu-(trusty|xenial)
-    voting: false
+  - name: ^magnum-coverage-ubuntu-(trusty|xenial).*$
     skip-if:
       - project: ^openstack/magnum$
         all-files-match-any:
           - ^.*\.rst$
           - ^doc/.*$
-
-  - name: ^python-magnumclient-coverage-ubuntu-(trusty|xenial)
-    voting: false
-
-  - name: ^karbor-coverage-ubuntu.*$
-    voting: false
-
-  - name: ^python-karborclient-coverage-ubuntu.*$
-    voting: false
 
   - name: gate-designate-python34
     branch: ^stable/mitaka$
@@ -2841,9 +2800,6 @@ jobs:
 
   - name: ^(gate|post)-sahara-extra-artifacts$
     branch: ^(?!stable/(mitaka|icehouse)).*$
-
-  - name: ^sahara-coverage-ubuntu-(trusty|xenial)
-    voting: false
 
   - name: ^gate-sahara-dashboard-dsvm-integration.*$
     voting: false
@@ -2910,9 +2866,6 @@ jobs:
   - name: gate-mistral-devstack-dsvm-kombu-nv
     branch: ^(?!stable/(?:mitaka|newton)).*$
 
-  - name: ^mistral-coverage-ubuntu-(trusty|xenial)$
-    voting: false
-
   - name: gate-mistral-dashboard-python34
     voting: false
 
@@ -2925,26 +2878,11 @@ jobs:
   - name: gate-mistral-docker-buildimage
     branch: master
 
-  - name: python-mistralclient-coverage-ubuntu-xenial
-    voting: false
-
-  - name: ^python-jenkins-coverage-ubuntu-(trusty|xenial)
-    voting: false
-
   - name: gate-python-muranoclient-python34
     # python3 support was implemented in mitaka
     branch: ^stable/mitaka$
 
   - name: ^gate-python-muranoclient-tox-py27-mitaka-ubuntu-xenial$
-    voting: false
-
-  - name: ^murano-pkg-check-coverage-ubuntu-(trusty|xenial)
-    voting: false
-
-  - name: ^refstack-coverage-ubuntu-xenial
-    voting: false
-
-  - name: python-muranoclient-coverage-ubuntu-xenial
     voting: false
 
   - name: ^gate-tempest-dsvm-murano-cfapi-ubuntu-trusty(-nv)?
@@ -2965,18 +2903,6 @@ jobs:
   # NOTE(kzaitsev): nodejs4-npm-run-test was added in ocata
   - name: ^gate-murano-dashboard-nodejs4-npm-run-test$
     branch: ^(?!stable/(?:mitaka|newton)).*$
-
-  - name: ^murano-dashboard-coverage-ubuntu-xenial
-    voting: false
-
-  - name: ^murano-coverage-db-ubuntu-(trusty|xenial)
-    voting: false
-
-  - name: ^kuryr-coverage-ubuntu-(trusty|xenial)
-    voting: false
-
-  - name: ^kuryr-libnetwork-coverage-ubuntu-(trusty|xenial)
-    voting: false
 
   # NOTE(limao): Only run these jobs on kuryr-libnetwork master branch,
   # because we do not need to check if kuryr-libnetwork  stable branch
@@ -3412,13 +3338,6 @@ jobs:
           - ^sahara_tempest_plugin/tests/api/.*$
           - ^tox.ini$
 
-  # TODO(esikachev): remove when tox -e cover will be working correct
-  - name: ^sahara-tests-coverage-ubuntu-xenial$
-    voting: false
-
-  - name: ^sahara-tests-coverage-ubuntu-trusty$
-    voting: false
-
   # Only run the unit cross tests for cliff against master.
   - name: ^gate-cliff-tox-(openstackclient|neutronclient)-tip-ubuntu-xenial$
     branch: ^master$
@@ -3501,12 +3420,6 @@ jobs:
   - name: ^gate-python-fuelclient-python27-ubuntu-xenial
     branch: ^(?!stable/(?:6\.1|7\.0|8\.0|mitaka)).*$
 
-  - name: ^watcher-coverage-ubuntu-(trusty|xenial)
-    voting: false
-
-  - name: ^python-watcherclient-coverage-ubuntu-(trusty|xenial)
-    voting: false
-
   - name: gate-tooz-tox-py27-consul-ubuntu-trusty
     branch: ^stable/mitaka.*$
 
@@ -3544,19 +3457,14 @@ jobs:
   - name: ^gate-fuel-octane-puppet.*$
     branch: ^(?!stable/(6.[01]|[78].0)).*$
 
-  - name: ^fuel-octane-coverage-ubuntu-trusty
+  - name: ^fuel-octane-coverage-ubuntu-trusty.*$
     branch: ^stable/(mitaka|[87]\.0).*$
-    voting: false
 
-  - name: ^fuel-octane-coverage-ubuntu-xenial
+  - name: ^fuel-octane-coverage-ubuntu-xenial.*$
     branch: ^(?!stable/(?:[456]\.[01]|[78]\.0|mitaka)).*$
-    voting: false
 
   - name: gate-fuel-ccp-validate
     queue-name: fuel-ccp
-
-  - name: ^coverage2sql-coverage-ubuntu-xenial
-    voting: false
 
   # Don't run nova-lxd tests on trusty.
   - name: ^gate-nova-lxd-(docs|pep8|python27)-ubuntu-xenial
@@ -5292,9 +5200,9 @@ projects:
       - name: python-jobs
       - name: infra-publish-jobs
     check:
-      - zuul-coverage-ubuntu-xenial
+      - zuul-coverage-ubuntu-xenial-nv
     post:
-      - zuul-coverage-ubuntu-xenial
+      - zuul-coverage-ubuntu-xenial-nv
     experimental:
       - gate-zuul-nodepool
 
@@ -5806,8 +5714,8 @@ projects:
       - name: api-guide-jobs
       - name: install-guide-jobs
     check:
-      - barbican-coverage-ubuntu-trusty
-      - barbican-coverage-ubuntu-xenial
+      - barbican-coverage-ubuntu-trusty-nv
+      - barbican-coverage-ubuntu-xenial-nv
       - gate-barbican-simple-crypto-devstack-ubuntu-trusty
       - gate-barbican-simple-crypto-devstack-ubuntu-xenial
       - gate-barbican-dogtag-devstack-fedora-25-nv
@@ -6835,7 +6743,7 @@ projects:
       - name: release-notes-jobs
       - name: openstack-server-publish-jobs
     check:
-      - coverage2sql-coverage-ubuntu-xenial
+      - coverage2sql-coverage-ubuntu-xenial-nv
 
   - name: openstack/craton
     template:
@@ -8701,11 +8609,11 @@ projects:
       - name: designate-dsvm-jobs
       - name: api-ref-jobs
     check:
-      - designate-coverage-ubuntu-trusty
-      - designate-coverage-ubuntu-xenial
+      - designate-coverage-ubuntu-trusty-nv
+      - designate-coverage-ubuntu-xenial-nv
     post:
-      - designate-coverage-ubuntu-trusty
-      - designate-coverage-ubuntu-xenial
+      - designate-coverage-ubuntu-trusty-nv
+      - designate-coverage-ubuntu-xenial-nv
 
   - name: openstack/designate-dashboard
     template:
@@ -9564,8 +9472,8 @@ projects:
       - gate-fuel-octane-python27-ubuntu-trusty
       - gate-fuel-octane-pep8-ubuntu-xenial
       - gate-fuel-octane-python27-ubuntu-xenial
-      - fuel-octane-coverage-ubuntu-trusty
-      - fuel-octane-coverage-ubuntu-xenial
+      - fuel-octane-coverage-ubuntu-trusty-nv
+      - fuel-octane-coverage-ubuntu-xenial-nv
       - gate-fuel-octane-puppet-lint
       - gate-fuel-octane-puppet-syntax-3-centos-7
       - gate-fuel-octane-puppet-syntax-4-centos-7
@@ -10991,7 +10899,7 @@ projects:
       - name: openstack-server-publish-jobs
       - name: api-ref-jobs
     check:
-      - karbor-coverage-ubuntu-xenial
+      - karbor-coverage-ubuntu-xenial-nv
       - gate-karbor-dsvm-fullstack-nv
 
   - name: openstack/karbor-dashboard
@@ -11138,7 +11046,7 @@ projects:
       - gate-kolla-dsvm-deploy-oraclelinux-binary-centos-7-nv
       - gate-kolla-dsvm-build-oraclelinux-source-centos-7
       - gate-kolla-dsvm-deploy-oraclelinux-source-centos-7-nv
-      - kolla-coverage-ubuntu-xenial
+      - kolla-coverage-ubuntu-xenial-nv
     gate:
       - gate-kolla-dsvm-build-centos-source-centos-7
       - gate-kolla-dsvm-build-ubuntu-source-ubuntu-xenial
@@ -11231,7 +11139,7 @@ projects:
       - name: openstack-server-publish-jobs
       - name: check-requirements
     check:
-      - kuryr-coverage-ubuntu-xenial
+      - kuryr-coverage-ubuntu-xenial-nv
 
   - name: openstack/kuryr-kubernetes
     template:
@@ -11256,7 +11164,7 @@ projects:
       - name: openstack-server-publish-jobs
       - name: check-requirements
     check:
-      - kuryr-libnetwork-coverage-ubuntu-xenial
+      - kuryr-libnetwork-coverage-ubuntu-xenial-nv
       - gate-install-dsvm-kuryr-libnetwork-ubuntu-xenial-nv
       - gate-kuryr-libnetwork-kuryr_lib-src-dsvm-fullstack-ubuntu-xenial-nv
       - gate-kuryr-libnetwork-dsvm-fullstack-ubuntu-xenial-nv
@@ -11315,8 +11223,8 @@ projects:
       - gate-functional-dsvm-magnum-k8s-ironic-ubuntu-xenial-nv
       - gate-functional-dsvm-magnum-swarm-ironic-ubuntu-xenial-nv
       - gate-magnum-tox-migration-ubuntu-xenial
-      - magnum-coverage-ubuntu-trusty
-      - magnum-coverage-ubuntu-xenial
+      - magnum-coverage-ubuntu-trusty-nv
+      - magnum-coverage-ubuntu-xenial-nv
     gate:
       - gate-functional-dsvm-magnum-api-ubuntu-trusty
       - gate-functional-dsvm-magnum-api-ubuntu-xenial
@@ -11364,8 +11272,8 @@ projects:
       - name: api-ref-jobs
       - name: install-guide-jobs
     check:
-      - manila-coverage-ubuntu-trusty
-      - manila-coverage-ubuntu-xenial
+      - manila-coverage-ubuntu-trusty-nv
+      - manila-coverage-ubuntu-xenial-nv
       - gate-manila-tox-genconfig-ubuntu-trusty
       - gate-manila-tox-genconfig-ubuntu-xenial
       - gate-manila-pylint-ubuntu-trusty
@@ -11404,8 +11312,8 @@ projects:
       - gate-manila-tempest-minimal-dsvm-lvm-ubuntu-trusty
       - gate-manila-tempest-minimal-dsvm-lvm-ubuntu-xenial
     post:
-      - manila-coverage-ubuntu-trusty
-      - manila-coverage-ubuntu-xenial
+      - manila-coverage-ubuntu-trusty-nv
+      - manila-coverage-ubuntu-xenial-nv
     experimental:
       - gate-manila-tempest-dsvm-glusterfs-nfs-ubuntu-xenial-nv
       - gate-manila-tempest-dsvm-glusterfs-native-ubuntu-xenial-nv
@@ -11462,8 +11370,8 @@ projects:
     check:
       - gate-manila-ui-tox-py27dj19-ubuntu-xenial
       - gate-manila-ui-tox-py27dj110-ubuntu-xenial
-      - manila-ui-coverage-ubuntu-trusty
-      - manila-ui-coverage-ubuntu-xenial
+      - manila-ui-coverage-ubuntu-trusty-nv
+      - manila-ui-coverage-ubuntu-xenial-nv
       - gate-manila-ui-dsvm-nv
     gate:
       - gate-manila-ui-tox-py27dj19-ubuntu-xenial
@@ -11539,7 +11447,7 @@ projects:
       - name: check-requirements
       - name: release-notes-jobs
     check:
-      - mistral-coverage-ubuntu-xenial
+      - mistral-coverage-ubuntu-xenial-nv
       - gate-rally-dsvm-mistral-task-ubuntu-trusty-nv
       - gate-rally-dsvm-mistral-task-ubuntu-xenial-nv
       - gate-mistral-devstack-dsvm-ubuntu-trusty-nv
@@ -11940,8 +11848,8 @@ projects:
       - name: translation-jobs
       - name: periodic-jobs-with-oslo-master
     check:
-      - murano-coverage-db-ubuntu-trusty
-      - murano-coverage-db-ubuntu-xenial
+      - murano-coverage-db-ubuntu-trusty-nv
+      - murano-coverage-db-ubuntu-xenial-nv
       - gate-murano-pylint-ubuntu-trusty
       - gate-murano-pylint-ubuntu-xenial
       - gate-murano-tox-py27-mitaka-ubuntu-xenial
@@ -11995,7 +11903,7 @@ projects:
       - name: translation-jobs-newton
       - name: nodejs4-jobs
     check:
-      - murano-dashboard-coverage-ubuntu-xenial
+      - murano-dashboard-coverage-ubuntu-xenial-nv
       - gate-murano-dashboard-pep8-ubuntu-trusty
       - gate-murano-dashboard-python27-ubuntu-trusty
       - gate-murano-dashboard-pep8-ubuntu-xenial
@@ -12008,7 +11916,7 @@ projects:
       - gate-murano-dashboard-python27-ubuntu-xenial
     post:
       - murano-dashboard-branch-tarball
-      - murano-dashboard-coverage-ubuntu-xenial
+      - murano-dashboard-coverage-ubuntu-xenial-nv
 
   - name: openstack/murano-deployment
     template:
@@ -12024,7 +11932,7 @@ projects:
       - name: python35-jobs
       - name: translation-jobs
     check:
-      - murano-pkg-check-coverage-ubuntu-xenial
+      - murano-pkg-check-coverage-ubuntu-xenial-nv
 
   - name: openstack/murano-plugin-networking-sfc
     template:
@@ -12168,7 +12076,7 @@ projects:
       - name: python35-jobs
       - name: publish-to-pypi
     check:
-      - gate-networking-cisco-compare-coverage-ubuntu-xenial
+      - gate-networking-cisco-compare-coverage-ubuntu-xenial-nv
       - gate-networking-cisco-tox-newton-ubuntu-xenial
       - gate-networking-cisco-tox-newton-ubuntu-trusty
       - gate-networking-cisco-tox-ocata-ubuntu-xenial
@@ -12320,8 +12228,8 @@ projects:
       - gate-tempest-dsvm-networking-midonet-ml2-full-ubuntu-xenial-nv
       - gate-tempest-dsvm-networking-midonet-ml2-ubuntu-trusty-nv
       - gate-networking-midonet-v2-rally-dsvm-ubuntu-trusty-nv
-      - networking-midonet-coverage-ubuntu-trusty
-      - networking-midonet-coverage-ubuntu-xenial
+      - networking-midonet-coverage-ubuntu-trusty-nv
+      - networking-midonet-coverage-ubuntu-xenial-nv
       - gate-grenade-dsvm-networking-midonet-ubuntu-xenial-nv
     gate:
       - gate-tempest-dsvm-networking-midonet-v2-ubuntu-xenial
@@ -12451,7 +12359,7 @@ projects:
       - gate-networking-ovn-dsvm-functional
       - gate-install-dsvm-networking-ovn-kuryr
       - gate-grenade-dsvm-networking-ovn-ubuntu-xenial-nv
-      - networking-ovn-coverage-ubuntu-xenial
+      - networking-ovn-coverage-ubuntu-xenial-nv
     gate:
       - gate-tempest-dsvm-networking-ovn
       - gate-tempest-dsvm-networking-ovn-native-services
@@ -12767,8 +12675,8 @@ projects:
       - name: api-ref-jobs
       - name: release-notes-jobs
     check:
-      - neutron-lib-coverage-ubuntu-trusty
-      - neutron-lib-coverage-ubuntu-xenial
+      - neutron-lib-coverage-ubuntu-trusty-nv
+      - neutron-lib-coverage-ubuntu-xenial-nv
 
   - name: openstack/neutron-specs
     template:
@@ -15848,7 +15756,7 @@ projects:
       - name: publish-to-pypi
       - name: docs-on-rtfd
     check:
-      - python-jenkins-coverage-ubuntu-xenial
+      - python-jenkins-coverage-ubuntu-xenial-nv
 
   - name: openstack/python-k8sclient
     template:
@@ -15870,7 +15778,7 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
     check:
-      - python-karborclient-coverage-ubuntu-xenial
+      - python-karborclient-coverage-ubuntu-xenial-nv
 
   - name: openstack/python-keystoneclient
     template:
@@ -15915,8 +15823,8 @@ projects:
       - name: publish-to-pypi
       - name: translation-jobs
     check:
-      - python-magnumclient-coverage-ubuntu-trusty
-      - python-magnumclient-coverage-ubuntu-xenial
+      - python-magnumclient-coverage-ubuntu-trusty-nv
+      - python-magnumclient-coverage-ubuntu-xenial-nv
 
   - name: openstack/python-manilaclient
     template:
@@ -15959,7 +15867,7 @@ projects:
       - name: osc-plugin-jobs
       - name: openstack-client-publish-jobs
     check:
-      - python-mistralclient-coverage-ubuntu-xenial
+      - python-mistralclient-coverage-ubuntu-xenial-nv
       - gate-python-mistralclient-devstack-dsvm-ubuntu-trusty
       - gate-python-mistralclient-devstack-dsvm-ubuntu-xenial
     gate:
@@ -16006,7 +15914,7 @@ projects:
       - name: translation-jobs
       - name: osc-plugin-jobs
     check:
-      - python-muranoclient-coverage-ubuntu-xenial
+      - python-muranoclient-coverage-ubuntu-xenial-nv
       - gate-muranoclient-dsvm-functional-mysql-backend-ubuntu-trusty
       - gate-muranoclient-dsvm-functional-mysql-backend-ubuntu-xenial
       - gate-muranoclient-dsvm-functional-glare-backend-ubuntu-xenial-nv
@@ -16015,7 +15923,7 @@ projects:
       - gate-muranoclient-dsvm-functional-mysql-backend-ubuntu-trusty
       - gate-muranoclient-dsvm-functional-mysql-backend-ubuntu-xenial
     post:
-      - python-muranoclient-coverage-ubuntu-xenial
+      - python-muranoclient-coverage-ubuntu-xenial-nv
 
   - name: openstack/python-namosclient
     template:
@@ -16366,8 +16274,8 @@ projects:
       - name: publish-to-pypi
       - name: osc-plugin-jobs
     check:
-      - python-watcherclient-coverage-ubuntu-trusty
-      - python-watcherclient-coverage-ubuntu-xenial
+      - python-watcherclient-coverage-ubuntu-trusty-nv
+      - python-watcherclient-coverage-ubuntu-xenial-nv
 
   - name: openstack/python-wsmanclient
     template:
@@ -16508,7 +16416,7 @@ projects:
       - gate-refstack-python27-ubuntu-xenial
       - gate-refstack-python34
       - gate-refstack-tox-py27-func-mysql-ubuntu-xenial
-      - refstack-coverage-ubuntu-xenial
+      - refstack-coverage-ubuntu-xenial-nv
     gate:
       - gate-refstack-pep8-ubuntu-xenial
       - gate-refstack-python27-ubuntu-xenial
@@ -16711,8 +16619,8 @@ projects:
       - gate-sahara-pylint-ubuntu-xenial
       - gate-tempest-dsvm-sahara-ubuntu-trusty
       - gate-tempest-dsvm-sahara-ubuntu-xenial
-      - sahara-coverage-ubuntu-trusty
-      - sahara-coverage-ubuntu-xenial
+      - sahara-coverage-ubuntu-trusty-nv
+      - sahara-coverage-ubuntu-xenial-nv
       - gate-grenade-dsvm-sahara-ubuntu-trusty-nv
       - gate-grenade-dsvm-sahara-ubuntu-xenial-nv
       - gate-sahara-dsvm-scenario-neutron-ubuntu-xenial
@@ -16833,11 +16741,12 @@ projects:
       - gate-tempest-dsvm-sahara-ubuntu-xenial-nv
       - gate-sahara-tests-dsvm-scenario-neutron-ubuntu-xenial
       - gate-sahara-cli-ubuntu-xenial-nv
-      - sahara-tests-coverage-ubuntu-xenial
+      # TODO(esikachev): remove when tox -e cover working correctly
+      - sahara-tests-coverage-ubuntu-xenial-nv
     gate:
       - gate-sahara-tests-dsvm-scenario-neutron-ubuntu-xenial
     post:
-      - sahara-tests-coverage-ubuntu-xenial
+      - sahara-tests-coverage-ubuntu-xenial-nv
 
   - name: openstack/scalpels
     template:
@@ -16936,8 +16845,8 @@ projects:
       - name: translation-jobs
       - name: api-ref-jobs
     check:
-      - senlin-coverage-ubuntu-trusty
-      - senlin-coverage-ubuntu-xenial
+      - senlin-coverage-ubuntu-trusty-nv
+      - senlin-coverage-ubuntu-xenial-nv
       - gate-senlin-dsvm-tempest-api
       - gate-senlin-dsvm-tempest-functional
       - gate-senlin-dsvm-tempest-integration-nv
@@ -18283,7 +18192,7 @@ projects:
       - name: publish-to-pypi
       - name: release-notes-jobs
     check:
-      - watcher-coverage-ubuntu-xenial
+      - watcher-coverage-ubuntu-xenial-nv
       - gate-rally-dsvm-watcher-watcher-ubuntu-xenial-nv
       - gate-watcher-dsvm-multinode-ubuntu-xenial-nv
 
