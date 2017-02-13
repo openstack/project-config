@@ -166,6 +166,12 @@
           }}
           export -f post_test_hook
 
+          function gate_hook {{
+              cd /opt/stack/new/zaqar/devstack/gate
+              ./gate_hook.sh tempest {backend}
+          }}
+          export -f gate_hook
+
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
 
