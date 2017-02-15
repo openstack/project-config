@@ -1297,7 +1297,7 @@ jobs:
 
   # do not run tempests on either stable/mitaka nor stable/newton
   # devstack gate for log-api was not functional that time
-  - name: ^gate-tempest-dsvm-monasca-log-api-ubuntu-xenial-nv$
+  - name: ^gate-tempest-dsvm-monasca-log-api-ubuntu-xenial$
     branch: ^(?!stable/(mitaka|newton)).*$
 
   # because of global requirements overrides, there is no reason to
@@ -11707,9 +11707,9 @@ projects:
       - name: merge-check
       - name: nodejs4-publish-to-npm
     check:
-      - gate-tempest-dsvm-monasca-log-api-ubuntu-xenial-nv
+      - gate-tempest-dsvm-monasca-log-api-ubuntu-xenial
     gate:
-      - noop
+      - gate-tempest-dsvm-monasca-log-api-ubuntu-xenial
 
   - name: openstack/monasca-log-api
     template:
@@ -11722,7 +11722,9 @@ projects:
       - name: check-requirements
     check:
       - monasca-log-api-coverage-ubuntu-xenial
-      - gate-tempest-dsvm-monasca-log-api-ubuntu-xenial-nv
+      - gate-tempest-dsvm-monasca-log-api-ubuntu-xenial
+    gate:
+      - gate-tempest-dsvm-monasca-log-api-ubuntu-xenial
     post:
       - monasca-log-api-coverage-ubuntu-xenial
 
