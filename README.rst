@@ -51,7 +51,6 @@ This dir contains the Jenkins job definitions as supplied to Jenkins Job
 Builder as well as the scripts used in many of the jobs. Edit these files
 if you need to add/delete/modify Jenkins Jobs.
 
-`Jenkins Documentation <http://docs.openstack.org/infra/system-config/jenkins.html>`_
 `Jenkins Job Builder Documentation <http://docs.openstack.org/infra/system-config/jjb.html>`_
 
 nodepool
