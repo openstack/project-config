@@ -581,15 +581,6 @@ project-templates:
     # gate:
     #  - 'gate-{name}-pypy'
 
-  # Invokes the same targets as pypy-jobs, but sets up databases.
-  - name: pypy-db-jobs
-    check:
-      - 'gate-{name}-pypy-db'
-    # gate-.*-pypy is non-voting, therefore not added to any gate.
-    # Readd it once the job is voting again.
-    # gate:
-    #  - 'gate-{name}-pypy-db'
-
   - name: openstack-server-publish-jobs
     post:
       - '{name}-docs-ubuntu-trusty'
@@ -17531,17 +17522,17 @@ projects:
     template:
       - name: merge-check
       - name: check-requirements
-      - name: python-db-jobs
-      - name: python34-db-jobs
-      - name: python35-db-jobs
-      - name: pypy-db-jobs
+      - name: python-jobs
+      - name: python34-jobs
+      - name: python35-jobs
+      - name: pypy-jobs
       - name: openstack-server-publish-jobs
       - name: publish-to-pypi
       - name: lib-forward-testing
       - name: release-notes-jobs
     post:
-      - taskflow-coverage-db-ubuntu-trusty
-      - taskflow-coverage-db-ubuntu-xenial
+      - taskflow-coverage-ubuntu-trusty
+      - taskflow-coverage-ubuntu-xenial
 
   - name: openstack/telcowg-usecases
     template:
