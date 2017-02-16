@@ -413,15 +413,15 @@
       - shell: |
           #!/bin/bash -eux
           export DISPLAY=:99
-          npm install
+          npm install --verbose
 
           # Try running as a standard lifecycle script, otherwise try custom.
           npm_lifecycle_phases="publish install version test stop start restart pack"
 
           if [[ $npm_lifecycle_phases =~ (^| ){command}($| ) ]]; then
-              npm {command} --silent
+              npm {command} --verbose
           else
-              npm run {command} --silent
+              npm run {command} --verbose
           fi
 
           # If no shrinkwrap exists, generate it.
