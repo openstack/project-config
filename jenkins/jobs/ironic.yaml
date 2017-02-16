@@ -309,6 +309,21 @@
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
 
+- builder:
+    name: ironic-staging-drivers-enabled
+    builders:
+      - ironic-extra-vars:
+          script: |
+            export PROJECTS="openstack/ironic-staging-drivers $PROJECTS"
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ironic-staging-drivers git://git.openstack.org/openstack/ironic-staging-drivers"
+
+- builder:
+    name: ironic-staging-test-driver
+    builders:
+      - ironic-extra-vars:
+          script: |
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_STAGING_DRIVER={staging-driver}"
+
 - job-template:
     name: '{pipeline}-ironic-dsvm-functional-{node}{suffix}'
     node: '{node}'
@@ -1307,6 +1322,49 @@
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+# NOTE(pas-ha) explanation for variables choices:
+# - devstack plugin of ironic-staging-drivers will be able to
+#   switch over nodes to ansible-deploy-enabled driver only
+#   from agent_ipmitool to pxe_ipmitool_ansible driver.
+# - Ansible-deploy driver does not support netboot,
+#   so testing wholedisk images only
+#   - Partition images with localboot are supported but deploy does not
+#     work with default cirros image as those do not have grub(2) installed
+# - Only tinyipa-based ramdisks are supported to be rebuilt for compatibility
+#   with ansible-deploy driver
+- job-template:
+    name: '{pipeline}-tempest-dsvm-ironic-staging-drivers-ansible-wholedisk-{node}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 80
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - ironic-deploy-with-IPA:
+          ramdisk-type: tinyipa
+      - ironic-staging-drivers-enabled
+      - ironic-staging-test-driver:
+          staging-driver: pxe_ipmitool_ansible
+      - ironic-tempest-regex:
+          tempest-regex: ironic
+      - ironic-tempest-plugin
+      - devstack-virtual-ironic:
+          build-ramdisk: ''
+          deploy_driver: agent_ipmitool
+          image-type: wholedisk
+          boot-mode: bios
+          branch-override: '{branch-override}'
+          bm-vm-count: 1
 
     publishers:
       - devstack-logs
