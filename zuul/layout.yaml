@@ -3241,19 +3241,34 @@ jobs:
           - ^tox.ini$
           - ^Vagrantfile
 
+
   # Run all OpenStack-Ansible trusty jobs except the docs and linters jobs
   # for Newton as this is still a supported platform for OpenStack-Ansible.
   # Trusty support is removed after Newton, so don't run any ubuntu-trusty
   # jobs against branches > stable/newton.
-  - name: ^gate-openstack-ansible.*-((?!(docs|linters)).)*-ubuntu-trusty.*$
+  # Since regexes override each other (last one wins), we can stage this.
+  # First, we run all trusty jobs on both mitaka and newton:
+  - name: ^gate-openstack-ansible.*-ubuntu-trusty.*$
     branch: ^stable/(mitaka|newton)$
 
-  # Skip any scenario job except the following for stable/mitaka:
-  # aio, func, docs, linters, releasenotes
-  # Also skip jobs on any platform other than ubuntu-trusty for the same as
-  # that is the only platform supported for those branches.
-  - name: ^gate-openstack-ansible-.*-ansible-(?!((aio|func|docs|linters)-ubuntu-trusty|releasenotes)).*$
+  # Second, docs and linters jobs run only on mitaka (there's a xenial
+  # job on newton, so no need to run both trusty and xenial).
+  - name: ^gate-openstack-ansible.*-(docs|linters).*-ubuntu-trusty.*$
+    branch: ^stable/mitaka$
+
+  # Keep in mind that stable/mitaka is trusty only, remove centos-7 jobs.
+  - name: ^gate-openstack-ansible-.*-ansible-.*-centos-7.*$
     branch: ^(?!(stable/mitaka)).*$
+
+  # Now some specific conditions for openstack-ansible:
+
+  # Run the os_keystone extra functional test jobs on trusty for Newton only
+  - name: ^gate-openstack-ansible-os_keystone-ansible-(uw_nginx|uw_apache)-ubuntu-trusty$
+    branch: ^stable/newton$
+
+  # Run the os_neutron extra functional test jobs on trusty for Newton only
+  - name: ^gate-openstack-ansible-os_neutron-ansible-func_ovs-ubuntu-trusty$
+    branch: ^stable/newton$
 
   # Run the OpenStack-Ansible non-voting aio scenario job on xenial for the
   # openstack-ansible repository if the branch is stable/newton.
@@ -3279,6 +3294,11 @@ jobs:
   # and earlier branches.
   - name: ^gate-openstack-ansible-os_ceilometer-ansible-gnocchi.*$
     branch: ^(?!(liberty|stable/(mitaka|newton))).*$
+
+  # Skip the os_neutron functional tests for calico/dragonflow on Newton
+  # and earlier branches.
+  - name: ^gate-openstack-ansible-os_neutron-ansible-(calico|dragonflow).*$
+    branch: ^(?!stable/(mitaka|newton)).*$
 
   # Skip the upgrade test on Newton and earlier branches.
   - name: ^gate-openstack-ansible-.*-ansible-upgrade.*$
@@ -13449,9 +13469,7 @@ projects:
       - name: ansible-role-functional-jobs-trusty
       - name: ansible-role-functional-jobs-xenial
     check:
-      - gate-openstack-ansible-os_neutron-ansible-calico-ubuntu-trusty-nv
       - gate-openstack-ansible-os_neutron-ansible-calico-ubuntu-xenial-nv
-      - gate-openstack-ansible-os_neutron-ansible-dragonflow-ubuntu-trusty-nv
       - gate-openstack-ansible-os_neutron-ansible-dragonflow-ubuntu-xenial-nv
       - gate-openstack-ansible-os_neutron-ansible-func_ovs-ubuntu-trusty
       - gate-openstack-ansible-os_neutron-ansible-func_ovs-ubuntu-xenial
