@@ -105,6 +105,14 @@
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
+          # Add configuration values for enabling security features in local.conf
+          function pre_test_hook {{
+              if [ -f $BASE/new/barbican-tempest-plugin/tools/pre_test_hook.sh ] ; then
+                  . $BASE/new/barbican-tempest-plugin/tools/pre_test_hook.sh
+              fi
+          }}
+          export -f pre_test_hook
+
           export PROJECTS="openstack/barbican $PROJECTS"
           export PROJECTS="openstack/python-barbicanclient $PROJECTS"
           export PROJECTS="openstack/barbican-tempest-plugin $PROJECTS"
