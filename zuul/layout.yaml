@@ -2103,7 +2103,7 @@ jobs:
   - name: ^gate-networking-cisco-tox-master-ubuntu-xenial$
     voting: false
 
-  - name: ^gate-tempest-dsvm-networking-ovn-native-services-multinode-nv
+  - name: ^gate-tempest-dsvm-networking-ovn-multinode-nv
     branch: ^(?!stable/newton).*$
 
   - name: ^gate-tempest-dsvm-networking-bagpipe$
@@ -12391,20 +12391,21 @@ projects:
       - name: python35-jobs
       - name: periodic-jobs-with-neutron-lib-master
     check:
-      - gate-tempest-dsvm-networking-ovn
-      - gate-tempest-dsvm-networking-ovn-native-services
-      - gate-tempest-dsvm-networking-ovn-native-services-multinode-nv
+      - gate-tempest-dsvm-networking-ovn-ovs-master
+      - gate-tempest-dsvm-networking-ovn-ovs-release
       - gate-rally-dsvm-networking-ovn
       - gate-networking-ovn-dsvm-functional
       - gate-install-dsvm-networking-ovn-kuryr
-      - gate-grenade-dsvm-networking-ovn-ubuntu-xenial-nv
       - networking-ovn-coverage-ubuntu-xenial-nv
     gate:
-      - gate-tempest-dsvm-networking-ovn
-      - gate-tempest-dsvm-networking-ovn-native-services
+      - gate-tempest-dsvm-networking-ovn-ovs-master
+      - gate-tempest-dsvm-networking-ovn-ovs-release
       - gate-rally-dsvm-networking-ovn
       - gate-networking-ovn-dsvm-functional
       - gate-install-dsvm-networking-ovn-kuryr
+    experimental:
+      - gate-grenade-dsvm-networking-ovn-ubuntu-xenial-nv
+      - gate-tempest-dsvm-networking-ovn-multinode-nv
 
   - name: openstack/networking-ovs-dpdk
     template:
