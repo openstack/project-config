@@ -12,13 +12,12 @@ zookeeper-servers:
 labels:
   - name: ubuntu-xenial
     image: ubuntu-xenial
-    ready-script: configure_mirror.sh
     min-ready: 1
     providers:
-      - name: infracloud-chocolate-zuulv3
+      - name: infracloud-chocolate
 
 providers:
-  - name: infracloud-chocolate-zuulv3
+  - name: infracloud-chocolate
     region-name: 'RegionOne'
     cloud: infracloud-chocolate
     api-timeout: 60
@@ -32,7 +31,7 @@ providers:
         min-ram: 8000
         name-filter: 'nodepool'
         diskimage: ubuntu-xenial
-        username: jenkins
+        username: zuul
         private-key: /home/nodepool/.ssh/id_rsa
         config-drive: true
 
