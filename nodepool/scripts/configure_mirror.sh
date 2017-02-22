@@ -175,11 +175,21 @@ sudo mv /tmp/pip.conf /etc/
 sudo chown root:root /etc/pip.conf
 sudo chmod 0644 /etc/pip.conf
 
+# NOTE(pabelanger): We can remove the jenkins user once we have migrated
+# nl01.o.o to production
 # Write jenkins user distutils/setuptools configuration used by easy_install
-echo "$PYDISTUTILS_CFG" >/home/jenkins/.pydistutils.cfg
-
+echo "$PYDISTUTILS_CFG" | sudo tee /home/jenkins/.pydistutils.cfg
+sudo chown jenkins:jenkins /home/jenkins/.pydistutils.cfg
 # Write jenkins user npm configuration
-echo "$NPMRC" >/home/jenkins/.npmrc
+echo "$NPMRC" | sudo tee /home/jenkins/.npmrc
+sudo chown jenkins:jenkins /home/jenkins/.npmrc
+
+# Write zuul user distutils/setuptools configuration used by easy_install
+echo "$PYDISTUTILS_CFG" | sudo tee /home/zuul/.pydistutils.cfg
+sudo chown zuul:zuul /home/zuul/.pydistutils.cfg
+# Write zuul user npm configuration
+echo "$NPMRC" | sudo tee /home/zuul/.npmrc
+sudo chown zuul:zuul /home/zuul/.npmrc
 
 # NOTE(pabelanger): We don't actually have mirrors for ubuntu-precise, so skip
 # them.
