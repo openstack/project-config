@@ -3508,10 +3508,11 @@ jobs:
     voting: false
 
   # NOTE(mriedem): The nova-next job runs placement + cells v2 + neutron
-  # which were all optional in newton but are defaults in ocata+ so we can
-  # restrict the job to just running on stable/newton changes.
+  # which were all optional in newton but are defaults in ocata+. In Pike we
+  # made the job run with send_service_user_token so we want to run against
+  # stable/newton and Pike (current master), but skip stable/ocata.
   - name: gate-tempest-dsvm-neutron-nova-next-full-ubuntu-xenial-nv
-    branch: stable/newton
+    branch: ^(stable/newton|master)$
 
   - name: ^gate-swift3-tox-s3tests_
     voting: false

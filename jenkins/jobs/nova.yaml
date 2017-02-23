@@ -54,6 +54,7 @@
 # -----------------------
 # Newton: Created job; placement and cells v2 were optional.
 # Ocata: placement and cells v2 are default and required.
+# Pike: Enabled send_service_user_token.
 - job-template:
     name: '{pipeline}-tempest-dsvm-neutron-nova-next-full-{node}{suffix}'
     node: '{node}'
@@ -83,6 +84,13 @@
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
+
+          # NOTE(mriedem): NOVA_USE_SERVICE_TOKEN is available starting in Pike
+          stable_compare="stable/[a-o]"
+          if [[ ! "$ZUUL_BRANCH" =~ $stable_compare ]] ; then
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"NOVA_USE_SERVICE_TOKEN=True"
+          fi
+
           function post_test_hook {{
               if [ -f $BASE/new/nova/tools/hooks/post_test_hook.sh ]; then
                   $BASE/new/nova/tools/hooks/post_test_hook.sh
