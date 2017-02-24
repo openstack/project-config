@@ -297,15 +297,19 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            ENABLE_IDENTITY_V2=False
+            SERVICE_DOMAIN_NAME=service
+            TEMPEST_USE_TEST_ACCOUNTS=True
+
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_TEMPEST_FULL=1
           export DEVSTACK_GATE_NEUTRON=1
-          export DEVSTACK_LOCAL_CONFIG="ENABLE_IDENTITY_V2=False"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"SERVICE_DOMAIN_NAME=service"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"TEMPEST_USE_TEST_ACCOUNTS=True"
           export DEVSTACK_GATE_TLSPROXY=1
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
