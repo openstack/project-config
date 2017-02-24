@@ -132,6 +132,14 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[post-config|/$Q_PLUGIN_CONF_FILE]]
+            [ovs]
+            of_interface=native
+            ovsdb_interface=native
+
+
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -143,15 +151,6 @@
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
-          # Add configrations for ovs native interface in local.conf
-          function pre_test_hook {{
-              local localconf=$BASE/new/devstack/local.conf
-              echo "[[post-config|/\$Q_PLUGIN_CONF_FILE]]" >> $localconf
-              echo "[ovs]" >> $localconf
-              echo "of_interface=native" >> $localconf
-              echo "ovsdb_interface=native" >> $localconf
-          }}
-          export -f pre_test_hook
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
