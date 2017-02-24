@@ -1054,6 +1054,7 @@ project-templates:
       - gate-tripleo-ci-centos-7-ovb-ha
       - gate-tripleo-ci-centos-7-ovb-nonha
       - gate-tripleo-ci-centos-7-ovb-updates
+      - gate-tripleo-ci-centos-7-ovb-containers-oooq
     check:
       - gate-tripleo-ci-centos-7-nonha-multinode
       - gate-tripleo-ci-centos-7-scenario001-multinode
@@ -1092,7 +1093,6 @@ project-templates:
       - gate-tripleo-ci-centos-7-ovb-fakeha-caserver
       - gate-tripleo-ci-centos-7-ovb-ha-oooq-nv
       - gate-tripleo-ci-centos-7-ovb-nonha-oooq-nv
-      - gate-tripleo-ci-centos-7-ovb-containers-oooq
 
   - name: designate-dsvm-jobs
     check:
@@ -1837,8 +1837,8 @@ jobs:
   - name: ^gate-tripleo-ci-centos-7-scenario00(1|2|3)-multinode-upgrades-nv$
     branch: ^(?!stable/(hammer|liberty|mitaka|newton|ocata)).*$
 
-  - name: ^gate-tripleo-ci-centos-7-ovb-containers-oooq-nv$
-    branch: ^(?!stable/(mitaka|newton)).*$
+  - name: ^gate-tripleo-ci-centos-7-ovb-containers-oooq.*$
+    branch: ^(?!stable/(mitaka|newton|ocata)).*$
 
   # TripleO scenario004 job has been introduced in Ocata so we don't want to run the upgrade job yet.
   - name: ^gate-tripleo-ci-centos-7-scenario004-multinode-upgrades.*$
@@ -5261,7 +5261,6 @@ projects:
       - gate-tripleo-ci-centos-7-ovb-ha-ipv6
       - gate-tripleo-ci-centos-7-ovb-fakeha-caserver
       - gate-tripleo-ci-centos-7-ovb-nonha-oooq-nv
-      - gate-tripleo-ci-centos-7-ovb-containers-oooq
 
   - name: openstack-infra/trystack-site
     template:
@@ -18061,8 +18060,6 @@ projects:
       - gate-tripleo-heat-templates-pep8-ubuntu-trusty
       - gate-tripleo-heat-templates-pep8-ubuntu-xenial
       - gate-tripleo-ci-centos-7-3nodes-multinode-nv
-    check-tripleo:
-      - gate-tripleo-ci-centos-7-ovb-containers-oooq-nv
     post:
       - tripleo-heat-templates-branch-tarball
     gate:
@@ -18119,6 +18116,7 @@ projects:
       - gate-tripleo-ci-centos-7-nonha-multinode-oooq-nv
     check-tripleo:
       - gate-tripleo-ci-centos-7-ovb-ha-oooq-nv
+      - gate-tripleo-ci-centos-7-ovb-containers-oooq
     gate:
       - gate-tripleo-quickstart-linters-ubuntu-xenial
       - gate-tripleo-quickstart-docs-ubuntu-xenial
@@ -18131,7 +18129,6 @@ projects:
       - gate-tripleo-ci-centos-7-scenario005-multinode-oooq-nv
     experimental-tripleo:
       - gate-tripleo-ci-centos-7-ovb-nonha-oooq-nv
-      - gate-tripleo-ci-centos-7-ovb-containers-oooq
 
   - name: openstack/tripleo-quickstart-extras
     template:
@@ -18143,6 +18140,7 @@ projects:
       - gate-tripleo-quickstart-extras-linters-ubuntu-xenial
     check-tripleo:
       - gate-tripleo-ci-centos-7-ovb-ha-oooq-nv
+      - gate-tripleo-ci-centos-7-ovb-containers-oooq
     gate:
       - gate-tripleo-quickstart-extras-linters-ubuntu-xenial
     experimental:
@@ -18154,7 +18152,6 @@ projects:
       - gate-tripleo-ci-centos-7-scenario005-multinode-oooq-nv
     experimental-tripleo:
       - gate-tripleo-ci-centos-7-ovb-nonha-oooq-nv
-      - gate-tripleo-ci-centos-7-ovb-containers-oooq
 
   - name: openstack/tripleo-repos
     template:
