@@ -812,6 +812,41 @@
       - console-log
 
 - job-template:
+    name: '{pipeline}-grenade-dsvm-ironic-multinode-multitenant-{node-release}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 180
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - ironic-grenade
+      - ironic-grenade-multitenant
+      - ironic-multinode
+      - ironic-multitenant
+      - ironic-deploy-with-IPA:
+          ramdisk-type: 'tinyipa'
+      - ironic-tempest-plugin:
+          concurrency: 1
+      - devstack-virtual-ironic:
+          build-ramdisk: ''
+          deploy_driver: 'agent_ipmitool'
+          image-type: 'wholedisk'
+          boot-mode: 'bios'
+          branch-override: '{branch-override}'
+          bm-vm-count: 7
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
     name: '{pipeline}-tempest-dsvm-ironic-pxe_ipa-full-{node}{suffix}'
     node: '{node}'
 
