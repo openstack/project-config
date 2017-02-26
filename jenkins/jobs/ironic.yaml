@@ -30,6 +30,8 @@
             # We disable the devstack plugin because the grenade code in Ironic
             # enables it and enabling it twice causes errors.
             IRONIC_DISABLE_DEVSTACK_PLUGIN=1
+            # Set this early so that we don't have to be as careful with builder ordering in jobs.
+            export GRENADE_PLUGINRC="enable_grenade_plugin ironic https://git.openstack.org/openstack/ironic"
 
       - ironic-extra-vars:
           script: |
@@ -37,7 +39,6 @@
             export DEVSTACK_GATE_GRENADE=pullup
             export DEVSTACK_GATE_OS_TEST_TIMEOUT=2400
             export DEVSTACK_GATE_TEMPEST_BAREMETAL_BUILD_TIMEOUT=1200
-            export GRENADE_PLUGINRC="enable_grenade_plugin ironic https://git.openstack.org/openstack/ironic"
             export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_BUILD_DEPLOY_RAMDISK=False"
 
 - builder:
