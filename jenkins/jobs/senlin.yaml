@@ -16,13 +16,14 @@
           export PYTHONUNBUFFERED=true
           export BRANCH_OVERRIDE={branch-override}
           export PROJECTS="openstack/senlin $PROJECTS"
+          export KEEP_LOCALRC=1
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
           export DEVSTACK_GATE_TEMPEST_REGEX="senlin.tests.tempest.{test_type}"
 
           export DEVSTACK_LOCAL_CONFIG="enable_plugin senlin https://git.openstack.org/openstack/senlin"
 
-          if [ "{test_type}" == "api" ]||[ "{test_type}" == "functional" ];then
+          if [ "{test_type}" == "api" ]||[ "{test_type}" == "functional" ]; then
             export SENLIN_BACKEND="openstack_test"
           else
             export SENLIN_BACKEND="openstack"
