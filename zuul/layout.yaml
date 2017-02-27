@@ -3332,7 +3332,12 @@ jobs:
 
   # Skip the OpenStack-Ansible Ceph job for the openstack-ansible repository if
   # the branch is anything before ocata.
-  - name: ^gate-openstack-ansible-openstack-ansible-ceph-ubuntu-xenial.*$
+  - name: ^gate-openstack-ansible-openstack-ansible-ceph-(centos-7|ubuntu-xenial).*$
+    branch: ^(?!stable/(mitaka|newton)).*$
+
+  # Skip the OpenStack-Ansible CentOS job for the openstack-ansible repository if
+  # the branch is anything before ocata.
+  - name: ^gate-openstack-ansible-openstack-ansible-aio-centos-7.*$
     branch: ^(?!stable/(mitaka|newton)).*$
 
   # Skip the functional tests against the RHEL 6 STIG content on Newton branch
