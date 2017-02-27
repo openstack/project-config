@@ -267,6 +267,11 @@
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
 
+          if [ "{deploy_driver}" == "pxe_snmp" ] ; then
+              # explicitly enable pxe_snmp driver
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_ENABLED_DRIVERS=fake,pxe_snmp"
+          fi
+
           if [ "{image-type}" == "wholedisk" ] ; then
             export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_TEMPEST_WHOLE_DISK_IMAGE=True"
             export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_VM_EPHEMERAL_DISK=0"
