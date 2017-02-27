@@ -123,6 +123,10 @@
               export DEVSTACK_GATE_POSTGRES=1
           fi
 
+          if [ "{special}" == "-castellan-from-git" ] ; then
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"LIBS_FROM_GIT=castellan"
+          fi
+
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
 
           ./safe-devstack-vm-gate-wrap.sh
