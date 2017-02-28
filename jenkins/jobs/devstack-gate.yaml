@@ -2322,51 +2322,6 @@
 
 
 - job-template:
-    name: '{pipeline}-tempest-dsvm-trove-{node}{suffix}'
-    node: '{node}'
-
-    wrappers:
-      - build-timeout:
-          timeout: 180
-      - timestamps
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - shell: |
-          #!/bin/bash -xe
-          export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_TEMPEST=1
-          export DEVSTACK_GATE_TEMPEST_REGEX="database"
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin trove git://git.openstack.org/openstack/trove"
-
-          # use tempest plugin (copied from ironic.yaml)
-          if [[ "$ZUUL_BRANCH" != "master" ]] ; then
-            # if this isn't a patch against master, then
-            # fetch master to install the plugin
-            export DEVSTACK_LOCAL_CONFIG+=$'\n'"TEMPEST_PLUGINS=git+git://git.openstack.org/openstack/trove"
-          else
-            # on master, use the local change, so we can pick up any changes to the plugin
-            export DEVSTACK_LOCAL_CONFIG+=$'\n'"TEMPEST_PLUGINS=/opt/stack/new/trove"
-          fi
-
-          export PROJECTS="openstack/trove-dashboard $PROJECTS"
-          export BRANCH_OVERRIDE={branch-override}
-          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
-              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
-          fi
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
-
-    publishers:
-      - devstack-logs
-      - console-log
-
-
-- job-template:
     name: '{pipeline}-tempest-dsvm-neutron-full-ssh{suffix}'
     node: '{node}'
 
@@ -2519,7 +2474,6 @@
       - '{pipeline}-tempest-dsvm-lxc-{node}{suffix}'
       - '{pipeline}-tempest-dsvm-nova-v20-api-{node}{suffix}'
       - '{pipeline}-tempest-dsvm-nova-wsgi-full-{node}{suffix}'
-      - '{pipeline}-tempest-dsvm-trove-{node}{suffix}'
       # NOTE(mriedem): gate-grenade-dsvm-ubuntu-xenial is intentionally omitted
       # from this list as stable/newton grenade jobs upgrade from trusty nodes
       # and ocata changes only run with nova-network in cells v1 configurations
@@ -2547,4 +2501,3 @@
       - '{pipeline}-tempest-dsvm-neutron-pg-full-{node}{suffix}'
       - '{pipeline}-tempest-dsvm-nova-v20-api-{node}{suffix}'
       - '{pipeline}-tempest-dsvm-nova-wsgi-full-{node}{suffix}'
-      - '{pipeline}-tempest-dsvm-trove-{node}{suffix}'
