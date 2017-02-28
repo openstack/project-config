@@ -96,6 +96,15 @@ def check_formatting():
             print("Line %(count)s not indented by multiple of 2:\n\t%(line)s" %
                   {"count": count, "line": line})
             errors = True
+
+        # check for something like
+        #  - name : ...
+        # which for consistency we like called "name: ..."
+        if " : " in line:
+            print("Line %(count)s does not align key with ':'\n\t%(line)s" %
+                  {"count": count, "line": line})
+            errors = True
+
         count = count + 1
 
     return errors
