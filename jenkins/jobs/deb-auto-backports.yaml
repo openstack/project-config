@@ -11,14 +11,16 @@
     - gerrit-git-prep
     - shell: |
           #!/bin/bash
+          BRANCH=$(echo $ZUUL_REFNAME | cut -d/ -f2)
 
           set -x
           set -e
 
+          # NOTE(pabelanger): This needs to be changed, currently hardcoded.
           sudo cp /etc/apt/sources.list.available.d/debian-openstack-newton.list /etc/apt/sources.list.d
           sudo apt-get update
           sudo apt-get install -y openstack-pkg-tools
-          sudo pkgos-infra-install-sbuild --sbuild-chroot-name jessie-newton-backports
+          sudo pkgos-infra-install-sbuild --sbuild-chroot-name jessie-$BRANCH-backports
           ./check-and-build-bpo
 
     publishers:
@@ -37,14 +39,16 @@
     - gerrit-git-prep
     - shell: |
           #!/bin/bash
+          BRANCH=$(echo $ZUUL_REFNAME | cut -d/ -f2)
 
           set -x
           set -e
 
+          # NOTE(pabelanger): This needs to be changed, currently hardcoded.
           sudo cp /etc/apt/sources.list.available.d/debian-openstack-newton.list /etc/apt/sources.list.d
           sudo apt-get update
           sudo apt-get install -y openstack-pkg-tools
-          sudo pkgos-infra-install-sbuild --sbuild-chroot-name jessie-newton-backports
+          sudo pkgos-infra-install-sbuild --sbuild-chroot-name jessie-$BRANCH-backports
           ./check-and-build-bpo
 
     publishers:
