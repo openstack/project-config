@@ -30,43 +30,6 @@
     node: '{node}'
 
 - job-template:
-    name: '{name}-coverage-db-{node}{suffix}'
-    description: 'Same job as {name}-coverage but sets up databases.'
-
-    wrappers:
-      - build-timeout:
-          timeout: 40
-      - timestamps
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - zuul-git-prep-upper-constraints
-      - install-distro-packages
-      - mysql-prep
-      - pgsql-prep
-      - mysql-db:
-          db_name: openstack_citest
-      - pgsql-db:
-          db_name: openstack_citest
-      - revoke-sudo
-      - coverage:
-          env: cover
-
-    publishers:
-      - scp:
-          site: 'static.openstack.org'
-          files:
-            - target: 'logs/$LOG_PATH'
-              source: 'cover/**'
-              keep-hierarchy: true
-              copy-after-failure: true
-      - test-results
-      - console-log
-
-    node: '{node}'
-
-- job-template:
     name: 'gate-{name}-compare-coverage-{node}{suffix}'
 
     wrappers:
@@ -168,36 +131,6 @@
     node: '{node}'
 
 - job-template:
-    name: 'gate-{name}-python27-db-{node}'
-    description: 'Same job as gate-{name}-python27 but sets up databases.'
-
-    wrappers:
-      - build-timeout:
-          timeout: 50
-      - timestamps
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - zuul-git-prep-upper-constraints
-      - install-distro-packages
-      - mysql-prep
-      - pgsql-prep
-      - mysql-db:
-          db_name: openstack_citest
-      - pgsql-db:
-          db_name: openstack_citest
-      - revoke-sudo
-      - python27
-      - assert-no-extra-files
-
-    publishers:
-      - test-results
-      - console-log
-
-    node: '{node}'
-
-- job-template:
     name: 'gate-cross-{name}-python27-{node}'
     description: 'Same job as gate-{name}-python27 but clones {name}'
 
@@ -224,37 +157,6 @@
     node: '{node}'
 
 - job-template:
-    name: 'gate-cross-{name}-python27-db-{node}'
-    description: 'Same job as gate-cross-{name}-python27 but sets up databases.'
-
-    wrappers:
-      - build-timeout:
-          timeout: 50
-      - timestamps
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - zuul-git-prep-upper-constraints-cross:
-          project: openstack/{name}
-      - install-distro-packages
-      - mysql-prep
-      - pgsql-prep
-      - mysql-db:
-          db_name: openstack_citest
-      - pgsql-db:
-          db_name: openstack_citest
-      - revoke-sudo
-      - python27
-      - assert-no-extra-files
-
-    publishers:
-      - test-results
-      - console-log
-
-    node: '{node}'
-
-- job-template:
     name: 'periodic-{name}-{python}-with-oslo-master'
     node: ubuntu-xenial
 
@@ -269,14 +171,7 @@
       - zuul-git-branch-prep-upper-constraints:
           branch: master
       - install-distro-packages
-      # The job runs with different repositories and invokes unittests, some
-      # of these repositories need a database set up.
-      - mysql-prep
-      - pgsql-prep
-      - mysql-db:
-          db_name: openstack_citest
-      - pgsql-db:
-          db_name: openstack_citest
+      - extra-test-setup
       - revoke-sudo
       - shell: "/usr/local/jenkins/slave_scripts/run-tox-with-oslo-master.sh {python}"
       - assert-no-extra-files
@@ -347,66 +242,6 @@
       - zuul-git-prep-upper-constraints
       - install-distro-packages
       - extra-test-setup
-      - revoke-sudo
-      - python35
-      - assert-no-extra-files
-
-    publishers:
-      - test-results
-      - console-log
-
-    node: ubuntu-xenial
-
-- job-template:
-    name: 'gate-{name}-python35-db-nv'
-    description: 'Same job as gate-{name}-python35-nv but sets up databases.'
-
-    wrappers:
-      - build-timeout:
-          timeout: 40
-      - timestamps
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - zuul-git-prep-upper-constraints
-      - install-distro-packages
-      - mysql-prep
-      - pgsql-prep
-      - mysql-db:
-          db_name: openstack_citest
-      - pgsql-db:
-          db_name: openstack_citest
-      - revoke-sudo
-      - python35
-      - assert-no-extra-files
-
-    publishers:
-      - test-results
-      - console-log
-
-    node: ubuntu-xenial
-
-- job-template:
-    name: 'gate-{name}-python35-db'
-    description: 'Same job as gate-{name}-python35 but sets up databases.'
-
-    wrappers:
-      - build-timeout:
-          timeout: 40
-      - timestamps
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - zuul-git-prep-upper-constraints
-      - install-distro-packages
-      - mysql-prep
-      - pgsql-prep
-      - mysql-db:
-          db_name: openstack_citest
-      - pgsql-db:
-          db_name: openstack_citest
       - revoke-sudo
       - python35
       - assert-no-extra-files
@@ -528,36 +363,6 @@
       - revoke-sudo
       - tox-with-tmpdir-passed-in:
           new_tmpdir_loc: "$HOME/xfstmp"
-          envlist: '{envlist}'
-      - assert-no-extra-files
-
-    publishers:
-      - test-results
-      - console-log
-
-- job-template:
-    name: 'gate-{name}-tox-db-{envlist}-{node}'
-    description: 'Same job as gate-{name}-tox-db-{envlist} but on node {node}'
-    node: '{node}'
-
-    wrappers:
-      - build-timeout:
-          timeout: 40
-      - timestamps
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - zuul-git-prep-upper-constraints
-      - install-distro-packages
-      - mysql-prep
-      - pgsql-prep
-      - mysql-db:
-          db_name: openstack_citest
-      - pgsql-db:
-          db_name: openstack_citest
-      - revoke-sudo
-      - run-tox:
           envlist: '{envlist}'
       - assert-no-extra-files
 
@@ -733,33 +538,6 @@
       - 'gate-cross-{name}-python27-{node}'
 
 
-# This is the legacy way of setting up databases. Projects should now
-# add tools/test-setup.sh to their repositories and use the normal
-# python-jobs instead.
-- job-group:
-    name: python-db-jobs
-    node:
-      - ubuntu-trusty
-      - ubuntu-xenial
-    jobs:
-      - 'gate-{name}-pep8-{node}'
-      - 'gate-{name}-python27-db-{node}'
-      - 'gate-{name}-python34-db'
-      - 'gate-{name}-python35-db'
-      - 'gate-{name}-docs-{node}'
-      - 'gate-{name}-requirements'
-      - '{name}-branch-tarball'
-      # pylint isn't standard
-      # pypy isn't standard
-      # gate-{name}-tox-{envlist} also isn't standard, but is reserved for
-      # projects that want to run specific jobs via tox
-
-- job-group:
-    name: cross-python-db-jobs
-    node: ubuntu-xenial
-    jobs:
-      - 'gate-cross-{name}-python27-db-{node}'
-
 - job-group:
     name: openstack-server-release-jobs
     jobs:
@@ -777,14 +555,3 @@
       - '-nv'
     jobs:
       - '{name}-coverage-{node}{suffix}'
-
-- job-group:
-    name: coverage-db-jobs
-    node:
-      - ubuntu-trusty
-      - ubuntu-xenial
-    suffix:
-      - ''
-      - '-nv'
-    jobs:
-      - '{name}-coverage-db-{node}{suffix}'

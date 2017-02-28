@@ -14907,10 +14907,10 @@
     name: trove
 
     jobs:
-      - coverage-db-jobs
-      - python-db-jobs
-      - python-mitaka-bitrot-db-jobs
-      - python-newton-bitrot-db-jobs
+      - coverage-jobs
+      - python-jobs
+      - python-mitaka-bitrot-jobs
+      - python-newton-bitrot-jobs
       - python-ocata-bitrot-jobs
       - openstack-server-release-jobs
       - openstack-publish-jobs
@@ -14974,15 +14974,13 @@
             - couchdb
       - api-ref-jobs:
           service: database
-      - gate-{name}-tox-db-{envlist}-{node}:
+      - gate-{name}-tox-{envlist}-{node}:
           node: ubuntu-xenial
           envlist:
             - fakemodetests
             - apiexamples
-      - gate-{name}-tox-{envlist}-{node}:
+      - gate-{name}-pylint-{node}:
           node: ubuntu-xenial
-          envlist:
-            - pylint
 
 - project:
     name: trove-dashboard
