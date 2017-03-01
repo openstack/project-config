@@ -14,6 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+#
+# Read through this script.  There are a lot of comments that might
+# help you!
+#
+
 # To run on Ubuntu 14.04, this depends on:
 # diskimage-builder
 # qemu-utils
@@ -58,6 +63,21 @@ fi
 ## If you need to debug the boot, setting this longer might help you
 ## break into the grub console.  Or set it to 0 for fast boot.
 # export DIB_GRUB_TIMEOUT=10
+
+## The openstack-repos element caches every git repo, wihch can take
+## quite some time.  We can override this, but some minimal repos are
+## required for a successful build.  For speeding up builds when
+## you're testing the following should work, but be very careful
+## stripping things out when generating real images.
+
+## add to /tmp/custom_projects.yaml:
+##
+## - project: openstack-infra/project-config
+## - project: openstack-infra/system-config
+## - project: openstack-dev/devstack
+
+# export DIB_CUSTOM_PROJECTS_LIST_URL='file:///tmp/custom_projects.yaml'
+
 
 # The list of elements here should match nodepool/nodepool.yaml
 disk-image-create -x --no-tmpfs -o $IMAGE_NAME \
