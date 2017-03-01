@@ -2802,7 +2802,8 @@ jobs:
           - ^tools/.*$
           - ^tox.ini$
 
-  # do not run sahara scenario tests for documentation changes only.
+  # do not run sahara scenario tests when the change is only
+  # about documentation and/or the Tempest plugin.
   - name: ^gate-(sahara|sahara-tests)-dsvm-scenario.*$
     skip-if:
       - project: ^openstack/sahara$
@@ -2815,6 +2816,7 @@ jobs:
           - ^.*\.rst$
           - ^doc/.*$
           - ^releasenotes/.*$
+          - ^sahara_tempest_plugin/.*$
 
   - name: gate-app-catalog-ui-dsvm-integration
     voting: false
