@@ -6337,6 +6337,15 @@
       - pypi-jobs
 
 - project:
+    name: liberasurecode
+
+    jobs:
+      - 'gate-liberasurecode-unit-{node}':
+          node:
+            - ubuntu-xenial
+            - centos-7
+
+- project:
     name: lodgeit
 
     jobs:
@@ -11969,6 +11978,9 @@
     jobs:
       - python-jobs
       - pypi-jobs
+      - 'gate-{name}-tox-{envlist}-{node}':
+          envlist: py27
+          node: centos-7
 
 - project:
     name: pyghmi
@@ -13913,7 +13925,12 @@
             - func-encryption
           node: ubuntu-xenial
       - 'gate-{name}-tox-xfs-tmp-{envlist}-{node}':
-          envlist: func
+          envlist:
+            - py27
+            - func
+            - func-fast-post
+            - func-post-as-copy
+            - func-encryption
           node: centos-7
       - '{pipeline}-swift-dsvm-functional{special}-{node}{suffix}':
           pipeline: gate
