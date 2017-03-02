@@ -1870,7 +1870,21 @@ jobs:
           - ^docs/.*$
     branch: ^(?!stable/liberty).*$
 
-  # no need to run integration jobs when patching unit or beaker tests
+  # no need to run the jobs for doc / releasenotes / unittests patches
+  - name: ^gate-(puppet-.*-(syntax|unit|beaker|integration-4)-|(tripleo-ci|scenario.*-tempest)-centos-7-).*$
+    skip-if:
+      - project: ^openstack/.*$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^.*\.md$
+          - ^doc/.*$
+          - ^releasenotes/.*$
+          - ^metadata.json$
+          - ^etc/.*$
+          - ^tempest/tests/.*$
+          - ^tempest/hacking/.*$
+
+  # no need to run integration jobs when patching unit or beaker tests, reno or readme.
   - name: ^gate-(puppet-.*-integration)-.*$
     skip-if:
       - project: ^openstack/puppet-.*$
@@ -1879,28 +1893,6 @@ jobs:
           - ^releasenotes/.*$
           - ^spec/.*$
           - ^metadata.json$
-
-  # no need to run the jobs for doc / releasenotes / unittests patches
-  - name: ^gate-(puppet-.*-(syntax|unit|beaker|integration-4)-|(tripleo-ci|scenario.*-tempest)-centos-7-).*$
-    skip-if:
-      - project: ^openstack/puppet-.*$
-        all-files-match-any:
-          - ^.*\.md$
-          - ^releasenotes/.*$
-          - ^metadata.json$
-      - project: ^openstack/tempest$
-        all-files-match-any:
-          - ^.*\.rst$
-          - ^doc/.*$
-          - ^etc/.*$
-          - ^tempest/tests/.*$
-          - ^tempest/hacking/.*$
-          - ^releasenotes/.*$
-      - project: ^openstack/(python-tripleoclient|tripleo-.*)$
-        all-files-match-any:
-          - ^.*\.rst$
-          - ^doc/.*$
-          - ^releasenotes/.*$
 
   # Only run the puppet module build job on metadata.json updates
   - name: ^gate-puppet-.*module-build.*$
