@@ -1316,6 +1316,28 @@ jobs:
     files:
       - ^reference/projects.yaml$
 
+  - name: ^.*manila-tempest-minimal-dsvm.*$
+    skip-if:
+      - project: ^openstack/manila$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+          - ^manila/hacking/.*$
+          - ^manila/tests/.*(?!dummy.py)$
+          - ^releasenotes/.*$
+          - ^rally-jobs/.*$
+          - ^run_tests.sh$
+          - ^tools/.*$
+          - ^tox.ini$
+          - ^api-ref/.*$
+          - ^install-guide/.*$
+
+  - name: ^.*manila-tempest-minimal-dsvm-lvm.*$
+    skip-if:
+      - project: ^openstack/manila$
+        all-files-match-any:
+          - ^manila/tests/.*$
+
   # Skip these long-running and expensive devstack jobs when the
   # change is only to documentation, release notes, unit tests or
   # similar components that won't be exercised by the job anyway.
