@@ -3369,6 +3369,13 @@ jobs:
   - name: ^gate-python-ironic-inspector-client-docs-ubuntu-xenial$
     branch: ^(?!stable/(mitaka|newton)).*$
 
+  # NOTE(pas-ha) ironic-lib has no docs in Mitaka,
+  # and Trusty jobs are only run on Mitaka.
+  # As this job is part of python-jobs template, disable this single one
+  # in ironic-lib by running it only on a non-existing branch.
+  - name: ^gate-ironic-lib-docs-ubuntu-trusty$
+    branch: ^stable/thisbranchnamewillneverexist$
+
   # NOTE(jlvilla): Ironic and Inspector Grenade do not work until after mitaka
   - name: ^gate-grenade-dsvm-ironic.*-ubuntu-trusty(-nv)?$
     branch: ^stable/newton$
