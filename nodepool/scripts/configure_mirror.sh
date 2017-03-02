@@ -61,6 +61,7 @@ NODEPOOL_EPEL_MIRROR=${NODEPOOL_EPEL_MIRROR:-http://$NODEPOOL_MIRROR_HOST/epel}
 NODEPOOL_FEDORA_MIRROR=${NODEPOOL_FEDORA_MIRROR:-http://$NODEPOOL_MIRROR_HOST/fedora}
 NODEPOOL_CEPH_MIRROR=${NODEPOOL_CEPH_MIRROR:-http://$NODEPOOL_MIRROR_HOST/ceph-deb-hammer}
 NODEPOOL_UCA_MIRROR=${NODEPOOL_UCA_MIRROR:-http://$NODEPOOL_MIRROR_HOST/ubuntu-cloud-archive}
+NODEPOOL_MARIADB_MIRROR=${NODEPOOL_MARIADB_MIRROR:-http://$NODEPOOL_MIRROR_HOST/ubuntu-mariadb}
 NODEPOOL_NPM_MIRROR=${NODEPOOL_NPM_MIRROR:-http://$NODEPOOL_MIRROR_HOST/npm/}
 
 PIP_CONF="\
@@ -94,6 +95,9 @@ CEPH_SOURCES_LIST="deb $NODEPOOL_CEPH_MIRROR $LSBDISTCODENAME main"
 UCA_SOURCES_LIST_LIBERTY="deb $NODEPOOL_UCA_MIRROR trusty-updates/liberty main"
 UCA_SOURCES_LIST_MITAKA="deb $NODEPOOL_UCA_MIRROR trusty-updates/mitaka main"
 UCA_SOURCES_LIST_NEWTON="deb $NODEPOOL_UCA_MIRROR xenial-updates/newton main"
+
+MARIADB_SOURCES_LIST_10_0="deb $NODEPOOL_MARIADB_MIRROR/10.0 $LSBDISTCODENAME main"
+MARIADB_SOURCES_LIST_10_1="deb $NODEPOOL_MARIADB_MIRROR/10.1 $LSBDISTCODENAME main"
 
 APT_CONF_UNAUTHENTICATED="APT::Get::AllowUnauthenticated \"true\";"
 
@@ -216,6 +220,13 @@ if [ "$LSBDISTID" == "Ubuntu" ] && [ "$LSBDISTCODENAME" != 'precise' ]; then
 
     echo "$UCA_SOURCES_LIST_NEWTON" >/tmp/ubuntu-cloud-archive-newton.list
     sudo mv /tmp/ubuntu-cloud-archive-newton.list /etc/apt/sources.list.available.d/
+
+    # Ubuntu Mariadb
+    echo "$MARIADB_SOURCES_LIST_10_0" >/tmp/ubuntu-mariadb-10-0.list
+    sudo mv /tmp/ubuntu-mariadb-10-0.list /etc/apt/sources.list.available.d/
+
+    echo "$MARIADB_SOURCES_LIST_10_1" >/tmp/ubuntu-mariadb-10-1.list
+    sudo mv /tmp/ubuntu-mariadb-10-1.list /etc/apt/sources.list.available.d/
 
     sudo chown root:root /etc/apt/sources.list.available.d/*
     sudo chmod 0644 /etc/apt/sources.list.available.d/*
