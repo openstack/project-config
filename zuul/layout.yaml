@@ -1053,34 +1053,28 @@ project-templates:
       - gate-tripleo-ci-centos-7-ovb-updates
       - gate-tripleo-ci-centos-7-ovb-containers-oooq-nv
     check:
-      - gate-tripleo-ci-centos-7-nonha-multinode
-      - gate-tripleo-ci-centos-7-scenario001-multinode
-      - gate-tripleo-ci-centos-7-scenario002-multinode
-      - gate-tripleo-ci-centos-7-scenario003-multinode
-      - gate-tripleo-ci-centos-7-scenario004-multinode
+      - gate-tripleo-ci-centos-7-nonha-multinode-oooq
+      - gate-tripleo-ci-centos-7-scenario001-multinode-oooq
+      - gate-tripleo-ci-centos-7-scenario002-multinode-oooq
+      - gate-tripleo-ci-centos-7-scenario003-multinode-oooq
+      - gate-tripleo-ci-centos-7-scenario004-multinode-oooq
       - gate-tripleo-ci-centos-7-nonha-multinode-updates-nv
     gate:
-      - gate-tripleo-ci-centos-7-nonha-multinode
-      - gate-tripleo-ci-centos-7-scenario001-multinode
-      - gate-tripleo-ci-centos-7-scenario002-multinode
-      - gate-tripleo-ci-centos-7-scenario003-multinode
-      - gate-tripleo-ci-centos-7-scenario004-multinode
+      - gate-tripleo-ci-centos-7-nonha-multinode-oooq
+      - gate-tripleo-ci-centos-7-scenario001-multinode-oooq
+      - gate-tripleo-ci-centos-7-scenario002-multinode-oooq
+      - gate-tripleo-ci-centos-7-scenario003-multinode-oooq
+      - gate-tripleo-ci-centos-7-scenario004-multinode-oooq
     experimental:
-      - gate-tripleo-ci-centos-7-nonha-multinode-oooq-nv
-      - gate-tripleo-ci-centos-7-scenario001-multinode-oooq-nv
-      - gate-tripleo-ci-centos-7-scenario002-multinode-oooq-nv
-      - gate-tripleo-ci-centos-7-scenario003-multinode-oooq-nv
-      - gate-tripleo-ci-centos-7-scenario004-multinode-oooq-nv
       - gate-tripleo-ci-centos-7-scenario005-multinode-oooq-nv
-      - gate-tripleo-ci-centos-7-scenario005-multinode
       - gate-tripleo-ci-centos-7-undercloud-containers
 
   - name: check-tripleo-undercloud-jobs
     check:
-      - gate-tripleo-ci-centos-7-undercloud
+      - gate-tripleo-ci-centos-7-undercloud-oooq
       - gate-tripleo-ci-centos-7-undercloud-upgrades-nv
     gate:
-      - gate-tripleo-ci-centos-7-undercloud
+      - gate-tripleo-ci-centos-7-undercloud-oooq
 
   - name: experimental-tripleo-jobs
     experimental-tripleo:
@@ -1740,7 +1734,7 @@ jobs:
   # and are global to the jobname.
   # It will be done with zuul v3:
   # http://specs.openstack.org/openstack-infra/infra-specs/specs/zuulv3.html#jobs
-  - name: ^gate-tripleo-ci-centos-7-scenario001-multinode(-upgrades)?(-nv)?$
+  - name: ^gate-tripleo-ci-centos-7-scenario001-multinode(-upgrades)?(-oooq)?(-nv)?$
     branch: ^(?!stable/(hammer|liberty|mitaka)).*$
     files:
       - ^manifests/haproxy.*$
@@ -1766,7 +1760,7 @@ jobs:
       - ^manifests/profile/base/congress.*$
       - ci/environments/scenario001-multinode.yaml
       - ci/pingtests/scenario001-multinode.yaml
-  - name: ^gate-tripleo-ci-centos-7-scenario002-multinode(-upgrades)?(-nv)?$
+  - name: ^gate-tripleo-ci-centos-7-scenario002-multinode(-upgrades)?(-oooq)?(-nv)?$
     branch: ^(?!stable/(hammer|liberty|mitaka)).*$
     files:
       - ^manifests/haproxy.*$
@@ -1784,7 +1778,7 @@ jobs:
       - ^manifests/profile/base/zaqar.*$
       - ci/environments/scenario002-multinode.yaml
       - ci/pingtests/scenario002-multinode.yaml
-  - name: ^gate-tripleo-ci-centos-7-scenario003-multinode(-upgrades)?(-nv)?$
+  - name: ^gate-tripleo-ci-centos-7-scenario003-multinode(-upgrades)?(-oooq)?(-nv)?$
     branch: ^(?!stable/(hammer|liberty|mitaka)).*$
     files:
       - ^manifests/haproxy.*$
@@ -1794,7 +1788,7 @@ jobs:
       - ^manifests/profile/base/mistral.*$
       - ci/environments/scenario003-multinode.yaml
       - ci/pingtests/scenario003-multinode.yaml
-  - name: ^gate-tripleo-ci-centos-7-scenario004-multinode(-upgrades)?(-nv)?$
+  - name: ^gate-tripleo-ci-centos-7-scenario004-multinode(-upgrades)?(-oooq)?(-nv)?$
     branch: ^(?!stable/(hammer|liberty|mitaka|newton)).*$
     files:
       - ^manifests/haproxy.*$
@@ -1805,7 +1799,7 @@ jobs:
       - ^manifests/profile/pacemaker/manila.*$
       - ci/environments/scenario004-multinode.yaml
       - ci/pingtests/scenario004-multinode.yaml
-  - name: ^gate-tripleo-ci-centos-7-scenario005-multinode(-nv)?$
+  - name: ^gate-tripleo-ci-centos-7-scenario005-multinode(-oooq)?(-nv)?$
     branch: ^(?!stable/(hammer|liberty|mitaka|newton)).*$
     files:
       - ^manifests/haproxy.*$
@@ -5244,7 +5238,6 @@ projects:
       - name: check-tripleo-jobs
       - name: check-tripleo-undercloud-jobs
     check:
-      - gate-tripleo-ci-centos-7-nonha-multinode-oooq-nv
       - gate-tripleo-ci-centos-7-multinode-upgrades-nv
     check-tripleo:
       - gate-tripleo-ci-centos-7-ovb-nonha-mitaka
@@ -5270,11 +5263,6 @@ projects:
       - periodic-tripleo-ci-centos-7-scenario003-multinode
       - periodic-tripleo-ci-centos-7-scenario004-multinode
     experimental:
-      - gate-tripleo-ci-centos-7-scenario001-multinode-oooq-nv
-      - gate-tripleo-ci-centos-7-scenario002-multinode-oooq-nv
-      - gate-tripleo-ci-centos-7-scenario003-multinode-oooq-nv
-      - gate-tripleo-ci-centos-7-scenario004-multinode-oooq-nv
-      - gate-tripleo-ci-centos-7-scenario005-multinode-oooq-nv
       - gate-tripleo-ci-centos-7-containers-multinode-upgrades-nv
     experimental-tripleo:
       - gate-tripleo-ci-centos-7-ovb-nonha
@@ -18270,20 +18258,25 @@ projects:
     check:
       - gate-tripleo-quickstart-linters-ubuntu-xenial
       - gate-tripleo-quickstart-docs-ubuntu-xenial
-      - gate-tripleo-ci-centos-7-nonha-multinode-oooq-nv
+      - gate-tripleo-ci-centos-7-nonha-multinode-oooq
+      - gate-tripleo-ci-centos-7-scenario001-multinode-oooq
+      - gate-tripleo-ci-centos-7-scenario002-multinode-oooq
+      - gate-tripleo-ci-centos-7-scenario003-multinode-oooq
+      - gate-tripleo-ci-centos-7-scenario004-multinode-oooq
+      - gate-tripleo-ci-centos-7-scenario005-multinode-oooq-nv
     check-tripleo:
       - gate-tripleo-ci-centos-7-ovb-ha-oooq-nv
       - gate-tripleo-ci-centos-7-ovb-containers-oooq-nv
     gate:
       - gate-tripleo-quickstart-linters-ubuntu-xenial
       - gate-tripleo-quickstart-docs-ubuntu-xenial
+      - gate-tripleo-ci-centos-7-nonha-multinode-oooq
+      - gate-tripleo-ci-centos-7-scenario001-multinode-oooq
+      - gate-tripleo-ci-centos-7-scenario002-multinode-oooq
+      - gate-tripleo-ci-centos-7-scenario003-multinode-oooq
+      - gate-tripleo-ci-centos-7-scenario004-multinode-oooq
     experimental:
       - gate-tripleo-quickstart-base-centos-7-nv
-      - gate-tripleo-ci-centos-7-scenario001-multinode-oooq-nv
-      - gate-tripleo-ci-centos-7-scenario002-multinode-oooq-nv
-      - gate-tripleo-ci-centos-7-scenario003-multinode-oooq-nv
-      - gate-tripleo-ci-centos-7-scenario004-multinode-oooq-nv
-      - gate-tripleo-ci-centos-7-scenario005-multinode-oooq-nv
     experimental-tripleo:
       - gate-tripleo-ci-centos-7-ovb-nonha-oooq-nv
 
@@ -18293,20 +18286,25 @@ projects:
       - name: openstack-server-release-jobs
       - name: release-notes-jobs
     check:
-      - gate-tripleo-ci-centos-7-nonha-multinode-oooq-nv
+      - gate-tripleo-ci-centos-7-nonha-multinode-oooq
       - gate-tripleo-quickstart-extras-linters-ubuntu-xenial
+      - gate-tripleo-ci-centos-7-scenario001-multinode-oooq
+      - gate-tripleo-ci-centos-7-scenario002-multinode-oooq
+      - gate-tripleo-ci-centos-7-scenario003-multinode-oooq
+      - gate-tripleo-ci-centos-7-scenario004-multinode-oooq
+      - gate-tripleo-ci-centos-7-scenario005-multinode-oooq-nv
     check-tripleo:
       - gate-tripleo-ci-centos-7-ovb-ha-oooq-nv
       - gate-tripleo-ci-centos-7-ovb-containers-oooq-nv
     gate:
       - gate-tripleo-quickstart-extras-linters-ubuntu-xenial
+      - gate-tripleo-ci-centos-7-nonha-multinode-oooq
+      - gate-tripleo-ci-centos-7-scenario001-multinode-oooq
+      - gate-tripleo-ci-centos-7-scenario002-multinode-oooq
+      - gate-tripleo-ci-centos-7-scenario003-multinode-oooq
+      - gate-tripleo-ci-centos-7-scenario004-multinode-oooq
     experimental:
       - gate-tripleo-quickstart-extras-base-centos-7-nv
-      - gate-tripleo-ci-centos-7-scenario001-multinode-oooq-nv
-      - gate-tripleo-ci-centos-7-scenario002-multinode-oooq-nv
-      - gate-tripleo-ci-centos-7-scenario003-multinode-oooq-nv
-      - gate-tripleo-ci-centos-7-scenario004-multinode-oooq-nv
-      - gate-tripleo-ci-centos-7-scenario005-multinode-oooq-nv
     experimental-tripleo:
       - gate-tripleo-ci-centos-7-ovb-nonha-oooq-nv
 
