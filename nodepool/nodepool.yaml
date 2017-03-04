@@ -36,7 +36,6 @@ labels:
       - name: internap-mtl01
       - name: osic-cloud1-s3500
       - name: osic-cloud1-s3700
-      - name: osic-cloud1-disk
       - name: infracloud-vanilla
       - name: infracloud-chocolate
   - name: ubuntu-precise
@@ -53,7 +52,6 @@ labels:
       - name: internap-mtl01
       - name: osic-cloud1-s3500
       - name: osic-cloud1-s3700
-      - name: osic-cloud1-disk
       - name: infracloud-vanilla
       - name: infracloud-chocolate
   - name: ubuntu-trusty
@@ -70,7 +68,6 @@ labels:
       - name: internap-mtl01
       - name: osic-cloud1-s3500
       - name: osic-cloud1-s3700
-      - name: osic-cloud1-disk
       - name: infracloud-vanilla
       - name: infracloud-chocolate
   - name: ubuntu-trusty-2-node
@@ -88,7 +85,6 @@ labels:
       - name: internap-mtl01
       - name: osic-cloud1-s3500
       - name: osic-cloud1-s3700
-      - name: osic-cloud1-disk
       - name: infracloud-vanilla
       - name: infracloud-chocolate
   - name: ubuntu-xenial
@@ -105,7 +101,6 @@ labels:
       - name: internap-mtl01
       - name: osic-cloud1-s3500
       - name: osic-cloud1-s3700
-      - name: osic-cloud1-disk
       - name: infracloud-vanilla
       - name: infracloud-chocolate
   - name: ubuntu-xenial-2-node
@@ -123,7 +118,6 @@ labels:
       - name: internap-mtl01
       - name: osic-cloud1-s3500
       - name: osic-cloud1-s3700
-      - name: osic-cloud1-disk
       - name: infracloud-vanilla
       - name: infracloud-chocolate
   - name: ubuntu-xenial-3-node
@@ -141,7 +135,6 @@ labels:
       - name: internap-mtl01
       - name: osic-cloud1-s3500
       - name: osic-cloud1-s3700
-      - name: osic-cloud1-disk
       - name: infracloud-vanilla
       - name: infracloud-chocolate
   - name: centos-7
@@ -158,7 +151,6 @@ labels:
       - name: internap-mtl01
       - name: osic-cloud1-s3500
       - name: osic-cloud1-s3700
-      - name: osic-cloud1-disk
       - name: infracloud-vanilla
       - name: infracloud-chocolate
   - name: fedora-25
@@ -175,7 +167,6 @@ labels:
       - name: internap-mtl01
       - name: osic-cloud1-s3500
       - name: osic-cloud1-s3700
-      - name: osic-cloud1-disk
       - name: infracloud-vanilla
       - name: infracloud-chocolate
   - name: centos-7-2-node
@@ -193,7 +184,6 @@ labels:
       - name: internap-mtl01
       - name: osic-cloud1-s3500
       - name: osic-cloud1-s3700
-      - name: osic-cloud1-disk
       - name: infracloud-vanilla
       - name: infracloud-chocolate
   - name: centos-7-3-node
@@ -211,7 +201,6 @@ labels:
       - name: internap-mtl01
       - name: osic-cloud1-s3500
       - name: osic-cloud1-s3700
-      - name: osic-cloud1-disk
       - name: infracloud-vanilla
       - name: infracloud-chocolate
   - name: centos-7-4-node
@@ -229,7 +218,6 @@ labels:
       - name: internap-mtl01
       - name: osic-cloud1-s3500
       - name: osic-cloud1-s3700
-      - name: osic-cloud1-disk
       - name: infracloud-vanilla
       - name: infracloud-chocolate
   - name: tripleo-centos-7
@@ -721,55 +709,13 @@ providers:
     cloud: osic-cloud1
     api-timeout: 60
     boot-timeout: 240
-    max-servers: 512
+    max-servers: 0
     rate: 0.01
     ipv6-preferred: true
     networks:
       - name: 'GATEWAY_NET_V6'
     template-hostname: '{image.name}-{timestamp}'
-    images:
-      - name: ubuntu-precise
-        min-ram: 8000
-        name-filter: 'm2.medium.disk'
-        diskimage: ubuntu-precise
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-      - name: ubuntu-trusty
-        min-ram: 8000
-        name-filter: 'm2.medium.disk'
-        diskimage: ubuntu-trusty
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-      - name: ubuntu-xenial
-        min-ram: 8000
-        name-filter: 'm2.medium.disk'
-        diskimage: ubuntu-xenial
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-      - name: debian-jessie
-        min-ram: 8000
-        name-filter: 'm2.medium.disk'
-        diskimage: debian-jessie
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-      - name: fedora-25
-        min-ram: 8000
-        name-filter: 'm2.medium.disk'
-        diskimage: fedora-25
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-      - name: centos-7
-        min-ram: 8000
-        name-filter: 'm2.medium.disk'
-        diskimage: centos-7
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
+    images: []
   - name: tripleo-test-cloud-rh1
     region-name: 'regionOne'
     cloud: tripleo-test-cloud-rh1
