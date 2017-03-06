@@ -3135,24 +3135,6 @@ jobs:
   - name: ^(gate-)?devstack-docs
     branch: ^master
 
-  # TODO(yamamoto): Revisit when Neutron driver API become more stable.
-  # OFAgent will be removed in the Newton cycle.
-  - name: ^gate-networking-ofagent-.*$
-    branch: ^stable/mitaka$
-
-  - name: ^gate-networking-ofagent-python27-ubuntu-trusty
-    voting: false
-
-  - name: gate-networking-ofagent-python34
-    voting: false
-
-  - name: ^gate-tempest-dsvm-networking-ofagent.*$
-    tags: neutron
-
-  - name: gate-tempest-dsvm-networking-ofagent
-    branch: ^stable/mitaka$
-    voting: false
-
   - name: ^gate-tempest-dsvm-neutron.*-ovs.*$
     tags: neutron
 
@@ -12462,22 +12444,7 @@ projects:
   - name: openstack/networking-ofagent
     template:
       - name: merge-check
-      - name: publish-to-pypi
-      - name: check-requirements
-      - name: openstack-server-publish-jobs
-    check:
-      - gate-networking-ofagent-python34
-      - gate-networking-ofagent-pep8-ubuntu-trusty
-      - gate-networking-ofagent-docs-ubuntu-trusty
-      - gate-networking-ofagent-python27-ubuntu-trusty
-      - gate-tempest-dsvm-networking-ofagent
-    gate:
-      - gate-networking-ofagent-pep8-ubuntu-trusty
-      - gate-networking-ofagent-docs-ubuntu-trusty
-    periodic:
-      - periodic-tempest-dsvm-networking-ofagent-mitaka
-    post:
-      - networking-ofagent-branch-tarball
+      - name: noop-jobs
 
   - name: openstack/networking-onos
     template:
