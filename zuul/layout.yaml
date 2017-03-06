@@ -872,10 +872,7 @@ project-templates:
 
   - name: tripleo-upgrade-jobs-scenario004
     check:
-      - gate-tripleo-ci-centos-7-scenario004-multinode-upgrades
       - gate-tripleo-ci-centos-7-scenario004-multinode-upgrades-nv
-    gate:
-      - gate-tripleo-ci-centos-7-scenario004-multinode-upgrades
 
   - name: puppet-openstack-integration-jobs-all
     check:
@@ -1827,14 +1824,16 @@ jobs:
   - name: ^gate-tripleo-ci-centos-7.*-upgrades.*$
     branch: ^(?!stable/(hammer|liberty|mitaka|newton)).*$
 
-  # TripleO Upgrade jobs are voting for scenario001,002,003 on Ocata.
+  # TripleO Upgrade jobs are voting for scenario001,002,003 and
+  # classic multinode-upgrades job on Ocata.
   # For now, we only want these jobs on stable/ocata in check & gate
-  - name: ^gate-tripleo-ci-centos-7-scenario00(1|2|3)-multinode-upgrades$
+  - name: ^gate-tripleo-ci-centos-7(-scenario00(1|2|3))?-multinode-upgrades$
     branch: ^stable/ocata$
 
-  # TripleO Upgrade jobs are non-voting for scenario001,002,003 on master (future Pike).
+  # TripleO Upgrade jobs are non-voting for scenario001,002,003,004
+  # and classic multinode-upgrades job on master (future Pike).
   # For now, we only want these jobs in master
-  - name: ^gate-tripleo-ci-centos-7-scenario00(1|2|3)-multinode-upgrades-nv$
+  - name: ^gate-tripleo-ci-centos-7(-scenario00(1|2|3|4))?-multinode-upgrades-nv$
     branch: ^(?!stable/(hammer|liberty|mitaka|newton|ocata)).*$
 
   - name: ^gate-tripleo-ci-centos-7-ovb-containers-oooq-nv$
