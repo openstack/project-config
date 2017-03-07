@@ -14422,10 +14422,12 @@
           trigger: 'gate'
           branch-override: default
           timeout: 180
-      # check job for multinode
+      # job for basic multinode
       - '{trigger}-tripleo-ci-{jobname}{suffix}':
           jobname: 'centos-7-nonha-multinode'
-          suffix: ''
+          suffix:
+            - ''
+            - '-nv'
           type: 'nonha-multinode'
           node: 'centos-7-2-node'
           trigger: 'gate'
@@ -14449,15 +14451,6 @@
           trigger: 'gate'
           branch-override: default
           timeout: 180
-      # non-voting check job for multinode
-      - '{trigger}-tripleo-ci-{jobname}{suffix}':
-          jobname: 'centos-7-nonha-multinode'
-          suffix: '-nv'
-          type: 'nonha-multinode'
-          node: 'centos-7-2-node'
-          trigger: 'gate'
-          branch-override: default
-          timeout: 180
       # undercloud-only job
       - '{trigger}-tripleo-ci-{jobname}{suffix}':
           jobname: 'centos-7-undercloud'
@@ -14478,7 +14471,10 @@
           timeout: 180
       - '{trigger}-tripleo-ci-{jobname}{suffix}':
           jobname: 'centos-7-scenario001-multinode'
-          suffix: ''
+          suffix:
+            - ''
+            - '-puppet'
+            - '-puppet-nv'
           type: 'scenario001-multinode'
           node: 'centos-7-2-node'
           trigger: 'gate'
@@ -14486,7 +14482,10 @@
           timeout: 180
       - '{trigger}-tripleo-ci-{jobname}{suffix}':
           jobname: 'centos-7-scenario002-multinode'
-          suffix: ''
+          suffix:
+            - ''
+            - '-puppet'
+            - '-puppet-nv'
           type: 'scenario002-multinode'
           node: 'centos-7-2-node'
           trigger: 'gate'
@@ -14494,7 +14493,10 @@
           timeout: 180
       - '{trigger}-tripleo-ci-{jobname}{suffix}':
           jobname: 'centos-7-scenario003-multinode'
-          suffix: ''
+          suffix:
+            - ''
+            - '-puppet'
+            - '-puppet-nv'
           type: 'scenario003-multinode'
           node: 'centos-7-2-node'
           trigger: 'gate'
@@ -14502,7 +14504,9 @@
           timeout: 180
       - '{trigger}-tripleo-ci-{jobname}{suffix}':
           jobname: 'centos-7-scenario004-multinode'
-          suffix: ''
+          suffix:
+            - ''
+            - '-puppet'
           type: 'scenario004-multinode'
           node: 'centos-7-2-node'
           trigger: 'gate'
@@ -14538,68 +14542,6 @@
           type: 'periodic-scenario004-multinode'
           node: 'centos-7-2-node'
           trigger: 'periodic'
-          branch-override: default
-          timeout: 180
-      # (emilien) Duplicate scenarioXXX-multinode because
-      # this job only runs when touching some specific files.
-      # But Zuul v2.5 doesn't allow us to also run the jobs for
-      # a specific project (will be supported in Zuul v3).
-      # Which means we need to create a specific job
-      # that we will run for some Puppet projects.
-      - '{trigger}-tripleo-ci-{jobname}{suffix}':
-          jobname: 'centos-7-scenario001-multinode'
-          suffix: '-puppet'
-          type: 'scenario001-multinode'
-          node: 'centos-7-2-node'
-          trigger: 'gate'
-          branch-override: default
-          timeout: 180
-      - '{trigger}-tripleo-ci-{jobname}{suffix}':
-          jobname: 'centos-7-scenario001-multinode'
-          suffix: '-puppet-nv'
-          type: 'scenario001-multinode'
-          node: 'centos-7-2-node'
-          trigger: 'gate'
-          branch-override: default
-          timeout: 180
-      - '{trigger}-tripleo-ci-{jobname}{suffix}':
-          jobname: 'centos-7-scenario002-multinode'
-          suffix: '-puppet'
-          type: 'scenario002-multinode'
-          node: 'centos-7-2-node'
-          trigger: 'gate'
-          branch-override: default
-          timeout: 180
-      - '{trigger}-tripleo-ci-{jobname}{suffix}':
-          jobname: 'centos-7-scenario002-multinode'
-          suffix: '-puppet-nv'
-          type: 'scenario002-multinode'
-          node: 'centos-7-2-node'
-          trigger: 'gate'
-          branch-override: default
-          timeout: 180
-      - '{trigger}-tripleo-ci-{jobname}{suffix}':
-          jobname: 'centos-7-scenario003-multinode'
-          suffix: '-puppet'
-          type: 'scenario003-multinode'
-          node: 'centos-7-2-node'
-          trigger: 'gate'
-          branch-override: default
-          timeout: 180
-      - '{trigger}-tripleo-ci-{jobname}{suffix}':
-          jobname: 'centos-7-scenario003-multinode'
-          suffix: '-puppet-nv'
-          type: 'scenario003-multinode'
-          node: 'centos-7-2-node'
-          trigger: 'gate'
-          branch-override: default
-          timeout: 180
-      - '{trigger}-tripleo-ci-{jobname}{suffix}':
-          jobname: 'centos-7-scenario004-multinode'
-          suffix: '-puppet'
-          type: 'scenario004-multinode'
-          node: 'centos-7-2-node'
-          trigger: 'gate'
           branch-override: default
           timeout: 180
       # duplicate scenarioXXX-multinode for upgrade scenarios
