@@ -28,10 +28,13 @@
 
           function pre_test_hook {
               # Install blazar tempest integration
-              # Copying Tempest test suites
               BLAZAR_TEMPEST_DIR=/opt/stack/new/blazar/contrib/tempest
-              TEMPEST_DIR=${TEMPEST_DIR:-/opt/stack/new/tempest}
-              cp -R $BLAZAR_TEMPEST_DIR/tempest/* $TEMPEST_DIR/tempest
+              # Copying Tempest test suites
+              # This will be removed once blazar's tempest starts to use TempestPlugin
+              if [ -e $BLAZAR_TEMPEST_DIR ];
+                 TEMPEST_DIR=${TEMPEST_DIR:-/opt/stack/new/tempest}
+                 cp -R $BLAZAR_TEMPEST_DIR/tempest/* $TEMPEST_DIR/tempest
+              fi
           }
           export -f pre_test_hook
 
