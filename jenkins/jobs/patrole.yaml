@@ -20,8 +20,9 @@
 
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_NEUTRON=1
-          export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
-          export DEVSTACK_GATE_TEMPEST_REGEX=patrole_tempest_plugin
+          export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=0
+
+          export ENABLED_SERVICES=tempest
 
           export DEVSTACK_LOCAL_CONFIG="enable_plugin patrole git://git.openstack.org/openstack/patrole"
 
@@ -40,6 +41,12 @@
                   {rbac-role}
           }}
           export -f pre_test_hook
+
+          function post_test_hook {{
+              source $BASE/new/patrole/contrib/post_test_hook.sh \
+                  {rbac-role}
+          }}
+          export -f post_test_hook
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
