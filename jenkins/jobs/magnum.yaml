@@ -75,6 +75,192 @@
       - devstack-logs
       - console-log
 
+- builder:
+    name: devstack-magnum
+    builders:
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+
+          if [ "{neutron}" -eq 1 ] ; then
+              export DEVSTACK_GATE_NEUTRON=1
+          fi
+
+          if [ "{tempest}" -eq 1 ] ; then
+              export DEVSTACK_GATE_TEMPEST=0
+              # Enable tempest for tempest plugin
+              export ENABLED_SERVICES=tempest
+          fi
+
+          if [ "{branch-override}" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+
+          export PROJECTS="openstack/magnum $PROJECTS"
+          export PROJECTS="openstack/python-magnumclient $PROJECTS"
+          export PROJECTS="openstack/diskimage-builder $PROJECTS"
+
+          if [ "{multinode}" -eq 1 ] ; then
+              export DEVSTACK_GATE_TOPOLOGY="multinode"
+          fi
+
+          if [ "{identity-v3-only}" -eq 1 ] ; then
+              export DEVSTACK_LOCAL_CONFIGi+=$'\n'"ENABLE_IDENTITY_V2=False"
+          fi
+
+          special=""
+          if [ "{ironic}" -eq 1 ] ; then
+              export PROJECTS="openstack/ironic $PROJECTS"
+              export PROJECTS="openstack/ironic-lib $PROJECTS"
+              export PROJECTS="openstack/ironic-python-agent $PROJECTS"
+              export PROJECTS="openstack/python-ironicclient $PROJECTS"
+              export PROJECTS="openstack/pyghmi $PROJECTS"
+              export PROJECTS="openstack/virtualbmc $PROJECTS"
+              special="-ironic"
+          fi
+
+          if [ "{horizon}" -eq 0 ] ; then
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service horizon"
+          fi
+          if [ "{swift}" -eq 0 ] ; then
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-account"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-container"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-object"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-proxy"
+          fi
+          if [ "{ceilometer}" -eq 0 ] ; then
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-acentral"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-acompute"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-alarm-evaluator"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-alarm-notifier"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-api"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-collector"
+          fi
+
+          # Keep localrc to be able to set some vars in post_test_hook
+          export KEEP_LOCALRC=1
+
+          function gate_hook {{
+               cd /opt/stack/new/magnum/
+              ./magnum/tests/contrib/gate_hook.sh {coe} $special
+          }}
+          export -f gate_hook
+
+          function post_test_hook {{
+              source $BASE/new/devstack/accrc/admin/admin
+              cd /opt/stack/new/magnum/
+              ./magnum/tests/contrib/post_test_hook.sh {coe} $special
+          }}
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+
+- job-template:
+    name: '{pipeline}-experimental-functional-dsvm-magnum-{coe}-{node}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 130
+      - timestamps
+
+    builders:
+        - devstack-magnum:
+            coe: '{coe}'
+            ironic: '0'
+            identity-v3-only: '0'
+            ceilometer: '0'
+            swift: '0'
+            horizon: '0'
+            multinode: '0'
+            neutron: '1'
+            tempest: '1'
+            branch-override: '{branch-override}'
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-experimental-functional-dsvm-magnum-{coe}-ironic-{node}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 130
+      - timestamps
+
+    builders:
+        - devstack-magnum:
+            coe: '{coe}'
+            ironic: '1'
+            identity-v3-only: '0'
+            ceilometer: '0'
+            swift: '0'
+            horizon: '0'
+            multinode: '0'
+            neutron: '1'
+            tempest: '1'
+            branch-override: '{branch-override}'
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-experimental-functional-dsvm-magnum-{coe}-identity-v3-only-{node}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 130
+      - timestamps
+
+    builders:
+        - devstack-magnum:
+            coe: '{coe}'
+            ironic: '0'
+            identity-v3-only: '1'
+            ceilometer: '0'
+            swift: '0'
+            horizon: '0'
+            multinode: '0'
+            neutron: '1'
+            tempest: '1'
+            branch-override: '{branch-override}'
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-experimental-functional-dsvm-magnum-{coe}-multinode-{node-release}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 130
+      - timestamps
+
+    builders:
+        - devstack-magnum:
+            coe: '{coe}'
+            ironic: '0'
+            identity-v3-only: '0'
+            ceilometer: '0'
+            swift: '0'
+            horizon: '0'
+            multinode: '1'
+            neutron: '1'
+            tempest: '1'
+            branch-override: '{branch-override}'
+
+    publishers:
+      - devstack-logs
+      - console-log
+
 - job-template:
     name: '{pipeline}-magnum-dib-buildimage-{image-name}-{node}'
     node: '{node}'
