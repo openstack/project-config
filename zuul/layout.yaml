@@ -3336,9 +3336,10 @@ jobs:
   - name: ^gate-openstack-ansible.*-(docs|linters).*-ubuntu-trusty.*$
     branch: ^stable/mitaka$
 
-  # Keep in mind that stable/mitaka is trusty only, remove centos-7 jobs.
+  # Keep in mind that stable/mitaka and stable/newton are ubuntu only,
+  # so we remove centos-7 jobs.
   - name: ^gate-openstack-ansible-.*-ansible-.*-centos-7.*$
-    branch: ^(?!(stable/mitaka)).*$
+    branch: ^(?!stable/(mitaka|newton)).*$
 
   # Now some specific conditions for openstack-ansible:
 
@@ -3354,6 +3355,11 @@ jobs:
   # openstack-ansible repository if the branch is stable/newton.
   - name: ^gate-openstack-ansible-openstack-ansible-aio-ubuntu-xenial-nv$
     branch: ^stable/newton$
+
+  # Run the openstack-ansible-security functional test on centos-7
+  # for any branch after stable/mitaka.
+  - name: ^gate-openstack-ansible-security-ansible-func-centos-7.*$
+    branch: ^(?!stable/mitaka).*$
 
   # Skip the OpenStack-Ansible voting aio scenario job on xenial for the
   # openstack-ansible repository if the branch is anything before ocata.
@@ -3387,11 +3393,6 @@ jobs:
 
   # Skip the upgrade test on Newton and earlier branches.
   - name: ^gate-openstack-ansible-.*-ansible-upgrade.*$
-    branch: ^(?!stable/(mitaka|newton)).*$
-
-  # Skip any OpenStack-Ansible jobs for os_ repositories which run on CentOS7
-  # except os_keystone, os_glance, os_cinder for stable/newton.
-  - name: ^gate-openstack-ansible-os_(?!(keystone|glance|cinder)).*-ansible-.*-centos-7.*$
     branch: ^(?!stable/(mitaka|newton)).*$
 
   # Skip any deploy guide publish jobs for mitaka
