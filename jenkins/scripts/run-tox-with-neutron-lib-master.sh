@@ -29,4 +29,11 @@ commands =
   {toxinidir}/tools/ostestr_compat_shim.sh {posargs}
 EOF
 
+set +e
+$script_path/run-tox.sh pep8
+pep8_code=$?
 $script_path/run-tox.sh $venv-neutron-lib-master
+venv_code=$?
+set -e
+exit_code=$(( $pep8_code || $venv_code ))
+exit $exit_code
