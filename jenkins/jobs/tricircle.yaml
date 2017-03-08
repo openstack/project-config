@@ -82,15 +82,13 @@
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
 
-          function pre_test_hook {{
-              cd /opt/stack/new/tricircle/tricircle/tempestplugin/
-              ./pre_test_hook.sh
+          function gate_hook {{
+              bash -xe $BASE/new/tricircle/tricircle/tempestplugin/gate_hook.sh
           }}
-          export -f pre_test_hook
+          export -f gate_hook
 
           function post_test_hook {{
-              cd /opt/stack/new/tricircle/tricircle/tempestplugin/
-              ./post_test_hook.sh
+              bash -xe $BASE/new/tricircle/tricircle/tempestplugin/post_test_hook.sh
           }}
           export -f post_test_hook
 
