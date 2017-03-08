@@ -26,10 +26,6 @@
     builders:
       - ironic-vars-early:
           script: |
-            # NOTE(jlvillal): export not needed for this as used within devstack-virtual-ironic
-            # We disable the devstack plugin because the grenade code in Ironic
-            # enables it and enabling it twice causes errors.
-            IRONIC_DISABLE_DEVSTACK_PLUGIN=1
             # Set this early so that we don't have to be as careful with builder ordering in jobs.
             export GRENADE_PLUGINRC="enable_grenade_plugin ironic https://git.openstack.org/openstack/ironic"
 
@@ -303,9 +299,7 @@
           source ironic-vars-early
 
           # devstack plugin didn't exist until mitaka
-          if [[ -z "$IRONIC_DISABLE_DEVSTACK_PLUGIN" ]] ; then
-              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ironic git://git.openstack.org/openstack/ironic"
-          fi
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ironic git://git.openstack.org/openstack/ironic"
 
           # Ensure the ironic-EXTRA-vars file exists
           touch ironic-extra-vars
