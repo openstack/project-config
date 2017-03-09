@@ -393,6 +393,47 @@
       - devstack-logs
       - console-log
 
+- job-template:
+    name: '{pipeline}-tempest-dsvm-neutron-scenario-multinode-{node}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 180
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            ENABLE_IDENTITY_V2=False
+            TEMPEST_USE_TEST_ACCOUNTS=True
+
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_TEMPEST_SCENARIOS=1
+          export DEVSTACK_GATE_NEUTRON=1
+          export DEVSTACK_GATE_TLSPROXY=1
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          export DEVSTACK_GATE_TOPOLOGY="multinode"
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
 
 - job-template:
     name: '{pipeline}-tempest-dsvm-neutron-pg-full-{node}{suffix}'
