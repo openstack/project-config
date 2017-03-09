@@ -111,7 +111,6 @@
               export DEVSTACK_LOCAL_CONFIGi+=$'\n'"ENABLE_IDENTITY_V2=False"
           fi
 
-          special=""
           if [ "{ironic}" -eq 1 ] ; then
               export PROJECTS="openstack/ironic $PROJECTS"
               export PROJECTS="openstack/ironic-lib $PROJECTS"
@@ -119,7 +118,7 @@
               export PROJECTS="openstack/python-ironicclient $PROJECTS"
               export PROJECTS="openstack/pyghmi $PROJECTS"
               export PROJECTS="openstack/virtualbmc $PROJECTS"
-              special="-ironic"
+              export MAGNUM_GATE_SPECIAL="-ironic"
           fi
 
           if [ "{horizon}" -eq 0 ] ; then
@@ -144,15 +143,15 @@
           export KEEP_LOCALRC=1
 
           function gate_hook {{
-               cd /opt/stack/new/magnum/
-              ./magnum/tests/contrib/gate_hook.sh {coe} $special
+              cd /opt/stack/new/magnum/
+              ./magnum/tests/contrib/gate_hook.sh {coe} $MAGNUM_GATE_SPECIAL
           }}
           export -f gate_hook
 
           function post_test_hook {{
               source $BASE/new/devstack/accrc/admin/admin
               cd /opt/stack/new/magnum/
-              ./magnum/tests/contrib/post_test_hook.sh {coe} $special
+              ./magnum/tests/contrib/post_test_hook.sh {coe} $MAGNUM_GATE_SPECIAL
           }}
           export -f post_test_hook
 
