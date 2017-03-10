@@ -258,3 +258,92 @@
     publishers:
       - devstack-logs
       - console-log
+
+- job-template:
+    name: gate-octavia-dashboard-dsvm-integration-{node}{suffix}
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 60
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - firefox-install
+      - xvfb-install
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TEMPEST=0
+          export DEVSTACK_GATE_EXERCISES=0
+          export DEVSTACK_GATE_INSTALL_TESTONLY=1
+          export DEVSTACK_GATE_NEUTRON=1
+          export PROJECTS="openstack/octavia-dashboard $PROJECTS"
+
+
+          function pre_test_hook {{
+              $BASE/new/octavia-dashboard/tools/gate/integration/pre_test_hook.sh
+          }}
+          export -f pre_test_hook
+
+          function post_test_hook {{
+              $BASE/new/octavia-dashboard/tools/gate/integration/post_test_hook.sh
+          }}
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - test-results
+      - devstack-logs
+      - publish-screenshots
+      - console-log
+
+- job-template:
+    name: gate-octavia-dashboard-dsvm-py3x-integration-{node}{suffix}
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 60
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - firefox-install
+      - xvfb-install
+      - shell: |
+          #!/bin/bash -xe
+          export DEVSTACK_GATE_USE_PYTHON3=True
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TEMPEST=0
+          export DEVSTACK_GATE_EXERCISES=0
+          export DEVSTACK_GATE_INSTALL_TESTONLY=1
+          export DEVSTACK_GATE_NEUTRON=1
+          export PROJECTS="openstack/octavia-dashboard $PROJECTS"
+
+
+          function pre_test_hook {{
+              $BASE/new/octavia-dashboard/tools/gate/integration/pre_test_hook.sh
+          }}
+          export -f pre_test_hook
+
+          function post_test_hook {{
+              $BASE/new/octavia-dashboard/tools/gate/integration/post_test_hook.sh
+          }}
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - test-results
+      - devstack-logs
+      - publish-screenshots
+      - console-log

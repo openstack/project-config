@@ -8450,6 +8450,30 @@
           node: ubuntu-xenial
 
 - project:
+    name: octavia-dashboard
+
+    jobs:
+      - python-jobs
+      - openstack-publish-jobs
+      - nodejs4-jobs
+      - pypi-jobs
+      - translation-jobs
+      - gate-octavia-dashboard-dsvm-integration-{node}{suffix}:
+          node: ubuntu-xenial
+          suffix: '-nv'
+      - gate-octavia-dashboard-dsvm-py3x-integration-{node}{suffix}:
+          node: ubuntu-xenial
+          suffix: '-nv'
+
+- project:
+    name: octavia-tempest-plugin
+
+    jobs:
+      - python-jobs
+      - openstack-publish-jobs
+      - pypi-jobs
+
+- project:
     name: ooi
 
     jobs:
@@ -12673,6 +12697,15 @@
           special: '-neutron'
           suffix: ''
           branch-override: default
+
+- project:
+    name: python-octaviaclient
+
+    jobs:
+      - coverage-jobs
+      - python-jobs
+      - openstack-client-publish-jobs
+      - pypi-jobs
 
 - project:
     name: python-oneviewclient
