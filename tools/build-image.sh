@@ -78,8 +78,23 @@ fi
 
 # export DIB_CUSTOM_PROJECTS_LIST_URL='file:///tmp/custom_projects.yaml'
 
+## If you are building test images, or dealing with networking issues,
+## you will want to have a local login with password available (as
+## opposed to key-based ssh only).  You can use the "devuser" element
+## from dib to set this up.  Don't forget to enable sudo and set the
+## password.
 
-# The list of elements here should match nodepool/nodepool.yaml
+## defaults
+## DIB_DEV_USER_USERNAME=devuser
+## DIB_DEV_USER_AUTHORIZED_KEYS=$HOME/.ssh/id_rsa.pub
+
+# EXTRA_ELEMENTS+=devuser
+# DIB_DEV_USER_PWDLESS_SUDO=1
+# DIB_DEV_USER_PASSWORD=devuser
+
+## The list of elements below should match those configured
+## in nodepool/nodepool.yaml
+
 disk-image-create -x --no-tmpfs -o $IMAGE_NAME \
     $DISTRO \
     vm \
