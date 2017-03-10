@@ -18,9 +18,11 @@
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
 
+          # Ensure that tempest set up is executed, but do not automatically
+          # execute tempest tests; they are executed in post_test_hook.
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_NEUTRON=1
-          export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=0
+          export DEVSTACK_GATE_TEMPEST_NOTESTS=1
 
           export ENABLED_SERVICES=tempest
 
