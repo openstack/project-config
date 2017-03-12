@@ -3285,6 +3285,11 @@ jobs:
   - name: ^gate-swift-tox-xfs-tmp-func-fast-post-(ubuntu-xenial|centos-7)$
     branch: ^stable/newton$
 
+  # toxenv func-ec only works on current master and only future stable branches.
+  - name: ^gate-swift-tox-xfs-tmp-func-ec-(ubuntu-xenial|centos-7)$
+    branch: ^(?!stable/(mitaka|newton|ocata)).*$
+    voting: false
+
   - name: ^gate-murano-apps-linters-ubuntu-(trusty|xenial)$
     voting: false
 
@@ -17579,6 +17584,7 @@ projects:
       - gate-swift-tox-xfs-tmp-func-fast-post-ubuntu-xenial
       - gate-swift-tox-xfs-tmp-func-post-as-copy-ubuntu-xenial
       - gate-swift-tox-xfs-tmp-func-encryption-ubuntu-xenial
+      - gate-swift-tox-xfs-tmp-func-ec-ubuntu-xenial
       - gate-tempest-dsvm-neutron-identity-v3-only-full-ubuntu-xenial-nv
       - gate-swift-dsvm-functional-ubuntu-trusty
       - gate-swift-dsvm-functional-ubuntu-xenial
@@ -17607,6 +17613,7 @@ projects:
       - gate-swift-tox-xfs-tmp-func-fast-post-centos-7
       - gate-swift-tox-xfs-tmp-func-post-as-copy-centos-7
       - gate-swift-tox-xfs-tmp-func-encryption-centos-7
+      - gate-swift-tox-xfs-tmp-func-ec-centos-7
 
   - name: openstack/swift-bench
     template:
