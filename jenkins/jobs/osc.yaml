@@ -31,6 +31,9 @@
           # NOTE(dtroyer): Functional tests need a bit more volume headroom
           export VOLUME_BACKING_FILE_SIZE=20G
 
+          # NOTE(dtroyer): OSC needs to support Image v1 for a while yet so re-enable
+          export GLANCE_V1_ENABLED=True
+
           function post_test_hook {{
               # NOTE(stevemar): After the newton release was tagged the file was moved.
               # But, we run functional tests for various stable releases
@@ -84,6 +87,9 @@
           fi
           export DEVSTACK_LOCAL_CONFIG="enable_plugin neutron https://git.openstack.org/openstack/neutron"
           export ENABLED_SERVICES=q-qos
+
+          # NOTE(dtroyer): OSC needs to support Image v1 for a while yet so re-enable
+          export GLANCE_V1_ENABLED=True
 
           function post_test_hook {{
               # This test hook will install the master version of the following:
