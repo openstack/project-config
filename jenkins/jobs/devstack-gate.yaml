@@ -1303,7 +1303,7 @@
 
 
 - job-template:
-    name: '{pipeline}-grenade-dsvm-cinder-multinode-{node-release}{suffix}'
+    name: '{pipeline}-grenade-dsvm-cinder-mn-sub-{svc}-{node-release}{suffix}'
     node: '{node}'
 
     wrappers:
@@ -1326,7 +1326,14 @@
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
           export DEVSTACK_GATE_TOPOLOGY="multinode"
-          export DEVSTACK_GATE_CINDER_MN_GRENADE=1
+          export SERVICES={svc}
+          if [ "$SERVICES" == "bak" ] ; then
+            export DEVSTACK_GATE_CINDER_MN_GRENADE_SUB_BAK=1
+          elif [ "$SERVICES" == "volschbak" ] ; then
+            export DEVSTACK_GATE_CINDER_MN_GRENADE_SUB_VOLSCHBAK=1
+          else
+            export DEVSTACK_GATE_CINDER_MN_GRENADE=1
+          fi
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
