@@ -758,6 +758,10 @@
           echo "Host & kernel"
           echo "============="
           uname -a
+          echo "Network configuration data..."
+          [ -f /mnt/config/openstack/latest/network_info.json ] && python -mjson.tool /mnt/config/openstack/latest/network_info.json
+          [ -f /mnt/config/openstack/latest/network_data.json ] && python -mjson.tool /mnt/config/openstack/latest/network_data.json
+          [ -f /mnt/config/openstack/latest/vendor_data.json ] && python -mjson.tool /mnt/config/openstack/latest/vendor_data.json
           echo "Network interface addresses..."
           echo "=============================="
           ip address show
