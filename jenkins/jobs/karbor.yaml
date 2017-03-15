@@ -19,6 +19,17 @@
             [DEFAULT]
             workers=4
 
+            [[post-config|$CINDER_CONF]]
+            [DEFAULT]
+            osapi_volume_workers=8
+            rpc_response_timeout=120
+
+            [[post-config|$KARBOR_API_CONF]]
+            [DEFAULT]
+            max_window_time=150
+            min_window_time=75
+            min_interval=300
+
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
