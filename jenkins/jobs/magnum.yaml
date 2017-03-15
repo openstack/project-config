@@ -1,80 +1,3 @@
-- job-template:
-    name: '{pipeline}-functional-dsvm-magnum-{coe}{special}-{node}{suffix}'
-    node: '{node}'
-
-    wrappers:
-      - build-timeout:
-          timeout: 130
-      - timestamps
-
-    builders:
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - shell: |
-          #!/bin/bash -xe
-          export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_TEMPEST=0
-          export DEVSTACK_GATE_NEUTRON=1
-
-          # Enable tempest for tempest plugin
-          export ENABLED_SERVICES=tempest
-
-          export DEVSTACK_LOCAL_CONFIG="disable_service horizon"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-account"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-container"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-object"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-proxy"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-acentral"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-acompute"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-alarm-evaluator"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-alarm-notifier"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-api"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-collector"
-
-          export BRANCH_OVERRIDE={branch-override}
-          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
-              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
-          fi
-          if [ "{special}" == "-identity-v3-only" ] ; then
-              export DEVSTACK_LOCAL_CONFIG="ENABLE_IDENTITY_V2=False"
-          fi
-          export PROJECTS="openstack/magnum $PROJECTS"
-          export PROJECTS="openstack/python-magnumclient $PROJECTS"
-          export PROJECTS="openstack/diskimage-builder $PROJECTS"
-
-          if [ "{special}" == "-ironic" ] ; then
-              export PROJECTS="openstack/ironic $PROJECTS"
-              export PROJECTS="openstack/ironic-lib $PROJECTS"
-              export PROJECTS="openstack/ironic-python-agent $PROJECTS"
-              export PROJECTS="openstack/python-ironicclient $PROJECTS"
-              export PROJECTS="openstack/pyghmi $PROJECTS"
-              export PROJECTS="openstack/virtualbmc $PROJECTS"
-          fi
-
-          # Keep localrc to be able to set some vars in post_test_hook
-          export KEEP_LOCALRC=1
-
-          function gate_hook {{
-               cd /opt/stack/new/magnum/
-              ./magnum/tests/contrib/gate_hook.sh {coe} {special}
-          }}
-          export -f gate_hook
-
-          function post_test_hook {{
-              source $BASE/new/devstack/accrc/admin/admin
-              cd /opt/stack/new/magnum/
-              ./magnum/tests/contrib/post_test_hook.sh {coe} {special}
-          }}
-          export -f post_test_hook
-
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
-
-    publishers:
-      - devstack-logs
-      - console-log
-
 - builder:
     name: devstack-magnum
     builders:
@@ -160,7 +83,7 @@
 
 
 - job-template:
-    name: '{pipeline}-experimental-functional-dsvm-magnum-{coe}-{node}{suffix}'
+    name: '{pipeline}-functional-dsvm-magnum-{coe}-{node}{suffix}'
     node: '{node}'
 
     wrappers:
@@ -186,7 +109,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-experimental-functional-dsvm-magnum-{coe}-ironic-{node}{suffix}'
+    name: '{pipeline}-functional-dsvm-magnum-{coe}-ironic-{node}{suffix}'
     node: '{node}'
 
     wrappers:
@@ -212,7 +135,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-experimental-functional-dsvm-magnum-{coe}-identity-v3-only-{node}{suffix}'
+    name: '{pipeline}-functional-dsvm-magnum-{coe}-identity-v3-only-{node}{suffix}'
     node: '{node}'
 
     wrappers:
@@ -238,7 +161,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-experimental-functional-dsvm-magnum-{coe}-multinode-{node-release}{suffix}'
+    name: '{pipeline}-functional-dsvm-magnum-{coe}-multinode-{node-release}{suffix}'
     node: '{node}'
 
     wrappers:
