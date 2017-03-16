@@ -1,0 +1,43 @@
+dashboard:
+  title: Kolla Failure Rate
+  rows:
+    - title: Description
+      height: 100px
+      panels:
+        - title: Description
+          content: |
+            **This dashboard is managed by [Grafyaml](http://docs.openstack.org/infra/system-config/grafyaml.html).**
+
+            If you would like to make changes to this dashboard, please see the grafana directory in [project-config](https://git.openstack.org/cgit/openstack-infra/project-config/tree/grafana/kolla.yaml).
+          type: text
+    - title: Graphs
+      height: 320px
+      panels:
+        - title: Source Build Failure Rates (Check queue)
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-kolla-dsvm-build-centos-source-centos-7.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-kolla-dsvm-build-centos-source-centos-7.{SUCCESS,FAILURE})),'24hours'), 'gate-kolla-build-source-centos')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-kolla-dsvm-build-ubuntu-source-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-kolla-dsvm-build-ubuntu-source-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-kolla-build-source-ubuntu-xenial')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-kolla-dsvm-build-oraclelinux-source-centos-7.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-kolla-dsvm-build-oraclelinux-source-centos-7.{SUCCESS,FAILURE})),'24hours'), 'gate-kolla-build-source-oraclelinux')
+          type: graph
+        - title: Binary Build Failure Rates (Check queue)
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-kolla-dsvm-build-centos-binary-centos-7-nv.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-kolla-dsvm-build-centos-binary-centos-7-nv.{SUCCESS,FAILURE})),'24hours'), 'gate-kolla-build-binary-centos')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-kolla-dsvm-build-ubuntu-binary-ubuntu-xenial-nv.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-kolla-dsvm-build-ubuntu-binary-ubuntu-xenial-nv.{SUCCESS,FAILURE})),'24hours'), 'gate-kolla-build-binary-ubuntu-xenial')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-kolla-dsvm-build-oraclelinux-binary-centos-7-nv.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-kolla-dsvm-build-oraclelinux-binary-centos-7-nv.{SUCCESS,FAILURE})),'24hours'), 'gate-kolla-build-binary-oraclelinux')
+          type: graph
+        - title: Source Deploy Failure Rates (Check queue)
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-kolla-dsvm-deploy-centos-source-centos-7-nv.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-kolla-dsvm-deploy-centos-source-centos-7-nv.{SUCCESS,FAILURE})),'24hours'), 'gate-kolla-deploy-source-centos')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-kolla-dsvm-deploy-ubuntu-source-ubuntu-xenial-nv.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-kolla-dsvm-deploy-ubuntu-source-ubuntu-xenial-nv.{SUCCESS,FAILURE})),'24hours'), 'gate-kolla-deploy-source-ubuntu-xenial')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-kolla-dsvm-deploy-oraclelinux-source-centos-7-nv.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-kolla-dsvm-deploy-oraclelinux-source-centos-7-nv.{SUCCESS,FAILURE})),'24hours'), 'gate-kolla-deploy-source-oraclelinux')
+          type: graph
+        - title: Binary Deploy Failure Rates (Check queue)
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-kolla-dsvm-deploy-centos-binary-centos-7-nv.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-kolla-dsvm-deploy-centos-binary-centos-7-nv.{SUCCESS,FAILURE})),'24hours'), 'gate-kolla-deploy-binary-centos')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-kolla-dsvm-deploy-ubuntu-binary-ubuntu-xenial-nv.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-kolla-dsvm-deploy-ubuntu-binary-ubuntu-xenial-nv.{SUCCESS,FAILURE})),'24hours'), 'gate-kolla-deploy-binary-ubuntu-xenial')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-kolla-dsvm-deploy-oraclelinux-binary-centos-7-nv.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-kolla-dsvm-deploy-oraclelinux-binary-centos-7-nv.{SUCCESS,FAILURE})),'24hours'), 'gate-kolla-deploy-binary-oraclelinux')
+          type: graph
