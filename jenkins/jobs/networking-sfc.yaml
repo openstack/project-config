@@ -102,6 +102,12 @@
           }}
           export -f pre_test_hook
 
+          function gate_hook {{
+              if [ -f $BASE/new/networking-sfc/networking_sfc/tests/contrib/gate_hook.sh ] ; then
+                  bash -xe $BASE/new/networking-sfc/networking_sfc/tests/contrib/gate_hook.sh dsvm-networking-sfc
+          }}
+          export -f gate_hook
+
           function post_test_hook {{
               if [ -f $BASE/new/networking-sfc/devstack/post_test_hook.sh ] ; then
                   . $BASE/new/networking-sfc/devstack/post_test_hook.sh
