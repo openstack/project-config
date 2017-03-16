@@ -11,6 +11,10 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin almanach git://git.openstack.org/openstack/almanach
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -18,7 +22,6 @@
           export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
           export DEVSTACK_GATE_TEMPEST_REGEX="^almanach\."
           export PROJECTS="openstack/almanach $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin almanach git://git.openstack.org/openstack/almanach"
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh

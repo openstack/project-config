@@ -11,11 +11,14 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin aodh git://git.openstack.org/openstack/aodh
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export PROJECTS="openstack/aodh $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin aodh git://git.openstack.org/openstack/aodh"
 
           function gate_hook {{
               cd /opt/stack/new/aodh/devstack/gate
@@ -50,6 +53,10 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin aodh git://git.openstack.org/openstack/aodh
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -58,7 +65,6 @@
           export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
           export PROJECTS="openstack/aodh $PROJECTS"
           export AODH_BACKEND={backend}
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin aodh git://git.openstack.org/openstack/aodh"
           if [ "{backend}" = "postgresql" ] ; then
               export DEVSTACK_GATE_POSTGRES=1
           fi
