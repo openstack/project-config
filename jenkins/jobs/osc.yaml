@@ -11,6 +11,15 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin neutron https://git.openstack.org/openstack/neutron
+            # NOTE(dtroyer): OSC needs to support Image v1 for a while yet so re-enable
+            GLANCE_V1_ENABLED=True
+            enable_service q-qos
+            # NOTE(dtroyer): Functional tests need a bit more volume headroom
+            VOLUME_BACKING_FILE_SIZE=20G
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -25,14 +34,6 @@
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin neutron https://git.openstack.org/openstack/neutron"
-          # NOTE(dtroyer): OSC needs to support Image v1 for a while yet so re-enable
-          DEVSTACK_LOCAL_CONFIG+=$'\n'"GLANCE_V1_ENABLED=True"
-
-          export ENABLED_SERVICES=q-qos
-
-          # NOTE(dtroyer): Functional tests need a bit more volume headroom
-          export VOLUME_BACKING_FILE_SIZE=20G
 
           function post_test_hook {{
               # NOTE(stevemar): After the newton release was tagged the file was moved.
@@ -68,6 +69,15 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin neutron https://git.openstack.org/openstack/neutron
+            # NOTE(dtroyer): OSC needs to support Image v1 for a while yet so re-enable
+            GLANCE_V1_ENABLED=True
+            enable_service q-qos
+            # NOTE(dtroyer): Functional tests need a bit more volume headroom
+            VOLUME_BACKING_FILE_SIZE=20G
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -85,11 +95,6 @@
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin neutron https://git.openstack.org/openstack/neutron"
-          # NOTE(dtroyer): OSC needs to support Image v1 for a while yet so re-enable
-          DEVSTACK_LOCAL_CONFIG+=$'\n'"GLANCE_V1_ENABLED=True"
-
-          export ENABLED_SERVICES=q-qos
 
           function post_test_hook {{
               # This test hook will install the master version of the following:
