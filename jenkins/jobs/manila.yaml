@@ -483,8 +483,9 @@
       - devstack-logs
       - console-log
 
+
 - job-template:
-    name: 'gate-manila-tempest-dsvm-cephfs-native-{node}{suffix}'
+    name: 'gate-manila-tempest-minimal-dsvm-cephfs-{variant}-{node}{suffix}'
     node: '{node}'
 
     wrappers:
@@ -496,47 +497,45 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin manila git://git.openstack.org/openstack/manila
+
+            enable_plugin devstack-plugin-ceph git://git.openstack.org/openstack/devstack-plugin-ceph
+
+            # Enable CephFS as the backend for Manila.
+            ENABLE_CEPH_MANILA=True
+
+            # Disable Ceph as the storage backend for Nova.
+            ENABLE_CEPH_NOVA=False
+
+            # Disable Ceph as the storage backend for Glance.
+            ENABLE_CEPH_GLANCE=False
+
+            # Disable Ceph as the storage backend for Cinder.
+            ENABLE_CEPH_CINDER=False
+
+            # Disable Ceph as the storage backend for Cinder backup.
+            ENABLE_CEPH_C_BAK=False
+
+            # Set native or NFS variant of ceph driver
+            MANILA_CEPH_DRIVER=cephfs{variant}
+
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_NEUTRON=1
           export ENABLED_SERVICES=tempest
           export PROJECTS="openstack/python-manilaclient openstack/devstack-plugin-ceph $PROJECTS"
-
-          # Enable Manila's DevStack plugin. Provided repo should be
-          # cloned by zuul before devstack run and below provided link
-          # should not be used.
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin manila git://git.openstack.org/openstack/manila"
-
-          # Enable devstack-plugin-ceph plugin, to install and configure
-          # CephFS.
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin devstack-plugin-ceph git://git.openstack.org/openstack/devstack-plugin-ceph"
-
-
-          # Enable CephFS as the backend for Manila.
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"ENABLE_CEPH_MANILA=True"
-
-          # Disable Ceph as the storage backend for Nova.
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"ENABLE_CEPH_NOVA=False"
-
-          # Disable Ceph as the storage backend for Glance.
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"ENABLE_CEPH_GLANCE=False"
-
-          # Disable Ceph as the storage backend for Cinder.
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"ENABLE_CEPH_CINDER=False"
-
-          # Disable Ceph as the storage backend for Cinder backup.
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"ENABLE_CEPH_C_BAK=False"
-
-          # Keep localrc to be able to set some vars in pre_test_hook
           export KEEP_LOCALRC=1
 
           function pre_test_hook {{
-              # Configure Manila with a CephFSNative driver backend.
+              # Configure Manila with a CephFS Native or NFS driver backend.
               # Refer job-template's pre_test_hook for more details on the
               # arguments.
               source $BASE/new/devstack-plugin-ceph/manila/pre_test_hook.sh \
-                  false cephfsnative singlebackend
+                  false cephfs{variant} singlebackend
           }}
           export -f pre_test_hook
 
@@ -546,7 +545,7 @@
               # Refer job-template's post_test_hook for more details on the
               # arguments.
               source $BASE/new/devstack-plugin-ceph/manila/post_test_hook.sh \
-                  singlebackend cephfsnative api
+                  singlebackend cephfs{variant} api
           }}
           export -f post_test_hook
 
