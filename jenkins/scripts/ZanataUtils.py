@@ -28,7 +28,7 @@ except ImportError:
     from urlparse import urljoin
 
 
-class IniConfig:
+class IniConfig(object):
     """Object that stores zanata.ini configuration
 
     Read zanata.ini and make its values available.
@@ -61,12 +61,13 @@ class IniConfig:
                 setattr(self, item_type, item[1])
 
 
-class ZanataRestService:
-    def __init__(self, zconfig, content_type='application/xml', verify=True):
+class ZanataRestService(object):
+    def __init__(self, zconfig, accept='application/xml',
+                 content_type='application/xml', verify=True):
         self.url = zconfig.url
         if "charset" not in content_type:
             content_type = "%s;charset=utf8" % content_type
-        self.headers = {'Accept': content_type,
+        self.headers = {'Accept': accept,
                         'Content-Type': content_type,
                         'X-Auth-User': zconfig.username,
                         'X-Auth-Token': zconfig.key}
@@ -98,7 +99,7 @@ class ZanataRestService:
             raise ValueError('Connection error')
 
 
-class ProjectConfig:
+class ProjectConfig(object):
     """Object that stores zanata.xml per-project configuration.
 
     Write out a zanata.xml file for the project given the supplied values.
@@ -162,8 +163,7 @@ class ProjectConfig:
         return xml
 
     def _add_configuration(self, xml):
-        """
-        Insert additional configuration
+        """Insert additional configuration
 
         Add locale mapping rules to the base zanata.xml retrieved from
         the server.
