@@ -135,3 +135,36 @@
       - devstack-logs
       - console-log
 
+- job-template:
+    name: 'gate-grenade-dsvm-barbican-{node}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 130
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export PROJECTS="openstack-dev/grenade $PROJECTS"
+          export PROJECTS="openstack/python-barbicanclient $PROJECTS"
+          export PROJECTS="openstack/barbican-tempest-plugin $PROJECTS"
+          export GRENADE_PLUGINRC="enable_grenade_plugin barbican https://git.openstack.org/openstack/barbican"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"export TEMPEST_PLUGINS='/opt/stack/new/barbican-tempest-plugin'"
+          export DEVSTACK_GATE_GRENADE=pullup
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
