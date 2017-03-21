@@ -2436,7 +2436,22 @@
       - install-distro-packages
       - revoke-sudo
       - run-tox:
-          envlist: py3-run-tests,run-tests
+          envlist: run-tests
+
+    publishers:
+      - console-log
+
+
+- job:
+    name: gate-devstack-gate-unittests-py3
+    node: ubuntu-xenial
+
+    builders:
+      - gerrit-git-prep
+      - install-distro-packages
+      - revoke-sudo
+      - run-tox:
+          envlist: py3-run-tests
 
     publishers:
       - console-log
