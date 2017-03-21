@@ -953,13 +953,13 @@ project-templates:
   - name: puppet-openstack-libraries-jobs
     check:
       - gate-puppet-openstack-libraries-puppet-lint-centos-7
-      - gate-puppet-openstack-libraries-puppet-syntax-3-centos-7
+      - gate-puppet-openstack-libraries-puppet-syntax-3-legacy-centos-7
       - gate-puppet-openstack-libraries-puppet-syntax-4-centos-7
       - gate-puppet-openstack-libraries-puppet-unit-centos-7
       - gate-puppet-openstack-libraries-puppet-beaker-rspec-centos-7
     gate:
       - gate-puppet-openstack-libraries-puppet-lint-centos-7
-      - gate-puppet-openstack-libraries-puppet-syntax-3-centos-7
+      - gate-puppet-openstack-libraries-puppet-syntax-3-legacy-centos-7
       - gate-puppet-openstack-libraries-puppet-syntax-4-centos-7
       - gate-puppet-openstack-libraries-puppet-unit-centos-7
       - gate-puppet-openstack-libraries-puppet-beaker-rspec-centos-7
@@ -986,33 +986,33 @@ project-templates:
   - name: puppet-check-jobs
     check:
       - gate-{name}-puppet-lint
-      - gate-{name}-puppet-syntax-3-centos-7
+      - gate-{name}-puppet-syntax-3-legacy-centos-7
       - gate-{name}-puppet-syntax-4-centos-7
       - gate-{name}-puppet-module-build
     gate:
       - gate-{name}-puppet-lint
-      - gate-{name}-puppet-syntax-3-centos-7
+      - gate-{name}-puppet-syntax-3-legacy-centos-7
       - gate-{name}-puppet-syntax-4-centos-7
       - gate-{name}-puppet-module-build
 
   - name: puppet-module-unit-jobs
     check:
-      - gate-{name}-puppet-unit-3.3-centos-7
-      - gate-{name}-puppet-unit-3.4-centos-7
+      - gate-{name}-puppet-unit-3.3-legacy-centos-7
+      - gate-{name}-puppet-unit-3.4-legacy-centos-7
       # 3.5 was swiftly replaced with 3.6
-      - gate-{name}-puppet-unit-3.6-centos-7
-      - gate-{name}-puppet-unit-3.7-centos-7
-      - gate-{name}-puppet-unit-3.8-centos-7
+      - gate-{name}-puppet-unit-3.6-legacy-centos-7
+      - gate-{name}-puppet-unit-3.7-legacy-centos-7
+      - gate-{name}-puppet-unit-3.8-legacy-centos-7
       - gate-{name}-puppet-unit-4.0-centos-7
       - gate-{name}-puppet-unit-4.5-centos-7
       - gate-{name}-puppet-unit-latest-centos-7
     gate:
-      - gate-{name}-puppet-unit-3.3-centos-7
-      - gate-{name}-puppet-unit-3.4-centos-7
+      - gate-{name}-puppet-unit-3.3-legacy-centos-7
+      - gate-{name}-puppet-unit-3.4-legacy-centos-7
       # 3.5 was swiftly replaced with 3.6
-      - gate-{name}-puppet-unit-3.6-centos-7
-      - gate-{name}-puppet-unit-3.7-centos-7
-      - gate-{name}-puppet-unit-3.8-centos-7
+      - gate-{name}-puppet-unit-3.6-legacy-centos-7
+      - gate-{name}-puppet-unit-3.7-legacy-centos-7
+      - gate-{name}-puppet-unit-3.8-legacy-centos-7
       - gate-{name}-puppet-unit-4.0-centos-7
       - gate-{name}-puppet-unit-4.5-centos-7
 
@@ -1935,6 +1935,10 @@ jobs:
           - ^releasenotes/.*$
           - ^docs/.*$
     branch: ^(?!stable/liberty).*$
+
+  # Puppet 3 is not supported in Pike and beyond, so we don't want to test it anymore.
+  - name: ^gate-(tripleo-heat-templates|tripleo-.*|puppet-.*)-(syntax|unit)-3-legacy-centos-7$
+    branch: ^(stable/(mitaka|newton|ocata)).*$
 
   # no need to run the jobs for doc / releasenotes / unittests patches
   - name: ^gate-(puppet-.*-(syntax|unit|beaker|integration-4)-|(tripleo-ci|scenario.*-tempest)-centos-7-).*$
