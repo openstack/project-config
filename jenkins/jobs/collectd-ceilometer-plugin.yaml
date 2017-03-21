@@ -1,0 +1,56 @@
+- job-template:
+   name: '{pipeline}-dsvm-collectd-ceilometer-plugin-{install_type}-{node}{suffix}'
+   node: '{node}'
+
+   wrappers:
+     - build-timeout:
+         timeout: 130
+     - timestamps
+
+   publishers:
+     - devstack-logs
+     - console-log
+
+   builders:
+     - print-template-name:
+         template-name: '{template-name}'
+     - link-logs
+     - net-info
+     - devstack-checkout
+     - local_conf:
+         conf: |
+             [[local|localrc]]
+             enable_plugin collectd-ceilometer-plugin git://git.openstack.org/openstack/collectd-ceilometer-plugin"
+     - shell: |
+         #!/bin/bash -xe
+         export BRANCH_OVERRIDE={branch-override}
+         export PYTHONUNBUFFERED=true
+         if [ "$BRANCH_OVERRRIDE" != "default" ] ; then
+             export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+         fi
+         # Because we are testing a non standard project, add
+         # our project repository. This makes zuul do the right
+         # reference magic for testing changes.
+         export PROJECTS="openstack/collectd-ceilometer-plugin $PROJECTS"
+
+         # Keep localrc to be able to set some vars in pre_test_hook
+         export KEEP_LOCALRC=1
+
+         function pre_test_hook {{
+              if [ -f $BASE/new/collectd-ceilometer-plugin/devstack/gate/pre_test_hook_{install_type}.sh ] ; then
+                  . $BASE/new/collectd-ceilometer-plugin/devstack/gate/pre_test_hook_{install_type}.sh
+              fi
+         }}
+         export -f pre_test_hook
+
+         function post_test_hook {{
+              if [ -f $BASE/new/collectd-ceilometer-plugin/devstack/gate/post_test_hook_{install_type}.sh ] ; then
+                  . $BASE/new/collectd-ceilometer-plugin/devstack/gate/post_test_hook_{install_type}.sh
+              fi
+          }}
+          export -f post_test_hook
+
+          export DEVSTACK_GATE_SETTINGS=/opt/stack/new/collectd-ceilometer-plugin/devstack/gate/devstackgaterc
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
