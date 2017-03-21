@@ -36,10 +36,11 @@ def main():
     args = get_args()
     zc = IniConfig(os.path.expanduser('~/.config/zanata.ini'))
     rest_service = ZanataRestService(zc, content_type='application/json',
+                                     accept='application/json',
                                      verify=args.verify)
     try:
         r = rest_service.query(
-            '/rest/projects/p/%s/iterations/i/%s'
+            '/rest/project/%s/version/%s'
             % (args.project, args.version))
     except ValueError:
         sys.exit(1)
