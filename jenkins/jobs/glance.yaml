@@ -23,6 +23,11 @@
           if [ "{special}" == "-identity-v3-only" ] ; then
               export DEVSTACK_LOCAL_CONFIG="ENABLE_IDENTITY_V2=False"
           fi
+
+          # TODO(rosmaita): remove when glanceclient tests no longer
+          #   use the Images v1 API
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"GLANCE_V1_ENABLED=True"
+
           function post_test_hook {{
               # Configure and run functional tests
               $BASE/new/python-glanceclient/glanceclient/tests/functional/hooks/post_test_hook.sh
