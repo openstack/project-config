@@ -28,7 +28,7 @@
               git://git.openstack.org openstack/puppet-openstack-integration
 
 - job-template:
-    name: 'gate-{name}-puppet-unit-{puppet_version}-{node}'
+    name: 'gate-{name}-puppet-unit-{puppet_version}-{legacy}{node}'
     node: '{node}'
 
     builders:
@@ -153,7 +153,7 @@
       - console-log
 
 - job-template:
-    name: 'gate-{name}-puppet-syntax-{puppet_version}-{node}'
+    name: 'gate-{name}-puppet-syntax-{puppet_version}-{legacy}{node}'
     node: '{node}'
 
     builders:
@@ -238,7 +238,7 @@
       - console-log
 
 - job-template:
-    name: 'gate-puppet-openstack-libraries-puppet-syntax-{puppet_version}-{node}'
+    name: 'gate-puppet-openstack-libraries-puppet-syntax-{puppet_version}-{legacy}{node}'
     node: '{node}'
 
     builders:
@@ -366,11 +366,14 @@
       - 3
       - 4
     node: centos-7
+    legacy:
+      - ''
+      - 'legacy-'
     jobs:
       - 'gate-{name}-puppet-lint'
       - 'gate-{name}-puppet-syntax'
       - 'gate-{name}-puppet-module-build'
-      - 'gate-{name}-puppet-syntax-{puppet_version}-{node}'
+      - 'gate-{name}-puppet-syntax-{puppet_version}-{legacy}{node}'
 
 - job-group:
     name: 'puppet-module-unit'
@@ -385,8 +388,11 @@
       - 'latest'
     puppet_unit_version: '3.3 3.4 3.6 3.7 3.8 4.0 4.5 latest'
     node: centos-7
+    legacy:
+      - ''
+      - 'legacy-'
     jobs:
-      - 'gate-{name}-puppet-unit-{puppet_version}-{node}'
+      - 'gate-{name}-puppet-unit-{puppet_version}-{legacy}{node}'
 
 - job-group:
     name: 'puppet-beaker-jobs-trusty'
@@ -432,8 +438,11 @@
     puppet_version:
       - 3
       - 4
+    legacy:
+      - ''
+      - 'legacy-'
     jobs:
       - 'gate-puppet-openstack-libraries-puppet-lint-{node}'
-      - 'gate-puppet-openstack-libraries-puppet-syntax-{puppet_version}-{node}'
+      - 'gate-puppet-openstack-libraries-puppet-syntax-{puppet_version}-{legacy}{node}'
       - 'gate-puppet-openstack-libraries-puppet-unit-{node}'
       - 'gate-puppet-openstack-libraries-puppet-beaker-rspec-{node}'
