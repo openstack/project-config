@@ -3431,6 +3431,10 @@ jobs:
   - name: ^gate-openstack-ansible-.*-ansible-upgrade.*$
     branch: ^(?!stable/(mitaka|newton)).*$
 
+  # Skip galera_ssl test on Ocata and earlier branches
+  - name: ^gate-openstack-ansible-galera_server-ansible-ssl.*$
+    branch: ^(?!stable/(mitaka|newton|ocata)).*$
+
   # Skip any deploy guide publish jobs for mitaka
   - name: ^gate-openstack-ansible-deploy-guide$
     branch: ^(?!stable/mitaka).*$
@@ -13445,6 +13449,9 @@ projects:
       - name: ansible-role-functional-jobs-xenial
     release:
       - openstack-ansible-galera_server-announce-release
+    check:
+      - gate-openstack-ansible-galera_server-ansible-ssl-centos-7-nv
+      - gate-openstack-ansible-galera_server-ansible-ssl-ubuntu-xenial-nv
 
   - name: openstack/openstack-ansible-haproxy_server
     template:
