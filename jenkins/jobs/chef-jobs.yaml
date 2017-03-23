@@ -36,7 +36,7 @@
     builders:
       - print-template-name:
           template-name: '{template-name}'
-      - gerrit-git-prep
+      - zuul-git-prep
       - install-distro-packages
       - chef-bootstrap
       - chef-rake-integration
@@ -46,7 +46,7 @@
       - console-log
 
 - job-template:
-    name: periodic-{name}-chef-rake-integration-{node}
+    name: gate-{name}-chef-rake-integration-multinode-{node-release}-nv
     node: '{node}'
 
     wrappers:
@@ -57,10 +57,9 @@
     builders:
       - print-template-name:
           template-name: '{template-name}'
-      - branch-git-prep:
-          branch: master
+      - zuul-git-prep
       - install-distro-packages
-      - chef-bootstrap
+      - chef-bootstrap-multinode
       - chef-rake-integration
 
     publishers:
@@ -68,10 +67,16 @@
       - console-log
 
 - job-group:
-    name: chef-test-jobs
+    name: chef-rake-jobs
     jobs:
       - gate-{name}-chef-rake
       - gate-{name}-chef-rake-integration-{node}-nv:
           node:
             - centos-7
             - ubuntu-xenial
+      - 'gate-{name}-chef-rake-integration-multinode-{node-release}-nv':
+          node-release: centos-7
+          node: centos-7-2-node
+      - 'gate-{name}-chef-rake-integration-multinode-{node-release}-nv':
+          node-release: ubuntu-xenial
+          node: ubuntu-xenial-2-node
