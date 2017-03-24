@@ -15,3 +15,29 @@
 
     publishers:
       - console-log
+
+- job-template:
+    name: '{pipeline}-libec-pyeclib-unit-{node}'
+    node: '{node}'
+
+    builders:
+      - shell: |
+          #!/bin/bash -xe
+          cd $WORKSPACE
+          /usr/zuul-env/bin/zuul-cloner --cache-dir /opt/git \
+            git://git.openstack.org \
+            openstack/liberasurecode
+            openstack/pyeclib
+          # build libec
+          cd openstack/liberasurecode
+          /usr/local/jenkins/slave_scripts/install-distro-packages.sh
+          ./autogen.sh
+          ./configure
+          make
+          sudo make install
+          # test pyeclib
+          cd $WORKSPACE/openstack/pyeclib
+          tox -e py27
+
+    publishers:
+      - console-log
