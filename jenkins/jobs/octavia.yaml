@@ -261,6 +261,64 @@
       - console-log
 
 - job-template:
+    name: '{pipeline}-octavia-{octaviaversion}-dsvm-{octaviatest}-{hypervisor}-{amphora_os}.{amphora_os_version}-{node}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 130
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            OCTAVIA_HYPERVISOR={hypervisor}
+            OCTAVIA_AMP_BASE_OS={amphora_os}
+            OCTAVIA_AMP_DISTRIBUTION_RELEASE_ID={amphora_os_version}
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_TEMPEST_NOTESTS=1
+          export DEVSTACK_GATE_EXERCISES=0
+          export DEVSTACK_GATE_NEUTRON=1
+          export DEVSTACK_GATE_INSTALL_TESTONLY=1
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          export PROJECTS="openstack/barbican $PROJECTS"
+          export PROJECTS="openstack/barbican-tempest-plugin $PROJECTS"
+          export PROJECTS="openstack/python-barbicanclient $PROJECTS"
+          export PROJECTS="openstack/diskimage-builder $PROJECTS"
+          export PROJECTS="openstack/tripleo-image-elements $PROJECTS"
+          export PROJECTS="openstack/neutron-lbaas $PROJECTS"
+          export PROJECTS="openstack/octavia $PROJECTS"
+
+          function gate_hook {{
+              $BASE/new/octavia/octavia/tests/contrib/gate_hook.sh tempest {octaviaversion} {octaviatest}
+          }}
+          export -f gate_hook
+
+          function post_test_hook {{
+              $BASE/new/octavia/octavia/tests/contrib/post_test_hook.sh tempest {octaviaversion} {octaviatest}
+          }}
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
     name: gate-octavia-dashboard-dsvm-integration-{node}{suffix}
     node: '{node}'
 
