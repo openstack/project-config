@@ -112,6 +112,23 @@
       - console-log
 
 - job-template:
+    name: gate-placement-api-ref-nv
+    description: Build and draft the placement API Reference from source.
+    node: ubuntu-xenial
+
+    builders:
+      - zuul-git-prep-upper-constraints
+      - install-distro-packages
+      - revoke-sudo
+      - run-tox:
+          envlist: 'placement-api-ref'
+
+    publishers:
+      - upload-placement-api-ref-draft
+      - test-results
+      - console-log
+
+- job-template:
     name: gate-{name}-api-ref-src
     description: Build and draft the API Reference from source using os-api-ref from source.
     node: ubuntu-xenial
