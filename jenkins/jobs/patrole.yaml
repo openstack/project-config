@@ -1,6 +1,6 @@
 # Job for Patrole+Tempest
 - job-template:
-    name: 'gate-tempest-dsvm-patrole-{rbac-role}-{node}{suffix}'
+    name: 'gate-tempest-dsvm-patrole-{rbac-role}-{type}-{node}{suffix}'
     node: '{node}'
 
     wrappers:
@@ -43,13 +43,13 @@
 
           function pre_test_hook {{
               source $BASE/new/patrole/contrib/pre_test_hook.sh \
-                  {rbac-role}
+                  {rbac-role} {type}
           }}
           export -f pre_test_hook
 
           function post_test_hook {{
               source $BASE/new/patrole/contrib/post_test_hook.sh \
-                  {rbac-role}
+                  {rbac-role} {type}
           }}
           export -f post_test_hook
 
