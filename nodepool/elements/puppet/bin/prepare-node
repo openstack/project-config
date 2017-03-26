@@ -23,10 +23,9 @@ THIN=${THIN:-true}
 ALL_MYSQL_PRIVS=${ALL_MYSQL_PRIVS:-false}
 
 if [ -n "$NODEPOOL_SSH_KEY" ] ; then
-    puppet_install_users="install_users => false,
-ssh_key => '$NODEPOOL_SSH_KEY',"
+    puppet_ssh_key="ssh_key => '$NODEPOOL_SSH_KEY',"
 else
-    puppet_install_users=""
+    puppet_ssh_key=""
 fi
 
 export FACTER_in_chroot=true
@@ -42,7 +41,7 @@ class {'openstack_project::single_use_slave':
   thin => $THIN,
   all_mysql_privs => $ALL_MYSQL_PRIVS,
   install_resolv_conf => false,
-  $puppet_install_users
+  $puppet_ssh_key
 }
 EOF
 
