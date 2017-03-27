@@ -1,0 +1,34 @@
+- builder:
+    name: clone-loci
+    builders:
+      - shell: |
+          #!/bin/bash -xe
+          /usr/zuul-env/bin/zuul-cloner --cache-dir /opt/git \
+              git://git.openstack.org openstack/loci
+
+- job-template:
+    name: 'gate-{name}-image-builder-{node}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 60
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: '{template-name}'
+      - clone-loci
+      - shell: |
+          #!/bin/bash -xe
+          openstack/loci/scripts/gate-setup.sh
+          openstack/loci/scripts/run-tests.sh
+
+    publishers:
+      - console-log
+
+- job-group:
+    name: loci-jobs
+    node: ubuntu-xenial
+    jobs:
+      - 'gate-{name}-image-builder-{node}'
