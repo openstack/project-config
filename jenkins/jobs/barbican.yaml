@@ -21,7 +21,10 @@
           export DEVSTACK_LOCAL_CONFIG="enable_plugin barbican git://git.openstack.org/openstack/barbican"
           if [ "{special}" == "-py35" ] ; then
              export DEVSTACK_GATE_USE_PYTHON3=True
-             export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_python3_package swift"
+             export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-account"
+             export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-container"
+             export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-object"
+             export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-proxy"
           else
              export DEVSTACK_GATE_USE_PYTHON3=False
           fi
