@@ -110,29 +110,26 @@
           export DEVSTACK_LOCAL_CONFIG="enable_plugin nodepool git://git.openstack.org/openstack-infra/nodepool"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"LIBS_FROM_GIT=diskimage-builder,glean,shade"
 
+          # Start with all images disabled.
+          export NODEPOOL_PAUSE_CENTOS_7_DIB=true
+          export NODEPOOL_PAUSE_FEDORA_25_DIB=true
+          export NODEPOOL_PAUSE_UBUNTU_PRECISE_DIB=true
+          export NODEPOOL_PAUSE_UBUNTU_TRUSTY_DIB=true
+          export NODEPOOL_PAUSE_UBUNTU_XENIAL_DIB=true
+
           if [ "{images}" == "-redhat" ] ; then
               export NODEPOOL_PAUSE_CENTOS_7_DIB=false
               export NODEPOOL_PAUSE_FEDORA_25_DIB=false
-              export NODEPOOL_PAUSE_UBUNTU_PRECISE_DIB=true
-              export NODEPOOL_PAUSE_UBUNTU_TRUSTY_DIB=true
-              export NODEPOOL_PAUSE_UBUNTU_XENIAL_DIB=true
-              export DEVSTACK_LOCAL_CONFIG+=$'\n'"NODEPOOL_PAUSE_CENTOS_7_DIB=$NODEPOOL_PAUSE_CENTOS_7_DIB"
-              export DEVSTACK_LOCAL_CONFIG+=$'\n'"NODEPOOL_PAUSE_FEDORA_25_DIB=$NODEPOOL_PAUSE_FEDORA_25_DIB"
-              export DEVSTACK_LOCAL_CONFIG+=$'\n'"NODEPOOL_PAUSE_UBUNTU_PRECISE_DIB=$NODEPOOL_PAUSE_UBUNTU_PRECISE_DIB"
-              export DEVSTACK_LOCAL_CONFIG+=$'\n'"NODEPOOL_PAUSE_UBUNTU_TRUSTY_DIB=$NODEPOOL_PAUSE_UBUNTU_TRUSTY_DIB"
-              export DEVSTACK_LOCAL_CONFIG+=$'\n'"NODEPOOL_PAUSE_UBUNTU_XENIAL_DIB=$NODEPOOL_PAUSE_UBUNTU_XENIAL_DIB"
           elif [ "{images}" == "-debian" ] ; then
-              export NODEPOOL_PAUSE_CENTOS_7_DIB=true
-              export NODEPOOL_PAUSE_FEDORA_25_DIB=true
               export NODEPOOL_PAUSE_UBUNTU_PRECISE_DIB=false
               export NODEPOOL_PAUSE_UBUNTU_TRUSTY_DIB=false
               export NODEPOOL_PAUSE_UBUNTU_XENIAL_DIB=false
-              export DEVSTACK_LOCAL_CONFIG+=$'\n'"NODEPOOL_PAUSE_CENTOS_7_DIB=$NODEPOOL_PAUSE_CENTOS_7_DIB"
-              export DEVSTACK_LOCAL_CONFIG+=$'\n'"NODEPOOL_PAUSE_FEDORA_25_DIB=$NODEPOOL_PAUSE_FEDORA_25_DIB"
-              export DEVSTACK_LOCAL_CONFIG+=$'\n'"NODEPOOL_PAUSE_UBUNTU_PRECISE_DIB=$NODEPOOL_PAUSE_UBUNTU_PRECISE_DIB"
-              export DEVSTACK_LOCAL_CONFIG+=$'\n'"NODEPOOL_PAUSE_UBUNTU_TRUSTY_DIB=$NODEPOOL_PAUSE_UBUNTU_TRUSTY_DIB"
-              export DEVSTACK_LOCAL_CONFIG+=$'\n'"NODEPOOL_PAUSE_UBUNTU_XENIAL_DIB=$NODEPOOL_PAUSE_UBUNTU_XENIAL_DIB"
           fi
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"NODEPOOL_PAUSE_CENTOS_7_DIB=$NODEPOOL_PAUSE_CENTOS_7_DIB"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"NODEPOOL_PAUSE_FEDORA_25_DIB=$NODEPOOL_PAUSE_FEDORA_25_DIB"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"NODEPOOL_PAUSE_UBUNTU_PRECISE_DIB=$NODEPOOL_PAUSE_UBUNTU_PRECISE_DIB"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"NODEPOOL_PAUSE_UBUNTU_TRUSTY_DIB=$NODEPOOL_PAUSE_UBUNTU_TRUSTY_DIB"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"NODEPOOL_PAUSE_UBUNTU_XENIAL_DIB=$NODEPOOL_PAUSE_UBUNTU_XENIAL_DIB"
 
           function post_test_hook {{
               /opt/stack/new/nodepool/tools/check_devstack_plugin.sh
