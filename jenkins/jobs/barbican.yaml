@@ -19,6 +19,12 @@
           export PROJECTS="openstack/python-barbicanclient $PROJECTS"
           export PROJECTS="openstack/barbican-tempest-plugin $PROJECTS"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin barbican git://git.openstack.org/openstack/barbican"
+          if [ "{special}" == "-py35" ] ; then
+             export DEVSTACK_GATE_USE_PYTHON3=True
+             export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_python3_package swift"
+          else
+             export DEVSTACK_GATE_USE_PYTHON3=False
+          fi
 
           function gate_hook {{
               $BASE/new/barbican/devstack/gate_hook.sh
