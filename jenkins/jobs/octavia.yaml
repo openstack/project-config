@@ -221,6 +221,10 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+              [[local|localrc]]
+              enable_plugin nova-lxd https://git.openstack.org/openstack/nova-lxd
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -230,7 +234,6 @@
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_INSTALL_TESTONLY=1
           export BRANCH_OVERRIDE={branch-override}
-          export OCTAVIA_USE_LXD=True
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
