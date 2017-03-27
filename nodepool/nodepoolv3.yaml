@@ -11,50 +11,44 @@ zookeeper-servers:
 
 labels:
   - name: ubuntu-xenial
-    image: ubuntu-xenial
     min-ready: 2
-    providers:
-      - name: infracloud-chocolate
-      - name: infracloud-vanilla
 
 providers:
   - name: infracloud-chocolate
     region-name: 'RegionOne'
     cloud: infracloud-chocolate
-    api-timeout: 60
     boot-timeout: 120
-    max-servers: 5
     rate: 0.25
-    image-type: 'qcow2'
     image-name-format: '{image.name}-{timestamp}'
-    images:
+    diskimages:
       - name: ubuntu-xenial
-        min-ram: 8000
-        name-filter: 'nodepool'
-        diskimage: ubuntu-xenial
-        username: zuul
-        private-key: /home/nodepool/.ssh/id_rsa
         config-drive: true
+    pools:
+      - name: main
+        max-servers: 5
+        labels:
+          - name: ubuntu-xenial
+            min-ram: 8000
+            name-filter: 'nodepool'
+            diskimage: ubuntu-xenial
+
   - name: infracloud-vanilla
     region-name: 'RegionOne'
     cloud: infracloud-vanilla
-    api-timeout: 60
     boot-timeout: 120
-    max-servers: 5
     rate: 0.25
-    image-type: 'qcow2'
     image-name-format: '{image.name}-{timestamp}'
-    images:
+    diskimages:
       - name: ubuntu-xenial
-        min-ram: 8000
-        name-filter: 'nodepool'
-        diskimage: ubuntu-xenial
-        username: zuul
-        private-key: /home/nodepool/.ssh/id_rsa
         config-drive: true
-
-targets:
-  - name: zuul
+    pools:
+      - name: main
+        max-servers: 5
+        labels:
+          - name: ubuntu-xenial
+            min-ram: 8000
+            name-filter: 'nodepool'
+            diskimage: ubuntu-xenial
 
 diskimages:
   - name: ubuntu-xenial
