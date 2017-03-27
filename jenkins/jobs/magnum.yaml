@@ -12,10 +12,10 @@
               export DEVSTACK_GATE_NEUTRON=1
           fi
 
-          if [ "{tempest}" -eq 1 ] ; then
-              export DEVSTACK_GATE_TEMPEST=0
-              # Enable tempest for tempest plugin
-              export ENABLED_SERVICES=tempest
+          export DEVSTACK_GATE_TEMPEST=1
+          if [ "{tempest}" -eq 0 ] ; then
+              # Do not run any tempest tests
+              export DEVSTACK_GATE_TEMPEST_NOTESTS=1
           fi
 
           if [ "{branch-override}" != "default" ] ; then
@@ -28,6 +28,7 @@
 
           if [ "{multinode}" -eq 1 ] ; then
               export DEVSTACK_GATE_TOPOLOGY="multinode"
+              export DEVSTACK_SUBNODE_CONFIG+=$'\n'"disable_service tempest"
           fi
 
           if [ "{identity-v3-only}" -eq 1 ] ; then
@@ -101,7 +102,7 @@
             horizon: '0'
             multinode: '0'
             neutron: '1'
-            tempest: '1'
+            tempest: '0'
             branch-override: '{branch-override}'
 
     publishers:
@@ -127,7 +128,7 @@
             horizon: '0'
             multinode: '0'
             neutron: '1'
-            tempest: '1'
+            tempest: '0'
             branch-override: '{branch-override}'
 
     publishers:
@@ -153,7 +154,7 @@
             horizon: '0'
             multinode: '0'
             neutron: '1'
-            tempest: '1'
+            tempest: '0'
             branch-override: '{branch-override}'
 
     publishers:
@@ -179,7 +180,7 @@
             horizon: '0'
             multinode: '1'
             neutron: '1'
-            tempest: '1'
+            tempest: '0'
             branch-override: '{branch-override}'
 
     publishers:
