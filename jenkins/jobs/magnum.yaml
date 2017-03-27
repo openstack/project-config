@@ -216,8 +216,19 @@
             openstack/dib-utils \
             openstack/magnum $EXTRA_PROJECTS
 
-          export PATH=$PATH:$(pwd)/openstack/dib-utils/bin
-          export PATH=$PATH:$(pwd)/openstack/diskimage-builder/bin
+          virtualenv env
+
+          ./env/bin/pip install $(pwd)/openstack/dib-utils
+          ./env/bin/pip install $(pwd)/openstack/diskimage-builder
+
+          # TODO(pabelanger): Remove once we migrated to bindep
+          ./openstack/diskimage-builder/tests/install_test_deps.sh
+
+          # activate the virtualenv so that any tools run by dib run
+          # using the python inside it
+          set +u
+          source ./env/bin/activate
+          set -u
 
           DIB_ELEMENTS=./openstack/diskimage-builder/elements
 
@@ -255,6 +266,10 @@
               # validate image
               $MAGNUM_ELEMENTS/fedora-atomic/validate_atomic_image.sh $WORKSPACE/{image-name}-dib.qcow2
           fi
+
+          set +u
+          deactivate
+          set -u
 
     publishers:
       - scp:
