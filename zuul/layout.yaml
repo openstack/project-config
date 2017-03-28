@@ -1854,6 +1854,17 @@ jobs:
   - name: ^gate-tripleo-ci-centos-7-ovb-nonha-puppet-ocata$
     branch: ^(stable/ocata).*$
 
+  # Skip non-doc jobs for doc-only networking-odl changes.  Since
+  # doc/source/conf.py is checked by networking-odl-pep8, that job
+  # should not be skipped.
+  - name: ^.*networking-odl-(python27|python35|fullstack|functional|coverage).*$
+    skip-if:
+      - project: ^openstack/networking-odl$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+          - ^releasenotes/.*$
+
   # Skip non-doc jobs for doc-only networking-midonet changes.  Since
   # doc/source/conf.py is checked by networking-midonet-pep8, that job
   # should not be skipped.
