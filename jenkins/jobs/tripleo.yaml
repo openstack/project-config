@@ -93,6 +93,7 @@
       - link-logs
       - net-info
       - python-tripleoclient-buildimage-checkout
+      - zuul-git-prep-upper-constraints
       - shell: |
           #!/bin/bash -xe
           cd python-tripleoclient
@@ -116,7 +117,15 @@
               export DELOREAN_TRUNK_REPO="https://buildlogs.centos.org/centos/7/cloud/x86_64/rdo-trunk-master-tripleo/"
           fi
 
-          tox -evenv -- pip install $WORKSPACE/diskimage-builder
+          # if we are on master, install from source
+          # otherwise, install from requirements
+          if [ "$ZUUL_BRANCH" == "master" ]; then
+              tox -evenv -- pip install $WORKSPACE/diskimage-builder
+          else
+              export UPPER_CONSTRAINTS_FILE=$WORKSPACE/upper-constraints.txt
+              tox -evenv -- pip install diskimage-builder -c $UPPER_CONSTRAINTS_FILE
+          fi
+
           tox -evenv -- openstack overcloud image build --type {image-name} --elements-path="$ELEMENTS"
 
           mkdir -p $WORKSPACE/logs
