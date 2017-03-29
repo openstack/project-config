@@ -14,7 +14,7 @@
       - shell: |
           #!/bin/bash -xe
           export SHADE_USE_KEYSTONE_V2=1
-          export SHADE_HAS_DESIGNATE=1
+          export SHADE_HAS_DESIGNATE=0
           export SHADE_HAS_HEAT=1
           export SHADE_HAS_MAGNUM=0
           export SHADE_HAS_NEUTRON=0
@@ -23,7 +23,6 @@
           export DEVSTACK_GATE_NEUTRON=0
           export DEVSTACK_GATE_HEAT=1
           export DEVSTACK_LOCAL_CONFIG="ENABLE_IDENTITY_V2=True"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin designate git://git.openstack.org/openstack/designate"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service horizon"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-acentral"
@@ -33,9 +32,6 @@
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-anotification"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-api"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-collector"
-          export PROJECTS="openstack/designate $PROJECTS"
-          export PROJECTS="openstack/designate-dashboard $PROJECTS"
-          export PROJECTS="openstack/designate-tempest-plugin $PROJECTS"
           export PROJECTS="openstack-infra/shade $PROJECTS"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
@@ -70,7 +66,7 @@
       - shell: |
           #!/bin/bash -xe
           export SHADE_USE_KEYSTONE_V2=1
-          export SHADE_HAS_DESIGNATE=1
+          export SHADE_HAS_DESIGNATE=0
           export SHADE_HAS_HEAT=1
           export SHADE_HAS_MAGNUM=0
           export SHADE_HAS_NEUTRON=0
@@ -79,7 +75,6 @@
           export DEVSTACK_GATE_NEUTRON=0
           export DEVSTACK_GATE_HEAT=1
           export DEVSTACK_LOCAL_CONFIG="ENABLE_IDENTITY_V2=True"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin designate git://git.openstack.org/openstack/designate"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service horizon"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-acentral"
@@ -89,9 +84,6 @@
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-anotification"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-api"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-collector"
-          export PROJECTS="openstack/designate $PROJECTS"
-          export PROJECTS="openstack/designate-dashboard $PROJECTS"
-          export PROJECTS="openstack/designate-tempest-plugin $PROJECTS"
           export PROJECTS="openstack-infra/shade $PROJECTS"
           export PROJECTS="openstack/os-client-config $PROJECTS"
           export PROJECTS="openstack/keystoneauth $PROJECTS"
@@ -99,7 +91,6 @@
           export PROJECTS="openstack/python-keystoneclient $PROJECTS"
           export PROJECTS="openstack/python-cinderclient $PROJECTS"
           export PROJECTS="openstack/python-neutronclient $PROJECTS"
-          export PROJECTS="openstack/python-designateclient $PROJECTS"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -133,14 +124,13 @@
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
-          export SHADE_HAS_DESIGNATE=1
+          export SHADE_HAS_DESIGNATE=0
           export SHADE_HAS_HEAT=1
           export SHADE_HAS_MAGNUM=0
           export SHADE_HAS_NEUTRON=1
           export SHADE_HAS_SWIFT=1
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_HEAT=1
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin designate git://git.openstack.org/openstack/designate"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service horizon"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-acentral"
@@ -150,9 +140,6 @@
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-anotification"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-api"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-collector"
-          export PROJECTS="openstack/designate $PROJECTS"
-          export PROJECTS="openstack/designate-dashboard $PROJECTS"
-          export PROJECTS="openstack/designate-tempest-plugin $PROJECTS"
           export PROJECTS="openstack-infra/shade $PROJECTS"
 
           export BRANCH_OVERRIDE={branch-override}
@@ -247,18 +234,14 @@
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
-          export SHADE_HAS_DESIGNATE=1
+          export SHADE_HAS_DESIGNATE=0
           export SHADE_HAS_HEAT=1
           export SHADE_HAS_MAGNUM=0
           export SHADE_HAS_NEUTRON=1
           export SHADE_HAS_SWIFT=1
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_HEAT=1
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin designate git://git.openstack.org/openstack/designate"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
-          export PROJECTS="openstack/designate $PROJECTS"
-          export PROJECTS="openstack/designate-dashboard $PROJECTS"
-          export PROJECTS="openstack/designate-tempest-plugin $PROJECTS"
           export PROJECTS="openstack-infra/shade $PROJECTS"
           export PROJECTS="openstack/os-client-config $PROJECTS"
           export PROJECTS="openstack/keystoneauth $PROJECTS"
@@ -266,7 +249,6 @@
           export PROJECTS="openstack/python-keystoneclient $PROJECTS"
           export PROJECTS="openstack/python-cinderclient $PROJECTS"
           export PROJECTS="openstack/python-neutronclient $PROJECTS"
-          export PROJECTS="openstack/python-designateclient $PROJECTS"
 
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
@@ -301,14 +283,13 @@
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
-          export SHADE_HAS_DESIGNATE=1
+          export SHADE_HAS_DESIGNATE=0
           export SHADE_HAS_HEAT=1
           export SHADE_HAS_MAGNUM=0
           export SHADE_HAS_NEUTRON=1
           export SHADE_HAS_SWIFT=1
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_HEAT=1
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin designate git://git.openstack.org/openstack/designate"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service horizon"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-acentral"
@@ -318,9 +299,6 @@
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-anotification"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-api"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-collector"
-          export PROJECTS="openstack/designate $PROJECTS"
-          export PROJECTS="openstack/designate-dashboard $PROJECTS"
-          export PROJECTS="openstack/designate-tempest-plugin $PROJECTS"
           export PROJECTS="openstack-infra/shade $PROJECTS"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
@@ -354,7 +332,7 @@
       - shell: |
           #!/bin/bash -xe
           export SHADE_ANSIBLE_DEV=1
-          export SHADE_HAS_DESIGNATE=1
+          export SHADE_HAS_DESIGNATE=0
           export SHADE_HAS_HEAT=1
           export SHADE_HAS_MAGNUM=0
           export SHADE_HAS_NEUTRON=1
@@ -362,7 +340,6 @@
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_HEAT=1
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin designate git://git.openstack.org/openstack/designate"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service horizon"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-acentral"
@@ -372,9 +349,6 @@
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-anotification"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-api"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-collector"
-          export PROJECTS="openstack/designate $PROJECTS"
-          export PROJECTS="openstack/designate-dashboard $PROJECTS"
-          export PROJECTS="openstack/designate-tempest-plugin $PROJECTS"
           export PROJECTS="openstack-infra/shade $PROJECTS"
 
           export BRANCH_OVERRIDE={branch-override}
