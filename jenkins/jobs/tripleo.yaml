@@ -110,11 +110,13 @@
           export USE_DELOREAN_TRUNK=1
           export DELOREAN_REPO_FILE="delorean.repo"
 
-          if [ "$ZUUL_BRANCH" == "stable/mitaka" ]; then
-              export DELOREAN_TRUNK_REPO="https://trunk.rdoproject.org/centos7-mitaka/current/"
-          else
-              export DELOREAN_TRUNK_REPO="https://buildlogs.centos.org/centos/7/cloud/x86_64/rdo-trunk-master-tripleo/"
-          fi
+          # set the correct build repo
+          case "$ZUUL_BRANCH" in
+              "stable/mitaka") export DELOREAN_TRUNK_REPO="https://trunk.rdoproject.org/centos7-mitaka/current/" ;;
+              "stable/newton") export DELOREAN_TRUNK_REPO="https://trunk.rdoproject.org/centos7-newton/current/" ;;
+              "stable/ocata") export DELOREAN_TRUNK_REPO="https://trunk.rdoproject.org/centos7-ocata/current/" ;;
+              *) export DELOREAN_TRUNK_REPO="https://buildlogs.centos.org/centos/7/cloud/x86_64/rdo-trunk-master-tripleo/" ;;
+          esac
 
           tox -evenv -- pip install $WORKSPACE/diskimage-builder
           tox -evenv -- openstack overcloud image build --type {image-name} --elements-path="$ELEMENTS"
