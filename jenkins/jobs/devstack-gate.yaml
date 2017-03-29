@@ -2045,6 +2045,13 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            CINDER_ISCSI_HELPER=lioadm
+            CINDER_LVM_TYPE=thin
+            enable_service barbican
+            enable_plugin barbican git://git.openstack.org/openstack/barbican
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -2054,9 +2061,6 @@
           # the regex to limit the tests to the same as a tempest -efull would
           # run.
           export DEVSTACK_GATE_TEMPEST_REGEX='(?!.*\[.*\bslow\b.*\])(^tempest\.(api|scenario)|(^cinder\.tests.tempest))'
-
-          export DEVSTACK_LOCAL_CONFIG="CINDER_ISCSI_HELPER=lioadm"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"CINDER_LVM_TYPE=thin"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -2124,7 +2128,7 @@
       - devstack-checkout
       - shell: |
           #!/bin/bash -xe
-          export PROJECTS="openstack/{name} $PROJECTS"
+          export PROJECTS="openstack/{name} $PROJECTS openstack/barbican"
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
