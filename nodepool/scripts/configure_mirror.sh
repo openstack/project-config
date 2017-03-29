@@ -130,7 +130,9 @@ enabled=1
 metadata_expire=7d
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-\$releasever-\$basearch
-skip_if_unavailable=False"
+skip_if_unavailable=False
+deltarpm=False
+deltarpm_percentage=0"
 
 YUM_REPOS_FEDORA_UPDATES="\
 [updates]
@@ -141,7 +143,9 @@ enabled=1
 gpgcheck=1
 metadata_expire=6h
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-fedora-\$releasever-\$basearch
-skip_if_unavailable=False"
+skip_if_unavailable=False
+deltarpm=False
+deltarpm_percentage=0"
 
 YUM_REPOS_CENTOS_BASE="\
 [base]
