@@ -2923,7 +2923,7 @@ jobs:
   - name: ^gate-sahara-dsvm-scenario-(nova|neutron)-ubuntu-trusty-nv$
     branch: ^stable/mitaka$
 
-  - name: ^gate-sahara-dsvm-multinode-ubuntu-xenial-nv$
+  - name: ^gate-sahara-dsvm-scenario-multinode-spark-ubuntu-xenial-nv$
     branch: ^(?!stable/(mitaka|newton|ocata)).*$
 
   - name: ^(gate|post)-sahara-extra-artifacts$
@@ -2956,7 +2956,7 @@ jobs:
 
   # do not run sahara scenario tests when the change is only
   # about documentation and/or the Tempest plugin.
-  - name: ^gate-(sahara|sahara-tests)-dsvm-scenario.*$
+  - name: ^gate-sahara-dsvm-scenario.*$
     skip-if:
       - project: ^openstack/sahara$
         all-files-match-any:
@@ -16715,14 +16715,14 @@ projects:
       - gate-python-saharaclient-python34
       - gate-sahara-cli-ubuntu-trusty-nv
       - gate-sahara-cli-ubuntu-xenial-nv
-      - gate-python-saharaclient-dsvm-scenario-neutron-ubuntu-xenial
+      - gate-sahara-dsvm-scenario-neutron-ubuntu-xenial
       - gate-tempest-dsvm-neutron-src-python-saharaclient-ubuntu-trusty
       - gate-tempest-dsvm-neutron-src-python-saharaclient-ubuntu-xenial
     post:
       - python-saharaclient-coverage-ubuntu-trusty
       - python-saharaclient-coverage-ubuntu-xenial
     gate:
-      - gate-python-saharaclient-dsvm-scenario-neutron-ubuntu-xenial
+      - gate-sahara-dsvm-scenario-neutron-ubuntu-xenial
       - gate-tempest-dsvm-neutron-src-python-saharaclient-ubuntu-trusty
       - gate-tempest-dsvm-neutron-src-python-saharaclient-ubuntu-xenial
     experimental:
@@ -17265,7 +17265,7 @@ projects:
       - sahara-coverage-ubuntu-trusty
       - sahara-coverage-ubuntu-xenial
     experimental:
-      - gate-sahara-dsvm-multinode-ubuntu-xenial-nv
+      - gate-sahara-dsvm-scenario-multinode-spark-ubuntu-xenial-nv
 
   - name: openstack/sahara-ci-config
     template:
@@ -17372,14 +17372,16 @@ projects:
     check:
       - gate-sahara-tests-pylint-ubuntu-xenial
       - gate-tempest-dsvm-sahara-ubuntu-xenial-nv
-      - gate-sahara-tests-dsvm-scenario-neutron-ubuntu-xenial
+      - gate-sahara-dsvm-scenario-neutron-ubuntu-xenial
       - gate-sahara-cli-ubuntu-xenial-nv
       # TODO(esikachev): remove when tox -e cover working correctly
       - sahara-tests-coverage-ubuntu-xenial-nv
     gate:
-      - gate-sahara-tests-dsvm-scenario-neutron-ubuntu-xenial
+      - gate-sahara-dsvm-scenario-neutron-ubuntu-xenial
     post:
       - sahara-tests-coverage-ubuntu-xenial-nv
+    experimental:
+      - gate-sahara-dsvm-scenario-multinode-spark-ubuntu-xenial-nv
 
   - name: openstack/scalpels
     template:

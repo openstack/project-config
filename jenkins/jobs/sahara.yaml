@@ -1,3 +1,58 @@
+- builder:
+    name: devstack-sahara
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_SUBNODE_CONFIG=" "
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin sahara git://git.openstack.org/openstack/sahara"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
+          export DEVSTACK_GATE_TEMPEST=0
+          export DEVSTACK_GATE_SAHARA=1
+          export DEVSTACK_GATE_EXERCISES=0
+          export DEVSTACK_GATE_INSTALL_TESTONLY=1
+          export KEEP_LOCALRC=1
+          export PROJECTS="openstack/sahara-tests $PROJECTS"
+          export PROJECTS="openstack/sahara-image-elements openstack/sahara-extra $PROJECTS"
+          if [ "{network}" == "nova" ] ; then
+              export DEVSTACK_GATE_NEUTRON=0
+          else
+              export DEVSTACK_GATE_NEUTRON=1
+          fi
+          if [ "$ZUUL_PROJECT" = "openstack/python-saharaclient" ]; then
+              export DEVSTACK_PROJECT_FROM_GIT=python-saharaclient
+              export PROJECTS="openstack/python-saharaclient $PROJECTS"
+          fi
+          if [ "{multinode}" -eq 1 ] ; then
+              export DEVSTACK_GATE_TOPOLOGY="multinode"
+          fi
+
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "{branch-override}" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+
+          function pre_test_hook {{
+              cd /opt/stack/new/sahara-tests/tools/gate/scenario
+              ./pre_test_hook.sh {network} {plugin}
+          }}
+          export -f pre_test_hook
+
+          function post_test_hook {{
+              cd /opt/stack/new/sahara-tests/tools/gate/scenario
+              ./post_test_hook.sh {network} {plugin}
+          }}
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+
 - job-template:
     name: 'gate-sahara-dashboard-dsvm-integration-{node}'
     node: '{node}'
@@ -269,7 +324,7 @@
 
 
 - job-template:
-    name: '{pipeline}-{name}-dsvm-scenario-{network}-{node}{suffix}'
+    name: '{pipeline}-sahara-dsvm-scenario-{network}-{node}{suffix}'
     node: '{node}'
 
     wrappers:
@@ -278,52 +333,32 @@
       - timestamps
 
     builders:
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - shell: |
-          #!/bin/bash -xe
-          export PYTHONUNBUFFERED=true
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin sahara git://git.openstack.org/openstack/sahara"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
-          export DEVSTACK_GATE_TEMPEST=0
-          export DEVSTACK_GATE_SAHARA=1
-          export DEVSTACK_GATE_EXERCISES=0
-          export DEVSTACK_GATE_INSTALL_TESTONLY=1
-          export KEEP_LOCALRC=1
-          export PROJECTS="openstack/sahara-tests $PROJECTS"
+      - devstack-sahara:
+          network: "{network}"
+          multinode: 0
+          plugin: "fake"
+          branch-override: "{branch-override}"
 
-          if [ "{name}" == "python-saharaclient" ] ; then
-              export PROJECTS="openstack/python-saharaclient $PROJECTS"
-              export DEVSTACK_PROJECT_FROM_GIT=python-saharaclient
-          fi
+    publishers:
+      - devstack-logs
+      - console-log
 
-          export BRANCH_OVERRIDE={branch-override}
-          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
-              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
-          fi
 
-          if [ "{network}" == "nova" ] ; then
-              export DEVSTACK_GATE_NEUTRON=0
-          else
-              export DEVSTACK_GATE_NEUTRON=1
-          fi
+- job-template:
+    name: '{pipeline}-sahara-dsvm-scenario-multinode-{plugin}-{node-release}{suffix}'
+    node: '{node}'
 
-          function pre_test_hook {{
-              cd /opt/stack/new/sahara-tests/tools/gate/scenario
-              ./pre_test_hook.sh {network}
-          }}
-          export -f pre_test_hook
+    wrappers:
+      - build-timeout:
+          timeout: 130
+      - timestamps
 
-          function post_test_hook {{
-              cd /opt/stack/new/sahara-tests/tools/gate/scenario
-              ./post_test_hook.sh {network}
-          }}
-          export -f post_test_hook
-
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
+    builders:
+      - devstack-sahara:
+          network: neutron
+          multinode: 1
+          plugin: "{plugin}"
+          branch-override: "{branch-override}"
 
     publishers:
       - devstack-logs
@@ -360,58 +395,6 @@
           fi
           export PROJECTS="openstack/python-saharaclient $PROJECTS"
           export DEVSTACK_PROJECT_FROM_GIT=python-saharaclient
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
-
-    publishers:
-      - devstack-logs
-      - console-log
-
-
-- job-template:
-    name: '{pipeline}-sahara-dsvm-multinode-{node-release}{suffix}'
-    node: '{node}'
-
-    wrappers:
-      - build-timeout:
-          timeout: 130
-      - timestamps
-
-    builders:
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - shell: |
-          #!/bin/bash -xe
-          export PYTHONUNBUFFERED=true
-          export DEVSTACK_SUBNODE_CONFIG=" "
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin sahara git://git.openstack.org/openstack/sahara"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
-          export DEVSTACK_GATE_TEMPEST=0
-          export DEVSTACK_GATE_EXERCISES=0
-          export DEVSTACK_GATE_INSTALL_TESTONLY=1
-          export KEEP_LOCALRC=1
-          export DEVSTACK_GATE_SAHARA=1
-          export PROJECTS="openstack/sahara-tests $PROJECTS"
-          export BRANCH_OVERRIDE={branch-override}
-          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
-              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
-          fi
-          export DEVSTACK_GATE_NEUTRON=1
-          export DEVSTACK_GATE_TOPOLOGY="multinode"
-
-          function pre_test_hook {{
-              cd /opt/stack/new/sahara-tests/tools/gate/multinode
-              ./pre_test_hook.sh
-          }}
-          export -f pre_test_hook
-
-          function post_test_hook {{
-              cd /opt/stack/new/sahara-tests/tools/gate/multinode
-              ./post_test_hook.sh
-          }}
-          export -f post_test_hook
-
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
 

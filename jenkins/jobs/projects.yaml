@@ -12989,12 +12989,6 @@
       - pypi-jobs
       - openstack-client-publish-jobs
       - openstack-releasenotes-jobs
-      - '{pipeline}-{name}-dsvm-scenario-{network}-{node}{suffix}':
-          pipeline: gate
-          node: ubuntu-xenial
-          suffix: ''
-          branch-override: default
-          network: neutron
       - '{pipeline}-tempest-dsvm-neutron-src-python-saharaclient-{node}{suffix}':
           pipeline: gate
           node:
@@ -13573,31 +13567,28 @@
             - ubuntu-xenial
           suffix: '-nv'
           branch-override: default
-      - '{pipeline}-{name}-dsvm-scenario-{network}-{node}{suffix}':
+      - '{pipeline}-sahara-dsvm-scenario-{network}-{node}{suffix}':
           pipeline: gate
           node: ubuntu-xenial
           suffix: ''
-          branch-override: default
           network: neutron
-      - '{pipeline}-sahara-dsvm-multinode-{node-release}{suffix}':
+          branch-override: default
+      - '{pipeline}-sahara-dsvm-scenario-multinode-{plugin}-{node-release}{suffix}':
           pipeline: gate
           node-release: ubuntu-xenial
           node: ubuntu-xenial-2-node
           suffix: '-nv'
           branch-override: default
+          plugin: spark
       # only for mitaka branch
-      - '{pipeline}-{name}-dsvm-scenario-{network}-{node}{suffix}':
+      - '{pipeline}-sahara-dsvm-scenario-{network}-{node}{suffix}':
           pipeline: gate
           node: ubuntu-trusty
           suffix: '-nv'
           branch-override: default
-          network: nova
-      - '{pipeline}-{name}-dsvm-scenario-{network}-{node}{suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
-          suffix: '-nv'
-          branch-override: default
-          network: neutron
+          network:
+            - nova
+            - neutron
       - api-ref-jobs:
           service: data-processing
       - '{pipeline}-grenade-dsvm-sahara-{node}{suffix}':
@@ -13682,12 +13673,6 @@
       - gate-{name}-pylint-{node}:
           node: ubuntu-xenial
       - openstack-releasenotes-jobs
-      - '{pipeline}-{name}-dsvm-scenario-{network}-{node}{suffix}':
-          pipeline: gate
-          node: ubuntu-xenial
-          suffix: ''
-          branch-override: default
-          network: neutron
 
 - project:
     name: scalpels
