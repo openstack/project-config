@@ -155,3 +155,18 @@
             - '-nv'
             - ''
       - '{name}-announce-release'
+
+- job:
+    name: propose-openstack-ansible-update-osa-test-scripts
+    node: proposal
+
+    builders:
+      - proposal-slave-cleanup
+      - revoke-sudo
+      - link-logs
+      - net-info
+      - zuul-git-prep
+      - shell: /usr/local/jenkins/slave_scripts/propose_update.sh openstack-ansible-tests
+
+    publishers:
+      - console-log

@@ -65,6 +65,17 @@ elif [ "$OWN_PROJECT" == "puppet-openstack-constraints" ] ; then
     function update {
         bash /usr/local/jenkins/slave_scripts/generate_puppetfile.sh
     }
+elif [ "$OWN_PROJECT" == "openstack-ansible-tests" ] ; then
+    INITIAL_COMMIT_MSG="Updated from OpenStack Ansible Tests"
+    TOPIC="openstack/openstack-ansible-tests/sync-tests"
+    ###### WIP - REMOVE ME #####
+    # Use a retired repository for tesing
+    PROJECTS="openstack/openstack-ansible-os_swift_sync"
+    ##### END OF WIP ########
+    #PROJECTS=$(./gen-projects-list.sh)
+    function update {
+        bash /usr/local/jenkins/slave_scripts/sync_openstack_ansible_common_files.sh
+    }
 else
     echo "Unknown project $1" >2
     exit 1
