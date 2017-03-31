@@ -47,6 +47,49 @@
       - console-log
 
 
+- job-template:
+    name: '{pipeline}-osc-placement-dsvm-functional{special}-{node}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 120
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export BRANCH_OVERRIDE={branch-override}
+          export PROJECTS="openstack/osc-placement $PROJECTS"
+          export DEVSTACK_PROJECT_FROM_GIT=osc-placement
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          # This ensures that if we set override branch to something
+          # else, we still take osc-placement from the zuul branch
+          # name. So override branch can be 'stable/mitaka' but we can
+          # test master changes.
+          export OVERRIDE_OSC_PLACEMENT_PROJECT_BRANCH=$ZUUL_BRANCH
+
+          function post_test_hook {{
+              # Configure and run functional tests
+              $BASE/new/osc-placement/osc_placement/tests/functional/hooks/post_test_hook.sh
+          }}
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - test-results
+      - devstack-logs
+      - console-log
+
+
 # This runs single-node full tempest with neutron plus cells v2 and
 # the placement-api service. The intent of this job is to test the latest
 # features in Nova which might be considered experimental in master.
