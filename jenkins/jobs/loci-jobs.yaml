@@ -29,6 +29,30 @@
       - devstack-logs
       - console-log
 
+- job-template:
+    name: '{name}-publish-loci-tarball'
+    node: ubuntu-xenial
+
+    builders:
+      - print-template-name:
+          template-name: '{template-name}'
+      - clone-loci
+      - shell: |
+          #!/bin/bash -xe
+          /usr/local/jenkins/slave_scripts/version-properties.sh
+          source version.properties
+
+          mkdir dist
+          tar cvfz dist/{name}-$PROJECT_VER.tar.gz -C openstack/loci scripts
+          if [[ "$ZUUL_BRANCH" == 'master' ]]; then
+              cp dist/* dist/{name}-latest.tar.gz
+          fi
+
+    publishers:
+      - tarball
+      - console-log
+
+
 - job-group:
     name: loci-jobs
     node: ubuntu-xenial
