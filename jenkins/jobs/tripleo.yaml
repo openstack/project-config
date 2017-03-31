@@ -41,7 +41,8 @@
             openstack/instack-undercloud \
             openstack/python-tripleoclient \
             openstack/tripleo-image-elements \
-            openstack/tripleo-puppet-elements
+            openstack/tripleo-puppet-elements \
+            openstack/requirements
 
 - job-template:
     name: '{pipeline}-tripleo-quickstart-{scenario}-{node}{suffix}'
@@ -93,7 +94,6 @@
       - link-logs
       - net-info
       - python-tripleoclient-buildimage-checkout
-      - zuul-git-prep-upper-constraints
       - shell: |
           #!/bin/bash -xe
           cd python-tripleoclient
@@ -124,7 +124,7 @@
           if [ "$ZUUL_BRANCH" == "master" ]; then
               tox -evenv -- pip install $WORKSPACE/diskimage-builder
           else
-              export UPPER_CONSTRAINTS_FILE=$WORKSPACE/upper-constraints.txt
+              export UPPER_CONSTRAINTS_FILE=$WORKSPACE/requirements/upper-constraints.txt
               tox -evenv -- pip install diskimage-builder -c $UPPER_CONSTRAINTS_FILE
           fi
 
