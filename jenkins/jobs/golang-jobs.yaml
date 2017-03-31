@@ -36,6 +36,48 @@
     publishers:
       - console-log
 
+- job-template:
+    name: 'gate-{name}-golang-dsvm-{suite}-{node}'
+    node: ubuntu-xenial
+
+    wrappers:
+      - build-timeout:
+          timeout: 180
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin {name} git://git.openstack.org/openstack/{name}"
+
+          function pre_test_hook {{
+              source $BASE/new/{name}/contrib/pre_test_hook.sh
+          }}
+          export -f pre_test_hook
+
+          function gate_hook {{
+              source $BASE/new/{name}/contrib/gate_hook.sh
+          }}
+          export -f gate_hook
+
+          function post_test_hook {{
+              source $BASE/new/{name}/contrib/post_test_hook.sh '{suite}'
+          }}
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - test-results
+      - devstack-logs
+      - console-log
+
 - job-group:
     name: golang-jobs
     node: ubuntu-xenial
