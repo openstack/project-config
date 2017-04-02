@@ -72,26 +72,28 @@
           services+=,q-svc,q-dhcp,q-meta,q-agt,q-l3
           export OVERRIDE_ENABLED_SERVICES=$services
 
-          if [[ -f "$BASE/new/{name}/contrib/pre_test_hook.sh" ]]; then
-              function pre_test_hook {{
+          function pre_test_hook {{
+              if [[ -f "$BASE/new/{name}/contrib/pre_test_hook.sh" ]]; then
                   source $BASE/new/{name}/contrib/pre_test_hook.sh
-              }}
-            export -f pre_test_hook
-          fi
+              fi
+          }}
+          export -f pre_test_hook
 
-          if [[ -f "$BASE/new/{name}/contrib/gate_hook.sh" ]]; then
-              function gate_hook {{
+          function gate_hook {{
+              if [[ -f "$BASE/new/{name}/contrib/gate_hook.sh" ]]; then
                   source $BASE/new/{name}/contrib/gate_hook.sh
-              }}
-              export -f gate_hook
-          fi
+              else
+                  $BASE/new/devstack-gate/devstack-vm-gate.sh
+              fi
+          }}
+          export -f gate_hook
 
-          if [[ -f "$BASE/new/{name}/contrib/post_test_hook.sh" ]]; then
-              function post_test_hook {{
-                  source $BASE/new/{name}/contrib/post_test_hook.sh '{suite}'
-              }}
-              export -f post_test_hook
-          fi
+          function post_test_hook {{
+              if [[ -f "$BASE/new/{name}/contrib/post_test_hook.sh" ]]; then
+                  source $BASE/new/{name}/contrib/post_test_hook.sh
+              fi
+          }}
+          export -f post_test_hook
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
