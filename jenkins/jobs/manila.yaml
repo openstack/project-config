@@ -82,12 +82,17 @@
           function pre_test_hook {{
               # Build custom image if needed
               if [[ {driver} == *"_with_custom_image" ]]; then
-                  project_dir="/opt/stack/new/manila-image-elements"
-                  git_dir=$project_dir/.git
-                  $project_dir/tools/gate/build-images {driver} True
-                  image_name=$(git --git-dir $git_dir ls-files --others --exclude-standard)
+                  current_dir=$(pwd)
+
+                  # Go to 'manila-image-elements' dir, build image and get its name
+                  cd /opt/stack/new/manila-image-elements
+                  ./tools/gate/build-images {driver} True
+                  image_name=$(git ls-files --others --exclude-standard)
                   export MANILA_SERVICE_IMAGE_URL="http://localhost:80/public_html/$image_name"
                   export MANILA_SERVICE_IMAGE_NAME=$(basename -s .tar.gz $(basename -s .qcow2 $image_name))
+
+                  # Return back to execution dir
+                  cd $current_dir
               fi
 
               # 'dhss' - acronym for 'Driver Handles Share Servers',
