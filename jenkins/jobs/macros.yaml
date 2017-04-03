@@ -11,22 +11,6 @@
       - shell: 'echo JJB template: {template-name}'
 
 - builder:
-    name: gerrit-git-prep
-    builders:
-      - shell: |
-          #!/bin/bash
-          count=0
-          until /usr/local/jenkins/slave_scripts/gerrit-git-prep.sh https://review.openstack.org git://git.openstack.org ; do
-              echo "git failed, retrying"
-              count=$(($count + 1))
-              if [ $count -eq 3 ]; then
-                  echo "Maximum of 3 git retries reached"
-                  exit 1
-              fi
-              sleep 5
-          done
-
-- builder:
     name: zuul-git-prep
     builders:
       - shell: |
