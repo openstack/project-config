@@ -10041,16 +10041,23 @@
       - python-jobs
       - openstack-publish-jobs
       - pypi-jobs
-      - 'gate-tempest-dsvm-patrole-{rbac-role}-{type}-{node}{suffix}':
+      - '{pipeline}-tempest-dsvm-patrole-{rbac-role}-{node}{suffix}':
+          pipeline: gate
           node: ubuntu-xenial
           branch-override: default
           suffix: '-nv'
           rbac-role:
             - admin
             - member
-          type:
-            - fast
-            - slow
+      - '{pipeline}-tempest-dsvm-patrole-multinode-{rbac-role}-{node-release}{suffix}':
+          pipeline: gate
+          node-release: ubuntu-xenial
+          node: ubuntu-xenial-2-node
+          branch-override: default
+          suffix: '-nv'
+          rbac-role:
+            - admin
+            - member
 
 - project:
     name: pbr
