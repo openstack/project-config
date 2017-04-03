@@ -95,6 +95,8 @@ CEPH_SOURCES_LIST="deb $NODEPOOL_CEPH_MIRROR $LSBDISTCODENAME main"
 UCA_SOURCES_LIST_LIBERTY="deb $NODEPOOL_UCA_MIRROR trusty-updates/liberty main"
 UCA_SOURCES_LIST_MITAKA="deb $NODEPOOL_UCA_MIRROR trusty-updates/mitaka main"
 UCA_SOURCES_LIST_NEWTON="deb $NODEPOOL_UCA_MIRROR xenial-updates/newton main"
+UCA_SOURCES_LIST_OCATA="deb $NODEPOOL_UCA_MIRROR xenial-updates/ocata main"
+UCA_SOURCES_LIST_PIKE="deb $NODEPOOL_UCA_MIRROR xenial-updates/pike main"
 
 MARIADB_SOURCES_LIST_10_0="deb $NODEPOOL_MARIADB_MIRROR/10.0 $LSBDISTCODENAME main"
 MARIADB_SOURCES_LIST_10_1="deb $NODEPOOL_MARIADB_MIRROR/10.1 $LSBDISTCODENAME main"
@@ -224,6 +226,12 @@ if [ "$LSBDISTID" == "Ubuntu" ] && [ "$LSBDISTCODENAME" != 'precise' ]; then
 
     echo "$UCA_SOURCES_LIST_NEWTON" >/tmp/ubuntu-cloud-archive-newton.list
     sudo mv /tmp/ubuntu-cloud-archive-newton.list /etc/apt/sources.list.available.d/
+
+    echo "$UCA_SOURCES_LIST_OCATA" >/tmp/ubuntu-cloud-archive-ocata.list
+    sudo mv /tmp/ubuntu-cloud-archive-ocata.list /etc/apt/sources.list.available.d/
+
+    echo "$UCA_SOURCES_LIST_PIKE" >/tmp/ubuntu-cloud-archive-pike.list
+    sudo mv /tmp/ubuntu-cloud-archive-pike.list /etc/apt/sources.list.available.d/
 
     # Ubuntu Mariadb
     echo "$MARIADB_SOURCES_LIST_10_0" >/tmp/ubuntu-mariadb-10-0.list
