@@ -19,6 +19,7 @@
       - print-template-name:
           template-name: '{template-name}'
       - link-logs
+      - zuul-git-prep
       - clone-loci
       - shell: |
           #!/bin/bash -xe
@@ -36,17 +37,16 @@
     builders:
       - print-template-name:
           template-name: '{template-name}'
-      - clone-loci
+      - zuul-git-prep
       - shell: |
           #!/bin/bash -xe
+          tar cvfz {name}.tar.gz --exclude .git .
+
           /usr/local/jenkins/slave_scripts/version-properties.sh
           source version.properties
 
           mkdir dist
-          tar cvfz dist/{name}-$PROJECT_VER.tar.gz -C openstack/loci scripts
-          if [[ "$ZUUL_BRANCH" == 'master' ]]; then
-              cp dist/* dist/{name}-latest.tar.gz
-          fi
+          mv {name}.tar.gz dist/{name}-$PROJECT_VER.tar.gz
 
     publishers:
       - tarball
