@@ -160,12 +160,20 @@
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
+
+          export PROJECTS="openstack/barbican $PROJECTS"
           export PROJECTS="openstack-dev/grenade $PROJECTS"
           export PROJECTS="openstack/python-barbicanclient $PROJECTS"
           export PROJECTS="openstack/barbican-tempest-plugin $PROJECTS"
+
           export GRENADE_PLUGINRC="enable_grenade_plugin barbican https://git.openstack.org/openstack/barbican"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"export TEMPEST_PLUGINS='/opt/stack/new/barbican-tempest-plugin'"
+
+          export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_GRENADE=pullup
+          export DEVSTACK_GATE_TEMPEST_REGEX=barbican
+          export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
+
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
