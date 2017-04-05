@@ -40,13 +40,13 @@
       - zuul-git-prep
       - shell: |
           #!/bin/bash -xe
-          tar cvfz {name}.tar.gz --exclude .git .
+          mkdir dist
+          tar cvfz dist/{name}.tar.gz --exclude dist --exclude .git .
 
           /usr/local/jenkins/slave_scripts/version-properties.sh
           source version.properties
 
-          mkdir dist
-          mv {name}.tar.gz dist/{name}-$PROJECT_VER.tar.gz
+          mv dist/{name}.tar.gz dist/{name}-$PROJECT_VER.tar.gz
 
     publishers:
       - tarball
