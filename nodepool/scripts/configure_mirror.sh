@@ -302,9 +302,3 @@ elif [ "$LSBDISTID" == "Fedora" ]; then
 elif [ "$LSBDISTID" == "openSUSE project" ]; then
     sudo sed -i -e "s,http://download.opensuse.org/,$NODEPOOL_OPENSUSE_MIRROR/," /etc/zypp/repos.d/*.repo
 fi
-
-# Finally write the base mirror host location to /etc/nodepool/mirror_host
-# This makes it easy for jobs to check if a mirror is expected at all
-# in jobs and where it is located.
-echo "$NODEPOOL_MIRROR_HOST" > /tmp/mirror_host
-sudo mv /tmp/mirror_host /etc/nodepool/mirror_host
