@@ -11,13 +11,21 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer
+            enable_plugin heat git://git.openstack.org/openstack/heat
+            enable_plugin congress git://git.openstack.org/openstack/congress
+            enable_plugin murano git://git.openstack.org/openstack/murano
+            enable_plugin aodh git://git.openstack.org/openstack/aodh
+            # To deploy congress as multi-process (api, pe, datasources)
+            CONGRESS_MULTIPROCESS_DEPLOYMENT=True
+
       - shell: |
           #!/bin/bash -xe
           ENABLED_SERVICES=s-proxy,s-object,s-container,s-account,
           ENABLED_SERVICES+=h-eng,h-api,h-api-cfn,h-api-cw
-
-          DEVSTACK_LOCAL_CONFIG="enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
-          DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
 
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
@@ -33,16 +41,7 @@
           export PROJECTS="openstack/python-muranoclient $PROJECTS"
           export PROJECTS="openstack/python-aodhclient $PROJECTS"
 
-          # Enable congress devstack plugin.
-          DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin congress git://git.openstack.org/openstack/congress"
-          # To be enabled for Mitaka and later
-          DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin murano git://git.openstack.org/openstack/murano"
-          DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin aodh git://git.openstack.org/openstack/aodh"
-          # To deploy congress as multi-process (api, pe, datasources)
-          DEVSTACK_LOCAL_CONFIG+=$'\n'"CONGRESS_MULTIPROCESS_DEPLOYMENT=True"
-
           export ENABLED_SERVICES
-          export DEVSTACK_LOCAL_CONFIG
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -72,13 +71,19 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer
+            enable_plugin heat git://git.openstack.org/openstack/heat
+            enable_plugin congress git://git.openstack.org/openstack/congress
+            enable_plugin aodh git://git.openstack.org/openstack/aodh
+            CONGRESS_REPLICATED=True
+            CONGRESS_MULTIPROCESS_DEPLOYMENT=True
       - shell: |
           #!/bin/bash -xe
           ENABLED_SERVICES=s-proxy,s-object,s-container,s-account,
           ENABLED_SERVICES+=h-eng,h-api,h-api-cfn,h-api-cw
-
-          DEVSTACK_LOCAL_CONFIG="enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
-          DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
 
           export ENABLED_SERVICES
           export PYTHONUNBUFFERED=true
@@ -91,12 +96,6 @@
           export PROJECTS="openstack/python-aodhclient $PROJECTS"
           export PROJECTS="openstack/aodh $PROJECTS"
           export DEVSTACK_PROJECT_FROM_GIT=python-congressclient
-          # Enable congress devstack plugin.
-          DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin congress git://git.openstack.org/openstack/congress"
-          DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin aodh git://git.openstack.org/openstack/aodh"
-          DEVSTACK_LOCAL_CONFIG+=$'\n'"CONGRESS_REPLICATED=True"
-          DEVSTACK_LOCAL_CONFIG+=$'\n'"CONGRESS_MULTIPROCESS_DEPLOYMENT=True"
-          export DEVSTACK_LOCAL_CONFIG
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
