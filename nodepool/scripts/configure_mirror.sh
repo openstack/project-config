@@ -219,9 +219,7 @@ sudo chown zuul:zuul /home/zuul/.pydistutils.cfg
 echo "$NPMRC" | sudo tee /home/zuul/.npmrc
 sudo chown zuul:zuul /home/zuul/.npmrc
 
-# NOTE(pabelanger): We don't actually have mirrors for ubuntu-precise, so skip
-# them.
-if [ "$LSBDISTID" == "Ubuntu" ] && [ "$LSBDISTCODENAME" != 'precise' ]; then
+if [ "$LSBDISTID" == "Ubuntu" ]; then
     echo "$UBUNTU_SOURCES_LIST" >/tmp/sources.list
     sudo mv /tmp/sources.list /etc/apt/
     sudo chown root:root /etc/apt/sources.list
@@ -261,10 +259,9 @@ if [ "$LSBDISTID" == "Ubuntu" ] && [ "$LSBDISTCODENAME" != 'precise' ]; then
     sudo chown root:root /etc/apt/sources.list.available.d/*
     sudo chmod 0644 /etc/apt/sources.list.available.d/*
 
-    if [ "$LSBDISTCODENAME" != 'precise' ] ; then
-        # Turn off multi-arch
-        sudo dpkg --remove-architecture i386
-    fi
+    # Turn off multi-arch
+    sudo dpkg --remove-architecture i386
+
     # Turn off checking of GPG signatures
     echo "$APT_CONF_UNAUTHENTICATED" >/tmp/99unauthenticated
     sudo mv /tmp/99unauthenticated /etc/apt/apt.conf.d/
