@@ -6920,13 +6920,24 @@
       # other projects.
       # - openstack-server-release-jobs
       - pypi-jobs
-      - '{pipeline}-{component}-devstack-dsvm-{node}{suffix}':
+      - '{pipeline}-{component}-devstack-dsvm{special}-{node}{suffix}':
           pipeline: gate
-          node:
-            - ubuntu-trusty
-            - ubuntu-xenial
+          node: ubuntu-xenial
           component: mistral
           suffix: '-nv'
+          special: ''
+      - '{pipeline}-{component}-devstack-dsvm{special}-{node}{suffix}':
+          pipeline: gate
+          node: ubuntu-xenial
+          component: mistral
+          suffix: '-nv'
+          special: '-non-apache'
+      - '{pipeline}-{component}-devstack-dsvm{special}-{node}{suffix}':
+          pipeline: gate
+          node: ubuntu-xenial
+          component: mistral
+          suffix: '-nv'
+          special: '-kombu'
       - gate-rally-dsvm-mistral-{name}-{node}{suffix}:
           name: task
           node:
@@ -6940,9 +6951,6 @@
           node:
             - ubuntu-trusty
             - ubuntu-xenial
-      - 'gate-mistral-devstack-dsvm-kombu{suffix}':
-          suffix: '-nv'
-          node: ubuntu-xenial
 
 - project:
     name: mistral-dashboard
@@ -12828,13 +12836,14 @@
       - python-jobs
       - pypi-jobs
       - openstack-client-publish-jobs
-      - '{pipeline}-{component}-devstack-dsvm-{node}{suffix}':
+      - '{pipeline}-{component}-devstack-dsvm{special}-{node}{suffix}':
           pipeline: gate
           node:
             - ubuntu-trusty
             - ubuntu-xenial
           suffix: ''
           component: python-mistralclient
+          special: ''
 
 - project:
     name: python-moganclient

@@ -1,5 +1,5 @@
 - job-template:
-    name: '{pipeline}-{component}-devstack-dsvm-{node}{suffix}'
+    name: '{pipeline}-{component}-devstack-dsvm{special}-{node}{suffix}'
     node: '{node}'
 
     wrappers:
@@ -28,6 +28,14 @@
           export DEVSTACK_LOCAL_CONFIG="enable_plugin mistral https://git.openstack.org/openstack/mistral"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
 
+          if [ "{special}" == "-non-apache" ]; then
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"MISTRAL_USE_MOD_WSGI=False"
+          fi
+
+          if [ "{special}" == "-kombu" ]; then
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"MISTRAL_RPC_IMPLEMENTATION=kombu"
+          fi
+
           function post_test_hook {{
               cd /opt/stack/new/{component}/functionaltests
               ./post_test_hook.sh
@@ -40,6 +48,7 @@
     publishers:
       - devstack-logs
       - console-log
+
 
 - job:
     name: gate-mistral-docker-buildimage
@@ -61,45 +70,4 @@
               target: 'tarballs/mistral/images'
               keep-hierarchy: false
               copy-after-failure: false
-      - console-log
-
-
-- job-template:
-    name: 'gate-mistral-devstack-dsvm-kombu{suffix}'
-    node: '{node}'
-
-    wrappers:
-      - build-timeout:
-          timeout: 70
-      - timestamps
-
-    builders:
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - shell: |
-          #!/bin/bash -xe
-          export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_NEUTRON=1
-
-          export ENABLED_SERVICES=heat,h-api,h-api-cfn,h-api-cw,h-eng,tempest
-          export PROJECTS="openstack/heat $PROJECTS"
-          export PROJECTS="openstack/mistral $PROJECTS"
-          export PROJECTS="openstack/mistral-dashboard $PROJECTS"
-          export PROJECTS="openstack/python-mistralclient $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin mistral https://git.openstack.org/openstack/mistral"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"MISTRAL_RPC_IMPLEMENTATION=kombu"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
-
-          function post_test_hook {{
-              cd /opt/stack/new/mistral/functionaltests
-              ./post_test_hook.sh
-          }}
-          export -f post_test_hook
-
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
-
-    publishers:
-      - devstack-logs
       - console-log
