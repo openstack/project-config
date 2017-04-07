@@ -38,22 +38,6 @@ labels:
       - name: osic-cloud1-s3700
       - name: infracloud-vanilla
       - name: infracloud-chocolate
-  - name: ubuntu-precise
-    image: ubuntu-precise
-    ready-script: configure_mirror.sh
-    min-ready: 0
-    providers:
-      - name: rax-dfw
-      - name: rax-ord
-      - name: rax-iad
-      - name: ovh-gra1
-      - name: ovh-bhs1
-      - name: bluebox-sjc1
-      - name: internap-mtl01
-      - name: osic-cloud1-s3500
-      - name: osic-cloud1-s3700
-      - name: infracloud-vanilla
-      - name: infracloud-chocolate
   - name: ubuntu-trusty
     image: ubuntu-trusty
     ready-script: configure_mirror.sh
@@ -239,13 +223,6 @@ providers:
     image-type: vhd
     template-hostname: '{image.name}-{timestamp}'
     images:
-      - name: ubuntu-precise
-        min-ram: 8192
-        diskimage: ubuntu-precise
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        name-filter: 'Performance'
-        config-drive: true
       - name: ubuntu-trusty
         min-ram: 8192
         diskimage: ubuntu-trusty
@@ -293,13 +270,6 @@ providers:
     image-type: vhd
     template-hostname: '{image.name}-{timestamp}'
     images:
-      - name: ubuntu-precise
-        min-ram: 8192
-        diskimage: ubuntu-precise
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        name-filter: 'Performance'
-        config-drive: true
       - name: ubuntu-trusty
         min-ram: 8192
         diskimage: ubuntu-trusty
@@ -347,13 +317,6 @@ providers:
     image-type: vhd
     template-hostname: '{image.name}-{timestamp}'
     images:
-      - name: ubuntu-precise
-        min-ram: 8192
-        diskimage: ubuntu-precise
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        name-filter: 'Performance'
-        config-drive: true
       - name: ubuntu-trusty
         min-ram: 8192
         diskimage: ubuntu-trusty
@@ -399,13 +362,6 @@ providers:
     image-type: 'qcow2'
     template-hostname: '{image.name}-{timestamp}'
     images:
-      - name: ubuntu-precise
-        min-ram: 8000
-        name-filter: 'ssd-osFoundation-3'
-        diskimage: ubuntu-precise
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
       - name: ubuntu-trusty
         min-ram: 8000
         name-filter: 'ssd-osFoundation-3'
@@ -451,13 +407,6 @@ providers:
     image-type: 'qcow2'
     template-hostname: '{image.name}-{timestamp}'
     images:
-      - name: ubuntu-precise
-        min-ram: 8000
-        name-filter: 'ssd-osFoundation-3'
-        diskimage: ubuntu-precise
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
       - name: ubuntu-trusty
         min-ram: 8000
         name-filter: 'ssd-osFoundation-3'
@@ -503,13 +452,6 @@ providers:
     clean-floating-ips: true
     template-hostname: '{image.name}-{timestamp}'
     images:
-      - name: ubuntu-precise
-        min-ram: 8000
-        name-filter: 'nodepool'
-        diskimage: ubuntu-precise
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
       - name: ubuntu-trusty
         min-ram: 8000
         name-filter: 'nodepool'
@@ -554,13 +496,6 @@ providers:
     rate: 0.001
     template-hostname: '{image.name}-{timestamp}'
     images:
-      - name: ubuntu-precise
-        min-ram: 8000
-        name-filter: 'A1.8'
-        diskimage: ubuntu-precise
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
       - name: ubuntu-trusty
         min-ram: 8000
         name-filter: 'A1.8'
@@ -608,13 +543,6 @@ providers:
       - name: 'GATEWAY_NET_V6'
     template-hostname: '{image.name}-{timestamp}'
     images:
-      - name: ubuntu-precise
-        min-ram: 8000
-        name-filter: 'm2.medium.s3500'
-        diskimage: ubuntu-precise
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
       - name: ubuntu-trusty
         min-ram: 8000
         name-filter: 'm2.medium.s3500'
@@ -662,13 +590,6 @@ providers:
       - name: 'GATEWAY_NET_V6'
     template-hostname: '{image.name}-{timestamp}'
     images:
-      - name: ubuntu-precise
-        min-ram: 8000
-        name-filter: 'm2.medium.s3700'
-        diskimage: ubuntu-precise
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
       - name: ubuntu-trusty
         min-ram: 8000
         name-filter: 'm2.medium.s3700'
@@ -733,13 +654,6 @@ providers:
     image-type: 'qcow2'
     template-hostname: '{image.name}-{timestamp}'
     images:
-      - name: ubuntu-precise
-        min-ram: 8000
-        name-filter: 'nodepool'
-        diskimage: ubuntu-precise
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
       - name: ubuntu-trusty
         min-ram: 8000
         name-filter: 'nodepool'
@@ -786,13 +700,6 @@ providers:
     image-type: 'qcow2'
     template-hostname: '{image.name}-{timestamp}'
     images:
-      - name: ubuntu-precise
-        min-ram: 8000
-        name-filter: 'nodepool'
-        diskimage: ubuntu-precise
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
       - name: ubuntu-trusty
         min-ram: 8000
         name-filter: 'nodepool'
@@ -855,27 +762,6 @@ diskimages:
       DIB_DISABLE_APT_CLEANUP: '1'
       DIB_DISTRIBUTION_MIRROR: http://ftp.us.debian.org/debian/
       DIB_GRUB_TIMEOUT: '0'
-  - name: ubuntu-precise
-    elements:
-      - ubuntu-minimal
-      - vm
-      - simple-init
-      - openstack-repos
-      - nodepool-base
-      - cache-devstack
-      - cache-bindep
-      - growroot
-      - infra-package-needs
-    release: precise
-    env-vars:
-      TMPDIR: /opt/dib_tmp
-      DIB_CHECKSUM: '1'
-      DIB_IMAGE_CACHE: /opt/dib_cache
-      DIB_APT_LOCAL_CACHE: '0'
-      DIB_DISABLE_APT_CLEANUP: '1'
-      FS_TYPE: ext3
-      DIB_GRUB_TIMEOUT: '0'
-      DIB_DEBIAN_COMPONENTS: 'main,universe'
   - name: ubuntu-trusty
     elements:
       - ubuntu-minimal
