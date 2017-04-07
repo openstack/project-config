@@ -11,6 +11,12 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+              [[local|localrc]]
+              enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer
+              enable_plugin neutron https://git.openstack.org/openstack/neutron
+              enable_plugin octavia https://git.openstack.org/openstack/octavia
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -22,11 +28,10 @@
           export DEVSTACK_GATE_INSTALL_TESTONLY=1
           export BRANCH_OVERRIDE={branch-override}
           export PROJECTS="openstack/python-openstacksdk $PROJECTS"
+          export PROJECTS="openstack/octavia $PROJECTS"
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin neutron https://git.openstack.org/openstack/neutron"
           export ENABLED_SERVICES=q-qos
           function post_test_hook {{
               bash -xe $BASE/new/python-openstacksdk/post_test_hook.sh
