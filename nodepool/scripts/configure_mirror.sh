@@ -59,6 +59,7 @@ NODEPOOL_CENTOS_MIRROR=${NODEPOOL_CENTOS_MIRROR:-http://$NODEPOOL_MIRROR_HOST/ce
 NODEPOOL_DEBIAN_OPENSTACK_MIRROR=${NODEPOOL_DEBIAN_OPENSTACK_MIRROR:-http://$NODEPOOL_MIRROR_HOST/debian-openstack}
 NODEPOOL_EPEL_MIRROR=${NODEPOOL_EPEL_MIRROR:-http://$NODEPOOL_MIRROR_HOST/epel}
 NODEPOOL_FEDORA_MIRROR=${NODEPOOL_FEDORA_MIRROR:-http://$NODEPOOL_MIRROR_HOST/fedora}
+NODEPOOL_OPENSUSE_MIRROR=${NODEPOOL_OPENSUSE_MIRROR:-http://$NODEPOOL_MIRROR_HOST/opensuse}
 NODEPOOL_CEPH_MIRROR=${NODEPOOL_CEPH_MIRROR:-http://$NODEPOOL_MIRROR_HOST/ceph-deb-hammer}
 NODEPOOL_UCA_MIRROR=${NODEPOOL_UCA_MIRROR:-http://$NODEPOOL_MIRROR_HOST/ubuntu-cloud-archive}
 NODEPOOL_MARIADB_MIRROR=${NODEPOOL_MARIADB_MIRROR:-http://$NODEPOOL_MIRROR_HOST/ubuntu-mariadb}
@@ -298,6 +299,8 @@ elif [ "$LSBDISTID" == "Fedora" ]; then
     sudo mv /tmp/fedora-updates.repo /etc/yum.repos.d/
     sudo chown root:root /etc/yum.repos.d/*
     sudo chmod 0644 /etc/yum.repos.d/*
+elif [ "$LSBDISTID" == "openSUSE project" ]; then
+    sudo sed -i -e "s,http://download.opensuse.org/,$NODEPOOL_OPENSUSE_MIRROR/," /etc/zypp/repos.d/*.repo
 fi
 
 # Finally write the base mirror host location to /etc/nodepool/mirror_host
