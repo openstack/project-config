@@ -157,6 +157,32 @@
     node: '{node}'
 
 - job-template:
+    name: 'gate-cross-{name}-python35'
+    description: 'Same job as gate-{name}-python35 but clones {name}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 50
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - zuul-git-prep-upper-constraints-cross:
+          project: openstack/{name}
+      - install-distro-packages
+      - extra-test-setup
+      - revoke-sudo
+      - python35
+      - assert-no-extra-files
+
+    publishers:
+      - test-results
+      - console-log
+
+    node: ubuntu-xenial
+
+- job-template:
     name: 'gate-cross-{name}-func-{node}'
     description: 'Same job as gate-{name}-tox-functional but clones {name}'
 
@@ -563,6 +589,7 @@
     node: ubuntu-xenial
     jobs:
       - 'gate-cross-{name}-python27-{node}'
+      - 'gate-cross-{name}-python35'
       - 'gate-cross-{name}-func-{node}'
 
 
