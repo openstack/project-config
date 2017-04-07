@@ -2423,9 +2423,13 @@ jobs:
           - ^tox.ini$
 
   # NOTE(mriedem): The nova-next job runs with the placement-api service and
-  # cells v2 so it won't work before Newton.
-  - name: gate-grenade-dsvm-neutron-nova-next-ubuntu-trusty-nv
-    branch: ^stable/newton$
+  # cells v2, both of which were optional in newton but required started in
+  # ocata. We pin this job to stable/ocata so that upgrade tests on ocata
+  # changes will test deploying placement/cellsv2 on newton nodes and uprading
+  # to ocata. This job isn't interesting after ocata because the normal
+  # grenade job tests the same thing by default.
+  - name: gate-grenade-dsvm-neutron-nova-next-ubuntu-xenial-nv
+    branch: ^stable/ocata$
 
   - name: gate-grenade-dsvm-neutron-multinode-live-migration-nv
     branch: ^(?!stable/(mitaka|newton)).*$
@@ -3865,7 +3869,6 @@ projects:
     experimental:
       - gate-grenade-dsvm-neutron-forward-ubuntu-trusty
       - gate-grenade-dsvm-neutron-forward-ubuntu-xenial
-      - gate-grenade-dsvm-neutron-nova-next-ubuntu-trusty-nv
       - gate-grenade-dsvm-neutron-nova-next-ubuntu-xenial-nv
       - gate-grenade-dsvm-trove
       - gate-grenade-dsvm-ceilometer-ubuntu-trusty
@@ -13254,9 +13257,7 @@ projects:
       - gate-tempest-dsvm-nova-v20-api-ubuntu-trusty
       - gate-tempest-dsvm-nova-v20-api-ubuntu-xenial
       - gate-grenade-dsvm-forward-ubuntu-trusty
-      - gate-grenade-dsvm-neutron-nova-next-ubuntu-trusty-nv
       - gate-grenade-dsvm-neutron-nova-next-ubuntu-xenial-nv
-      - gate-tempest-dsvm-nova-wsgi-full-ubuntu-trusty
       - gate-tempest-dsvm-nova-wsgi-full-ubuntu-xenial
       - gate-tempest-dsvm-multinode-full-ubuntu-trusty-nv
       - gate-tempest-dsvm-multinode-full-ubuntu-xenial-nv
@@ -13266,11 +13267,8 @@ projects:
       - gate-tempest-dsvm-ironic-pxe_ipa-full-ubuntu-trusty-nv
       - gate-tempest-dsvm-ironic-pxe_ipa-full-ubuntu-xenial-nv
       - gate-tempest-dsvm-lxc-ubuntu-xenial
-      - gate-tempest-dsvm-lvm-ubuntu-trusty
       - gate-tempest-dsvm-lvm-ubuntu-xenial
-      - gate-tempest-dsvm-neutron-src-oslo.versionedobjects-ubuntu-trusty
       - gate-tempest-dsvm-neutron-src-oslo.versionedobjects-ubuntu-xenial
-      - gate-tempest-dsvm-nova-os-vif-ubuntu-trusty-nv
       - gate-tempest-dsvm-nova-os-vif-ubuntu-xenial-nv
       - gate-tempest-dsvm-nova-libvirt-kvm-apr-ubuntu-xenial-nv
       - gate-grenade-dsvm-neutron-multinode-zero-downtime-ubuntu-xenial
