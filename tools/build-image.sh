@@ -54,8 +54,8 @@ fi
 
 ## If your firewall won't allow outbound DNS connections, you'll want
 ## to set these to local resolvers
-# NODEPOOL_STATIC_NAMESERVER_V4=192.168.0.1
-# NODEPOOL_STATIC_NAMESERVER_V6=2000::...
+# export NODEPOOL_STATIC_NAMESERVER_V4=192.168.0.1
+# export NODEPOOL_STATIC_NAMESERVER_V6=2000::...
 
 ## This will get dib to drop you into a shell on error, useful for debugging
 # export break="after-error"
@@ -85,12 +85,12 @@ fi
 ## password.
 
 ## defaults
-## DIB_DEV_USER_USERNAME=devuser
-## DIB_DEV_USER_AUTHORIZED_KEYS=$HOME/.ssh/id_rsa.pub
+## export DIB_DEV_USER_USERNAME=devuser
+## export DIB_DEV_USER_AUTHORIZED_KEYS=$HOME/.ssh/id_rsa.pub
 
 # EXTRA_ELEMENTS+=devuser
-# DIB_DEV_USER_PWDLESS_SUDO=1
-# DIB_DEV_USER_PASSWORD=devuser
+# export DIB_DEV_USER_PWDLESS_SUDO=1
+# export DIB_DEV_USER_PASSWORD=devuser
 
 ## The list of elements below should match those configured
 ## in nodepool/nodepool.yaml
