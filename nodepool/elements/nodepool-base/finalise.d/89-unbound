@@ -86,3 +86,54 @@ EOF
 chmod a+x /etc/rc.local
 
 echo 'include: /etc/unbound/forwarding.conf' >> /etc/unbound/unbound.conf
+
+# This defaults file must be in place to work around this bug:
+# https://bugs.launchpad.net/ubuntu/+source/unbound/+bug/988513
+# The issue is fixed for Xenial so this is only required for Trusty.
+if [ "$DIB_RELEASE" == "trusty" ] ; then
+    cat > /etc/default/unbound <<EOF
+UNBOUND_ENABLE=true
+ROOT_TRUST_ANCHOR_UPDATE=true
+ROOT_TRUST_ANCHOR_FILE=/var/lib/unbound/root.key
+RESOLVCONF=true
+RESOLVCONF_FORWARDERS=false
+EOF
+fi
+
+# Tripleo uses dhcp
+dhcp_file=''
+if [[ "$DISTRO_NAME" =~ (centos|rhel7|fedora) ]] ; then
+    dhcp_file=/etc/dhcp/dhclient-eth0.conf
+elif [[ "$DISTRO_NAME" =~ (debian|ubuntu) ]] ; then
+    dhcp_file=/etc/dhcp/dhclient.conf
+fi
+if [ -n "$dhcp_file" ] ; then
+    cat > $dhcp_file <<EOF
+option rfc3442-classless-static-routes code 121 = array of unsigned integer 8;
+send host-name "<hostname>";
+request subnet-mask, broadcast-address, routers,
+    interface-mtu, rfc3442-classless-static-routes;
+supersede domain-name-servers 127.0.0.1;
+supersede domain-search "";
+supersede domain-name "";
+EOF
+fi
+
+case "$DIB_INIT_SYSTEM" in
+    upstart)
+        # nothing to do
+        ;;
+    systemd)
+        systemctl enable unbound.service
+        ;;
+    openrc)
+        # let dib-init-system's postinstall handle enabling init scripts
+        ;;
+    sysv)
+        # nothing to do
+        ;;
+    *)
+        echo "Unsupported init system $DIB_INIT_SYSTEM"
+        exit 1
+        ;;
+esac
