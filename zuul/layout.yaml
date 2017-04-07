@@ -2661,6 +2661,11 @@ jobs:
   - name: ^gate-rally-dsvm-cinder-ubuntu-xenial.*$
     branch: ^(?!(stable/mitaka|driverfixes/)).*$
 
+    # NOTE(tbarron): Ensure this job is stable in master (Pike) before
+    # making it vote.   Python 3.x job tests only from Pike forwards.
+  - name: ^gate-tempest-dsvm-py35-full-devstack-plugin-ceph-ubuntu-xenial.*$
+    branch: ^(?!(stable/(newton|ocata)|driverfixes/)).*$
+
     # NOTE(jordanP): Non-voting is temporary until the job stabilizes in
     # master (Pike).
   - name: ^gate-tempest-dsvm-full-devstack-plugin-ceph-ubuntu-xenial.*$
@@ -3840,6 +3845,9 @@ projects:
       - gate-tempest-dsvm-neutron-linuxbridge-ubuntu-xenial
     experimental:
       - gate-tempest-dsvm-full-devstack-plugin-ceph-ubuntu-xenial
+      - gate-tempest-dsvm-py35-full-devstack-plugin-ceph-ubuntu-xenial-nv
+      - gate-manila-tempest-minimal-py35-dsvm-cephfs-native-centos-7-nv
+      - gate-manila-tempest-minimal-py35-dsvm-cephfs-nfs-centos-7-nv
       - gate-neutron-dsvm-functional-ubuntu-trusty
       - gate-tempest-dsvm-neutron-dvr-ubuntu-trusty
       - gate-tempest-dsvm-neutron-dvr-ubuntu-xenial
@@ -6853,6 +6861,7 @@ projects:
       - gate-grenade-dsvm-cinder-mn-sub-volschbak-ubuntu-xenial-nv
       - gate-grenade-dsvm-cinder-mn-sub-bak-ubuntu-xenial-nv
       - gate-rally-dsvm-py35-cinder-nv
+      - gate-tempest-dsvm-py35-full-devstack-plugin-ceph-ubuntu-xenial-nv
 
   - name: openstack/cinder-fusioncompute
     template:
@@ -8976,6 +8985,10 @@ projects:
       - gate-manila-tempest-minimal-dsvm-cephfs-nfs-centos-7-nv
     gate:
       - gate-devstack-plugin-ceph-bashate
+    experimental:
+      - gate-tempest-dsvm-py35-full-devstack-plugin-ceph-ubuntu-xenial-nv
+      - gate-manila-tempest-minimal-py35-dsvm-cephfs-native-centos-7-nv
+      - gate-manila-tempest-minimal-py35-dsvm-cephfs-nfs-centos-7-nv
 
   - name: openstack/devstack-plugin-container
     template:
@@ -10504,6 +10517,7 @@ projects:
     experimental:
       - gate-grenade-dsvm-forward-ubuntu-trusty
       - gate-glance-dsvm-grenade-multinode-ubuntu-xenial-nv
+      - gate-tempest-dsvm-py35-full-devstack-plugin-ceph-ubuntu-xenial-nv
 
   - name: openstack/glance-specs
     template:
@@ -13372,7 +13386,7 @@ projects:
       - gate-tempest-dsvm-full-devstack-plugin-nfs-nv
       - gate-tripleo-ci-centos-7-nonha-multinode-oooq
       - gate-barbican-simple-crypto-dsvm-tempest-nova-ubuntu-xenial-nv
-
+      - gate-tempest-dsvm-py35-full-devstack-plugin-ceph-ubuntu-xenial-nv
 
   - name: openstack/nova-dpm
     template:
@@ -18425,6 +18439,8 @@ projects:
       - gate-tempest-dsvm-nova-v20-api-ubuntu-xenial
       - gate-tempest-dsvm-lvm-multibackend-ubuntu-xenial-nv
       - gate-tempest-dsvm-cinder-v1-ubuntu-xenial
+      - gate-tempest-dsvm-py35-full-devstack-plugin-ceph-ubuntu-xenial-nv
+
     post:
       - tempest-docs-ubuntu-xenial
       - tempest-coverage-ubuntu-xenial

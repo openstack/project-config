@@ -1946,6 +1946,51 @@
       - devstack-logs
       - console-log
 
+- job-template:
+    name: '{pipeline}-tempest-dsvm-py35-full-devstack-plugin-ceph-{node}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 180
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            # swift is not ready for python3 yet
+            disable_service s-account
+            disable_service s-container
+            disable_service s-object
+            disable_service s-proxy
+
+            enable_plugin devstack-plugin-{plugin} git://git.openstack.org/{plugin-repo}
+
+      - shell: |
+          #!/bin/bash -xe
+          export DEVSTACK_GATE_USE_PYTHON3=True
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
+          export PROJECTS="{plugin-repo} $PROJECTS"
+
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+
+          export DEVSTACK_GATE_SETTINGS=/opt/stack/new/nova/devstack/tempest-dsvm-ceph-rc
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
 
 - job-template:
     name: '{pipeline}-tempest-dsvm-full-ceph-plugin-src-{name}-{node}{suffix}'
