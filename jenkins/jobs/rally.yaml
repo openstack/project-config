@@ -136,28 +136,24 @@
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin magnum https://git.openstack.org/openstack/magnum"
           fi
           if [ $DEVSTACK_GATE_TELEMETRY -ne 0 ]; then
-              export PROJECTS="openstack/ceilometer $PROJECTS"
-              export PROJECTS="openstack/aodh $PROJECTS"
-
               # panko exists for Newton+ only
               if [[ ! "stable/mitaka" =~ $ZUUL_BRANCH ]]; then
                   export PROJECTS="openstack/panko $PROJECTS"
+                  export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin panko git://git.openstack.org/openstack/panko"
+                  export ENABLED_SERVICES+=panko-api,
               fi
+              export PROJECTS="openstack/ceilometer $PROJECTS"
+              export PROJECTS="openstack/aodh $PROJECTS"
+              export PROJECTS="openstack/gnocchi $PROJECTS"
+
               export CEILOMETER_NOTIFICATION_TOPICS=notifications,profiler
 
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin aodh git://git.openstack.org/openstack/aodh"
-              # panko exists for Newton+ only
-              if [[ ! "stable/mitaka" =~ $ZUUL_BRANCH ]]; then
-                  export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin panko git://git.openstack.org/openstack/panko"
-              fi
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin gnocchi git://git.openstack.org/openstack/gnocchi"
               export ENABLED_SERVICES+=ceilometer-acompute,ceilometer-acentral,ceilometer-api,
               export ENABLED_SERVICES+=ceilometer-anotification,ceilometer-collector,
               export ENABLED_SERVICES+=aodh-api,aodh-evaluator,aodh-notifier,
-              # panko exists for Newton+ only
-              if [[ ! "stable/mitaka" =~ $ZUUL_BRANCH ]]; then
-                  export ENABLED_SERVICES+=panko-api,
-              fi
           fi
           export ENABLED_SERVICES
           export DEVSTACK_LOCAL_CONFIG
