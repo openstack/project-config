@@ -316,3 +316,8 @@ elif [ "$LSBDISTID" == "Fedora" ]; then
 elif [ "$LSBDISTID" == "openSUSE project" ]; then
     sudo sed -i -e "s,http://download.opensuse.org/,$NODEPOOL_OPENSUSE_MIRROR/," /etc/zypp/repos.d/*.repo
 fi
+
+if [ "$LSBDISTID" == "Debian" ] || [ "$LSBDISTID" == "Ubuntu" ]; then
+    # Make sure our indexes are up to date.
+    sudo apt-get update
+fi
