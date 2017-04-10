@@ -203,10 +203,12 @@ def main():
         # Check redundant groups entry:
         # By default the groups entry is repo_name, no need to add this.
         groups = p.get('groups')
-        if groups and len(groups) == 1 and groups[0] == repo_name:
+        storyboard = p.get('use-storyboard', False)
+        if (groups and len(groups) == 1 and groups[0] == repo_name
+                and not storyboard):
             found_errors += 1
-            print("ERROR: Project %s has default groups entry, remove it" %
-                  name)
+            print("ERROR: Non-StoryBoard project %s has default groups entry, "
+                  "remove it" % name)
 
     if found_errors:
         print("Found %d error(s) in %s" % (found_errors, args.infile))
