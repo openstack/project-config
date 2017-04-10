@@ -31,7 +31,9 @@
           if [ "{multinode}" -eq 1 ] ; then
               export DEVSTACK_GATE_TOPOLOGY="multinode"
           fi
-
+          if [ "{sahara-mod-wsgi}" -eq 1 ] ; then
+              export SAHARA_USE_MOD_WSGI=True
+          fi
           export BRANCH_OVERRIDE={branch-override}
           if [ "{branch-override}" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -336,7 +338,30 @@
       - devstack-sahara:
           network: "{network}"
           multinode: 0
+          sahara-mod-wsgi: 0
           plugin: "fake"
+          branch-override: "{branch-override}"
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+
+- job-template:
+    name: '{pipeline}-sahara-dsvm-scenario-mod-wsgi-{node}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 130
+      - timestamps
+
+    builders:
+      - devstack-sahara:
+          network: neutron
+          multinode: 0
+          sahara-mod-wsgi: 1
+          plugin: fake
           branch-override: "{branch-override}"
 
     publishers:
@@ -357,6 +382,7 @@
       - devstack-sahara:
           network: neutron
           multinode: 1
+          sahara-mod-wsgi: 0
           plugin: "{plugin}"
           branch-override: "{branch-override}"
 
