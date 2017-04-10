@@ -6285,8 +6285,20 @@
           action: deploy
           config:
             - helm-entrypoint
-            - helm-operator
             - helm-compute-kit
+          distro: centos
+          node: 'centos-7'
+          type:
+            - 'source'
+            - 'binary'
+          ver:
+            - '2'
+            - '4'
+          suffix: '-nv'
+      - 'gate-kolla-kubernetes-{action}-{distro}-{type}-{ver}-{config}{suffix}':
+          action: deploy
+          config:
+            - helm-operator
             - external-ovs
             - ceph
             - iscsi
