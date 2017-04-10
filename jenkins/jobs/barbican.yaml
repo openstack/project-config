@@ -140,6 +140,14 @@
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"LIBS_FROM_GIT=cursive"
           fi
 
+          if [ "{special}" == "-py35" ] ; then
+             export DEVSTACK_GATE_USE_PYTHON3=True
+             export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-account"
+             export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-container"
+             export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-object"
+             export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-proxy"
+          fi
+
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
 
           ./safe-devstack-vm-gate-wrap.sh
