@@ -13,6 +13,10 @@
       - devstack-checkout
       - firefox-install
       - xvfb-install
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin app-catalog-ui https://git.openstack.org/openstack/app-catalog-ui
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -23,7 +27,6 @@
 
           # Enable App Catalog Horizon plugin
           export PROJECTS="openstack/app-catalog-ui $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin app-catalog-ui https://git.openstack.org/openstack/app-catalog-ui"
 
           function pre_test_hook {
               $BASE/new/app-catalog-ui/tools/gate/integration/pre_test_hook.sh
