@@ -1,5 +1,5 @@
 - job-template:
-    name: '{pipeline}-senlin-dsvm-tempest-{test_type}{suffix}'
+    name: '{pipeline}-senlin-dsvm-tempest-{py_ver}-{test_type}{suffix}'
     node: '{node}'
 
     wrappers:
@@ -13,7 +13,12 @@
       - devstack-checkout
       - shell: |
           #!/bin/bash -xe
-          export PYTHONUNBUFFERED=true
+          if [ "{py_ver}" == "py35" ]; then
+            export DEVSTACK_GATE_USE_PYTHON3=True
+          else
+            export DEVSTACK_GATE_USE_PYTHON3=False
+          fi
+          export PYTHONUNBUFFERED=True
           export BRANCH_OVERRIDE={branch-override}
           export PROJECTS="openstack/senlin $PROJECTS"
           export KEEP_LOCALRC=1

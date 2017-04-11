@@ -3576,9 +3576,7 @@ jobs:
   - name: ^gate-tempest-dsvm-ironic-ipa-wholedisk-bios-pxe_ipmitool-tinyipa-ubuntu-xenial$
     branch: ^stable/(mitaka|newton|ocata).*$
 
-
-  - name: ^gate-senlin-dsvm-tempest-(functional|api|integration)
-    branch: ^(?!stable/mitaka).*$
+  - name: ^gate-senlin-dsvm-tempest-(py27|py35)-(functional|api|integration)
     skip-if:
       - project: ^openstack/senlin$
         all-files-match-any:
@@ -3586,6 +3584,12 @@ jobs:
           - ^doc/.*$
           - ^api-ref/.*$
           - ^releasenotes/.*$
+
+  - name: ^gate-senlin-dsvm-tempest-py35-(functional|api|integration)
+    branch: ^(?!stable/(mitaka|newton)).*$
+
+  - name: ^gate-senlin-dsvm-tempest-py27-(functional|api|integration)
+    branch: ^(?!stable/mitaka).*$
 
   # NOTE(andrey-mp): nova-network is deprecated since Ocata
   - name: gate-functional-nova-network-dsvm-ec2api-ubuntu-xenial
@@ -17545,12 +17549,17 @@ projects:
     check:
       - senlin-coverage-ubuntu-trusty-nv
       - senlin-coverage-ubuntu-xenial-nv
-      - gate-senlin-dsvm-tempest-api
-      - gate-senlin-dsvm-tempest-functional
-      - gate-senlin-dsvm-tempest-integration-nv
+      - gate-senlin-dsvm-tempest-py27-api
+      - gate-senlin-dsvm-tempest-py35-api
+      - gate-senlin-dsvm-tempest-py27-functional
+      - gate-senlin-dsvm-tempest-py35-functional
+      - gate-senlin-dsvm-tempest-py27-integration-nv
+      - gate-senlin-dsvm-tempest-py35-integration-nv
     gate:
-      - gate-senlin-dsvm-tempest-api
-      - gate-senlin-dsvm-tempest-functional
+      - gate-senlin-dsvm-tempest-py27-api
+      - gate-senlin-dsvm-tempest-py35-api
+      - gate-senlin-dsvm-tempest-py27-functional
+      - gate-senlin-dsvm-tempest-py35-functional
     experimental:
       - gate-rally-dsvm-senlin-senlin-ubuntu-trusty-nv
       - gate-rally-dsvm-senlin-senlin-ubuntu-xenial-nv
