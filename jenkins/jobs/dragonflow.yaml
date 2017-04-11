@@ -117,6 +117,11 @@
 
           export PROJECTS="openstack/dragonflow $PROJECTS"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin dragonflow git://git.openstack.org/openstack/dragonflow"
+          # Add bgp project to fullstack gate job.
+          export PROJECTS="openstack/neutron-dynamic-routing $PROJECTS"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin neutron-dynamic-routing git://git.openstack.org/openstack/neutron-dynamic-routing"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"DR_MODE=df-bgp"
+
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_ENABLE_DRAGONFLOW_LOCAL_CONTROLLER=True"
 
           export DEVSTACK_GATE_SETTINGS=/opt/stack/new/dragonflow/devstack/devstackgaterc
