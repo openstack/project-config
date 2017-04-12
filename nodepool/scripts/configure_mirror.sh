@@ -193,7 +193,7 @@ YUM_REPOS_EPEL="\
 name=Extra Packages for Enterprise Linux \$releasever - \$basearch
 baseurl=$NODEPOOL_EPEL_MIRROR/\$releasever/\$basearch
 failovermethod=priority
-enabled=1
+enabled=0
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-\$releasever"
 
