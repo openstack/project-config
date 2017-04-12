@@ -19,8 +19,6 @@
 set -e
 
 SUDO=${SUDO:-true}
-THIN=${THIN:-true}
-ALL_MYSQL_PRIVS=${ALL_MYSQL_PRIVS:-false}
 
 if [ -n "$NODEPOOL_SSH_KEY" ] ; then
     puppet_install_users="install_users => false,
@@ -39,8 +37,6 @@ Service {
 }
 class {'openstack_project::single_use_slave':
   sudo => $SUDO,
-  thin => $THIN,
-  all_mysql_privs => $ALL_MYSQL_PRIVS,
   install_resolv_conf => false,
   $puppet_install_users
 }
