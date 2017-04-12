@@ -189,6 +189,13 @@
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
+          # Add configuration values for enabling security features in local.conf
+          function pre_test_hook {{
+              if [ -f /opt/stack/new/barbican-tempest-plugin/tools/pre_test_hook.sh ] ; then
+                  . /opt/stack/new/barbican-tempest-plugin/tools/pre_test_hook.sh
+              fi
+          }}
+          export -f pre_test_hook
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
