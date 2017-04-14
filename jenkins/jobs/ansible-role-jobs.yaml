@@ -76,6 +76,10 @@
       - print-template-name:
           template-name: "{template-name}"
       - zuul-git-prep-upper-constraints
+      - shell: |
+          if [[ "{name}" == *"openstack-ansible"* ]]; then
+             sudo yum-config-manager --enable epel || true
+          fi
       - install-distro-packages
       - shell: |
           # Allow Jenkins user to ssh into localhost
