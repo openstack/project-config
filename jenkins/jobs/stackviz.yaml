@@ -1,11 +1,24 @@
-- job-template:
-    name: stackviz-npm-run-prod
+- job:
+    name: gate-stackviz-npm-run-prod
     node: ubuntu-xenial
 
     builders:
-      - print-template-name:
-          template-name: "{template-name}"
       - zuul-git-prep
+      - install-distro-packages
+      - revoke-sudo
+      - npm-run:
+          command: 'prod'
+
+    publishers:
+      - console-log
+
+- job:
+    name: periodic-stackviz-npm-run-prod
+    node: ubuntu-xenial
+
+    builders:
+      - zuul-git-branch-prep:
+        branch: master
       - install-distro-packages
       - revoke-sudo
       - npm-run:
