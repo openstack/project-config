@@ -442,6 +442,32 @@
       - console-log
 
 - job:
+    name: periodic-package-stackviz-element
+    node: ubuntu-xenial
+
+    builders:
+      - zuul-git-branch-prep:
+          branch: master
+      - install-distro-packages
+      - revoke-sudo
+      - shell: |
+          #!/bin/bash -ex
+          # NOTE(pabelanger): Delete npm mirror, since it is currently broken.
+          rm -rf ~/.npmrc
+          export DISPLAY=:99
+          npm install --verbose
+          rm -rf .tox
+          rm -rf node_modules
+          npm pack --verbose
+          mkdir -p dist
+          mv *.tgz dist/stackviz-latest.tar.gz
+
+    publishers:
+      - tarball:
+          project: 'package-stackviz-element'
+      - console-log
+
+- job:
     name: gate-zuul-nodepool
     node: ubuntu-xenial
 
