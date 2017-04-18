@@ -32,7 +32,22 @@ CUSTOM_PROJECTS_LIST_URL=os.environ.get('DIB_CUSTOM_PROJECTS_LIST_URL')
 
 def get_project_list(url):
     try:
-        projects = [f['project'] for f in yaml.load(urllib2.urlopen(url))]
+        projects = []
+        for f in yaml.load(urllib2.urlopen(url)):
+            # Skip repos that are inactive
+            project = f['project']
+            dirname = os.path.dirname(project)
+            if 'attic' in dirname or dirname == 'stackforge':
+                continue
+            # Skip the /deb- git repo copies
+            if '/deb-' in project:
+                continue
+            acl = f.get('acl-config')
+            # Ignore retired repositories
+            if acl and os.path.basename(acl) == 'retired.config':
+                continue
+            projects.append(project)
+
         return projects
     except URLError:
         print "Could not open project list url: '%s'" % url
@@ -48,14 +63,6 @@ def main():
 
     with open(PROJECTS_REPOS, 'w') as projects_list:
         for project in projects:
-            # Skip repos that are inactive
-            dirname = os.path.dirname(project)
-            if ('attic' in dirname or dirname == 'stackforge'):
-                continue
-            # Skip the /deb- git repo copies
-            if ('/deb-' in project):
-                continue
-
             args = dict(
                 name=os.path.basename(project),
                 location=os.path.join('/opt/git', project),
