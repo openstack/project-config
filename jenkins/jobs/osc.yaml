@@ -114,6 +114,68 @@
       - devstack-logs
       - console-log
 
+- job-template:
+    name: '{pipeline}-osc-dsvm-functional-n-net-{node}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 130
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            # NOTE(RuiChen): nova-network only can be enable in nova cell v1
+            enable_service n-net n-cell
+            disable_service neutron q-svc q-agt q-dhcp q-l3 q-meta q-metering
+            # NOTE(dtroyer): OSC needs to support Image v1 for a while yet so re-enable
+            GLANCE_V1_ENABLED=True
+            # NOTE(dtroyer): Functional tests need a bit more volume headroom
+            VOLUME_BACKING_FILE_SIZE=20G
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_UNSTACK=0
+          export DEVSTACK_GATE_TEMPEST=0
+          export DEVSTACK_GATE_EXERCISES=0
+          export DEVSTACK_GATE_INSTALL_TESTONLY=1
+          # NOTE(RuiChen): Explicitly tell devstack-gate that we need to run
+          # the nova-network job with cell v1.
+          export DEVSTACK_GATE_NEUTRON=0
+          export DEVSTACK_GATE_CELLS=1
+          export BRANCH_OVERRIDE={branch-override}
+          export PROJECTS="openstack/python-openstackclient $PROJECTS"
+          export DEVSTACK_PROJECT_FROM_GIT=python-openstackclient
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+
+          function post_test_hook {{
+              # NOTE(stevemar): After the newton release was tagged the file was moved.
+              # But, we run functional tests for various stable releases
+              # (mitaka, and newton).
+              # TODO(stevemar): Remove this check when Newton is EOL'ed.
+              hook_location=$BASE/new/python-openstackclient/openstackclient/tests/functional/post_test_hook.sh
+              if [ ! -f "$hook_location" ]; then
+                  hook_location=$BASE/new/python-openstackclient/post_test_hook.sh
+              fi
+              bash -xe $hook_location
+          }}
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - test-results
+      - devstack-logs
+      - console-log
+
 - job:
     name: check-osc-plugins
     node: ubuntu-trusty
