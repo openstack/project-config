@@ -1,6 +1,5 @@
 #!/bin/bash
-# Copyright (C) 2011-2013 OpenStack Foundation
-# Copyright 2016 Red Hat, Inc.
+# Copyright 2017 Red Hat, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,10 +21,6 @@ fi
 set -eu
 set -o pipefail
 
-# NOTE(pabelanger): Until zuulv3 lands, manually copy scripts / data into
-# /usr/local/jenkins.
-mkdir -p /usr/local/jenkins
-cp -a /opt/git/openstack-infra/project-config/jenkins/data \
-    /usr/local/jenkins/common_data
-cp -a /opt/git/openstack-infra/project-config/jenkins/scripts \
-    /usr/local/jenkins/slave_scripts
+# Make sure our sudoers files have the proper permissions.
+chmod 0440 /etc/sudoers.d/jenkins-sudo
+chmod 0440 /etc/sudoers.d/jenkins-sudo-grep
