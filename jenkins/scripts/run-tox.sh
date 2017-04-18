@@ -125,7 +125,7 @@ $script_path/jenkins-oom-grep.sh pre
 
 sudo $script_path/jenkins-sudo-grep.sh pre
 
-tox -v -e$venv
+tox -vv -e$venv
 result=$?
 
 freeze_venv
