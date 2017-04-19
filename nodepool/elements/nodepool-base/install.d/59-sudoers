@@ -21,6 +21,14 @@ fi
 set -eu
 set -o pipefail
 
-# Make sure our sudoers files have the proper permissions.
+cat > /etc/sudoers.d/jenkins-sudo << EOF
+jenkins ALL=(ALL) NOPASSWD:ALL
+EOF
 chmod 0440 /etc/sudoers.d/jenkins-sudo
+
+cat > /etc/sudoers.d/jenkins-sudo-grep <<EOF
+jenkins ALL = NOPASSWD:/usr/local/jenkins/slave_scripts/jenkins-sudo-grep.sh
+EOF
 chmod 0440 /etc/sudoers.d/jenkins-sudo-grep
+
+visudo -c || die "Error setting jenkins sudo!"
