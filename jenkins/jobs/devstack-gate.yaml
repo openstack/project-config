@@ -1727,6 +1727,11 @@
           # RUN_SMOKE to False in order to run live migration tests using
           # grenade
           export DEVSTACK_LOCAL_CONFIG="RUN_SMOKE=False"
+          # LIVE_MIGRATE_BACK_AND_FORTH will tell Tempest to run a live
+          # migration of the same instance to one compute node and then back
+          # to the other, which is mostly only interesting for grenade since
+          # we have mixed level computes.
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"LIVE_MIGRATE_BACK_AND_FORTH=True"
           export BRANCH_OVERRIDE={branch-override}
           export DEVSTACK_GATE_TOPOLOGY="multinode"
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
