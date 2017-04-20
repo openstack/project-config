@@ -1898,15 +1898,17 @@
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
+          # As we are setting DEVSTACK_GATE_TEMPEST_ALL_PLUGINS, we need to add
+          # the regex to limit the tests to the same as a tempest -efull would
+          # run.
+          export DEVSTACK_GATE_TEMPEST_REGEX='(?!.*\[.*\bslow\b.*\])(^tempest\.(api|scenario)|(^cinder\.tests.tempest))'
+
           export PROJECTS="{plugin-repo} $PROJECTS"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin devstack-plugin-{plugin} git://git.openstack.org/{plugin-repo}"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
-
-          export DEVSTACK_GATE_SETTINGS=/opt/stack/new/nova/devstack/tempest-dsvm-ceph-rc
-
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
 
