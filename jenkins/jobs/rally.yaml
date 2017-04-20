@@ -104,10 +104,14 @@
               export PROJECTS="openstack/neutron-fwaas $PROJECTS"
               export PROJECTS="openstack/diskimage-builder $PROJECTS"
               export PROJECTS="openstack/tripleo-image-elements $PROJECTS"
+              export PROJECTS="openstack/neutron-vpnaas $PROJECTS"
+              export PROJECTS="openstack/networking-bgpvpn $PROJECTS"
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin neutron-lbaas git://git.openstack.org/openstack/neutron-lbaas"
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin octavia https://git.openstack.org/openstack/octavia"
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin neutron-fwaas https://git.openstack.org/openstack/neutron-fwaas"
-              export ENABLED_SERVICES+=q-lbaasv2,octavia,o-cw,o-hk,o-hm,o-api,q-fwaas,
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin neutron-vpnaas https://git.openstack.org/openstack/neutron-vpnaas"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin networking-bgpvpn https://git.openstack.org/openstack/networking-bgpvpn.git"
+              export ENABLED_SERVICES+=q-lbaasv2,octavia,o-cw,o-hk,o-hm,o-api,q-fwaas,q-svc,q-agt,q-dhcp,q-l3,q-meta,
           fi
           if [ $DEVSTACK_GATE_IRONIC -ne 0 ]; then
               export PROJECTS="openstack/ironic $PROJECTS"
