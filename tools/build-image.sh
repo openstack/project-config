@@ -52,6 +52,14 @@ if [ ! -f ${ZUUL_USER_SSH_PUBLIC_KEY} ]; then
     exit 1
 fi
 
+## Several parts of infra node bringup require EPEL, but we don't want
+## to introduce dependencies on it, so keep disabled.
+if [[ ${DISTRO} == "centos-minimal" ]]; then
+    EXTRA_ELEMENTS+="epel "
+    export DIB_EPEL_DISABLED=1
+fi
+
+
 ## If your firewall won't allow outbound DNS connections, you'll want
 ## to set these to local resolvers
 # export NODEPOOL_STATIC_NAMESERVER_V4=192.168.0.1
