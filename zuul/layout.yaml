@@ -3020,7 +3020,7 @@ jobs:
   - name: gate-mistral-python34
     branch: ^stable/mitaka$
 
-  - name: gate-mistral-devstack-dsvm-kombu-nv
+  - name: gate-mistral-devstack-dsvm-kombu-ubuntu-xenial-nv
     branch: ^(?!stable/(?:mitaka|newton)).*$
 
   - name: gate-mistral-dashboard-python34
@@ -3031,6 +3031,10 @@ jobs:
 
   - name: ^gate-mistral-tox-unit-postgresql-ubuntu-(trusty|xenial)$
     voting: false
+
+  # NOTE(bcrochet) (mistral) run non-apache pike and forward
+  - name: ^gate-mistral-devstack-dsvm-non-apache-ubuntu-xenial-nv
+    branch: ^(?!stable/(mitaka|newton|ocata)).*$
 
   - name: gate-mistral-docker-buildimage
     branch: master
@@ -11781,13 +11785,13 @@ projects:
       - mistral-coverage-ubuntu-xenial-nv
       - gate-rally-dsvm-mistral-task-ubuntu-trusty-nv
       - gate-rally-dsvm-mistral-task-ubuntu-xenial-nv
-      - gate-mistral-devstack-dsvm-ubuntu-trusty-nv
       - gate-mistral-devstack-dsvm-ubuntu-xenial-nv
+      - gate-mistral-devstack-dsvm-non-apache-ubuntu-xenial-nv
       - gate-mistral-tox-unit-mysql-ubuntu-xenial
       - gate-mistral-tox-unit-postgresql-ubuntu-trusty
       - gate-mistral-tox-unit-postgresql-ubuntu-xenial
       - gate-tripleo-ci-centos-7-scenario003-multinode-oooq-puppet
-      - gate-mistral-devstack-dsvm-kombu-nv
+      - gate-mistral-devstack-dsvm-kombu-ubuntu-xenial-nv
     gate:
       - gate-tripleo-ci-centos-7-scenario003-multinode-oooq-puppet
     post:
