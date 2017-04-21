@@ -18,7 +18,7 @@
 
           export DEVSTACK_GATE_TEMPEST=0
 
-          export OVERRIDE_ENABLED_SERVICES=kuryr-libnetwork,etcd-server,docker-engine,q-svc,q-dhcp,q-agt,q-l3,key,mysql,rabbit
+          export ENABLED_SERVICES=kuryr-libnetwork,etcd-server,docker-engine
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -102,7 +102,7 @@
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_INSTALL_TESTONLY=1
 
-          export OVERRIDE_ENABLED_SERVICES=kuryr-libnetwork,etcd-server,docker-engine,q-svc,q-dhcp,q-agt,q-l3,key,mysql,rabbit
+          export ENABLED_SERVICES=kuryr-libnetwork,etcd-server,docker-engine
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -165,7 +165,7 @@
               export PROJECTS="openstack/kuryr $PROJECTS"
           fi
 
-          export OVERRIDE_ENABLED_SERVICES=kuryr-libnetwork,etcd-server,docker-engine,q-svc,q-dhcp,q-agt,q-l3,key,mysql,rabbit
+          export ENABLED_SERVICES=kuryr-libnetwork,etcd-server,docker-engine
 
           function post_test_hook {{
               $BASE/new/rally/tests/ci/rally-gate.sh
