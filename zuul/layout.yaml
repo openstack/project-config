@@ -2022,7 +2022,7 @@ jobs:
           - ^releasenotes/.*$
 
   # no need to run the jobs for doc / releasenotes / unittests patches
-  - name: ^gate-octavia-v1-dsvm-scenario-ubuntu-xenial.*$
+  - name: ^gate-octavia-v1-dsvm(-py3x)?-scenario.*$
     skip-if:
       - project: ^openstack/octavia
         all-files-match-any:
@@ -2032,6 +2032,7 @@ jobs:
           - ^tempest/tests/.*$
           - ^tempest/hacking/.*$
           - ^releasenotes/.*$
+          - ^api-ref/.*$
 
   # Only run the cross unittests on upper-constraints.txt updates
   - name: ^gate-cross-.*-python27.*$
@@ -13358,10 +13359,10 @@ projects:
       - gate-neutron-lbaasv2-dsvm-py3x-scenario-ubuntu-xenial-nv
       - gate-octavia-tox-functional-ubuntu-xenial
       - gate-octavia-tox-functional-py35-ubuntu-xenial
-      - gate-octavia-v1-dsvm-scenario-ubuntu-xenial-nv
-      - gate-octavia-v1-dsvm-py3x-scenario-ubuntu-xenial-nv
-      - gate-octavia-v1-dsvm-scenario-multinode-nv
-      - gate-octavia-v1-dsvm-py3x-scenario-multinode-nv
+      - gate-octavia-v1-dsvm-scenario-ubuntu-xenial
+      - gate-octavia-v1-dsvm-py3x-scenario-ubuntu-xenial
+      - gate-octavia-v1-dsvm-scenario-multinode
+      - gate-octavia-v1-dsvm-py3x-scenario-multinode
       - gate-octavia-v1-dsvm-scenario-kvm-centos.7-ubuntu-xenial-nv
       - gate-octavia-v1-dsvm-scenario-lxd-ubuntu-xenial-nv
     gate:
@@ -13381,6 +13382,10 @@ projects:
       - octavia-coverage-ubuntu-xenial
       - gate-octavia-tox-functional-ubuntu-xenial
       - gate-octavia-tox-functional-py35-ubuntu-xenial
+      - gate-octavia-v1-dsvm-scenario-ubuntu-xenial
+      - gate-octavia-v1-dsvm-py3x-scenario-ubuntu-xenial
+      - gate-octavia-v1-dsvm-scenario-multinode
+      - gate-octavia-v1-dsvm-py3x-scenario-multinode
       - gate-neutron-lbaasv2-dsvm-api-ubuntu-xenial
 
   - name: openstack/octavia-dashboard
