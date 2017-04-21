@@ -3635,6 +3635,12 @@
       - pypi-jobs
 
 - project:
+    name: development-proposals
+
+    jobs:
+      - specs-jobs
+
+- project:
     name: devstack
 
     jobs:
@@ -9380,12 +9386,6 @@
       - specs-jobs
 
 - project:
-    name: openstack-user-stories
-
-    jobs:
-      - specs-jobs
-
-- project:
     name: openstack-ux
 
     jobs:
@@ -10698,6 +10698,21 @@
 
 - project:
     name: puppet-exim
+
+    jobs:
+      - puppet-check-jobs
+      - puppet-beaker-jobs-trusty:
+          suffix: ''
+          branch-override: default
+      - puppet-beaker-jobs-xenial:
+          suffix: '-nv'
+          branch-override: default
+      - puppet-beaker-jobs-centos7:
+          suffix: ''
+          branch-override: default
+
+- project:
+    name: puppet-featuretracker
 
     jobs:
       - puppet-check-jobs
@@ -12210,21 +12225,6 @@
 
 - project:
     name: puppet-user
-
-    jobs:
-      - puppet-check-jobs
-      - puppet-beaker-jobs-trusty:
-          suffix: ''
-          branch-override: default
-      - puppet-beaker-jobs-xenial:
-          suffix: '-nv'
-          branch-override: default
-      - puppet-beaker-jobs-centos7:
-          suffix: ''
-          branch-override: default
-
-- project:
-    name: puppet-userstory_dashboard
 
     jobs:
       - puppet-check-jobs
