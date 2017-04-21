@@ -1,0 +1,60 @@
+dashboard:
+  title: Mosquitto Status
+  rows:
+    - title: Description
+      height: 100px
+      panels:
+        - title: Description
+          content: |
+            **This dashboard is managed by [Grafyaml](http://docs.openstack.org/infra/system-config/grafyaml.html).**
+
+            If you would like to make changes to this dashboard, please see the grafana directory in [project-config](https://git.openstack.org/cgit/openstack-infra/project-config/tree/grafana/mosquitto.yaml).
+          type: text
+    - title: Client Information
+      height: 150px
+      panels:
+        - title: Total Clients
+          span: 2
+          sparkline:
+            full: true
+            show: true
+          targets:
+            - target: stats.gauges.mosquitto.total_clients
+          type: singlestat
+          valueName: current
+        - title: Subscription Count
+          span: 2
+          sparkline:
+            full: true
+            show: true
+          targets:
+            - target: stats.gauges.mosquitto.subscription_count
+          type: singlestat
+          valueName: current
+      showTitle: true
+    - title: Connection Information
+      height: 250px
+      panels:
+        - title: Message Statistics
+          span: 4
+          stack: true
+          tooltip:
+            value_type: individual
+          targets:
+            - target: alias(stats.gauges.mosquitto.messages_sent, 'Messages Sent')
+            - target: alias(stats.gauges.mosquitto.messages_received, 'Messages Received')
+          seriesOverrides:
+            - alias: Max
+              stack: False
+          type: graph
+        - title: Heap Size
+          span: 4
+          targets:
+            - target: stats.gagues.mosquitto.heap_size
+          type: graph
+        - title: Data Transfers
+          span: 4
+          targets:
+            - target: stats.gauges.mosquitto.bytes_sent
+            - target: stats.gauges.mosquitto.bytes_received
+          type: graph
