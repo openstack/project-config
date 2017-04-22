@@ -5600,17 +5600,17 @@
       # exclude ipmitool jobs from running on trusty, stable branches
       # should continue to run on pxe_ssh and trusty
       - driver: 'pxe_ipmitool'
-        node: 'ubuntu-trusty'
+        node: ubuntu-trusty
       - driver: 'agent_ipmitool'
-        node: 'ubuntu-trusty'
+        node: ubuntu-trusty
       # exclude ssh jobs from running on xenial
       - driver: 'pxe_ssh'
-        node: 'ubuntu-xenial'
+        node: ubuntu-xenial
       - driver: 'agent_ssh'
-        node: 'ubuntu-xenial'
+        node: ubuntu-xenial
       # run new pxe_snmp jobs only on xenial
       - driver: 'pxe_snmp'
-        node: 'ubuntu-trusty'
+        node: ubuntu-trusty
 
     jobs:
       - coverage-jobs
@@ -5820,26 +5820,26 @@
             - 'partition'
           exclude:
             # all xenial jobs are voting
-            - node: 'ubuntu-xenial'
+            - node: ubuntu-xenial
               suffix: '-nv'
             # these jobs are not voting yet
             - image-type: 'partition'
               driver: 'agent_ipmitool'
               suffix: ''
-              node: 'ubuntu-trusty'
+              node: ubuntu-trusty
             - image-type: 'wholedisk'
               driver: 'pxe_ipmitool'
               suffix: ''
-              node: 'ubuntu-trusty'
+              node: ubuntu-trusty
             # these jobs are voting
             - image-type: 'partition'
               driver: 'pxe_ipmitool'
               suffix: '-nv'
-              node: 'ubuntu-trusty'
+              node: ubuntu-trusty
             - image-type: 'wholedisk'
               driver: 'agent_ipmitool'
               suffix: '-nv'
-              node: 'ubuntu-trusty'
+              node: ubuntu-trusty
           branch-override: default
 
 - project:
@@ -6183,7 +6183,7 @@
           distro:
             - centos
             - oraclelinux
-          node: 'centos-7'
+          node: centos-7
           pipeline: gate
           type:
             - binary
@@ -6205,7 +6205,7 @@
       - '{pipeline}-kolla-dsvm-{action}-{distro}-{type}-{node}{suffix}':
           action: deploy-multinode
           distro: ubuntu
-          node: 'ubuntu-trusty-2-node'
+          node: ubuntu-trusty-2-node
           pipeline: gate
           type: source
           suffix: "-nv"
@@ -6215,7 +6215,7 @@
           distro:
             - centos
             - oraclelinux
-          node: 'centos-7'
+          node: centos-7
           pipeline: gate
           type:
             - binary
@@ -6249,7 +6249,7 @@
           distro:
             - centos
             - oraclelinux
-          node: 'centos-7'
+          node: centos-7
           pipeline: gate
           type:
             - binary
@@ -6267,7 +6267,7 @@
       - '{pipeline}-kolla-ansible-dsvm-{action}-{distro}-{type}-{node}{suffix}':
           action: deploy-multinode
           distro: ubuntu
-          node: 'ubuntu-xenial-2-node'
+          node: ubuntu-xenial-2-node
           pipeline: gate
           type: source
           suffix: "-nv"
@@ -6284,7 +6284,7 @@
           action: deploy
           config: ceph-multi
           distro: centos
-          node: 'centos-7-2-node'
+          node: centos-7-2-node
           type: binary
           ver:
             - '2'
@@ -6296,7 +6296,7 @@
           action: deploy
           config: ceph-reboot
           distro: centos
-          node: 'centos-7-2-node'
+          node: centos-7-2-node
           type: binary
           ver: '2'
           suffix: '-nv'
@@ -6304,7 +6304,7 @@
           action: upgrade
           config: ceph
           distro: centos
-          node: 'centos-7'
+          node: centos-7
           type: binary
           ver:
             - '2'
@@ -6314,7 +6314,7 @@
           action: deploy
           config: ironic
           distro: centos
-          node: 'centos-7'
+          node: centos-7
           type: source
           ver: '4'
           suffix: '-nv'
@@ -6322,7 +6322,7 @@
           action: deploy
           config: ironic
           distro: ubuntu
-          node: 'ubuntu-xenial'
+          node: ubuntu-xenial
           type: source
           ver: '4'
           suffix: '-nv'
@@ -6332,7 +6332,7 @@
             - helm-entrypoint
             - helm-compute-kit
           distro: centos
-          node: 'centos-7'
+          node: centos-7
           type:
             - 'source'
             - 'binary'
@@ -6348,7 +6348,7 @@
             - ceph
             - iscsi
           distro: centos
-          node: 'centos-7'
+          node: centos-7
           type: binary
           ver: '2'
           suffix: '-nv'
@@ -6380,7 +6380,7 @@
             - ceph
             - iscsi
           distro: centos
-          node: 'centos-7'
+          node: centos-7
           type: binary
           ver:
             - '2'
@@ -6678,8 +6678,8 @@
           service: shared-file-systems
       - '{pipeline}-manilaclient-dsvm-neutron-functional-{node}{suffix}':
           node:
-            - 'ubuntu-trusty'
-            - 'ubuntu-xenial'
+            - ubuntu-trusty
+            - ubuntu-xenial
           pipeline: 'gate'
           suffix: ''
       - '{pipeline}-grenade-dsvm-manila-{node}{suffix}':
@@ -6705,13 +6705,13 @@
           suffix: '-nv'
       - 'gate-manila-tempest-dsvm-hdfs-{node}{suffix}':
           node:
-            - 'ubuntu-trusty'
-            - 'ubuntu-xenial'
+            - ubuntu-trusty
+            - ubuntu-xenial
           suffix: '-nv'
       - 'gate-manila-tempest-dsvm-{description}-{node}{suffix}':
           node:
-            - 'ubuntu-trusty'
-            - 'ubuntu-xenial'
+            - ubuntu-trusty
+            - ubuntu-xenial
           description: postgres-generic-singlebackend
           postgres_enabled: '1'
           dhss: '1'
@@ -6739,8 +6739,8 @@
           suffix: '-nv'
       - 'gate-manila-tempest-dsvm-{description}-{node}{suffix}':
           node:
-            - 'ubuntu-trusty'
-            - 'ubuntu-xenial'
+            - ubuntu-trusty
+            - ubuntu-xenial
           description: postgres-zfsonlinux
           postgres_enabled: '1'
           dhss: '0'
@@ -6758,7 +6758,7 @@
           test_type: 'api'
           suffix: '-nv'
       - 'gate-manila-tempest-dsvm-{description}-{node}{suffix}':
-          node: 'ubuntu-xenial'
+          node: ubuntu-xenial
           description: 'container-scenario-custom-image'
           postgres_enabled: '0'
           dhss: '1'
@@ -6768,8 +6768,8 @@
           suffix: '-nv'
       - 'gate-manila-tempest-dsvm-{description}-{node}{suffix}':
           node:
-            - 'ubuntu-trusty'
-            - 'ubuntu-xenial'
+            - ubuntu-trusty
+            - ubuntu-xenial
           description: generic-no-share-servers
           postgres_enabled: '0'
           dhss: '0'
@@ -6778,7 +6778,7 @@
           test_type: 'api'
           suffix: '-nv'
       - 'gate-manila-tempest-dsvm-{description}-{node}{suffix}':
-          node: 'ubuntu-xenial'
+          node: ubuntu-xenial
           description: 'generic-scenario-custom-image'
           postgres_enabled: '0'
           dhss: '1'
@@ -6788,8 +6788,8 @@
           suffix: '-nv'
       - 'gate-manila-tempest-dsvm-{description}-{node}{suffix}':
           node:
-            - 'ubuntu-trusty'
-            - 'ubuntu-xenial'
+            - ubuntu-trusty
+            - ubuntu-xenial
           description: scenario
           postgres_enabled: '0'
           dhss: '1'
@@ -6798,33 +6798,33 @@
           test_type: 'scenario'
           suffix: '-nv'
       - 'gate-manila-tempest-dsvm-glusterfs-{variant}-{node}{suffix}':
-          node: 'ubuntu-trusty'
+          node: ubuntu-trusty
           suffix: '-nv'
           variant: 'nfs'
       - 'gate-manila-tempest-dsvm-glusterfs-{variant}-{node}{suffix}':
-          node: 'ubuntu-trusty'
+          node: ubuntu-trusty
           suffix: '-nv'
           variant: 'native'
       - 'gate-manila-tempest-dsvm-glusterfs-{variant}-{node}{suffix}':
-          node: 'ubuntu-xenial'
+          node: ubuntu-xenial
           suffix: '-nv'
           variant: 'nfs'
       - 'gate-manila-tempest-dsvm-glusterfs-{variant}-{node}{suffix}':
-          node: 'ubuntu-xenial'
+          node: ubuntu-xenial
           suffix: '-nv'
           variant: 'native'
       - 'gate-manila-tempest-dsvm-glusterfs-{variant}-{node}{suffix}':
-          node: 'ubuntu-xenial'
+          node: ubuntu-xenial
           suffix: '-nv'
           variant: 'nfs-heketi'
       - 'gate-manila-tempest-dsvm-glusterfs-{variant}-{node}{suffix}':
-          node: 'ubuntu-xenial'
+          node: ubuntu-xenial
           suffix: '-nv'
           variant: 'native-heketi'
       - 'gate-manila-tempest-minimal-dsvm-cephfs-{variant}-{node}{suffix}':
           node:
-            - 'ubuntu-xenial'
-            - 'centos-7'
+            - ubuntu-xenial
+            - centos-7
           suffix: '-nv'
           variant:
             - 'native'
@@ -7590,7 +7590,7 @@
       - '{pipeline}-networking-l2gw-dsvm-functional{suffix}':
           pipeline: gate
           suffix: '-nv'
-          node: 'ubuntu-xenial'
+          node: ubuntu-xenial
           branch-override: default
 
 - project:
@@ -13819,7 +13819,7 @@
       - python-jobs
       - pypi-jobs
       - '{pipeline}-scalpels-dsvm-neutron-{node}{suffix}':
-          node: 'ubuntu-xenial'
+          node: ubuntu-xenial
           pipeline: gate
           suffix: '-nv'
           branch-override: default
@@ -14902,7 +14902,7 @@
             - ''
             - '-nv'
           type: 'nonha-multinode'
-          node: 'centos-7-2-node'
+          node: centos-7-2-node
           trigger: 'gate'
           branch-override: default
           timeout: 180
@@ -14911,7 +14911,7 @@
           jobname: 'centos-7-3nodes-multinode'
           suffix: '-nv'
           type: '3nodes-multinode'
-          node: 'centos-7-3-node'
+          node: centos-7-3-node
           trigger: 'gate'
           branch-override: default
           timeout: 180
@@ -14920,7 +14920,7 @@
           jobname: 'centos-7-scenario005-multinode'
           suffix: ''
           type: 'scenario005-multinode'
-          node: 'centos-7-4-node'
+          node: centos-7-4-node
           trigger: 'gate'
           branch-override: default
           timeout: 180
@@ -14929,7 +14929,7 @@
           jobname: 'centos-7-undercloud-oooq'
           suffix: ''
           type: 'singlenode-featureset003'
-          node: 'centos-7'
+          node: centos-7
           trigger: 'gate'
           branch-override: default
           timeout: 180
@@ -14938,7 +14938,7 @@
           jobname: 'centos-7-undercloud-containers'
           suffix: ''
           type: 'undercloud-containers'
-          node: 'centos-7'
+          node: centos-7
           trigger: 'gate'
           branch-override: default
           timeout: 180
@@ -14946,7 +14946,7 @@
           jobname: 'centos-7-scenario001-multinode'
           suffix: ''
           type: 'periodic-scenario001-multinode'
-          node: 'centos-7-2-node'
+          node: centos-7-2-node
           trigger: 'periodic'
           branch-override: default
           timeout: 180
@@ -14954,7 +14954,7 @@
           jobname: 'centos-7-scenario002-multinode'
           suffix: ''
           type: 'periodic-scenario002-multinode'
-          node: 'centos-7-2-node'
+          node: centos-7-2-node
           trigger: 'periodic'
           branch-override: default
           timeout: 180
@@ -14962,7 +14962,7 @@
           jobname: 'centos-7-scenario003-multinode'
           suffix: ''
           type: 'periodic-scenario003-multinode'
-          node: 'centos-7-2-node'
+          node: centos-7-2-node
           trigger: 'periodic'
           branch-override: default
           timeout: 180
@@ -14970,7 +14970,7 @@
           jobname: 'centos-7-scenario004-multinode'
           suffix: ''
           type: 'periodic-scenario004-multinode'
-          node: 'centos-7-2-node'
+          node: centos-7-2-node
           trigger: 'periodic'
           branch-override: default
           timeout: 180
@@ -14981,7 +14981,7 @@
             - '-upgrades'
             - '-upgrades-nv'
           type: 'scenario001-multinode-upgrades'
-          node: 'centos-7-2-node'
+          node: centos-7-2-node
           trigger: 'gate'
           branch-override: default
           timeout: 190
@@ -14991,7 +14991,7 @@
             - '-upgrades'
             - '-upgrades-nv'
           type: 'scenario002-multinode-upgrades'
-          node: 'centos-7-2-node'
+          node: centos-7-2-node
           trigger: 'gate'
           branch-override: default
           timeout: 190
@@ -15001,7 +15001,7 @@
             - '-upgrades'
             - '-upgrades-nv'
           type: 'scenario003-multinode-upgrades'
-          node: 'centos-7-2-node'
+          node: centos-7-2-node
           trigger: 'gate'
           branch-override: default
           timeout: 190
@@ -15011,7 +15011,7 @@
             - '-upgrades'
             - '-upgrades-nv'
           type: 'scenario004-multinode-upgrades'
-          node: 'centos-7-2-node'
+          node: centos-7-2-node
           trigger: 'gate'
           branch-override: default
           timeout: 190
@@ -15020,7 +15020,7 @@
           jobname: 'centos-7-undercloud-upgrades'
           suffix: '-nv'
           type: 'undercloud-upgrades'
-          node: 'centos-7'
+          node: centos-7
           trigger: 'gate'
           branch-override: default
           timeout: 180
@@ -15029,7 +15029,7 @@
           jobname: 'centos-7-nonha-multinode-updates'
           suffix: '-nv'
           type: 'nonha-multinode-updates'
-          node: 'centos-7-2-node'
+          node: centos-7-2-node
           trigger: 'gate'
           branch-override: default
           timeout: 180
@@ -15040,7 +15040,7 @@
             - ''
             - '-nv'
           type: 'multinode-upgrades'
-          node: 'centos-7-2-node'
+          node: centos-7-2-node
           trigger: 'gate'
           branch-override: default
           timeout: 180
@@ -15051,7 +15051,7 @@
             - ''
             - '-nv'
           type: 'multinode-1ctlr-featureset011'
-          node: 'centos-7-2-node'
+          node: centos-7-2-node
           trigger: 'gate'
           branch-override: default
           timeout: 180
@@ -15107,7 +15107,7 @@
             - ''
             - '-nv'
           type: 'multinode-1ctlr-featureset004'
-          node: 'centos-7-2-node'
+          node: centos-7-2-node
           trigger: 'gate'
           branch-override: default
           timeout: 180
@@ -15118,7 +15118,7 @@
             - '-puppet'
             - '-puppet-nv'
           type: 'multinode-1ctlr-featureset005'
-          node: 'centos-7-2-node'
+          node: centos-7-2-node
           trigger: 'gate'
           branch-override: default
           timeout: 180
@@ -15129,7 +15129,7 @@
             - '-puppet'
             - '-puppet-nv'
           type: 'multinode-1ctlr-featureset006'
-          node: 'centos-7-2-node'
+          node: centos-7-2-node
           trigger: 'gate'
           branch-override: default
           timeout: 180
@@ -15140,7 +15140,7 @@
             - '-puppet'
             - '-puppet-nv'
           type: 'multinode-1ctlr-featureset007'
-          node: 'centos-7-2-node'
+          node: centos-7-2-node
           trigger: 'gate'
           branch-override: default
           timeout: 180
@@ -15150,7 +15150,7 @@
             - ''
             - '-puppet'
           type: 'multinode-1ctlr-featureset008'
-          node: 'centos-7-2-node'
+          node: centos-7-2-node
           trigger: 'gate'
           branch-override: default
           timeout: 180
@@ -15159,7 +15159,7 @@
           jobname: 'centos-7-scenario005-multinode-oooq'
           suffix: '-nv'
           type: 'multinode-1ctlr-featureset009'
-          node: 'centos-7-4-node'
+          node: centos-7-4-node
           trigger: 'gate'
           branch-override: default
           timeout: 180
