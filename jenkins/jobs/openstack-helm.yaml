@@ -1,0 +1,22 @@
+- job-template:
+    name: 'gate-openstack-helm-{node}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 100
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - zuul-git-prep
+      - install-distro-packages
+      - shell: |
+          #!/bin/bash -xe
+          tools/gate/setup_gate.sh {node}
+
+    publishers:
+      - console-log
