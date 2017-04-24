@@ -1,0 +1,29 @@
+#!/bin/bash
+
+if [ "${DIB_DEBUG_TRACE:-0}" -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+case "$DIB_INIT_SYSTEM" in
+    upstart)
+        # nothing to do
+        exit 0
+        ;;
+    systemd)
+        systemctl enable haveged.service
+        ;;
+    openrc)
+        # TODO(pabelanger): Make sure we support gentoo if we bring images
+        # online for nodepool.o.o.
+        exit 0
+        ;;
+    sysv)
+        exit 0
+        ;;
+    *)
+        echo "Unsupported init system $DIB_INIT_SYSTEM"
+        exit 1
+        ;;
+esac
