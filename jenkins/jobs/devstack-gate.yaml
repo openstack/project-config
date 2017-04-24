@@ -1909,6 +1909,14 @@
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
+
+          # If an in-repo configuration exists, source it.  This will likely
+          # override DEVSTACK_GATE_TEMPEST_REGEX to further refine the set of
+          # tests being run.
+          if [ -f "/opt/stack/new/{plugin-repo}/tempest-conf.sh" ]; then
+              export DEVSTACK_GATE_SETTINGS=/opt/stack/new/{plugin-repo}/tempest-conf.sh
+          fi
+
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
 
