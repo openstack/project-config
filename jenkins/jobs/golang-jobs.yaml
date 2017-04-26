@@ -65,12 +65,18 @@
           export KEEP_LOCALRC=1
 
           # Run a minimum set of services
-          services=rabbit,mysql,dstat,key
-          services+=,n-api,n-cpu,n-cond,n-sch,n-crt
-          services+=,g-api,g-reg
-          services+=,c-sch,c-api,c-vol,c-bak
-          services+=,q-svc,q-dhcp,q-meta,q-agt,q-l3
-          export OVERRIDE_ENABLED_SERVICES=$services
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service horizon"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-account"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-container"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-object"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-proxy"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-acentral"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-acompute"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-alarm-evaluator"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-alarm-notifier"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-anotification"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-api"
+          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service ceilometer-collector"
 
           function pre_test_hook {{
               if [[ -f "$BASE/new/{name}/contrib/pre_test_hook.sh" ]]; then
