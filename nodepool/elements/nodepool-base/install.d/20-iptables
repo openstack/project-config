@@ -28,6 +28,10 @@ elif [[ "$DISTRO_NAME" =~ (centos|fedora) ]] ; then
     rules_dir=/etc/sysconfig
     ipv4_rules=${rules_dir}/iptables
     ipv6_rules=${rules_dir}/ip6tables
+elif [[ "$DISTRO_NAME" =~ 'opensuse' ]] ; then
+    rules_dir=/etc/sysconfig
+    ipv4_rules=${rules_dir}/iptables
+    ipv6_rules=${rules_dir}/ip6tables
 else
     echo "Unsupported operating system $DISTRO_NAME"
     exit 1
@@ -81,3 +85,15 @@ cat > $ipv6_rules << EOF
 -A openstack-INPUT -j REJECT --reject-with icmp6-adm-prohibited
 COMMIT
 EOF
+
+if [[ "$DISTRO_NAME" =~ 'opensuse' ]] ; then
+    sed -i -e 's,^FW_CUSTOMRULES=.*$,FW_CUSTOMRULES="/etc/sysconfig/scripts/SuSEfirewall2-custom",' /etc/sysconfig/SuSEfirewall2
+
+    cat > /etc/sysconfig/scripts/SuSEfirewall2-custom <<EOF
+fw_custom_after_finished() {
+    /usr/sbin/iptables-restore $ipv4_rules
+    /usr/sbin/ip6tables-restore $ipv6_rules
+}
+EOF
+
+fi
