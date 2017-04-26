@@ -1,0 +1,35 @@
+#!/bin/bash
+
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+groupadd jenkins
+useradd -g jenkins -m jenkins
+
+# this was copied from outside the chroot by extras.d
+_pub_key=/tmp/in_target.d/jenkins-user-ssh-public-key
+if [ ! -f $_pub_key ]; then
+    die "Can not find Jenkins public key!"
+fi
+
+mkdir /home/jenkins/.ssh
+chmod 700 /home/jenkins/.ssh
+
+cp $_pub_key /home/jenkins/.ssh/authorized_keys
+chmod 644 /home/jenkins/.ssh/authorized_keys
+
+cat > /home/jenkins/.gitconfig <<EOF
+[user]
+    name = OpenStack Jenkins
+    email = jenkins@openstack.org
+    signingkey = jenkins@openstack.org
+[gitreview]
+    rebase = false
+    username = jenkins
+EOF
+
+# cleanup everything to the right owner
+chown -R jenkins:jenkins /home/jenkins

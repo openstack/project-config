@@ -1,0 +1,20 @@
+#!/bin/bash
+
+if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+# TODO(pabelanger): Once we complete remove puppet from our diskimages, we
+# should also remove our default SSH key. Since only 3rdparty CI system would be
+# using this element moving forward, it doesn't make sense to bake in our
+# default key.
+NODEPOOL_SSH_KEY=${NODEPOOL_SSH_KEY:-AAAAB3NzaC1yc2EAAAADAQABAAABAQC6WutNHfM+YdnjeNFeaIpvxqt+9aDn95Ykpmc+fASSjlDZJtOrueH3ch/v08wkE4WQKg03i+t8VonqEwMGmApYA3VzFsURUQbxzlSz5kHlBQSqgz5JTwUmnt1RH5sePL5pkuJ6JgqJ8PxJod6fiD7YDjaKJW/wBzXGnGg2EkgqrkBQXYL4hyaPuSwsQF0Gdwg3QFqXl+R/GrM6FscUkkJzbjqGKI2GhLT8mf2BIMEAiMFhF5Wl4FFrbvhTfPfW+9VdcsiMxCXaxp00n1x1+Y7OqR5AZ/id0Lkz9ZoFVGS901OB/L4xXrvUtI2y+kIYeF6hxfmAl/zhY0eWzwo9lDPz}
+
+if [ -z $NODEPOOL_SSH_KEY ]; then
+    die "Can not find public key for jenkins user!"
+fi
+
+# save the public key inside the chroot
+echo "ssh-rsa $NODEPOOL_SSH_KEY" > $TMP_HOOKS_PATH/jenkins-user-ssh-public-key
