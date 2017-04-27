@@ -13,10 +13,10 @@
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
           export DEVSTACK_GATE_TEMPEST=0
-          export DEVSTACK_GATE_SAHARA=1
           export DEVSTACK_GATE_EXERCISES=0
           export DEVSTACK_GATE_INSTALL_TESTONLY=1
           export KEEP_LOCALRC=1
+          export PROJECTS="openstack/sahara $PROJECTS"
           export PROJECTS="openstack/sahara-tests $PROJECTS"
           export PROJECTS="openstack/sahara-image-elements openstack/sahara-extra $PROJECTS"
           if [ "{network}" == "nova" ] ; then
@@ -77,10 +77,11 @@
           export DEVSTACK_GATE_EXERCISES=0
           export DEVSTACK_GATE_INSTALL_TESTONLY=1
           export DEVSTACK_GATE_NEUTRON=1
-          export DEVSTACK_GATE_SAHARA=1
           export DEVSTACK_LOCAL_CONFIG="enable_plugin sahara git://git.openstack.org/openstack/sahara"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin sahara-dashboard git://git.openstack.org/openstack/sahara-dashboard"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
+          export PROJECTS="openstack/sahara $PROJECTS"
+          export PROJECTS="openstack/sahara-dashboard $PROJECTS"
 
           function pre_test_hook {{
               cd /opt/stack/new/sahara-dashboard/tools/gate/integration
@@ -210,15 +211,16 @@
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_TEMPEST_REGEX="sahara_tempest_plugin.tests.cli"
-          export DEVSTACK_GATE_SAHARA=1
           export DEVSTACK_LOCAL_CONFIG="enable_plugin sahara git://git.openstack.org/openstack/sahara"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"export TEMPEST_PLUGINS='/opt/stack/new/sahara-tests'"
           export KEEP_LOCALRC=1
-          export PROJECTS="openstack/sahara-tests openstack/python-saharaclient $PROJECTS"
+          export PROJECTS="openstack/sahara $PROJECTS"
+          export PROJECTS="openstack/sahara-tests $PROJECTS"
 
           if [ "$ZUUL_PROJECT" = "openstack/python-saharaclient" ]; then
               export DEVSTACK_PROJECT_FROM_GIT=python-saharaclient
+              export PROJECTS="openstack/python-saharaclient $PROJECTS"
           fi
 
           function pre_test_hook {{
@@ -256,9 +258,9 @@
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_TEMPEST=1
           export KEEP_LOCALRC=1
-          export DEVSTACK_GATE_SAHARA=1
           export DEVSTACK_GATE_TEMPEST_REGEX="(sahara_tempest_plugin.tests.api|sahara_tempest_plugin.tests.clients|data_processing)"
           export DEVSTACK_LOCAL_CONFIG="export TEMPEST_PLUGINS='/opt/stack/new/sahara-tests'"
+          export PROJECTS="openstack/sahara $PROJECTS"
           export PROJECTS="openstack/sahara-tests $PROJECTS"
 
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin sahara git://git.openstack.org/openstack/sahara"
@@ -301,7 +303,7 @@
       - shell: |
           #!/bin/bash -xe
           export PROJECTS="openstack-dev/grenade $PROJECTS"
-          export PROJECTS="openstack/python-saharaclient $PROJECTS"
+          export PROJECTS="openstack/sahara $PROJECTS"
           export PYTHONUNBUFFERED=true
           OVERRIDE_ENABLED_SERVICES=c-api,c-bak,c-sch,c-vol,cinder,dstat,g-api,g-reg,key,mysql,n-api,n-cond,n-cpu,n-crt,n-sch,q-agt,q-dhcp,q-l3,q-meta,q-metering,q-svc,rabbit,s-account,s-container,s-object,s-proxy,ceilometer-acompute,ceilometer-acentral,ceilometer-collector,ceilometer-api,sahara,h-api,h-api-cfn,h-api-cw,h-eng,heat
           export GRENADE_PLUGINRC="enable_grenade_plugin sahara https://git.openstack.org/openstack/sahara"
@@ -309,7 +311,6 @@
           export OVERRIDE_ENABLED_SERVICES
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_TEMPEST=0
-          export DEVSTACK_GATE_SAHARA=1
           export DEVSTACK_GATE_TEMPEST_NOTESTS=1
           export DEVSTACK_GATE_GRENADE=pullup
           export BRANCH_OVERRIDE={branch-override}
@@ -412,8 +413,8 @@
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_TEMPEST_FULL=1
-          export DEVSTACK_GATE_SAHARA=1
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"export TEMPEST_PLUGINS='/opt/stack/new/sahara-tests'"
+          export PROJECTS="openstack/sahara $PROJECTS"
           export PROJECTS="openstack/sahara-tests $PROJECTS"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
