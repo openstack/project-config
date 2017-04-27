@@ -40,7 +40,6 @@ install_from_source python-barbicanclient
 install_from_source python-cloudkittyclient
 install_from_source python-congressclient
 install_from_source python-designateclient
-install_from_source python-gnocchiclient
 install_from_source python-heatclient
 install_from_source python-ironicclient
 install_from_source python-ironic-inspector-client
