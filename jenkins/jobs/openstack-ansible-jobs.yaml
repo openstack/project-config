@@ -13,7 +13,12 @@
       - zuul-git-prep
       - shell: |
           #!/bin/bash -xe
-          sudo scripts/gate-check-commit.sh "{scenario}"
+          sudo ZUUL_BRANCH=$ZUUL_BRANCH \
+               ZUUL_CHANGE=$ZUUL_CHANGE \
+               ZUUL_CHANGES=$ZUUL_CHANGES \
+               ZUUL_CHANGE_IDS=$ZUUL_CHANGE_IDS \
+               ZUUL_PATCHSET=$ZUUL_PATCHSET \
+               scripts/gate-check-commit.sh "{scenario}"
 
     publishers:
       - devstack-logs
