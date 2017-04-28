@@ -815,8 +815,6 @@ project-templates:
       - gate-tripleo-ci-centos-7-nonha-multinode-oooq
     gate:
       - gate-tripleo-ci-centos-7-nonha-multinode-oooq
-    check-tripleo:
-      - gate-tripleo-ci-centos-7-ovb-nonha-puppet-mitaka
 
   - name: tripleo-scenario-jobs-scenario001
     check:
@@ -1677,21 +1675,12 @@ jobs:
   - name: ^gate-os-net-config-python35$
     branch: ^(?!stable/newton).*$
 
-  # With composable services, we don't have Puppet code in THT anymore.
-  - name: ^gate-tripleo-heat-templates-puppet-(lint|syntax-.*)$
-    branch: ^stable/mitaka$
-
-  # tripleo multinode and undercloud jobs were introduced during Newton cycle.
-  - name: ^gate-tripleo-ci-.*(multinode|undercloud).*$
-    branch: ^(?!stable/(liberty|mitaka)).*$
-
   # TripleO 3-nodes job has been introduced in Ocata
   - name: ^gate-tripleo-ci-centos-7-3nodes.*$
-    branch: ^(?!stable/(hammer|liberty|mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
 
   # tripleo scenario001 started to be used used in newton
   - name: ^gate-tripleo-ci-centos-7-scenario001-multinode-oooq-puppet.*$
-    branch: ^(?!stable/(hammer|liberty|mitaka)).*$
     skip-if:
       - project: ^openstack/puppet-.*$
         all-files-match-any:
@@ -1703,7 +1692,7 @@ jobs:
 
   # tripleo scenario002 started to be used used in ocata
   - name: ^gate-tripleo-ci-centos-7-scenario002-multinode-oooq-puppet.*$
-    branch: ^(?!stable/(hammer|liberty|mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
     skip-if:
       - project: ^openstack/puppet-.*$
         all-files-match-any:
@@ -1715,7 +1704,7 @@ jobs:
 
   # tripleo scenario003 started to be used used in ocata
   - name: ^gate-tripleo-ci-centos-7-scenario003-multinode-oooq-puppet.*$
-    branch: ^(?!stable/(hammer|liberty|mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
     skip-if:
       - project: ^openstack/puppet-.*$
         all-files-match-any:
@@ -1727,7 +1716,7 @@ jobs:
 
   # tripleo scenario004 started to be used used in ocata
   - name: ^gate-tripleo-ci-centos-7-scenario004-multinode-oooq-puppet.*$
-    branch: ^(?!stable/(hammer|liberty|mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
     skip-if:
       - project: ^openstack/puppet-.*$
         all-files-match-any:
@@ -1742,7 +1731,6 @@ jobs:
   # It will be done with zuul v3:
   # http://specs.openstack.org/openstack-infra/infra-specs/specs/zuulv3.html#jobs
   - name: ^gate-tripleo-ci-centos-7-scenario001-multinode(-upgrades)?(-oooq)?(-nv)?$
-    branch: ^(?!stable/(hammer|liberty|mitaka)).*$
     files:
       - ^puppet/services/glance.*$
       - ^manifests/profile/base/glance.*$
@@ -1772,7 +1760,6 @@ jobs:
       - ci/environments/scenario001-multinode.yaml
       - ci/pingtests/scenario001-multinode.yaml
   - name: ^gate-tripleo-ci-centos-7-scenario002-multinode(-upgrades)?(-oooq)?(-nv)?$
-    branch: ^(?!stable/(hammer|liberty|mitaka)).*$
     files:
       - ^puppet/services/glance.*$
       - ^manifests/profile/base/glance.*$
@@ -1790,7 +1777,6 @@ jobs:
       - ci/environments/scenario002-multinode.yaml
       - ci/pingtests/scenario002-multinode.yaml
   - name: ^gate-tripleo-ci-centos-7-scenario003-multinode(-upgrades)?(-oooq)?(-nv)?$
-    branch: ^(?!stable/(hammer|liberty|mitaka)).*$
     files:
       - ^puppet/services/glance.*$
       - ^manifests/profile/base/glance.*$
@@ -1802,7 +1788,7 @@ jobs:
       - ci/environments/scenario003-multinode.yaml
       - ci/pingtests/scenario003-multinode.yaml
   - name: ^gate-tripleo-ci-centos-7-scenario004-multinode(-upgrades)?(-oooq)?(-nv)?$
-    branch: ^(?!stable/(hammer|liberty|mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
     files:
       - ^puppet/services/glance.*$
       - ^manifests/profile/base/glance.*$
@@ -1815,7 +1801,7 @@ jobs:
       - ci/environments/scenario004-multinode.yaml
       - ci/pingtests/scenario004-multinode.yaml
   - name: ^gate-tripleo-ci-centos-7-scenario005-multinode(-oooq)?(-nv)?$
-    branch: ^(?!stable/(hammer|liberty|mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
     files:
       - ^manifests/haproxy.*$
       - ^puppet/services/pacemaker.*$
@@ -1827,7 +1813,7 @@ jobs:
 
   # TripleO Upgrade job has been introduced in Ocata
   - name: ^gate-tripleo-ci-centos-7.*-upgrades.*$
-    branch: ^(?!stable/(hammer|liberty|mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
 
   # TripleO Upgrade jobs are voting for scenario001,002,003 and
   # classic multinode-upgrades job on Ocata.
@@ -1839,18 +1825,14 @@ jobs:
   # and classic multinode-upgrades job on master (future Pike).
   # For now, we only want these jobs in master
   - name: ^gate-tripleo-ci-centos-7(-scenario00(1|2|3|4))?-multinode-upgrades-nv$
-    branch: ^(?!stable/(hammer|liberty|mitaka|newton|ocata)).*$
+    branch: ^(?!stable/(newton|ocata)).*$
 
   - name: ^gate-tripleo-ci-centos-7-ovb-containers-oooq.*$
-    branch: ^(?!stable/(mitaka|newton|ocata)).*$
+    branch: ^(?!stable/(newton|ocata)).*$
 
   # TripleO scenario004 job has been introduced in Ocata so we don't want to run the upgrade job yet.
   - name: ^gate-tripleo-ci-centos-7-scenario004-multinode-upgrades.*$
-    branch: ^(?!stable/(hammer|liberty|mitaka|newton|ocata)).*$
-
-  # Test TripleO stable/mitaka in Puppet OpenStack CI
-  - name: ^gate-tripleo-ci-centos-7-ovb-nonha-puppet-mitaka$
-    branch: ^(stable/mitaka).*$
+    branch: ^(?!stable/(newton|ocata)).*$
 
   # Test TripleO stable/newton in Puppet OpenStack CI
   - name: ^gate-tripleo-ci-centos-7-ovb-nonha-puppet-newton$
@@ -5374,10 +5356,8 @@ projects:
     check:
       - gate-tripleo-ci-centos-7-multinode-upgrades-nv
     check-tripleo:
-      - gate-tripleo-ci-centos-7-ovb-nonha-mitaka
       - gate-tripleo-ci-centos-7-ovb-nonha-newton
       - gate-tripleo-ci-centos-7-ovb-nonha-ocata
-      - gate-tripleo-ci-centos-7-ovb-ha-mitaka
       - gate-tripleo-ci-centos-7-ovb-ha-newton
       - gate-tripleo-ci-centos-7-ovb-ha-ocata
       - gate-tripleo-ci-centos-7-ovb-ha-oooq-nv
@@ -5388,7 +5368,6 @@ projects:
       - periodic-tripleo-ci-centos-7-ovb-nonha
       - periodic-tripleo-ci-centos-7-promote-ovb-ha
       - periodic-tripleo-ci-centos-7-promote-ovb-nonha
-      - periodic-tripleo-ci-centos-7-ovb-ha-mitaka
       - periodic-tripleo-ci-centos-7-ovb-ha-newton
       - periodic-tripleo-ci-centos-7-ovb-ha-ocata
       - periodic-tripleo-ci-centos-7-ovb-nonha-tempest-oooq
@@ -15267,7 +15246,6 @@ projects:
       - name: puppet-branch-tarball-jobs
       - name: openstack-server-release-jobs
     check-tripleo:
-      - gate-tripleo-ci-centos-7-ovb-nonha-puppet-mitaka
       - gate-tripleo-ci-centos-7-ovb-nonha-puppet-newton
       - gate-tripleo-ci-centos-7-ovb-nonha-puppet-ocata
 
@@ -15288,7 +15266,6 @@ projects:
       - name: puppet-branch-tarball-jobs
       - name: openstack-server-release-jobs
     check-tripleo:
-      - gate-tripleo-ci-centos-7-ovb-nonha-puppet-mitaka
       - gate-tripleo-ci-centos-7-ovb-nonha-puppet-newton
       - gate-tripleo-ci-centos-7-ovb-nonha-puppet-ocata
 
