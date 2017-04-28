@@ -6,7 +6,11 @@ fi
 set -eu
 set -o pipefail
 
-useradd -m zuul
+# Add zuul user and group.  Note we don't want to rely on
+# "useradd"'s group adding behaviour, because it might differ across
+# distros.
+groupadd zuul
+useradd -m zuul -g zuul -s /bin/bash
 
 cat > /etc/sudoers.d/zuul << EOF
 zuul ALL=(ALL) NOPASSWD:ALL
