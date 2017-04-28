@@ -2318,7 +2318,7 @@ jobs:
     branch: ^(?!stable)
 
   - name: ^gate-tempest-dsvm-neutron-identity-v3-only-full.*$
-    branch: ^(?!stable)
+    branch: ^(?!(stable|driverfixes))
 
   # NOTE(mriedem): novaclient functional tests didn't support a neutron
   # configuration until Newton, so skip for mitaka.
@@ -2561,20 +2561,35 @@ jobs:
   - name: ^gate-cinder-(api-ref|requirements)$
     branch: ^(?!driverfixes/).*$
 
+  - name: ^gate-tempest-dsvm-full-devstack-plugin-nfs
+    branch: ^(?!driverfixes/).*
+
   # Xenial jobs
   - name: ^gate-cinder-(docs|python27|pylint)-ubuntu-xenial$
-    branch: ^(?!(stable/mitaka|driverfixes/)).*$
+    branch: ^(?!driverfixes/).*$
 
   - name: ^gate-cinder-python35
-    branch: ^(?!(stable/mitaka|driverfixes/)).*$
+    branch: ^(?!driverfixes/).*$
+
+  - name: ^gate-grenade-dsvm-neutron-ubuntu-xenial$
+    branch: ^(?!driverfixes/).*$
+
+  - name: ^gate-tempest-dsvm-lvm-multibackend-ubuntu-xenial-nv$
+    branch: ^(?!driverfixes/).*$
+
+  - name: ^gate-tempest-dsvm-py35-ubuntu-xenial$
+    branch: ^(?!driverfixes/).*$
+
+  - name: ^gate-grenade-dsvm-cinder-mn-sub-volbak-ubuntu-xenial$
+    branch: ^(?!driverfixes/).*$
 
   # This job should run on driverfixes/mitaka branch
   - name: ^gate-cinder-pep8-ubuntu-trusty
-    branch: ^((stable/mitaka|driverfixes/mitaka))$
+    branch: ^(driverfixes/mitaka).*$
 
   # This job should run on future driverfixes/ branches
   - name: ^gate-cinder-pep8-ubuntu-xenial
-    branch: ^(?!(stable/mitaka|(driverfixes/mitaka))).*$
+    branch: ^(?!driverfixes/mitaka).*$
 
   # Skip post job for driverfixes
   - name: ^cinder-.*$
