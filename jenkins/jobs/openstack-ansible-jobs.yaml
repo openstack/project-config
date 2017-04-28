@@ -13,12 +13,11 @@
       - zuul-git-prep
       - shell: |
           #!/bin/bash -xe
-          sudo ZUUL_BRANCH=$ZUUL_BRANCH \
-               ZUUL_CHANGE=$ZUUL_CHANGE \
-               ZUUL_CHANGES=$ZUUL_CHANGES \
-               ZUUL_CHANGE_IDS=$ZUUL_CHANGE_IDS \
-               ZUUL_PATCHSET=$ZUUL_PATCHSET \
-               scripts/gate-check-commit.sh "{scenario}"
+          # Output all the zuul parameters to a file
+          # which can be sourced in the functional test.
+          printenv | grep ^ZUUL > zuul.env
+          # Execute the functional test
+          sudo scripts/gate-check-commit.sh "{scenario}"
 
     publishers:
       - devstack-logs
