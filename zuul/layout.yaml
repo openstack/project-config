@@ -1244,9 +1244,9 @@ jobs:
   - name: ^gate-logstash-filters-ubuntu-xenial$
     voting: false
 
-  # Transitional until monasca-transform is fixed for tests
-  - name: ^gate-tempest-dsvm-monasca-transform-python-full$
-    voting: false
+  # enable only for master and stable/pike onwards
+  - name: ^gate-tempest-dsvm-monasca-transform-python-functional$
+    branch: ^(?!stable/(newton|ocata)).*$
 
   # disable requirement control @ stable/mitaka,
   # gate-monasca-log-api-requirements fails on monasca-common which was not
@@ -12159,7 +12159,9 @@ projects:
       - name: python-jobs
       - name: python35-jobs-nv
     check:
-      - gate-tempest-dsvm-monasca-transform-python-full
+      - gate-tempest-dsvm-monasca-transform-python-functional
+    gate:
+      - gate-tempest-dsvm-monasca-transform-python-functional
 
   - name: openstack/monasca-ui
     template:
