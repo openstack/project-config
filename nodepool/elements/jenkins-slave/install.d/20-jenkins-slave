@@ -6,8 +6,17 @@ fi
 set -eu
 set -o pipefail
 
+# Add jenkins user and group.  Note we don't want to rely on
+# "useradd"'s group adding behaviour, because it might differ across
+# distros.
 groupadd jenkins
 useradd -g jenkins -m jenkins -s /bin/bash
+
+# a lot of caching happens in extra-data.d (for "historical" reasons).
+# We've put the cache stuff into /opt/cache/files, but again, for
+# "historical" reasons, ensure this is available in /home/jenkins
+mkdir -p /home/jenkins/cache
+ln -sf /opt/cache/files /home/jenkins/cache/files
 
 # this was copied from outside the chroot by extras.d
 _pub_key=/tmp/in_target.d/jenkins-user-ssh-public-key
