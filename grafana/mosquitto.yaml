@@ -35,7 +35,7 @@ dashboard:
     - title: Connection Information
       height: 250px
       panels:
-        - title: Message Statistics
+        - title: Message Rates (messages / minute)
           span: 4
           stack: true
           tooltip:
@@ -43,16 +43,17 @@ dashboard:
           targets:
             - target: alias(stats.gauges.mosquitto.messages_sent, 'Messages Sent')
             - target: alias(stats.gauges.mosquitto.messages_recieved, 'Messages Received')
+            - target: alias(stats.gauges.mosquitto.messages_dropped, 'Messages Dropped')
           seriesOverrides:
             - alias: Max
               stack: False
           type: graph
-        - title: Heap Size
+        - title: Heap Size (Bytes)
           span: 4
           targets:
             - target: stats.gauges.mosquitto.heap_size
           type: graph
-        - title: Data Transfers
+        - title: Data Transfered (bytes / minute)
           span: 4
           targets:
             - target: stats.gauges.mosquitto.bytes_sent
