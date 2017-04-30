@@ -115,11 +115,6 @@
               # variable.
               uc_prj=$(echo $prj | tr a-z- A-Z_ | tr -cd A-Z_)
               export OVERRIDE_${{uc_prj}}_PROJECT_BRANCH=$ZUUL_BRANCH
-              case "$prj" in
-                pbr)
-                   export PROJECTS="openstack-dev/$prj $PROJECTS" ;;
-                *) export PROJECTS="openstack/$prj $PROJECTS" ;;
-              esac
           done
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
@@ -157,11 +152,6 @@
       - devstack-checkout
       - shell: |
           #!/bin/bash -xe
-          REPOSITORY="openstack/{name}"
-          if [ "{name}" = "pbr" ]; then
-              REPOSITORY="openstack-dev/pbr"
-          fi
-          export PROJECTS="$REPOSITORY $PROJECTS"
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_TEMPEST_FULL=1
@@ -202,7 +192,6 @@
       - devstack-checkout
       - shell: |
           #!/bin/bash -xe
-          export PROJECTS="openstack/{name} $PROJECTS"
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_TEMPEST_FULL=1
@@ -1019,7 +1008,7 @@
       - devstack-checkout
       - shell: |
           #!/bin/bash -xe
-          export PROJECTS="openstack-dev/grenade openstack/{name} $PROJECTS"
+          export PROJECTS="openstack-dev/grenade $PROJECTS"
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_GRENADE=pullup
@@ -1766,7 +1755,7 @@
       - devstack-checkout
       - shell: |
           #!/bin/bash -xe
-          export PROJECTS="openstack-dev/grenade openstack/{name} $PROJECTS"
+          export PROJECTS="openstack-dev/grenade $PROJECTS"
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_GRENADE=pullup
