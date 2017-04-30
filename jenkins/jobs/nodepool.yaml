@@ -100,15 +100,14 @@
           # Because we are testing a non standard project, add the
           # our project repository. This makes zuul do the right
           # reference magic for testing changes.
-          export PROJECTS="openstack-infra/glean $PROJECTS"
           export PROJECTS="openstack-infra/nodepool $PROJECTS"
-          export PROJECTS="openstack-infra/shade $PROJECTS"
-          export PROJECTS="openstack/diskimage-builder $PROJECTS"
           # note the actual url here is somewhat irrelevant because it
           # caches in nodepool, however make it a valid url for
           # documentation purposes.
           export DEVSTACK_LOCAL_CONFIG="enable_plugin nodepool git://git.openstack.org/openstack-infra/nodepool"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"LIBS_FROM_GIT=diskimage-builder,glean,shade"
+          export DEVSTACK_PROJECT_FROM_GIT="diskimage-builder"
+          export DEVSTACK_PROJECT_FROM_GIT+=",glean"
+          export DEVSTACK_PROJECT_FROM_GIT+=",shade"
 
           # Start with all images disabled.
           export NODEPOOL_PAUSE_CENTOS_7_DIB=true
