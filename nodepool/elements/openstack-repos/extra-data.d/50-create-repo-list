@@ -71,18 +71,6 @@ def main():
 
             projects_list.write("%(name)s git %(location)s "
                                 "%(url)s %(ref)s\n" % args)
-        # Clone openstack-infra/system-config again so that we can use it to
-        # build the image without interferring with the slave repo cache.
-        project = 'openstack-infra/system-config'
-        args = dict(
-            name='config_tmp',
-            location=os.path.join('/opt/build_git', project),
-            url=os.environ.get('CONFIG_SOURCE',
-                               '%s/%s.git' % (GIT_BASE, project)),
-            ref=os.environ.get('CONFIG_REF', '*'))
-        projects_list.write(
-                "%(name)s git %(location)s %(url)s %(ref)s\n" % args)
-
 
 if __name__ == '__main__':
     main()
