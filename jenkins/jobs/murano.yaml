@@ -211,6 +211,7 @@
       - devstack-logs
       - console-log
 
+# Experimental murano functional pipeline in place of outdated murano-ci.
 - job-template:
     name: 'gate-murano-dsvm-functional-{node}{suffix}'
     node: '{node}'
@@ -249,6 +250,54 @@
 
           function post_test_hook {{
               source $BASE/new/murano/functionaltests/post_test_hook_experimental.sh
+          }}
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - test-results
+      - devstack-logs
+      - console-log
+
+# Experimental murano functional pipeline in place of outdated murano-ci.
+- job-template:
+    name: 'gate-dashboard-dsvm-selenium-{type}-{node}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 130
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin murano git://git.openstack.org/openstack/murano
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TEMPEST=0
+          export DEVSTACK_GATE_TEMPEST_NOTESTS=1
+          export DEVSTACK_GATE_NEUTRON=1
+
+          export PROJECTS="openstack/murano $PROJECTS"
+          export PROJECTS="openstack/murano-dashboard $PROJECTS"
+          export PROJECTS="openstack/python-muranoclient $PROJECTS"
+
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+
+          function post_test_hook {{
+              source $BASE/new/murano-dashboard/muranodashboard/tests/contrib/post_test_hook_experimental.sh \
+                {type}
           }}
           export -f post_test_hook
 
