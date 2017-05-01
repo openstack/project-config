@@ -141,22 +141,6 @@
       - console-log
 
 - job-template:
-    name: 'gate-{name}-puppet-syntax'
-    node: ubuntu-xenial
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - net-info
-      - zuul-git-prep
-      - install-distro-packages
-      - revoke-sudo
-      - puppet-syntax
-
-    publishers:
-      - console-log
-
-- job-template:
     name: 'gate-{name}-puppet-syntax-{puppet_version}-{legacy}{node}'
     node: '{node}'
 
@@ -375,13 +359,14 @@
     puppet_version:
       - 3
       - 4
-    node: centos-7
+    node:
+      - centos-7
+      - ubuntu-xenial
     legacy:
       - ''
       - 'legacy-'
     jobs:
       - 'gate-{name}-puppet-lint'
-      - 'gate-{name}-puppet-syntax'
       - 'gate-{name}-puppet-module-build'
       - 'gate-{name}-puppet-syntax-{puppet_version}-{legacy}{node}'
 
