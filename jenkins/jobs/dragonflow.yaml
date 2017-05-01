@@ -117,6 +117,7 @@
 
           export PROJECTS="openstack/dragonflow $PROJECTS"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin dragonflow git://git.openstack.org/openstack/dragonflow"
+
           # Add bgp project to fullstack gate job.
           export PROJECTS="openstack/neutron-dynamic-routing $PROJECTS"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin neutron-dynamic-routing git://git.openstack.org/openstack/neutron-dynamic-routing"
@@ -125,6 +126,62 @@
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_ENABLE_DRAGONFLOW_LOCAL_CONTROLLER=True"
 
           export DEVSTACK_GATE_SETTINGS=/opt/stack/new/dragonflow/devstack/devstackgaterc
+
+          function gate_hook {{
+              bash -xe $BASE/new/dragonflow/dragonflow/tests/contrib/gate_hook.sh fullstack
+          }}
+          export -f gate_hook
+
+          function post_test_hook {{
+              bash -xe $BASE/new/dragonflow/dragonflow/tests/contrib/post_test_hook.sh fullstack
+          }}
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - test-results
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-dragonflow-dsvm-fullstack-zmq-{node}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 130
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin dragonflow git://git.openstack.org/openstack/dragonflow
+            enable_plugin neutron-dynamic-routing git://git.openstack.org/openstack/neutron-dynamic-routing
+            DR_MODE=df-bgp
+            Q_ENABLE_DRAGONFLOW_LOCAL_CONTROLLER=True
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TEMPEST=0
+          export DEVSTACK_GATE_NEUTRON=1
+          export DEVSTACK_GATE_INSTALL_TESTONLY=1
+
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+
+          export PROJECTS="openstack/dragonflow $PROJECTS"
+          export PROJECTS="openstack/neutron-dynamic-routing $PROJECTS"
+          export DEVSTACK_GATE_SETTINGS=/opt/stack/new/dragonflow/devstack/devstackgaterc-zmq
 
           function gate_hook {{
               bash -xe $BASE/new/dragonflow/dragonflow/tests/contrib/gate_hook.sh fullstack
