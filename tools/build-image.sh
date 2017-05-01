@@ -110,7 +110,6 @@ disk-image-create -x --no-tmpfs -o $IMAGE_NAME \
     openstack-repos \
     nodepool-base \
     cache-devstack \
-    cache-bindep \
     growroot \
     infra-package-needs \
     stackviz \
