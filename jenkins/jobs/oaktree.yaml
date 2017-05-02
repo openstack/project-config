@@ -83,10 +83,9 @@
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_LOCAL_CONFIG="enable_plugin oaktree git://git.openstack.org/openstack/oaktree"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"LIBS_FROM_GIT=shade,oaktree,oaktreemodel"
-          export PROJECTS="openstack/oaktree $PROJECTS"
-          export PROJECTS="openstack/oaktreemodel $PROJECTS"
-          export PROJECTS="openstack-infra/shade $PROJECTS"
+          export DEVSTACK_PROJECT_FROM_GIT="shade"
+          export DEVSTACK_PROJECT_FROM_GIT+=",oaktree"
+          export DEVSTACK_PROJECT_FROM_GIT+=",oaktreemodel"
 
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
