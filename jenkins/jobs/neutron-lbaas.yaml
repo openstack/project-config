@@ -32,8 +32,10 @@
           export PROJECTS="openstack/neutron-lbaas $PROJECTS"
           export PROJECTS="openstack/octavia $PROJECTS"
 
-          export DEVSTACK_PROJECT_FROM_GIT="python-octaviaclient"
-          export OVERRIDE_PYTHON_OCTAVIACLIENT_PROJECT_BRANCH=$ZUUL_BRANCH
+          if ! [[ "$ZUUL_BRANCH" =~ "stable/newton"|"stable/ocata" ]]; then
+              export DEVSTACK_PROJECT_FROM_GIT="python-octaviaclient"
+              export OVERRIDE_PYTHON_OCTAVIACLIENT_PROJECT_BRANCH=$ZUUL_BRANCH
+          fi
 
           function gate_hook {{
               $BASE/new/neutron-lbaas/neutron_lbaas/tests/contrib/gate_hook.sh tempest {lbaasversion} {lbaastest}
@@ -87,8 +89,10 @@
           export PROJECTS="openstack/neutron-lbaas $PROJECTS"
           export PROJECTS="openstack/octavia $PROJECTS"
 
-          export DEVSTACK_PROJECT_FROM_GIT="python-octaviaclient"
-          export OVERRIDE_PYTHON_OCTAVIACLIENT_PROJECT_BRANCH=$ZUUL_BRANCH
+          if ! [[ "$ZUUL_BRANCH" =~ "stable/newton"|"stable/ocata" ]]; then
+              export DEVSTACK_PROJECT_FROM_GIT="python-octaviaclient"
+              export OVERRIDE_PYTHON_OCTAVIACLIENT_PROJECT_BRANCH=$ZUUL_BRANCH
+          fi
 
           function gate_hook {{
               $BASE/new/neutron-lbaas/neutron_lbaas/tests/contrib/gate_hook.sh tempest {lbaasversion} {lbaastest}
