@@ -40,11 +40,6 @@ export IMAGE_NAME=${IMAGE_NAME:-devstack-gate}
 export NODEPOOL_SCRIPTDIR=${NODEPOOL_SCRIPTDIR:-nodepool/scripts}
 export EXTRA_ELEMENTS=${EXTRA_ELEMENTS:-}
 
-## Test your changes to system-config by overriding this; note you can
-## get a CONFIG_REF from gerrit should you have uploaded a change
-# export CONFIG_SOURCE=${CONFIG_SOURCE:-https://git.openstack.org/openstack-infra/system-config}
-# export CONFIG_REF=${CONFIG_REF:-refs/changes/12/123456/1
-
 ZUUL_USER_SSH_PUBLIC_KEY=${ZUUL_USER_SSH_PUBLIC_KEY:-$HOME/.ssh/id_rsa.pub}
 if [ ! -f ${ZUUL_USER_SSH_PUBLIC_KEY} ]; then
     echo "Error: There is no SSH public key at: ${ZUUL_USER_SSH_PUBLIC_KEY}"
