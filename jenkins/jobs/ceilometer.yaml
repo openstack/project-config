@@ -98,7 +98,6 @@
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export BRANCH_OVERRIDE={branch-override}
-          export PROJECTS="openstack/python-ceilometerclient $PROJECTS"
           export DEVSTACK_PROJECT_FROM_GIT=python-ceilometerclient
           export DEVSTACK_LOCAL_CONFIG="enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
           export PROJECTS="openstack/aodh $PROJECTS"
@@ -190,7 +189,6 @@
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"GNOCCHI_ARCHIVE_POLICY=high"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"CEILOMETER_PIPELINE_INTERVAL=15"
 
-          export PROJECTS="openstack/{name} $PROJECTS"
           export DEVSTACK_PROJECT_FROM_GIT={name}
 
           function post_test_hook {{
@@ -236,7 +234,10 @@
           export DEVSTACK_GATE_EXERCISES=0
           export DEVSTACK_GATE_INSTALL_TESTONLY=1
 
-          export PROJECTS="openstack/ceilometer openstack/aodh openstack/gnocchi openstack/oslo.messaging openstack/devstack-plugin-{plugin}"
+          export PROJECTS="openstack/ceilometer $PROJECTS"
+          export PROJECTS="openstack/aodh $PROJECTS"
+          export PROJECTS="openstack/gnocchi $PROJECTS"
+          export PROJECTS="openstack/devstack-plugin-{plugin} $PROJECTS"
 
           export DEVSTACK_LOCAL_CONFIG="enable_plugin gnocchi git://git.openstack.org/openstack/gnocchi"
           case "$ZUUL_BRANCH" in

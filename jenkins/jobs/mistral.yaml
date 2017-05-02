@@ -17,14 +17,16 @@
           export DEVSTACK_GATE_NEUTRON=1
 
           if [ "{component}" = "python-mistralclient" ] ; then
+              # This puts the repo in PROJECTS
               export DEVSTACK_PROJECT_FROM_GIT="python-mistralclient"
+          else
+              export PROJECTS="openstack/python-mistralclient $PROJECTS"
           fi
 
           export ENABLED_SERVICES=heat,h-api,h-api-cfn,h-api-cw,h-eng,tempest
           export PROJECTS="openstack/heat $PROJECTS"
           export PROJECTS="openstack/mistral $PROJECTS"
           export PROJECTS="openstack/mistral-dashboard $PROJECTS"
-          export PROJECTS="openstack/python-mistralclient $PROJECTS"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin mistral https://git.openstack.org/openstack/mistral"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
 
