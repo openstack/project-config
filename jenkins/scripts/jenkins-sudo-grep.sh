@@ -19,16 +19,16 @@
 # the auth.log or secure log files before and after a test run.
 
 PATTERN="sudo.*jenkins.*:.*\(incorrect password attempts\|command not allowed\)"
-case $( facter osfamily ) in
-    Debian)
-        OLDLOGFILE=/var/log/auth.log.1
-        LOGFILE=/var/log/auth.log
-        ;;
-    RedHat)
-        OLDLOGFILE=$( ls /var/log/secure-* | sort | tail -n1 )
-        LOGFILE=/var/log/secure
-        ;;
-esac
+if [ -f /var/log/auth.log ]; then
+    OLDLOGFILE=/var/log/auth.log.1
+    LOGFILE=/var/log/auth.log
+elif [ -f /var/log/secure ]; then
+    OLDLOGFILE=$( ls /var/log/secure-* | sort | tail -n1 )
+    LOGFILE=/var/log/secure
+else
+    echo "*** Could not find auth.log/secure log for sudo tracing"
+    exit 1
+fi
 
 case "$1" in
     pre)
