@@ -2297,49 +2297,6 @@
       - console-log
 
 
-# run the tests for all the layer4 services together. This means we know they all work.
-- job-template:
-    name: '{pipeline}-tempest-dsvm-layer4-{node}{suffix}'
-    node: '{node}'
-
-    wrappers:
-      - build-timeout:
-          timeout: 180
-      - timestamps
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - shell: |
-          #!/bin/bash -xe
-          #
-          # tests heat, sahara, trove in a single job.
-          export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_TEMPEST=1
-          export DEVSTACK_GATE_HEAT=1
-          export DEVSTACK_GATE_NEUTRON=1
-          export DEVSTACK_GATE_SAHARA=1
-          export DEVSTACK_GATE_TROVE=1
-          export DEVSTACK_GATE_TEMPEST_REGEX="data_processing|orchestration"
-          export DEVSTACK_LOCAL_CONFIG="TEMPEST_USE_TEST_ACCOUNTS=True"
-          DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin sahara git://git.openstack.org/openstack/sahara"
-          DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
-          export DEVSTACK_LOCAL_CONFIG
-
-          export BRANCH_OVERRIDE={branch-override}
-          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
-              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
-          fi
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
-
-    publishers:
-      - devstack-logs
-      - console-log
-
 
 - job-template:
     name: '{pipeline}-tempest-dsvm-neutron-full-ssh{suffix}'
@@ -2466,7 +2423,6 @@
       - '{pipeline}-tempest-dsvm-cells-{node}{suffix}'
       - '{pipeline}-devstack-dsvm-updown-{node}{suffix}'
       - '{pipeline}-tempest-dsvm-neutron-full-ssh{suffix}'
-      - '{pipeline}-tempest-dsvm-layer4-{node}{suffix}'
       - '{pipeline}-tempest-dsvm-full-lio-{node}{suffix}'
       - '{pipeline}-tempest-dsvm-lvm-{node}{suffix}'
       - '{pipeline}-tempest-dsvm-zeromq-multibackend-{node}{suffix}'
