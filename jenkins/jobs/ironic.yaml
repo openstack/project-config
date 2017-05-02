@@ -213,7 +213,6 @@
     builders:
       - ironic-extra-vars:
           script: |
-            export PROJECTS="openstack/python-ironic-inspector-client $PROJECTS"
             export DEVSTACK_PROJECT_FROM_GIT="python-ironic-inspector-client,$DEVSTACK_PROJECT_FROM_GIT"
 
 - builder:
@@ -393,7 +392,7 @@
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
-          export PROJECTS="openstack/ironic openstack/python-ironicclient $PROJECTS"
+          export PROJECTS="openstack/ironic $PROJECTS"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin ironic git://git.openstack.org/openstack/ironic"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_DEPLOY_DRIVER=fake"
 
@@ -553,9 +552,10 @@
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
+          # DEVSTACK_PROJECT_FROM_GIT adds to PROJECTS, so no need to add python-ironic-inspector-client below
           export DEVSTACK_PROJECT_FROM_GIT="python-ironic-inspector-client"
-
-          export PROJECTS="openstack/ironic openstack/python-ironic-inspector-client openstack/ironic-inspector $PROJECTS"
+          export PROJECTS="openstack/ironic $PROJECTS"
+          export PROJECTS="openstack/ironic-inspector $PROJECTS"
           export DEVSTACK_LOCAL_CONFIG="enable_plugin ironic git://git.openstack.org/openstack/ironic"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ironic-inspector https://git.openstack.org/openstack/ironic-inspector"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_AUTOMATED_CLEAN_ENABLED=False"
