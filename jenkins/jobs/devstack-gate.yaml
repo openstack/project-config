@@ -515,8 +515,7 @@
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_TEMPEST_FULL=1
           # enable to use os-vif for Nova
-          export PROJECTS="openstack/os-vif $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"LIBS_FROM_GIT=os-vif"
+          export DEVSTACK_PROJECT_FROM_GIT="os-vif"
 
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
@@ -908,44 +907,24 @@
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
 
-          export PROJECTS="openstack/oslo.cache $PROJECTS"
-          export PROJECTS="openstack/oslo.concurrency $PROJECTS"
-          export PROJECTS="openstack/oslo.config $PROJECTS"
-          export PROJECTS="openstack/oslo.context $PROJECTS"
-          export PROJECTS="openstack/oslo.db $PROJECTS"
-          export PROJECTS="openstack/oslo.i18n $PROJECTS"
-          export PROJECTS="openstack/oslo.log $PROJECTS"
-          export PROJECTS="openstack/oslo.messaging $PROJECTS"
-          export PROJECTS="openstack/oslo.middleware $PROJECTS"
-          export PROJECTS="openstack/oslo.policy $PROJECTS"
-          export PROJECTS="openstack/oslo.privsep $PROJECTS"
-          export PROJECTS="openstack/oslo.reports $PROJECTS"
-          export PROJECTS="openstack/oslo.rootwrap $PROJECTS"
-          export PROJECTS="openstack/oslo.serialization $PROJECTS"
-          export PROJECTS="openstack/oslo.service $PROJECTS"
-          export PROJECTS="openstack/oslo.utils $PROJECTS"
-          export PROJECTS="openstack/oslo.versionedobjects $PROJECTS"
-          export PROJECTS="openstack/oslo.vmware $PROJECTS"
-
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"LIBS_FROM_GIT=oslo.cache"
-          export DEVSTACK_LOCAL_CONFIG+=$",oslo.concurrency"
-          export DEVSTACK_LOCAL_CONFIG+=$",oslo.config"
-          export DEVSTACK_LOCAL_CONFIG+=$",oslo.context"
-          export DEVSTACK_LOCAL_CONFIG+=$",oslo.db"
-          export DEVSTACK_LOCAL_CONFIG+=$",oslo.i18n"
-          export DEVSTACK_LOCAL_CONFIG+=$",oslo.log"
-          export DEVSTACK_LOCAL_CONFIG+=$",oslo.messaging"
-          export DEVSTACK_LOCAL_CONFIG+=$",oslo.middleware"
-          export DEVSTACK_LOCAL_CONFIG+=$",oslo.policy"
-          export DEVSTACK_LOCAL_CONFIG+=$",oslo.privsep"
-          export DEVSTACK_LOCAL_CONFIG+=$",oslo.reports"
-          export DEVSTACK_LOCAL_CONFIG+=$",oslo.rootwrap"
-          export DEVSTACK_LOCAL_CONFIG+=$",oslo.serialization"
-          export DEVSTACK_LOCAL_CONFIG+=$",oslo.service"
-          export DEVSTACK_LOCAL_CONFIG+=$",oslo.utils"
-          export DEVSTACK_LOCAL_CONFIG+=$",oslo.versionedobjects"
-          export DEVSTACK_LOCAL_CONFIG+=$",oslo.vmware"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'""
+          export DEVSTACK_PROJECT_FROM_GIT="oslo.cache"
+          export DEVSTACK_PROJECT_FROM_GIT+=",oslo.concurrency"
+          export DEVSTACK_PROJECT_FROM_GIT+=",oslo.config"
+          export DEVSTACK_PROJECT_FROM_GIT+=",oslo.context"
+          export DEVSTACK_PROJECT_FROM_GIT+=",oslo.db"
+          export DEVSTACK_PROJECT_FROM_GIT+=",oslo.i18n"
+          export DEVSTACK_PROJECT_FROM_GIT+=",oslo.log"
+          export DEVSTACK_PROJECT_FROM_GIT+=",oslo.messaging"
+          export DEVSTACK_PROJECT_FROM_GIT+=",oslo.middleware"
+          export DEVSTACK_PROJECT_FROM_GIT+=",oslo.policy"
+          export DEVSTACK_PROJECT_FROM_GIT+=",oslo.privsep"
+          export DEVSTACK_PROJECT_FROM_GIT+=",oslo.reports"
+          export DEVSTACK_PROJECT_FROM_GIT+=",oslo.rootwrap"
+          export DEVSTACK_PROJECT_FROM_GIT+=",oslo.serialization"
+          export DEVSTACK_PROJECT_FROM_GIT+=",oslo.service"
+          export DEVSTACK_PROJECT_FROM_GIT+=",oslo.utils"
+          export DEVSTACK_PROJECT_FROM_GIT+=",oslo.versionedobjects"
+          export DEVSTACK_PROJECT_FROM_GIT+=",oslo.vmware"
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
@@ -1125,15 +1104,14 @@
       - shell: |
           #!/bin/bash -xe
           export PROJECTS="openstack-dev/grenade $PROJECTS"
-          export PROJECTS="openstack/os-client-config $PROJECTS"
-          export PROJECTS="openstack/keystoneauth $PROJECTS"
-          export PROJECTS="openstack/python-novaclient $PROJECTS"
-          export PROJECTS="openstack/python-keystoneclient $PROJECTS"
-          export PROJECTS="openstack/python-glanceclient $PROJECTS"
-          export PROJECTS="openstack/python-cinderclient $PROJECTS"
-          export PROJECTS="openstack/python-neutronclient $PROJECTS"
-          export PROJECTS="openstack/python-ironicclient $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"LIBS_FROM_GIT=os-client-config,keystoneauth,python-novaclient,python-keystoneclient,python-glanceclient,python-cinderclient,python-neutronclient,python-ironicclient"
+          export DEVSTACK_PROJECT_FROM_GIT="os-client-config"
+          export DEVSTACK_PROJECT_FROM_GIT+=",keystoneauth"
+          export DEVSTACK_PROJECT_FROM_GIT+=",python-novaclient"
+          export DEVSTACK_PROJECT_FROM_GIT+=",python-keystoneclient"
+          export DEVSTACK_PROJECT_FROM_GIT+=",python-glanceclient"
+          export DEVSTACK_PROJECT_FROM_GIT+=",python-cinderclient"
+          export DEVSTACK_PROJECT_FROM_GIT+=",python-neutronclient"
+          export DEVSTACK_PROJECT_FROM_GIT+=",python-ironicclient"
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_GRENADE=pullup

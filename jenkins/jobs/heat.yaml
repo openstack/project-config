@@ -124,11 +124,10 @@
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"HEAT_USE_MOD_WSGI=False"
           fi
           if [ "{special}" == "-amqp1" ] ; then
-              export PROJECTS="openstack/oslo.messaging $PROJECTS"
               export PROJECTS="openstack/devstack-plugin-amqp1 $PROJECTS"
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"export AMQP1_SERVICE=qpid-hybrid"
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin devstack-plugin-amqp1 git://git.openstack.org/openstack/devstack-plugin-amqp1"
-              export DEVSTACK_LOCAL_CONFIG+=$'\n'"LIBS_FROM_GIT=oslo.messaging"
+              export DEVSTACK_PROJECT_FROM_GIT="oslo.messaging"
           fi
           function pre_test_hook {{
               cd /opt/stack/new/heat/heat_integrationtests

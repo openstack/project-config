@@ -130,19 +130,11 @@
 
           if [ "{special}" == "-postgres" ] ; then
               export DEVSTACK_GATE_POSTGRES=1
-          fi
-
-          if [ "{special}" == "-castellan-from-git" ] ; then
-              export DEVSTACK_LOCAL_CONFIG+=$'\n'"LIBS_FROM_GIT=castellan"
-              export PROJECTS="openstack/castellan $PROJECTS"
-          fi
-
-          if [ "{special}" == "-cursive" ] ; then
-              export DEVSTACK_LOCAL_CONFIG+=$'\n'"LIBS_FROM_GIT=cursive"
-              export PROJECTS="openstack/cursive $PROJECTS"
-          fi
-
-          if [ "{special}" == "-py35" ] ; then
+          elif [ "{special}" == "-castellan-from-git" ] ; then
+              export DEVSTACK_PROJECT_FROM_GIT="castellan"
+          elif [ "{special}" == "-cursive" ] ; then
+              export DEVSTACK_PROJECT_FROM_GIT="cursive"
+          elif [ "{special}" == "-py35" ] ; then
              export DEVSTACK_GATE_USE_PYTHON3=True
              export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-account"
              export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-container"
