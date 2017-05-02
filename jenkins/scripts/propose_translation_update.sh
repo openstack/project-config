@@ -106,6 +106,19 @@ function propose_training_guides {
     git_add_po_files doc/upstream-training/source/locale
 }
 
+# Propose updates for i18n
+function propose_i18n {
+
+    # Pull updated translations from Zanata.
+    pull_from_zanata "$PROJECT"
+
+    # Cleanup po and pot files
+    cleanup_module "doc"
+
+    # Add all changed files to git
+    git_add_po_files doc/source/locale
+}
+
 
 # Propose updates for python and django projects
 function propose_python_django {
@@ -263,6 +276,10 @@ case "$PROJECT" in
     training-guides)
         setup_training_guides "$ZANATA_VERSION"
         propose_training_guides
+        ;;
+    i18n)
+        setup_i18n "$ZANATA_VERSION"
+        propose_i18n
         ;;
     tripleo-ui)
         setup_reactjs_project "$PROJECT" "$ZANATA_VERSION"
