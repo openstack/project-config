@@ -2133,7 +2133,7 @@ jobs:
   # NOTE(mriedem): This must be defined before any more specific grenade
   # job filters so that those can override the branch filter if necessary.
   - name: ^gate-grenade-dsvm
-    branch: ^(?!stable/(mitaka|newton)).*$
+    branch: ^(?!(driverfixes|stable/(mitaka|newton))).*$
 
   # Grenade is tricky because we need it to start on old branch
   # then go up to new branch. This results in the following branch
@@ -2322,7 +2322,7 @@ jobs:
 
   # This job is just to check py35 compliance in master
   - name: ^gate-tempest-dsvm-py35.*$
-    branch: ^(?!stable)
+    branch: ^(?!(stable|driverfixes))
 
   - name: ^gate-tempest-dsvm-neutron-identity-v3-only-full.*$
     branch: ^(?!(stable|driverfixes))
@@ -2578,16 +2578,7 @@ jobs:
   - name: ^gate-cinder-python35
     branch: ^(?!driverfixes/).*$
 
-  - name: ^gate-grenade-dsvm-neutron-ubuntu-xenial$
-    branch: ^(?!driverfixes/).*$
-
   - name: ^gate-tempest-dsvm-lvm-multibackend-ubuntu-xenial-nv$
-    branch: ^(?!driverfixes/).*$
-
-  - name: ^gate-tempest-dsvm-py35-ubuntu-xenial$
-    branch: ^(?!driverfixes/).*$
-
-  - name: ^gate-grenade-dsvm-cinder-mn-sub-volbak-ubuntu-xenial$
     branch: ^(?!driverfixes/).*$
 
   # This job should run on driverfixes/mitaka branch
