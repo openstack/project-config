@@ -80,12 +80,16 @@
           if [[ "{name}" == *"openstack-ansible"* ]]; then
             # EPEL must be enabled because some deps from bindep.txt are
             # otherwise not available
-            [[ -e /usr/bin/yum ]] && sudo yum-config-manager --enable epel
+            if [[ -e /usr/bin/yum ]]; then
+              sudo yum-config-manager --enable epel
+            fi
           fi
       - install-distro-packages
       - shell: |
           if [[ "{name}" == *"openstack-ansible"* ]]; then
-            [[ -e /usr/bin/yum ]] && sudo yum-config-manager --disable epel
+            if [[ -e /usr/bin/yum ]]; then
+              sudo yum-config-manager --disable epel
+            fi
           fi
       - shell: |
           # Allow Jenkins user to ssh into localhost
