@@ -78,9 +78,15 @@
       - zuul-git-prep-upper-constraints
       - shell: |
           if [[ "{name}" == *"openstack-ansible"* ]]; then
-             sudo yum-config-manager --enable epel || true
+            # EPEL must be enabled because some deps from bindep.txt are
+            # otherwise not available
+            [[ -e /usr/bin/yum ]] && sudo yum-config-manager --enable epel
           fi
       - install-distro-packages
+      - shell: |
+          if [[ "{name}" == *"openstack-ansible"* ]]; then
+            [[ -e /usr/bin/yum ]] && sudo yum-config-manager --disable epel
+          fi
       - shell: |
           # Allow Jenkins user to ssh into localhost
           ssh-keygen -f ~/.ssh/id_rsa -N ""
