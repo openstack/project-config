@@ -173,6 +173,11 @@
 
           export ENABLED_SERVICES=kuryr-libnetwork,etcd-server,docker-engine
 
+          function gate_hook {{
+              bash -xe $BASE/new/kuryr-libnetwork/kuryr_libnetwork/tests/contrib/gate_hook.sh
+          }}
+          export -f gate_hook
+
           function post_test_hook {{
               $BASE/new/rally/tests/ci/rally-gate.sh
           }}
