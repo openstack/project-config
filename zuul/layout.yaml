@@ -3574,6 +3574,10 @@ jobs:
   - name: ^gate-tempest-dsvm-ironic-ipa-wholedisk-bios-pxe_ipmitool-tinyipa-ubuntu-xenial$
     branch: ^stable/(mitaka|newton|ocata).*$
 
+  # Only run the redfish job(s) against pike+
+  - name: ^gate-tempest-dsvm-ironic-ipa-(partition|wholedisk)-redfish-tinyipa-ubuntu-xenial.*$
+    branch: ^(?!stable/(mitaka|newton|ocata)).*$
+
   - name: ^gate-senlin-dsvm-tempest-(py27|py35)-(functional|api|integration)
     skip-if:
       - project: ^openstack/senlin$
@@ -10937,6 +10941,7 @@ projects:
       - gate-tempest-dsvm-ironic-pxe_ipa-full-ubuntu-trusty-nv
       - gate-tempest-dsvm-ironic-pxe_ipa-full-ubuntu-xenial-nv
       - gate-tempest-dsvm-ironic-ipa-partition-pxe_ipmitool-tinyipa-python3-ubuntu-xenial-nv
+      - gate-tempest-dsvm-ironic-ipa-partition-redfish-tinyipa-ubuntu-xenial-nv
       - gate-tempest-dsvm-ironic-ipa-resourceclasses-partition-pxe_ipmitool-tinyipa-ubuntu-xenial-nv
 
   - name: openstack/ironic-inspector
