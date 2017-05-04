@@ -150,47 +150,6 @@
 
 
 - job-template:
-    name: '{pipeline}-tempest-dsvm-heat{special}-{node}{suffix}'
-    node: '{node}'
-
-    wrappers:
-      - build-timeout:
-          timeout: 130
-      - timestamps
-
-    builders:
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - shell: |
-          #!/bin/bash -xe
-          export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_TEMPEST=1
-          export DEVSTACK_GATE_TEMPEST_REGEX="orchestration"
-          export DEVSTACK_GATE_HEAT=1
-          export BRANCH_OVERRIDE={branch-override}
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
-          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
-              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
-          fi
-          if [ "{special}" == "-identity-v3-only" ] ; then
-              export DEVSTACK_LOCAL_CONFIG+=$'\n'"ENABLE_IDENTITY_V2=False"
-          fi
-
-          # enable heat services for mitaka (no devstack plugin available)
-          if [[ "$ZUUL_BRANCH" == "stable/mitaka" ]]; then
-              export ENABLED_SERVICES+=,h-api,h-api-cfn,h-api-cw,h-eng,heat
-          fi
-
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
-
-    publishers:
-      - devstack-logs
-      - console-log
-
-
-- job-template:
    name: '{pipeline}-heatclient-dsvm-functional-{node}{suffix}'
    node: '{node}'
 
