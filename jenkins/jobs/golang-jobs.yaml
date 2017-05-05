@@ -80,14 +80,14 @@
 
           function pre_test_hook {{
               if [[ -f "$BASE/new/{name}/contrib/pre_test_hook.sh" ]]; then
-                  source $BASE/new/{name}/contrib/pre_test_hook.sh
+                  source $BASE/new/{name}/contrib/pre_test_hook.sh {suite}
               fi
           }}
           export -f pre_test_hook
 
           function gate_hook {{
               if [[ -f "$BASE/new/{name}/contrib/gate_hook.sh" ]]; then
-                  source $BASE/new/{name}/contrib/gate_hook.sh
+                  source $BASE/new/{name}/contrib/gate_hook.sh {suite}
               else
                   $BASE/new/devstack-gate/devstack-vm-gate.sh
               fi
@@ -96,7 +96,7 @@
 
           function post_test_hook {{
               if [[ -f "$BASE/new/{name}/contrib/post_test_hook.sh" ]]; then
-                  source $BASE/new/{name}/contrib/post_test_hook.sh
+                  source $BASE/new/{name}/contrib/post_test_hook.sh {suite}
               fi
           }}
           export -f post_test_hook
