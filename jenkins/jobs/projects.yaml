@@ -13759,6 +13759,12 @@
             - ubuntu-xenial
           suffix: '-nv'
           branch-override: default
+      - 'gate-{name}-buildimages-{plugin}-{node}{suffix}':
+          node: ubuntu-xenial
+          suffix: '-nv'
+          plugin:
+            - cloudera
+            - ambari
 
 - project:
     name: sahara-ci-config
@@ -13804,7 +13810,8 @@
     jobs:
       - python-jobs
       - pypi-jobs
-      - 'gate-sahara-buildimages-{plugin}-{node}':
+      - 'gate-{name}-buildimages-{plugin}-{node}{suffix}':
+          suffix: '-nv'
           node:
             - ubuntu-trusty
             - ubuntu-xenial
