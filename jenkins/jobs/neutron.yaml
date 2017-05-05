@@ -567,8 +567,9 @@
 # 1) neutron enabled
 # 2) oslo.messaging from git
 # 3) specific oslo.messaging driver enabled
+# 4) plug-in configuration (optional)
 - job-template:
-    name: 'gate-tempest-neutron-dsvm-src-oslo.messaging-{plugin}-{node}{suffix}'
+    name: 'gate-tempest-neutron-dsvm-src-oslo.messaging-{plugin}-{config}-{node}{suffix}'
     node: '{node}'
 
     wrappers:
@@ -593,6 +594,21 @@
           export DEVSTACK_LOCAL_CONFIG="enable_plugin devstack-plugin-{plugin} git://git.openstack.org/openstack/devstack-plugin-{plugin}"
 
           export DEVSTACK_PROJECT_FROM_GIT="oslo.messaging"
+
+          if [ "{plugin}" == "amqp1" ]; then
+              # The AMQP 1.0 plugin supports a couple of different message bus configurations
+              # 'hybrid' - use RabbitMQ for Notifications, qdrouterd for RPC
+              # 'dual' - use qpidd for Notifications, qdrouterd for RPC
+              # default: use qpidd for Notifications and for RPC
+              case "{config}" in
+                hybrid)
+                    export DEVSTACK_LOCAL_CONFIG+=$'\n'"AMQP1_SERVICE=qpid-hybrid"
+                    ;;
+                dual)
+                    export DEVSTACK_LOCAL_CONFIG+=$'\n'"AMQP1_SERVICE=qpid-dual"
+                    ;;
+              esac
+          fi
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh

@@ -2532,24 +2532,6 @@ jobs:
     branch: ^(?!stable/(mitaka|newton|ocata)).*$
     voting: false
 
-    # The following oslo.messaging-dsvm-functional tests have been
-    # deprecated in ocata and replaced by the
-    # oslo.messaging-tox-.*-func-.*$ tests:
-  - name: ^gate-oslo.messaging-dsvm-functional-.*-amqp1-ubuntu-trusty.*$
-    branch: ^stable/mitaka$
-
-  - name: ^gate-oslo.messaging-dsvm-functional-.*-amqp1-centos-7.*$
-    branch: ^stable/(mitaka|newton)$
-
-  - name: ^gate-oslo.messaging-dsvm-functional-.*-pika-ubuntu-trusty$
-    branch: ^stable/mitaka$
-
-  - name: ^gate-oslo.messaging-dsvm-functional-.*-zeromq-ubuntu-trusty$
-    branch: ^stable/mitaka$
-
-  - name: ^gate-oslo.messaging-dsvm-functional-.*-zeromq-.*-ubuntu-trusty.*$
-    branch: ^stable/mitaka$
-
   - name: ^gate-python-cinderclient-pylint.*$
     voting: false
 
@@ -3089,23 +3071,16 @@ jobs:
   - name: gate-manila-tempest-minimal-dsvm-lvm-centos-7-nv
     branch: ^(?!stable/(?:mitaka|newton)).*$
 
-  - name: ^gate-oslo.messaging-src-dsvm-full-amqp1-ubuntu-trusty.*$
-    branch: ^stable/mitaka$
+  # amqp1 hybrid and dual support added in pike:
+  - name: ^gate-tempest-neutron-dsvm-src-oslo.messaging-amqp1-(hybrid|dual)-.*$
+    branch: ^(?!stable/(?:newton|ocata)).*$
 
-  - name: ^gate-oslo.messaging-src-dsvm-full-zmq-ubuntu-trusty
-    branch: ^stable/mitaka$
+  - name: ^gate-oslo.messaging-src-dsvm-full-amqp1-(hybrid|dual)-.*$
+    branch: ^(?!stable/(?:newton|ocata)).*$
 
-  - name: ^gate-oslo.messaging-src-dsvm-full-pika-ubuntu-trusty
-    branch: ^stable/mitaka$
-
-  - name: ^gate-oslo.messaging-telemetry-dsvm-integration-.*ubuntu-trusty(-nv)?$
-    branch: ^stable/mitaka$
-
-  - name: gate-tempest-neutron-dsvm-src-oslo.messaging-pika-ubuntu-trusty
-    branch: ^stable/mitaka$
-
+  # tox based functional tests run in >= ocata
   - name: ^gate-oslo.messaging-tox-.*-func-.*$
-    branch: ^(?!stable/(?:mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
 
   - name: ^gate-oslo.messaging-tox-py27-func-(amqp1|kafka|zmq-proxy|zmq-pubsub)-.*$
     voting: false
@@ -14725,50 +14700,25 @@ projects:
       - gate-oslo.messaging-tox-py35-func-amqp1-ubuntu-xenial
       - gate-oslo.messaging-tox-py35-func-rabbit-ubuntu-xenial
       - gate-oslo.messaging-tox-py35-func-zmq-ubuntu-xenial
-      - gate-oslo.messaging-dsvm-functional-py27-rabbit-ubuntu-trusty-nv
-      - gate-oslo.messaging-dsvm-functional-py34-rabbit-ubuntu-trusty-nv
-      - gate-oslo.messaging-dsvm-functional-py27-amqp1-ubuntu-trusty-nv
-      - gate-oslo.messaging-dsvm-functional-py27-amqp1-centos-7-nv
-      - gate-oslo.messaging-dsvm-functional-py34-amqp1-ubuntu-trusty-nv
-      - gate-oslo.messaging-dsvm-functional-py27-pika-ubuntu-trusty
-      - gate-oslo.messaging-dsvm-functional-py27-zeromq-ubuntu-trusty
-      - gate-oslo.messaging-dsvm-functional-py27-zeromq-proxy-ubuntu-trusty-nv
-      - gate-oslo.messaging-dsvm-functional-py27-zeromq-pub-sub-ubuntu-trusty-nv
-      - gate-oslo.messaging-src-dsvm-full-amqp1-ubuntu-trusty-nv
-      - gate-oslo.messaging-src-dsvm-full-amqp1-ubuntu-xenial-nv
-      - gate-oslo.messaging-src-dsvm-full-amqp1-centos-7-nv
-      - gate-oslo.messaging-src-dsvm-full-pika-ubuntu-trusty
-      - gate-oslo.messaging-src-dsvm-full-pika-ubuntu-xenial
-      - gate-oslo.messaging-src-dsvm-full-zmq-ubuntu-trusty
-      - gate-oslo.messaging-src-dsvm-full-zmq-ubuntu-xenial-nv
-      - gate-oslo.messaging-src-grenade-dsvm-ubuntu-trusty-nv
+      - gate-oslo.messaging-src-dsvm-full-amqp1-hybrid-ubuntu-xenial-nv
+      - gate-oslo.messaging-src-dsvm-full-amqp1-dual-centos-7-nv
+      - gate-oslo.messaging-src-dsvm-full-pika-default-ubuntu-xenial
+      - gate-oslo.messaging-src-dsvm-full-zmq-default-ubuntu-xenial-nv
       - gate-oslo.messaging-src-grenade-dsvm-ubuntu-xenial-nv
-      - gate-oslo.messaging-src-grenade-dsvm-multinode-ubuntu-trusty-nv
       - gate-oslo.messaging-src-grenade-dsvm-multinode-ubuntu-xenial-nv
-      - gate-telemetry-dsvm-integration-oslo.messaging-ubuntu-trusty
       - gate-telemetry-dsvm-integration-oslo.messaging-ubuntu-xenial
-      - gate-oslo.messaging-telemetry-dsvm-integration-amqp1-ubuntu-trusty-nv
       - gate-oslo.messaging-telemetry-dsvm-integration-amqp1-ubuntu-xenial-nv
-      - gate-oslo.messaging-telemetry-dsvm-integration-pika-ubuntu-trusty-nv
       - gate-oslo.messaging-telemetry-dsvm-integration-pika-ubuntu-xenial-nv
-      - gate-oslo.messaging-telemetry-dsvm-integration-zmq-ubuntu-trusty-nv
       - gate-oslo.messaging-telemetry-dsvm-integration-zmq-ubuntu-xenial-nv
-      - gate-tempest-neutron-dsvm-src-oslo.messaging-amqp1-ubuntu-xenial-nv
-      - gate-tempest-neutron-dsvm-src-oslo.messaging-pika-ubuntu-trusty
-      - gate-tempest-neutron-dsvm-src-oslo.messaging-pika-ubuntu-xenial
-      - gate-tempest-neutron-dsvm-src-oslo.messaging-zmq-ubuntu-xenial-nv
+      - gate-tempest-neutron-dsvm-src-oslo.messaging-amqp1-hybrid-ubuntu-xenial-nv
+      - gate-tempest-neutron-dsvm-src-oslo.messaging-pika-default-ubuntu-xenial
+      - gate-tempest-neutron-dsvm-src-oslo.messaging-zmq-default-ubuntu-xenial-nv
     gate:
       - gate-oslo.messaging-tox-py27-func-rabbit-ubuntu-xenial
       - gate-oslo.messaging-tox-py27-func-pika-ubuntu-xenial
-      - gate-oslo.messaging-dsvm-functional-py27-pika-ubuntu-trusty
-      - gate-oslo.messaging-dsvm-functional-py27-zeromq-ubuntu-trusty
-      - gate-oslo.messaging-src-dsvm-full-pika-ubuntu-trusty
-      - gate-oslo.messaging-src-dsvm-full-pika-ubuntu-xenial
-      - gate-oslo.messaging-src-dsvm-full-zmq-ubuntu-trusty
-      - gate-tempest-neutron-dsvm-src-oslo.messaging-pika-ubuntu-trusty
-      - gate-tempest-neutron-dsvm-src-oslo.messaging-pika-ubuntu-xenial
+      - gate-oslo.messaging-src-dsvm-full-pika-default-ubuntu-xenial
+      - gate-tempest-neutron-dsvm-src-oslo.messaging-pika-default-ubuntu-xenial
     post:
-      - oslo.messaging-coverage-ubuntu-trusty
       - oslo.messaging-coverage-ubuntu-xenial
 
   - name: openstack/oslo.middleware
