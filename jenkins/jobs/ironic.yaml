@@ -336,6 +336,14 @@
           script: |
             export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_STAGING_DRIVER={staging-driver}"
 
+- builder:
+    name: ironic-sushy-from-source
+    builders:
+      - ironic-extra-vars:
+          script: |
+            export DEVSTACK_PROJECT_FROM_GIT="sushy,$DEVSTACK_PROJECT_FROM_GIT"
+
+
 - job-template:
     name: '{pipeline}-ironic-dsvm-functional-{node}{suffix}'
     node: '{node}'
@@ -737,6 +745,40 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - ironic-deploy-with-IPA:
+          ramdisk-type: 'tinyipa'
+      - ironic-tempest-regex:
+          tempest-regex: ironic
+      - ironic-tempest-plugin:
+          concurrency: 1
+      - devstack-virtual-ironic:
+          build-ramdisk: ''
+          deploy_driver: 'redfish'
+          image-type: 'partition'
+          boot-mode: 'bios'
+          branch-override: '{branch-override}'
+          bm-vm-count: 1
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-tempest-dsvm-ironic-ipa-partition-redfish-sushy-src-{node}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 75
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - ironic-sushy-from-source
       - ironic-deploy-with-IPA:
           ramdisk-type: 'tinyipa'
       - ironic-tempest-regex:
