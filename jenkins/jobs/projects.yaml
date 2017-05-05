@@ -9406,7 +9406,14 @@
     name: openstack-helm
 
     jobs:
-      - gate-openstack-helm-{node}{suffix}:
+      - gate-openstack-helm-{integration}-{type}-{node}{suffix}:
+          integration: nocluster
+          type: linter
+          node: ubuntu-xenial
+          suffix: '-nv'
+      - gate-openstack-helm-{integration}-{type}-{node}{suffix}:
+          integration: aio
+          type: basic
           node: ubuntu-xenial
           suffix: '-nv'
       - gate-{name}-docs-{node}:
