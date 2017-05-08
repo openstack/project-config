@@ -1,5 +1,5 @@
 - job-template:
-    name: 'gate-openstack-helm-{node}{suffix}'
+    name: 'gate-openstack-helm-{integration}-{type}-{node}{suffix}'
     node: '{node}'
 
     wrappers:
@@ -16,6 +16,8 @@
       - install-distro-packages
       - shell: |
           #!/bin/bash -xe
+          export INTEGRATION={integration}
+          export INTEGRATION_TYPE={type}
           tools/gate/setup_gate.sh {node}
 
     publishers:
