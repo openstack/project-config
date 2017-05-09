@@ -1,5 +1,5 @@
 - job-template:
-    name: 'gate-dib-dsvm-functests-{node}{suffix}'
+    name: 'gate-dib-dsvm-functests-{python}-{node}{suffix}'
     node: '{node}'
 
     wrappers:
@@ -31,7 +31,7 @@
           export DIB_NO_TMPFS=1
           export TMPDIR=/opt/dib_cache
 
-          virtualenv env
+          virtualenv -p {python} env
 
           ./env/bin/pip install $(pwd)/openstack/dib-utils
           ./env/bin/pip install $(pwd)/openstack/diskimage-builder
