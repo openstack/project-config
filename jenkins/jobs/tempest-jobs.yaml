@@ -55,3 +55,49 @@
     publishers:
       - devstack-logs
       - console-log
+
+
+- job-template:
+    name: '{pipeline}-tempest-plugin-sanity-{node}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 30
+      - timestamps
+
+    builders:
+      - zuul-git-prep
+      - install-distro-packages
+      - revoke-sudo
+      - shell: |
+            #!/bin/bash -eux
+            cd $WORKSPACE
+            PROJECT_LIST="$(python ./openstack/tempest/tools/generate-tempest-plugins-list.py)"
+            # function to clone project using zuul-cloner
+            function clone_project() {{
+                /usr/zuul-env/bin/zuul-cloner --cache-dir /opt/git \
+                git://git.openstack.org \
+                openstack/"$1"
+                echo "$1 project clonned successfully."
+            }}
+
+            # Clone projects having tempest plugins
+            for project in $PROJECT_LIST; do
+                clone_project $project
+            done
+            virtualenv $WORKSPACE/openstack/tempest/.venv
+            export TVENV="$WORKSPACE/openstack/tempest/tools/with_venv.sh"
+            $TVENV pip install $WORKSPACE/openstack/tempest
+            # Install other tempest plugins projects
+            for project in $PROJECT_LIST; do
+                $TVENV pip install $WORKSPACE/openstack/$project
+            done
+            # Create Tempest workspace
+            $TVENV tempest init $WORKSPACE/tempest_sanity
+            cd $WORKSPACE/tempest_sanity
+            $TVENV tempest list-plugins
+            $TVENV tempest run -l
+
+    publishers:
+      - console-log
