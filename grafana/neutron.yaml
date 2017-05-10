@@ -80,6 +80,11 @@ dashboard:
           targets:
             - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-neutron-dsvm-functional-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-neutron-dsvm-functional-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-dsvm-functional-ubuntu-xenial')
           type: graph
+        - title: Coverage Failure Rates (Gate queue)
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.neutron-coverage-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.neutron-coverage-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'neutron-coverage-ubuntu-xenial')
+          type: graph
         - title: DVR/LinuxBridge/Multi-node/OVS FW Failure Rates (Check queue)
           span: 4
           targets:
