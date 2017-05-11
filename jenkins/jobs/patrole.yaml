@@ -78,6 +78,14 @@
           conf: |
             [[local|localrc]]
             enable_plugin patrole git://git.openstack.org/openstack/patrole
+
+            # Swift is not ready for python3 yet
+            disable_service s-account
+            disable_service s-container
+            disable_service s-object
+            disable_service s-proxy
+            # Without Swift, c-bak can't run (in the Gate at least)
+            disable_service c-bak
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
