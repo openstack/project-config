@@ -185,7 +185,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-grenade-dsvm-networking-midonet-{node}{suffix}'
+    name: '{pipeline}-grenade-dsvm-networking-midonet-{midonet-plugin}-{node}{suffix}'
     node: '{node}'
 
     wrappers:
@@ -213,7 +213,7 @@
           fi
 
           function gate_hook {{
-              bash -xe $BASE/new/networking-midonet/devstack/ci/gate_hook.sh grenade
+              bash -xe $BASE/new/networking-midonet/devstack/ci/gate_hook.sh grenade-{midonet-plugin}
           }}
           export -f gate_hook
 
