@@ -124,22 +124,6 @@ dashboard:
             - none
           targets:
             - target: aliasSub(aliasByNode(scale(stats.timers.nodepool.launch.provider.$provider.ready.mean, '0.001'), 5), 'citycloud-', '')
-        - title: Test Nodes (Fra1)
-          type: graph
-          span: 4
-          stack: true
-          tooltip:
-            value_type: individual
-          leftYAxisLabel: "nodes"
-          targets:
-            - target: alias(stats.gauges.nodepool.provider.citycloud-fra1.nodes.building, 'Building')
-            - target: alias(stats.gauges.nodepool.provider.citycloud-fra1.nodes.ready, 'Available')
-            - target: alias(stats.gauges.nodepool.provider.citycloud-fra1.nodes.used, 'In Use')
-            - target: alias(stats.gauges.nodepool.provider.citycloud-fra1.nodes.delete, 'Deleting')
-            - target: alias(stats.gauges.nodepool.provider.citycloud-fra1.max_servers, 'Max')
-          seriesOverrides:
-            - alias: Max
-              stack: False
         - title: Test Nodes (Kna1)
           type: graph
           span: 4
@@ -153,6 +137,22 @@ dashboard:
             - target: alias(stats.gauges.nodepool.provider.citycloud-kna1.nodes.used, 'In Use')
             - target: alias(stats.gauges.nodepool.provider.citycloud-kna1.nodes.delete, 'Deleting')
             - target: alias(stats.gauges.nodepool.provider.citycloud-kna1.max_servers, 'Max')
+          seriesOverrides:
+            - alias: Max
+              stack: False
+        - title: Test Nodes (La1)
+          type: graph
+          span: 4
+          stack: true
+          tooltip:
+            value_type: individual
+          leftYAxisLabel: "nodes"
+          targets:
+            - target: alias(stats.gauges.nodepool.provider.citycloud-la1.nodes.building, 'Building')
+            - target: alias(stats.gauges.nodepool.provider.citycloud-la1.nodes.ready, 'Available')
+            - target: alias(stats.gauges.nodepool.provider.citycloud-la1.nodes.used, 'In Use')
+            - target: alias(stats.gauges.nodepool.provider.citycloud-la1.nodes.delete, 'Deleting')
+            - target: alias(stats.gauges.nodepool.provider.citycloud-la1.max_servers, 'Max')
           seriesOverrides:
             - alias: Max
               stack: False
@@ -172,6 +172,22 @@ dashboard:
           seriesOverrides:
             - alias: Max
               stack: False
+        - title: Test Nodes (Sto2)
+          type: graph
+          span: 4
+          stack: true
+          tooltip:
+            value_type: individual
+          leftYAxisLabel: "nodes"
+          targets:
+            - target: alias(stats.gauges.nodepool.provider.citycloud-sto2.nodes.building, 'Building')
+            - target: alias(stats.gauges.nodepool.provider.citycloud-sto2.nodes.ready, 'Available')
+            - target: alias(stats.gauges.nodepool.provider.citycloud-sto2.nodes.used, 'In Use')
+            - target: alias(stats.gauges.nodepool.provider.citycloud-sto2.nodes.delete, 'Deleting')
+            - target: alias(stats.gauges.nodepool.provider.citycloud-sto2.max_servers, 'Max')
+          seriesOverrides:
+            - alias: Max
+              stack: False
     - title: Job Runtimes
       showTitle: true
       height: 250px
@@ -184,9 +200,10 @@ dashboard:
             - s
             - none
           targets:
-            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-full-ubuntu-xenial.master.ubuntu-xenial.citycloud-fra1.runtime.mean, '0.001'), 'fra1')
             - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-full-ubuntu-xenial.master.ubuntu-xenial.citycloud-kna1.runtime.mean, '0.001'), 'kna1')
+            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-full-ubuntu-xenial.master.ubuntu-xenial.citycloud-la1.runtime.mean, '0.001'), 'la1')
             - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-full-ubuntu-xenial.master.ubuntu-xenial.citycloud-lon1.runtime.mean, '0.001'), 'lon1')
+            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-full-ubuntu-xenial.master.ubuntu-xenial.citycloud-sto2.runtime.mean, '0.001'), 'sto2')
         - title: gate-tempest-dsvm-neutron-full
           type: graph
           span: 6
@@ -195,6 +212,7 @@ dashboard:
             - s
             - none
           targets:
-            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-neutron-full-ubuntu-xenial.master.ubuntu-xenial.citycloud-fra1.runtime.mean, '0.001'), 'fra1')
             - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-neutron-full-ubuntu-xenial.master.ubuntu-xenial.citycloud-kna1.runtime.mean, '0.001'), 'kna1')
+            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-neutron-full-ubuntu-xenial.master.ubuntu-xenial.citycloud-la1.runtime.mean, '0.001'), 'la1')
             - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-neutron-full-ubuntu-xenial.master.ubuntu-xenial.citycloud-lon1.runtime.mean, '0.001'), 'lon1')
+            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-neutron-full-ubuntu-xenial.master.ubuntu-xenial.citycloud-sto2.runtime.mean, '0.001'), 'sto2')
