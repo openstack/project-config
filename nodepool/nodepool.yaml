@@ -38,6 +38,10 @@ labels:
       - name: osic-cloud1-s3700
       - name: infracloud-vanilla
       - name: infracloud-chocolate
+      - name: citycloud-lon1
+      - name: citycloud-kna1
+      - name: citycloud-la1
+      - name: citycloud-sto2
   - name: ubuntu-trusty
     image: ubuntu-trusty
     ready-script: configure_mirror.sh
@@ -54,6 +58,10 @@ labels:
       - name: osic-cloud1-s3700
       - name: infracloud-vanilla
       - name: infracloud-chocolate
+      - name: citycloud-lon1
+      - name: citycloud-kna1
+      - name: citycloud-la1
+      - name: citycloud-sto2
   - name: ubuntu-trusty-2-node
     image: ubuntu-trusty
     ready-script: multinode_setup.sh
@@ -71,6 +79,10 @@ labels:
       - name: osic-cloud1-s3700
       - name: infracloud-vanilla
       - name: infracloud-chocolate
+      - name: citycloud-lon1
+      - name: citycloud-kna1
+      - name: citycloud-la1
+      - name: citycloud-sto2
   - name: ubuntu-xenial
     image: ubuntu-xenial
     ready-script: configure_mirror.sh
@@ -87,6 +99,10 @@ labels:
       - name: osic-cloud1-s3700
       - name: infracloud-vanilla
       - name: infracloud-chocolate
+      - name: citycloud-lon1
+      - name: citycloud-kna1
+      - name: citycloud-la1
+      - name: citycloud-sto2
   - name: ubuntu-xenial-2-node
     image: ubuntu-xenial
     ready-script: multinode_setup.sh
@@ -104,6 +120,10 @@ labels:
       - name: osic-cloud1-s3700
       - name: infracloud-vanilla
       - name: infracloud-chocolate
+      - name: citycloud-lon1
+      - name: citycloud-kna1
+      - name: citycloud-la1
+      - name: citycloud-sto2
   - name: ubuntu-xenial-3-node
     image: ubuntu-xenial
     ready-script: multinode_setup.sh
@@ -121,6 +141,10 @@ labels:
       - name: osic-cloud1-s3700
       - name: infracloud-vanilla
       - name: infracloud-chocolate
+      - name: citycloud-lon1
+      - name: citycloud-kna1
+      - name: citycloud-la1
+      - name: citycloud-sto2
   - name: centos-7
     image: centos-7
     ready-script: configure_mirror.sh
@@ -137,6 +161,10 @@ labels:
       - name: osic-cloud1-s3700
       - name: infracloud-vanilla
       - name: infracloud-chocolate
+      - name: citycloud-lon1
+      - name: citycloud-kna1
+      - name: citycloud-la1
+      - name: citycloud-sto2
   - name: fedora-25
     image: fedora-25
     ready-script: configure_mirror.sh
@@ -153,6 +181,10 @@ labels:
       - name: osic-cloud1-s3700
       - name: infracloud-vanilla
       - name: infracloud-chocolate
+      - name: citycloud-lon1
+      - name: citycloud-kna1
+      - name: citycloud-la1
+      - name: citycloud-sto2
   - name: centos-7-2-node
     image: centos-7
     ready-script: multinode_setup.sh
@@ -170,6 +202,10 @@ labels:
       - name: osic-cloud1-s3700
       - name: infracloud-vanilla
       - name: infracloud-chocolate
+      - name: citycloud-lon1
+      - name: citycloud-kna1
+      - name: citycloud-la1
+      - name: citycloud-sto2
   - name: centos-7-3-node
     image: centos-7
     ready-script: multinode_setup.sh
@@ -187,6 +223,10 @@ labels:
       - name: osic-cloud1-s3700
       - name: infracloud-vanilla
       - name: infracloud-chocolate
+      - name: citycloud-lon1
+      - name: citycloud-kna1
+      - name: citycloud-la1
+      - name: citycloud-sto2
   - name: centos-7-4-node
     image: centos-7
     ready-script: multinode_setup.sh
@@ -204,12 +244,17 @@ labels:
       - name: osic-cloud1-s3700
       - name: infracloud-vanilla
       - name: infracloud-chocolate
+      - name: citycloud-lon1
+      - name: citycloud-kna1
+      - name: citycloud-la1
+      - name: citycloud-sto2
   - name: tripleo-centos-7
     image: centos-7
     ready-script: configure_mirror.sh
     min-ready: 6
     providers:
       - name: tripleo-test-cloud-rh1
+
 providers:
   - name: rax-dfw
     region-name: 'DFW'
@@ -786,6 +831,202 @@ providers:
       - name: centos-7
         min-ram: 8000
         name-filter: 'nodepool'
+        diskimage: centos-7
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+        key-name: infra-root-keys
+  - name: citycloud-lon1
+    region-name: 'Lon1'
+    cloud: citycloud
+    api-timeout: 60
+    boot-timeout: 120
+    max-servers: 0
+    rate: 0.25
+    image-type: 'qcow2'
+    images:
+      - name: ubuntu-trusty
+        min-ram: 8000
+        name-filter: '8C-8GB-100GB'
+        diskimage: ubuntu-trusty
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+        key-name: infra-root-keys
+      - name: ubuntu-xenial
+        min-ram: 8000
+        name-filter: '8C-8GB-100GB'
+        diskimage: ubuntu-xenial
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+        key-name: infra-root-keys
+      - name: debian-jessie
+        min-ram: 8000
+        name-filter: '8C-8GB-100GB'
+        diskimage: debian-jessie
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+        key-name: infra-root-keys
+      - name: fedora-25
+        min-ram: 8000
+        name-filter: '8C-8GB-100GB'
+        diskimage: fedora-25
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+        key-name: infra-root-keys
+      - name: centos-7
+        min-ram: 8000
+        name-filter: '8C-8GB-100GB'
+        diskimage: centos-7
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+        key-name: infra-root-keys
+  - name: citycloud-kna1
+    region-name: 'Kna1'
+    cloud: citycloud
+    api-timeout: 60
+    boot-timeout: 120
+    max-servers: 0
+    rate: 0.25
+    image-type: 'qcow2'
+    images:
+      - name: ubuntu-trusty
+        min-ram: 8000
+        name-filter: '8C-8GB-100GB'
+        diskimage: ubuntu-trusty
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+        key-name: infra-root-keys
+      - name: ubuntu-xenial
+        min-ram: 8000
+        name-filter: '8C-8GB-100GB'
+        diskimage: ubuntu-xenial
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+        key-name: infra-root-keys
+      - name: debian-jessie
+        min-ram: 8000
+        name-filter: '8C-8GB-100GB'
+        diskimage: debian-jessie
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+        key-name: infra-root-keys
+      - name: fedora-25
+        min-ram: 8000
+        name-filter: '8C-8GB-100GB'
+        diskimage: fedora-25
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+        key-name: infra-root-keys
+      - name: centos-7
+        min-ram: 8000
+        name-filter: '8C-8GB-100GB'
+        diskimage: centos-7
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+        key-name: infra-root-keys
+  - name: citycloud-la1
+    region-name: 'La1'
+    cloud: citycloud
+    api-timeout: 60
+    boot-timeout: 120
+    max-servers: 0
+    rate: 0.25
+    image-type: 'qcow2'
+    images:
+      - name: ubuntu-trusty
+        min-ram: 8000
+        name-filter: '8C-8GB-100GB'
+        diskimage: ubuntu-trusty
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+        key-name: infra-root-keys
+      - name: ubuntu-xenial
+        min-ram: 8000
+        name-filter: '8C-8GB-100GB'
+        diskimage: ubuntu-xenial
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+        key-name: infra-root-keys
+      - name: debian-jessie
+        min-ram: 8000
+        name-filter: '8C-8GB-100GB'
+        diskimage: debian-jessie
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+        key-name: infra-root-keys
+      - name: fedora-25
+        min-ram: 8000
+        name-filter: '8C-8GB-100GB'
+        diskimage: fedora-25
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+        key-name: infra-root-keys
+      - name: centos-7
+        min-ram: 8000
+        name-filter: '8C-8GB-100GB'
+        diskimage: centos-7
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+        key-name: infra-root-keys
+  - name: citycloud-sto2
+    region-name: 'Sto2'
+    cloud: citycloud
+    api-timeout: 60
+    boot-timeout: 120
+    max-servers: 0
+    rate: 0.25
+    image-type: 'qcow2'
+    images:
+      - name: ubuntu-trusty
+        min-ram: 8000
+        name-filter: '8C-8GB-100GB'
+        diskimage: ubuntu-trusty
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+        key-name: infra-root-keys
+      - name: ubuntu-xenial
+        min-ram: 8000
+        name-filter: '8C-8GB-100GB'
+        diskimage: ubuntu-xenial
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+        key-name: infra-root-keys
+      - name: debian-jessie
+        min-ram: 8000
+        name-filter: '8C-8GB-100GB'
+        diskimage: debian-jessie
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+        key-name: infra-root-keys
+      - name: fedora-25
+        min-ram: 8000
+        name-filter: '8C-8GB-100GB'
+        diskimage: fedora-25
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+        key-name: infra-root-keys
+      - name: centos-7
+        min-ram: 8000
+        name-filter: '8C-8GB-100GB'
         diskimage: centos-7
         username: jenkins
         private-key: /home/nodepool/.ssh/id_rsa
