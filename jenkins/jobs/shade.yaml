@@ -91,6 +91,14 @@
           export PROJECTS="openstack/python-keystoneclient $PROJECTS"
           export PROJECTS="openstack/python-cinderclient $PROJECTS"
           export PROJECTS="openstack/python-neutronclient $PROJECTS"
+          # The purpose of this job is to test that latest libs work with
+          # newton devstack. We don't want to install devstack from branch
+          # tips. We want to install branch tips (of master) into our
+          # functional venv.
+          export OVERRIDE_OS_CLIENT_CONFIG_PROJECT_BRANCH="master"
+          export OVERRIDE_KEYSTONEAUTH_PROJECT_BRANCH="master"
+          export OVERRIDE_PYTHON_NOVACLIENT_PROJECT_BRANCH="master"
+          export OVERRIDE_PYTHON_KEYSTONECLIENT_PROJECT_BRANCH="master"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
