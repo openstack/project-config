@@ -247,6 +247,21 @@ function setup_training_guides {
         -f zanata.xml
 }
 
+# Setup a i18n project for Zanata
+function setup_i18n {
+    local project=i18n
+    local version=${1:-master}
+
+    # Update the .pot file
+    tox -e generatepot
+
+    /usr/local/jenkins/slave_scripts/create-zanata-xml.py \
+        -p $project -v $version \
+        --srcdir doc/source/locale \
+        --txdir doc/source/locale \
+        -f zanata.xml
+}
+
 # Setup a ReactJS project for Zanata
 function setup_reactjs_project {
     local project=$1
