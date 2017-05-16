@@ -16,6 +16,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from __future__ import print_function
+from __future__ import unicode_literals
+
 import os
 import subprocess
 import sys
@@ -44,7 +47,7 @@ if 'DISTRO_NAME' in os.environ:
         # centos7 matches as rhel7 in devstack
         RELEASE='rhel7'
 if not RELEASE:
-    print "Can not determine RELEASE"
+    print("Can not determine RELEASE")
     sys.exit(1)
 
 DEVSTACK = os.path.join(TMP_MOUNT_PATH, 'opt/git/openstack-dev/devstack')
@@ -53,11 +56,12 @@ IMAGES=os.path.join(TMP_HOOKS_PATH, 'source-repository-images')
 
 
 def run_local(cmd, status=False, cwd='.', env={}):
-    print "Running:", cmd
+    print("Running:", cmd)
     newenv = os.environ
     newenv.update(env)
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE, cwd=cwd,
-                         stderr=subprocess.STDOUT, env=newenv)
+                         stderr=subprocess.STDOUT, env=newenv,
+                         universal_newlines=True)
     (out, nothing) = p.communicate()
     if status:
         return (p.returncode, out.strip())
@@ -106,8 +110,8 @@ def _find_images(basedir):
     if os.path.exists(image_tool):
         returncode, out = run_local(image_tool, status=True)
         if returncode:
-            print "%s failed" % image_tool
-            print "Exit: %s, Output: %s" % (returncode, out)
+            print("%s failed" % image_tool)
+            print("Exit: %s, Output: %s" % (returncode, out))
             # reset images so we'll fall back
             images = []
         else:
@@ -126,7 +130,7 @@ def local_prep(distribution):
         if ' -> ' in branch:
             continue
         branch_data = {'name': branch}
-        print 'Branch: ', branch
+        print('Branch: ', branch)
         run_local(['sudo', 'git', 'checkout', branch], cwd=DEVSTACK)
         run_local(['sudo', 'git', 'pull', '--ff-only', 'origin'], cwd=DEVSTACK)
 
