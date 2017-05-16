@@ -52,6 +52,59 @@
       - console-log
 
 - job-template:
+    name: 'gate-barbican-{plugin}-dsvm-functional{special}-{node}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 70
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin barbican git://git.openstack.org/openstack/barbican
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export OVERRIDE_ENABLED_SERVICES='{services}'
+          export PROJECTS="openstack/barbican $PROJECTS"
+          export PROJECTS="openstack/python-barbicanclient $PROJECTS"
+          export PROJECTS="openstack/barbican-tempest-plugin $PROJECTS"
+
+          if [ "{special}" == "-py35" ] ; then
+             export DEVSTACK_GATE_USE_PYTHON3=True
+          else
+             export DEVSTACK_GATE_USE_PYTHON3=False
+          fi
+
+          function gate_hook {{
+              $BASE/new/barbican/devstack/gate_hook.sh
+          }}
+          export -f gate_hook
+
+          function post_test_hook {{
+              cd /opt/stack/new/barbican/functionaltests
+              ./post_test_hook.sh '{plugin}'
+          }}
+          export -f post_test_hook
+
+          if [ "{special}" == "-postgres" ] ; then
+              export DEVSTACK_GATE_POSTGRES=1
+          fi
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
     name: 'gate-python-barbicanclient-devstack-dsvm-{node}'
     node: '{node}'
 
