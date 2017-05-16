@@ -501,6 +501,20 @@
           cd $WORKSPACE
 
 - builder:
+    name: puppet-agent-install
+    builders:
+      - shell: |
+          if [ -f /usr/bin/yum ]; then
+              sudo yum install -y https://yum.puppetlabs.com/puppetlabs-release-pc1-el-7.noarch.rpm
+              sudo yum install -y puppet-agent
+          elif [ -f /usr/bin/apt-get ]; then
+              wget https://apt.puppetlabs.com/puppetlabs-release-pc1-xenial.deb -o /tmp/puppet.deb
+              sudo dpkg -i /tmp/puppet.deb
+              sudo apt-get install puppet-agent
+              rm -rf /tmp/puppet.deb
+          fi
+
+- builder:
     name: puppet-prepare-node
     builders:
       - shell: |
