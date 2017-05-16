@@ -1051,6 +1051,7 @@ project-templates:
       - gate-tripleo-ci-centos-7-scenario004-multinode-oooq
     experimental:
       - gate-tripleo-ci-centos-7-scenario005-multinode-oooq-nv
+      - gate-tripleo-ci-centos-7-scenario006-multinode-oooq-nv
 
   - name: check-tripleo-undercloud-jobs
     check:
@@ -1806,6 +1807,14 @@ jobs:
       - manifests/profile/base/pacemaker.pp
       - ci/environments/scenario005-multinode.yaml
       - ci/pingtests/scenario005-multinode.yaml
+  - name: ^gate-tripleo-ci-centos-7-scenario006-multinode(-oooq)?(-nv)?$
+    branch: ^(?!stable/(newton|ocata)).*$
+    files:
+      - ^coe/.*$
+      - ^environments/openshift.*$
+      - ^environments/kubernetes.*$
+      - ci/environments/scenario006-multinode.yaml
+      - ci/pingtests/scenario006-multinode.yaml
 
   # TripleO Upgrade job has been introduced in Ocata
   - name: ^gate-tripleo-ci-centos-7.*-upgrades.*$
