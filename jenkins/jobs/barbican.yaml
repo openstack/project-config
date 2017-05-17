@@ -117,10 +117,14 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin barbican git://git.openstack.org/openstack/barbican
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
-          export ENABLED_SERVICES=barbican,tempest,keystone
+          export OVERRIDE_ENABLED_SERVICES=tempest,rabbit,mysql,key
           export PROJECTS="openstack/barbican $PROJECTS"
           export PROJECTS="openstack/python-barbicanclient $PROJECTS"
           export PROJECTS="openstack/barbican-tempest-plugin $PROJECTS"
