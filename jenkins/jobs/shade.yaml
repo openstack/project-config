@@ -115,7 +115,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-shade-dsvm-functional-neutron{suffix}'
+    name: '{pipeline}-shade-dsvm-functional-neutron{python}{suffix}'
     node: '{node}'
 
     wrappers:
@@ -135,6 +135,9 @@
           export SHADE_HAS_MAGNUM=0
           export SHADE_HAS_NEUTRON=1
           export SHADE_HAS_SWIFT=1
+          if [ "{python}" == "-py35" ]; then
+              export SHADE_TOX_PYTHON=python3
+          fi
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_HEAT=1
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
@@ -226,7 +229,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-shade-dsvm-functional-libs{suffix}'
+    name: '{pipeline}-shade-dsvm-functional-libs{python}{suffix}'
     node: '{node}'
 
     wrappers:
@@ -246,6 +249,9 @@
           export SHADE_HAS_MAGNUM=0
           export SHADE_HAS_NEUTRON=1
           export SHADE_HAS_SWIFT=1
+          if [ "{python}" == "-py35" ]; then
+              export SHADE_TOX_PYTHON=python3
+          fi
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_HEAT=1
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
