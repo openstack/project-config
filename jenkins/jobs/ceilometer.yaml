@@ -140,24 +140,16 @@
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
 
-          # NOTE(sileht): This job runs on Aodh, Ceilometer, and Gnocchi
+          # NOTE(sileht): This job runs on Aodh and Ceilometer.
           # Gnocchi uses an independent release cycle. So we map here
           # which Gnocchi version can be used with other OpenStack
           # components and the reverse.
           gnocchi_branch=
-          if [ "$ZUUL_PROJECT" == "openstack/gnocchi" ]; then
-              case "$ZUUL_BRANCH" in
-                  "stable/2.0"|"stable/2.1") export OVERRIDE_ZUUL_BRANCH=stable/mitaka ;;
-                  "stable/2.2"|"stable/3.0") export OVERRIDE_ZUUL_BRANCH=stable/newton ;;
-                  "stable/3.1") export OVERRIDE_ZUUL_BRANCH=stable/ocata ;;
-              esac
-          else
-              case "$ZUUL_BRANCH" in
-                  "stable/mitaka") export OVERRIDE_GNOCCHI_PROJECT_BRANCH="stable/2.1";;
-                  "stable/newton") export OVERRIDE_GNOCCHI_PROJECT_BRANCH="stable/3.0";;
-                  "stable/ocata") export OVERRIDE_GNOCCHI_PROJECT_BRANCH="stable/3.1";;
-              esac
-          fi
+          case "$ZUUL_BRANCH" in
+              "stable/mitaka") export OVERRIDE_GNOCCHI_PROJECT_BRANCH="stable/2.1";;
+              "stable/newton") export OVERRIDE_GNOCCHI_PROJECT_BRANCH="stable/3.0";;
+              "stable/ocata") export OVERRIDE_GNOCCHI_PROJECT_BRANCH="stable/3.1";;
+          esac
 
           export DEVSTACK_GATE_HEAT=1
           export DEVSTACK_GATE_NEUTRON=1

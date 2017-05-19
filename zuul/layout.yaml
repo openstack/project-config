@@ -3182,13 +3182,6 @@ jobs:
   - name: ^gate-aodh-dsvm-tempest-plugin-(hbase|mongodb)-ubuntu-xenial
     branch: stable/newton
 
-  #NOTE (gordc): stable/2.1 mapped to stable/mitaka, can be removed accordingly
-  - name: ^gate-telemetry-dsvm-integration-gnocchi-ubuntu-trusty
-    branch: stable/2.1
-
-  - name: ^gate-telemetry-dsvm-integration-gnocchi-ubuntu-xenial
-    branch: ^(?!stable/2\.1)
-
   # TODO(lcastell): Make voting once tests are fixed
   - name: ^gate-craton-dashboard-nodejs4-npm-run-test$
     voting: false
@@ -3474,28 +3467,6 @@ jobs:
   # Ignore requirements on the keystoneclient/keystoneauth integration branch
   - name: gate-python-keystoneclient-requirements
     branch: ^(?!feature/keystoneauth_integration).*$
-
-  - name: ^gate-gnocchi-tox-py35
-    branch: ^(?!stable/2\.[01])
-
-  - name: ^gate-gnocchi-tox-.+-upgrade-from-2.2-ubuntu-xenial
-    branch: ^stable/3\.1$
-
-  - name: ^gate-gnocchi-tox-.+-upgrade-from-3.0-ubuntu-xenial
-    branch: ^stable/3\.1$
-
-  - name: ^gate-gnocchi-tox-.+-upgrade-from-3.1-ubuntu-xenial
-    branch: ^master$
-
-  # Use Ubuntu Trusty for stable/2.*
-  # (i.e. everything that is before Newton)
-  - name: ^gate-gnocchi-dsvm-functional-.+-ubuntu-trusty
-    branch: ^(stable/2\.[01])
-
-  # Use Ubuntu Xenial for stable/3.0 and stable/3.1 (i.e. Newton and Ocata)
-  # After 3.1, Gnocchi run functional tests within the default pyXX target
-  - name: ^gate-gnocchi-dsvm-functional-.+-ubuntu-xenial
-    branch: ^(stable/3\.[01])
 
   - name: ^gate-sahara-cli.*$
     skip-if:
@@ -10456,62 +10427,7 @@ projects:
   - name: openstack/gnocchi
     template:
       - name: merge-check
-      - name: publish-to-pypi
-    check:
-      - gate-gnocchi-pep8-ubuntu-trusty
-      - gate-gnocchi-docs-ubuntu-trusty
-      - gate-gnocchi-pep8-ubuntu-xenial
-      - gate-gnocchi-docs-ubuntu-xenial
-      - gate-gnocchi-tox-py27-mysql-ubuntu-xenial
-      - gate-gnocchi-tox-py27-postgresql-ubuntu-trusty
-      - gate-gnocchi-tox-py34-postgresql-ubuntu-trusty
-      - gate-gnocchi-tox-py35-mysql-ubuntu-xenial
-      - gate-gnocchi-tox-py35-postgresql-ubuntu-xenial
-      - gate-gnocchi-tox-py27-mysql-ceph-upgrade-from-2.2-ubuntu-xenial
-      - gate-gnocchi-tox-py35-postgresql-file-upgrade-from-2.2-ubuntu-xenial
-      - gate-gnocchi-tox-py27-mysql-ceph-upgrade-from-3.0-ubuntu-xenial
-      - gate-gnocchi-tox-py35-postgresql-file-upgrade-from-3.0-ubuntu-xenial
-      - gate-gnocchi-tox-py27-mysql-ceph-upgrade-from-3.1-ubuntu-xenial
-      - gate-gnocchi-tox-py35-postgresql-file-upgrade-from-3.1-ubuntu-xenial
-      - gate-gnocchi-bashate
-      - gate-gnocchi-dsvm-functional-file-mysql-ubuntu-xenial
-      - gate-gnocchi-dsvm-functional-swift-postgresql-ubuntu-xenial
-      - gate-gnocchi-dsvm-functional-ceph-mysql-ubuntu-xenial
-      - gate-gnocchi-dsvm-functional-file-mysql-ubuntu-trusty
-      - gate-gnocchi-dsvm-functional-swift-postgresql-ubuntu-trusty
-      - gate-gnocchi-dsvm-functional-ceph-mysql-ubuntu-trusty
-      - gate-telemetry-dsvm-integration-gnocchi-ubuntu-trusty
-      - gate-telemetry-dsvm-integration-gnocchi-ubuntu-xenial
-      - gate-tripleo-ci-centos-7-scenario001-multinode-oooq-puppet-nv
-    gate:
-      - gate-gnocchi-pep8-ubuntu-trusty
-      - gate-gnocchi-docs-ubuntu-trusty
-      - gate-gnocchi-pep8-ubuntu-xenial
-      - gate-gnocchi-docs-ubuntu-xenial
-      - gate-gnocchi-tox-py27-mysql-ubuntu-xenial
-      - gate-gnocchi-tox-py27-postgresql-ubuntu-trusty
-      - gate-gnocchi-tox-py34-postgresql-ubuntu-trusty
-      - gate-gnocchi-tox-py35-mysql-ubuntu-xenial
-      - gate-gnocchi-tox-py35-postgresql-ubuntu-xenial
-      - gate-gnocchi-tox-py27-mysql-ceph-upgrade-from-2.2-ubuntu-xenial
-      - gate-gnocchi-tox-py35-postgresql-file-upgrade-from-2.2-ubuntu-xenial
-      - gate-gnocchi-tox-py27-mysql-ceph-upgrade-from-3.0-ubuntu-xenial
-      - gate-gnocchi-tox-py35-postgresql-file-upgrade-from-3.0-ubuntu-xenial
-      - gate-gnocchi-tox-py27-mysql-ceph-upgrade-from-3.1-ubuntu-xenial
-      - gate-gnocchi-tox-py35-postgresql-file-upgrade-from-3.1-ubuntu-xenial
-      - gate-gnocchi-bashate
-      - gate-gnocchi-dsvm-functional-file-mysql-ubuntu-xenial
-      - gate-gnocchi-dsvm-functional-swift-postgresql-ubuntu-xenial
-      - gate-gnocchi-dsvm-functional-ceph-mysql-ubuntu-xenial
-      - gate-gnocchi-dsvm-functional-file-mysql-ubuntu-trusty
-      - gate-gnocchi-dsvm-functional-swift-postgresql-ubuntu-trusty
-      - gate-gnocchi-dsvm-functional-ceph-mysql-ubuntu-trusty
-      - gate-telemetry-dsvm-integration-gnocchi-ubuntu-trusty
-      - gate-telemetry-dsvm-integration-gnocchi-ubuntu-xenial
-    post:
-      - gnocchi-branch-tarball
-    experimental:
-      - gate-gnocchi-dsvm-functional-influxdb-mysql-ubuntu-xenial
+      - name: noop-jobs
 
   - name: openstack/golang-client
     template:
