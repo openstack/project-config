@@ -4083,26 +4083,30 @@
           python: python2
           suffix: ''
           tests: ''
-      - '{pipeline}-dsvm-nodepool{images}-src{suffix}':
+      - '{pipeline}-dsvm-nodepool{python}{images}-src{suffix}':
           pipeline: gate
+          python: ''
           node: ubuntu-xenial
           images: '-debian'
           suffix: '-nv'
           branch-override: 'default'
-      - '{pipeline}-dsvm-nodepool{images}-src{suffix}':
+      - '{pipeline}-dsvm-nodepool{python}{images}-src{suffix}':
           pipeline: gate
+          python: ''
           node: ubuntu-xenial
           images: '-opensuse'
           suffix: '-nv'
           branch-override: 'default'
-      - '{pipeline}-dsvm-nodepool{images}-src{suffix}':
+      - '{pipeline}-dsvm-nodepool{python}{images}-src{suffix}':
           pipeline: gate
+          python: ''
           node: ubuntu-xenial
           images: '-redhat'
           suffix: '-nv'
           branch-override: 'default'
-      - '{pipeline}-dsvm-nodepool{images}-src{suffix}':
+      - '{pipeline}-dsvm-nodepool{python}{images}-src{suffix}':
           pipeline: gate
+          python: ''
           node: ubuntu-xenial
           images: '-ubuntu'
           suffix: '-nv'
@@ -8541,17 +8545,27 @@
       - 'gate-{name}-python35-nv'
       - pypi-jobs
       - infra-publish-jobs
-      - '{pipeline}-dsvm-nodepool{suffix}':
+      - '{pipeline}-dsvm-nodepool{python}{suffix}':
           pipeline: gate
+          python: ''
           node: ubuntu-xenial
           suffix: ''
           branch-override: 'default'
-      - '{pipeline}-dsvm-nodepool{images}-src{suffix}':
+      - '{pipeline}-dsvm-nodepool{python}{images}-src{suffix}':
           pipeline: gate
+          python: ''
           node: ubuntu-xenial
           images: ''
           suffix: '-nv'
           branch-override: 'default'
+      - '{pipeline}-dsvm-nodepool{python}{images}-src{suffix}':
+          pipeline: gate
+          python: '-py35'
+          node: ubuntu-xenial
+          images: ''
+          suffix: '-nv'
+          branch-override: 'default'
+
 
 - project:
     name: nose-html-output
@@ -14075,8 +14089,9 @@
           node: ubuntu-xenial
           suffix: '-nv'
           branch-override: default
-      - '{pipeline}-dsvm-nodepool{images}-src{suffix}':
+      - '{pipeline}-dsvm-nodepool{python}{images}-src{suffix}':
           pipeline: gate
+          python: ''
           node: ubuntu-xenial
           images: ''
           suffix: ''

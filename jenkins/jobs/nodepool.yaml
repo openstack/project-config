@@ -1,5 +1,5 @@
 - job-template:
-    name: '{pipeline}-dsvm-nodepool{suffix}'
+    name: '{pipeline}-dsvm-nodepool{python}{suffix}'
     node: '{node}'
 
     wrappers:
@@ -13,6 +13,9 @@
       - devstack-checkout
       - shell: |
           #!/bin/bash -xe
+          if [ "{python}" == "-py35" ]; then
+              export DEVSTACK_GATE_USE_PYTHON3=true
+          fi
           export PYTHONUNBUFFERED=true
           # Disable tempest as nodepool is talking to the cloud not tempest.
           export DEVSTACK_GATE_TEMPEST=0
@@ -59,7 +62,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-dsvm-nodepool{images}-src{suffix}'
+    name: '{pipeline}-dsvm-nodepool{python}{images}-src{suffix}'
     node: '{node}'
 
     wrappers:
@@ -73,6 +76,9 @@
       - devstack-checkout
       - shell: |
           #!/bin/bash -xe
+          if [ "{python}" == "py35" ]; then
+              export DEVSTACK_GATE_USE_PYTHON3=true
+          fi
           export PYTHONUNBUFFERED=true
           # Disable tempest as nodepool is talking to the cloud not tempest.
           export DEVSTACK_GATE_TEMPEST=0
