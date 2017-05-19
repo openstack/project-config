@@ -3419,6 +3419,11 @@ jobs:
   - name: ^gate-openstack-ansible-security-ansible-func-centos-7.*$
     branch: ^(?!stable/mitaka).*$
 
+  # Run the openstack-ansible-security functional test on debian-jessie
+  # for any branch after stable/ocata.
+  - name: ^gate-openstack-ansible-security-ansible-func-debian-jessie.*$
+    branch: ^(?!stable/(mitaka|newton|ocata)).*$
+
   # Skip the OpenStack-Ansible voting aio scenario job on xenial for the
   # openstack-ansible repository if the branch is anything before ocata.
   - name: ^gate-openstack-ansible-openstack-ansible-aio-ubuntu-xenial$
@@ -14211,6 +14216,7 @@ projects:
       - name: ansible-role-functional-jobs-xenial
     check:
       - gate-openstack-ansible-security-ansible-func_rhel6-ubuntu-trusty
+      - gate-openstack-ansible-security-ansible-func-debian-jessie-nv
     gate:
       - gate-openstack-ansible-security-ansible-func_rhel6-ubuntu-trusty
     release:
