@@ -1,0 +1,33 @@
+dashboard:
+  title: ovsdbapp Failure Rates
+  rows:
+    - title: Description
+      height: 100px
+      panels:
+        - title: Description
+          content: |
+            **This dashboard is managed by [Grafyaml](http://docs.openstack.org/infra/system-config/grafyaml.html).**
+
+            If you would like to make changes to this dashboard, please see the grafana directory in [project-config](https://git.openstack.org/cgit/openstack-infra/project-config/tree/grafana/ovsdbapp.yaml).
+          type: text
+    - title: Graphs
+      height: 320px
+      panels:
+        - title: Unit Test Failure Rates (Check queue)
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-ovsdbapp-python27-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-ovsdbapp-python27-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-ovsdbapp-python27-ubuntu-xenial')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-ovsdbapp-python35.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-ovsdbapp-python35.{SUCCESS,FAILURE})),'24hours'), 'gate-ovsdbapp-python35')
+          type: graph
+        - title: Unit Test Failure Rates (Gate queue)
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-ovsdbapp-python27-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-ovsdbapp-python27-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-ovsdbapp-python27-ubuntu-xenial')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-ovsdbapp-python35.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-ovsdbapp-python35.{SUCCESS,FAILURE})),'24hours'), 'gate-ovsdbapp-python35')
+          type: graph
+        - title: Periodic Job Failure Rates
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.periodic.job.periodic-neutron-py35-with-ovsdbapp-master.FAILURE),sum(stats_counts.zuul.pipeline.periodic.job.periodic-neutron-py35-with-ovsdbapp-master.{SUCCESS,FAILURE})),'24hours'), 'periodic-neutron-py35-with-ovsdbapp-master')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.periodic.job.periodic-networking-ovn-py35-with-ovsdbapp-master.FAILURE),sum(stats_counts.zuul.pipeline.periodic.job.periodic-networking-ovn-py35-with-ovsdbapp-master.{SUCCESS,FAILURE})),'24hours'), 'periodic-networking-ovn-py35-with-ovsdbapp-master')
+          type: graph

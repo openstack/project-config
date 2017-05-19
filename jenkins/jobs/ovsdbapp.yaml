@@ -1,0 +1,22 @@
+- job-template:
+    name: 'periodic-{name}-{python}-with-ovsdbapp-master'
+    node: ubuntu-xenial
+
+    wrappers:
+      - build-timeout:
+          timeout: 50
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - zuul-git-branch-prep-upper-constraints:
+          branch: master
+      - install-distro-packages
+      - revoke-sudo
+      - shell: "/usr/local/jenkins/slave_scripts/run-tox-with-dependency-master.sh {name} {python}"
+      - assert-no-extra-files
+
+    publishers:
+      - test-results
+      - console-log
