@@ -14054,41 +14054,34 @@
       - pypi-jobs
       - openstack-releasenotes-jobs
       - openstack-client-publish-jobs
-      - '{pipeline}-shade-dsvm-functional-legacy{suffix}':
+      - '{pipeline}-shade-dsvm-functional-legacy{libs}{suffix}':
           pipeline: gate
           node: ubuntu-xenial
-          suffix: ''
+          suffix:
+            - ''
+            - '-nv'
+          libs:
+            - ''
+            - '-libs'
           branch-override: stable/newton
-      - '{pipeline}-shade-dsvm-functional-legacy-libs{suffix}':
+      - '{pipeline}-shade-dsvm-functional{libs}{python}{suffix}':
           pipeline: gate
           node: ubuntu-xenial
-          suffix: '-nv'
-          branch-override: stable/newton
-      - '{pipeline}-shade-dsvm-functional-libs{python}{suffix}':
-          pipeline: gate
-          node: ubuntu-xenial
-          suffix: '-nv'
+          suffix:
+            - ''
+            - '-nv'
+          libs:
+            - ''
+            - '-libs'
           branch-override: default
           python:
-          - ''
-          - '-py35'
+            - ''
+            - '-py35'
       - '{pipeline}-shade-dsvm-functional-magnum{suffix}':
           pipeline: gate
           node: ubuntu-xenial
           suffix: '-nv'
           branch-override: default
-      - '{pipeline}-shade-dsvm-functional-neutron{python}{suffix}':
-          pipeline: gate
-          node: ubuntu-xenial
-          suffix: ''
-          branch-override: default
-          python: ''
-      - '{pipeline}-shade-dsvm-functional-neutron{python}{suffix}':
-          pipeline: gate
-          node: ubuntu-xenial
-          suffix: '-nv'
-          branch-override: default
-          python: '-py35'
       - '{pipeline}-shade-dsvm-ansible{release}{suffix}':
           pipeline: gate
           node: ubuntu-xenial
