@@ -4,6 +4,7 @@
       - local_conf:
           conf: |
             [[local|localrc]]
+            ENABLE_IDENTITY_V2=False
             enable_plugin heat https://git.openstack.org/openstack/heat
             disable_service ceilometer-acentral
             disable_service ceilometer-acompute
@@ -15,80 +16,7 @@
             disable_service horizon
 
 - job-template:
-    name: '{pipeline}-shade-dsvm-functional-legacy{libs}{suffix}'
-    node: '{node}'
-
-    wrappers:
-      - build-timeout:
-          timeout: 70
-      - timestamps
-
-    builders:
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - local_conf:
-          conf: |
-            [[local|localrc]]
-            ENABLE_IDENTITY_V2=True
-            enable_plugin heat https://git.openstack.org/openstack/heat
-            disable_service ceilometer-acentral
-            disable_service ceilometer-acompute
-            disable_service ceilometer-alarm-evaluator
-            disable_service ceilometer-alarm-notifier
-            disable_service ceilometer-anotification
-            disable_service ceilometer-api
-            disable_service ceilometer-collector
-            disable_service horizon
-      - shell: |
-          #!/bin/bash -xe
-          export DEVSTACK_GATE_HEAT=1
-          export DEVSTACK_GATE_NEUTRON=0
-          export PYTHONUNBUFFERED=true
-          export SHADE_HAS_DESIGNATE=0
-          export SHADE_HAS_HEAT=1
-          export SHADE_HAS_MAGNUM=0
-          export SHADE_HAS_NEUTRON=0
-          export SHADE_HAS_SWIFT=1
-          export SHADE_USE_KEYSTONE_V2=1
-
-          export PROJECTS="openstack-infra/shade $PROJECTS"
-
-          if [ "{libs}" == "-libs" ]; then
-              export PROJECTS="openstack/keystoneauth $PROJECTS"
-              export PROJECTS="openstack/os-client-config $PROJECTS"
-              export PROJECTS="openstack/python-keystoneclient $PROJECTS"
-              export PROJECTS="openstack/python-novaclient $PROJECTS"
-
-              # The purpose of the -libs job is to test that latest libs work
-              # with old devstack. We don't want to install devstack from
-              # libs tips. We want to install tip of master into our
-              # functional venv.
-              export OVERRIDE_OS_CLIENT_CONFIG_PROJECT_BRANCH="master"
-              export OVERRIDE_KEYSTONEAUTH_PROJECT_BRANCH="master"
-              export OVERRIDE_PYTHON_NOVACLIENT_PROJECT_BRANCH="master"
-              export OVERRIDE_PYTHON_KEYSTONECLIENT_PROJECT_BRANCH="master"
-          fi
-
-          export BRANCH_OVERRIDE={branch-override}
-          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
-              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
-          fi
-
-          function post_test_hook {{
-              $BASE/new/shade/shade/tests/functional/hooks/post_test_hook.sh tips
-          }}
-          export -f post_test_hook
-
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
-
-    publishers:
-      - devstack-logs
-      - console-log
-
-- job-template:
-    name: '{pipeline}-shade-dsvm-functional{libs}{python}{suffix}'
+    name: '{pipeline}-shade-functional{legacy}{libs}{python}{suffix}'
     node: '{node}'
 
     wrappers:
@@ -103,13 +31,23 @@
       - shade-local-conf
       - shell: |
           #!/bin/bash -xe
+          if [ "{legacy}" == "-legacy" ]; then
+              export DEVSTACK_GATE_NEUTRON=0
+              # the local.conf macro doesn't allow for conditional setting.
+              # Set the default above, then edit it here for the legacy case
+              # where we want to flip the bit. This should work unless someone
+              # redefines the /tmp/dg-local.conf location in the local_conf:
+              # macro.
+              sed -i -e 's/ENABLE_IDENTITY_V2=False/ENABLE_IDENTITY_V2=True/' /tmp/dg-local.conf
+          else
+              export DEVSTACK_GATE_NEUTRON=1
+          fi
           export DEVSTACK_GATE_HEAT=1
-          export DEVSTACK_GATE_NEUTRON=1
           export PYTHONUNBUFFERED=true
           export SHADE_HAS_DESIGNATE=0
           export SHADE_HAS_HEAT=1
           export SHADE_HAS_MAGNUM=0
-          export SHADE_HAS_NEUTRON=1
+          export SHADE_HAS_NEUTRON=$DEVSTACK_GATE_NEUTRON
           export SHADE_HAS_SWIFT=1
           if [ "{python}" == "-py35" ]; then
               export SHADE_TOX_PYTHON=python3
@@ -121,11 +59,24 @@
               export PROJECTS="openstack/os-client-config $PROJECTS"
               export PROJECTS="openstack/python-keystoneclient $PROJECTS"
               export PROJECTS="openstack/python-novaclient $PROJECTS"
+
+              if [ "{legacy}" == "-legacy" ]; then
+                  # The purpose of the -legacy-libs job is to test that latest
+                  # libs work with old OpenStack. We don't want to install
+                  # OpenStack from tip of master of the libs. We want to
+                  # install tip of master of the libs into our functional venv.
+                  export OVERRIDE_OS_CLIENT_CONFIG_PROJECT_BRANCH="master"
+                  export OVERRIDE_KEYSTONEAUTH_PROJECT_BRANCH="master"
+                  export OVERRIDE_PYTHON_NOVACLIENT_PROJECT_BRANCH="master"
+                  export OVERRIDE_PYTHON_KEYSTONECLIENT_PROJECT_BRANCH="master"
+              fi
           fi
 
-          export BRANCH_OVERRIDE={branch-override}
-          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+          if [ "{legacy}" == "-legacy" ]; then
+              export BRANCH_OVERRIDE="stable/newton"
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          else
+              export BRANCH_OVERRIDE="default"
           fi
 
           function post_test_hook {{
@@ -142,7 +93,7 @@
 
 
 - job-template:
-    name: '{pipeline}-shade-dsvm-functional-magnum{suffix}'
+    name: '{pipeline}-shade-functional-magnum{suffix}'
     node: '{node}'
 
     wrappers:
@@ -204,7 +155,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-shade-dsvm-ansible{release}{suffix}'
+    name: '{pipeline}-shade-ansible{release}{suffix}'
     node: '{node}'
 
     wrappers:
