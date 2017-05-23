@@ -47,7 +47,7 @@ def set_node_options(item, job, params):
     params['OFFLINE_NODE_WHEN_COMPLETE'] = '1'
     # Pass tags through for subunit2sql
     params['JOB_TAGS'] = ' '.join(sorted(job.tags))
-    proposal_re = r'^.*(propose|upstream)-(.*?)-(constraints-.*|updates?|update-(liberty|mitaka|newton|ocata|pike)|plugins-list|openstack-constraints|update-constraints)$'  # noqa
+    proposal_re = r'^.*(propose|upstream)-(.*?)-(constraints-.*|updates?|update-(liberty|mitaka|newton|ocata|pike)|plugins-list|openstack-constraints|update-constraints|osa-test-files)$'  # noqa
     release_re = r'^.*-(forge|jenkinsci|mavencentral|pypi-(both|wheel)|npm)-upload$'
     hook_re = r'^hook-(.*?)-(rtfd)$'
     wheel_re = r'^wheel-(build|release)-.*$'
