@@ -336,6 +336,45 @@
     publishers:
       - console-log
 
+- job-template:
+    name: '{name}-puppet-tarball'
+    node: ubuntu-xenial
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - install-distro-packages
+      - puppet-agent-install
+      - revoke-sudo
+      - zuul-clone:
+          project: $ZUUL_PROJECT
+      - shell: |
+          #!/bin/bash -xe
+          cd $ZUUL_PROJECT
+          # try to find the modulename, ex: puppet-aodh
+          # we have to use sed because workspace is puppet-aodh-branch-tarball
+          # or puppet-aodh-tarball and not puppet-aodh.
+          MODULE_NAME=$(basename `git rev-parse --show-toplevel` | sed "s/\(-branch\)\?-tarball$//")
+          puppet module build .
+          # NOTE(pabelanger): Here we are converting openstack-neutron-8.0.0.tar.gz to
+          # puppet-neutron-8.0.0.tar.gz.
+          find . -name openstack-*.tar.gz | sed -e "p;s/openstack-/puppet-/" | xargs -n2 mv
+          mkdir -p dist
+          if echo $ZUUL_REFNAME | grep refs/tags/ >/dev/null ; then
+              # NOTE(pabelanger) We don't need to rename tagged tarballs as `puppet
+              # module build` does the right thing.
+              mv pkg/*.tar.gz dist/
+          else
+              mv pkg/*.tar.gz dist/$MODULE_NAME.tar.gz
+          fi
+          mv dist ../
+
+    publishers:
+      - tarball:
+          project: '{name}'
+      - test-results
+      - console-log
+
 - job:
     name: propose-puppet-openstack-constraints
     node: proposal
@@ -442,3 +481,11 @@
       - 'gate-puppet-openstack-libraries-puppet-syntax-{puppet_version}-{legacy}{node}'
       - 'gate-puppet-openstack-libraries-puppet-unit-{node}'
       - 'gate-puppet-openstack-libraries-puppet-beaker-rspec-{node}'
+
+- job-group:
+    name: puppet-release-jobs
+    jobs:
+      - '{name}-announce-release'
+      - '{name}-puppet-tarball'
+      - '{name}-tarball-signing'
+      - '{name}-branch-tarball'

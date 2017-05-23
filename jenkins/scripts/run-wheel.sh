@@ -14,13 +14,6 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-# metadata.json is a file present in Puppet modules but not in Python projects.
-# Based on this information, we'll run wheel only on Python projects.
-# This conditionnal allows to run tarball JJB macro for both types of projects.
-if [ -r metadata.json ]; then
-    exit 0
-fi
-
 venv=${1:-venv}
 
 export UPPER_CONSTRAINTS_FILE=$(pwd)/upper-constraints.txt
