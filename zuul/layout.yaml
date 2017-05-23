@@ -1264,6 +1264,12 @@ jobs:
   - name: ^gate-tempest-dsvm-monasca-log-api-ubuntu-xenial$
     branch: ^(?!stable/(mitaka|newton)).*$
 
+  # disable requirement control @ stable/mitaka for networking-arista
+  # networking-arista was not managed in requirements for mitaka.
+  - name: ^gate-networking-arista-requirements$
+    branch: ^(?!stable/mitaka).*$
+
+
   # because of global requirements overrides, there is no reason to
   # run tempest/grenade tests after a requirements sync, as they've
   # already been run in the requirements job with the override.
