@@ -3439,15 +3439,16 @@ jobs:
   - name: ^gate-openstack-ansible-openstack-ansible-aio-ubuntu-xenial-nv$
     branch: ^stable/newton$
 
-  # Run the openstack-ansible-security functional test on centos-7
-  # for any branch after stable/mitaka.
-  - name: ^gate-openstack-ansible-security-ansible-func-centos-7.*$
+  # Restrictions for openstack-ansible-security/ansible-hardening
+  #   - Run centos-7 job on Newton or later
+  #   - Run debian-jessie job on Pike or later
+  #   - Run RHEL 6 content against ubuntu-trusty on Ocata or later
+  - name: ^gate-(openstack-ansible-security|ansible-hardening)-ansible-func-centos-7.*$
     branch: ^(?!stable/mitaka).*$
-
-  # Run the openstack-ansible-security functional test on debian-jessie
-  # for any branch after stable/ocata.
-  - name: ^gate-openstack-ansible-security-ansible-func-debian-jessie.*$
+  - name: ^gate-(openstack-ansible-security|ansible-hardening)-ansible-func-debian-jessie.*$
     branch: ^(?!stable/(mitaka|newton|ocata)).*$
+  - name: ^gate-(openstack-ansible-security|ansible-hardening)-ansible-func_rhel6.*$
+    branch: ^(?!stable/(mitaka|newton)).*$
 
   # Skip the OpenStack-Ansible voting aio scenario job on xenial for the
   # openstack-ansible repository if the branch is anything before ocata.
@@ -3462,11 +3463,6 @@ jobs:
   # Skip the OpenStack-Ansible CentOS job for the openstack-ansible repository if
   # the branch is anything before ocata.
   - name: ^gate-openstack-ansible-openstack-ansible-aio-centos-7.*$
-    branch: ^(?!stable/(mitaka|newton)).*$
-
-  # Skip the functional tests against the RHEL 6 STIG content on Newton branch
-  # and earlier branches.
-  - name: ^gate-openstack-ansible-security-ansible-func_rhel6.*$
     branch: ^(?!stable/(mitaka|newton)).*$
 
   # Skip the os_ceilometer functional tests against gnocchi on Newton
@@ -5526,6 +5522,25 @@ projects:
       - name: openstack-server-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
+
+  # NOTE(mhayden): This repository will replace openstack-ansible-security in
+  # the future.
+  - name: openstack/ansible-hardening
+    template:
+      - name: merge-check
+      - name: ansible-role-jobs
+      - name: check-requirements
+      - name: openstack-server-publish-jobs
+      - name: release-notes-jobs
+      - name: ansible-role-functional-jobs-centos7
+      - name: ansible-role-functional-jobs-xenial
+    check:
+      - gate-ansible-hardening-ansible-func_rhel6-ubuntu-trusty
+      - gate-ansible-hardening-ansible-func-debian-jessie-nv
+    gate:
+      - gate-ansible-hardening-ansible-func_rhel6-ubuntu-trusty
+    release:
+      - ansible-hardening-announce-release
 
   - name: openstack/ansible-role-ara
     template:
