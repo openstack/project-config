@@ -13,9 +13,6 @@
       - devstack-checkout
       - shell: |
           #!/bin/bash -xe
-          if [ "{python}" == "-py35" ]; then
-              export DEVSTACK_GATE_USE_PYTHON3=True
-          fi
           export PYTHONUNBUFFERED=true
           # Disable tempest as nodepool is talking to the cloud not tempest.
           export DEVSTACK_GATE_TEMPEST=0
@@ -36,6 +33,17 @@
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service c-sch"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service c-api"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service c-vol"
+
+          if [ "{python}" == "-py35" ]; then
+              export DEVSTACK_GATE_USE_PYTHON3=True
+
+              # swift is not ready for python3 yet
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-account"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-container"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-object"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-proxy"
+          fi
+
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -76,9 +84,6 @@
       - devstack-checkout
       - shell: |
           #!/bin/bash -xe
-          if [ "{python}" == "-py35" ]; then
-              export DEVSTACK_GATE_USE_PYTHON3=True
-          fi
           export PYTHONUNBUFFERED=true
           # Disable tempest as nodepool is talking to the cloud not tempest.
           export DEVSTACK_GATE_TEMPEST=0
@@ -99,6 +104,17 @@
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service c-sch"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service c-api"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service c-vol"
+
+          if [ "{python}" == "-py35" ]; then
+              export DEVSTACK_GATE_USE_PYTHON3=True
+
+              # swift is not ready for python3 yet
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-account"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-container"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-object"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-proxy"
+          fi
+
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
