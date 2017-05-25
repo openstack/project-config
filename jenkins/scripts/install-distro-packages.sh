@@ -50,6 +50,9 @@ until $BINDEP -b -f $PACKAGES test; do
         sudo emerge -uDNq --jobs=4 @world
         sudo PATH=/usr/sbin:/sbin:$PATH emerge -q --jobs=4 \
             `$BINDEP -b -f $PACKAGES`
+    elif zypper --version >/dev/null 2>&1 ; then
+        sudo PATH=/usr/sbin:/sbin:$PATH zypper --non-interactive install \
+            `$BINDEP -b -f $PACKAGES test`
     else
         sudo PATH=/usr/sbin:/sbin:$PATH $YUM install -y \
             `$BINDEP -b -f $PACKAGES test`
