@@ -8,9 +8,12 @@ set -o pipefail
 
 ZUUL_USER_SSH_PUBLIC_KEY=${ZUUL_USER_SSH_PUBLIC_KEY:-$HOME/.ssh/id_rsa.pub}
 
-if [ ! -f $ZUUL_USER_SSH_PUBLIC_KEY ]; then
+if [ -f "$ZUUL_USER_SSH_PUBLIC_KEY" ]; then
+    # save the public key inside the chroot from specific file
+    cat $ZUUL_USER_SSH_PUBLIC_KEY >> $TMP_HOOKS_PATH/zuul-user-ssh-public-key
+elif [ -n "$ZUUL_USER_SSH_PUBLIC_KEY" ]; then
+    # save the specific public key inside the chroot from env derectly
+    echo "$ZUUL_USER_SSH_PUBLIC_KEY" >> $TMP_HOOKS_PATH/zuul-user-ssh-public-key
+else
     die "Can not find public key for zuul user!"
 fi
-
-# save the public key inside the chroot
-cat $ZUUL_USER_SSH_PUBLIC_KEY >> $TMP_HOOKS_PATH/zuul-user-ssh-public-key
