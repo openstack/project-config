@@ -188,6 +188,26 @@ enabled=0
 gpgcheck=1
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-\$releasever"
 
+ZYPPER_REPOS_OPENSUSE_BASE="\
+[repo-oss]
+name=repo-oss
+enabled=1
+autorefresh=0
+baseurl=$NODEPOOL_OPENSUSE_MIRROR/distribution/leap/\$releasever/repo/oss/
+type=yast2
+keeppackages=0
+"
+
+ZYPPER_REPOS_OPENSUSE_UPDATE="\
+[repo-update]
+name=repo-update
+enabled=1
+autorefresh=0
+baseurl=$NODEPOOL_OPENSUSE_MIRROR/update/leap/\$releasever/oss/
+type=rpm-md
+keeppackages=0
+"
+
 # Write global pip configuration
 echo "$PIP_CONF" >/tmp/pip.conf
 sudo mv /tmp/pip.conf /etc/
@@ -298,8 +318,14 @@ elif [ "$LSBDISTID" == "Fedora" ]; then
     sudo mv /tmp/fedora-updates.repo /etc/yum.repos.d/
     sudo chown root:root /etc/yum.repos.d/*
     sudo chmod 0644 /etc/yum.repos.d/*
+
 elif [ "$LSBDISTID" == "openSUSE project" ]; then
-    sudo sed -i -e "s,http://download.opensuse.org/,$NODEPOOL_OPENSUSE_MIRROR/," /etc/zypp/repos.d/*.repo
+    echo "$ZYPPER_REPOS_OPENSUSE_BASE" > /tmp/repo-oss.repo
+    sudo mv /tmp/repo-oss.repo /etc/zypp/repos.d/
+    echo "$ZYPPER_REPOS_OPENSUSE_UPDATE" > /tmp/repo-update.repo
+    sudo mv /tmp/repo-update.repo /etc/zypp/repos.d/
+    sudo chown root:root /etc/zypp/repos.d/*
+    sudo chmod 0644 /etc/zypp/repos.d/*
 fi
 
 if [ "$LSBDISTID" == "Debian" ] || [ "$LSBDISTID" == "Ubuntu" ]; then
