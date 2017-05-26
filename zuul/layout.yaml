@@ -3114,10 +3114,10 @@ jobs:
   - name: ^gate-oslo.messaging-tox-.*-func-.*$
     branch: ^(?!stable/newton).*$
 
-  - name: ^gate-oslo.messaging-tox-py27-func-(amqp1|kafka|zmq-proxy|zmq-pubsub)-.*$
+  - name: ^gate-oslo.messaging-tox-py27-func-(kafka|zmq-proxy|zmq-pubsub)-.*$
     voting: false
 
-  - name: ^gate-oslo.messaging-tox-py35-func-(amqp1|rabbit|zmq)-.*$
+  - name: ^gate-oslo.messaging-tox-py35-func-(rabbit|zmq)-.*$
     voting: false
 
   # Timeout often see: BUG #1668187
@@ -8867,11 +8867,13 @@ projects:
       - name: merge-check
     check:
       - gate-devstack-plugin-amqp1-bashate
-      - gate-tempest-dsvm-full-amqp1-ubuntu-xenial-nv
-      - gate-oslo.messaging-src-dsvm-full-amqp1-hybrid-ubuntu-xenial-nv
+      - gate-tempest-dsvm-full-amqp1-ubuntu-xenial
+      - gate-oslo.messaging-src-dsvm-full-amqp1-hybrid-ubuntu-xenial
       - gate-oslo.messaging-src-dsvm-full-amqp1-dual-centos-7-nv
     gate:
       - gate-devstack-plugin-amqp1-bashate
+      - gate-tempest-dsvm-full-amqp1-ubuntu-xenial
+      - gate-oslo.messaging-src-dsvm-full-amqp1-hybrid-ubuntu-xenial
 
   - name: openstack/devstack-plugin-bdd
     template:
@@ -14712,7 +14714,7 @@ projects:
       - gate-oslo.messaging-tox-py35-func-amqp1-ubuntu-xenial
       - gate-oslo.messaging-tox-py35-func-rabbit-ubuntu-xenial
       - gate-oslo.messaging-tox-py35-func-zmq-ubuntu-xenial
-      - gate-oslo.messaging-src-dsvm-full-amqp1-hybrid-ubuntu-xenial-nv
+      - gate-oslo.messaging-src-dsvm-full-amqp1-hybrid-ubuntu-xenial
       - gate-oslo.messaging-src-dsvm-full-amqp1-dual-centos-7-nv
       - gate-oslo.messaging-src-dsvm-full-pika-default-ubuntu-xenial
       - gate-oslo.messaging-src-dsvm-full-zmq-default-ubuntu-xenial-nv
@@ -14722,14 +14724,18 @@ projects:
       - gate-oslo.messaging-telemetry-dsvm-integration-amqp1-ubuntu-xenial-nv
       - gate-oslo.messaging-telemetry-dsvm-integration-pika-ubuntu-xenial-nv
       - gate-oslo.messaging-telemetry-dsvm-integration-zmq-ubuntu-xenial-nv
-      - gate-tempest-neutron-dsvm-src-oslo.messaging-amqp1-hybrid-ubuntu-xenial-nv
+      - gate-tempest-neutron-dsvm-src-oslo.messaging-amqp1-hybrid-ubuntu-xenial
       - gate-tempest-neutron-dsvm-src-oslo.messaging-pika-default-ubuntu-xenial
       - gate-tempest-neutron-dsvm-src-oslo.messaging-zmq-default-ubuntu-xenial-nv
     gate:
       - gate-oslo.messaging-tox-py27-func-rabbit-ubuntu-xenial
       - gate-oslo.messaging-tox-py27-func-pika-ubuntu-xenial
+      - gate-oslo.messaging-tox-py27-func-amqp1-ubuntu-xenial
+      - gate-oslo.messaging-tox-py35-func-amqp1-ubuntu-xenial
       - gate-oslo.messaging-src-dsvm-full-pika-default-ubuntu-xenial
+      - gate-oslo.messaging-src-dsvm-full-amqp1-hybrid-ubuntu-xenial
       - gate-tempest-neutron-dsvm-src-oslo.messaging-pika-default-ubuntu-xenial
+      - gate-tempest-neutron-dsvm-src-oslo.messaging-amqp1-hybrid-ubuntu-xenial
     post:
       - oslo.messaging-coverage-ubuntu-xenial
 
