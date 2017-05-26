@@ -58,8 +58,9 @@ cat > $ipv4_rules << EOF
 # the ironic API from the neutron public net
 -A openstack-INPUT -s 172.24.4.0/23 -p udp -m udp --dport 69 -j ACCEPT
 -A openstack-INPUT -s 172.24.4.0/23 -p tcp -m tcp --dport 6385 -j ACCEPT
-# Ports 8000, 8003, 8004 from the devstack neutron public net to allow
+# Ports 80, 8000, 8003, 8004 from the devstack neutron public net to allow
 # nova servers to reach heat-api-cfn, heat-api-cloudwatch, heat-api
+-A openstack-INPUT -s 172.24.4.0/23 -p tcp -m tcp --dport 80 -j ACCEPT
 -A openstack-INPUT -s 172.24.4.0/23 -p tcp -m tcp --dport 8000 -j ACCEPT
 -A openstack-INPUT -s 172.24.4.0/23 -p tcp -m tcp --dport 8003 -j ACCEPT
 -A openstack-INPUT -s 172.24.4.0/23 -p tcp -m tcp --dport 8004 -j ACCEPT
