@@ -20,7 +20,7 @@ set -eu
 OSA_PROJECT=${1}
 
 # Careful of what you put here.
-declare -ra files_to_sync=(run_tests.sh bindep.txt Vagrantfile tests/tests-repo-clone.sh)
+declare -ra files_to_sync=(run_tests.sh bindep.txt Vagrantfile tests/tests-repo-clone.sh .gitignore)
 
 excluded_projects=
 exclude_project() {
