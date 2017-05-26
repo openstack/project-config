@@ -7871,7 +7871,6 @@
           odl-provider: ''
           driver-version: 'v1driver'
           odl-release-base:
-            - 'beryllium-snapshot'
             - 'boron-snapshot'
             - 'carbon-snapshot'
           branch-override: stable/mitaka
@@ -7892,7 +7891,6 @@
           odl-provider: ''
           driver-version: 'v2driver'
           odl-release-base:
-            - 'beryllium-snapshot'
             - 'boron-snapshot'
           branch-override: default
       - '{pipeline}-tempest-dsvm-networking-odl-{odl-release-base}-{odl-provider}{driver-version}{suffix}':
@@ -7906,21 +7904,26 @@
           odl-release-base:
             - 'boron-snapshot'
             - 'carbon-snapshot'
+            - 'nitrogen-snapshot'
           branch-override: default
       - '{pipeline}-tempest-dsvm-networking-odl-multinode-{odl-release-base}{suffix}':
           pipeline: gate
           node: ubuntu-xenial-2-node
           suffix: '-nv'
-          odl-release-base: 'carbon-snapshot'
+          odl-release-base:
+            - 'carbon-snapshot'
+            - 'nitrogen-snapshot'
           branch-override: default
       - '{pipeline}-rally-dsvm-networking-odl-{odl-release-base}{suffix}':
           pipeline: gate
           node: ubuntu-xenial
-          suffix: ''
+          suffix:
+            - ''
+            - '-nv'
           odl-release-base:
-            - 'beryllium-snapshot'
             - 'boron-snapshot'
             - 'carbon-snapshot'
+            - 'nitrogen-snapshot'
           branch-override: default
       - '{pipeline}-grenade-dsvm-networking-odl{suffix}':
           pipeline: gate
@@ -7931,15 +7934,21 @@
           pipeline: gate
           node: ubuntu-xenial
           odltest: fullstack
-          odl-release-base: 'carbon-snapshot'
+          odl-release-base:
+            - 'carbon-snapshot'
+            - 'nitrogen-snapshot'
           suffix: '-nv'
           branch-override: default
       - '{pipeline}-dsvm-networking-odl-{odltest}-{odl-release-base}{suffix}':
           pipeline: gate
           node: ubuntu-xenial
           odltest: functional
-          odl-release-base: 'carbon-snapshot'
-          suffix: ''
+          odl-release-base:
+            - 'carbon-snapshot'
+            - 'nitrogen-snapshot'
+          suffix:
+            - ''
+            - '-nv'
           branch-override: default
       - periodic-python-jobs-with-neutron-lib-master
 
