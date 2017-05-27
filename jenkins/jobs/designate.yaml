@@ -74,6 +74,13 @@
       - print-node-uuid
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin designate git://git.openstack.org/openstack/designate
+            DESIGNATE_SERVICE_PORT_DNS=5322
+            DESIGNATE_BACKEND_DRIVER=agent
+            DESIGNATE_AGENT_BACKEND_DRIVER={designate-driver}
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -81,11 +88,6 @@
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
           export DEVSTACK_GATE_TEMPEST_REGEX=designate
-
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin designate git://git.openstack.org/openstack/designate"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"DESIGNATE_SERVICE_PORT_DNS=5322"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"DESIGNATE_BACKEND_DRIVER=agent"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"DESIGNATE_AGENT_BACKEND_DRIVER={designate-driver}"
 
           export PROJECTS="openstack/designate $PROJECTS"
           export PROJECTS="openstack/python-designateclient $PROJECTS"
@@ -119,6 +121,11 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            DESIGNATE_SERVICE_PORT_DNS=5322
+            DESIGNATE_BACKEND_DRIVER={designate-driver}
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -128,8 +135,6 @@
           export DEVSTACK_GATE_GRENADE=pullup
           export DEVSTACK_GATE_TEMPEST_REGEX=designate
 
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"DESIGNATE_SERVICE_PORT_DNS=5322"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"DESIGNATE_BACKEND_DRIVER={designate-driver}"
 
           export PROJECTS="openstack/designate $PROJECTS"
           export PROJECTS="openstack/python-designateclient $PROJECTS"
@@ -164,6 +169,10 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin designate git://git.openstack.org/openstack/designate
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -175,8 +184,6 @@
           export PROJECTS="openstack/python-designateclient $PROJECTS"
           export PROJECTS="openstack/designate-dashboard $PROJECTS"
           export PROJECTS="openstack/designate-tempest-plugin $PROJECTS"
-
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin designate git://git.openstack.org/openstack/designate"
 
           function gate_hook {{
               cd /opt/stack/new/designate/devstack/gate
