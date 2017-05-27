@@ -11,13 +11,16 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer
+            # Enable watcher devstack plugin.
+            enable_plugin watcher git://git.openstack.org/openstack/watcher
+
       - shell: |
           #!/bin/bash -xe
-          DEVSTACK_LOCAL_CONFIG="enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
-          # Enable watcher devstack plugin.
-          DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin watcher git://git.openstack.org/openstack/watcher"
 
-          export DEVSTACK_LOCAL_CONFIG
           export DEVSTACK_SUBNODE_CONFIG=" "
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1

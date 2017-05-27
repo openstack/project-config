@@ -11,6 +11,10 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin tap-as-a-service git://git.openstack.org/openstack/tap-as-a-service
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -24,7 +28,6 @@
 
           # Enable tap-as-a-service
           export PROJECTS="openstack/tap-as-a-service $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin tap-as-a-service git://git.openstack.org/openstack/tap-as-a-service"
           export ENABLED_SERVICES=taas,taas_openvswitch_agent
 
           export DEVSTACK_GATE_SETTINGS=/opt/stack/new/tap-as-a-service/devstack/devstackgaterc

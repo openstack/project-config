@@ -11,6 +11,10 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin scalpels git://git.openstack.org/openstack/scalpels
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -18,7 +22,6 @@
           export DEVSTACK_GATE_NEUTRON_DVR=1
           export BRANCH_OVERRIDE={branch-override}
           export PROJECTS="openstack/scalpels $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin scalpels https://git.openstack.org/openstack/scalpels"
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
