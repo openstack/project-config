@@ -1061,6 +1061,7 @@ project-templates:
       - gate-tripleo-ci-centos-7-scenario002-multinode-oooq
       - gate-tripleo-ci-centos-7-scenario003-multinode-oooq
       - gate-tripleo-ci-centos-7-scenario004-multinode-oooq
+      - gate-tripleo-ci-centos-7-containers-multinode-nv
       - gate-tripleo-ci-centos-7-nonha-multinode-updates-nv
     gate:
       - gate-tripleo-ci-centos-7-nonha-multinode-oooq
@@ -1695,8 +1696,8 @@ jobs:
   - name: ^gate-tripleo-ci-centos-7-3nodes.*$
     branch: ^(?!stable/newton).*$
 
-  # TripleO container job has been introduced in Pike
-  - name: ^gate-tripleo-ci-centos-7-undercloud-containers.*$
+  # TripleO container jobs have been introduced in Pike
+  - name: ^gate-tripleo-ci-centos-7-.*container.*$
     branch: ^(?!stable/(newton|ocata)).*$
 
   # tripleo scenario001 started to be used used in newton
@@ -1853,12 +1854,6 @@ jobs:
   # and classic multinode-upgrades job on master (future Pike).
   # For now, we only want these jobs in master
   - name: ^gate-tripleo-ci-centos-7(-scenario00(1|2|3|4))?-multinode-upgrades-nv$
-    branch: ^(?!stable/(newton|ocata)).*$
-
-  - name: ^gate-tripleo-ci-centos-7-ovb-containers-oooq.*$
-    branch: ^(?!stable/(newton|ocata)).*$
-
-  - name: ^gate-tripleo-ci-centos-7-containers-multinode-upgrades.*$
     branch: ^(?!stable/(newton|ocata)).*$
 
   # TripleO scenario004 job has been introduced in Ocata so we don't want to run the upgrade job yet.
