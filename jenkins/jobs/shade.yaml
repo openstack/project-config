@@ -15,7 +15,7 @@
             disable_service horizon
 
 - job-template:
-    name: '{pipeline}-shade-dsvm-functional-legacy{suffix}'
+    name: '{pipeline}-shade-dsvm-functional-legacy{libs}{suffix}'
     node: '{node}'
 
     wrappers:
@@ -54,75 +54,22 @@
 
           export PROJECTS="openstack-infra/shade $PROJECTS"
 
-          export BRANCH_OVERRIDE={branch-override}
-          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
-              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          if [ "{libs}" == "-libs" ]; then
+              export PROJECTS="openstack/keystoneauth $PROJECTS"
+              export PROJECTS="openstack/os-client-config $PROJECTS"
+              export PROJECTS="openstack/python-keystoneclient $PROJECTS"
+              export PROJECTS="openstack/python-novaclient $PROJECTS"
+
+              # The purpose of the -libs job is to test that latest libs work
+              # with old devstack. We don't want to install devstack from
+              # libs tips. We want to install tip of master into our
+              # functional venv.
+              export OVERRIDE_OS_CLIENT_CONFIG_PROJECT_BRANCH="master"
+              export OVERRIDE_KEYSTONEAUTH_PROJECT_BRANCH="master"
+              export OVERRIDE_PYTHON_NOVACLIENT_PROJECT_BRANCH="master"
+              export OVERRIDE_PYTHON_KEYSTONECLIENT_PROJECT_BRANCH="master"
           fi
 
-          function post_test_hook {{
-              $BASE/new/shade/shade/tests/functional/hooks/post_test_hook.sh
-          }}
-          export -f post_test_hook
-
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
-
-    publishers:
-      - devstack-logs
-      - console-log
-
-- job-template:
-    name: '{pipeline}-shade-dsvm-functional-legacy-libs{suffix}'
-    node: '{node}'
-
-    wrappers:
-      - build-timeout:
-          timeout: 70
-      - timestamps
-
-    builders:
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - local_conf:
-          conf: |
-            [[local|localrc]]
-            ENABLE_IDENTITY_V2=True
-            enable_plugin heat https://git.openstack.org/openstack/heat
-            disable_service ceilometer-acentral
-            disable_service ceilometer-acompute
-            disable_service ceilometer-alarm-evaluator
-            disable_service ceilometer-alarm-notifier
-            disable_service ceilometer-anotification
-            disable_service ceilometer-api
-            disable_service ceilometer-collector
-            disable_service horizon
-      - shell: |
-          #!/bin/bash -xe
-          export DEVSTACK_GATE_HEAT=1
-          export DEVSTACK_GATE_NEUTRON=0
-          export PYTHONUNBUFFERED=true
-          export SHADE_HAS_DESIGNATE=0
-          export SHADE_HAS_HEAT=1
-          export SHADE_HAS_MAGNUM=0
-          export SHADE_HAS_NEUTRON=0
-          export SHADE_HAS_SWIFT=1
-          export SHADE_USE_KEYSTONE_V2=1
-
-          export PROJECTS="openstack-infra/shade $PROJECTS"
-          export PROJECTS="openstack/keystoneauth $PROJECTS"
-          export PROJECTS="openstack/os-client-config $PROJECTS"
-          export PROJECTS="openstack/python-keystoneclient $PROJECTS"
-          export PROJECTS="openstack/python-novaclient $PROJECTS"
-
-          # The purpose of this job is to test that latest libs work with
-          # newton devstack. We don't want to install devstack from branch
-          # tips. We want to install branch tips (of master) into our
-          # functional venv.
-          export OVERRIDE_OS_CLIENT_CONFIG_PROJECT_BRANCH="master"
-          export OVERRIDE_KEYSTONEAUTH_PROJECT_BRANCH="master"
-          export OVERRIDE_PYTHON_NOVACLIENT_PROJECT_BRANCH="master"
-          export OVERRIDE_PYTHON_KEYSTONECLIENT_PROJECT_BRANCH="master"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -141,7 +88,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-shade-dsvm-functional-neutron{python}{suffix}'
+    name: '{pipeline}-shade-dsvm-functional{libs}{python}{suffix}'
     node: '{node}'
 
     wrappers:
@@ -169,6 +116,12 @@
           fi
 
           export PROJECTS="openstack-infra/shade $PROJECTS"
+          if [ "{libs}" == "-libs" ]; then
+              export PROJECTS="openstack/keystoneauth $PROJECTS"
+              export PROJECTS="openstack/os-client-config $PROJECTS"
+              export PROJECTS="openstack/python-keystoneclient $PROJECTS"
+              export PROJECTS="openstack/python-novaclient $PROJECTS"
+          fi
 
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
@@ -240,57 +193,6 @@
 
           function post_test_hook {{
               $BASE/new/shade/shade/tests/functional/hooks/post_test_hook.sh
-          }}
-          export -f post_test_hook
-
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
-
-    publishers:
-      - devstack-logs
-      - console-log
-
-- job-template:
-    name: '{pipeline}-shade-dsvm-functional-libs{python}{suffix}'
-    node: '{node}'
-
-    wrappers:
-      - build-timeout:
-          timeout: 70
-      - timestamps
-
-    builders:
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - shade-local-conf
-      - shell: |
-          #!/bin/bash -xe
-          export DEVSTACK_GATE_HEAT=1
-          export DEVSTACK_GATE_NEUTRON=1
-          export PYTHONUNBUFFERED=true
-          export SHADE_HAS_DESIGNATE=0
-          export SHADE_HAS_HEAT=1
-          export SHADE_HAS_MAGNUM=0
-          export SHADE_HAS_NEUTRON=1
-          export SHADE_HAS_SWIFT=1
-          if [ "{python}" == "-py35" ]; then
-              export SHADE_TOX_PYTHON=python3
-          fi
-
-          export PROJECTS="openstack-infra/shade $PROJECTS"
-          export PROJECTS="openstack/keystoneauth $PROJECTS"
-          export PROJECTS="openstack/os-client-config $PROJECTS"
-          export PROJECTS="openstack/python-keystoneclient $PROJECTS"
-          export PROJECTS="openstack/python-novaclient $PROJECTS"
-
-          export BRANCH_OVERRIDE={branch-override}
-          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
-              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
-          fi
-
-          function post_test_hook {{
-              $BASE/new/shade/shade/tests/functional/hooks/post_test_hook.sh tips
           }}
           export -f post_test_hook
 
