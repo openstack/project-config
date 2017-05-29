@@ -18,37 +18,24 @@
           conf: |
             [[local|localrc]]
             enable_plugin patrole git://git.openstack.org/openstack/patrole
+            TEMPEST_PLUGINS='/opt/stack/new/patrole'
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
 
-          # Ensure that tempest set up is executed, but do not automatically
-          # execute tempest tests; they are executed in post_test_hook.
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_NEUTRON=1
-          export DEVSTACK_GATE_TEMPEST_NOTESTS=1
+          export DEVSTACK_GATE_TEMPEST_REGEX='(?!.*\[.*\bslow\b.*\])(^patrole_tempest_plugin\.tests\.api)'
 
           export PROJECTS="openstack/patrole $PROJECTS"
+
+          # Needed by Patrole devstack plugin
+          export RBAC_TEST_ROLE={rbac-role}
 
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
-
-          # Keep localrc to be able to set some vars in pre_test_hook
-          export KEEP_LOCALRC=1
-
-          function pre_test_hook {{
-              source $BASE/new/patrole/contrib/pre_test_hook.sh \
-                  {rbac-role}
-          }}
-          export -f pre_test_hook
-
-          function post_test_hook {{
-              source $BASE/new/patrole/contrib/post_test_hook.sh \
-                  {rbac-role}
-          }}
-          export -f post_test_hook
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
@@ -78,6 +65,7 @@
           conf: |
             [[local|localrc]]
             enable_plugin patrole git://git.openstack.org/openstack/patrole
+            TEMPEST_PLUGINS='/opt/stack/new/patrole'
 
             # Swift is not ready for python3 yet
             disable_service s-account
@@ -95,29 +83,17 @@
           # execute tempest tests; they are executed in post_test_hook.
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_NEUTRON=1
-          export DEVSTACK_GATE_TEMPEST_NOTESTS=1
+          export DEVSTACK_GATE_TEMPEST_REGEX='(?!.*\[.*\bslow\b.*\])(^patrole_tempest_plugin\.tests\.api)'
 
           export PROJECTS="openstack/patrole $PROJECTS"
+
+          # Needed by Patrole devstack plugin
+          export RBAC_TEST_ROLE={rbac-role}
 
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
-
-          # Keep localrc to be able to set some vars in pre_test_hook
-          export KEEP_LOCALRC=1
-
-          function pre_test_hook {{
-              source $BASE/new/patrole/contrib/pre_test_hook.sh \
-                  {rbac-role}
-          }}
-          export -f pre_test_hook
-
-          function post_test_hook {{
-              source $BASE/new/patrole/contrib/post_test_hook.sh \
-                  {rbac-role}
-          }}
-          export -f post_test_hook
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
@@ -147,7 +123,7 @@
           conf: |
             [[local|localrc]]
             enable_plugin patrole git://git.openstack.org/openstack/patrole
-            enable_plugin heat git://git.openstack.org/openstack/heat
+            TEMPEST_PLUGINS='/opt/stack/new/patrole'
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -157,29 +133,17 @@
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_TOPOLOGY="multinode"
-          export DEVSTACK_GATE_TEMPEST_NOTESTS=1
+          export DEVSTACK_GATE_TEMPEST_REGEX='(?=.*\[.*\bslow\b.*\])(^patrole_tempest_plugin\.tests\.api)'
 
           export PROJECTS="openstack/patrole $PROJECTS"
+
+          # Needed by Patrole devstack plugin
+          export RBAC_TEST_ROLE={rbac-role}
 
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
-
-          # Keep localrc to be able to set some vars in pre_test_hook
-          export KEEP_LOCALRC=1
-
-          function pre_test_hook {{
-              source $BASE/new/patrole/contrib/pre_test_hook.sh \
-                  {rbac-role} multinode
-          }}
-          export -f pre_test_hook
-
-          function post_test_hook {{
-              source $BASE/new/patrole/contrib/post_test_hook.sh \
-                  {rbac-role} multinode
-          }}
-          export -f post_test_hook
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
@@ -188,4 +152,3 @@
       - test-results
       - devstack-logs
       - console-log
-
