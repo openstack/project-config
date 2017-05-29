@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 #    Licensed under the Apache License, Version 2.0 (the "License"); you may
 #    not use this file except in compliance with the License. You may obtain
@@ -14,8 +14,6 @@
 
 """Lists the most recent versions in the deliverable files.
 """
-
-from __future__ import print_function
 
 import argparse
 import os.path
@@ -35,7 +33,7 @@ def find_modified_deliverable_files(reporoot):
     results = subprocess.check_output(
         ['git', 'diff', '--name-only', '--pretty=format:', 'HEAD^'],
         cwd=reporoot,
-    )
+    ).decode('utf-8')
     filenames = [
         l.strip()
         for l in results.splitlines()
@@ -66,7 +64,7 @@ def get_modified_deliverable_file_content(reporoot, filenames):
         if not os.path.exists(filename):
             # The file must have been deleted, skip it.
             continue
-        with open(filename, 'r') as f:
+        with open(filename, 'r', encoding='utf-8') as f:
             deliverable_data = yaml.load(f.read())
 
         # If there are no releases listed in this file, skip it.
