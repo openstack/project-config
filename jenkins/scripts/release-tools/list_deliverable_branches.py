@@ -74,16 +74,17 @@ def get_modified_deliverable_file_content(reporoot, filenames):
         }
 
         for branch in deliverable_data.get('branches', []):
-            branch_type = branch['name'].split('/')[0]
             location = branch['location']
 
-            if branch_type == 'stable':
-                for proj in releases_by_version[location]['projects']:
-                    yield (proj['repo'], branch['name'], branch['location'])
-
-            else:
+            if isinstance(location, dict):
                 for repo, sha in sorted(location.items()):
                     yield (repo, branch['name'], sha)
+
+            else:
+                # Assume a single location string that is a valid
+                # reference in the git repository.
+                for proj in releases_by_version[location]['projects']:
+                    yield (proj['repo'], branch['name'], branch['location'])
 
 
 def main():
