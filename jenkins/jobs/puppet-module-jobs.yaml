@@ -350,6 +350,9 @@
           project: $ZUUL_PROJECT
       - shell: |
           #!/bin/bash -xe
+          # NOTE(mwhahaha): puppet from puppet-agent-install builder is not in
+          # the standard path, so add puppetlabs bin to the path
+          export PATH=$PATH:/opt/puppetlabs/bin
           cd $ZUUL_PROJECT
           # try to find the modulename, ex: puppet-aodh
           # we have to use sed because workspace is puppet-aodh-branch-tarball
