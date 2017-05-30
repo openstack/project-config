@@ -11,6 +11,9 @@
           #!/bin/bash -xe
           # This installs packages from "general" that might be
           # required for unit tests
+          # Note that we have toset the safe IP addr range to avoid
+          # conflicts with cloud networks that result in job failures.
+          echo "IPV4_ADDRS_SAFE_TO_USE=10.1.0.0/20" >> localrc
           ./tools/install_prereqs.sh
       - revoke-sudo
       - shell: |
