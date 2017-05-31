@@ -190,13 +190,16 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin {project-repo} git://git.openstack.org/{project-repo}
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_TEMPEST_FULL=1
           export DEVSTACK_GATE_NEUTRON=1
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin {project-repo} git://git.openstack.org/openstack/{project-repo}"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -224,12 +227,15 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            TEMPEST_USE_TEST_ACCOUNTS=True
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_TEMPEST_FULL=1
-          export DEVSTACK_LOCAL_CONFIG="TEMPEST_USE_TEST_ACCOUNTS=True"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -255,13 +261,16 @@
           template-name: "{template-name}"
       - link-logs
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            TEMPEST_USE_TEST_ACCOUNTS=True
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_TEMPEST_FULL=1
-          export DEVSTACK_LOCAL_CONFIG="TEMPEST_USE_TEST_ACCOUNTS=True"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -294,7 +303,6 @@
             ENABLE_IDENTITY_V2=False
             SERVICE_DOMAIN_NAME=service
             TEMPEST_USE_TEST_ACCOUNTS=True
-
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -329,14 +337,17 @@
           template-name: "{template-name}"
       - link-logs
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            TEMPEST_HAS_ADMIN=False
+            TEMPEST_USE_TEST_ACCOUNTS=True
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_TEMPEST_DISABLE_TENANT_ISOLATION=1
-          export DEVSTACK_LOCAL_CONFIG="TEMPEST_HAS_ADMIN=False"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"TEMPEST_USE_TEST_ACCOUNTS=True"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -477,11 +488,14 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            TEMPEST_COMPUTE_TYPE=compute_legacy
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
-          export DEVSTACK_LOCAL_CONFIG="TEMPEST_COMPUTE_TYPE=compute_legacy"
           # only run compute API tests
           export DEVSTACK_GATE_TEMPEST_REGEX="api.*compute"
 
@@ -591,6 +605,14 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            # swift is not ready for python3 yet
+            disable_service s-account
+            disable_service s-container
+            disable_service s-object
+            disable_service s-proxy
       - shell: |
           #!/bin/bash -xe
           export DEVSTACK_GATE_USE_PYTHON3=True
@@ -598,12 +620,6 @@
           export DEVSTACK_GATE_HEAT=1
           export DEVSTACK_GATE_SAHARA=1
           export DEVSTACK_GATE_TLSPROXY=1
-
-          # swift is not ready for python3 yet
-          export DEVSTACK_LOCAL_CONFIG="disable_service s-account"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-container"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-object"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-proxy"
 
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
@@ -639,13 +655,16 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            NOVA_USE_MOD_WSGI=True
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_TEMPEST_FULL=1
           export DEVSTACK_GATE_NEUTRON=1
-          export DEVSTACK_LOCAL_CONFIG="NOVA_USE_MOD_WSGI=True"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -672,6 +691,16 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            # swift is not ready for python3 yet
+            disable_service s-account
+            disable_service s-container
+            disable_service s-object
+            disable_service s-proxy
+            # without Swift, c-bak can't run (in the Gate at least)
+            disable_service c-bak
       - shell: |
           #!/bin/bash -xe
           export DEVSTACK_GATE_USE_PYTHON3=True
@@ -680,14 +709,6 @@
           export DEVSTACK_GATE_TEMPEST_FULL=1
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_CONFIGDRIVE=1
-
-          # swift is not ready for python3 yet
-          export DEVSTACK_LOCAL_CONFIG="disable_service s-account"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-container"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-object"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-proxy"
-          # without Swift, c-bak can't run (in the Gate at least)
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service c-bak"
 
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
@@ -715,13 +736,16 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin devstack-plugin-additional-pkg-repos git://git.openstack.org/openstack/devstack-plugin-additional-pkg-repos
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_TEMPEST_FULL=1
           export PROJECTS="openstack/devstack-plugin-additional-pkg-repos $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin devstack-plugin-additional-pkg-repos git://git.openstack.org/openstack/devstack-plugin-additional-pkg-repos"
           # We want to test the latest libvirt with kvm version with that plugin
           # TODO: (markus_z) rename that in the apr repo to "libvirt-kvm"
           #       to make the chosen virtualization technology explicit.
@@ -752,12 +776,15 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            LIBVIRT_TYPE=lxc
+            NOVA_BACKEND=LVM
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
-          export DEVSTACK_LOCAL_CONFIG="LIBVIRT_TYPE=lxc"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"NOVA_BACKEND=LVM"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -823,6 +850,11 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin devstack-plugin-zmq git://git.openstack.org/openstack/devstack-plugin-zmq
+            CINDER_ENABLED_BACKENDS=lvm:lvmdriver-1,lvm:lvmdriver-2
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -833,8 +865,6 @@
           # run.
           export DEVSTACK_GATE_TEMPEST_REGEX='(?!.*\[.*\bslow\b.*\])(^tempest\.(api|scenario)|(^cinder\.tests.tempest))'
           export PROJECTS="openstack/devstack-plugin-zmq $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin devstack-plugin-zmq git://git.openstack.org/openstack/devstack-plugin-zmq"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"CINDER_ENABLED_BACKENDS=lvm:lvmdriver-1,lvm:lvmdriver-2"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -862,14 +892,17 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            ENABLE_IDENTITY_V2=False
+            SERVICE_DOMAIN_NAME=service
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_TEMPEST_FULL=1
           export DEVSTACK_GATE_NEUTRON=1
-          export DEVSTACK_LOCAL_CONFIG="ENABLE_IDENTITY_V2=False"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"SERVICE_DOMAIN_NAME=service"
           export DEVSTACK_GATE_TLSPROXY=1
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
@@ -1067,6 +1100,11 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            # NOTE(mriedem): cells v2 should be the default after newton-eol
+            NOVA_CONFIGURE_CELLSV2=True
       - shell: |
           #!/bin/bash -xe
           export PROJECTS="openstack-dev/grenade $PROJECTS"
@@ -1074,8 +1112,6 @@
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_GRENADE=pullup
           export DEVSTACK_GATE_NEUTRON=1
-          # NOTE(mriedem): cells v2 should be the default after newton-eol
-          export DEVSTACK_LOCAL_CONFIG="NOVA_CONFIGURE_CELLSV2=True"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -1862,6 +1898,10 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin devstack-plugin-{plugin} git://git.openstack.org/{plugin-repo}
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -1873,7 +1913,6 @@
           export DEVSTACK_GATE_TEMPEST_REGEX='(?!.*\[.*\bslow\b.*\])(^tempest\.(api|scenario)|(^cinder\.tests.tempest))'
 
           export PROJECTS="{plugin-repo} $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin devstack-plugin-{plugin} git://git.openstack.org/{plugin-repo}"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -1909,6 +1948,10 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin devstack-plugin-{plugin} git://git.openstack.org/{plugin-repo}
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -1920,7 +1963,6 @@
           export DEVSTACK_GATE_TEMPEST_REGEX='(?!.*\[.*\bslow\b.*\])(^tempest\.(api|scenario)|(^cinder\.tests.tempest))'
 
           export PROJECTS="{plugin-repo} $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin devstack-plugin-{plugin} git://git.openstack.org/{plugin-repo}"
 
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
@@ -1947,6 +1989,11 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin devstack-plugin-{plugin} git://git.openstack.org/{plugin-repo}
+            ENABLE_NFS_CINDER=True
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -1954,8 +2001,6 @@
           export DEVSTACK_GATE_TEMPEST_FULL=1
 
           export PROJECTS="{plugin-repo} $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin devstack-plugin-{plugin} git://git.openstack.org/{plugin-repo}"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"ENABLE_NFS_CINDER=True"
 
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
@@ -1983,6 +2028,12 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin devstack-plugin-nfs git://git.openstack.org/devstack-plugin-nfs
+            enable_plugin devstack-plugin-ceph https://git.openstack.org/openstack/devstack-plugin-ceph
+            CINDER_ENABLED_BACKENDS=lvm:lvm,nfs:nfs,ceph:ceph
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -1993,11 +2044,8 @@
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
 
-          export DEVSTACK_LOCAL_CONFIG="CINDER_ENABLED_BACKENDS=lvm:lvm,nfs:nfs,ceph:ceph"
           export PROJECTS="openstack/devstack-plugin-nfs $PROJECTS"
           export PROJECTS="openstack/devstack-plugin-ceph $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin devstack-plugin-nfs https://git.openstack.org/openstack/devstack-plugin-nfs"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin devstack-plugin-ceph https://git.openstack.org/openstack/devstack-plugin-ceph"
 
           function post_test_hook {{
               /opt/stack/new/cinder/tools/hooks/run_multi_backend_matrix.sh
@@ -2070,6 +2118,10 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            CINDER_ENABLED_BACKENDS=lvm:lvmdriver-1,lvm:lvmdriver-2
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -2079,7 +2131,6 @@
           # the regex to limit the tests to the same as a tempest -efull would
           # run.
           export DEVSTACK_GATE_TEMPEST_REGEX='(?!.*\[.*\bslow\b.*\])(^tempest\.(api|scenario)|(^cinder\.tests.tempest))'
-          export DEVSTACK_LOCAL_CONFIG="CINDER_ENABLED_BACKENDS=lvm:lvmdriver-1,lvm:lvmdriver-2"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -2109,6 +2160,11 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            CINDER_ISCSI_HELPER=lioadm
+            CINDER_LVM_TYPE=thin
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -2119,8 +2175,6 @@
           # run.
           export DEVSTACK_GATE_TEMPEST_REGEX='(?!.*\[.*\bslow\b.*\])(^tempest\.(api|scenario)|(^cinder\.tests.tempest))'
 
-          export DEVSTACK_LOCAL_CONFIG="CINDER_ISCSI_HELPER=lioadm"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"CINDER_LVM_TYPE=thin"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -2151,12 +2205,15 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin devstack-plugin-{plugin} git://git.openstack.org/{plugin-repo}
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
           export PROJECTS="{plugin-repo} $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin devstack-plugin-{plugin} git://git.openstack.org/{plugin-repo}"
           export DEVSTACK_PROJECT_FROM_GIT={srcname}
 
           if [[ "{plugin}" = "sheepdog" ]]; then
@@ -2194,12 +2251,15 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin devstack-plugin-{plugin} git://git.openstack.org/{plugin-repo}
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
           export PROJECTS="{plugin-repo} $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin devstack-plugin-{plugin} git://git.openstack.org/{plugin-repo}"
 
           if [[ "{plugin}" = "sheepdog" ]]; then
               export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
@@ -2240,6 +2300,11 @@
           irc: flip214
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin drbd-devstack git://git.openstack.org/drbd-devstack
+            CINDER_ENABLED_BACKENDS=drbd:drbdmanage
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -2250,8 +2315,6 @@
           # run.
           export DEVSTACK_GATE_TEMPEST_REGEX='(?!.*\[.*\bslow\b.*\])(^tempest\.(api|scenario)|(^cinder\.tests.tempest))'
           export PROJECTS="openstack/drbd-devstack $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin drbd-devstack git://git.openstack.org/openstack/drbd-devstack"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"CINDER_ENABLED_BACKENDS=drbd:drbdmanage"
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
@@ -2280,6 +2343,10 @@
           irc: e0ne
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin devstack-plugin-bdd git://git.openstack.org/devstack-plugin-bdd
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -2289,7 +2356,6 @@
           export DEVSTACK_GATE_TEMPEST_REGEX="^(?!.*(volume_in_use|test_volume_boot_pattern)).*volume"
           export TEMPEST_CONCURRENCY=1
           export PROJECTS="openstack/devstack-plugin-bdd $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin devstack-plugin-bdd git://git.openstack.org/openstack/devstack-plugin-bdd"
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
@@ -2315,6 +2381,11 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            TEMPEST_RUN_VALIDATION=True
+            ENABLE_FILE_INJECTION=True
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -2322,8 +2393,6 @@
           export DEVSTACK_GATE_TEMPEST_FULL=1
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_TLSPROXY=1
-          export DEVSTACK_LOCAL_CONFIG="TEMPEST_RUN_VALIDATION=True"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"ENABLE_FILE_INJECTION=True"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -2349,13 +2418,17 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin devstack-plugin-os-loganalyze git://git.openstack.org/openstack-infra/os-loganalyze
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
           export ENABLED_SERVICES=os-loganalyze
           export PROJECTS="openstack-infra/os-loganalyze $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin devstack-plugin-os-loganalyze git://git.openstack.org/openstack-infra/os-loganalyze"
+
           function post_test_hook {{
               # Copy the tempest output to os-loganalze's DocumentRoot
               sudo cp -r logs/* /var/www/logs/
