@@ -3436,10 +3436,13 @@ jobs:
   # Restrictions for openstack-ansible-security/ansible-hardening
   #   - Run centos-7 job on Newton or later
   #   - Run debian-jessie job on Pike or later
+  #   - Run fedora-25 job on Pike or later
   #   - Run RHEL 6 content against ubuntu-trusty on Ocata or later
   - name: ^gate-(openstack-ansible-security|ansible-hardening)-ansible-func-centos-7.*$
     branch: ^(?!stable/mitaka).*$
   - name: ^gate-(openstack-ansible-security|ansible-hardening)-ansible-func-debian-jessie.*$
+    branch: ^(?!stable/(mitaka|newton|ocata)).*$
+  - name: ^gate-(openstack-ansible-security|ansible-hardening)-ansible-func-fedora-25.*$
     branch: ^(?!stable/(mitaka|newton|ocata)).*$
   - name: ^gate-(openstack-ansible-security|ansible-hardening)-ansible-func_rhel6.*$
     branch: ^(?!stable/(mitaka|newton)).*$
@@ -5525,6 +5528,7 @@ projects:
     check:
       - gate-ansible-hardening-ansible-func_rhel6-ubuntu-trusty
       - gate-ansible-hardening-ansible-func-debian-jessie
+      - gate-ansible-hardening-ansible-func-fedora-25-nv
     gate:
       - gate-ansible-hardening-ansible-func_rhel6-ubuntu-trusty
       - gate-ansible-hardening-ansible-func-debian-jessie
