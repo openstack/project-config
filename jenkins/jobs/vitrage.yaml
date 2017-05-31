@@ -11,6 +11,10 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin vitrage git://git.openstack.org/openstack/vitrage
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -19,8 +23,6 @@
           export PROJECTS="openstack/vitrage-dashboard $PROJECTS"
           export PROJECTS="openstack/aodh $PROJECTS"
           export ENABLED_SERVICES=tempest
-
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin vitrage git://git.openstack.org/openstack/vitrage"
 
           function pre_test_hook {{
               source $BASE/new/vitrage/devstack/pre_test_hook.sh

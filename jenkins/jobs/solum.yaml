@@ -11,14 +11,17 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin solum git://git.openstack.org/openstack/solum
+            SOLUM_PROJ_DIR=/opt/stack/new/solum
+            enable_plugin zun git://git.openstack.org/openstack/zun
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_NEUTRON=1
           export ENABLED_SERVICES=solum,solum-api,solum-conductor,solum-deployer,solum-worker,tempest,zaqar,barbican,mistral
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin solum git://git.openstack.org/openstack/solum"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"SOLUM_PROJ_DIR=/opt/stack/new/solum"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin zun git://git.openstack.org/openstack/zun"
           export PROJECTS="openstack/solum  $PROJECTS"
           export PROJECTS="openstack/solum-dashboard $PROJECTS"
           export PROJECTS="openstack/python-solumclient $PROJECTS"
@@ -67,15 +70,18 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin solum git://git.openstack.org/openstack/solum
+            SOLUM_PROJ_DIR=/opt/stack/new/solum
+            enable_plugin zun git://git.openstack.org/openstack/zun
       - shell: |
           #!/bin/bash -xe
           export DEVSTACK_GATE_USE_PYTHON3=True
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_NEUTRON=1
           export ENABLED_SERVICES=solum,solum-api,solum-conductor,solum-deployer,solum-worker,tempest,zaqar,barbican,mistral
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin solum git://git.openstack.org/openstack/solum"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"SOLUM_PROJ_DIR=/opt/stack/new/solum"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin zun git://git.openstack.org/openstack/zun"
           export PROJECTS="openstack/solum  $PROJECTS"
           export PROJECTS="openstack/solum-dashboard $PROJECTS"
           export PROJECTS="openstack/python-solumclient $PROJECTS"

@@ -39,11 +39,14 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            TEMPEST_VOLUME_API_V1=True
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
-          export DEVSTACK_LOCAL_CONFIG="TEMPEST_VOLUME_API_V1=True"
           export DEVSTACK_GATE_TEMPEST_REGEX="volume"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then

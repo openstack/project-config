@@ -11,6 +11,10 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin zaqar git://git.openstack.org/openstack/zaqar
       - shell: |
           #!/bin/bash -xe
           export PROJECTS="openstack/python-zaqarclient $PROJECTS"
@@ -22,7 +26,6 @@
           export DEVSTACK_GATE_EXERCISES=0
           export DEVSTACK_GATE_INSTALL_TESTONLY=1
           export ENABLED_SERVICES=mysql,key,tempest
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin zaqar git://git.openstack.org/openstack/zaqar"
           export BRANCH_OVERRIDE={branch-override}
 
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
@@ -59,12 +62,15 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin zaqar git://git.openstack.org/openstack/zaqar
       - shell: |
           #!/bin/bash -xe
           export PROJECTS="openstack/python-zaqarclient $PROJECTS"
           export PYTHONUNBUFFERED=true
           export BRANCH_OVERRIDE={branch-override}
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin zaqar git://git.openstack.org/openstack/zaqar"
 
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -103,13 +109,16 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin zaqar git://git.openstack.org/openstack/zaqar
       - shell: |
           #!/bin/bash -xe
           export PROJECTS="openstack/python-zaqarclient $PROJECTS"
           export PYTHONUNBUFFERED=true
           export ENABLED_SERVICES=tempest
           export DEVSTACK_GATE_TEMPEST=0
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin zaqar git://git.openstack.org/openstack/zaqar"
 
           function gate_hook {{
               cd /opt/stack/new/zaqar/devstack/gate
@@ -138,6 +147,10 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin zaqar git://git.openstack.org/openstack/zaqar
       - shell: |
           #!/bin/bash -xe
           export PROJECTS="openstack-dev/grenade $PROJECTS"
@@ -145,7 +158,6 @@
           export PYTHONUNBUFFERED=true
           export ENABLED_SERVICES=tempest
           export DEVSTACK_GATE_TEMPEST=0
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin zaqar git://git.openstack.org/openstack/zaqar"
 
           export DEVSTACK_GATE_GRENADE=pullup
           export GRENADE_PLUGINRC="enable_grenade_plugin zaqar https://git.openstack.org/openstack/zaqar"

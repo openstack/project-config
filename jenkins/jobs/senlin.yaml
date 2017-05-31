@@ -105,15 +105,18 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin senlin https://git.openstack.org/openstack/senlin
+            enable_service sl-api sl-eng
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export BRANCH_OVERRIDE={branch-override}
           export KEEP_LOCALRC=1
           export PROJECTS="openstack/senlin $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin senlin https://git.openstack.org/openstack/senlin"
           export DEVSTACK_PROJECT_FROM_GIT=python-senlinclient
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_service sl-api sl-eng"
           export SENLIN_BACKEND="openstack_test"
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
