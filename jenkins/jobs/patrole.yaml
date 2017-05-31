@@ -19,6 +19,8 @@
             [[local|localrc]]
             enable_plugin patrole git://git.openstack.org/openstack/patrole
             TEMPEST_PLUGINS='/opt/stack/new/patrole'
+            # Needed by Patrole devstack plugin
+            RBAC_TEST_ROLE={rbac-role}
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -26,11 +28,9 @@
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_TEMPEST_REGEX='(?!.*\[.*\bslow\b.*\])(^patrole_tempest_plugin\.tests\.api)'
+          export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
 
           export PROJECTS="openstack/patrole $PROJECTS"
-
-          # Needed by Patrole devstack plugin
-          export RBAC_TEST_ROLE={rbac-role}
 
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
@@ -66,6 +66,8 @@
             [[local|localrc]]
             enable_plugin patrole git://git.openstack.org/openstack/patrole
             TEMPEST_PLUGINS='/opt/stack/new/patrole'
+            # Needed by Patrole devstack plugin
+            RBAC_TEST_ROLE={rbac-role}
 
             # Swift is not ready for python3 yet
             disable_service s-account
@@ -84,11 +86,9 @@
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_TEMPEST_REGEX='(?!.*\[.*\bslow\b.*\])(^patrole_tempest_plugin\.tests\.api)'
+          export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
 
           export PROJECTS="openstack/patrole $PROJECTS"
-
-          # Needed by Patrole devstack plugin
-          export RBAC_TEST_ROLE={rbac-role}
 
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
@@ -124,6 +124,8 @@
             [[local|localrc]]
             enable_plugin patrole git://git.openstack.org/openstack/patrole
             TEMPEST_PLUGINS='/opt/stack/new/patrole'
+            # Needed by Patrole devstack plugin
+            RBAC_TEST_ROLE={rbac-role}
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -134,11 +136,9 @@
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_TOPOLOGY="multinode"
           export DEVSTACK_GATE_TEMPEST_REGEX='(?=.*\[.*\bslow\b.*\])(^patrole_tempest_plugin\.tests\.api)'
+          export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
 
           export PROJECTS="openstack/patrole $PROJECTS"
-
-          # Needed by Patrole devstack plugin
-          export RBAC_TEST_ROLE={rbac-role}
 
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
