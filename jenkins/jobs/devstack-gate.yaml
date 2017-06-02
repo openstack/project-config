@@ -394,7 +394,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-tempest-dsvm-neutron-scenario-multinode-{node-release}{suffix}'
+    name: '{pipeline}-tempest-dsvm-neutron-scenario-multinode-lvm-multibackend-{node-release}{suffix}'
     node: '{node}'
 
     wrappers:
@@ -414,6 +414,9 @@
             [[local|localrc]]
             ENABLE_IDENTITY_V2=False
             TEMPEST_USE_TEST_ACCOUNTS=True
+            # Enable lvm multiple backends to run multi backend slow scenario tests.
+            # Note: multi backend experimental job exclude the slow scenario tests.
+            CINDER_ENABLED_BACKENDS=lvm:lvmdriver-1,lvm:lvmdriver-2
 
       - shell: |
           #!/bin/bash -xe
