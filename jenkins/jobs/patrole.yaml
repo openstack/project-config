@@ -5,7 +5,7 @@
 
     wrappers:
       - build-timeout:
-          timeout: 70
+          timeout: 130
       - timestamps
 
     builders:
@@ -21,6 +21,8 @@
             TEMPEST_PLUGINS='/opt/stack/new/patrole'
             # Needed by Patrole devstack plugin
             RBAC_TEST_ROLE={rbac-role}
+            # Optimize test run time by using Keystone UUID tokens
+            KEYSTONE_TOKEN_FORMAT=uuid
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -52,7 +54,7 @@
 
     wrappers:
       - build-timeout:
-          timeout: 70
+          timeout: 130
       - timestamps
 
     builders:
@@ -68,6 +70,8 @@
             TEMPEST_PLUGINS='/opt/stack/new/patrole'
             # Needed by Patrole devstack plugin
             RBAC_TEST_ROLE={rbac-role}
+            # Optimize test run time by using Keystone UUID tokens
+            KEYSTONE_TOKEN_FORMAT=uuid
 
             # Swift is not ready for python3 yet
             disable_service s-account
@@ -110,7 +114,7 @@
 
     wrappers:
       - build-timeout:
-          timeout: 70
+          timeout: 130
       - timestamps
 
     builders:
@@ -126,6 +130,8 @@
             TEMPEST_PLUGINS='/opt/stack/new/patrole'
             # Needed by Patrole devstack plugin
             RBAC_TEST_ROLE={rbac-role}
+            # Optimize test run time by using Keystone UUID tokens
+            KEYSTONE_TOKEN_FORMAT=uuid
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
