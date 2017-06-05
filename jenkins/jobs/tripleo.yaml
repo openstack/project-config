@@ -71,7 +71,11 @@
               tox -evenv -- pip install diskimage-builder -c $UPPER_CONSTRAINTS_FILE
           fi
 
-          tox -evenv -- openstack overcloud image build --type {image-name} --elements-path="$ELEMENTS"
+          if [ "$image_name" == "overclud-sec-hard-full" ]; then
+              tox -evenv -- openstack overcloud image build --config-file /usr/share/openstack-tripleo-common/image-yaml/overcloud-hardened-images.yaml --type {image-name} --elements-path="$ELEMENTS"
+          else
+              tox -evenv -- openstack overcloud image build --type {image-name} --elements-path="$ELEMENTS"
+          fi
 
           mkdir -p $WORKSPACE/logs
           mv *.log $WORKSPACE/logs
