@@ -44,7 +44,7 @@ cat - > releasenotes/source/${SERIES}.rst <<EOF
 ===================================
 
 .. release-notes::
-   :branch: origin/$NEW_BRANCH
+   :branch: $NEW_BRANCH
 EOF
 
 # Look at the indentation of the existing entries and reuse the same
