@@ -31,6 +31,40 @@
       - console-log
 
 - job-template:
+    name: '{pipeline}-keystone-dsvm-functional-split-plugin-{node}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 70
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - local_conf:
+        conf: |
+          [[local|localrc]]
+          TEMPEST_PLUGINS='/opt/stack/new/keystone-tempest-plugin'
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export PROJECTS="openstack/keystone-tempest-plugin $PROJECTS"
+          export DEVSTACK_GATE_TEMPEST=1
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
     name: '{pipeline}-keystone-dsvm-functional-v3-only-{node}{suffix}'
     node: '{node}'
 
