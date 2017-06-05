@@ -74,11 +74,12 @@
               TRIPLEO_COMMON_PATH=/usr/share/tripleo-common
           fi
 
+          export ELEMENTS_PATH=$ELEMENTS
+          CONFIG_FILES=""
           if [ "{image-name}" == "overcloud-sec-hard-full" ]; then
-              tox -evenv -- openstack overcloud image build --config-file $TRIPLEO_COMMON_PATH/image-yaml/overcloud-hardened-images.yaml --config-file $TRIPLEO_COMMON_PATH/image-yaml/overcloud-hardened-images-centos7.yaml --elements-path="$ELEMENTS"
-          else
-              tox -evenv -- openstack overcloud image build --type {image-name} --elements-path="$ELEMENTS"
+              CONFIG_FILES+="--config-file /usr/share/tripleo-common/image-yaml/overcloud-hardened-images.yaml --config-file /usr/share/tripleo-common/image-yaml/overcloud-hardened-images-centos7.yaml"
           fi
+          tox -evenv -- openstack overcloud image build --image-name {image-name} $CONFIG_FILES
 
           mkdir -p $WORKSPACE/logs
           mv *.log $WORKSPACE/logs
