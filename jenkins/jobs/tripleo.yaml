@@ -67,13 +67,12 @@
           # otherwise, install from requirements
           if [ "$ZUUL_BRANCH" == "master" ]; then
               tox -evenv -- pip install $WORKSPACE/diskimage-builder
-              TRIPLEO_COMMON_PATH=$WORKSPACE/tripleo-common
           else
               export UPPER_CONSTRAINTS_FILE=$WORKSPACE/requirements/upper-constraints.txt
               tox -evenv -- pip install diskimage-builder -c $UPPER_CONSTRAINTS_FILE
-              TRIPLEO_COMMON_PATH=/usr/share/tripleo-common
           fi
 
+          TRIPLEO_COMMON_PATH=$WORKSPACE/tripleo-common
           export ELEMENTS_PATH=$ELEMENTS
           if [ "{image-name}" == "overcloud-sec-hard-full" ]; then
               CONFIG_FILES="--config-file $TRIPLEO_COMMON_PATH/image-yaml/overcloud-hardened-images.yaml --config-file $TRIPLEO_COMMON_PATH/image-yaml/overcloud-hardened-images-centos7.yaml"
