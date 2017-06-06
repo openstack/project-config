@@ -69,8 +69,8 @@ elif [ "$OWN_PROJECT" == "openstack-ansible-tests" ] ; then
     INITIAL_COMMIT_MSG="Updated from OpenStack Ansible Tests"
     TOPIC="openstack/openstack-ansible-tests/sync-tests"
     ###### WIP - REMOVE ME #####
-    # Use a retired repository for tesing
-    PROJECTS="openstack/openstack-ansible-os_swift_sync"
+    # Use a single repository for testing
+    PROJECTS="openstack/openstack-ansible-galera_client"
     ##### END OF WIP ########
     #PROJECTS=$(./gen-projects-list.sh)
     function update {
