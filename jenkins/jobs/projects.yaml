@@ -6276,15 +6276,7 @@
             - source
           suffix: "-nv"
       - '{pipeline}-kolla-dsvm-{action}-{distro}-{type}-{node}{suffix}':
-          action: deploy-multinode
-          distro: ubuntu
-          node: ubuntu-trusty-2-node
-          pipeline: gate
-          type: source
-          suffix: "-nv"
-      - '{pipeline}-kolla-dsvm-{action}-{distro}-{type}-{node}{suffix}':
-          action:
-            - build
+          action: build
           distro:
             - centos
             - oraclelinux
@@ -6297,11 +6289,36 @@
       - '{pipeline}-kolla-dsvm-{action}-{distro}-{type}-{node}{suffix}':
           action:
             - build
+            - save
           distro: ubuntu
           node:
-            - ubuntu-trusty
             - ubuntu-xenial
           pipeline: gate
+          type:
+            - binary
+            - source
+          suffix: ''
+      - 'publish-kolla-dsvm-{action}-{distro}-{type}-{node}{suffix}':
+          action:
+            - build
+            - save
+          distro: ubuntu
+          node:
+            - ubuntu-xenial
+          type:
+            - binary
+            - source
+          suffix: ''
+      - '{pipeline}-kolla-dsvm-{orch}-{action}-{distro}-{type}-{node}{suffix}':
+          action:
+            - build
+            - deploy-multinode
+          distro: ubuntu
+          orch:
+            - ansible
+            - kubernetes
+          node: ubuntu-xenial-2-node
+          pipeline: publish
           type:
             - binary
             - source
@@ -6347,7 +6364,9 @@
             - source
           suffix: "-nv"
       - '{pipeline}-kolla-ansible-dsvm-{action}-{distro}-{type}-{node}{suffix}':
-          action: deploy-multinode
+          action:
+            - deploy-multinode
+            - upgrade-multinode
           distro:
             - centos
             - oraclelinux

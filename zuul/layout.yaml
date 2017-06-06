@@ -11363,10 +11363,6 @@ projects:
       - gate-kolla-dsvm-deploy-centos-binary-centos-7-nv
       - gate-kolla-dsvm-build-centos-source-centos-7
       - gate-kolla-dsvm-deploy-centos-source-centos-7-nv
-      - gate-kolla-dsvm-build-ubuntu-binary-ubuntu-trusty-nv
-      - gate-kolla-dsvm-build-ubuntu-source-ubuntu-trusty-nv
-      - gate-kolla-dsvm-deploy-ubuntu-binary-ubuntu-trusty-nv
-      - gate-kolla-dsvm-deploy-ubuntu-source-ubuntu-trusty-nv
       - gate-kolla-dsvm-build-ubuntu-binary-ubuntu-xenial-nv
       - gate-kolla-dsvm-build-ubuntu-source-ubuntu-xenial
       - gate-kolla-dsvm-deploy-ubuntu-binary-ubuntu-xenial-nv
@@ -11381,7 +11377,10 @@ projects:
       - gate-kolla-dsvm-build-ubuntu-source-ubuntu-xenial
       - gate-kolla-dsvm-build-oraclelinux-source-centos-7
     experimental:
-      - gate-kolla-dsvm-deploy-multinode-ubuntu-source-ubuntu-trusty-2-node-nv
+      - publish-kolla-dsvm-build-ubuntu-source-ubuntu-xenial:
+        - publish-kolla-dsvm-ansible-deploy-multinode-ubuntu-source-ubuntu-xenial-2-node:
+          - publish-kolla-dsvm-kubernetes-deploy-multinode-ubuntu-source-ubuntu-xenial-2-node:
+            - publish-kolla-dsvm-save-ubuntu-source-ubuntu-xenial
     post:
       - kolla-dsvm-build-centos-binary-centos-7
       - kolla-dsvm-build-centos-source-centos-7
@@ -11407,7 +11406,6 @@ projects:
       - gate-kolla-ansible-dsvm-deploy-ubuntu-source-ubuntu-xenial-nv
       - gate-kolla-ansible-dsvm-deploy-oraclelinux-binary-centos-7-nv
       - gate-kolla-ansible-dsvm-deploy-oraclelinux-source-centos-7-nv
-    experimental:
       - gate-kolla-ansible-dsvm-deploy-multinode-ubuntu-source-ubuntu-xenial-2-node-nv
       - gate-kolla-ansible-dsvm-deploy-multinode-ubuntu-binary-ubuntu-xenial-2-node-nv
       - gate-kolla-ansible-dsvm-deploy-multinode-centos-source-centos-7-2-node-nv
@@ -11420,6 +11418,8 @@ projects:
       - gate-kolla-ansible-dsvm-deploy-ceph-centos-binary-centos-7-2-node-nv
       - gate-kolla-ansible-dsvm-deploy-ceph-oraclelinux-source-centos-7-2-node-nv
       - gate-kolla-ansible-dsvm-deploy-ceph-oraclelinux-binary-centos-7-2-node-nv
+    experimental:
+      - gate-kolla-ansible-dsvm-upgrade-multinode-centos-source-centos-7-2-node-nv
 
   - name: openstack/kolla-kubernetes
     template:
