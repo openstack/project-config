@@ -21,6 +21,7 @@
             openstack/heat-agents \
             openstack/instack-undercloud \
             openstack/python-tripleoclient \
+            openstack/tripleo-common \
             openstack/tripleo-image-elements \
             openstack/tripleo-puppet-elements \
             openstack/requirements
@@ -66,13 +67,15 @@
           # otherwise, install from requirements
           if [ "$ZUUL_BRANCH" == "master" ]; then
               tox -evenv -- pip install $WORKSPACE/diskimage-builder
+              TRIPLEO_COMMON_PATH=$WORKSPACE/tripleo-common
           else
               export UPPER_CONSTRAINTS_FILE=$WORKSPACE/requirements/upper-constraints.txt
               tox -evenv -- pip install diskimage-builder -c $UPPER_CONSTRAINTS_FILE
+              TRIPLEO_COMMON_PATH=/usr/share/openstack-tripleo-common
           fi
 
           if [ "{image-name}" == "overcloud-sec-hard-full" ]; then
-              tox -evenv -- openstack overcloud image build --config-file /usr/share/openstack-tripleo-common/image-yaml/overcloud-hardened-images.yaml --config-file /usr/share/openstack-tripleo-common/image-yaml/overcloud-hardened-images-centos7.yaml --elements-path="$ELEMENTS"
+              tox -evenv -- openstack overcloud image build --config-file $TRIPLEO_COMMON_PATH/image-yaml/overcloud-hardened-images.yaml --config-file $TRIPLEO_COMMON_PATH/image-yaml/overcloud-hardened-images-centos7.yaml --elements-path="$ELEMENTS"
           else
               tox -evenv -- openstack overcloud image build --type {image-name} --elements-path="$ELEMENTS"
           fi
