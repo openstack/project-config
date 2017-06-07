@@ -20,6 +20,81 @@
 
 
 - job-template:
+    name: '{name}-docs-unified-{node}'
+    node: '{node}'
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - zuul-release-git-prep-upper-constraints
+      - install-distro-packages
+      - revoke-sudo
+      - docs
+      - add-docs-root-marker:
+          docsrootdir: 'doc/build/html'
+      - shell: |
+          #!/bin/bash -x
+
+          if [[ $ZUUL_REFNAME =~ ^refs/tags/ ]]; then
+              # We need to determine the branch by looking to see
+              # where the tag exists. A tag can be on more than one
+              # branch, especially if the tag is applied and then the
+              # stable branch is created as we do in our normal stable
+              # branch creation process. If we get any stable
+              # branches, use the most recent one (assuming
+              # alphabetical ordering). If we do not see master, use
+              # whatever name we do see and let the logic below
+              # trigger an abort if we shouldn't be publishing.
+              refname=$(echo $ZUUL_REFNAME | cut -d/ -f2-)
+              git branch --contains $refname > branches.txt
+              if grep -q stable/ branches.txt; then
+                  branch_name=$(grep stable/ branches.txt | sort | tail -n 1)
+              elif ! grep -q master branches.txt; then
+                  branch_name=$(cat branches.txt | sort | tail -n 1)
+              else
+                  branch_name=master
+              fi
+          else
+              # If the ref wasn't a tag, assume it is a branch.
+              branch_name=$ZUUL_REFNAME
+          fi
+
+          # When building from master we want to publish to the
+          # "latest" directory. When building from a stable branch, we
+          # want to publish to a directory using that branch base
+          # name. Building from other branches is an error.
+          if [[ $branch_name = master ]]; then
+              publish_name=latest
+          elif [[ $branch_name =~ stable/ ]]; then
+              publish_name=$(basename $branch_name)
+          elif [[ $branch_name =~ feature/ ]]; then
+              echo "Docs should not be published for feature branches"
+              exit 1
+          elif [[ $branch_name =~ driverfixes/ ]]; then
+              echo "Docs should not be published for feature branches"
+              exit 1
+          else
+              # What is this even?
+              echo "Could not determine publishing location for branch_name $branch_name"
+              exit 1
+          fi
+
+          # Rearrange the build output to reflect the end publishing
+          # location, so we can use doc/publish as the source for the
+          # publisher step.
+          mkdir -p doc/publish
+          mv doc/build/html doc/publish/$publish_name
+
+    publishers:
+      - afs:
+          site: afs-docs
+          source: 'doc/publish/**'
+          target: '{name}'
+          remove-prefix: 'doc/publish'
+      - console-log
+
+
+- job-template:
     name: '{name}-docs-tags-only'
     description: Publish infra documents, use when only publish on tag
     node: ubuntu-xenial
@@ -104,7 +179,8 @@
 - job-group:
     name: openstack-publish-jobs
     jobs:
-      - '{name}-docs-{node}':
+      - '{name}-docs-{node}'
+      - '{name}-docs-unified-{node}'
     node:
       - ubuntu-trusty
       - ubuntu-xenial
