@@ -1,5 +1,5 @@
-- job:
-    name: gate-openstackid-unittests
+- job-template:
+    name: gate-laravel-{name}-unittests
     node: ubuntu-trusty
 
     builders:
@@ -24,7 +24,7 @@
         - console-log
 
 - job-template:
-    name: 'openstackid-release-{suffix}'
+    name: laravel-{name}-release-{suffix}
     node: ubuntu-trusty
 
     builders:
@@ -49,9 +49,9 @@
             rm -rf tarballs
             mkdir -p tarballs
             # Create an archive tarball.
-            tar -czf openstackid-$PROJECT_VER.tar.gz dist/
-            cp openstackid-$PROJECT_VER.tar.gz tarballs/openstackid-latest.tar.gz
-            mv openstackid-$PROJECT_VER.tar.gz tarballs/
+            tar -czf {name}-$PROJECT_VER.tar.gz dist/
+            cp {name}-$PROJECT_VER.tar.gz tarballs/{name}-latest.tar.gz
+            mv {name}-$PROJECT_VER.tar.gz tarballs/
     publishers:
         - coverage-log
         - scp:
@@ -61,7 +61,7 @@
                   source: './reports/**'
                   keep-hierarchy: true
                   copy-after-failure: true
-                - target: 'tarballs/openstackid/'
+                - target: 'tarballs/{name}/'
                   source: 'tarballs/*.tar.gz'
                   keep-hierarchy: false
                   copy-after-failure: false
