@@ -2780,9 +2780,6 @@ jobs:
       - 'jenkins/data/bindep-fallback.txt'
       - 'other-requirements.txt'
 
-  - name: gate-browbeat-linters-ubuntu-xenial
-    voting: false
-
   - name: ^gate-.*-tox-doc-publish-checkbuild.*$
     success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/publish-docs/
 
@@ -6180,8 +6177,10 @@ projects:
       - name: docs-on-rtfd
     check:
       - gate-browbeat-python27-ubuntu-xenial
+      - gate-browbeat-pep8-ubuntu-xenial
     gate:
       - gate-browbeat-python27-ubuntu-xenial
+      - gate-browbeat-pep8-ubuntu-xenial
 
   - name: openstack/castellan
     template:
