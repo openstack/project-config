@@ -179,6 +179,8 @@ def main():
         for k, entries in global_reqs.items():
             # Discard the lines: we don't need them.
             global_reqs[k] = set(r for (r, line) in entries)
+        backlist = requirement.parse(
+            open(reqdir + '/blacklist.txt', 'rt').read())
         cwd = os.getcwd()
         # build a list of requirements in the proposed change,
         # and check them for style violations while doing so
@@ -220,6 +222,11 @@ def main():
                 if (name in branch_reqs.reqs and
                             reqs == branch_reqs.reqs[name]):
                     # Unchanged [or a change that preserves a current value]
+                    continue
+                if name in blacklist:
+                    # Blacklisted items are not synced and are managed
+                    # by project teams as they see fit, so no further
+                    # testing is needed.
                     continue
                 if name not in global_reqs:
                     failed = True
