@@ -90,7 +90,11 @@
           else
               CONFIG_FILES="--config-file $TRIPLEO_COMMON_PATH/image-yaml/overcloud-images.yaml --config-file $TRIPLEO_COMMON_PATH/image-yaml/overcloud-images-centos7.yaml"
           fi
-          tox -evenv -- openstack overcloud image build --image-name {image-name} $CONFIG_FILES
+          if [ "$ZUUL_BRANCH" == "stable/newton" ]; then
+              tox -evenv -- openstack overcloud image build --type {image-name} --elements-path="$ELEMENTS"
+          else
+              tox -evenv -- openstack overcloud image build --image-name {image-name} $CONFIG_FILES
+          fi
 
           mkdir -p $WORKSPACE/logs
           mv *.log $WORKSPACE/logs
