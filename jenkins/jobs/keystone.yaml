@@ -11,38 +11,6 @@
       - link-logs
       - net-info
       - devstack-checkout
-      - shell: |
-          #!/bin/bash -xe
-          export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_TEMPEST=1
-          export BRANCH_OVERRIDE={branch-override}
-          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
-              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
-          fi
-
-          export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
-          export DEVSTACK_GATE_TEMPEST_REGEX='keystone_tempest_plugin'
-
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
-
-    publishers:
-      - devstack-logs
-      - console-log
-
-- job-template:
-    name: '{pipeline}-keystone-dsvm-functional-split-plugin-{node}{suffix}'
-    node: '{node}'
-
-    wrappers:
-      - build-timeout:
-          timeout: 70
-      - timestamps
-
-    builders:
-      - link-logs
-      - net-info
-      - devstack-checkout
       - local_conf:
           conf: |
             [[local|localrc]]
@@ -79,6 +47,10 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            TEMPEST_PLUGINS='/opt/stack/new/keystone-tempest-plugin'
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -88,7 +60,6 @@
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
 
-          export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
           export DEVSTACK_GATE_TEMPEST_REGEX='keystone_tempest_plugin'
           export DEVSTACK_LOCAL_CONFIG="ENABLE_IDENTITY_V2=False"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin keystone git://git.openstack.org/openstack/keystone"
@@ -114,6 +85,10 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            TEMPEST_PLUGINS='/opt/stack/new/keystone-tempest-plugin'
       - shell: |
           #!/bin/bash -xe
           export DEVSTACK_GATE_USE_PYTHON3=True
@@ -131,7 +106,6 @@
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
 
-          export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
           export DEVSTACK_GATE_TEMPEST_REGEX='keystone_tempest_plugin'
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"ENABLE_IDENTITY_V2=False"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin keystone git://git.openstack.org/openstack/keystone"
