@@ -179,7 +179,7 @@ def main():
         for k, entries in global_reqs.items():
             # Discard the lines: we don't need them.
             global_reqs[k] = set(r for (r, line) in entries)
-        backlist = requirement.parse(
+        blacklist = requirement.parse(
             open(reqdir + '/blacklist.txt', 'rt').read())
         cwd = os.getcwd()
         # build a list of requirements in the proposed change,
