@@ -87,6 +87,60 @@
       - console-log
 
 - job-template:
+    name: '{pipeline}-tempest-dsvm-kuryr-kubernetes-{node}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin kuryr-kubernetes \
+                https://git.openstack.org/openstack/kuryr-kubernetes
+            enable_plugin neutron-lbaas \
+                git://git.openstack.org/openstack/neutron-lbaas
+            enable_service q-lbaasv2
+            NEUTRON_LBAAS_SERVICE_PROVIDERV2="LOADBALANCERV2:Haproxy:neutron_lbaas.drivers.haproxy.plugin_driver.HaproxyOnHostPluginDriver:default"
+            enable_service docker
+            enable_service etcd
+            enable_service kubernetes-api
+            enable_service kubernetes-controller-manager
+            enable_service kubernetes-scheduler
+            enable_service kubelet
+            enable_service kuryr-kubernetes
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_NEUTRON=1
+          export DEVSTACK_GATE_TEMPEST_REGEX="kuryr_tempest_plugin.tests"
+          export BRANCH_OVERRIDE={branch-override}
+
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+
+          export PROJECTS="openstack/kuryr-kubernetes $PROJECTS"
+          export PROJECTS="openstack/kuryr-tempest-plugin $PROJECTS"
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - test-results
+      - devstack-logs
+      - console-log
+
+- job-template:
     name: '{pipeline}-kuryr-libnetwork{kuryr_lib-src}-dsvm-fullstack-{node}{suffix}'
     node: '{node}'
 
