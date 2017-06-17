@@ -38,6 +38,19 @@ mv /tmp/forwarding.conf /etc/unbound/
 chown root:root /etc/unbound/forwarding.conf
 chmod a+r /etc/unbound/forwarding.conf
 
+dd of=/tmp/unbound-logging.conf <<EOF
+logfile: "/var/log/unbound.log"
+# Log only errors
+verbosity: 0
+EOF
+
+mv /tmp/unbound-logging.conf /etc/unbound/unbound.conf.d/
+chown root:root /etc/unbound/unbound.conf.d/unbound-logging.conf
+chmod a+r /etc/unbound/unbound.conf.d/unbound-logging.conf
+touch /var/log/unbound.log
+chown unbound /var/log/unbound.log
+chmod 0644 /var/log/unbound.log
+
 # You'd think rc.local would be simple ...
 #
 # On Redhat systems, systemd's rc-local service looks for an
