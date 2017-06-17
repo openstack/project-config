@@ -57,6 +57,71 @@
               target: 'tarballs/kolla/images/'
       - console-log
 
+- job-template:
+    name: 'publish-kolla-dsvm-{action}-{distro}-{type}-{node}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 90
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - zuul-git-prep-upper-constraints
+      - install-distro-packages
+      - shell: |
+          #!/bin/bash -xe
+          export ACTION={action}
+          export BASE_DISTRO={distro}
+          export INSTALL_TYPE={type}
+          export PACK_REGISTRY=1
+          export PUBLISHER=1
+
+          tools/publisher.sh
+
+    publishers:
+      - devstack-logs
+      - scp:
+          site: 'tarballs.openstack.org'
+          files:
+            - source: 'images/*'
+              target: 'tarballs/kolla/images/tmp'
+      - console-log
+
+- job-template:
+    name: '{pipeline}-kolla-dsvm-{orch}-{action}-{distro}-{type}-{node}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 90
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - zuul-git-prep-upper-constraints
+      - install-distro-packages
+      - shell: |
+          #!/bin/bash -xe
+          export ORCH_ENGINE={orch}
+          export ACTION={action}
+          export BASE_DISTRO={distro}
+          export INSTALL_TYPE={type}
+
+          tools/publisher.sh
+
+    publishers:
+      - devstack-logs
+      - scp:
+          site: 'tarballs.openstack.org'
+          files:
+            - source: 'images/*.txt'
+              target: 'tarballs/kolla/images/tmp'
+      - console-log
+
 - job-group:
     name: 'kolla-publish-image-jobs'
     suffix: ''
