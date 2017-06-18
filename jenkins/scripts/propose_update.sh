@@ -74,7 +74,7 @@ elif [ "$OWN_PROJECT" == "openstack-ansible-tests" ] ; then
     ##### END OF WIP ########
     #PROJECTS=$(./gen-projects-list.sh)
     function update {
-        bash /usr/local/jenkins/slave_scripts/sync_openstack_ansible_common_files.sh
+        bash /usr/local/jenkins/slave_scripts/sync_openstack_ansible_common_files.sh $1
     }
 else
     echo "Unknown project $1" >2
