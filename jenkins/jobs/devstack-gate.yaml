@@ -393,6 +393,12 @@
       - devstack-logs
       - console-log
 
+
+# This job runs cinder multi-backend (for things like volume retype/migration)
+# and it runs tempest slow and scenario tests, and compute live migration
+# tests. Of particular interest is the TestVolumeMigrateRetypeAttached scenario
+# test which performs a volume retype of a volume attached to a server instance
+# as it's root disk.
 - job-template:
     name: '{pipeline}-tempest-dsvm-neutron-scenario-multinode-lvm-multibackend-{node-release}{suffix}'
     node: '{node}'
