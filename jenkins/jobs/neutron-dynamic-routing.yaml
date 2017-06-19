@@ -137,3 +137,55 @@
       - test-results
       - devstack-logs
       - console-log
+
+- job-template:
+    name: '{pipeline}-neutron-dynamic-routing-dsvm-tempest-with-ryu-master-scenario-{scenariotype}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 130
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_TEMPEST_REGEX="^neutron_dynamic_routing.tests.tempest.scenario.{scenariotype}\."
+          export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
+          export DEVSTACK_GATE_NEUTRON=1
+          export BRANCH_OVERRIDE={branch-override}
+          if [[ "$BRANCH_OVERRIDE" != "default" ]] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          export PROJECTS="openstack/neutron-dynamic-routing $PROJECTS"
+          DEVSTACK_LOCAL_CONFIG="NEUTRON_CREATE_INITIAL_NETWORKS=False"
+          DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin neutron-dynamic-routing git://git.openstack.org/openstack/neutron-dynamic-routing"
+          if [[ "{scenariotype}" == "basic" ]]; then
+              DEVSTACK_LOCAL_CONFIG+=$'\n'"BGP_SCHEDULER_DRIVER=neutron_dynamic_routing.services.bgp.scheduler.bgp_dragent_scheduler.ChanceScheduler"
+          fi
+          export DEVSTACK_LOCAL_CONFIG
+
+          function gate_hook {{
+              local ryu_path=$BASE/new/ryu_master
+              if [[ ! -d $ryu_path ]]; then
+                  git clone https://github.com/osrg/ryu $ryu_path
+              fi
+              sudo pip install -e $ryu_path
+              bash -xe $BASE/new/neutron-dynamic-routing/neutron_dynamic_routing/tests/contrib/gate_hook.sh dsvm-scenario
+          }}
+          export -f gate_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - test-results
+      - devstack-logs
+      - console-log
