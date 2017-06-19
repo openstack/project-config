@@ -39,9 +39,10 @@ chown root:root /etc/unbound/forwarding.conf
 chmod a+r /etc/unbound/forwarding.conf
 
 dd of=/tmp/unbound-logging.conf <<EOF
-logfile: "/var/log/unbound.log"
-# Log only errors
-verbosity: 0
+server:
+  logfile: "/var/log/unbound.log"
+  # Log only errors
+  verbosity: 0
 EOF
 
 mv /tmp/unbound-logging.conf /etc/unbound/unbound.conf.d/
