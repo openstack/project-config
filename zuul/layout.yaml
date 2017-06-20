@@ -14363,8 +14363,12 @@ projects:
 
   - name: openstack/openstack-helm-addons
     template:
-    - name: merge-check
-    - name: noop-jobs
+      - name: merge-check
+    check:
+      - gate-openstack-helm-addons-nocluster-linter-ubuntu-xenial
+      - gate-openstack-helm-addons-multi-basic-ubuntu-xenial-3-node-nv
+    gate:
+      - gate-openstack-helm-addons-nocluster-linter-ubuntu-xenial
 
   - name: openstack/openstack-manuals
     template:
