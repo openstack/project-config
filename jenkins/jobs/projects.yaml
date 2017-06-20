@@ -9596,29 +9596,49 @@
     name: openstack-helm
 
     jobs:
-      - gate-openstack-helm-{integration}-{type}-{node}{suffix}:
+      - gate-openstack-helm{sub}-{integration}-{type}-{node}{suffix}:
           integration: nocluster
           type: linter
           node: ubuntu-xenial
+          sub: ''
           suffix: ''
-      - gate-openstack-helm-{integration}-{type}-{node}{suffix}:
+      - gate-openstack-helm{sub}-{integration}-{type}-{node}{suffix}:
           integration: aio
           type: basic
           node:
             - ubuntu-xenial
             - centos-7
             - fedora-25
+          sub: ''
           suffix: '-nv'
-      - gate-openstack-helm-{integration}-{type}-{node}{suffix}:
+      - gate-openstack-helm{sub}-{integration}-{type}-{node}{suffix}:
           integration: multi
           type: basic
           node:
             - ubuntu-xenial-2-node
             - ubuntu-xenial-3-node
+          sub: ''
           suffix: '-nv'
       - gate-{name}-docs-{node}:
           node: ubuntu-xenial
       - hook-{name}-rtfd
+
+- project:
+    name: openstack-helm-addons
+
+    jobs:
+      - gate-openstack-helm{sub}-{integration}-{type}-{node}{suffix}:
+          integration: nocluster
+          type: linter
+          node: ubuntu-xenial
+          sub: '-addons'
+          suffix: ''
+      - gate-openstack-helm{sub}-{integration}-{type}-{node}{suffix}:
+          integration: multi
+          type: basic
+          node: ubuntu-xenial-3-node
+          sub: '-addons'
+          suffix: '-nv'
 
 - project:
     name: openstack-manuals
