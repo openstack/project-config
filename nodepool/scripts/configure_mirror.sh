@@ -22,6 +22,37 @@ if [ -f /etc/dib-builddate.txt ]; then
     cat /etc/dib-builddate.txt
 fi
 
+# Use only ipv6 resolvers if ipv6 is present and routable. This
+# avoids traversing potential NAT when using ipv4 which can be unreliable.
+#
+# Similarly do not use ipv6 resolvers if there is no ipv6 available as this
+# causes timeouts and failovers that are unnecesary.
+export NODEPOOL_STATIC_NAMESERVER_V6='2620:0:ccc::2'
+export NODEPOOL_STATIC_NAMESERVER_V4='208.67.222.222'
+export NODEPOOL_STATIC_NAMESERVER_V6_FALLBACK='2001:4860:4860::8888'
+export NODEPOOL_STATIC_NAMESERVER_V4_FALLBACK='8.8.8.8'
+if ip -6 route | grep '^default' ; then
+    cat > /etc/unbound/forwarding.conf << EOF
+forward-zone:
+  name: "."
+  forward-addr: $NODEPOOL_STATIC_NAMESERVER_V6
+  forward-addr: $NODEPOOL_STATIC_NAMESERVER_V6_FALLBACK
+EOF
+else
+    cat > /etc/unbound/forwarding.conf << EOF
+forward-zone:
+  name: "."
+  forward-addr: $NODEPOOL_STATIC_NAMESERVER_V4
+  forward-addr: $NODEPOOL_STATIC_NAMESERVER_V4_FALLBACK
+EOF
+fi
+
+if type -p systemctl ; then
+    sudo systemctl restart unbound
+else
+    sudo service unbound restart
+fi
+
 source /etc/nodepool/provider
 
 NODEPOOL_MIRROR_HOST=${NODEPOOL_MIRROR_HOST:-mirror.$NODEPOOL_REGION.$NODEPOOL_CLOUD.openstack.org}
