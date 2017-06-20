@@ -14530,8 +14530,14 @@ projects:
 
   - name: openstack/openstack-helm-infra
     template:
-    - name: merge-check
-    - name: noop-jobs
+      - name: merge-check
+    check:
+      - gate-openstack-helm-infra-nocluster-linter-ubuntu-xenial
+      - gate-openstack-helm-infra-aio-basic-ubuntu-xenial-nv
+      - gate-openstack-helm-infra-aio-basic-centos-7-nv
+      - gate-openstack-helm-infra-aio-basic-fedora-25-nv
+    gate:
+      - gate-openstack-helm-infra-nocluster-linter-ubuntu-xenial
 
   - name: openstack/openstack-manuals
     template:

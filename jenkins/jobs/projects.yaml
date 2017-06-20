@@ -9700,6 +9700,26 @@
           suffix: '-nv'
 
 - project:
+    name: openstack-helm-infra
+
+    jobs:
+      - gate-openstack-helm{sub}-{integration}-{type}-{node}{suffix}:
+          integration: nocluster
+          type: linter
+          node: ubuntu-xenial
+          sub: '-infra'
+          suffix: ''
+      - gate-openstack-helm{sub}-{integration}-{type}-{node}{suffix}:
+          integration: aio
+          type: basic
+          node:
+            - ubuntu-xenial
+            - centos-7
+            - fedora-25
+          sub: '-infra'
+          suffix: '-nv'
+
+- project:
     name: openstack-manuals
 
     jobs:
