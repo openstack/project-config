@@ -68,11 +68,7 @@ elif [ "$OWN_PROJECT" == "puppet-openstack-constraints" ] ; then
 elif [ "$OWN_PROJECT" == "openstack-ansible-tests" ] ; then
     INITIAL_COMMIT_MSG="Updated from OpenStack Ansible Tests"
     TOPIC="openstack/openstack-ansible-tests/sync-tests"
-    ###### WIP - REMOVE ME #####
-    # Use a single repository for testing
-    PROJECTS="openstack/openstack-ansible-galera_client"
-    ##### END OF WIP ########
-    #PROJECTS=$(./gen-projects-list.sh)
+    PROJECTS=$(./gen-projects-list.sh)
     function update {
         bash /usr/local/jenkins/slave_scripts/sync_openstack_ansible_common_files.sh $1
     }
