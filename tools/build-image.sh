@@ -108,5 +108,4 @@ disk-image-create -x --no-tmpfs -o $IMAGE_NAME \
     cache-devstack \
     growroot \
     infra-package-needs \
-    stackviz \
     $EXTRA_ELEMENTS
