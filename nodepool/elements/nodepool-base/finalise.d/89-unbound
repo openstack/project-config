@@ -45,9 +45,17 @@ server:
   verbosity: 0
 EOF
 
-mv /tmp/unbound-logging.conf /etc/unbound/unbound.conf.d/
-chown root:root /etc/unbound/unbound.conf.d/unbound-logging.conf
-chmod a+r /etc/unbound/unbound.conf.d/unbound-logging.conf
+if [[ "$DISTRO_NAME" =~ (centos|fedora|opensuse) ]] ; then
+    UNBOUND_CONFD=/etc/unbound/conf.d
+else
+    UNBOUND_CONFD=/etc/unbound/unbound.conf.d
+fi
+
+mv /tmp/unbound-logging.conf $UNBOUND_CONFD
+chown root:root $UNBOUND_CONFD/unbound-logging.conf
+chmod a+r $UNBOUND_CONFD/unbound-logging.conf
+
+
 touch /var/log/unbound.log
 chown unbound /var/log/unbound.log
 chmod 0644 /var/log/unbound.log
