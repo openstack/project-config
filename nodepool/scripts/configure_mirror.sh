@@ -32,20 +32,24 @@ export NODEPOOL_STATIC_NAMESERVER_V4='208.67.222.222'
 export NODEPOOL_STATIC_NAMESERVER_V6_FALLBACK='2001:4860:4860::8888'
 export NODEPOOL_STATIC_NAMESERVER_V4_FALLBACK='8.8.8.8'
 if ip -6 route | grep '^default' ; then
-    cat > /etc/unbound/forwarding.conf << EOF
+    cat > /tmp/forwarding.conf << EOF
 forward-zone:
   name: "."
   forward-addr: $NODEPOOL_STATIC_NAMESERVER_V6
   forward-addr: $NODEPOOL_STATIC_NAMESERVER_V6_FALLBACK
 EOF
 else
-    cat > /etc/unbound/forwarding.conf << EOF
+    cat > /tmp/forwarding.conf << EOF
 forward-zone:
   name: "."
   forward-addr: $NODEPOOL_STATIC_NAMESERVER_V4
   forward-addr: $NODEPOOL_STATIC_NAMESERVER_V4_FALLBACK
 EOF
 fi
+
+sudo mv /tmp/forwarding.conf /etc/unbound
+sudo chown root:root /etc/unbound/forwarding.conf
+sudo chmod 0644 /etc/unbound/forwarding.conf
 
 if type -p systemctl ; then
     sudo systemctl restart unbound
