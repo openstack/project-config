@@ -50,6 +50,10 @@ fi
 sudo mv /tmp/forwarding.conf /etc/unbound
 sudo chown root:root /etc/unbound/forwarding.conf
 sudo chmod 0644 /etc/unbound/forwarding.conf
+if type -p restorecon ; then
+    # Fedora and centos need selinux contexts configured properly
+    sudo restorecon -v /etc/unbound/forwarding.conf
+fi
 
 if type -p systemctl ; then
     sudo systemctl restart unbound
