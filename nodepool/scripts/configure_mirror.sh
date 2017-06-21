@@ -16,6 +16,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# We need to ensure that we can find utilities like ip and restorecon
+# which at least on some distros live in /usr/sbin.
+export PATH="$PATH:/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/bin"
+
 if [ -f /etc/dib-builddate.txt ]; then
     echo "Image build date"
     echo "================"
