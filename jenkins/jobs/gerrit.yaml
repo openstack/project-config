@@ -17,6 +17,16 @@
               --cache-dir /opt/git \
               git://git.openstack.org openstack-infra/gerrit
 
+# Slightly hacky, but this is a workaround for removal of ant and asciidoc
+# from the bindep fallback list while avoiding gratuitously adding a
+# bindep.txt file to our fork of the Gerrit repo.
+- builder:
+    name: extra-gerrit-build-deps
+    builders:
+      - shell: |
+          #!/bin/bash -xe
+          sudo bash -c "echo -e 'ant\nasciidoc' >> /usr/local/jenkins/common_data/bindep-fallback.txt"
+
 - job:
     name: gate-gerrit-buck
     node: ubuntu-trusty
@@ -27,6 +37,7 @@
       - timestamps
 
     builders:
+      - extra-gerrit-build-deps
       - install-distro-packages
       - revoke-sudo
       - install-buck
@@ -59,6 +70,7 @@
       - timestamps
 
     builders:
+      - extra-gerrit-build-deps
       - install-distro-packages
       - revoke-sudo
       - install-buck
@@ -77,4 +89,45 @@
       - war:
           warfile: 'gerrit/buck-out/gen/gerrit-*.war'
           target: 'tarballs/ci/gerrit'
+      - console-log
+
+- job-template:
+    name: '{plugin-name}-gerrit-plugin-{plugin-branch}'
+    node: ubuntu-trusty
+
+    wrappers:
+      - build-timeout:
+          timeout: 30
+      - timestamps
+
+    builders:
+      - extra-gerrit-build-deps
+      - install-distro-packages
+      - revoke-sudo
+      - install-buck
+      - shell: |
+          #!/bin/bash -xe
+          export PATH=`pwd`/buck/bin:$PATH
+          rm -rf gerrit
+          git clone -b {gerrit-branch} {gerrit-project}
+          PLUGIN_PARENT_PROJECT={plugin-parent-project}
+          if [ -n "$PLUGIN_PARENT_PROJECT" ]; then
+            git clone -b {plugin-parent-branch} {plugin-parent-project} gerrit/plugins/{plugin-parent-name}
+          fi
+          git clone -b {plugin-branch} {plugin-project} gerrit/plugins/{plugin-name}
+          cd gerrit/plugins/{plugin-name}
+          /usr/local/jenkins/slave_scripts/version-properties.sh
+          source version.properties
+          cd $WORKSPACE/gerrit
+          buck clean
+          if [ -n "$PLUGIN_PARENT_PROJECT" ]; then
+            buck build plugins/{plugin-parent-name}:{plugin-parent-name}
+          fi
+          buck build plugins/{plugin-name}:{plugin-name}
+          cp ./buck-out/gen/plugins/{plugin-name}/{plugin-name}.jar ./buck-out/gen/plugins/{plugin-name}/{plugin-name}-$PROJECT_VER.jar
+
+    publishers:
+      - war:
+          warfile: 'gerrit/buck-out/gen/plugins/{plugin-name}/{plugin-name}-*.jar'
+          target: 'tarballs/ci/gerrit/plugins/{plugin-name}'
       - console-log
