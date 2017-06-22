@@ -64,7 +64,7 @@ chmod 0644 /var/log/unbound.log
 #
 # On Redhat systems, systemd's rc-local service looks for an
 # executable /etc/rc.d/rc.local file to run.  On Debian/Ubuntu, the
-# eqivalent file is /etc/rc.local.
+# eqivalent file is /etc/rc.local, which is missing on Debian stretch.
 #
 # Centos' systemd package symlinks /etc/rc.local to /etc/rc.d/rc.local
 # correctly. Fedora, however, does not come with an rc.local file at
@@ -76,7 +76,7 @@ chmod 0644 /var/log/unbound.log
 # details on all this.  As at 2016-10-18 is unresolved.
 #
 # [1] https://bugzilla.redhat.com/show_bug.cgi?id=1386052
-if [[ ! -e /etc/rc.local ]]; then
+if [[ ! -e /etc/rc.local ]] && [[ ! -e /etc/debian_version ]]; then
     if [[ ! -d /etc/rc.d ]]; then
         echo "No rc.local and no rc.d directory!  See comments in 89-unbound"
         exit 1
