@@ -3703,11 +3703,11 @@ jobs:
   - name: gate-fuel-ccp-validate
     queue-name: fuel-ccp
 
-  # Don't run nova-lxd tests on trusty.
-  # We can remove these rules when mitaka is EOL'd and we no longer have
-  # the default branch rules for trusty.
-  - name: ^gate-nova-lxd-(docs|pep8|python27)-ubuntu-xenial
-    branch: ^.*$
+  # Don't run Python 3.5 checks against older nova-lxd releases
+  # as a) they don't have the right tox targets a b) no one
+  # is actually going to use them with this python version.
+  - name: ^gate-nova-lxd-python35$
+    branch: ^(?!stable/(mitaka|newton|ocata)).*$
 
   # Don't run nova-lxd dsvm gate checks on newton or older
   # Older nova-lxd versions did not use os-vif, and as a result have
@@ -13439,20 +13439,14 @@ projects:
   - name: openstack/nova-lxd
     template:
       - name: merge-check
+      - name: python-jobs
+      - name: python35-jobs
       - name: check-requirements
       - name: publish-to-pypi
     check:
-      - gate-nova-lxd-docs-ubuntu-xenial
-      - gate-nova-lxd-pep8-ubuntu-xenial
-      - gate-nova-lxd-python27-ubuntu-xenial
       - gate-tempest-dsvm-lxd-ovs
     gate:
-      - gate-nova-lxd-docs-ubuntu-xenial
-      - gate-nova-lxd-pep8-ubuntu-xenial
-      - gate-nova-lxd-python27-ubuntu-xenial
       - gate-tempest-dsvm-lxd-ovs
-    post:
-      - nova-lxd-branch-tarball
     experimental:
       - gate-tempest-dsvm-lxd-linuxbridge-nv
 
