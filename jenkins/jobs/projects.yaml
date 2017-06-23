@@ -4064,38 +4064,75 @@
       - pypi-jobs
       - gate-{name}-pylint-{node}:
           node: ubuntu-xenial
+      # The "-extras-nv" jobs are tests that we don't want to gate on
+      # just yet.
       - gate-dib-dsvm-functests-{python}-{node}{suffix}:
           node: ubuntu-trusty
           python: python2
           suffix: '-extras-nv'
           tests: >
             gentoo/build-succeeds
-            opensuse/build-succeeds
-            opensuse/opensuse423-build-succeeds
+            opensuse-minimal/opensuse423-build-succeeds
+            debian-minimal/stable-vm
       - gate-dib-dsvm-functests-{python}-{node}{suffix}:
           node: ubuntu-xenial
           python: python2
           suffix: '-extras-nv'
           tests: >
             gentoo/build-succeeds
-            opensuse/build-succeeds
-            opensuse/opensuse423-build-succeeds
+            opensuse-minimal/opensuse423-build-succeeds
+            debian-minimal/stable-vm
       - gate-dib-dsvm-functests-{python}-{node}{suffix}:
           node: ubuntu-xenial
           python: python3
           suffix: '-extras-nv'
           tests: >
             gentoo/build-succeeds
-            opensuse/build-succeeds
-            opensuse/opensuse423-build-succeeds
+            opensuse-minimal/opensuse423-build-succeeds
+            debian-minimal/stable-vm
       - gate-dib-dsvm-functests-{python}-{node}{suffix}:
           node: centos-7
           python: python2
           suffix: '-extras-nv'
           tests: >
             gentoo/build-succeeds
+            opensuse-minimal/opensuse423-build-succeeds
+            debian-minimal/stable-vm
+      # These "-image" jobs download base images from the internet and
+      # are unreliable.  -nv until we can get mirroring happening
+      - gate-dib-dsvm-functests-{python}-{node}{suffix}:
+          node: ubuntu-trusty
+          python: python2
+          suffix: '-image-nv'
+          tests: >
+            centos7/build-succeeds
             opensuse/build-succeeds
             opensuse/opensuse423-build-succeeds
+            fedora/build-succeeds
+            ubuntu/trusty-build-succeeds
+            ubuntu/xenial-build-succeeds
+      - gate-dib-dsvm-functests-{python}-{node}{suffix}:
+          node: centos-7
+          python: python2
+          suffix: '-image-nv'
+          tests: >
+            centos7/build-succeeds
+            opensuse/build-succeeds
+            opensuse/opensuse423-build-succeeds
+            fedora/build-succeeds
+            ubuntu/trusty-build-succeeds
+            ubuntu/xenial-build-succeeds
+      - gate-dib-dsvm-functests-{python}-{node}{suffix}:
+          node: ubuntu-xenial
+          python: python3
+          suffix: '-image-nv'
+          tests: >
+            centos7/build-succeeds
+            opensuse/build-succeeds
+            opensuse/opensuse423-build-succeeds
+            fedora/build-succeeds
+            ubuntu/trusty-build-succeeds
+            ubuntu/xenial-build-succeeds
       - gate-dib-dsvm-functests-{python}-{node}{suffix}:
           node: ubuntu-trusty
           python: python2
