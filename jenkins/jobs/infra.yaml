@@ -131,7 +131,8 @@
     builders:
       - shell: |
           #!/bin/bash -xe
-          /usr/zuul-env/bin/zuul-cloner --cache-dir /opt/git git://git.openstack.org openstack-infra/system-config
+          /usr/zuul-env/bin/zuul-cloner --cache-dir /opt/git \
+            git://git.openstack.org openstack-infra/system-config
 
 - publisher:
     name: infra-puppet-apply-logs
@@ -196,6 +197,10 @@
       - pin-pip
       - zuul-clone:
           project: openstack-infra/puppet-openstackci
+      - shell: |
+          #!/bin/bash -xe
+          /usr/zuul-env/bin/zuul-cloner --cache-dir /opt/git \
+            git://git.openstack.org openstack-infra/puppet-openstack_infra_spec_helper
       - puppet-prepare-node
       - allow-local-ssh-root
       - shell: |
