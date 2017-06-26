@@ -140,17 +140,6 @@
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
 
-          # NOTE(sileht): This job runs on Aodh and Ceilometer.
-          # Gnocchi uses an independent release cycle. So we map here
-          # which Gnocchi version can be used with other OpenStack
-          # components and the reverse.
-          gnocchi_branch=
-          case "$ZUUL_BRANCH" in
-              "stable/mitaka") export OVERRIDE_GNOCCHI_PROJECT_BRANCH="stable/2.1";;
-              "stable/newton") export OVERRIDE_GNOCCHI_PROJECT_BRANCH="stable/3.0";;
-              "stable/ocata") export OVERRIDE_GNOCCHI_PROJECT_BRANCH="stable/3.1";;
-          esac
-
           export DEVSTACK_GATE_HEAT=1
           export DEVSTACK_GATE_NEUTRON=1
           if [ "$ZUUL_BRANCH" == "stable/mitaka" ] || [ "$ZUUL_BRANCH" == "stable/newton" ] ; then
@@ -162,12 +151,30 @@
           export DEVSTACK_GATE_INSTALL_TESTONLY=1
           export DEVSTACK_GATE_TEMPEST_NOTESTS=1
 
-          export PROJECTS="openstack/ceilometer openstack/aodh openstack/gnocchi"
+          export PROJECTS="openstack/ceilometer openstack/aodh"
 
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin gnocchi git://git.openstack.org/openstack/gnocchi"
+          # NOTE(sileht): This job runs on Aodh and Ceilometer.
+          # Gnocchi uses an independent release cycle. So we map here
+          # which Gnocchi version can be used with other OpenStack
+          # components and the reverse.
           case "$ZUUL_BRANCH" in
-              stable/mitaka) :;;
-              stable/2.0|stable/2.1|stable/2.2) :;;
+              "stable/mitaka")
+                  export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin gnocchi git://git.openstack.org/openstack/gnocchi"
+                  export OVERRIDE_GNOCCHI_PROJECT_BRANCH="stable/2.1"
+                  export PROJECTS="$PROJECTS openstack/gnocchi"
+                  ;;
+              "stable/newton")
+                  export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin gnocchi git://git.openstack.org/openstack/gnocchi"
+                  export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin panko git://git.openstack.org/openstack/panko"
+                  export OVERRIDE_GNOCCHI_PROJECT_BRANCH="stable/3.0"
+                  export PROJECTS="openstack/panko $PROJECTS openstack/gnocchi"
+                  ;;
+              "stable/ocata")
+                  export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin gnocchi git://git.openstack.org/openstack/gnocchi"
+                  export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin panko git://git.openstack.org/openstack/panko"
+                  export OVERRIDE_GNOCCHI_PROJECT_BRANCH="stable/3.1"
+                  export PROJECTS="openstack/panko $PROJECTS openstack/gnocchi"
+                  ;;
               *)
                 export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin panko git://git.openstack.org/openstack/panko"
                 export PROJECTS="openstack/panko $PROJECTS"
@@ -228,13 +235,26 @@
 
           export PROJECTS="openstack/ceilometer $PROJECTS"
           export PROJECTS="openstack/aodh $PROJECTS"
-          export PROJECTS="openstack/gnocchi $PROJECTS"
           export PROJECTS="openstack/devstack-plugin-{plugin} $PROJECTS"
 
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin gnocchi git://git.openstack.org/openstack/gnocchi"
           case "$ZUUL_BRANCH" in
-              stable/mitaka) :;;
-              stable/2.0|stable/2.1|stable/2.2) :;;
+              "stable/mitaka")
+                  export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin gnocchi git://git.openstack.org/openstack/gnocchi"
+                  export OVERRIDE_GNOCCHI_PROJECT_BRANCH="stable/2.1"
+                  export PROJECTS="$PROJECTS openstack/gnocchi"
+                  ;;
+              "stable/newton")
+                  export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin gnocchi git://git.openstack.org/openstack/gnocchi"
+                  export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin panko git://git.openstack.org/openstack/panko"
+                  export OVERRIDE_GNOCCHI_PROJECT_BRANCH="stable/3.0"
+                  export PROJECTS="openstack/panko $PROJECTS openstack/gnocchi"
+                  ;;
+              "stable/ocata")
+                  export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin gnocchi git://git.openstack.org/openstack/gnocchi"
+                  export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin panko git://git.openstack.org/openstack/panko"
+                  export OVERRIDE_GNOCCHI_PROJECT_BRANCH="stable/3.1"
+                  export PROJECTS="openstack/panko $PROJECTS openstack/gnocchi"
+                  ;;
               *)
                 export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin panko git://git.openstack.org/openstack/panko"
                 export PROJECTS="openstack/panko $PROJECTS"
