@@ -121,6 +121,12 @@ def main():
             (('astor', 'Astor', 'astra', 'Astra', 'astara'), 'Astara')
         )
         if description:
+            # newlines here mess up cgit "repo.desc
+            if '\n' in description:
+                found_errors += 1
+                print("ERROR: Descriptions should not contain newlines:")
+                print('  "%s"' % description)
+
             for words, should_be in badwords:
                 for word in words:
                     # look for the bad word hanging out on it's own.  Only
