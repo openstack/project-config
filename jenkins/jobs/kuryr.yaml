@@ -136,12 +136,13 @@
             enable_service kubelet
             # Kuryr watcher
             enable_service kuryr-kubernetes
+            # Enable Tempest plugin
+            TEMPEST_PLUGINS='/opt/stack/new/kuryr-tempest-plugin'
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_NEUTRON=1
-          export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
           export DEVSTACK_GATE_TEMPEST_REGEX="kuryr_tempest_plugin.tests"
           export BRANCH_OVERRIDE={branch-override}
 
