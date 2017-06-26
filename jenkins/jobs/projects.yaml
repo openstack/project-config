@@ -8519,37 +8519,6 @@
       - openstack-server-release-jobs
       - openstack-releasenotes-jobs
       - translation-jobs
-      # Legacy trusty job mitaka - remove after mitaka EOL
-      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}-{node}{suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
-          suffix: ''
-          branch-override: default
-          lbaasversion: lbaasv1
-          lbaastest: api
-      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}-{node}{suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
-          suffix: ''
-          branch-override: default
-          lbaasversion: lbaasv2
-          lbaastest:
-            - healthmonitor
-            - listener
-            - loadbalancer
-            - member
-            - pool
-            - minimal
-      - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}-{node}{suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
-          suffix: '-nv'
-          branch-override: default
-          lbaasversion: lbaasv2
-          lbaastest:
-            - scenario
-            - scenario-namespace
-            - api-namespace
       # Legacy xenial jobs (newton) - Remove after newton EOL
       - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}-{node}{suffix}':
           pipeline: gate
@@ -8575,14 +8544,18 @@
       - '{pipeline}-neutron-{lbaasversion}-dsvm-py3x-{lbaastest}-{node}{suffix}':
           pipeline: gate
           node: ubuntu-xenial
-          suffix: '-nv'
+          suffix:
+            - ''
+            - '-nv'
           branch-override: default
           lbaasversion: lbaasv2
           lbaastest: api
       - '{pipeline}-neutron-{lbaasversion}-dsvm-{lbaastest}-{node}{suffix}':
           pipeline: gate
           node: ubuntu-xenial
-          suffix: '-nv'
+          suffix:
+            - ''
+            - '-nv'
           branch-override: default
           lbaasversion: lbaasv2
           lbaastest:
@@ -8592,7 +8565,9 @@
       - '{pipeline}-neutron-{lbaasversion}-dsvm-py3x-{lbaastest}-{node}{suffix}':
           pipeline: gate
           node: ubuntu-xenial
-          suffix: '-nv'
+          suffix:
+            - ''
+            - '-nv'
           branch-override: default
           lbaasversion: lbaasv2
           lbaastest:
@@ -8611,9 +8586,7 @@
       - translation-jobs
       - translation-jobs-ocata
       - gate-neutron-lbaas-dashboard-dsvm-integration-{node}{suffix}:
-          node:
-            - ubuntu-trusty
-            - ubuntu-xenial
+          node: ubuntu-xenial
           suffix: '-nv'
       - gate-neutron-lbaas-dashboard-dsvm-py3x-integration-{node}{suffix}:
           node: ubuntu-xenial

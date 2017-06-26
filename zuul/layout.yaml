@@ -2307,10 +2307,6 @@ jobs:
   - name: ^gate-neutron-dynamic-routing-dsvm-tempest-scenario.*$
     branch: ^(?!stable/newton).*$
 
-  # LBaaS v1 should run on mitaka only
-  - name: ^gate-neutron-lbaasv1-dsvm-api-ubuntu-trusty
-    branch: ^stable/mitaka
-
   # Legacy api tests xenial - remove after newton EOL
   - name: ^gate-neutron-lbaasv2-dsvm-loadbalancer-ubuntu-xenial
     branch: ^stable/newton
@@ -13212,38 +13208,21 @@ projects:
       - name: release-notes-jobs
       - name: translation-jobs
     check:
-      - gate-neutron-lbaasv1-dsvm-api-ubuntu-trusty
-      - gate-neutron-lbaasv2-dsvm-api-namespace-ubuntu-trusty-nv
-      - gate-neutron-lbaasv2-dsvm-minimal-ubuntu-trusty
-      - gate-neutron-lbaasv2-dsvm-loadbalancer-ubuntu-trusty
-      - gate-neutron-lbaasv2-dsvm-listener-ubuntu-trusty
-      - gate-neutron-lbaasv2-dsvm-pool-ubuntu-trusty
-      - gate-neutron-lbaasv2-dsvm-member-ubuntu-trusty
-      - gate-neutron-lbaasv2-dsvm-healthmonitor-ubuntu-trusty
-      - gate-neutron-lbaasv2-dsvm-scenario-ubuntu-trusty-nv
-      - gate-neutron-lbaasv2-dsvm-scenario-namespace-ubuntu-trusty-nv
       - gate-neutron-lbaasv2-dsvm-api-ubuntu-xenial
-      - gate-neutron-lbaasv2-dsvm-py3x-api-ubuntu-xenial-nv
-      - gate-neutron-lbaasv2-dsvm-api-namespace-ubuntu-xenial-nv
-      - gate-neutron-lbaasv2-dsvm-py3x-api-namespace-ubuntu-xenial-nv
+      - gate-neutron-lbaasv2-dsvm-py3x-api-ubuntu-xenial
+      - gate-neutron-lbaasv2-dsvm-api-namespace-ubuntu-xenial
+      - gate-neutron-lbaasv2-dsvm-py3x-api-namespace-ubuntu-xenial
       - gate-neutron-lbaasv2-dsvm-minimal-ubuntu-xenial
       - gate-neutron-lbaasv2-dsvm-loadbalancer-ubuntu-xenial
       - gate-neutron-lbaasv2-dsvm-listener-ubuntu-xenial
       - gate-neutron-lbaasv2-dsvm-pool-ubuntu-xenial
       - gate-neutron-lbaasv2-dsvm-member-ubuntu-xenial
       - gate-neutron-lbaasv2-dsvm-healthmonitor-ubuntu-xenial
-      - gate-neutron-lbaasv2-dsvm-scenario-ubuntu-xenial-nv
-      - gate-neutron-lbaasv2-dsvm-py3x-scenario-ubuntu-xenial-nv
-      - gate-neutron-lbaasv2-dsvm-scenario-namespace-ubuntu-xenial-nv
-      - gate-neutron-lbaasv2-dsvm-py3x-scenario-namespace-ubuntu-xenial-nv
+      - gate-neutron-lbaasv2-dsvm-scenario-ubuntu-xenial
+      - gate-neutron-lbaasv2-dsvm-py3x-scenario-ubuntu-xenial
+      - gate-neutron-lbaasv2-dsvm-scenario-namespace-ubuntu-xenial
+      - gate-neutron-lbaasv2-dsvm-py3x-scenario-namespace-ubuntu-xenial
     gate:
-      - gate-neutron-lbaasv1-dsvm-api-ubuntu-trusty
-      - gate-neutron-lbaasv2-dsvm-minimal-ubuntu-trusty
-      - gate-neutron-lbaasv2-dsvm-loadbalancer-ubuntu-trusty
-      - gate-neutron-lbaasv2-dsvm-listener-ubuntu-trusty
-      - gate-neutron-lbaasv2-dsvm-pool-ubuntu-trusty
-      - gate-neutron-lbaasv2-dsvm-member-ubuntu-trusty
-      - gate-neutron-lbaasv2-dsvm-healthmonitor-ubuntu-trusty
       - gate-neutron-lbaasv2-dsvm-api-ubuntu-xenial
       - gate-neutron-lbaasv2-dsvm-minimal-ubuntu-xenial
       - gate-neutron-lbaasv2-dsvm-loadbalancer-ubuntu-xenial
@@ -13251,6 +13230,13 @@ projects:
       - gate-neutron-lbaasv2-dsvm-pool-ubuntu-xenial
       - gate-neutron-lbaasv2-dsvm-member-ubuntu-xenial
       - gate-neutron-lbaasv2-dsvm-healthmonitor-ubuntu-xenial
+      - gate-neutron-lbaasv2-dsvm-py3x-api-ubuntu-xenial
+      - gate-neutron-lbaasv2-dsvm-api-namespace-ubuntu-xenial
+      - gate-neutron-lbaasv2-dsvm-py3x-api-namespace-ubuntu-xenial
+      - gate-neutron-lbaasv2-dsvm-scenario-ubuntu-xenial
+      - gate-neutron-lbaasv2-dsvm-py3x-scenario-ubuntu-xenial
+      - gate-neutron-lbaasv2-dsvm-scenario-namespace-ubuntu-xenial
+      - gate-neutron-lbaasv2-dsvm-py3x-scenario-namespace-ubuntu-xenial
 
   - name: openstack/neutron-lbaas-dashboard
     template:
@@ -13264,7 +13250,6 @@ projects:
     check:
       - gate-neutron-lbaas-dashboard-nodejs4-npm-run-lint
       - gate-neutron-lbaas-dashboard-nodejs4-npm-run-test
-      - gate-neutron-lbaas-dashboard-dsvm-integration-ubuntu-trusty-nv
       - gate-neutron-lbaas-dashboard-dsvm-integration-ubuntu-xenial-nv
       - gate-neutron-lbaas-dashboard-dsvm-py3x-integration-ubuntu-xenial-nv
 
@@ -13556,13 +13541,6 @@ projects:
       - name: translation-jobs
       - name: api-ref-jobs
     check:
-      # legacy trusty gates mitaka - remove after mitaka EOL
-      - gate-neutron-lbaasv2-dsvm-minimal-ubuntu-trusty
-      - gate-neutron-lbaasv2-dsvm-loadbalancer-ubuntu-trusty
-      - gate-neutron-lbaasv2-dsvm-listener-ubuntu-trusty
-      - gate-neutron-lbaasv2-dsvm-pool-ubuntu-trusty
-      - gate-neutron-lbaasv2-dsvm-member-ubuntu-trusty
-      - gate-neutron-lbaasv2-dsvm-healthmonitor-ubuntu-trusty
       # legacy xenial gates (newton) - remove after newton EOL
       - gate-neutron-lbaasv2-dsvm-minimal-ubuntu-xenial
       - gate-neutron-lbaasv2-dsvm-loadbalancer-ubuntu-xenial
@@ -13585,12 +13563,6 @@ projects:
       - gate-octavia-v1-dsvm-scenario-kvm-centos.7-ubuntu-xenial-nv
       - gate-octavia-v1-dsvm-scenario-lxd-ubuntu-xenial-nv
     gate:
-      # legacy trusty gates mitaka - remove after mitaka EOL
-      - gate-neutron-lbaasv2-dsvm-loadbalancer-ubuntu-trusty
-      - gate-neutron-lbaasv2-dsvm-listener-ubuntu-trusty
-      - gate-neutron-lbaasv2-dsvm-pool-ubuntu-trusty
-      - gate-neutron-lbaasv2-dsvm-member-ubuntu-trusty
-      - gate-neutron-lbaasv2-dsvm-healthmonitor-ubuntu-trusty
       # legacy xenial gates (newton) - remove after newton EOL
       - gate-neutron-lbaasv2-dsvm-loadbalancer-ubuntu-xenial
       - gate-neutron-lbaasv2-dsvm-listener-ubuntu-xenial
