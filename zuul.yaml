@@ -13,6 +13,32 @@
       gerrit:
         verified: -1
 
+- job:
+    name: base
+    description: |
+      The base job for OpenStack's installation of Zuul.
+
+      All jobs ultimately inherit from this.  It runs a pre-playbook
+      which copies all of the job's prepared git repos on to all of
+      the nodes in the nodeset.  It runs a post-playbook which copies
+      all of the files in the logs/ directory of every node on to the
+      logserver.
+
+      It also sets default timeout and nodeset values (which may be
+      overidden).
+    pre-run: base/pre
+    post-run: base/post
+    roles:
+      - zuul: openstack-infra/openstack-zuul-roles
+    success-url: http://logs.openstack.org/{change.number[:-2]}/{change.number}/{change.patchset}/{pipeline.name}/{buildset.uuid}/
+    failure-url: http://logs.openstack.org/{change.number[:-2]}/{change.number}/{change.patchset}/{pipeline.name}/{buildset.uuid}/
+    timeout: 1800
+    vars:
+      zuul_workspace_root: /home/zuul
+    nodes:
+      - name: ubuntu-xenial
+        label: ubuntu-xenial
+
 - project:
     name: openstack-infra/openstack-zuul-jobs
     check:

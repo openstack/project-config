@@ -1,0 +1,17 @@
+- hosts: all
+  roles:
+    - collect-logs
+---
+- hosts: localhost
+  tasks:
+    - name: Add log server ssh key.
+      command: ssh-add /var/lib/zuul/ssh/static_id_rsa
+
+    - name: Add log server to inventory.
+      add_host:
+        name: static.openstack.org
+        groups: zuul_logserver
+---
+- hosts: zuul_logserver
+  roles:
+    - upload-logs
