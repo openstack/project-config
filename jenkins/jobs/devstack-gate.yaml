@@ -161,6 +161,9 @@
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
           export DEVSTACK_PROJECT_FROM_GIT={name}
+          if [ "$DEVSTACK_PROJECT_FROM_GIT" == "django_openstack_auth" ] ; then
+              export DEVSTACK_GATE_HORIZON=1
+          fi
 
           # Even if the branch is overridden, make sure we use
           # the correct branch using the OVERRIDE_*_PROJECT_BRANCH
