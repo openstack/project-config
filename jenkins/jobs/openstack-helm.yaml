@@ -18,6 +18,20 @@
           #!/bin/bash -xe
           export INTEGRATION={integration}
           export INTEGRATION_TYPE={type}
+          export SUB={sub}
+          export GATE_ENVIRONMENT=zuul
+
+          TOOLKIT_TMP=$HOME/helm-toolkit
+          mkdir -p $TOOLKIT_TMP
+
+          if [ "$SUB" != "" ] ; then
+            /usr/zuul-env/bin/zuul-cloner \
+              --cache-dir /opt/git \
+              --workspace $TOOLKIT_TMP \
+              git://git.openstack.org \
+              openstack/openstack-helm
+          fi
+
           tools/gate/setup_gate.sh {node}
 
     publishers:
