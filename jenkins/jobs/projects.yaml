@@ -4065,30 +4065,14 @@
       - gate-{name}-pylint-{node}:
           node: ubuntu-xenial
       # The "-extras-nv" jobs are tests that we don't want to gate on
-      # just yet.
+      # just yet.  Note opensuse-minimal can only run on Xenial due to
+      # requring zypper on the host.
       - gate-dib-dsvm-functests-{python}-{node}{suffix}:
           node: ubuntu-trusty
           python: python2
           suffix: '-extras-nv'
           tests: >
             gentoo/build-succeeds
-            opensuse-minimal/opensuse423-build-succeeds
-            debian-minimal/stable-vm
-      - gate-dib-dsvm-functests-{python}-{node}{suffix}:
-          node: ubuntu-xenial
-          python: python2
-          suffix: '-extras-nv'
-          tests: >
-            gentoo/build-succeeds
-            opensuse-minimal/opensuse423-build-succeeds
-            debian-minimal/stable-vm
-      - gate-dib-dsvm-functests-{python}-{node}{suffix}:
-          node: ubuntu-xenial
-          python: python3
-          suffix: '-extras-nv'
-          tests: >
-            gentoo/build-succeeds
-            opensuse-minimal/opensuse423-build-succeeds
             debian-minimal/stable-vm
       - gate-dib-dsvm-functests-{python}-{node}{suffix}:
           node: centos-7
@@ -4096,8 +4080,15 @@
           suffix: '-extras-nv'
           tests: >
             gentoo/build-succeeds
-            opensuse-minimal/opensuse423-build-succeeds
             debian-minimal/stable-vm
+      - gate-dib-dsvm-functests-{python}-{node}{suffix}:
+          node: ubuntu-xenial
+          python: python3
+          suffix: '-extras-nv'
+          tests: >
+            gentoo/build-succeeds
+            debian-minimal/stable-vm
+            opensuse-minimal/opensuse423-build-succeeds
       # These "-image" jobs download base images from the internet and
       # are unreliable.  -nv until we can get mirroring happening
       - gate-dib-dsvm-functests-{python}-{node}{suffix}:
