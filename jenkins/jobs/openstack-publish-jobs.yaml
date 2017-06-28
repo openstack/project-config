@@ -36,34 +36,26 @@
           #!/bin/bash -x
 
           if [[ $ZUUL_REFNAME =~ ^refs/tags/ ]]; then
-              # We need to determine the branch by looking to see
-              # where the tag exists. A tag can be on more than one
-              # branch, especially if the tag is applied and then the
-              # stable branch is created as we do in our normal stable
-              # branch creation process. If we get any stable
-              # branches, use the most recent one (assuming
-              # alphabetical ordering). If we do not see master, use
-              # whatever name we do see and let the logic below
-              # trigger an abort if we shouldn't be publishing.
-              refname=$(echo $ZUUL_REFNAME | cut -d/ -f2-)
-              git branch --contains $refname > branches.txt
-              if grep -q stable/ branches.txt; then
-                  branch_name=$(grep stable/ branches.txt | sort | tail -n 1)
-              elif ! grep -q master branches.txt; then
-                  branch_name=$(cat branches.txt | sort | tail -n 1)
-              else
-                  branch_name=master
-              fi
+              # This job should not be configured to run for
+              # pre-releases, so if we have a tag we want to use it as
+              # the publishing location.
+              tag=$(echo $ZUUL_REFNAME | cut -d/ -f2-)
+              branch_name=""
           else
               # If the ref wasn't a tag, assume it is a branch.
               branch_name=$ZUUL_REFNAME
+              tag=""
           fi
 
-          # When building from master we want to publish to the
-          # "latest" directory. When building from a stable branch, we
-          # want to publish to a directory using that branch base
+          # When we have a tag, we want to use that as the publishing
+          # location so that we get version-specific docs.  Otherwise,
+          # when building from master we want to publish to the
+          # "latest" directory and when building from a stable branch,
+          # we want to publish to a directory using that branch base
           # name. Building from other branches is an error.
-          if [[ $branch_name = master ]]; then
+          if [[ ! -z "$tag" ]]; then
+              publish_name=$tag
+          elif [[ $branch_name = master ]]; then
               publish_name=latest
           elif [[ $branch_name =~ stable/ ]]; then
               publish_name=$(basename $branch_name)
