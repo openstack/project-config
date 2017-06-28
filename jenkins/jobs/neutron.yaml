@@ -243,7 +243,7 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-neutron-dsvm-fullstack-{node}{suffix}'
+    name: '{pipeline}-neutron-dsvm-fullstack{python}-{node}{suffix}'
     node: '{node}'
 
     wrappers:
@@ -270,12 +270,12 @@
           fi
 
           function gate_hook {{
-              bash -xe $BASE/new/neutron/neutron/tests/contrib/gate_hook.sh dsvm-fullstack
+              bash -xe $BASE/new/neutron/neutron/tests/contrib/gate_hook.sh dsvm-fullstack{python}
           }}
           export -f gate_hook
 
           function post_test_hook {{
-              bash -xe $BASE/new/neutron/neutron/tests/contrib/post_test_hook.sh dsvm-fullstack
+              bash -xe $BASE/new/neutron/neutron/tests/contrib/post_test_hook.sh dsvm-fullstack{python}
           }}
           export -f post_test_hook
 

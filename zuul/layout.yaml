@@ -1588,7 +1588,7 @@ jobs:
   # Skip non-doc jobs for doc-only or translation-only neutron
   # changes. Since doc/source/conf.py is checked by
   # neutron-(pep8|pylint), those jobs should not be skipped.
-  - name: ^.*neutron-((dsvm-api|dsvm-fullstack|dsvm-functional|dsvm-functional-python35|python(27|34|35))(-ubuntu-.*)?|coverage-.+|lbaasv[12]-dsvm-(api|minimal))$
+  - name: ^.*neutron-((dsvm-api|dsvm-fullstack|dsvm-fullstack-python35|dsvm-functional|dsvm-functional-python35|python(27|34|35))(-ubuntu-.*)?|coverage-.+|lbaasv[12]-dsvm-(api|minimal))$
     skip-if:
       - project: ^openstack/neutron$
         all-files-match-any:
@@ -2302,6 +2302,9 @@ jobs:
   # NOTE(jlibosva) Run fullstack jobs only non-voting
   - name: ^gate-neutron-dsvm-fullstack-ubuntu-(trusty|xenial)
     voting: false
+
+  - name: ^gate-neutron-dsvm-fullstack-python35-ubuntu-xenial.*$
+    branch: ^(?!stable/(newton|ocata)).*$
 
   - name: ^gate-neutron-dsvm-functional-python35-ubuntu-xenial.*$
     branch: ^(?!stable/(newton|ocata)).*$
@@ -13120,6 +13123,7 @@ projects:
       - neutron-coverage-ubuntu-xenial
     experimental:
       - gate-neutron-dsvm-functional-python35-ubuntu-xenial-nv
+      - gate-neutron-dsvm-fullstack-python35-ubuntu-xenial-nv
       - gate-grenade-dsvm-neutron-forward-ubuntu-trusty
       - gate-grenade-dsvm-neutron-forward-ubuntu-xenial
       - gate-tempest-dsvm-neutron-ipv6only-nv
