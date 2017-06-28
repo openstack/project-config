@@ -14,8 +14,7 @@
 
           /usr/zuul-env/bin/zuul-cloner --cache-dir /opt/git \
             git://git.openstack.org \
-            openstack/diskimage-builder \
-            openstack/dib-utils
+            openstack/diskimage-builder
       - shell: |
           #!/bin/bash -xe
           cd ~/openstack/diskimage-builder
@@ -33,11 +32,14 @@
 
           virtualenv -p {python} env
 
-          ./env/bin/pip install $(pwd)/openstack/dib-utils
           ./env/bin/pip install $(pwd)/openstack/diskimage-builder
 
           # TODO(pabelanger): Remove once we migrated to bindep
           ./openstack/diskimage-builder/tests/install_test_deps.sh
+
+          # This sets up some repo files pointing to the infra mirrors
+          # which are used during test runs
+          ./openstack/diskimage-builder/contrib/setup-gate-mirrors.sh
 
           # activate the virtualenv so that any tools run by dib run
           # using the python inside it
