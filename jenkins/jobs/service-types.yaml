@@ -1,0 +1,55 @@
+- job:
+    name: gate-service-types-authority-validate
+    description: Validates service-types-authority data
+    node: ubuntu-xenial
+
+    wrappers:
+      - build-timeout:
+          timeout: 40
+      - timestamps
+
+    builders:
+      - zuul-git-prep
+      - install-distro-packages
+      - extra-test-setup
+      - revoke-sudo
+      - run-tox:
+          envlist: publish
+      - assert-no-extra-files
+
+    publishers:
+      - test-results
+      - scp:
+          site: 'static.openstack.org'
+          files:
+            - target: 'logs/$LOG_PATH'
+              source: 'publish'
+              keep-hierarchy: true
+              copy-after-failure: true
+            - target: 'logs/$LOG_PATH'
+              source: 'service-types.json*'
+              keep-hierarchy: true
+              copy-after-failure: true
+      - console-log
+
+- job:
+    name: publish-service-types-authority
+    description: Publish service-types data
+    node: ubuntu-xenial
+
+    builders:
+      - zuul-git-branch-prep
+      - install-distro-packages
+      - revoke-sudo
+      - run-tox:
+          envlist: publish
+
+    publishers:
+      - scp:
+          site: 'static.openstack.org'
+          files:
+            - target: 'service-types'
+              source: 'publish'
+              keep-hierarchy: false
+              copy-after-failure: false
+      - console-log
