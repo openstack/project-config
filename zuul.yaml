@@ -30,8 +30,12 @@
     post-run: playbooks/base/post
     roles:
       - zuul: openstack-infra/openstack-zuul-roles
-    success-url: http://logs.openstack.org/{change.number[:-2]}/{change.number}/{change.patchset}/{pipeline.name}/{buildset.uuid}/
-    failure-url: http://logs.openstack.org/{change.number[:-2]}/{change.number}/{change.patchset}/{pipeline.name}/{buildset.uuid}/
+    # TODO(jeblair): This will only work for our current 6 digit
+    # change numbers.  We have a plan to do the formatting in the log
+    # publishing playbook and pass the information back to zuul.  That
+    # will obsolete this.
+    success-url: http://logs.openstack.org/{change.number[4]}{change.number[5]}/{change.number}/{change.patchset}/{pipeline.name}/{buildset.uuid}/
+    failure-url: http://logs.openstack.org/{change.number[4]}{change.number[5]}/{change.number}/{change.patchset}/{pipeline.name}/{buildset.uuid}/
     timeout: 1800
     vars:
       zuul_workspace_root: /home/zuul
