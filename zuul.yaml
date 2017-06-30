@@ -44,6 +44,15 @@
       - name: ubuntu-xenial
         label: ubuntu-xenial
 
+- job:
+    name: base-test
+    description: |
+      A job to test changes to the base job without disturbing the
+      main job in production.  Not for general use.
+    parent: base
+    pre-run: playbooks/base-test/pre
+    post-run: playbooks/base-test/post
+
 - project:
     name: openstack-infra/openstack-zuul-jobs
     check:
