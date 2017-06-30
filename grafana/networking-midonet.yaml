@@ -45,8 +45,14 @@ dashboard:
         - title: Rally Failure Rates (Check queue)
           span: 4
           targets:
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-networking-midonet-rally-dsvm-ml2-ubuntu-xenial-nv.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-networking-midonet-rally-dsvm-ml2-ubuntu-xenial-nv.{SUCCESS,FAILURE})),'24hours'), 'gate-networking-midonet-rally-dsvm-ml2-ubuntu-xenial-nv')
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-networking-midonet-rally-dsvm-v2-ubuntu-xenial-nv.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-networking-midonet-rally-dsvm-v2-ubuntu-xenial-nv.{SUCCESS,FAILURE})),'24hours'), 'gate-networking-midonet-rally-dsvm-v2-ubuntu-xenial-nv')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-networking-midonet-rally-dsvm-ml2-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-networking-midonet-rally-dsvm-ml2-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-networking-midonet-rally-dsvm-ml2-ubuntu-xenial')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-networking-midonet-rally-dsvm-v2-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-networking-midonet-rally-dsvm-v2-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-networking-midonet-rally-dsvm-v2-ubuntu-xenial')
+          type: graph
+        - title: Rally Failure Rates (Gate queue)
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-networking-midonet-rally-dsvm-ml2-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-networking-midonet-rally-dsvm-ml2-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-networking-midonet-rally-dsvm-ml2-ubuntu-xenial')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-networking-midonet-rally-dsvm-v2-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-networking-midonet-rally-dsvm-v2-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-networking-midonet-rally-dsvm-v2-ubuntu-xenial')
           type: graph
         - title: Periodic jobs
           span: 4
