@@ -3951,6 +3951,7 @@ projects:
   - name: openstack-dev/hacking
     template:
       - name: merge-check
+      - name: openstack-unified-publish-jobs
       - name: python-jobs
       - name: python35-jobs
       - name: publish-to-pypi
@@ -3958,12 +3959,7 @@ projects:
     check:
       - gate-hacking-integration-nova
     post:
-      - hacking-docs-ubuntu-xenial
       - hacking-coverage-ubuntu-xenial
-    pre-release:
-      - hacking-docs-ubuntu-xenial
-    release:
-      - hacking-docs-ubuntu-xenial
 
   - name: openstack-dev/heat-cfnclient
     template:
@@ -5427,8 +5423,7 @@ projects:
       - name: python-jobs
       - name: python35-jobs
       - name: release-notes-jobs
-    post:
-      - subunit2sql-docs-ubuntu-xenial
+      - name: openstack-unified-publish-jobs
 
   - name: openstack-infra/system-config
     template:
@@ -10793,6 +10788,7 @@ projects:
     template:
       - name: merge-check
       - name: check-requirements
+      - name: openstack-unified-publish-jobs
       - name: publish-to-pypi
       - name: python35-jobs
     check:
@@ -10803,8 +10799,6 @@ projects:
       - gate-heat-cfntools-python27-ubuntu-xenial
     post:
       - heat-cfntools-branch-tarball
-    release:
-      - heat-cfntools-docs-ubuntu-xenial
 
   - name: openstack/heat-specs
     template:
@@ -11183,8 +11177,6 @@ projects:
       - name: python-jobs
       - name: python34-jobs
       - name: python35-jobs
-      # Using the server jobs since it will regen on every commit, not only
-      # on release.
       - name: openstack-unified-publish-jobs
       - name: check-requirements
       - name: publish-to-pypi
@@ -15399,8 +15391,7 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-    post:
-      - performance-docs-docs-ubuntu-xenial
+      - name: openstack-unified-publish-jobs
 
   - name: openstack/picasso
     template:
@@ -18494,6 +18485,7 @@ projects:
       - name: grenade-nova-net
       - name: python-jobs
       - name: python35-jobs
+      - name: openstack-unified-publish-jobs
       - name: publish-to-pypi
       - name: release-notes-jobs
     check:
@@ -18540,7 +18532,6 @@ projects:
       - gate-tempest-dsvm-py35-full-devstack-plugin-ceph-ubuntu-xenial-nv
 
     post:
-      - tempest-docs-ubuntu-xenial
       - tempest-coverage-ubuntu-xenial
       - tempest-branch-tarball
     pre-release:
@@ -18574,13 +18565,12 @@ projects:
     template:
       - name: merge-check
       - name: check-requirements
+      - name: openstack-unified-publish-jobs
       - name: publish-to-pypi
       - name: lib-forward-testing
       - name: python-jobs
       - name: python35-jobs
       - name: release-notes-jobs
-    post:
-      - tempest-lib-docs-ubuntu-xenial
 
   - name: openstack/tempest-plugin-cookiecutter
     template:
@@ -18785,14 +18775,13 @@ projects:
   - name: openstack/tripleo-docs
     template:
       - name: merge-check
+      - name: openstack-unified-publish-jobs
     check:
       - gate-tripleo-docs-docs-ubuntu-xenial
       - gate-tripleo-docs-deploy-guide
     gate:
       - gate-tripleo-docs-docs-ubuntu-xenial
       - gate-tripleo-docs-deploy-guide
-    post:
-      - tripleo-docs-docs-ubuntu-xenial
 
   - name: openstack/tripleo-heat-templates
     template:
@@ -18830,16 +18819,11 @@ projects:
       - name: merge-check
       - name: check-tripleo-jobs
       - name: experimental-tripleo-jobs
+      - name: openstack-unified-publish-jobs
     check:
       - gate-tripleo-incubator-docs-ubuntu-xenial
     gate:
       - gate-tripleo-incubator-docs-ubuntu-xenial
-    post:
-      - tripleo-incubator-docs-ubuntu-xenial
-    pre-release:
-      - tripleo-incubator-docs-ubuntu-xenial
-    release:
-      - tripleo-incubator-docs-ubuntu-xenial
 
   - name: openstack/tripleo-puppet-elements
     template:
