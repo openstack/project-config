@@ -2765,8 +2765,10 @@ jobs:
 
   - name: ^gate-.*-install-guide$
     success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/install-guide/build/html/
-    # This is only available in Newton.
-    branch: ^(?!stable/mitaka).*$
+    # Starting with Pike, the install guide is not a separate build
+    # anymore, it is integrated into the docs tree.
+    # The job was introduced in newton, so handle newton and ocata only.
+    branch: ^stable/(newton|ocata).*$
     files:
       - '^tox.ini$'
       - '^install-guide/.*'
@@ -2774,8 +2776,9 @@ jobs:
       - other-requirements.txt
 
     # Starting with Pike, the install guide is not a separate build
-    # anymore.
-  - name: ^gate-.*(barbican|ironic)-install-guide$
+    # anymore, it is integrated into the docs tree.
+    # The job was introduced in newton, so handle newton and ocata only.
+  - name: ^(?!gate-).*-install-guide$
     branch: ^stable/(newton|ocata).*$
 
   - name: ^gate-.*-deploy-guide$
@@ -2788,6 +2791,9 @@ jobs:
       - 'bindep.txt'
       - other-requirements.txt
 
+  - name: ^(?!gate-).*-deploy-guide$
+    branch: ^(?!stable/mitaka).*$
+
   - name: ^(?!gate-).*-api-guide$
     # Only publish from master
     branch: master
@@ -2795,17 +2801,6 @@ jobs:
   - name: ^(?!gate-).*-api-ref$
     # Only publish from master
     branch: master
-
-  - name: ^(?!gate-).*-install-guide$
-    branch: ^(?!stable/mitaka).*$
-
-    # Starting with Pike, the install guide is not a separate build
-    # anymore.
-  - name: ^(?!gate-).*(barbican|ironic)-install-guide$
-    branch: ^stable/(newton|ocata).*$
-
-  - name: ^(?!gate-).*-deploy-guide$
-    branch: ^(?!stable/mitaka).*$
 
   - name: gate-murano-firstapp-docs
     # Only publish from master
