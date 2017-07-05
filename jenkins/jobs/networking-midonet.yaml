@@ -31,37 +31,10 @@
           export PROJECTS="openstack/networking-l2gw $PROJECTS"
           export PROJECTS="openstack/tap-as-a-service $PROJECTS"
 
-          BRANCH=${{OVERRIDE_ZUUL_BRANCH:-$ZUUL_BRANCH}}
-          if [[ ! "stable/mitaka" =~ $BRANCH ]]; then
-              function gate_hook {{
-                  bash -xe $BASE/new/networking-midonet/devstack/ci/gate_hook.sh {midonet-plugin}
-              }}
-              export -f gate_hook
-          else
-              # Note the actual url here is somewhat irrelevant because it
-              # caches in nodepool, however make it a valid url for
-              # documentation purposes.
-              export DEVSTACK_LOCAL_CONFIG="enable_plugin networking-midonet git://git.openstack.org/openstack/networking-midonet"
-              export DEVSTACK_LOCAL_CONFIG+=$'\n'"TEMPEST_RUN_VALIDATION=True"
-
-              export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_PLUGIN=midonet"
-              export DEVSTACK_LOCAL_CONFIG+=$'\n'"MIDONET_USE_ZOOM=True"
-
-              if [[ {midonet-plugin} = v2 ]]; then
-                  # Enable MidoNet v2 architecture
-                  export DEVSTACK_LOCAL_CONFIG+=$'\n'"MIDONET_PLUGIN=midonet.neutron.plugin_v2.MidonetPluginV2"
-                  export DEVSTACK_LOCAL_CONFIG+=$'\n'"MIDONET_CLIENT=midonet.neutron.client.api.MidonetApiClient"
-                  export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_SERVICE_PLUGIN_CLASSES=midonet.neutron.services.l3.l3_midonet.MidonetL3ServicePlugin"
-              else
-                  # ml2
-                  export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_PLUGIN=ml2"
-                  export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_ML2_PLUGIN_MECHANISM_DRIVERS=midonet"
-                  export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_ML2_PLUGIN_TYPE_DRIVERS=midonet,uplink"
-                  export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_ML2_TENANT_NETWORK_TYPE=midonet"
-                  export DEVSTACK_LOCAL_CONFIG+=$'\n'"ML2_L3_PLUGIN=midonet.neutron.services.l3.l3_midonet.MidonetL3ServicePlugin"
-              fi
-          fi
-
+          function gate_hook {{
+               bash -xe $BASE/new/networking-midonet/devstack/ci/gate_hook.sh {midonet-plugin}
+          }}
+          export -f gate_hook
           export DEVSTACK_GATE_SETTINGS=/opt/stack/new/networking-midonet/devstack/devstackgaterc
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh

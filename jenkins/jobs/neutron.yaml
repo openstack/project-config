@@ -51,13 +51,8 @@
           # branches below are dropped. Prior to Newton, the API Tempest tests are
           # invoked explicitly and thus we need the following variables set. From
           # Newton onward, everything is taken care of by the Tempest plugin framework
-          if [ "$ZUUL_BRANCH" == "stable/mitaka" ] ; then
-              export DEVSTACK_GATE_TEMPEST_NOTESTS=1
-              export DEVSTACK_GATE_INSTALL_TESTONLY=1
-          else
-              export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
-              export DEVSTACK_GATE_TEMPEST_REGEX="^neutron.tests.tempest.api\."
-          fi
+          export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
+          export DEVSTACK_GATE_TEMPEST_REGEX="^neutron.tests.tempest.api\."
 
           function gate_hook {{
               bash -xe $BASE/new/neutron/neutron/tests/contrib/gate_hook.sh api{which}

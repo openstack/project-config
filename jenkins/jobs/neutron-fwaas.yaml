@@ -69,12 +69,8 @@
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
-          if [[ "$ZUUL_BRANCH" != "stable/mitaka" ]]; then
-              # Note the actual url here is somewhat irrelevant because it
-              # caches in nodepool, however make it a valid url for
-              # documentation purposes.
-              export DEVSTACK_LOCAL_CONFIG="enable_plugin neutron-fwaas git://git.openstack.org/openstack/neutron-fwaas"
-          fi
+          export DEVSTACK_LOCAL_CONFIG="enable_plugin neutron-fwaas git://git.openstack.org/openstack/neutron-fwaas"
+
           function gate_hook {{
               bash -xe $BASE/new/neutron-fwaas/neutron_fwaas/tests/contrib/gate_hook_tempest.sh {fwaas-version}
           }}
@@ -86,9 +82,7 @@
               export ENABLED_SERVICES="q-fwaas"
           fi
 
-          if [[ ! "stable/mitaka" =~ $ZUUL_BRANCH ]]; then
-              export -f gate_hook
-          fi
+          export -f gate_hook
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
@@ -130,9 +124,7 @@
           export DEVSTACK_GATE_TOPOLOGY="multinode"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin neutron-fwaas git://git.openstack.org/openstack/neutron-fwaas"
 
-          if [[ ! "stable/mitaka" =~ $ZUUL_BRANCH ]]; then
-              export -f gate_hook
-          fi
+          export -f gate_hook
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
@@ -177,9 +169,7 @@
           export DEVSTACK_GATE_TOPOLOGY="multinode"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin neutron-fwaas git://git.openstack.org/openstack/neutron-fwaas"
 
-          if [[ ! "stable/mitaka" =~ $ZUUL_BRANCH ]]; then
-              export -f gate_hook
-          fi
+          export -f gate_hook
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
