@@ -1123,13 +1123,7 @@ project-templates:
 
   - name: designate-dsvm-jobs
     check:
-      # Remove the two jobs below when Mitaka is EOL (they only run against
-      # mitaka.
-      - gate-designate-dsvm-powerdns-ubuntu-trusty
-      - gate-designate-dsvm-bind9-ubuntu-trusty
-      - gate-tempest-dsvm-designate-powerdns-ubuntu-trusty
       - gate-tempest-dsvm-designate-pdns4-ubuntu-xenial
-      - gate-tempest-dsvm-designate-bind9-ubuntu-trusty
       - gate-tempest-dsvm-designate-bind9-ubuntu-xenial
       - gate-tempest-dsvm-designate-pdns4-postgres-ubuntu-xenial
       - gate-tempest-dsvm-designate-pdns4-worker-model-ubuntu-xenial
@@ -1139,25 +1133,15 @@ project-templates:
       - gate-grenade-dsvm-designate-pdns4-ubuntu-xenial
       - gate-tempest-dsvm-designate-pdns4-identity-v3-only-ubuntu-xenial
     gate:
-      # Remove the two jobs below when Mitaka is EOL (they only run against
-      # mitaka.
-      - gate-designate-dsvm-powerdns-ubuntu-trusty
-      - gate-designate-dsvm-bind9-ubuntu-trusty
-      - gate-tempest-dsvm-designate-powerdns-ubuntu-trusty
       - gate-tempest-dsvm-designate-pdns4-ubuntu-xenial
-      - gate-tempest-dsvm-designate-bind9-ubuntu-trusty
       - gate-tempest-dsvm-designate-bind9-ubuntu-xenial
-      - gate-grenade-dsvm-designate-powerdns-ubuntu-trusty
       - gate-grenade-dsvm-designate-pdns4-ubuntu-xenial
       - gate-tempest-dsvm-designate-pdns4-postgres-ubuntu-xenial
       - gate-tempest-dsvm-designate-pdns4-worker-model-ubuntu-xenial
       - gate-tempest-dsvm-designate-pdns4-identity-v3-only-ubuntu-xenial
     experimental:
-      - gate-tempest-dsvm-designate-agent-knot2-ubuntu-trusty
       - gate-tempest-dsvm-designate-agent-knot2-ubuntu-xenial
-      - gate-tempest-dsvm-designate-agent-djbdns-ubuntu-trusty
       - gate-tempest-dsvm-designate-agent-djbdns-ubuntu-xenial
-      - gate-tempest-dsvm-designate-agent-gdnsd-ubuntu-trusty
       - gate-tempest-dsvm-designate-agent-gdnsd-ubuntu-xenial
 
   - name: nodejs4-jobs
@@ -1242,11 +1226,6 @@ jobs:
     branch: ^stable/(liberty|mitaka)
   - name: ^(?!periodic).*-ubuntu-xenial(-nv)?$
     branch: ^(?!stable/(liberty|mitaka)).*$
-  # These are tests for the designated branch run against
-  # projects that only have a master branch therefore we need
-  # to run ubuntu-trusty jobs against master.
-  - name: ^gate-.*-ubuntu-trusty-(liberty|mitaka)(-nv)?$
-    branch: master
   # Restrict python34 testing to <= Mitaka.
   - name: ^gate-.*-python34(-nv)?$
     branch: ^stable/(liberty|mitaka)
@@ -2981,14 +2960,8 @@ jobs:
   - name: ^gate-grenade-dsvm-barbican-ubuntu-xenial$
     branch: ^(?!stable/(mitaka|newton|ocata)).*$
 
-  - name: ^gate-tempest-dsvm-designate-.*-ubuntu-trusty(-nv)?$
-    branch: ^stable/mitaka$
-
   - name: ^gate-tempest-dsvm-designate-pdns4-postgres-ubuntu-xenial(-nv)?$
-    branch: ^(?!stable/(?:mitaka|newton)).*$
-
-  - name: ^gate-tempest-dsvm-designate-.*-mitaka$
-    branch: ^master$
+    branch: ^(?!stable/newton).*$
 
   # Designate grenade is >= newton. Trusty pinned to newton
   # then default grenade rules will run the xenial job on
@@ -3007,9 +2980,6 @@ jobs:
 
   - name: ^gate-sahara-pylint.*$
     voting: false
-
-  - name: ^gate-sahara-dsvm-scenario-(nova|neutron)-ubuntu-trusty-nv$
-    branch: ^stable/mitaka$
 
   - name: ^gate-sahara-dsvm-scenario-multinode-spark-ubuntu-xenial-nv$
     branch: ^(?!stable/(mitaka|newton|ocata)).*$
@@ -3204,14 +3174,14 @@ jobs:
 
   # NOTE(amrith): This job should be run for trove-integration, and
   #               trove's and trove clients stable branches for
-  #               mitaka and newton.
+  #               newton.
   - name: ^gate-trove-legacy-functional-dsvm-.*$
     skip-if:
       - project: ^openstack/(trove|python-troveclient)$
-        branch: ^(?!stable/(mitaka|newton)).*$
+        branch: ^(?!stable/newton).*$
 
   - name: ^gate-trove-functional-dsvm-.*$
-    branch: ^(?!stable/(mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
 
   - name: ^gate-tempest-dsvm-full-lio-ubuntu-(trusty|xenial)
     voting: false
@@ -8898,15 +8868,9 @@ projects:
     check:
       - gate-designate-tempest-plugin-pep8-ubuntu-xenial
       - gate-designate-tempest-plugin-docs-ubuntu-xenial
-      # Stable Compat Jobs
-      - gate-tempest-dsvm-designate-powerdns-ubuntu-trusty-mitaka
-      - gate-tempest-dsvm-designate-bind9-ubuntu-trusty-mitaka
     gate:
       - gate-designate-tempest-plugin-pep8-ubuntu-xenial
       - gate-designate-tempest-plugin-docs-ubuntu-xenial
-      # Stable Compat Jobs
-      - gate-tempest-dsvm-designate-powerdns-ubuntu-trusty-mitaka
-      - gate-tempest-dsvm-designate-bind9-ubuntu-trusty-mitaka
 
   - name: openstack/development-proposals
     template:
@@ -16617,7 +16581,6 @@ projects:
       - gate-grenade-dsvm-forward-ubuntu-trusty
       - gate-grenade-dsvm-neutron-libs-ubuntu-trusty-nv
       - gate-grenade-dsvm-neutron-libs-ubuntu-xenial-nv
-      - gate-neutronclient-test-dsvm-functional-ubuntu-trusty-mitaka-nv
 
   - name: openstack/python-novaclient
     template:
@@ -17337,8 +17300,6 @@ projects:
       - sahara-coverage-ubuntu-xenial-nv
       - gate-grenade-dsvm-sahara-ubuntu-xenial-nv
       - gate-sahara-dsvm-scenario-neutron-ubuntu-xenial
-      - gate-sahara-dsvm-scenario-neutron-ubuntu-trusty-nv
-      - gate-sahara-dsvm-scenario-nova-ubuntu-trusty-nv
       - gate-sahara-dsvm-scenario-mod-wsgi-ubuntu-xenial-nv
     gate:
       - gate-sahara-dsvm-scenario-neutron-ubuntu-xenial
@@ -18803,11 +18764,9 @@ projects:
     template:
       - name: merge-check
     check:
-      - gate-trove-legacy-functional-dsvm-mysql-mitaka
       - gate-trove-legacy-functional-dsvm-mysql-newton
       - gate-trove-legacy-functional-dsvm-redis-newton
     gate:
-      - gate-trove-legacy-functional-dsvm-mysql-mitaka
       - gate-trove-legacy-functional-dsvm-mysql-newton
       - gate-trove-legacy-functional-dsvm-redis-newton
 

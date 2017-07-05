@@ -3589,28 +3589,12 @@
           - ubuntu-xenial
           suffix: '-nv'
       - 'gate-tempest-dsvm-designate-{designate-driver}{special}-{node}{suffix}':
-          node: ubuntu-trusty
-          branch-override: default
-          special: ''
-          suffix: ''
-          designate-driver:
-            - powerdns
-            - bind9
-      - 'gate-tempest-dsvm-designate-{designate-driver}{special}-{node}{suffix}':
           node: ubuntu-xenial
           branch-override: default
           special: ''
           suffix: ''
           designate-driver:
             - pdns4
-            - bind9
-      - 'gate-tempest-dsvm-designate-{designate-driver}{special}-{node}{suffix}':
-          node: ubuntu-trusty
-          branch-override: stable/mitaka
-          special: ''
-          suffix: '-mitaka'
-          designate-driver:
-            - powerdns
             - bind9
       # This job is xenial only because it is pinned to > newton - pgSQL support was broken in newton and before
       - 'gate-tempest-dsvm-designate-{designate-driver}{special}-{node}{suffix}':
@@ -3629,9 +3613,7 @@
           designate-driver:
             - pdns4
       - 'gate-tempest-dsvm-designate-agent-{designate-driver}-{node}{suffix}':
-          node:
-            - ubuntu-trusty
-            - ubuntu-xenial
+          node: ubuntu-xenial
           branch-override: default
           suffix: ''
           designate-driver:
@@ -3650,12 +3632,6 @@
           suffix: ''
           designate-driver:
             - pdns4
-      # Legacy Jobs that only run against mitaka (no xenial).
-      - 'gate-designate-dsvm-{designate-driver}-{node}':
-          node: ubuntu-trusty
-          designate-driver:
-            - powerdns
-            - bind9
       # identity-v3-only only started running in newton/ocata timeframe so is
       # xenial only, not trusty.
       - 'gate-tempest-dsvm-designate-{designate-driver}{special}-{node}{suffix}':
@@ -13246,12 +13222,6 @@
       - '{pipeline}-neutronclient-test-dsvm-{which-test}-{node}{suffix}':
           pipeline: gate
           node: ubuntu-trusty
-          which-test: functional
-          suffix: '-mitaka-nv'
-          branch-override: stable/mitaka
-      - '{pipeline}-neutronclient-test-dsvm-{which-test}-{node}{suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
           which-test: functional-adv-svcs
           suffix: ''
           branch-override: default
@@ -14023,15 +13993,6 @@
           suffix: '-nv'
           branch-override: default
           plugin: spark
-      # only for mitaka branch
-      - '{pipeline}-sahara-dsvm-scenario-{network}-{node}{suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
-          suffix: '-nv'
-          branch-override: default
-          network:
-            - nova
-            - neutron
       - api-ref-jobs:
           service: data-processing
       - '{pipeline}-grenade-dsvm-sahara-{node}{suffix}':
@@ -15827,10 +15788,6 @@
     name: trove-integration
 
     jobs:
-      - 'gate-trove-legacy-functional-dsvm-{datastore}{suffix}':
-          datastore: 'mysql'
-          suffix: '-mitaka'
-          branch-override: stable/mitaka
       - 'gate-trove-legacy-functional-dsvm-{datastore}{suffix}':
           datastore:
             - mysql
