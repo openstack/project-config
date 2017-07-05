@@ -885,11 +885,8 @@ project-templates:
 
   - name: puppet-openstack-integration-jobs-all
     check:
-      - gate-puppet-openstack-integration-3-scenario001-tempest-ubuntu-trusty
       - gate-puppet-openstack-integration-3-scenario001-tempest-centos-7
-      - gate-puppet-openstack-integration-3-scenario002-tempest-ubuntu-trusty
       - gate-puppet-openstack-integration-3-scenario002-tempest-centos-7
-      - gate-puppet-openstack-integration-3-scenario003-tempest-ubuntu-trusty
       - gate-puppet-openstack-integration-3-scenario003-tempest-centos-7
       - gate-puppet-openstack-integration-4-scenario001-tempest-centos-7
       - gate-puppet-openstack-integration-4-scenario002-tempest-centos-7
@@ -900,11 +897,8 @@ project-templates:
       - gate-puppet-openstack-integration-4-scenario003-tempest-ubuntu-xenial
       - gate-puppet-openstack-integration-4-scenario004-tempest-ubuntu-xenial
     gate:
-      - gate-puppet-openstack-integration-3-scenario001-tempest-ubuntu-trusty
       - gate-puppet-openstack-integration-3-scenario001-tempest-centos-7
-      - gate-puppet-openstack-integration-3-scenario002-tempest-ubuntu-trusty
       - gate-puppet-openstack-integration-3-scenario002-tempest-centos-7
-      - gate-puppet-openstack-integration-3-scenario003-tempest-ubuntu-trusty
       - gate-puppet-openstack-integration-3-scenario003-tempest-centos-7
       - gate-puppet-openstack-integration-4-scenario001-tempest-centos-7
       - gate-puppet-openstack-integration-4-scenario002-tempest-centos-7
@@ -926,36 +920,30 @@ project-templates:
 
   - name: puppet-openstack-integration-jobs-scenario001
     check:
-      - gate-puppet-openstack-integration-3-scenario001-tempest-ubuntu-trusty
       - gate-puppet-openstack-integration-3-scenario001-tempest-centos-7
       - gate-puppet-openstack-integration-4-scenario001-tempest-ubuntu-xenial
       - gate-puppet-openstack-integration-4-scenario001-tempest-centos-7
     gate:
-      - gate-puppet-openstack-integration-3-scenario001-tempest-ubuntu-trusty
       - gate-puppet-openstack-integration-3-scenario001-tempest-centos-7
       - gate-puppet-openstack-integration-4-scenario001-tempest-ubuntu-xenial
       - gate-puppet-openstack-integration-4-scenario001-tempest-centos-7
 
   - name: puppet-openstack-integration-jobs-scenario002
     check:
-      - gate-puppet-openstack-integration-3-scenario002-tempest-ubuntu-trusty
       - gate-puppet-openstack-integration-3-scenario002-tempest-centos-7
       - gate-puppet-openstack-integration-4-scenario002-tempest-ubuntu-xenial
       - gate-puppet-openstack-integration-4-scenario002-tempest-centos-7
     gate:
-      - gate-puppet-openstack-integration-3-scenario002-tempest-ubuntu-trusty
       - gate-puppet-openstack-integration-3-scenario002-tempest-centos-7
       - gate-puppet-openstack-integration-4-scenario002-tempest-ubuntu-xenial
       - gate-puppet-openstack-integration-4-scenario002-tempest-centos-7
 
   - name: puppet-openstack-integration-jobs-scenario003
     check:
-      - gate-puppet-openstack-integration-3-scenario003-tempest-ubuntu-trusty
       - gate-puppet-openstack-integration-3-scenario003-tempest-centos-7
       - gate-puppet-openstack-integration-4-scenario003-tempest-ubuntu-xenial
       - gate-puppet-openstack-integration-4-scenario003-tempest-centos-7
     gate:
-      - gate-puppet-openstack-integration-3-scenario003-tempest-ubuntu-trusty
       - gate-puppet-openstack-integration-3-scenario003-tempest-centos-7
       - gate-puppet-openstack-integration-4-scenario003-tempest-ubuntu-xenial
       - gate-puppet-openstack-integration-4-scenario003-tempest-centos-7
@@ -2065,19 +2053,6 @@ jobs:
 
   - name: ^gate-puppet-openstackci-puppet-beaker-rspec-.*$
     voting: false
-
-  # puppet-integration on trusty stopped after Mitaka (OpenStack) and Hammer (Ceph) releases.
-  - name: ^gate-puppet-openstack-integration-3-scenario00(1|2)-tempest-ubuntu-trusty$
-    branch: ^(stable/(liberty|mitaka|hammer)).*$
-
-  # puppet-integration scenario003 was introduced after Liberty (OpenStack) but we stop to
-  # test Trusty after Mitaka.
-  - name: ^gate-puppet-openstack-integration-3-scenario003-tempest-ubuntu-trusty$
-    branch: ^(stable/mitaka).*$
-
-  # puppet-integration scenario003 was introduced after Liberty (OpenStack).
-  - name: ^gate-puppet-openstack-integration-3-scenario003-tempest-centos-7$
-    branch: ^(?!stable/liberty).*$
 
   # Aims to break when a new version of Puppet is released
   # For now, run the jobs only on master so if the job starts to
