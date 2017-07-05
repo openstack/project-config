@@ -1261,12 +1261,6 @@ jobs:
   - name: ^gate-tempest-dsvm-monasca-transform-python-functional$
     branch: ^(?!stable/newton).*$
 
-  # disable requirement control @ stable/mitaka,
-  # gate-monasca-log-api-requirements fails on monasca-common which was not
-  # at that time (stable/mitaka) part of global-requirements
-  - name: ^gate-monasca-log-api-requirements$
-    branch: ^(?!stable/mitaka).*$
-
   # OpenStack documentation process is not meant to be part of stable/ocata
   - name: ^gate-monasca-log-api-releasenotes$
     branch: ^(?!stable/(newton|ocata)).*$
@@ -1276,12 +1270,12 @@ jobs:
   # py35 ENV in tox were introduced recently
   # so the apply only to master and stable/ocata
   - name: ^gate-monasca-log-api-python35$
-    branch: ^(?!stable/(mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
 
   # do not run tempests on either stable/mitaka nor stable/newton
   # devstack gate for log-api was not functional that time
   - name: ^gate-tempest-dsvm-monasca-log-api-ubuntu-xenial$
-    branch: ^(?!stable/(mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
 
   # disable requirement control @ stable/mitaka for networking-arista
   # networking-arista was not managed in requirements for mitaka.
@@ -1958,10 +1952,10 @@ jobs:
           - ^deploy-guide/source/.*
 
   - name: ^kolla-dsvm-build.*$
-    branch: ^(?!stable/(mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
 
   - name: ^kolla-coverage-ubuntu-xenial-nv$
-    branch: ^(?!stable/(mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
     skip-if:
       - project: ^openstack/kolla$
         all-files-match-any:
@@ -2202,7 +2196,7 @@ jobs:
     voting: false
 
   # NOTE(mriedem): These jobs use nova-network specifically which won't work
-  # after newton so restrict them to just run on mitaka and newton changes.
+  # after newton so restrict them to just run on newton changes.
   - name: ^gate-grenade-dsvm-multinode.*$
     branch: ^stable/newton$
 
@@ -2222,27 +2216,9 @@ jobs:
       - ^rally/verification.*$
       - ^tests/ci/.*verify.*$
 
-  # NOTE(markvan) (heat) functional lbaas v2 testing was introduced in the mitaka
-  # cycle as experimental, so testing it there and earlier branches doesn't make sense.
-  - name: ^gate-heat-dsvm-functional-.*-lbaasv2-ubuntu-xenial$
-    branch: ^(?!stable/mitaka).*$
-
-  # NOTE(therve) (heat) functional lbaas v1 testing is deprecated in newton and
-  # forward.
-  - name: ^gate-heat-dsvm-functional-.*-lbaasv1-ubuntu-trusty$
-    branch: ^(stable/mitaka).*$
-
-  # NOTE(therve) (heat) only run convergence lbaasv1 on mitaka
-  - name: ^gate-heat-dsvm-functional-convg-mysql-lbaasv1-ubuntu-trusty$
-    branch: ^(stable/mitaka).*$
-
-  # NOTE(therve) (heat) run convergence lbaasv2 newton and forward
-  - name: ^gate-heat-dsvm-functional-convg-mysql-lbaasv2-ubuntu-xenial$
-    branch: ^(?!stable/mitaka).*$
-
   # NOTE(rabi) (heat) run non-apache ocata and forward
   - name: ^gate-heat-dsvm-functional-convg-mysql-lbaasv2-non-apache-ubuntu-xenial$
-    branch: ^(?!stable/(mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
 
   # NOTE(therve) (heat) run amqp1 job only on master
   - name: ^gate-heat-dsvm-functional-convg-mysql-lbaasv2-amqp1-ubuntu-xenial-nv$
@@ -2250,7 +2226,7 @@ jobs:
 
   # NOTE(rabi) (heat) run py35 pike and forward
   - name: ^gate-heat-dsvm-functional-convg-mysql-lbaasv2-py35-ubuntu-xenial$
-    branch: ^(?!stable/(mitaka|newton|ocata)).*$
+    branch: ^(?!stable/(newton|ocata)).*$
 
   # NOTE(sambetts) Make networking-cisco tests against neutron master
   # non-voting so we aren't broken everytime neutron removes something
@@ -2369,11 +2345,6 @@ jobs:
   # This job is just to check py35 compliance in master
   - name: ^gate-tempest-dsvm-py35.*$
     branch: ^(?!(stable|driverfixes))
-
-  # NOTE(mriedem): novaclient functional tests didn't support a neutron
-  # configuration until Newton, so skip for mitaka.
-  - name: ^gate-novaclient-dsvm-functional-neutron
-    branch: ^(?!stable/mitaka).*$
 
   # NOTE(mriedem): This job requires nova-network which is not used in Ocata+
   # except in cells v1 configurations, so restrict it to Newton for Xenial.
@@ -2807,12 +2778,6 @@ jobs:
     success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/publish-docs/
 
   - name: ^gate-.*-tox-checklang.*ubuntu-xenial$
-    # run this on all branches. The default ubuntu-xenial condition
-    # will not run this on older branches. We do not have a
-    # thisbranchnamewillneverexist branch but this allows to match all
-    # branches.
-    # TODO(jaegerandi): Remove branch condition once mitaka is retired.
-    branch: ^(?!stable/thisbranchnamewillneverexist).*$
     # Only run job if at least one po or pot file was changed
     files:
       - '^.*\.po$'
@@ -10605,8 +10570,6 @@ projects:
       - name: api-ref-jobs
       - name: install-guide-jobs
     check:
-      - gate-heat-dsvm-functional-orig-mysql-lbaasv1-ubuntu-trusty
-      - gate-heat-dsvm-functional-convg-mysql-lbaasv1-ubuntu-trusty
       - gate-heat-dsvm-functional-orig-mysql-lbaasv2-ubuntu-trusty
       - gate-heat-dsvm-functional-orig-mysql-lbaasv2-ubuntu-xenial
       - gate-heat-dsvm-functional-convg-mysql-lbaasv2-ubuntu-trusty
@@ -10618,8 +10581,6 @@ projects:
       - gate-grenade-dsvm-heat-ubuntu-xenial
       - gate-heat-dsvm-functional-convg-mysql-lbaasv2-identity-v3-only-ubuntu-xenial-nv
     gate:
-      - gate-heat-dsvm-functional-orig-mysql-lbaasv1-ubuntu-trusty
-      - gate-heat-dsvm-functional-convg-mysql-lbaasv1-ubuntu-trusty
       - gate-heat-dsvm-functional-orig-mysql-lbaasv2-ubuntu-trusty
       - gate-heat-dsvm-functional-orig-mysql-lbaasv2-ubuntu-xenial
       - gate-heat-dsvm-functional-convg-mysql-lbaasv2-ubuntu-trusty
@@ -10635,10 +10596,8 @@ projects:
       - gate-rally-dsvm-fakevirt-heat-ubuntu-trusty-nv
       - gate-rally-dsvm-fakevirt-heat-ubuntu-xenial-nv
     experimental:
-      - gate-heat-dsvm-functional-orig-mysql-lbaasv1-identity-v3-only-ubuntu-xenial-nv
       - gate-rally-dsvm-fakevirt-heat-ubuntu-trusty-nv
       - gate-rally-dsvm-fakevirt-heat-ubuntu-xenial-nv
-      - gate-heat-dsvm-functional-orig-postgres-lbaasv1-ubuntu-trusty
       - gate-tripleo-ci-centos-7-nonha-multinode-oooq
     experimental-tripleo:
       - gate-tripleo-ci-centos-7-ovb-nonha-convergence
