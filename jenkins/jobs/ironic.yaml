@@ -38,6 +38,17 @@
             export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_BUILD_DEPLOY_RAMDISK=False"
 
 - builder:
+    name: ironic-cinder
+    builders:
+      - ironic-extra-vars:
+          script: |
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_ENABLED_STORAGE_INTERFACES=cinder,noop"
+            export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_STORAGE_INTERFACE=cinder"
+            # We have to enable cinder this way, as normally when
+            # DEVSTACK_GATE_IRONIC=1 it disables all the cinder services.
+            export ENABLED_SERVICES=cinder,c-sch,c-api,c-vol
+
+- builder:
     name: ironic-inspector-grenade
     builders:
       - ironic-extra-vars:
@@ -1170,6 +1181,40 @@
       - ironic-multitenant
       - ironic-tempest-plugin:
           concurrency: 1
+      - devstack-virtual-ironic:
+          build-ramdisk: ''
+          deploy_driver: agent_ipmitool
+          image-type: wholedisk
+          boot-mode: bios
+          branch-override: '{branch-override}'
+          bm-vm-count: 3
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: '{pipeline}-tempest-dsvm-ironic-bfv-{node}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 160
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - ironic-deploy-with-IPA:
+          ramdisk-type: 'tinyipa'
+      - ironic-tempest-regex:
+          tempest-regex: baremetal_boot_from_volume
+      - ironic-tempest-plugin:
+          concurrency: 1
+      - ironic-cinder
       - devstack-virtual-ironic:
           build-ramdisk: ''
           deploy_driver: agent_ipmitool
