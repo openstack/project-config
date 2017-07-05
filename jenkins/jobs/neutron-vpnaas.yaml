@@ -158,13 +158,8 @@
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
 
-          if [ "$ZUUL_BRANCH" == "stable/liberty" -o "$ZUUL_BRANCH" == "stable/mitaka" ] ; then
-              export DEVSTACK_GATE_TEMPEST_NOTESTS=1
-              export DEVSTACK_GATE_INSTALL_TESTONLY=1
-          else
-              export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
-              export DEVSTACK_GATE_TEMPEST_REGEX="^neutron_vpnaas.tests.tempest.api\."
-          fi
+          export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
+          export DEVSTACK_GATE_TEMPEST_REGEX="^neutron_vpnaas.tests.tempest.api\."
 
           function gate_hook {{
               bash -xe $BASE/new/neutron-vpnaas/neutron_vpnaas/tests/contrib/gate_hook.sh api{which}

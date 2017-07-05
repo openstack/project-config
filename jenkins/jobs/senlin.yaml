@@ -34,7 +34,7 @@
           services+=,g-api,g-reg
           services+=,n-api,n-cpu,n-cond,n-sch,n-crt
           # placement services mandatory for nova from ocata
-          if [[ ! "stable/mitaka stable/newton" =~ $ZUUL_BRANCH ]]; then
+          if [[ "stable/newton" != $ZUUL_BRANCH ]]; then
              services+=,placement-api,placement-client
           fi
           services+=,c-sch,c-api,c-vol,c-bak
@@ -47,10 +47,6 @@
             export SENLIN_BACKEND="openstack_test"
           else
             export SENLIN_BACKEND="openstack"
-            # Enable heat for mitaka (no devstack plugin available)
-            if [[ "$ZUUL_BRANCH" == "stable/mitaka" ]]; then
-                services+=,h-api,h-api-cfn,h-api-cw,h-eng
-            fi
             export PROJECTS="openstack/heat $PROJECTS"
             export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
 

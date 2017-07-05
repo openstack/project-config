@@ -51,7 +51,7 @@
           services+=,n-api,n-api-meta,n-cpu,n-cond,n-sch,n-crt
 
           # placement services mandatory for nova from ocata
-          if [[ ! "stable/mitaka stable/newton" =~ $ZUUL_BRANCH ]]; then
+          if [[ "stable/newton" != $ZUUL_BRANCH ]]; then
              services+=,placement-api,placement-client
           fi
 
@@ -65,11 +65,6 @@
           else
              export DEVSTACK_GATE_USE_PYTHON3=False
              services+=,s-proxy,s-object,s-container,s-account
-          fi
-
-          # enable heat services for mitaka (no devstack plugin available)
-          if [[ "$ZUUL_BRANCH" == "stable/mitaka" ]]; then
-              services+=,h-api,h-api-cfn,h-api-cw,h-eng
           fi
 
           if [[ ! "stable/newton stable/ocata" =~ $ZUUL_BRANCH ]]; then
@@ -181,11 +176,6 @@
              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
          fi
 
-         # enable heat services for mitaka (no devstack plugin available)
-         if [[ "$ZUUL_BRANCH" == "stable/mitaka" ]]; then
-             export ENABLED_SERVICES+=,h-api,h-api-cfn,h-api-cw,h-eng
-         fi
-
          function post_test_hook {{
              # Configure and run functional tests
              $BASE/new/python-heatclient/heatclient/tests/functional/hooks/post_test_hook.sh
@@ -220,11 +210,6 @@
           export PYTHONUNBUFFERED=true
           export GRENADE_PLUGINRC="enable_grenade_plugin heat https://git.openstack.org/openstack/heat"
           export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
-
-          # enable heat services for mitaka (no devstack plugin available)
-          if [[ "$ZUUL_BRANCH" == "stable/mitaka" ]]; then
-              ENABLED_SERVICES+=,h-api,h-api-cfn,h-api-cw,h-eng
-          fi
 
           export ENABLED_SERVICES
 

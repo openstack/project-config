@@ -142,12 +142,9 @@
               export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin magnum https://git.openstack.org/openstack/magnum"
           fi
           if [ $DEVSTACK_GATE_TELEMETRY -ne 0 ]; then
-              # panko exists for Newton+ only
-              if [[ ! "stable/mitaka" =~ $ZUUL_BRANCH ]]; then
-                  export PROJECTS="openstack/panko $PROJECTS"
-                  export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin panko git://git.openstack.org/openstack/panko"
-                  export ENABLED_SERVICES+=panko-api,
-              fi
+              export PROJECTS="openstack/panko $PROJECTS"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin panko git://git.openstack.org/openstack/panko"
+              export ENABLED_SERVICES+=panko-api,
               export PROJECTS="openstack/ceilometer $PROJECTS"
               export PROJECTS="openstack/aodh $PROJECTS"
               export PROJECTS="openstack/gnocchi $PROJECTS"
