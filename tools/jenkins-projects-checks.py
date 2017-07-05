@@ -14,9 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import copy
 import io
 import glob
 import sys
+import requests
 import voluptuous as v
 
 # The files uses YAML extensions like !include, therefore use the
@@ -200,8 +202,124 @@ def _check_tox_builder(schema, entry):
     return count
 
 
+class ServiceTypeValidator(object):
+    # NOTE(dhellmann): This class will move to os-service-types when
+    # that repo is ready to start accepting code.
+
+    # The location of the service-types-authority data.
+    _URL = 'https://service-types.openstack.org/service-types.json'  # noqa
+
+    def __init__(self):
+        # FIXME(dhellmann): Improve error handling and add caching.
+        self._raw = requests.get(self._URL).json()
+        # Store a mapping from the project name to the service
+        # data. Include api_reference_project names when present so
+        # that validation code can look up either type of project.
+        by_project = {}
+        for s in self._raw['services']:
+            for key in ['project', 'api_reference_project']:
+                name = s.get(key)
+                if name:
+                    by_project[self._canonical_project_name(name)] = s
+        self._raw['by_project'] = by_project
+
+    def _canonical_project_name(self, name):
+        "Convert repo name to project name."
+        return name.rpartition('/')[-1]
+
+    @property
+    def url(self):
+        "The URL from which the data was retrieved."
+        return self._URL
+
+    @property
+    def version(self):
+        "The version of the data."
+        return self._raw['version']
+
+    @property
+    def forward(self):
+        "Mapping service type names to their aliases."
+        return copy.deepcopy(self._raw['forward'])
+
+    @property
+    def reverse(self):
+        "Mapping aliases to their service type names."
+        return copy.deepcopy(self._raw['reverse'])
+
+    @property
+    def services(self):
+        return copy.deepcopy(self._raw['services'])
+
+    def get_data_for_project(self, name):
+        """Return the data value associated with the project.
+
+        :param name: A repository or project name in the form
+            ``'openstack/project'`` or just ``'project'``.
+        :type name: str
+        :returns: dict
+        :raises: ValueError
+
+        """
+        key = name.rpartition('/')[-1]
+        try:
+            return self._raw['by_project'][key]
+        except KeyError:
+            raise ValueError(
+                'No service_type was found for {}'.format(key),
+            )
+
+
+# The jobs for which the service type needs to be checked
+_API_JOBS = ['install-guide-jobs', 'api-guide-jobs', 'api-ref-jobs']
+
+
+def validate_service_types():
+    print("Validating Service Types")
+    print("========================")
+    count = 0
+    # Load the current service-type-authority data
+    service_types = ServiceTypeValidator()
+    # Load the project job definitions
+    with io.open('jenkins/jobs/projects.yaml', 'r', encoding='utf-8') as f:
+        file_contents = local_yaml.load(f.read())
+    for item in file_contents:
+        project = item.get('project', {})
+        for job in project.get('jobs', []):
+            for api_job in _API_JOBS:
+                if api_job not in job:
+                    continue
+                try:
+                    proj_data = service_types.get_data_for_project(
+                        project['name'])
+                except ValueError:
+                    print('ERROR: Found service type reference "{}" for {} in {} '
+                          'but not in authority list {}'.format(
+                              job[api_job]['service'],
+                              api_job,
+                              project['name'],
+                              service_types.url))
+                    count +=1
+                else:
+                    actual = job[api_job]['service']
+                    expected = proj_data['service_type']
+                    if actual != expected:
+                        print('ERROR: Found service "{}" for {} '
+                              'in {} but expected "{}"'.format(
+                                  job[api_job]['service'],
+                                  api_job,
+                                  project['name'],
+                                  expected))
+                        count += 1
+    print('Found {} errors in service type settings '
+          'in jenkins/jobs/projects.yaml\n'.format(
+              count))
+    return count
+
+
 def check_all():
     errors = validate_jobs()
+    errors = errors or validate_service_types()  # skip if formatting errors
     errors = check_alphabetical() or errors
 
     if errors:
