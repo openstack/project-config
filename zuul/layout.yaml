@@ -477,36 +477,24 @@ project-templates:
       - '{name}-branch-tarball'
 
   - name: grenade-nova-net
-    check:
-      - 'gate-grenade-dsvm-ubuntu-trusty'
-    gate:
-      - 'gate-grenade-dsvm-ubuntu-trusty'
     experimental:
-      - 'gate-grenade-dsvm-neutron-ubuntu-trusty'
-      - 'gate-grenade-dsvm-neutron-ubuntu-xenial'
+      - gate-grenade-dsvm-neutron-ubuntu-xenial
 
   - name: integrated-gate-nova-net
     check:
-      - 'gate-tempest-dsvm-nnet-ubuntu-trusty'
-      - 'gate-tempest-dsvm-nnet-ubuntu-xenial'
+      - gate-tempest-dsvm-nnet-ubuntu-xenial
     gate:
-      - 'gate-tempest-dsvm-nnet-ubuntu-trusty'
-      - 'gate-tempest-dsvm-nnet-ubuntu-xenial'
+      - gate-tempest-dsvm-nnet-ubuntu-xenial
 
   - name: integrated-gate
     check:
-      - 'gate-tempest-dsvm-neutron-full-ubuntu-trusty'
-      - 'gate-grenade-dsvm-neutron-ubuntu-trusty'
-      - 'gate-tempest-dsvm-neutron-full-ubuntu-xenial'
-      - 'gate-grenade-dsvm-neutron-ubuntu-xenial'
+      - gate-tempest-dsvm-neutron-full-ubuntu-xenial
+      - gate-grenade-dsvm-neutron-ubuntu-xenial
     gate:
-      - 'gate-tempest-dsvm-neutron-full-ubuntu-trusty'
-      - 'gate-grenade-dsvm-neutron-ubuntu-trusty'
-      - 'gate-tempest-dsvm-neutron-full-ubuntu-xenial'
-      - 'gate-grenade-dsvm-neutron-ubuntu-xenial'
+      - gate-tempest-dsvm-neutron-full-ubuntu-xenial
+      - gate-grenade-dsvm-neutron-ubuntu-xenial
     experimental:
-      - 'gate-tempest-dsvm-neutron-pg-full-ubuntu-trusty'
-      - 'gate-tempest-dsvm-neutron-pg-full-ubuntu-xenial'
+      - gate-tempest-dsvm-neutron-pg-full-ubuntu-xenial
 
   - name: integrated-gate-py35
     check:
@@ -2188,9 +2176,6 @@ jobs:
   # the one that determines our selection here
   # only here until stable is votable, then merge
   # back to a single job
-  - name: ^.*grenade-dsvm(-.*)?-forward-ubuntu-trusty$
-    branch: ^stable/mitaka$
-    voting: false
   - name: ^.*grenade-dsvm(-.*)?-forward-ubuntu-xenial$
     branch: ^stable/(?!mitaka).*$
     voting: false
@@ -3732,14 +3717,12 @@ projects:
       - gate-devstack-docs-ubuntu-xenial
       - gate-devstack-bashate
       - gate-devstack-unit-tests
-      - gate-grenade-dsvm-forward-ubuntu-trusty
       - gate-tempest-dsvm-ironic-ipa-wholedisk-bios-agent_ssh-tinyipa-ubuntu-trusty-nv
       - gate-tempest-dsvm-ironic-ipa-wholedisk-bios-agent_ipmitool-tinyipa-ubuntu-xenial-nv
       - gate-devstack-dsvm-updown-ubuntu-xenial
       - gate-devstack-dsvm-py35-updown-ubuntu-xenial-nv
       - gate-swift-dsvm-functional-ubuntu-trusty-nv
       - gate-swift-dsvm-functional-ubuntu-xenial-nv
-      - gate-grenade-dsvm-neutron-ubuntu-trusty
       - gate-grenade-dsvm-neutron-ubuntu-xenial
       - gate-grenade-dsvm-multinode
       - gate-grenade-dsvm-neutron-multinode-ubuntu-trusty
@@ -3764,7 +3747,6 @@ projects:
       - gate-manila-tempest-minimal-py35-dsvm-cephfs-native-centos-7-nv
       - gate-manila-tempest-minimal-py35-dsvm-cephfs-nfs-centos-7-nv
       - gate-neutron-dsvm-functional-ubuntu-trusty
-      - gate-tempest-dsvm-neutron-dvr-ubuntu-trusty
       - gate-tempest-dsvm-neutron-dvr-ubuntu-xenial
       - gate-tempest-dsvm-neutron-dvr-multinode-full-ubuntu-trusty-nv
       - gate-tempest-dsvm-neutron-dvr-multinode-full-ubuntu-xenial-nv
@@ -3772,10 +3754,8 @@ projects:
       - gate-tempest-dsvm-neutron-nova-next-full-ubuntu-xenial-nv
       - gate-tempest-dsvm-multinode-full-ubuntu-trusty-nv
       - gate-tempest-dsvm-multinode-full-ubuntu-xenial-nv
-      - gate-tempest-dsvm-cells-ubuntu-trusty
       - gate-tempest-dsvm-cells-ubuntu-xenial
       - gate-dsvm-mongodb-zaqar-ubuntu-trusty-nv
-      - gate-grenade-dsvm-forward-ubuntu-trusty
       - gate-tempest-dsvm-lvm-multibackend-ubuntu-xenial-nv
       - gate-tempest-dsvm-neutron-full-fedora-25-nv
     periodic:
@@ -3796,20 +3776,14 @@ projects:
     template:
       - name: merge-check
     check:
-      - gate-grenade-dsvm-ubuntu-trusty
-      - gate-grenade-dsvm-neutron-ubuntu-trusty
       - gate-grenade-dsvm-neutron-ubuntu-xenial
-      - gate-grenade-dsvm-forward-ubuntu-trusty
       - gate-grenade-dsvm-heat-ubuntu-xenial-nv
       - gate-grenade-dsvm-multinode
       - gate-grenade-dsvm-neutron-multinode-ubuntu-trusty
       - gate-grenade-dsvm-neutron-multinode-ubuntu-xenial
       - gate-grenade-publish-docs
-      - gate-grenade-dsvm-ironic-ubuntu-trusty-nv
       - gate-grenade-dsvm-ironic-ubuntu-xenial-nv
     gate:
-      - gate-grenade-dsvm-ubuntu-trusty
-      - gate-grenade-dsvm-neutron-ubuntu-trusty
       - gate-grenade-dsvm-neutron-ubuntu-xenial
       - gate-grenade-dsvm-multinode
       - gate-grenade-dsvm-neutron-multinode-ubuntu-trusty
@@ -3818,11 +3792,9 @@ projects:
     post:
       - grenade-publish-docs
     experimental:
-      - gate-grenade-dsvm-neutron-forward-ubuntu-trusty
       - gate-grenade-dsvm-neutron-forward-ubuntu-xenial
       - gate-grenade-dsvm-neutron-nova-next-ubuntu-xenial-nv
       - gate-grenade-dsvm-trove
-      - gate-grenade-dsvm-ceilometer-ubuntu-trusty
       - gate-grenade-dsvm-ceilometer-ubuntu-xenial
 
   - name: openstack-dev/hacking
@@ -4006,7 +3978,6 @@ projects:
       - gate-grenade-dsvm-neutron-multinode-ubuntu-xenial
     experimental:
       - gate-tempest-dsvm-neutron-full-fedora-25-nv
-      - gate-grenade-dsvm-forward-ubuntu-trusty
       - gate-tempest-dsvm-neutron-dvr-multinode-full-ubuntu-xenial-nv
 
   - name: openstack-infra/elastic-recheck
@@ -6229,7 +6200,6 @@ projects:
       - gate-ceilometer-tox-py27-mongodb-ubuntu-xenial
       - gate-ceilometer-tox-py27-mysql-ubuntu-xenial
       - gate-ceilometer-tox-py27-postgresql-ubuntu-xenial
-      - gate-grenade-dsvm-ceilometer-ubuntu-trusty
       - gate-grenade-dsvm-ceilometer-ubuntu-xenial
       - gate-telemetry-dsvm-integration-ceilometer-ubuntu-trusty
       - gate-telemetry-dsvm-integration-ceilometer-ubuntu-xenial
@@ -6247,7 +6217,6 @@ projects:
       - gate-ceilometer-tox-py27-mongodb-ubuntu-xenial
       - gate-ceilometer-tox-py27-mysql-ubuntu-xenial
       - gate-ceilometer-tox-py27-postgresql-ubuntu-xenial
-      - gate-grenade-dsvm-ceilometer-ubuntu-trusty
       - gate-grenade-dsvm-ceilometer-ubuntu-xenial
       - gate-telemetry-dsvm-integration-ceilometer-ubuntu-trusty
       - gate-telemetry-dsvm-integration-ceilometer-ubuntu-xenial
@@ -6255,7 +6224,6 @@ projects:
     experimental:
       - gate-ceilometer-dsvm-tempest-plugin-es-ubuntu-trusty
       - gate-ceilometer-dsvm-tempest-plugin-es-ubuntu-xenial
-      - gate-grenade-dsvm-forward-ubuntu-trusty
       - gate-rally-dsvm-fakevirt-ceilometer-ubuntu-xenial
 
   - name: openstack/ceilometer-powervm
@@ -6772,14 +6740,12 @@ projects:
       - gate-tempest-dsvm-full-sheepdog-ubuntu-xenial-nv
       - gate-tempest-dsvm-full-drbd-devstack-ubuntu-trusty-nv
       - gate-tempest-dsvm-full-drbd-devstack-ubuntu-xenial-nv
-      - gate-tempest-dsvm-full-lio-ubuntu-trusty
       - gate-tempest-dsvm-full-lio-ubuntu-xenial
       - gate-tempest-dsvm-full-devstack-plugin-nfs-nv
     gate:
       - gate-cinder-tox-compliance-ubuntu-xenial
       - gate-grenade-dsvm-cinder-mn-sub-volbak-ubuntu-xenial
     experimental:
-      - gate-grenade-dsvm-forward-ubuntu-trusty
       - gate-tempest-dsvm-full-sheepdog-src-os-brick-ubuntu-trusty-nv
       - gate-tempest-dsvm-full-sheepdog-src-os-brick-ubuntu-xenial-nv
       - gate-tempest-dsvm-zeromq-multibackend-ubuntu-xenial
@@ -10407,7 +10373,6 @@ projects:
       - gate-rally-dsvm-glance-ubuntu-xenial-nv
       - gate-rally-dsvm-py35-glance-nv
     experimental:
-      - gate-grenade-dsvm-forward-ubuntu-trusty
       - gate-glance-dsvm-grenade-multinode-ubuntu-xenial-nv
       - gate-tempest-dsvm-py35-full-devstack-plugin-ceph-ubuntu-xenial-nv
 
@@ -10695,8 +10660,6 @@ projects:
       - gate-horizon-selenium-headless-ubuntu-xenial
       - gate-horizon-dsvm-tempest-plugin-ubuntu-trusty
       - gate-horizon-dsvm-tempest-plugin-ubuntu-xenial
-    experimental:
-      - gate-grenade-dsvm-forward-ubuntu-trusty
 
   - name: openstack/horizon-cisco-ui
     template:
@@ -10860,7 +10823,6 @@ projects:
       - name: api-ref-jobs
       - name: install-guide-jobs
     check:
-      - gate-tempest-dsvm-ironic-pxe_ssh-ubuntu-trusty
       - gate-tempest-dsvm-ironic-pxe_ssh-postgres-ubuntu-trusty-nv
       - gate-tempest-dsvm-ironic-pxe_ipmitool-postgres-ubuntu-xenial-nv
       - gate-tempest-dsvm-ironic-ipa-wholedisk-bios-agent_ssh-tinyipa-ubuntu-trusty
@@ -10879,7 +10841,6 @@ projects:
       - gate-ironic-dsvm-standalone-ubuntu-xenial
       - gate-ironic-inspector-dsvm-ipa-ubuntu-trusty-nv
       - gate-tempest-dsvm-ironic-inspector-ubuntu-xenial-nv
-      - gate-grenade-dsvm-ironic-ubuntu-trusty
       - gate-grenade-dsvm-ironic-ubuntu-xenial
       - gate-grenade-dsvm-ironic-multinode-multitenant-ubuntu-xenial
       - gate-tempest-dsvm-ironic-multitenant-network-ubuntu-xenial
@@ -10895,7 +10856,6 @@ projects:
       - gate-tempest-dsvm-ironic-ipa-wholedisk-bios-agent_ipmitool-tinyipa-ubuntu-xenial
       - gate-tempest-dsvm-ironic-ipa-partition-redfish-tinyipa-ubuntu-xenial
       - gate-ironic-dsvm-standalone-ubuntu-xenial
-      - gate-grenade-dsvm-ironic-ubuntu-trusty
       - gate-grenade-dsvm-ironic-ubuntu-xenial
       - gate-grenade-dsvm-ironic-multinode-multitenant-ubuntu-xenial
       - ironic-coverage-ubuntu-trusty
@@ -11215,7 +11175,6 @@ projects:
     gate:
       - gate-keystone-dsvm-functional-ubuntu-xenial
     experimental:
-      - gate-grenade-dsvm-forward-ubuntu-trusty
       - gate-rally-dsvm-keystone-ubuntu-xenial-nv
       - gate-keystone-tox-patch_cover-ubuntu-trusty
       - gate-keystone-tox-patch_cover-ubuntu-xenial
@@ -12897,7 +12856,6 @@ projects:
       - gate-neutron-dsvm-fullstack-ubuntu-xenial
       - gate-rally-dsvm-neutron-neutron-ubuntu-trusty
       - gate-rally-dsvm-neutron-neutron-ubuntu-xenial
-      - gate-tempest-dsvm-neutron-dvr-ubuntu-trusty
       - gate-tempest-dsvm-neutron-dvr-ubuntu-xenial
       - gate-tempest-dsvm-neutron-linuxbridge-ubuntu-trusty
       - gate-tempest-dsvm-neutron-linuxbridge-ubuntu-xenial
@@ -12920,7 +12878,6 @@ projects:
       - gate-neutron-dsvm-api-ubuntu-trusty
       - gate-neutron-dsvm-api-ubuntu-xenial
       - gate-neutron-dsvm-functional-ubuntu-xenial
-      - gate-tempest-dsvm-neutron-dvr-ubuntu-trusty
       - gate-tempest-dsvm-neutron-dvr-ubuntu-xenial
       - gate-tempest-dsvm-neutron-linuxbridge-ubuntu-trusty
       - gate-tempest-dsvm-neutron-linuxbridge-ubuntu-xenial
@@ -12933,7 +12890,6 @@ projects:
     experimental:
       - gate-neutron-dsvm-functional-python35-ubuntu-xenial-nv
       - gate-neutron-dsvm-fullstack-python35-ubuntu-xenial-nv
-      - gate-grenade-dsvm-neutron-forward-ubuntu-trusty
       - gate-grenade-dsvm-neutron-forward-ubuntu-xenial
       - gate-tempest-dsvm-neutron-ipv6only-nv
       - gate-tempest-dsvm-neutron-serviceipv6-nv
@@ -13188,7 +13144,6 @@ projects:
       - gate-grenade-dsvm-neutron-multinode-ubuntu-trusty
       - gate-grenade-dsvm-neutron-multinode-ubuntu-xenial
       - gate-grenade-dsvm-neutron-multinode-live-migration-nv
-      - gate-tempest-dsvm-cells-ubuntu-trusty
       - gate-tempest-dsvm-cells-ubuntu-xenial
       - gate-tempest-dsvm-full-devstack-plugin-ceph-ubuntu-trusty
       - gate-tempest-dsvm-full-devstack-plugin-ceph-ubuntu-xenial
@@ -13206,7 +13161,6 @@ projects:
       - gate-nova-tox-functional-ubuntu-xenial
       - gate-nova-tox-functional-py35-ubuntu-xenial
       - gate-grenade-dsvm-neutron-multinode-ubuntu-trusty
-      - gate-tempest-dsvm-cells-ubuntu-trusty
       - gate-tempest-dsvm-cells-ubuntu-xenial
       - gate-tempest-dsvm-multinode-live-migration-ubuntu-xenial
     post:
@@ -16082,8 +16036,6 @@ projects:
     post:
       - python-cinderclient-coverage-ubuntu-trusty
       - python-cinderclient-coverage-ubuntu-xenial
-    experimental:
-      - gate-grenade-dsvm-forward-ubuntu-trusty
 
   - name: openstack/python-cloudkittyclient
     template:
@@ -16228,8 +16180,6 @@ projects:
     post:
       - python-glanceclient-coverage-ubuntu-trusty
       - python-glanceclient-coverage-ubuntu-xenial
-    experimental:
-      - gate-grenade-dsvm-forward-ubuntu-trusty
 
   - name: openstack/python-glareclient
     template:
@@ -16383,8 +16333,6 @@ projects:
     post:
       - python-keystoneclient-coverage-ubuntu-trusty
       - python-keystoneclient-coverage-ubuntu-xenial
-    experimental:
-      - gate-grenade-dsvm-forward-ubuntu-trusty
 
   - name: openstack/python-kingbirdclient
     template:
@@ -16537,7 +16485,6 @@ projects:
       - python-neutronclient-coverage-ubuntu-trusty
       - python-neutronclient-coverage-ubuntu-xenial
     experimental:
-      - gate-grenade-dsvm-forward-ubuntu-trusty
       - gate-grenade-dsvm-neutron-libs-ubuntu-trusty-nv
       - gate-grenade-dsvm-neutron-libs-ubuntu-xenial-nv
 
@@ -16564,8 +16511,6 @@ projects:
     post:
       - python-novaclient-coverage-ubuntu-trusty
       - python-novaclient-coverage-ubuntu-xenial
-    experimental:
-      - gate-grenade-dsvm-forward-ubuntu-trusty
 
   - name: openstack/python-octaviaclient
     template:
@@ -17976,7 +17921,6 @@ projects:
       - swift-coverage-ubuntu-trusty
       - swift-coverage-ubuntu-xenial
     experimental:
-      - gate-grenade-dsvm-forward-ubuntu-trusty
       - gate-grenade-dsvm-multinode
       - gate-swift-tox-xfs-tmp-py27-centos-7
       - gate-swift-tox-xfs-tmp-func-centos-7
