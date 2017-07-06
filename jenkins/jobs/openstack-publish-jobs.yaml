@@ -31,7 +31,7 @@
       - revoke-sudo
       - docs
       - add-docs-root-marker:
-          docsrootdir: 'doc/build/html'
+          docsrootdir: 'doc/build'
       - shell: |
           #!/bin/bash -x
 
@@ -47,35 +47,44 @@
               tag=""
           fi
 
-          # When we have a tag, we want to use that as the publishing
-          # location so that we get version-specific docs.  Otherwise,
-          # when building from master we want to publish to the
-          # "latest" directory and when building from a stable branch,
-          # we want to publish to a directory using that branch base
-          # name. Building from other branches is an error.
+          # Rearrange the build output to reflect the end publishing
+          # location, so we can use doc/publish as the source for the
+          # publisher step.
+          mkdir -p doc/publish
+
           if [[ ! -z "$tag" ]]; then
-              publish_name=$tag
+              # run-docs.sh will have already moved the content inside
+              # a directory named for the tag, so we move that
+              # directory to the publish location.
+              mv doc/build/html/$tag doc/publish/
+              mv doc/build/.root-marker doc/publish/$tag/
+
           elif [[ $branch_name = master ]]; then
-              publish_name=latest
+              # run-docs.sh does not rename the output directory, but
+              # we want it to be called "latest".
+              mv doc/build/html doc/publish/latest
+              mv doc/build/.root-marker doc/publish/latest/
+
           elif [[ $branch_name =~ stable/ ]]; then
-              publish_name=$(basename $branch_name)
+              # run-docs.sh will have already moved the content inside
+              # a directory named for the branch, so move that to the
+              # publish location.
+              mv doc/build/html/$(basename $branch_name) doc/publish/
+              mv doc/build/.root-marker doc/publish/$(basename $branch_name)
+
           elif [[ $branch_name =~ feature/ ]]; then
               echo "Docs should not be published for feature branches"
               exit 1
+
           elif [[ $branch_name =~ driverfixes/ ]]; then
               echo "Docs should not be published for feature branches"
               exit 1
+
           else
               # What is this even?
               echo "Could not determine publishing location for branch_name $branch_name"
               exit 1
           fi
-
-          # Rearrange the build output to reflect the end publishing
-          # location, so we can use doc/publish as the source for the
-          # publisher step.
-          mkdir -p doc/publish
-          mv doc/build/html doc/publish/$publish_name
 
     publishers:
       - afs:
