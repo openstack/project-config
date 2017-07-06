@@ -3,14 +3,6 @@
     builders:
       - shell: |
           #!/bin/bash -xe
-          ZUUL_BRANCH_REAL=${ZUUL_BRANCH:-master}
-          # Workaround for puppet-ceph, where we need to checkout
-          # puppet-openstack-integration from stable/mitaka when working on stable/hammer.
-          # Ceph Hammer works with Mitaka and before.
-          # Ceph Jewel works with Newton and beyond.
-          if [[ "$ZUUL_BRANCH" == "stable/hammer" ]]; then
-              ZUUL_BRANCH_REAL='stable/mitaka'
-          fi
           export ZUUL_REF=${ZUUL_REF:-None}
           CLONEMAP=`mktemp`
           function cleanup {
@@ -24,7 +16,6 @@
           EOF
           /usr/zuul-env/bin/zuul-cloner -m $CLONEMAP \
               --cache-dir /opt/git \
-              --zuul-branch $ZUUL_BRANCH_REAL \
               git://git.openstack.org openstack/puppet-openstack-integration
 
 - job-template:
