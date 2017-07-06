@@ -133,23 +133,10 @@ function setup_project {
 
     local exclude='.tox/**'
 
-    # For projects with one module on stable/mitaka, we use "old" setup.
-    # Note that stable/mitaka is only stable translated branch for
-    # projects.
-    # TODO(jaegerandi): Remove once mitaka translation ends.
-    if [ $# -eq 1 ] && [ "$version" == "stable-mitaka" ] ; then
-        local modulename=$1
-        /usr/local/jenkins/slave_scripts/create-zanata-xml.py \
-            -p $project -v $version --srcdir $modulename/locale \
-            --txdir $modulename/locale \
-            -r '**/*.pot' '{locale_with_underscore}/LC_MESSAGES/{filename}.po' \
-            -f zanata.xml
-    else
-        /usr/local/jenkins/slave_scripts/create-zanata-xml.py \
-            -p $project -v $version --srcdir . --txdir . \
-            -r '**/*.pot' '{path}/{locale_with_underscore}/LC_MESSAGES/{filename}.po' \
-            -e "$exclude" -f zanata.xml
-    fi
+    /usr/local/jenkins/slave_scripts/create-zanata-xml.py \
+        -p $project -v $version --srcdir . --txdir . \
+        -r '**/*.pot' '{path}/{locale_with_underscore}/LC_MESSAGES/{filename}.po' \
+        -e "$exclude" -f zanata.xml
 }
 
 
