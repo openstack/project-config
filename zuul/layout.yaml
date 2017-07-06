@@ -1238,7 +1238,7 @@ jobs:
   - name: ^gate-monasca-log-api-python35$
     branch: ^(?!stable/newton).*$
 
-  # do not run tempests on either stable/mitaka nor stable/newton
+  # do not run tempests on stable/newton
   # devstack gate for log-api was not functional that time
   - name: ^gate-tempest-dsvm-monasca-log-api-ubuntu-xenial$
     branch: ^(?!stable/newton).*$
@@ -1247,7 +1247,6 @@ jobs:
   # networking-arista was not managed in requirements for mitaka.
   - name: ^gate-networking-arista-requirements$
     branch: ^(?!stable/mitaka).*$
-
 
   # because of global requirements overrides, there is no reason to
   # run tempest/grenade tests after a requirements sync, as they've
@@ -2052,37 +2051,18 @@ jobs:
     branch: ^master
     voting: false
 
-  # Starting from Newton and Jewel, Puppet OpenStack will gate on Xenial nodes.
-  - name: ^gate-.*-puppet-beaker-rspec-ubuntu-xenial.*$
-    branch: ^(?!stable/(liberty|mitaka|hammer)).*$
-
-  # Starting from Newton and Jewel, Puppet OpenStack stops testing on Puppet 3.3, 3.4, 3.7 and 4.0.
-  - name: ^gate-puppet-.*-puppet-unit-(3.(3|4|7)|4.0)-.*$
-    branch: ^stable/(liberty|mitaka|hammer).*$
-
-  # Starting from Mitaka and Jewel, Puppet OpenStack starts voting on Puppet 4.5.
-  - name: ^gate-puppet-.*-puppet-unit-4.5-.*$
-    branch: ^(?!stable/(liberty|hammer)).*$
-
-  # Liberty, Mitaka, Hammer gates test Puppet 3.
-  - name: ^gate-puppet-openstack-integration-3-.*$
-    branch: ^stable/(liberty|mitaka|hammer).*$
-
-  # Newton and beyond, Jewel gates test Puppet 4.
-  - name: ^gate-puppet-openstack-integration-4-.*$
-    branch: ^(?!stable/(liberty|mitaka|hammer)).*$
-
-  # puppet-integration scenario004 was introduced after Newton (OpenStack) and Hammer (Ceph).
+  # puppet-integration scenario004 was introduced after Newton (OpenStack)
   - name: ^gate-puppet-openstack-integration-(3|4)-scenario004.*$
-    branch: ^(?!stable/(liberty|mitaka|newton|hammer)).*$
+    branch: ^(?!stable/newton).*$
 
   - name: gate-requirements-python34
     branch: master
 
   # For some projects, python35 is not passing on stable/newton
   # but passing on master, thus do not run it on newton.
+  # Note networking-arista still has mitaka-hpi branch.
   - name: ^gate-(requirements|murano-agent|networking-arista)-python35
-    branch: ^(?!stable/(liberty|mitaka|newton)).*$
+    branch: ^(?!stable/(mitaka|newton)).*$
 
   # This overrides the above "looser" match above, while we work through the
   # py34 -> py35 transition. Also note that this job will not work from
@@ -2191,15 +2171,15 @@ jobs:
     branch: ^(?!stable/newton).*$
 
   - name: ^gate-tempest-dsvm-networking-bagpipe$
-    branch: ^(?!stable/(mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
 
   - name: ^gate-networking-bagpipe-dsvm-fullstack-ubuntu-xenial
-    branch: ^(?!stable/(mitaka|newton|ocata)).*$
+    branch: ^(?!stable/(newton|ocata)).*$
 
   # NOTE(tonyb):  networking-bgpvpn is only setup to manage requirements since
   # ocata, so don't run this job on older branches.
   - name: gate-networking-bgpvpn-requirements
-    branch: ^(?!stable/(mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
 
   # NOTE(jlibosva) Run fullstack jobs only non-voting
   - name: ^gate-neutron-dsvm-fullstack-ubuntu-(trusty|xenial)
@@ -2234,7 +2214,7 @@ jobs:
 
   # This is a new test for Ocata forward
   - name: ^gate-neutron-lbaasv2-dsvm-api-ubuntu-xenial
-    branch: ^(?!stable/(mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
 
   # This job is just to check Python 3.X compliance in master for NLBaaSv2
   - name: ^gate-neutron-lbaasv2-dsvm-py3x-.*$
@@ -2254,15 +2234,15 @@ jobs:
 
   # Octavia functional tests
   - name: ^gate-octavia-tox-functional-ubuntu-xenial
-    branch: ^(?!stable/(mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
 
   # Octavia functional tests on python 3 - for now NV
   - name: ^gate-octavia-tox-functional-py35-ubuntu-xenial
-    branch: ^(?!stable/(mitaka|newton|ocata)).*$
+    branch: ^(?!stable/(newton|ocata)).*$
 
   # Octavia tests based on LXD starting from Pike
   - name: ^gate-octavia-v1-dsvm-scenario-lxd
-    branch: ^(?!stable/(mitaka|newton|ocata)).*$
+    branch: ^(?!stable/(newton|ocata)).*$
 
     # BUG #1290562 pypy does not work with new setuptools, so is breaking
     # all jobs. Disable until there is resolution.
@@ -2274,17 +2254,14 @@ jobs:
 
   # Ironic stand-alone was enabled in the Pike cycle
   - name: ^gate-ironic-dsvm-standalone-.*$
-    branch: ^(?!stable/(mitaka|newton|ocata)).*$
+    branch: ^(?!stable/(newton|ocata)).*$
 
   # Ironic grenade multi-node multi-tenant was enabled in the Pike cycle
   - name: ^gate-grenade-dsvm-ironic-multinode-multitenant-.*$
-    branch: ^(?!stable/(mitaka|newton|ocata)).*$
+    branch: ^(?!stable/(newton|ocata)).*$
 
-  - name: ^gate-ironic-python-agent-tox-func-ubuntu-(trusty|xenial)$
+  - name: ^gate-ironic-python-agent-tox-func-ubuntu-xenial$
     voting: false
-
-  - name: ^gate-ironic-inspector-tox-func3.*$
-    branch: ^(?!stable/mitaka).*$
 
   - name: ^gate-devstack-dsvm-updown.*$
     branch: ^(?!stable)
@@ -2320,9 +2297,6 @@ jobs:
           - ^.*\.rst$
           - ^doc/.*$
 
-  # Fall through to handle skip if for both trusty and xenial
-  # NOTE(yuanying): ironic isn't supported in mitaka.
-  # We only have a xenial job for it which doesn't run on mitaka.
   - name: ^gate-functional-dsvm-magnum-k8s.*
     skip-if:
       - project: ^openstack/magnum$
@@ -2332,9 +2306,6 @@ jobs:
           - ^magnum/drivers/swarm.*$
           - ^magnum/drivers/mesos.*$
 
-  # Fall through to handle skip if for both trusty and xenial
-  # NOTE(yuanying): ironic isn't supported in mitaka
-  # We only have a xenial job for it which doesn't run on mitaka.
   - name: ^gate-functional-dsvm-magnum-swarm.*
     skip-if:
       - project: ^openstack/magnum$
@@ -2362,7 +2333,6 @@ jobs:
           - ^doc/.*$
 
   - name: gate-tempest-dsvm-multinode-live-migration-ubuntu-xenial
-    branch: ^(?!stable/mitaka).*$
     skip-if:
       - project: ^openstack/nova$
         all-files-match-any:
@@ -2390,7 +2360,7 @@ jobs:
     branch: ^stable/ocata$
 
   - name: gate-grenade-dsvm-neutron-multinode-live-migration-nv
-    branch: ^(?!stable/(mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
     skip-if:
       - project: ^openstack/nova$
         all-files-match-any:
@@ -2424,9 +2394,6 @@ jobs:
           - ^releasenotes/.*$
           - ^tools/.*$
           - ^tox.ini$
-
-  - name: ^gate-.*-identity-v3-only.*
-    branch: ^(?!stable/mitaka).*$
 
   - name: ^gate-tempest-dsvm-networking-midonet-.+-full-ubuntu-xenial
     branch: ^(?!stable/newton).*$
@@ -2467,32 +2434,14 @@ jobs:
   - name: ^gate-dsvm-networking-odl-(fullstack|functional)-nitrogen-snapshot
     branch: ^(?!stable/(newton|ocata)).*$
 
-  - name: ^gate-grenade-dsvm-neutron-fwaas-multinode-nv
-    branch: ^(?!stable/mitaka).*$
-
-  - name: ^gate-neutron-fwaas-dsvm-functional$
-    branch: ^(?!stable/mitaka).*$
-
-  - name: ^gate-neutron-fwaas-v2-dsvm-tempest$
-    branch: ^(?!stable/mitaka).*$
-
-  - name: ^gate-neutron-fwaas-v1-dsvm-tempest$
-    branch: ^(?!stable/mitaka).*$
-
   - name: ^gate-neutron-fwaas-v1-dsvm-tempest-multinode-nv$
-    branch: ^(?!stable/(mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
 
   - name: ^gate-neutron-fwaas-v2-dsvm-tempest-multinode-nv$
-    branch: ^(?!stable/(mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
 
   - name: ^gate-neutron-fwaas-dsvm-fullstack-ubuntu-xenial-nv$
-    branch: ^(?!stable/(mitaka|newton)).*$
-
-  - name: ^gate-networking-l2gw-dsvm-functional-nv$
-    branch: ^(?!stable/mitaka).*$
-
-  - name: ^gate-networking-l2gw-dsvm-tempest-api-dummy-driver-nv$
-    branch: ^(?!stable/mitaka).*$
+    branch: ^(?!stable/newton).*$
 
 # For Gerrit ver 2.8.x and later (using buck)
   - name: ^.*gerrit.*buck$
@@ -2500,7 +2449,7 @@ jobs:
 
     # For stable compat jobs.
   - name: ^gate-tempest-dsvm-neutron-src-.*-newton$
-    branch: ^(?!stable/(mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
     voting: false
 
   - name: ^gate-python-cinderclient-pylint.*$
@@ -2546,17 +2495,17 @@ jobs:
     voting: false
 
   - name: ^gate-cinder-tox-functional-ubuntu-xenial$
-    branch: ^(?!(stable/mitaka|driverfixes/)).*$
+    branch: ^(?!driverfixes/).*$
     voting: false
 
   - name: ^gate-cinder-tox-compliance-ubuntu-xenial$
-    branch: ^(?!(stable/mitaka|driverfixes/)).*$
+    branch: ^(?!driverfixes/).*$
 
   - name: ^gate-cinder-dsvm-apache-ubuntu-xenial.*$
-    branch: ^(?!(stable/mitaka|driverfixes/)).*$
+    branch: ^(?!driverfixes/).*$
 
   - name: ^gate-cinder-tox-bandit-baseline-ubuntu-xenial$
-    branch: ^(?!(stable/(mitaka|newton|ocata)|driverfixes/)).*$
+    branch: ^(?!(stable/(newton|ocata)|driverfixes/)).*$
     voting: false
 
   # All python 3.x jobs should test master only
@@ -2564,7 +2513,7 @@ jobs:
     branch: master
 
   - name: ^gate-rally-dsvm-cinder-ubuntu-xenial.*$
-    branch: ^(?!(stable/mitaka|driverfixes/)).*$
+    branch: ^(?!driverfixes/).*$
 
     # NOTE(tbarron): Ensure this job is stable in master (Pike) before
     # making it vote.   Python 3.x job tests only from Pike forwards.
@@ -2574,30 +2523,30 @@ jobs:
     # NOTE(jordanP): Non-voting is temporary until the job stabilizes in
     # master (Pike).
   - name: ^gate-tempest-dsvm-full-devstack-plugin-ceph-ubuntu-xenial.*$
-    branch: ^(?!(stable/mitaka|driverfixes/)).*$
+    branch: ^(?!driverfixes/).*$
     voting: false
 
     # NOTE(mriedem): Non-voting is temporary until the job stabilizes in
     # master (Pike).
   - name: ^gate-tempest-dsvm-full-ceph-plugin-src-.*-ubuntu-(trusty|xenial).*$
-    branch: ^(?!(stable/mitaka|driverfixes/)).*$
+    branch: ^(?!driverfixes/).*$
     voting: false
 
   - name: ^gate-tempest-dsvm-full-drbd-devstack-ubuntu-xenial.*$
-    branch: ^(?!(stable/mitaka|driverfixes/)).*$
+    branch: ^(?!driverfixes/).*$
 
   - name: ^gate-tempest-dsvm-full-lio-ubuntu-xenial.*$
-    branch: ^(?!(stable/mitaka|driverfixes/)).*$
+    branch: ^(?!driverfixes/).*$
 
   - name: ^gate-tempest-dsvm-full-sheepdog-ubuntu-xenial.*$
-    branch: ^(?!(stable/mitaka|driverfixes/)).*$
+    branch: ^(?!driverfixes/).*$
 
   - name: gate-tempest-dsvm-neutron-full-ubuntu-xenial
     # This job is part of integrated gate queue, use it to name the queue.
     # Note that the above needs to be a name and not a regex so that
     # queue-name works.
     queue-name: integrated
-    branch: ^(?!(stable/mitaka|driverfixes/)).*$
+    branch: ^(?!driverfixes/).*$
 
   - name: ^gate-jenkins-job-builder-tox-docs-linkcheck-ubuntu-(trusty|xenial)$
     voting: false
@@ -2783,8 +2732,6 @@ jobs:
 
   - name: ^gate-.*-deploy-guide$
     success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/deploy-guide/build/html/
-    # This is only available in Newton.
-    branch: ^(?!stable/mitaka).*$
     files:
       - '^tox.ini$'
       - '^deploy-guide/.*'
@@ -2839,11 +2786,11 @@ jobs:
           - ^doc/.*$
 
   - name: ^gate-barbican-simple-crypto-dsvm-tempest-py35-.*$
-    branch: ^(?!stable/(mitaka|newton|ocata)).*$
+    branch: ^(?!stable/(newton|ocata)).*$
 
     # The .*-dsvm-functional jobs only work on Pike and beyond
   - name: ^gate-barbican-.*-dsvm-functional-.*$
-    branch: ^(?!stable/(mitaka|newton|ocata)).*$
+    branch: ^(?!stable/(newton|ocata)).*$
 
     # Run the ./*-devstack- jobs only on the stable branches
     # (the .*-dsvm-functional jobs are replacing them in Pike)
@@ -2851,13 +2798,10 @@ jobs:
     branch: ^(?:stable/(newton|ocata)).*$
 
   - name: ^gate-grenade-dsvm-barbican-ubuntu-xenial$
-    branch: ^(?!stable/(mitaka|newton|ocata)).*$
+    branch: ^(?!stable/(newton|ocata)).*$
 
   - name: ^gate-tempest-dsvm-designate-pdns4-postgres-ubuntu-xenial(-nv)?$
     branch: ^(?!stable/newton).*$
-
-  - name: ^gate-congress-pe-replicated-.*-nv$
-    branch: ^(?!stable/mitaka).*$
 
   - name: gate-hacking-integration-nova
     voting: false
@@ -2869,16 +2813,16 @@ jobs:
     voting: false
 
   - name: ^gate-sahara-dsvm-scenario-multinode-spark-ubuntu-xenial-nv$
-    branch: ^(?!stable/(mitaka|newton|ocata)).*$
+    branch: ^(?!stable/(newton|ocata)).*$
 
   - name: ^gate-sahara-dsvm-scenario-py3-ubuntu-xenial-nv$
-    branch: ^(?!stable/(mitaka|newton|ocata)).*$
+    branch: ^(?!stable/(newton|ocata)).*$
 
   - name: ^gate-sahara-dsvm-scenario-mod-wsgi-ubuntu-xenial-nv$
-    branch: ^(?!stable/(mitaka|newton|ocata)).*$
+    branch: ^(?!stable/(newton|ocata)).*$
 
   - name: ^(gate|post)-sahara-extra-artifacts$
-    branch: ^(?!stable/(mitaka|icehouse)).*$
+    branch: ^(?!stable/icehouse).*$
 
   - name: ^gate-sahara-dashboard-dsvm-integration.*$
     voting: false
@@ -2938,7 +2882,7 @@ jobs:
     voting: false
 
   - name: gate-mistral-devstack-dsvm-kombu-ubuntu-xenial-nv
-    branch: ^(?!stable/(?:mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
 
   - name: ^gate-mistral-tox-unit-mysql-ubuntu-xenial$
     voting: false
@@ -2948,14 +2892,14 @@ jobs:
 
   # NOTE(bcrochet) (mistral) run non-apache pike and forward
   - name: ^gate-mistral-devstack-dsvm-non-apache-ubuntu-xenial-nv
-    branch: ^(?!stable/(mitaka|newton|ocata)).*$
+    branch: ^(?!stable/(newton|ocata)).*$
 
   - name: gate-mistral-docker-buildimage
     branch: master
 
   # NOTE(kzaitsev): nodejs4-npm-run-test was added in ocata
   - name: ^gate-murano-dashboard-nodejs4-npm-run-test$
-    branch: ^(?!stable/(?:mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
 
   # NOTE(limao): Only run these jobs on kuryr-libnetwork master branch,
   # because we do not need to check if kuryr-libnetwork  stable branch
@@ -2988,13 +2932,13 @@ jobs:
     voting: false
 
   - name: ^gate-manila-tempest-dsvm-.*-scenario-custom-image-.*
-    branch: ^(?!stable/(?:mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
 
   - name: ^gate-manila-tempest-minimal-dsvm-cephfs-nfs.*$
-    branch: ^(?!stable/(?:mitaka|newton|ocata)).*$
+    branch: ^(?!stable/(?:newton|ocata)).*$
 
   - name: gate-manila-tempest-minimal-dsvm-lvm-centos-7
-    branch: ^(?!stable/(?:mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
 
   # amqp1 hybrid and dual support added in pike:
   - name: ^gate-tempest-neutron-dsvm-src-oslo.messaging-amqp1-(hybrid|dual)-.*$
@@ -3019,15 +2963,15 @@ jobs:
 
   # Rally jobs for Manila should run only on ocata+ branches
   - name: gate-rally-dsvm-manila-multibackend
-    branch: ^(?!stable/(?:mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
     voting: false
 
   - name: gate-rally-dsvm-manila-multibackend-no-ss
-    branch: ^(?!stable/(?:mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
     voting: false
 
   - name: gate-manila-ui-dsvm-nv
-    branch: ^(?!stable/(?:mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
 
   - name: ^gate-blazar-pylint.*$
     voting: false
@@ -3042,7 +2986,7 @@ jobs:
     branch: ^stable/newton$
 
   - name: ^gate-trove-scenario-dsvm-.*$
-    branch: ^(?!stable/(mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
 
   # NOTE(amrith): This job should be run for trove-integration, and
   #               trove's and trove clients stable branches for
@@ -3102,7 +3046,7 @@ jobs:
     branch: ^(stable/newton).*$
 
   - name: gate-horizon-selenium-headless-ubuntu-xenial
-    branch: ^(?!stable/(mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
 
   - name: ^(gate-)?devstack-docs
     branch: ^master
@@ -3189,11 +3133,11 @@ jobs:
     branch: ^stable/newton$
 
   - name: ^gate-ceilometer-tox-.*
-    branch: ^(?!stable/(mitaka|newton))
+    branch: ^(?!stable/newton)
 
   # toxenv func-post-as-copy doesn't exist in swift before ocata.
   - name: ^gate-swift-tox-xfs-tmp-func-post-as-copy-(ubuntu-xenial|centos-7)$
-    branch: ^(?!stable/(mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
 
   # pre-ocata, func covered post-as-copy behavior,
   # and func-fast-post covered the now-default fast-post behavior
@@ -3202,7 +3146,7 @@ jobs:
 
   # toxenv func-ec only works on current master and only future stable branches.
   - name: ^gate-swift-tox-xfs-tmp-func-ec-(ubuntu-xenial|centos-7)$
-    branch: ^(?!stable/(mitaka|newton|ocata)).*$
+    branch: ^(?!stable/(newton|ocata)).*$
     voting: false
 
   - name: ^gate-murano-apps-linters-ubuntu-(trusty|xenial)$
@@ -3348,7 +3292,7 @@ jobs:
     branch: ^stable/thisbranchnamewillneverexist$
 
   - name: ^gate-python-ironic-inspector-client-docs-ubuntu-xenial$
-    branch: ^(?!stable/(mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
 
   # NOTE(pas-ha) ironic-lib has no docs in Mitaka,
   # and Trusty jobs are only run on Mitaka.
@@ -3359,7 +3303,7 @@ jobs:
 
   # NOTE(vsaienko) Ironic multinode job is voting starting from Pike
   - name: ^gate-tempest-dsvm-ironic-ipa-wholedisk-agent_ipmitool-tinyipa-multinode-ubuntu-xenial$
-    branch: ^(?!stable/(mitaka|newton|ocata)).*$
+    branch: ^(?!stable/(newton|ocata)).*$
 
   # NOTE(vsaienko) Ironic multinode-nv job launched only on Newton and Ocata
   - name: ^gate-tempest-dsvm-ironic-ipa-wholedisk-agent_ipmitool-tinyipa-multinode-ubuntu-xenial-nv$
@@ -3372,7 +3316,7 @@ jobs:
 
   # NOTE(vsaienko) Ironic snmp job do not work until after Ocata
   - name: ^gate-tempest-dsvm-ironic-ipa-wholedisk-bios-pxe_snmp-tinyipa-ubuntu-xenial.*$
-    branch: ^(?!stable/(mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
 
   # Skip the following jobs on ironic project starting from Pike, as we test the as part of ironic-standalone:
   #   * gate-tempest-dsvm-ironic-ipa-wholedisk-bios-pxe_ipmitool-tinyipa-ubuntu-xenial
@@ -3382,14 +3326,14 @@ jobs:
   #                 as it is integrated job and launched on devstack/nova/neutron/ironic projects
   #                 Might be replaced by multinode job in future.
   - name: ^gate-tempest-dsvm-ironic-ipa-partition-bios-(pxe|agent)_ipmitool-tinyipa-ubuntu-xenial$
-    branch: ^stable/(mitaka|newton|ocata).*$
+    branch: ^stable/(newton|ocata).*$
 
   - name: ^gate-tempest-dsvm-ironic-ipa-wholedisk-bios-pxe_ipmitool-tinyipa-ubuntu-xenial$
-    branch: ^stable/(mitaka|newton|ocata).*$
+    branch: ^stable/(newton|ocata).*$
 
   # Only run the redfish job(s) against pike+
   - name: ^gate-tempest-dsvm-ironic-ipa-(partition|wholedisk)-redfish-tinyipa-ubuntu-xenial.*$
-    branch: ^(?!stable/(mitaka|newton|ocata)).*$
+    branch: ^(?!stable/(newton|ocata)).*$
 
   - name: ^gate-senlin-dsvm-tempest-(py27|py35)-(functional|api|integration)
     skip-if:
@@ -3401,10 +3345,7 @@ jobs:
           - ^releasenotes/.*$
 
   - name: ^gate-senlin-dsvm-tempest-py35-(functional|api|integration)
-    branch: ^(?!stable/(mitaka|newton)).*$
-
-  - name: ^gate-senlin-dsvm-tempest-py27-(functional|api|integration)
-    branch: ^(?!stable/mitaka).*$
+    branch: ^(?!stable/newton).*$
 
   # NOTE(andrey-mp): nova-network is deprecated since Ocata
   - name: gate-functional-nova-network-dsvm-ec2api-ubuntu-xenial
@@ -3421,21 +3362,13 @@ jobs:
       - '^tox.ini'
       - '^.*requirements.txt$'
 
-  # Some python client projects do not have releasenotes until the Newton cycle
-  - name: ^gate-python-(manila|tacker|trove|glance)client-releasenotes$
-    branch: ^(?!stable/mitaka).*$
-
-  # Some projects do not have releasenotes until the Newton cycle
-  - name: ^gate-(magnum|manila-ui|networking-odl|oslo.(messaging|cache|concurrency|middleware|privsep|rootwrap|service|context|vmware|policy)|tacker)-releasenotes$
-    branch: ^(?!stable/mitaka).*$
-
   # Some python client projects do not have releasenotes until the Ocata cycle
   - name: ^gate-python-(freezer|tripleo|zaqar)client-releasenotes$
-    branch: ^(?!stable/(?:mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
 
   # Some projects do not have releasenotes until the Ocata cycle
   - name: ^gate-(automaton|ceilometermiddleware|cloudkitty|cloudkitty-dashboard|debtcollector|freezer|freezer-api|futurist|instack.*|kuryr|kuryr-libnetwork|networking-sfc|osprofiler|oslo.(i18n|middleware|reports|serialization|utils|versionedobjects)|oslosphinx|oslotest|puppet-tripleo|stevedore|swift|taskflow|tooz|tripleo.*)-releasenotes$
-    branch: ^(?!stable/(?:mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
 
   - name: gate-python-fuelclient-python34
     branch: ^stable/(8\.0|mitaka).*$
@@ -3448,10 +3381,10 @@ jobs:
 
   # NOTE(dims) etcd3 and etcd3gw is available only in pike and forward
   - name: ^gate-tooz-tox-.*-etcd3.*-ubuntu-xenial$
-    branch: ^(?!stable/(mitaka|newton|ocata)).*$
+    branch: ^(?!stable/(newton|ocata)).*$
 
   - name: ^gate-tooz-tox-py35-.+-ubuntu-xenial
-    branch: ^(?!stable/(mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
 
     # Requirements project publishes documents from master only.
   - name: ^(?:gate-)requirements-docs-ubuntu-xenial$
