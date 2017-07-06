@@ -21,15 +21,15 @@
           export SUB={sub}
           export GATE_ENVIRONMENT=zuul
 
-          TOOLKIT_TMP=$HOME/helm-toolkit
+          TOOLKIT_TMP=$HOME/infra
           mkdir -p $TOOLKIT_TMP
 
-          if [ "$SUB" != "" ] ; then
+          if [ "$SUB" != "-infra" ] ; then
             /usr/zuul-env/bin/zuul-cloner \
               --cache-dir /opt/git \
               --workspace $TOOLKIT_TMP \
               git://git.openstack.org \
-              openstack/openstack-helm
+              openstack/openstack-helm-infra
           fi
 
           tools/gate/setup_gate.sh {node}
