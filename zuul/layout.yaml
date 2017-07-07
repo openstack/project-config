@@ -3347,6 +3347,23 @@ jobs:
   - name: ^gate-senlin-dsvm-tempest-py35-(functional|api|integration)
     branch: ^(?!stable/newton).*$
 
+  # Skip non-doc jobs for doc-only patrole changes.
+  - name: ^gate-.*patrole-.*(admin|member|python27|python35|py35).*$
+    skip-if:
+      - project: ^openstack/patrole.*$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*
+          - ^releasenotes/.*
+
+  # Skip integration jobs for unit test-only patrole changes. All integration
+  # jobs prefixed with "gate-tempest-dsvm-patrole".
+  - name: ^gate-tempest-dsvm-patrole.*$
+    skip-if:
+      - project: ^openstack/patrole.*$
+        all-files-match-any:
+          - ^patrole/patrole_tempest_plugin/tests/unit/.*$
+
   # NOTE(andrey-mp): nova-network is deprecated since Ocata
   - name: gate-functional-nova-network-dsvm-ec2api-ubuntu-xenial
     branch: ^stable/newton$
