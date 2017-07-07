@@ -117,13 +117,15 @@
 
 - job-group:
     name: 'ansible-role-jobs'
-    node:
-      - ubuntu-trusty
-      - ubuntu-xenial
     jobs:
-      - 'gate-{name}-docs-{node}'
-      - 'gate-{name}-linters-{node}'
+      - 'gate-{name}-docs-{node}':
+          node: ubuntu-xenial
+      - 'gate-{name}-linters-{node}':
+          node: ubuntu-xenial
       - '{pipeline}-{name}-ansible-{scenario}-{ostype}{suffix}':
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           ostype:
             - centos-7
             - debian-jessie
@@ -140,13 +142,15 @@
 
 - job-group:
     name: 'ansible-role-dsvm-jobs'
-    node:
-      - ubuntu-trusty
-      - ubuntu-xenial
     jobs:
-      - 'gate-{name}-docs-{node}'
-      - 'gate-{name}-linters-{node}'
+      - 'gate-{name}-docs-{node}':
+          node: ubuntu-xenial
+      - 'gate-{name}-linters-{node}':
+          node: ubuntu-xenial
       - '{pipeline}-{name}-dsvm-ansible-func-{ostype}{suffix}':
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
           branch-override: default
           ostype:
             - centos-7

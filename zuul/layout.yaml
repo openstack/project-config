@@ -263,14 +263,10 @@ project-templates:
 
   - name: ansible-role-jobs
     check:
-      - 'gate-{name}-docs-ubuntu-trusty'
       - 'gate-{name}-docs-ubuntu-xenial'
-      - 'gate-{name}-linters-ubuntu-trusty'
       - 'gate-{name}-linters-ubuntu-xenial'
     gate:
-      - 'gate-{name}-docs-ubuntu-trusty'
       - 'gate-{name}-docs-ubuntu-xenial'
-      - 'gate-{name}-linters-ubuntu-trusty'
       - 'gate-{name}-linters-ubuntu-xenial'
 
   - name: ansible-role-functional-jobs-centos7
@@ -3156,7 +3152,7 @@ jobs:
 
   # Skip all openstack-ansible jobs except the releasenotes/docs/linters/
   # deploy-guide jobs for files that are not related to functional testing.
-  - name: ^gate-openstack-ansible(?!.*(-docs|-releasenotes|-deploy-guide|-linters-ubuntu-(trusty|xenial))).*$
+  - name: ^gate-openstack-ansible(?!.*(-docs|-releasenotes|-deploy-guide|-linters-ubuntu-xenial)).*$
     skip-if:
       - project: ^openstack/openstack-ansible(?!-specs).*$
         all-files-match-any:
@@ -3178,11 +3174,6 @@ jobs:
   # First, we run all trusty jobs on both mitaka and newton:
   - name: ^gate-openstack-ansible.*-ubuntu-trusty.*$
     branch: ^stable/(mitaka|newton)$
-
-  # Second, docs and linters jobs run only on mitaka (there's a xenial
-  # job on newton, so no need to run both trusty and xenial).
-  - name: ^gate-openstack-ansible.*-(docs|linters).*-ubuntu-trusty.*$
-    branch: ^stable/mitaka$
 
   # Keep in mind that stable/mitaka and stable/newton are ubuntu only,
   # so we remove centos-7 jobs.
@@ -12974,11 +12965,8 @@ projects:
       - name: openstack-unified-publish-jobs
       - name: release-notes-jobs
       - name: deploy-guide-jobs
+      - name: ansible-role-jobs
     check:
-      - gate-openstack-ansible-docs-ubuntu-trusty
-      - gate-openstack-ansible-docs-ubuntu-xenial
-      - gate-openstack-ansible-linters-ubuntu-trusty
-      - gate-openstack-ansible-linters-ubuntu-xenial
       - gate-openstack-ansible-openstack-ansible-aio-ubuntu-trusty
       - gate-openstack-ansible-openstack-ansible-aio-ubuntu-xenial
       - gate-openstack-ansible-openstack-ansible-aio-ubuntu-xenial-nv
@@ -12986,10 +12974,6 @@ projects:
       - gate-openstack-ansible-openstack-ansible-ceph-centos-7-nv
       - gate-openstack-ansible-openstack-ansible-aio-centos-7-nv
     gate:
-      - gate-openstack-ansible-docs-ubuntu-trusty
-      - gate-openstack-ansible-docs-ubuntu-xenial
-      - gate-openstack-ansible-linters-ubuntu-trusty
-      - gate-openstack-ansible-linters-ubuntu-xenial
       - gate-openstack-ansible-openstack-ansible-aio-ubuntu-trusty
       - gate-openstack-ansible-openstack-ansible-aio-ubuntu-xenial
     experimental:
@@ -13150,16 +13134,7 @@ projects:
       - name: check-requirements
       - name: openstack-unified-publish-jobs
       - name: release-notes-jobs
-    check:
-      - gate-openstack-ansible-ops-docs-ubuntu-trusty
-      - gate-openstack-ansible-ops-docs-ubuntu-xenial
-      - gate-openstack-ansible-ops-linters-ubuntu-trusty
-      - gate-openstack-ansible-ops-linters-ubuntu-xenial
-    gate:
-      - gate-openstack-ansible-ops-docs-ubuntu-trusty
-      - gate-openstack-ansible-ops-docs-ubuntu-xenial
-      - gate-openstack-ansible-ops-linters-ubuntu-trusty
-      - gate-openstack-ansible-ops-linters-ubuntu-xenial
+      - name: ansible-role-jobs
 
   - name: openstack/openstack-ansible-os_almanach
     template:
