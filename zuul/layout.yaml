@@ -1493,7 +1493,7 @@ jobs:
           - ^doc/.*$
           - ^releasenotes/.*$
   # Skip non-doc jobs for doc-only neutron-lib changes.
-  - name: ^.*(neutron-lib-(python(27|3[45](-nv)?)|coverage)|tempest-dsvm-neutron-src-neutron-lib)(-ubuntu-trusty|-ubuntu-xenial)?$
+  - name: ^.*(neutron-lib-(python(27|3[45](-nv)?)|coverage)|tempest-dsvm-neutron-src-neutron-lib)(-ubuntu-xenial)?$
     skip-if:
       - project: ^openstack/neutron-lib$
         all-files-match-any:
@@ -1598,7 +1598,7 @@ jobs:
           - ^releasenotes/.*$
   # Skip non-doc jobs for doc-only bifrost changes. Since documents
   # are checked by bifrost-pep8, that job should not be skipped.
-  - name: ^.*bifrost-(python27|integration-tinyipa|integration-dibipa-debian|integration-dhcp)-(ubuntu-(trusty|xenial)|opensuse-422|centos-7)(-nv)?$
+  - name: ^.*bifrost-(python27|integration-tinyipa|integration-dibipa-debian|integration-dhcp)-(ubuntu-xenial|opensuse-422|centos-7)(-nv)?$
     skip-if:
       - project: ^openstack/bifrost$
         all-files-match-any:
@@ -1858,7 +1858,7 @@ jobs:
           - ^doc/.*$
 
   # Skip non-doc jobs for doc-only kolla changes.
-  - name: ^gate-kolla.*(?<!docs-ubuntu-(trusty|xenial))$
+  - name: ^gate-kolla.*(?<!docs-ubuntu-xenial)$
     skip-if:
       - project: ^openstack/kolla.*$
         all-files-match-any:
@@ -2132,7 +2132,7 @@ jobs:
     branch: ^(?!stable/newton).*$
 
   # NOTE(jlibosva) Run fullstack jobs only non-voting
-  - name: ^gate-neutron-dsvm-fullstack-ubuntu-(trusty|xenial)
+  - name: ^gate-neutron-dsvm-fullstack-ubuntu-xenial
     voting: false
 
   - name: ^gate-neutron-dsvm-fullstack-python35-ubuntu-xenial.*$
@@ -2141,7 +2141,7 @@ jobs:
   - name: ^gate-neutron-dsvm-functional-python35-ubuntu-xenial.*$
     branch: ^(?!stable/(newton|ocata)).*$
 
-  - name: ^gate-tempest-dsvm-neutron-pg-full-ubuntu-(trusty|xenial)
+  - name: ^gate-tempest-dsvm-neutron-pg-full-ubuntu-xenial
     voting: false
 
   # scenario tests for neutron-dynamic-routing can be run on ocata and later
@@ -2265,7 +2265,6 @@ jobs:
           - ^magnum/drivers/k8s.*$
           - ^magnum/drivers/mesos.*$
 
-  # Fall through to handle skip if for both trusty and xenial
   - name: ^gate-functional-dsvm-magnum-mesos.*
     skip-if:
       - project: ^openstack/magnum$
@@ -2330,7 +2329,7 @@ jobs:
   # Only run the neutron LB job on nova if there are changes to nova/network/*
   # or nova/virt/libvirt/vif.py since that uses os-vif for LB vif type.
   # TODO(mriedem): Run this proper on all changes once nova-network is dropped.
-  - name: ^gate-tempest-dsvm-neutron-linuxbridge-ubuntu-(trusty|xenial)$
+  - name: ^gate-tempest-dsvm-neutron-linuxbridge-ubuntu-xenial$
     skip-if:
       - project: ^openstack/nova$
         all-files-match-any:
@@ -2407,8 +2406,6 @@ jobs:
 
   # Special handling for cinder driverfixes branches:
   # Only pep8 should run on it, nothing else.
-  # We do not need to handle any trusty jobs, those have already
-  # an explicit branch condition that avoids running on driverfixes.
 
   - name: ^gate-cinder-(api-ref|requirements)$
     branch: ^(?!driverfixes/).*$
@@ -2475,7 +2472,7 @@ jobs:
 
     # NOTE(mriedem): Non-voting is temporary until the job stabilizes in
     # master (Pike).
-  - name: ^gate-tempest-dsvm-full-ceph-plugin-src-.*-ubuntu-(trusty|xenial).*$
+  - name: ^gate-tempest-dsvm-full-ceph-plugin-src-.*-ubuntu-xenial.*$
     branch: ^(?!driverfixes/).*$
     voting: false
 
@@ -2495,7 +2492,7 @@ jobs:
     queue-name: integrated
     branch: ^(?!driverfixes/).*$
 
-  - name: ^gate-jenkins-job-builder-tox-docs-linkcheck-ubuntu-(trusty|xenial)$
+  - name: ^gate-jenkins-job-builder-tox-docs-linkcheck-ubuntu-xenial$
     voting: false
     failure-message: WARNING broken links in docs
 
@@ -2725,7 +2722,7 @@ jobs:
   - name: gate-app-catalog-ui-nodejs4-npm-run-lint
     voting: false
 
-  - name: ^magnum-coverage-ubuntu-(trusty|xenial).*$
+  - name: ^magnum-coverage-ubuntu-xenial.*$
     skip-if:
       - project: ^openstack/magnum$
         all-files-match-any:
@@ -2815,7 +2812,7 @@ jobs:
   - name: gate-app-catalog-ui-dsvm-integration
     voting: false
 
-  - name: ^gate-keystone-tox-patch_cover-ubuntu-(trusty|xenial)$
+  - name: ^gate-keystone-tox-patch_cover-ubuntu-xenial$
     voting: false
 
   # This job is just to check py35 compliance in master
@@ -2834,7 +2831,7 @@ jobs:
   - name: ^gate-mistral-tox-unit-mysql-ubuntu-xenial$
     voting: false
 
-  - name: ^gate-mistral-tox-unit-postgresql-ubuntu-(trusty|xenial)$
+  - name: ^gate-mistral-tox-unit-postgresql-ubuntu-xenial$
     voting: false
 
   # NOTE(bcrochet) (mistral) run non-apache pike and forward
@@ -2869,7 +2866,7 @@ jobs:
   - name: gate-solum-requirements
     voting: false
 
-  - name: ^gate-sqlalchemy-migrate-pep8-ubuntu-(trusty|xenial)
+  - name: ^gate-sqlalchemy-migrate-pep8-ubuntu-xenial
     voting: false
 
   - name: ^gate-manila-pylint.*$
@@ -2946,7 +2943,7 @@ jobs:
   - name: ^gate-trove-functional-dsvm-.*$
     branch: ^(?!stable/newton).*$
 
-  - name: ^gate-tempest-dsvm-full-lio-ubuntu-(trusty|xenial)
+  - name: ^gate-tempest-dsvm-full-lio-ubuntu-xenial
     voting: false
 
   - name: ^gate-aodh-dsvm-functional-(hbase|mongodb)-ubuntu-xenial
@@ -3096,10 +3093,10 @@ jobs:
     branch: ^(?!stable/(newton|ocata)).*$
     voting: false
 
-  - name: ^gate-murano-apps-linters-ubuntu-(trusty|xenial)$
+  - name: ^gate-murano-apps-linters-ubuntu-xenial$
     voting: false
 
-  - name: ^gate-dsvm-murano-apps-refstackclient-unittest-ubuntu-(trusty|xenial)-nv
+  - name: ^gate-dsvm-murano-apps-refstackclient-unittest-ubuntu-xenial-nv
     files:
       - 'RefStackClient/.*'
 
