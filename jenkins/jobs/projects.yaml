@@ -8548,7 +8548,9 @@
           node:
             - ubuntu-trusty
             - ubuntu-xenial
-          scenario: aio
+          scenario:
+            - aio
+            - ceph
       - 'gate-{name}-openstack-ansible-{scenario}-{node}{suffix}':
           suffix: '-nv'
           node:
@@ -8558,11 +8560,6 @@
           scenario:
             - aio
             - ceph
-            - compute
-            - ironic
-            - magnum
-            - sahara
-            - swift
       - 'periodic-openstack-ansible-{action}-{scenario}-{branch-name}-{node}{suffix}':
           action:
             - deploy
@@ -8941,9 +8938,7 @@
             - ubuntu-trusty
             - ubuntu-xenial
           pipeline: gate
-          scenario:
-            - calico
-            - dragonflow
+          scenario: dragonflow
       - '{pipeline}-{name}-ansible-{scenario}-{ostype}{suffix}':
           suffix: ''
           ostype:
@@ -8952,6 +8947,7 @@
             - ubuntu-xenial
           pipeline: gate
           scenario:
+            - calico
             - func_ovs
             - upgrade
 
