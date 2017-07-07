@@ -3280,20 +3280,8 @@ jobs:
   - name: ^gate-cliff-tox-(openstackclient|neutronclient)-tip-ubuntu-xenial$
     branch: ^master$
 
-  # This job should not be run anywhere but is part of the python-jobs
-  # template. So, make it only run on a non-existing branch.
-  - name: ^gate-python-ironic-inspector-client-docs-ubuntu-trusty$
-    branch: ^stable/thisbranchnamewillneverexist$
-
   - name: ^gate-python-ironic-inspector-client-docs-ubuntu-xenial$
     branch: ^(?!stable/newton).*$
-
-  # NOTE(pas-ha) ironic-lib has no docs in Mitaka,
-  # and Trusty jobs are only run on Mitaka.
-  # As this job is part of python-jobs template, disable this single one
-  # in ironic-lib by running it only on a non-existing branch.
-  - name: ^gate-ironic-lib-docs-ubuntu-trusty$
-    branch: ^stable/thisbranchnamewillneverexist$
 
   # NOTE(vsaienko) Ironic multinode job is voting starting from Pike
   - name: ^gate-tempest-dsvm-ironic-ipa-wholedisk-agent_ipmitool-tinyipa-multinode-ubuntu-xenial$
@@ -11961,12 +11949,12 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
+      - name: python-jobs-trusty
 
   - name: openstack/networking-ale-omniswitch
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python-jobs-trusty
       - name: publish-to-pypi
 
   - name: openstack/networking-arista
