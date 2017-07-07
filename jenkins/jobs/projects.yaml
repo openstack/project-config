@@ -5441,8 +5441,6 @@
       - '-src'
 
     driver:
-      - 'pxe_ssh'
-      - 'agent_ssh'
       - 'pxe_ipmitool'
       - 'agent_ipmitool'
       - 'pxe_snmp'
@@ -5460,14 +5458,6 @@
       - 'uefi'
 
     exclude:
-      # agent_ssh driver with partitions is experimental
-      - image-type: 'partition'
-        driver: 'agent_ssh'
-        suffix: ''
-      # pxe_ssh driver with whole disk images is experimental
-      - image-type: 'wholedisk'
-        driver: 'pxe_ssh'
-        suffix: ''
       # pxe_snmp driver is non-voting
       - driver: 'pxe_snmp'
         suffix: ''
@@ -5475,9 +5465,6 @@
       - ramdisk-type: 'coreos'
         src: ''
       # these jobs are always voting
-      - image-type: 'partition'
-        driver: 'pxe_ssh'
-        suffix: '-nv'
       - image-type: 'partition'
         driver: 'pxe_ipmitool'
         boot-mode: 'bios'
@@ -5490,27 +5477,9 @@
         suffix: '-nv'
       # source variants of these jobs are always voting
       - image-type: 'wholedisk'
-        driver: 'agent_ssh'
-        src: '-src'
-        suffix: '-nv'
-      - image-type: 'wholedisk'
         driver: 'agent_ipmitool'
         src: '-src'
         suffix: '-nv'
-      # exclude ipmitool jobs from running on trusty, stable branches
-      # should continue to run on pxe_ssh and trusty
-      - driver: 'pxe_ipmitool'
-        node: ubuntu-trusty
-      - driver: 'agent_ipmitool'
-        node: ubuntu-trusty
-      # exclude ssh jobs from running on xenial
-      - driver: 'pxe_ssh'
-        node: ubuntu-xenial
-      - driver: 'agent_ssh'
-        node: ubuntu-xenial
-      # run new pxe_snmp jobs only on xenial
-      - driver: 'pxe_snmp'
-        node: ubuntu-trusty
 
     jobs:
       - coverage-jobs
@@ -5527,9 +5496,7 @@
           service: baremetal
       - '{pipeline}-tempest-dsvm-ironic-ipa-{image-type}-{boot-mode}-{driver}-{ramdisk-type}{src}-{node}{suffix}':
           pipeline: gate
-          node:
-            - ubuntu-trusty
-            - ubuntu-xenial
+          node: ubuntu-xenial
           branch-override: default
       - '{pipeline}-tempest-dsvm-ironic-ipa-partition-pxe_ipmitool-tinyipa-python3-{node}{suffix}':
           pipeline: gate
@@ -5566,40 +5533,25 @@
           src: ''
       - '{pipeline}-ironic-dsvm-functional-{node}{suffix}':
           pipeline: gate
-          node:
-            - ubuntu-trusty
-            - ubuntu-xenial
+          node: ubuntu-xenial
           suffix: ''
           branch-override: default
       - '{pipeline}-tempest-dsvm-ironic-pxe_ipa-full-{node}{suffix}':
           pipeline: gate
-          node:
-            - ubuntu-trusty
-            - ubuntu-xenial
+          node: ubuntu-xenial
           suffix: '-nv'
           branch-override: default
       - '{pipeline}-tempest-dsvm-ironic-{driver}-postgres-{node}{suffix}':
           pipeline: gate
-          node:
-            - ubuntu-trusty
-            - ubuntu-xenial
-          driver:
-            - 'pxe_ipmitool'
-            - 'pxe_ssh'
+          node: ubuntu-xenial
+          driver: 'pxe_ipmitool'
           suffix: '-nv'
           branch-override: default
-
       - '{pipeline}-tempest-dsvm-ironic-parallel-{node}{suffix}':
           pipeline: gate
           node: ubuntu-xenial
           suffix: '-nv'
           branch-override: default
-      - '{pipeline}-ironic-inspector-dsvm-{ramdisk}-{node}{suffix}':
-          pipeline: gate
-          node: ubuntu-trusty
-          suffix: '-nv'
-          branch-override: default
-          ramdisk: ipa
       - '{pipeline}-tempest-dsvm-ironic-inspector{src}-{node}{suffix}':
           pipeline: gate
           node: ubuntu-xenial
@@ -5613,9 +5565,7 @@
           branch-override: default
       - '{pipeline}-grenade-dsvm-ironic-{node}{suffix}':
           pipeline: gate
-          node:
-            - ubuntu-trusty
-            - ubuntu-xenial
+          node: ubuntu-xenial
           suffix: '-nv'
           branch-override: default
       - '{pipeline}-grenade-dsvm-ironic-multinode-multitenant-{node-release}{suffix}':
