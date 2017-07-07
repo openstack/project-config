@@ -43,6 +43,7 @@ install_from_source python-designateclient
 install_from_source python-heatclient
 install_from_source python-ironicclient
 install_from_source python-ironic-inspector-client
+install_from_source python-karborclient
 install_from_source python-mistralclient
 install_from_source python-muranoclient
 install_from_source python-neutronclient
