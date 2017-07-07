@@ -939,7 +939,6 @@ openstack-infra:
     - openstack-infra/infra-specs
     - openstack-infra/irc-meetings
     - openstack-infra/jeepyb
-    - openstack-infra/jenkins-job-builder
     - openstack-infra/lodgeit
     - openstack-infra/log_processor
     - openstack-infra/logstash-filters
@@ -1081,7 +1080,6 @@ openstack-infra:
   branches:
     - master
     - debian/sid #zuul-packaging repo
-    - feature/2.0.x #jenkins-job-builder repo
     - feature/development #askbot-theme repo
     - feature/openid #openstackid repo
     - feature/gearman-zk-shim # nodepool
@@ -1169,6 +1167,17 @@ openstack-javascript:
     - openstack/js-openstack-lib
   branches:
     - master
+
+openstack-jjb:
+  events:
+    - patchset-created
+    - change-merged
+    - x-vrif-minus-2
+  projects:
+    - openstack-infra/jenkins-job-builder
+  branches:
+    - master
+    - stable/1.6
 
 openstack-karbor:
   events:
