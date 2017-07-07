@@ -622,38 +622,6 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-tempest-dsvm-ironic-pxe_ssh-{node}{suffix}'
-    node: '{node}'
-
-    wrappers:
-      - build-timeout:
-          timeout: 180
-      - timestamps
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - ironic-ipxe-disabled
-      - ironic-tempest-regex:
-          tempest-regex: ironic
-      - ironic-tempest-plugin:
-          concurrency: 1
-      - devstack-virtual-ironic:
-          build-ramdisk: 'yes'
-          deploy_driver: pxe_ssh
-          image-type: partition
-          boot-mode: bios
-          branch-override: '{branch-override}'
-          bm-vm-count: 1
-
-    publishers:
-      - devstack-logs
-      - console-log
-
-- job-template:
     name: '{pipeline}-tempest-dsvm-ironic-ipa-{image-type}-{boot-mode}-{driver}-{ramdisk-type}{src}-{node}{suffix}'
     node: '{node}'
 
