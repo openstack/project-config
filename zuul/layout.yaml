@@ -393,21 +393,25 @@ project-templates:
 
   - name: python-jobs
     check:
-      - 'gate-{name}-docs-ubuntu-trusty'
-      - 'gate-{name}-pep8-ubuntu-trusty'
-      - 'gate-{name}-python27-ubuntu-trusty'
       - 'gate-{name}-docs-ubuntu-xenial'
       - 'gate-{name}-pep8-ubuntu-xenial'
       - 'gate-{name}-python27-ubuntu-xenial'
     gate:
-      - 'gate-{name}-docs-ubuntu-trusty'
-      - 'gate-{name}-pep8-ubuntu-trusty'
-      - 'gate-{name}-python27-ubuntu-trusty'
       - 'gate-{name}-docs-ubuntu-xenial'
       - 'gate-{name}-pep8-ubuntu-xenial'
       - 'gate-{name}-python27-ubuntu-xenial'
     post:
       - '{name}-branch-tarball'
+
+  - name: python-jobs-trusty
+    check:
+      - 'gate-{name}-docs-ubuntu-trusty'
+      - 'gate-{name}-pep8-ubuntu-trusty'
+      - 'gate-{name}-python27-ubuntu-trusty'
+    gate:
+      - 'gate-{name}-docs-ubuntu-trusty'
+      - 'gate-{name}-pep8-ubuntu-trusty'
+      - 'gate-{name}-python27-ubuntu-trusty'
 
   - name: python-charm-jobs
     check:
@@ -5998,6 +6002,7 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
+      - name: python-jobs-trusty
 
   - name: openstack/ceilometermiddleware
     template:
@@ -6494,9 +6499,13 @@ projects:
       - gate-tempest-dsvm-full-drbd-devstack-ubuntu-xenial-nv
       - gate-tempest-dsvm-full-lio-ubuntu-xenial
       - gate-tempest-dsvm-full-devstack-plugin-nfs-nv
+      # Single job for driverfixes/mitaka branch:
+      - gate-cinder-pep8-ubuntu-trusty
     gate:
       - gate-cinder-tox-compliance-ubuntu-xenial
       - gate-grenade-dsvm-cinder-mn-sub-volbak-ubuntu-xenial
+      # Single job for driverfixes/mitaka branch:
+      - gate-cinder-pep8-ubuntu-trusty
     experimental:
       - gate-tempest-dsvm-full-sheepdog-src-os-brick-ubuntu-xenial-nv
       - gate-tempest-dsvm-zeromq-multibackend-ubuntu-xenial
@@ -6592,6 +6601,7 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
+      - name: python-jobs-trusty
       - name: python35-jobs
       - name: openstack-unified-publish-jobs
       - name: publish-to-pypi
@@ -6606,6 +6616,7 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
+      - name: python-jobs-trusty
       - name: publish-to-pypi
 
   - name: openstack/cloudroast
@@ -6623,6 +6634,7 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
+      - name: python-jobs-trusty
     experimental:
       - gate-dsvm-collectd-ceilometer-plugin-src-ubuntu-xenial-nv
       - gate-dsvm-collectd-ceilometer-plugin-bin-ubuntu-xenial-nv
@@ -10004,6 +10016,7 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
+      - name: python-jobs-trusty
 
   - name: openstack/futurist
     template:
@@ -10232,6 +10245,7 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
+      - name: python-jobs-trusty
       - name: publish-to-pypi
     check:
       - gate-group-based-policy-dsvm-functional-ubuntu-trusty-nv
@@ -10246,6 +10260,7 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
+      - name: python-jobs-trusty
       - name: publish-to-pypi
 
   - name: openstack/group-based-policy-specs
@@ -10261,6 +10276,7 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
+      - name: python-jobs-trusty
       - name: publish-to-pypi
 
   - name: openstack/heat
@@ -11950,6 +11966,7 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
+      - name: python-jobs-trusty
       - name: publish-to-pypi
 
   - name: openstack/networking-arista
@@ -12026,11 +12043,13 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
+      - name: python-jobs-trusty
 
   - name: openstack/networking-brocade
     template:
       - name: merge-check
       - name: python-jobs
+      - name: python-jobs-trusty
 
   - name: openstack/networking-calico
     template:
@@ -12166,6 +12185,7 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
+      - name: python-jobs-trusty
       - name: publish-to-pypi
 
   - name: openstack/networking-l2gw
@@ -12229,11 +12249,13 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
+      - name: python-jobs-trusty
 
   - name: openstack/networking-nec
     template:
       - name: merge-check
       - name: python-jobs
+      - name: python-jobs-trusty
       - name: python35-jobs
 
   - name: openstack/networking-odl
@@ -12329,6 +12351,7 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
+      - name: python-jobs-trusty
     experimental:
       - gate-tempest-dsvm-networking-ovs-dpdk-nv
 
@@ -12342,6 +12365,7 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
+      - name: python-jobs-trusty
       - name: publish-to-pypi
 
   - name: openstack/networking-powervm
@@ -12397,6 +12421,7 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
+      - name: python-jobs-trusty
 
   - name: openstack/neutron
     template:
@@ -12796,6 +12821,7 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
+      - name: python-jobs-trusty
 
   - name: openstack/novajoin
     template:
@@ -15557,6 +15583,7 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
+      - name: python-jobs-trusty
       - name: python35-jobs
       - name: publish-to-pypi
       - name: osc-plugin-jobs
@@ -15567,6 +15594,7 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
+      - name: python-jobs-trusty
       - name: publish-to-pypi
 
   - name: openstack/python-cognitiveclient
@@ -15704,6 +15732,7 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
+      - name: python-jobs-trusty
       - name: publish-to-pypi
 
   - name: openstack/python-heatclient
@@ -17245,6 +17274,7 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
+      - name: python-jobs-trusty
       - name: python35-jobs
       - name: openstack-unified-publish-jobs
       - name: openstack-server-release-jobs
@@ -17657,6 +17687,7 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
+      - name: python-jobs-trusty
       - name: publish-to-pypi
 
   - name: openstack/tooz
@@ -18063,6 +18094,7 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
+      - name: python-jobs-trusty
       - name: publish-to-pypi
 
   - name: openstack/turbo-hipster
@@ -18444,6 +18476,7 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
+      - name: python-jobs-trusty
       - name: python35-jobs
       - name: publish-to-pypi
       - name: docs-on-rtfd
