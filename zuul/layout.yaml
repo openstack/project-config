@@ -2058,18 +2058,20 @@ jobs:
   # these are pullup jobs): distro release
   # mitaka -> newton: trusty
   # newton -> master/ocata: xenial
-  # XXX: Delete later
-  # - name: ^.*grenade-.*-ubuntu-trusty$
-  #  branch: ^(stable/newton)$
+  # Note that we do not run these on the oldest supported branch,
+  # currently newton.
   - name: ^.*grenade-.*-ubuntu-xenial$
-    branch: ^(?!stable/(mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
   # For the forward grenade jobs we have the same mapping but the
   # branch on the left hand side is the one zuul is operating so is
-  # the one that determines our selection here
-  # only here until stable is votable, then merge
+  # the one that determines our selection of branch and distribution.
+  # Thus, we do run on the oldest supported branch. No branch condition
+  # is needed currently.
+  # name: ^.*grenade-dsvm(-.*)?-forward-ubuntu-xenial$
+
+  # Only here until stable is votable, then merge
   # back to a single job
   - name: ^.*grenade-dsvm(-.*)?-forward-ubuntu-xenial$
-    branch: ^stable/(?!mitaka).*$
     voting: false
 
   # NOTE(mriedem): These jobs use nova-network specifically which won't work
