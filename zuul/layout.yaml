@@ -2678,9 +2678,6 @@ jobs:
       - 'bindep.txt'
       - other-requirements.txt
 
-  - name: ^(?!gate-).*-deploy-guide$
-    branch: ^(?!stable/mitaka).*$
-
   - name: ^(?!gate-).*-api-guide$
     # Only publish from master
     branch: master
@@ -3349,13 +3346,13 @@ jobs:
   # as a) they don't have the right tox targets a b) no one
   # is actually going to use them with this python version.
   - name: ^gate-nova-lxd-python35$
-    branch: ^(?!stable/(mitaka|newton|ocata)).*$
+    branch: ^(?!stable/(newton|ocata)).*$
 
   # Don't run nova-lxd dsvm gate checks on newton or older
   # Older nova-lxd versions did not use os-vif, and as a result have
   # somewhat un-reliable network vif plugging.
   - name: ^gate-tempest-dsvm-lxd-.*$
-    branch: ^(?!stable/(mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
 
   # Only run nova-tox-functional-py35-ubuntu tests on branch master
   # TODO(gcb): run these tests on future stable branches starting with pike.
