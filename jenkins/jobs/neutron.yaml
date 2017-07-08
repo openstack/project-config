@@ -106,49 +106,6 @@
       - devstack-logs
       - console-log
 
-# TODO(armax): drop this job after all branches in the gate are tested
-# with the native configuration. This will happen when stable/mitaka is
-# dropped
-- job-template:
-    name: '{pipeline}-tempest-dsvm-neutron-dvr-ovs-native-{node}{suffix}'
-    node: '{node}'
-
-    wrappers:
-      - build-timeout:
-          timeout: 130
-      - timestamps
-
-    builders:
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - local_conf:
-          conf: |
-            [[post-config|/$Q_PLUGIN_CONF_FILE]]
-            [ovs]
-            of_interface=native
-            ovsdb_interface=native
-
-
-      - shell: |
-          #!/bin/bash -xe
-          export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_TEMPEST=1
-          export DEVSTACK_GATE_NEUTRON=1
-          export DEVSTACK_GATE_TEMPEST_FULL=1
-          export DEVSTACK_GATE_NEUTRON_DVR=1
-          export BRANCH_OVERRIDE={branch-override}
-          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
-              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
-          fi
-
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
-
-    publishers:
-      - devstack-logs
-      - console-log
-
 - job-template:
     name: '{pipeline}-tempest-dsvm-neutron-dvr-ha-multinode-full-{node-release}{suffix}'
     node: '{node}'
@@ -385,49 +342,6 @@
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
-
-    publishers:
-      - devstack-logs
-      - console-log
-
-# TODO(armax): drop this job after all branches in the gate are tested
-# with the native configuration. This will happen when stable/mitaka is
-# dropped
-- job-template:
-    name: '{pipeline}-tempest-dsvm-neutron-ovs-native-{node}{suffix}'
-    node: '{node}'
-
-    wrappers:
-      - build-timeout:
-          timeout: 130
-      - timestamps
-
-    builders:
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - shell: |
-          #!/bin/bash -xe
-          export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_TEMPEST=1
-          export DEVSTACK_GATE_TEMPEST_FULL=1
-          export DEVSTACK_GATE_NEUTRON=1
-          export BRANCH_OVERRIDE={branch-override}
-          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
-              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
-          fi
-          # Add configrations for ovs native interface in local.conf
-          function pre_test_hook {{
-              local localconf=$BASE/new/devstack/local.conf
-              echo "[[post-config|/\$Q_PLUGIN_CONF_FILE]]" >> $localconf
-              echo "[ovs]" >> $localconf
-              echo "of_interface=native" >> $localconf
-              echo "ovsdb_interface=native" >> $localconf
-          }}
-          export -f pre_test_hook
-
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
 
