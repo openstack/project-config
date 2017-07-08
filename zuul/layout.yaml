@@ -577,21 +577,6 @@ project-templates:
       - 'periodic-{name}-python27-ocata'
 
   # Used for building documentation projects that contain
-  # DocBook XML and RST files.
-  - name: openstack-doc-gate
-    check:
-      - gate-{name}-tox-checklinks-ubuntu-xenial
-      - gate-{name}-tox-checkniceness-ubuntu-xenial
-      - gate-{name}-tox-checksyntax-ubuntu-xenial
-      - gate-{name}-tox-checkdeletions-ubuntu-xenial
-      - gate-{name}-tox-doc-publish-checkbuild
-    gate:
-      - gate-{name}-tox-checkniceness-ubuntu-xenial
-      - gate-{name}-tox-checksyntax-ubuntu-xenial
-      - gate-{name}-tox-checkdeletions-ubuntu-xenial
-      - gate-{name}-tox-doc-publish-checkbuild
-
-  # Used for building documentation projects that contain
   # only RST files.
   - name: openstack-doc-rst-gate
     check:
@@ -2604,14 +2589,6 @@ jobs:
     files:
       - '^.*\.po$'
       - '^.*\.pot$'
-
-  - name: ^gate-.*-tox-checksyntax-ubuntu-xenial$
-    files:
-      - '^.*\.ent$'
-      - '^.*\.po$'
-      - '^.*\.pot$'
-      - '^.*\.wadl'
-      - '^.*\.xml$'
 
   - name: ^gate-.*-docs-ubuntu-(trusty|xenial)$
     success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/doc/build/html/
@@ -9238,16 +9215,13 @@ projects:
   - name: openstack/fuel-library
     template:
       - name: merge-check
+      - name: puppet-syntax
     check:
       - gate-fuel-library-puppet-lint
-      - gate-fuel-library-puppet-syntax-3-centos-7
-      - gate-fuel-library-puppet-syntax-4-centos-7
       - gate-fuel-library-puppet-unit-3.8-centos-7
       - gate-fuel-library-puppet-unit-4.5-centos-7
     gate:
       - gate-fuel-library-puppet-lint
-      - gate-fuel-library-puppet-syntax-3-centos-7
-      - gate-fuel-library-puppet-syntax-4-centos-7
       - gate-fuel-library-puppet-unit-3.8-centos-7
       - gate-fuel-library-puppet-unit-4.5-centos-7
 
@@ -9350,6 +9324,7 @@ projects:
   - name: openstack/fuel-octane
     template:
       - name: merge-check
+      - name: puppet-syntax
     check:
       - gate-fuel-octane-pep8-ubuntu-trusty
       - gate-fuel-octane-python27-ubuntu-trusty
@@ -9358,16 +9333,12 @@ projects:
       - fuel-octane-coverage-ubuntu-trusty-nv
       - fuel-octane-coverage-ubuntu-xenial-nv
       - gate-fuel-octane-puppet-lint
-      - gate-fuel-octane-puppet-syntax-3-centos-7
-      - gate-fuel-octane-puppet-syntax-4-centos-7
     gate:
       - gate-fuel-octane-pep8-ubuntu-trusty
       - gate-fuel-octane-python27-ubuntu-trusty
       - gate-fuel-octane-pep8-ubuntu-xenial
       - gate-fuel-octane-python27-ubuntu-xenial
       - gate-fuel-octane-puppet-lint
-      - gate-fuel-octane-puppet-syntax-3-centos-7
-      - gate-fuel-octane-puppet-syntax-4-centos-7
 
   - name: openstack/fuel-ostf
     template:
@@ -10408,15 +10379,12 @@ projects:
       - name: experimental-tripleo-jobs
       - name: check-requirements
       - name: release-notes-jobs
+      - name: puppet-syntax
     check:
       - gate-instack-undercloud-puppet-lint
-      - gate-instack-undercloud-puppet-syntax-3-centos-7
-      - gate-instack-undercloud-puppet-syntax-4-centos-7
       - instack-undercloud-coverage-ubuntu-xenial-nv
     gate:
       - gate-instack-undercloud-puppet-lint
-      - gate-instack-undercloud-puppet-syntax-3-centos-7
-      - gate-instack-undercloud-puppet-syntax-4-centos-7
 
   - name: openstack/installguide-cookiecutter
     template:
