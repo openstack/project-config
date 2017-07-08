@@ -1891,7 +1891,6 @@ jobs:
         all-files-match-any:
           - ^releasenotes/.*$
           - ^docs/.*$
-    branch: ^(?!stable/liberty).*$
 
   # Puppet 3 is not supported in Pike and beyond, so we don't want to test it anymore.
   - name: ^gate-(tripleo-heat-templates|tripleo-.*|puppet-.*)-(syntax|unit)-3.*-legacy-centos-7$
@@ -2760,9 +2759,6 @@ jobs:
 
   - name: ^gate-sahara-dsvm-scenario-mod-wsgi-ubuntu-xenial-nv$
     branch: ^(?!stable/(newton|ocata)).*$
-
-  - name: ^(gate|post)-sahara-extra-artifacts$
-    branch: ^(?!stable/icehouse).*$
 
   - name: ^gate-sahara-dashboard-dsvm-integration.*$
     voting: false
@@ -14495,14 +14491,10 @@ projects:
       - name: merge-check
       - name: packstack-integration-jobs
     check:
-      - gate-packstack-pep8-ubuntu-trusty
-      - gate-packstack-python27-ubuntu-trusty
       - gate-packstack-pep8-ubuntu-xenial
       - gate-packstack-python27-ubuntu-xenial
       - gate-packstack-releasenotes
     gate:
-      - gate-packstack-pep8-ubuntu-trusty
-      - gate-packstack-python27-ubuntu-trusty
       - gate-packstack-pep8-ubuntu-xenial
       - gate-packstack-python27-ubuntu-xenial
       - gate-packstack-releasenotes
@@ -16542,10 +16534,8 @@ projects:
     template:
       - name: merge-check
     check:
-      - gate-rpm-packaging-tox-lint-ubuntu-trusty
       - gate-rpm-packaging-tox-lint-ubuntu-xenial
     gate:
-      - gate-rpm-packaging-tox-lint-ubuntu-trusty
       - gate-rpm-packaging-tox-lint-ubuntu-xenial
 
   - name: openstack/rpm-packaging-tools
@@ -17673,13 +17663,10 @@ projects:
       - name: merge-check
       - name: python-jobs
     check:
-      - gate-training-labs-scripts-ubuntu-trusty
       - gate-training-labs-scripts-ubuntu-xenial
     gate:
-      - gate-training-labs-scripts-ubuntu-trusty
       - gate-training-labs-scripts-ubuntu-xenial
     post:
-      - training-labs-scripts-ubuntu-trusty
       - training-labs-scripts-ubuntu-xenial
 
   - name: openstack/transparency-policy
