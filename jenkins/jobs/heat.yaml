@@ -197,7 +197,7 @@
 
 
 - job-template:
-    name: '{pipeline}-grenade-dsvm-heat-{node}{suffix}'
+    name: '{pipeline}-grenade-dsvm-heat{topology}-{node-release}{suffix}'
     node: '{node}'
 
     wrappers:
@@ -219,28 +219,20 @@
           export PYTHONUNBUFFERED=true
           export GRENADE_PLUGINRC="enable_grenade_plugin heat https://git.openstack.org/openstack/heat"
 
-          export ENABLED_SERVICES
-
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_TEMPEST_NOTESTS=1
           export DEVSTACK_GATE_GRENADE=pullup
           export BRANCH_OVERRIDE={branch-override}
+          export TOPOLOGY={topology}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
 
-          function pre_test_hook {{
-              cd /opt/stack/new/heat/heat_upgradetests
-              ./pre_test_hook.sh
-          }}
-          export -f pre_test_hook
-
-          function post_test_hook {{
-              cd /opt/stack/new/heat/heat_upgradetests
-              ./post_test_hook.sh
-          }}
-          export -f post_test_hook
+          # Default topology is all-in-one (aio)
+          if [ "$TOPOLOGY" == "-multinode" ] ; then
+              export DEVSTACK_GATE_TOPOLOGY="multinode"
+          fi
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
