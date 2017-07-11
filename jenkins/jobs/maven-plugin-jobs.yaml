@@ -51,10 +51,12 @@
 
 - job-group:
     name: maven-plugin-jobs
-    node:
-      - ubuntu-trusty
-      - ubuntu-xenial
+
     jobs:
-      - 'gate-{name}-maven-build-{node}'
-      - '{name}-localrepo-upload-{node}'
+      - 'gate-{name}-maven-build-{node}':
+          node:
+            - ubuntu-trusty
+            - ubuntu-xenial
+      - '{name}-localrepo-upload-{node}':
+          node: ubuntu-xenial
       - '{name}-mavencentral-upload'
