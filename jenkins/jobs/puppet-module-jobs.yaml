@@ -399,7 +399,18 @@
     jobs:
       - 'gate-{name}-puppet-lint'
       - 'gate-{name}-puppet-module-build'
-      - 'gate-{name}-puppet-syntax-{puppet_version}-{legacy}{node}'
+      - 'gate-{name}-puppet-syntax-{puppet_version}-{legacy}{node}':
+          puppet_version: 3
+          node: ubuntu-xenial
+          legacy: ''
+      - 'gate-{name}-puppet-syntax-{puppet_version}-{legacy}{node}':
+          puppet_version: 3
+          node: centos-7
+          legacy: 'legacy-'
+      - 'gate-{name}-puppet-syntax-{puppet_version}-{legacy}{node}':
+          puppet_version: 4
+          node: centos-7
+          legacy: ''
 
 - job-group:
     name: 'puppet-module-unit'
