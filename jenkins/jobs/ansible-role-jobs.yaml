@@ -75,7 +75,11 @@
     builders:
       - print-template-name:
           template-name: "{template-name}"
-      - zuul-git-prep-upper-constraints
+      # The test executes against a repo which understand how to translate
+      # ZUUL_CHANGES into the correct setup. The only thing we need to
+      # bootstrap here is the Ansible repo itself.
+      - zuul-git-prep-upper-constraints-cross:
+          project: openstack/{name}
       - shell: |
           # NOTE(mhayden): The CentOS CI image has many repositories enabled by
           # default that can cause package conflicts. We must disable all of
