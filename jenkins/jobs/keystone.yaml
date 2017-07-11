@@ -211,3 +211,44 @@
       - devstack-logs
       - test-results
       - console-log
+
+- job-template:
+    name: '{pipeline}-keystone-dsvm-functional-ldap-domain-specific-driver-{node}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 70
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            TEMPEST_PLUGINS='/opt/stack/new/keystone-tempest-plugin'
+            # Enables ldap service and sets its password
+            enable_service ldap
+            KEYSTONE_CLEAR_LDAP=yes
+            LDAP_PASSWORD='nomoresecret'
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export PROJECTS="openstack/keystone-tempest-plugin $PROJECTS"
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_PROJECT_FROM_GIT=python-keystoneclient
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+
+          export DEVSTACK_GATE_TEMPEST_REGEX='keystone_tempest_plugin'
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
