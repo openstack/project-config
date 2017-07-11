@@ -1883,7 +1883,7 @@ jobs:
     branch: ^(stable/(mitaka|newton|ocata)).*$
 
   # no need to run the jobs for doc / releasenotes / unittests patches
-  - name: ^gate-(puppet-.*-(syntax|unit|beaker|integration-4)-|(tripleo-ci|scenario.*-tempest)-centos-7-).*$
+  - name: ^gate-(puppet-.*-(syntax|unit|beaker)-|tripleo-ci-centos-7-).*$
     skip-if:
       - project: ^openstack/.*$
         all-files-match-any:
@@ -1893,8 +1893,6 @@ jobs:
           - ^releasenotes/.*$
           - ^metadata.json$
           - ^etc/.*$
-          - ^tempest/tests/.*$
-          - ^tempest/hacking/.*$
           - ^test-requirements.txt$
 
   # no need to run integration jobs when patching unit or beaker tests, reno or readme.
@@ -1906,6 +1904,15 @@ jobs:
           - ^releasenotes/.*$
           - ^spec/.*$
           - ^metadata.json$
+          - ^test-requirements.txt$
+      - project: ^openstack/tempest$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+          - ^releasenotes/.*$
+          - ^etc/.*$
+          - ^tempest/tests/.*$
+          - ^tempest/hacking/.*$
           - ^test-requirements.txt$
 
   # Only run the puppet module build job on metadata.json updates
