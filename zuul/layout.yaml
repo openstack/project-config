@@ -1456,7 +1456,7 @@ jobs:
   # Skip non-doc jobs for doc-only or translation-only neutron
   # changes. Since doc/source/conf.py is checked by
   # neutron-(pep8|pylint), those jobs should not be skipped.
-  - name: ^.*neutron-((dsvm-api|dsvm-fullstack|dsvm-fullstack-python35|dsvm-functional|dsvm-functional-python35|python(27|34|35))(-ubuntu-.*)?|coverage-.+|lbaasv[12]-dsvm-(api|minimal))$
+  - name: ^.*neutron-((dsvm-api|dsvm-fullstack|dsvm-fullstack-python35|dsvm-functional|dsvm-functional-python35|python(27|35))(-ubuntu-.*)?|coverage-.+|lbaasv[12]-dsvm-(api|minimal))$
     skip-if:
       - project: ^openstack/neutron$
         all-files-match-any:
@@ -1465,7 +1465,7 @@ jobs:
           - ^doc/.*$
           - ^releasenotes/.*$
   # Skip non docs jobs for doc-only neutronclient changes
-  - name: ^gate-(python-neutronclient-(python27|python3[45](-nv)?|pypy)|neutronclient-test-dsvm-functional(-ubuntu-.*)?|neutronclient-test-dsvm-functional-adv-svcs(-ubuntu-.*)?|tempest-dsvm-neutron-src-python-neutronclient(-ubuntu-.*)?)$
+  - name: ^gate-(python-neutronclient-(python27|python35(-nv)?|pypy)|neutronclient-test-dsvm-functional(-ubuntu-.*)?|neutronclient-test-dsvm-functional-adv-svcs(-ubuntu-.*)?|tempest-dsvm-neutron-src-python-neutronclient(-ubuntu-.*)?)$
     skip-if:
       - project: ^openstack/python-neutronclient$
         all-files-match-any:
@@ -1474,7 +1474,7 @@ jobs:
           - ^doc/.*$
           - ^releasenotes/.*$
   # Skip non-doc jobs for doc-only neutron-lib changes.
-  - name: ^.*(neutron-lib-(python(27|3[45](-nv)?)|coverage)|tempest-dsvm-neutron-src-neutron-lib)(-ubuntu-xenial)?$
+  - name: ^.*(neutron-lib-(python(27|35(-nv)?)|coverage)|tempest-dsvm-neutron-src-neutron-lib)(-ubuntu-xenial)?$
     skip-if:
       - project: ^openstack/neutron-lib$
         all-files-match-any:
@@ -1484,7 +1484,7 @@ jobs:
           - ^releasenotes/.*$
   # Skip non-doc jobs for doc-only neutron-vpnaas changes. The dsvm
   # tests area already skipped by another check.
-  - name: ^.*neutron-vpnaas-python(27|3[45](-nv)?)$
+  - name: ^.*neutron-vpnaas-python(27|35(-nv)?)$
     skip-if:
       - project: ^openstack/neutron-vpnaas$
         all-files-match-any:
@@ -1501,7 +1501,7 @@ jobs:
   # Skip non-doc jobs for doc-only or translation-only nova changes.
   # Since doc/source/conf.py is checked by nova-(pep8|pylint), those
   # jobs should not be skipped.
-  - name: ^.*nova-(tox-functional|python27|python3[45](-nv)?)
+  - name: ^.*nova-(tox-functional|python27|python35(-nv)?)
     skip-if:
       - project: ^openstack/nova$
         all-files-match-any:
@@ -1533,7 +1533,7 @@ jobs:
   # Skip non-doc jobs for doc-only or translation-only heat changes.
   # Since doc/source/* is checked by heat-pep8, this job should not be
   # skipped.
-  - name: ^.*heat-(python27|python3[45])(-nv)?$
+  - name: ^.*heat-(python27|python35)(-nv)?$
     skip-if:
       - project: ^openstack/heat$
         all-files-match-any:
@@ -1556,13 +1556,13 @@ jobs:
           - ^releasenotes/.*$
   # Skip non-doc jobs for doc-only ironic changes. Since documents are checked
   # by ironic-pep8 it should not be skipped.
-  - name: ^.*ironic-(python27|python3[45])(-nv)?$
+  - name: ^.*ironic-(python27|python35)(-nv)?$
     skip-if:
       - project: ^openstack/ironic$
         all-files-match-any:
           - ^.*\.rst$
           - ^doc/.*$
-  - name: ^.*ironic-inspector-(python27|python3[45]|tox-func3?)(-ubuntu-.*)?(-nv)?$
+  - name: ^.*ironic-inspector-(python27|python35|tox-func3?)(-ubuntu-.*)?(-nv)?$
     skip-if:
       - project: ^openstack/ironic-inspector$
         all-files-match-any:
@@ -1570,7 +1570,7 @@ jobs:
           - ^doc/.*$
   # Skip non-doc jobs for doc-only python-ironicclient changes. Since documents
   # are checked by python-ironicclient-pep8 it should not be skipped.
-  - name: ^gate-(python-ironicclient-(python27|python3[45](-nv)?|pypy)|ironicclient-dsvm-functional|tempest-dsvm-python-ironicclient-src)(-ubuntu-.*)?$
+  - name: ^gate-(python-ironicclient-(python27|python35(-nv)?|pypy)|ironicclient-dsvm-functional|tempest-dsvm-python-ironicclient-src)(-ubuntu-.*)?$
     skip-if:
       - project: ^openstack/python-ironicclient$
         all-files-match-any:
@@ -1798,7 +1798,7 @@ jobs:
   # Skip non-doc jobs for doc-only networking-midonet changes.  Since
   # doc/source/conf.py is checked by networking-midonet-pep8, that job
   # should not be skipped.
-  - name: ^.*networking-midonet-(python27|python3[45](-nv)?)$
+  - name: ^.*networking-midonet-(python27|python35(-nv)?)$
     skip-if:
       - project: ^openstack/networking-midonet$
         all-files-match-any:
@@ -1807,7 +1807,7 @@ jobs:
   # Skip non-doc jobs for doc-only magnum changes.  Since
   # doc/source/conf.py is checked by gate-magnum-pep8, that job
   # should not be skipped.
-  - name: ^gate-magnum-python(27|3[45](-nv)?)$
+  - name: ^gate-magnum-python(27|35(-nv)?)$
     skip-if:
       - project: ^openstack/magnum$
         all-files-match-any:
@@ -1816,7 +1816,7 @@ jobs:
   # Skip non-doc jobs for doc-only tap-as-a-service changes.  Since
   # doc/source/conf.py is checked by tap-as-a-service-pep8, that job
   # should not be skipped.
-  - name: ^.*tap-as-a-service-(python27|python3[45](-nv)?)$
+  - name: ^.*tap-as-a-service-(python27|python35(-nv)?)$
     skip-if:
       - project: ^openstack/tap-as-a-service$
         all-files-match-any:
@@ -1831,7 +1831,7 @@ jobs:
         all-files-match-any:
           - ^.*\.rst$
           - ^doc/.*$
-  - name: ^.*diskimage-builder-(python27|python3[45](-nv)?)$
+  - name: ^.*diskimage-builder-(python27|python35(-nv)?)$
     skip-if:
       - project: ^openstack/diskimage-builder$
         all-files-match-any:
