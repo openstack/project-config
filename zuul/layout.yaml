@@ -1592,6 +1592,17 @@ jobs:
           - ^.*\.rst$
           - ^doc/.*$
           - ^releasenotes/.*$
+
+  # Skip non-doc jobs for doc-only python-ironic-inspector-client changes. Since documents
+  # are checked by python-ironic-inspector-client-pep8 it should not be skipped.
+  - name: ^gate-(python-ironic-inspector-client-(python27|python35|tox-func(-nv)?)|tempest-dsvm-python-ironic-inspector-client)(-ubuntu-.*)?$
+    skip-if:
+      - project: ^openstack/python-ironic-inspector-client$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+          - ^releasenotes/.*$
+
   # Skip non-doc jobs for doc-only bifrost changes. Since documents
   # are checked by bifrost-pep8, that job should not be skipped.
   - name: ^.*bifrost-(python27|integration-tinyipa|integration-dibipa-debian|integration-dhcp)-(ubuntu-xenial|opensuse-422|centos-7)(-nv)?$
