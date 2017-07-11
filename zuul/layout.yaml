@@ -3117,12 +3117,12 @@ jobs:
   # Since regexes override each other (last one wins), we can stage this.
   # First, we run all trusty jobs on both mitaka and newton:
   - name: ^gate-openstack-ansible.*-ubuntu-trusty.*$
-    branch: ^stable/(mitaka|newton)$
+    branch: ^stable/newton$
 
   # Keep in mind that stable/mitaka and stable/newton are ubuntu only,
   # so we remove centos-7 jobs.
   - name: ^gate-openstack-ansible-.*-ansible-.*-centos-7.*$
-    branch: ^(?!stable/(mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
 
   # Now some specific conditions for openstack-ansible:
 
@@ -3140,55 +3140,49 @@ jobs:
     branch: ^stable/newton$
 
   # Restrictions for openstack-ansible-security/ansible-hardening
-  #   - Run centos-7 job on Newton or later
+  #   - Run centos-7 job on Newton or later (no restriction needed)
   #   - Run debian-jessie job on Pike or later
   #   - Run fedora-25 job on Pike or later
   #   - Run RHEL 6 content against ubuntu-trusty on Ocata or later
-  - name: ^gate-(openstack-ansible-security|ansible-hardening)-ansible-func-centos-7.*$
-    branch: ^(?!stable/mitaka).*$
   - name: ^gate-(openstack-ansible-security|ansible-hardening)-ansible-func-debian-jessie.*$
-    branch: ^(?!stable/(mitaka|newton|ocata)).*$
+    branch: ^(?!stable/(newton|ocata)).*$
   - name: ^gate-(openstack-ansible-security|ansible-hardening)-ansible-func-fedora-25.*$
-    branch: ^(?!stable/(mitaka|newton|ocata)).*$
+    branch: ^(?!stable/(newton|ocata)).*$
   - name: ^gate-(openstack-ansible-security|ansible-hardening)-ansible-func_rhel6.*$
-    branch: ^(?!stable/(mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
 
   # Skip the OpenStack-Ansible voting aio scenario job on xenial for the
   # openstack-ansible repository if the branch is anything before ocata.
   - name: ^gate-openstack-ansible-openstack-ansible-aio-ubuntu-xenial$
-    branch: ^(?!stable/(mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
 
   # Skip the OpenStack-Ansible Ceph job for the openstack-ansible repository if
   # the branch is anything before ocata.
   - name: ^gate-openstack-ansible-openstack-ansible-ceph-(centos-7|ubuntu-xenial).*$
-    branch: ^(?!stable/(mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
 
   # Skip the OpenStack-Ansible CentOS job for the openstack-ansible repository if
   # the branch is anything before ocata.
   - name: ^gate-openstack-ansible-openstack-ansible-aio-centos-7.*$
-    branch: ^(?!stable/(mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
 
   # Skip the os_ceilometer functional tests against gnocchi on Newton
   # and earlier branches.
   - name: ^gate-openstack-ansible-os_ceilometer-ansible-gnocchi.*$
-    branch: ^(?!stable/(mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
 
   # Skip the os_neutron functional tests for calico/dragonflow on Newton
   # and earlier branches.
   - name: ^gate-openstack-ansible-os_neutron-ansible-(calico|dragonflow).*$
-    branch: ^(?!stable/(mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
 
   # Skip the upgrade test on Newton and earlier branches.
   - name: ^gate-openstack-ansible-.*-ansible-upgrade.*$
-    branch: ^(?!stable/(mitaka|newton)).*$
+    branch: ^(?!stable/newton).*$
 
   # Skip galera_ssl test on Ocata and earlier branches
   - name: ^gate-openstack-ansible-galera_server-ansible-ssl.*$
-    branch: ^(?!stable/(mitaka|newton|ocata)).*$
-
-  # Skip any deploy guide publish jobs for mitaka
-  - name: ^gate-openstack-ansible-deploy-guide$
-    branch: ^(?!stable/mitaka).*$
+    branch: ^(?!stable/newton|ocata).*$
 
   # Ignore requirements on the keystoneclient/keystoneauth integration branch
   - name: gate-python-keystoneclient-requirements
