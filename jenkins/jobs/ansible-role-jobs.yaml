@@ -77,19 +77,15 @@
           template-name: "{template-name}"
       - zuul-git-prep-upper-constraints
       - shell: |
-          if [[ "{name}" == *"openstack-ansible"* ]]; then
-            # EPEL must be enabled because some deps from bindep.txt are
-            # otherwise not available
-            if [[ -e /usr/bin/yum ]]; then
-              sudo yum-config-manager --enable epel
-            fi
+          # EPEL must be enabled because some deps from bindep.txt are
+          # otherwise not available
+          if [[ -e /usr/bin/yum ]]; then
+            sudo yum-config-manager --enable epel
           fi
       - install-distro-packages
       - shell: |
-          if [[ "{name}" == *"openstack-ansible"* ]]; then
-            if [[ -e /usr/bin/yum ]]; then
-              sudo yum-config-manager --disable epel
-            fi
+          if [[ -e /usr/bin/yum ]]; then
+            sudo yum-config-manager --disable epel
           fi
       - shell: |
           # Allow Jenkins user to ssh into localhost
