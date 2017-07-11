@@ -79,12 +79,12 @@
       - shell: |
           # EPEL must be enabled because some deps from bindep.txt are
           # otherwise not available
-          if [[ -e /usr/bin/yum ]]; then
+          if [[ -e /usr/bin/yum ]] && [[ -x /usr/bin/yum-config-manager ]]; then
             sudo yum-config-manager --enable epel
           fi
       - install-distro-packages
       - shell: |
-          if [[ -e /usr/bin/yum ]]; then
+          if [[ -e /usr/bin/yum ]] && [[ -x /usr/bin/yum-config-manager ]]; then
             sudo yum-config-manager --disable epel
           fi
       - shell: |
