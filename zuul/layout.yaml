@@ -2854,6 +2854,12 @@ jobs:
   - name: gate-manila-buildimage-docker-ubuntu-xenial
     voting: false
 
+  - name: ^gate-manila-(tempest|docs|ui).*
+    branch: ^(?!driverfixes/).*$
+
+  - name: gate-grenade-dsvm-manila-ubuntu-xenial-nv
+    branch: ^(?!driverfixes/).*$
+
   - name: ^gate-manila-tempest-dsvm-.*-scenario-custom-image-.*
     branch: ^(?!stable/newton).*$
 
@@ -2884,13 +2890,13 @@ jobs:
   - name: ^gate-oslo.messaging-tox-py27-func-zmq-ubuntu-xenial$
     voting: false
 
-  # Rally jobs for Manila should run only on ocata+ branches
+  # Rally jobs for Manila only for non driverfixes, ocata+ branches
   - name: gate-rally-dsvm-manila-multibackend
-    branch: ^(?!stable/newton).*$
+    branch: ^(?!stable/newton|driverfixes/).*$
     voting: false
 
   - name: gate-rally-dsvm-manila-multibackend-no-ss
-    branch: ^(?!stable/newton).*$
+    branch: ^(?!stable/newton|driverfixes/).*$
     voting: false
 
   - name: gate-manila-ui-dsvm-nv
