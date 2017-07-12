@@ -2077,11 +2077,6 @@ jobs:
   - name: ^.*grenade-dsvm(-.*)?-forward-ubuntu-xenial$
     voting: false
 
-  # NOTE(mriedem): These jobs use nova-network specifically which won't work
-  # after newton so restrict them to just run on newton changes.
-  - name: ^gate-grenade-dsvm-multinode.*$
-    branch: ^stable/newton$
-
   - name: gate-rally-dsvm-verify-full-discover-resources
     files:
       - ^rally/cli/commands/verify.py$
@@ -3497,7 +3492,6 @@ projects:
       - gate-devstack-dsvm-py35-updown-ubuntu-xenial-nv
       - gate-swift-dsvm-functional-ubuntu-xenial-nv
       - gate-grenade-dsvm-neutron-ubuntu-xenial
-      - gate-grenade-dsvm-multinode
       - gate-grenade-dsvm-neutron-multinode-ubuntu-xenial
       - gate-tempest-dsvm-neutron-full-centos-7-nv
       - gate-tempest-dsvm-neutron-linuxbridge-ubuntu-xenial
@@ -3506,7 +3500,6 @@ projects:
     gate:
       - gate-devstack-docs-ubuntu-xenial
       - gate-devstack-bashate
-      - gate-grenade-dsvm-multinode
       - gate-grenade-dsvm-neutron-multinode-ubuntu-xenial
       - gate-tempest-dsvm-neutron-linuxbridge-ubuntu-xenial
     experimental:
@@ -3542,13 +3535,11 @@ projects:
     check:
       - gate-grenade-dsvm-neutron-ubuntu-xenial
       - gate-grenade-dsvm-heat-ubuntu-xenial-nv
-      - gate-grenade-dsvm-multinode
       - gate-grenade-dsvm-neutron-multinode-ubuntu-xenial
       - gate-grenade-publish-docs
       - gate-grenade-dsvm-ironic-ubuntu-xenial-nv
     gate:
       - gate-grenade-dsvm-neutron-ubuntu-xenial
-      - gate-grenade-dsvm-multinode
       - gate-grenade-dsvm-neutron-multinode-ubuntu-xenial
       - gate-grenade-publish-docs
     post:
@@ -3714,7 +3705,6 @@ projects:
       - gate-devstack-gate-tox-py3-run-tests-ubuntu-xenial
       - gate-devstack-gate-bashate
       - gate-dg-hooks-dsvm
-      - gate-grenade-dsvm-multinode
       - gate-grenade-dsvm-neutron-multinode-ubuntu-xenial
       - gate-neutron-dsvm-functional-ubuntu-xenial-nv
       - gate-neutron-dsvm-api-ubuntu-xenial-nv
@@ -3731,7 +3721,6 @@ projects:
     gate:
       - gate-devstack-gate-tox-run-tests-ubuntu-xenial
       - gate-devstack-gate-tox-py3-run-tests-ubuntu-xenial
-      - gate-grenade-dsvm-multinode
       - gate-grenade-dsvm-neutron-multinode-ubuntu-xenial
     experimental:
       - gate-tempest-dsvm-neutron-full-fedora-25-nv
@@ -17274,7 +17263,6 @@ projects:
     post:
       - swift-coverage-ubuntu-xenial
     experimental:
-      - gate-grenade-dsvm-multinode
       - gate-swift-tox-xfs-tmp-py27-centos-7
       - gate-swift-tox-xfs-tmp-func-centos-7
       - gate-swift-tox-xfs-tmp-func-fast-post-centos-7
@@ -17490,7 +17478,6 @@ projects:
       - name: publish-to-pypi
       - name: release-notes-jobs
     check:
-      - gate-grenade-dsvm-multinode
       - gate-grenade-dsvm-neutron-multinode-ubuntu-xenial
       - gate-grenade-dsvm-neutron-ubuntu-xenial
       - gate-tempest-dsvm-ironic-ipa-wholedisk-bios-agent_ipmitool-tinyipa-ubuntu-xenial-nv
@@ -17513,7 +17500,6 @@ projects:
       - gate-tempest-plugin-sanity-ubuntu-xenial-nv
       - tempest-coverage-ubuntu-xenial-nv
     gate:
-      - gate-grenade-dsvm-multinode
       - gate-grenade-dsvm-neutron-multinode-ubuntu-xenial
     experimental:
       - periodic-tempest-dsvm-all-master
