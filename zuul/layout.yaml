@@ -1158,6 +1158,11 @@ jobs:
   - name: ^gate-monasca-log-api-python35$
     branch: ^(?!stable/newton).*$
 
+  # py35 for monasca-notification was introduced during Pike development
+  # enable for Pike and later
+  - name: ^gate-monasca-notification-python35$
+    branch: ^(?!stable/(newton|ocata)).*$
+
   # do not run tempests on stable/newton
   # devstack gate for log-api was not functional that time
   - name: ^gate-tempest-dsvm-monasca-log-api-ubuntu-xenial$
@@ -11589,7 +11594,7 @@ projects:
   - name: openstack/monasca-notification
     template:
       - name: merge-check
-      - name: python35-jobs-nv
+      - name: python35-jobs
       - name: publish-to-pypi
       - name: check-requirements
     check:
