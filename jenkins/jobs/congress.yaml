@@ -62,6 +62,78 @@
       - console-log
 
 - job-template:
+    name: '{pipeline}-congress-dsvm-py35-api-{backend}-{node}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 80
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            # swift is not ready for python3 yet
+            disable_service s-account
+            disable_service s-container
+            disable_service s-object
+            disable_service s-proxy
+            # without Swift, c-bak can't run (in the Gate at least)
+            disable_service c-bak
+            # disable all plug-ins to start
+            # enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer
+            # enable_plugin heat git://git.openstack.org/openstack/heat
+            # enable_plugin congress git://git.openstack.org/openstack/congress
+            # enable_plugin murano git://git.openstack.org/openstack/murano
+            # enable_plugin aodh git://git.openstack.org/openstack/aodh
+            # enable_plugin designate git://git.openstack.org/openstack/designate
+            # To deploy congress as multi-process (api, pe, datasources)
+            CONGRESS_MULTIPROCESS_DEPLOYMENT=True
+
+      - shell: |
+          #!/bin/bash -xe
+          export DEVSTACK_GATE_USE_PYTHON3=True
+          ENABLED_SERVICES=s-proxy,s-object,s-container,s-account,
+          ENABLED_SERVICES+=h-eng,h-api,h-api-cfn,h-api-cw
+
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
+          export DEVSTACK_GATE_TEMPEST_REGEX="congress_tempest_tests"
+          export DEVSTACK_GATE_NEUTRON=1
+          export PROJECTS="openstack/congress $PROJECTS"
+          export PROJECTS="openstack/congress-dashboard $PROJECTS"
+          export DEVSTACK_PROJECT_FROM_GIT=python-congressclient
+          export PROJECTS="openstack/murano $PROJECTS"
+          export PROJECTS="openstack/aodh $PROJECTS"
+          export PROJECTS="openstack/murano-dashboard $PROJECTS"
+          export PROJECTS="openstack/python-muranoclient $PROJECTS"
+          export PROJECTS="openstack/python-aodhclient $PROJECTS"
+          export PROJECTS="openstack/designate $PROJECTS"
+          export PROJECTS="openstack/designate-tempest-plugin $PROJECTS"
+
+          export ENABLED_SERVICES
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          if [ "{backend}" = "postgresql" ] ; then
+              export DEVSTACK_GATE_POSTGRES=1
+          fi
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - test-results
+      - devstack-logs
+      - console-log
+
+- job-template:
     name: '{pipeline}-congress-pe-replicated-{backend}{suffix}'
     node: '{node}'
 
