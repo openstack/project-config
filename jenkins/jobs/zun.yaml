@@ -108,3 +108,61 @@
     publishers:
       - devstack-logs
       - console-log
+
+- job-template:
+    name: '{pipeline}-tempest-dsvm-zun-multinode-{driver}-{db}-{node-release}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 70
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin zun git://git.openstack.org/openstack/zun
+      - shell: |
+          #!/bin/bash -xe
+
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_NEUTRON=1
+
+          # Enable tempest for tempest plugin
+          export ENABLED_SERVICES=tempest
+
+          export PROJECTS="openstack/zun $PROJECTS"
+          export PROJECTS="openstack/kuryr-libnetwork $PROJECTS"
+          export PROJECTS="openstack/python-zunclient $PROJECTS"
+          export PROJECTS="openstack/devstack-plugin-container $PROJECTS"
+
+          # Keep localrc to be able to set some vars in post_test_hook
+          export KEEP_LOCALRC=1
+          export DEVSTACK_GATE_TOPOLOGY="multinode"
+
+          function gate_hook {{
+               cd /opt/stack/new/zun/
+              ./zun/tests/contrib/gate_hook.sh {driver} {db}
+          }}
+          export -f gate_hook
+
+          function post_test_hook {{
+              source $BASE/new/devstack/accrc/admin/admin
+              cd /opt/stack/new/zun/
+              ./zun/tests/contrib/post_test_hook.sh {driver}
+          }}
+
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+
+    publishers:
+      - devstack-logs
+      - console-log
