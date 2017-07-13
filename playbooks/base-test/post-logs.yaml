@@ -1,0 +1,32 @@
+- hosts: localhost
+  tasks:
+    - name: Add log server ssh key
+      command: ssh-add /var/lib/zuul/ssh/static_id_rsa
+
+    - name: Add log server to inventory
+      add_host:
+        name: static.openstack.org
+        groups: zuul_logserver
+        ansible_user: jenkins
+
+    - name: Add log server to known hosts
+      known_hosts:
+        name: static.openstack.org
+        key: static.openstack.org,23.253.108.137,2001:4800:7817:104:be76:4eff:fe05:dbee ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDDcvLuGLagUAZfc0BThLus8ufSPCrIhDtG0BdXvhblJjvIbkuELD3dRWRZVSYZAdzGZRY3t6vTAcguTrkbQg5ngXfdfF+OKPkaH8DiZwAX/1g/iRXhInkZTGBVqHo9pLAMeNNwviSy2JjpTqdD6fLEkHwW+uw4E2YZhYivctTSbOepMkzAtFV0w5cpyBzjAT/Hax2x5un6es8R0Iw3AAnUmtapn5e5NCrg2rPNpd0nve84wUavvbC2DeGDOZQdnIahwo60Sder5ZE/x6cG39bkSDdgFQArAzrNrH6BHmNGjfFPpnGmfc7P8gQwDPtMf02HvKapqATXpIxdbSGimWLL
+
+    - name: Copy inventory to logs dir
+      copy:
+        src: "{{ inventory_file }}"
+        dest: "{{ zuul.executor.log_root  }}"
+
+- hosts: zuul_logserver
+  roles:
+    - upload-logs
+
+- hosts: localhost
+  tasks:
+    - name: Return log URL to Zuul
+      zuul_return:
+        data:
+          zuul:
+            log_url: "http://logs.openstack.org/{{ log_path }}"
