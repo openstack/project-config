@@ -16,7 +16,7 @@
 # under the License.
 
 # Find out if jenkins has attempted to run any sudo commands by checking
-# the auth.log or secure log files before and after a test run.
+# the auth.log or secure log or messages files before and after a test run.
 
 PATTERN="sudo.*jenkins.*:.*\(incorrect password attempts\|command not allowed\)"
 if [ -f /var/log/auth.log ]; then
@@ -25,8 +25,11 @@ if [ -f /var/log/auth.log ]; then
 elif [ -f /var/log/secure ]; then
     OLDLOGFILE=$( ls /var/log/secure-* | sort | tail -n1 )
     LOGFILE=/var/log/secure
+elif [ -f /var/log/messages ]; then
+    OLDLOGFILE=$( ls /var/log/messages-* | sort | tail -n1 )
+    LOGFILE=/var/log/messages.log
 else
-    echo "*** Could not find auth.log/secure log for sudo tracing"
+    echo "*** Could not find auth.log/secure/messages log for sudo tracing"
     exit 1
 fi
 
