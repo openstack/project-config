@@ -54,9 +54,16 @@
     description: |
       A job to test changes to the base job without disturbing the
       main job in production.  Not for general use.
-    parent: base
     pre-run: playbooks/base-test/pre
-    post-run: playbooks/base-test/post
+    post-run:
+      - playbooks/base-test/post-ssh
+      - playbooks/base-test/post-logs
+    roles:
+      - zuul: openstack-infra/zuul-jobs
+    timeout: 1800
+    nodes:
+      - name: ubuntu-xenial
+        label: ubuntu-xenial
 
 - project:
     name: openstack-infra/zuul-jobs
