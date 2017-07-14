@@ -5,9 +5,14 @@
         config-projects:
           - openstack-infra/project-config
         untrusted-projects:
+          # Order matters, load common job repos first
           - openstack-infra/zuul-jobs:
               shadow: openstack-infra/project-config
           - openstack-infra/openstack-zuul-jobs
           - openstack-infra/openstack-zuul-roles
+          # After this point, sorting projects alphabetically will help
+          # merge conflicts
           - openstack-infra/nodepool
+          - openstack-infra/shade
           - openstack-infra/zuul
+          - openstack/requirements
