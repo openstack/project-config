@@ -1989,9 +1989,6 @@ jobs:
   - name: ^gate-cross-.*-func-.*$
     files: ^upper-constraints.txt$
 
-  - name: ^gate-puppet-openstackci-puppet-beaker-rspec-.*$
-    voting: false
-
   # Aims to break when a new version of Puppet is released
   # For now, run the jobs only on master so if the job starts to
   # break due to Puppet new major release, we will see which branch
@@ -4564,6 +4561,10 @@ projects:
       - name: infra-puppet-apply-jobs
       - name: infra-publish-jobs
     check:
+      - gate-puppet-openstackci-puppet-beaker-rspec-ubuntu-trusty
+      - gate-puppet-openstackci-puppet-beaker-rspec-centos-7
+      - gate-puppet-openstackci-puppet-beaker-rspec-ubuntu-xenial
+    gate:
       - gate-puppet-openstackci-puppet-beaker-rspec-ubuntu-trusty
       - gate-puppet-openstackci-puppet-beaker-rspec-centos-7
       - gate-puppet-openstackci-puppet-beaker-rspec-ubuntu-xenial
