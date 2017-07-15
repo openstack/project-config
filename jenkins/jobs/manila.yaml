@@ -11,6 +11,11 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin manila git://git.openstack.org/openstack/manila
+            enable_plugin manila-ui git://git.openstack.org/openstack/manila-ui
       - firefox-install
       - xvfb-install
       - shell: |
@@ -22,8 +27,6 @@
           export DEVSTACK_GATE_INSTALL_TESTONLY=1
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_PROJECT_FROM_GIT="python-manilaclient"
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin manila git://git.openstack.org/openstack/manila"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin manila-ui git://git.openstack.org/openstack/manila-ui"
 
           # Keep localrc to be able to set some vars in pre_test_hook
           export KEEP_LOCALRC=1
@@ -59,6 +62,10 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin manila git://git.openstack.org/openstack/manila
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -71,11 +78,6 @@
               export PROJECTS="openstack/manila-image-elements $PROJECTS"
           fi
           export ENABLED_SERVICES=tempest
-
-          # Enable manila devstack plugin. Provided repo should be
-          # cloned by zuul before devstack run and below provided
-          # link should not be used.
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin manila git://git.openstack.org/openstack/manila"
 
           # Keep localrc to be able to set some vars in pre_test_hook
           export KEEP_LOCALRC=1
@@ -148,6 +150,10 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin manila git://git.openstack.org/openstack/manila
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -169,11 +175,6 @@
               fi
           fi
           export OVERRIDE_ENABLED_SERVICES
-
-          # Enable manila devstack plugin. Provided repo should be
-          # cloned by zuul before devstack run and below provided
-          # link should not be used.
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin manila git://git.openstack.org/openstack/manila"
 
           # Keep localrc to be able to set some vars in pre_test_hook
           export KEEP_LOCALRC=1
@@ -277,16 +278,15 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin manila git://git.openstack.org/openstack/manila
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_PROJECT_FROM_GIT="python-manilaclient"
-
-          # Enable manila devstack plugin. Provided repo should be
-          # cloned by zuul before devstack run and below provided link
-          # should not be used.
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin manila git://git.openstack.org/openstack/manila"
 
           # Keep localrc to be able to set some vars in pre_test_hook
           export KEEP_LOCALRC=1
@@ -390,6 +390,18 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin manila git://git.openstack.org/openstack/manila
+            # Enable devstack-plugin-glusterfs plugin, to install and configure GlusterFS.
+            enable_plugin devstack-plugin-glusterfs git://git.openstack.org/openstack/devstack-plugin-glusterfs
+
+            # Configure devstack-plugin-glusterfs to enable GlusterFS as a backend for Manila.
+            CONFIGURE_GLUSTERFS_MANILA=True
+
+            # Configure devstack-plugin-glusterfs to use respective GlusterFS driver variant.
+            GLUSTERFS_MANILA_DRIVER_TYPE=glusterfs-{variant}
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -397,20 +409,6 @@
           export ENABLED_SERVICES=tempest
           export DEVSTACK_PROJECT_FROM_GIT="python-manilaclient"
           export PROJECTS="openstack/devstack-plugin-glusterfs $PROJECTS"
-
-          # Enable manila devstack plugin. Provided repo should be
-          # cloned by zuul before devstack run and below provided link
-          # should not be used.
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin manila git://git.openstack.org/openstack/manila"
-
-          # Enable devstack-plugin-glusterfs plugin, to install and configure GlusterFS.
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin devstack-plugin-glusterfs git://git.openstack.org/openstack/devstack-plugin-glusterfs"
-
-          # Configure devstack-plugin-glusterfs to enable GlusterFS as a backend for Manila.
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"CONFIGURE_GLUSTERFS_MANILA=True"
-
-          # Configure devstack-plugin-glusterfs to use respective GlusterFS driver variant.
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"GLUSTERFS_MANILA_DRIVER_TYPE=glusterfs-{variant}"
 
           # Keep localrc to be able to set some vars in pre_test_hook
           export KEEP_LOCALRC=1
@@ -448,6 +446,12 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin manila git://git.openstack.org/openstack/manila
+            # Enable devstack-plugin-hdfs plugin, to install and configure HDFS.
+            enable_plugin devstack-plugin-hdfs git://git.openstack.org/openstack/devstack-plugin-hdfs
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -455,13 +459,6 @@
           export ENABLED_SERVICES=tempest
           export PROJECTS="openstack/devstack-plugin-hdfs $PROJECTS"
           export DEVSTACK_PROJECT_FROM_GIT="python-manilaclient"
-
-          # Enable manila devstack plugin. Provided repo should be cloned by zuul before devstack run
-          # and below provided link should not be used.
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin manila git://git.openstack.org/openstack/manila"
-
-          # Enable devstack-plugin-hdfs plugin, to install and configure HDFS.
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin devstack-plugin-hdfs git://git.openstack.org/openstack/devstack-plugin-hdfs"
 
           # Keep localrc to be able to set some vars in pre_test_hook
           export KEEP_LOCALRC=1

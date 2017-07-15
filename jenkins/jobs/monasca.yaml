@@ -11,6 +11,12 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin monasca-api git://git.openstack.org/openstack/monasca-api
+            MONASCA_API_IMPLEMENTATION_LANG={lang}
+            MONASCA_PERSISTER_IMPLEMENTATION_LANG={lang}
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -20,14 +26,11 @@
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_EXERCISES=0
 
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin monasca-api git://git.openstack.org/openstack/monasca-api"
           if [ {backend} == "postgresql" ]; then
               export DEVSTACK_GATE_POSTGRES=1
           else
               export DEVSTACK_GATE_POSTGRES=0
           fi
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"MONASCA_API_IMPLEMENTATION_LANG={lang}"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"MONASCA_PERSISTER_IMPLEMENTATION_LANG={lang}"
 
           export PROJECTS="openstack/monasca-api $PROJECTS"
           export PROJECTS="openstack/monasca-persister $PROJECTS"
@@ -86,14 +89,16 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin monasca-api git://git.openstack.org/openstack/monasca-api
+            enable_plugin monasca-log-api git://git.openstack.org/openstack/monasca-log-api
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_NEUTRON=0
           export OVERRIDE_ENABLED_SERVICES=key,mysql,rabbit,tempest,dstat
-          DEVSTACK_LOCAL_CONFIG="enable_plugin monasca-api git://git.openstack.org/openstack/monasca-api"
-          DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin monasca-log-api git://git.openstack.org/openstack/monasca-log-api"
-          export DEVSTACK_LOCAL_CONFIG
 
           export PROJECTS="openstack/monasca-api $PROJECTS"
           export PROJECTS="openstack/monasca-log-api $PROJECTS"
