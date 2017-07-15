@@ -257,24 +257,35 @@
 
 - project:
     name: ara
-    ostype:
-      - centos-7
-      - ubuntu-xenial
-    ansible_version:
-      - 2.1.6.0
-      - 2.2.3.0
-      - latest
-      - devel
     jobs:
       - coverage-jobs
       - python-jobs
       - 'gate-{name}-python35-nv'
       - hook-{name}-rtfd
-      - 'gate-ara-integration-{ansible_version}-{ostype}{suffix}':
-          suffix:
-            - ''
-            - '-nv'
-      - 'gate-ara-integration-openstack-ansible-func-{ostype}'
+      - 'gate-ara-integration-{python_version}-{ansible_version}-{ostype}{suffix}':
+          python_version: py27
+          ansible_version:
+            - 2.1.6.0
+            - 2.2.3.0
+            - latest
+          ostype: centos-7
+          suffix: ''
+      - 'gate-ara-integration-{python_version}-{ansible_version}-{ostype}{suffix}':
+          python_version: py27
+          ansible_version: devel
+          ostype: centos-7
+          suffix: '-nv'
+      - 'gate-ara-integration-{python_version}-{ansible_version}-{ostype}{suffix}':
+          python_version: py35
+          ansible_version:
+            - latest
+            - devel
+          ostype: ubuntu-xenial
+          suffix: '-nv'
+      - 'gate-ara-integration-openstack-ansible-func-{ostype}':
+          ostype:
+            - centos-7
+            - ubuntu-xenial
 
 - project:
     name: arch-wg
