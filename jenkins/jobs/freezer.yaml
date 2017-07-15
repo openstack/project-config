@@ -10,6 +10,15 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            # enable freezer-agent and freezer-scheduler
+            enable_plugin freezer git://git.openstack.org/openstack/freezer
+            # enable freezer-api and python-freezerclient
+            enable_plugin freezer-api https://git.openstack.org/openstack/freezer-api
+            # enable freezer-web-ui and python-freezerclient
+            enable_plugin freezer-web-ui https://git.openstack.org/openstack/freezer-web-ui
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -24,12 +33,6 @@
           export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
           TEMPEST_REGEX="{name}_tempest_plugin"
           export DEVSTACK_GATE_TEMPEST_REGEX=${{TEMPEST_REGEX/\-/\_ }}
-          # enable freezer-agent and freezer-scheduler
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin freezer https://git.openstack.org/openstack/freezer"
-          # enable freezer-api and python-freezerclient
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin freezer-api https://git.openstack.org/openstack/freezer-api"
-          # enable freezer-web-ui and python-freezerclient
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin freezer-web-ui https://git.openstack.org/openstack/freezer-web-ui"
 
           # which repo is being tested
           export DEVSTACK_PROJECT_FROM_GIT={name}

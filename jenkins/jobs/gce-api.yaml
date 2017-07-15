@@ -11,6 +11,10 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin gce-api git://git.openstack.org/openstack/gce-api
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -21,7 +25,6 @@
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
           export PROJECTS="openstack/gce-api $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin gce-api git://git.openstack.org/openstack/gce-api"
 
           if [ "{network}" = "neutron" ] ; then
               export DEVSTACK_GATE_NEUTRON=1
