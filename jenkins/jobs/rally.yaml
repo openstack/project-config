@@ -193,6 +193,13 @@
     builders:
       - link-logs
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer
+            enable_plugin aodh git://git.openstack.org/openstack/aodh
+            enable_plugin rally git://git.openstack.org/openstack/rally
+            enable_plugin designate git://git.openstack.org/openstack/designate
       - shell: |
           #!/bin/bash -xe
 
@@ -220,15 +227,6 @@
           ENABLED_SERVICES+=designate,designate-api,designate-central,designate-sink,designate-mdns,
           export ENABLED_SERVICES
 
-          DEVSTACK_LOCAL_CONFIG="enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer"
-          DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin aodh git://git.openstack.org/openstack/aodh"
-          DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin rally git://git.openstack.org/openstack/rally"
-          export DEVSTACK_LOCAL_CONFIG
-
-          # Otherwise, enable the Designate devstack plugin.
-          DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin designate git://git.openstack.org/openstack/designate"
-          export DEVSTACK_LOCAL_CONFIG
-
           function gate_hook {{
               cd /opt/stack/new/designate/devstack/gate
               ./gate_hook.sh
@@ -248,6 +246,11 @@
     builders:
       - link-logs
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin manila git://git.openstack.org/openstack/manila
+            enable_plugin rally git://git.openstack.org/openstack/rally
       - shell: |
           #!/bin/bash -xe
 
@@ -268,12 +271,8 @@
           export DEVSTACK_GATE_NEUTRON=1
           export RALLY_SCENARIO={scenario}
 
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin manila git://git.openstack.org/openstack/manila"
-
           # Keep localrc to be able to set some vars in pre_test_hook
           export KEEP_LOCALRC=1
-
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin rally git://git.openstack.org/openstack/rally"
 
           function pre_test_hook {{
               # Install manila-devstack integration
@@ -342,6 +341,12 @@
     builders:
       - link-logs
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin rally git://git.openstack.org/openstack/rally
+            enable_plugin heat git://git.openstack.org/openstack/heat
+            enable_plugin murano git://git.openstack.org/openstack/murano
       - shell: |
           #!/bin/bash -xe
 
@@ -361,13 +366,6 @@
           export RALLY_SCENARIO={scenario}
 
           export IDENTITY_API_VERSION=3
-
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin rally git://git.openstack.org/openstack/rally"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
-
-          # Enable murano devstack plugin. Provided repo should be cloned by zuul before devstack run
-          # and below provided link should not be used.
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin murano git://git.openstack.org/openstack/murano"
 
           export ENABLED_SERVICES
 
@@ -392,6 +390,11 @@
     builders:
       - link-logs
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin rally git://git.openstack.org/openstack/rally
+            enable_plugin mistral https://git.openstack.org/openstack/mistral
       - shell: |
           #!/bin/bash -xe
 
@@ -411,8 +414,6 @@
           export IDENTITY_API_VERSION=3
 
           export ENABLED_SERVICES=h-api,h-api-cfn,h-api-cw,h-eng,heat,
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin rally git://git.openstack.org/openstack/rally"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin mistral https://git.openstack.org/openstack/mistral"
 
           function post_test_hook {{
               $BASE/new/rally/tests/ci/rally-gate.sh
@@ -461,6 +462,10 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin rally git://git.openstack.org/openstack/rally
       - shell: |
           #!/bin/bash -xe
 
@@ -474,7 +479,6 @@
           export DEVSTACK_GATE_TEMPEST=0
           export DEVSTACK_GATE_EXERCISES=0
           export RALLY_SCENARIO={scenario}
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin rally git://git.openstack.org/openstack/rally"
 
           export IDENTITY_API_VERSION=3
 
@@ -845,6 +849,11 @@
     builders:
       - link-logs
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin rally git://git.openstack.org/openstack/rally
+            CINDER_ENABLE_V1_API=True
       - shell: |
           #/bin/bash -xe
 
@@ -855,9 +864,6 @@
           export PROJECTS="openstack/rally $PROJECTS"
 
           export DEVSTACK_GATE_NEUTRON=1
-          DEVSTACK_LOCAL_CONFIG="enable_plugin rally git://git.openstack.org/openstack/rally"
-          DEVSTACK_LOCAL_CONFIG+=$'\n'"CINDER_ENABLE_V1_API=True"
-          export DEVSTACK_LOCAL_CONFIG
 
           function post_test_hook {
               cd $BASE/new/rally

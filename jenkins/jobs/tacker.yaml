@@ -11,6 +11,17 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            SFC_UPDATE_OVS=False
+            enable_plugin heat git://git.openstack.org/openstack/heat
+            enable_plugin aodh git://git.openstack.org/openstack/aodh
+            enable_plugin ceilometer https://git.openstack.org/openstack/ceilometer
+            enable_plugin networking-sfc http://git.trystack.cn/openstack/networking-sfc
+            enable_plugin mistral git://git.openstack.org/openstack/mistral
+            enable_plugin barbican git://git.openstack.org/openstack/barbican
+            enable_plugin tacker git://git.openstack.org/openstack/tacker
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -21,25 +32,16 @@
           export PROJECTS="openstack/tacker $PROJECTS"
           export PROJECTS="openstack/tacker-horizon $PROJECTS"
           export PROJECTS="openstack/python-tackerclient $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG=""
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"SFC_UPDATE_OVS=False"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
           export PROJECTS="openstack/heat $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin aodh git://git.openstack.org/openstack/aodh"
           export PROJECTS="openstack/aodh $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin ceilometer https://git.openstack.org/openstack/ceilometer"
           export PROJECTS="openstack/ceilometer $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin networking-sfc http://git.trystack.cn/openstack/networking-sfc"
           export PROJECTS="openstack/networking-sfc $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin mistral git://git.openstack.org/openstack/mistral"
           export PROJECTS="openstack/mistral $PROJECTS"
           export PROJECTS="openstack/mistral-dashboard $PROJECTS"
           export PROJECTS="openstack/python-mistralclient $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin barbican git://git.openstack.org/openstack/barbican"
           export PROJECTS="openstack/barbican $PROJECTS"
           export PROJECTS="openstack/python-barbicanclient $PROJECTS"
 
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin tacker git://git.openstack.org/openstack/tacker"
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
