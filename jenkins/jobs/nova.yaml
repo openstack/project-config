@@ -167,6 +167,11 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            # NOTE(mriedem): cells v2 should be the default after newton-eol
+            NOVA_CONFIGURE_CELLSV2=True
       - shell: |
           #!/bin/bash -xe
           export ENABLED_SERVICES=placement-api
@@ -175,8 +180,6 @@
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_GRENADE=pullup
           export DEVSTACK_GATE_NEUTRON=1
-          # NOTE(mriedem): cells v2 should be the default after newton-eol
-          export DEVSTACK_LOCAL_CONFIG="NOVA_CONFIGURE_CELLSV2=True"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE

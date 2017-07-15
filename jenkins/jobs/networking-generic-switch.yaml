@@ -11,6 +11,18 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin networking-generic-switch git://git.openstack.org/openstack/networking-generic-switch
+            OVS_PHYSICAL_BRIDGE=brbm
+            PHYSICAL_NETWORK=mynetwork
+            Q_PLUGIN=ml2
+            ENABLE_TENANT_VLANS=True
+            Q_ML2_TENANT_NETWORK_TYPE=vlan
+            TENANT_VLAN_RANGE=100:150
+            # test with DLM support enabled
+            GENERIC_SWITCH_USER_MAX_SESSIONS=2
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -26,16 +38,6 @@
           fi
 
           export PROJECTS="openstack/networking-generic-switch $PROJECTS"
-
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin networking-generic-switch https://git.openstack.org/openstack/networking-generic-switch"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"OVS_PHYSICAL_BRIDGE=brbm"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"PHYSICAL_NETWORK=mynetwork"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_PLUGIN=ml2"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"ENABLE_TENANT_VLANS=True"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"Q_ML2_TENANT_NETWORK_TYPE=vlan"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"TENANT_VLAN_RANGE=100:150"
-          # test with DLM support enabled
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"GENERIC_SWITCH_USER_MAX_SESSIONS=2"
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh

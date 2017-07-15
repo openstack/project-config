@@ -59,6 +59,11 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+              [[local|localrc]]
+              enable_plugin neutron-vpnaas git://git.openstack.org/openstack/neutron-vpnaas
+              enable_plugin rally git://git.openstack.org/openstack/rally
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -70,9 +75,6 @@
           fi
           export PROJECTS="openstack/neutron-vpnaas $PROJECTS"
           export PROJECTS="openstack/rally $PROJECTS"
-
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin neutron-vpnaas https://git.openstack.org/openstack/neutron-vpnaas"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin rally git://git.openstack.org/openstack/rally"
 
           function post_test_hook {{
               $BASE/new/rally/tests/ci/rally-gate.sh
