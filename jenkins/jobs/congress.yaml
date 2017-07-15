@@ -84,10 +84,10 @@
             disable_service s-proxy
             # without Swift, c-bak can't run (in the Gate at least)
             disable_service c-bak
-            # disable all plug-ins to start
+            # disable all plug-ins for now except congress
             # enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer
             # enable_plugin heat git://git.openstack.org/openstack/heat
-            # enable_plugin congress git://git.openstack.org/openstack/congress
+            enable_plugin congress git://git.openstack.org/openstack/congress
             # enable_plugin murano git://git.openstack.org/openstack/murano
             # enable_plugin aodh git://git.openstack.org/openstack/aodh
             # enable_plugin designate git://git.openstack.org/openstack/designate
@@ -97,8 +97,9 @@
       - shell: |
           #!/bin/bash -xe
           export DEVSTACK_GATE_USE_PYTHON3=True
-          ENABLED_SERVICES=s-proxy,s-object,s-container,s-account,
-          ENABLED_SERVICES+=h-eng,h-api,h-api-cfn,h-api-cw
+          # swift is not ready for python3 yet
+          # ENABLED_SERVICES=s-proxy,s-object,s-container,s-account,
+          # ENABLED_SERVICES+=h-eng,h-api,h-api-cfn,h-api-cw
 
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
