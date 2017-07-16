@@ -118,18 +118,25 @@
           node: ubuntu-xenial
       - 'gate-{name}-linters-{node}':
           node: ubuntu-xenial
+      # For some oses we need both voting and non-voting jobs.
       - '{pipeline}-{name}-ansible-{scenario}-{ostype}{suffix}':
           ostype:
             - centos-7
             - fedora-25
-            - ubuntu-trusty
             - ubuntu-xenial
-            - opensuse-422
           pipeline: gate
           scenario: func
           suffix:
             - '-nv'
             - ''
+      # Other oses only have voting jobs.
+      - '{pipeline}-{name}-ansible-{scenario}-{ostype}{suffix}':
+          ostype:
+            - ubuntu-trusty
+            - opensuse-422
+          pipeline: gate
+          scenario: func
+          suffix: ''
       - '{name}-announce-release'
 
 - job-group:
@@ -144,12 +151,8 @@
           ostype:
             - centos-7
             - ubuntu-trusty
-            - ubuntu-xenial
-            - opensuse-422
           pipeline: gate
-          suffix:
-            - '-nv'
-            - ''
+          suffix: ''
       - '{name}-announce-release'
 
 - job:
