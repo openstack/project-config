@@ -21,8 +21,8 @@
       All jobs ultimately inherit from this.  It runs a pre-playbook
       which copies all of the job's prepared git repos on to all of
       the nodes in the nodeset.  It runs a post-playbook which copies
-      all of the files in the logs/ directory of every node on to the
-      logserver.
+      all of the files in the logs/ subdirectory of the executor
+      work directory to the logserver.
 
       It also sets default timeout and nodeset values (which may be
       overidden).
@@ -31,20 +31,8 @@
       - playbooks/base/post-ssh
       - playbooks/base/post-logs
     roles:
-      - zuul: openstack-infra/openstack-zuul-roles
-      # TODO(mordred): Once base job in project-config is an override of
-      # base job in zuul-jobs, we will not need this line.
       - zuul: openstack-infra/zuul-jobs
-    # TODO(jeblair): This will only work for our current 6 digit
-    # change numbers.  We have a plan to do the formatting in the log
-    # publishing playbook and pass the information back to zuul.  That
-    # will obsolete this.  Also the uuid thing is obviously
-    # ridiculous.  That will be fixed too.
-    success-url: http://logs.openstack.org/{change.number[4]}{change.number[5]}/{change.number}/{change.patchset}/{pipeline.name}/{build.uuid[0]}{build.uuid[1]}{build.uuid[2]}{build.uuid[3]}{build.uuid[4]}{build.uuid[5]}{build.uuid[6]}/
-    failure-url: http://logs.openstack.org/{change.number[4]}{change.number[5]}/{change.number}/{change.patchset}/{pipeline.name}/{build.uuid[0]}{build.uuid[1]}{build.uuid[2]}{build.uuid[3]}{build.uuid[4]}{build.uuid[5]}{build.uuid[6]}/
     timeout: 1800
-    vars:
-      zuul_workspace_root: /home/zuul
     nodes:
       - name: ubuntu-xenial
         label: ubuntu-xenial
