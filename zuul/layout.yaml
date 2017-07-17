@@ -1160,6 +1160,10 @@ jobs:
   - name: ^gate-tempest-dsvm-monasca-transform-python-functional$
     branch: ^(?!stable/newton).*$
 
+  # enable python35 test for master and stable/pike onwards
+  - name: ^gate-tempest-dsvm-monasca-transform-python35-functional
+    branch: ^(?!stable/(newton|ocata)).*$
+
   # OpenStack documentation process is not meant to be part of stable/ocata
   - name: ^gate-monasca-log-api-releasenotes$
     branch: ^(?!stable/(newton|ocata)).*$
@@ -11697,12 +11701,13 @@ projects:
   - name: openstack/monasca-transform
     template:
       - name: merge-check
-      - name: check-requirements
-      - name: publish-to-pypi
       - name: python-jobs
-      - name: python35-jobs-nv
+      - name: python35-jobs
+      - name: publish-to-pypi
+      - name: check-requirements
     check:
       - gate-tempest-dsvm-monasca-transform-python-functional
+      - gate-tempest-dsvm-monasca-transform-python35-functional-nv
     gate:
       - gate-tempest-dsvm-monasca-transform-python-functional
 
