@@ -3378,6 +3378,11 @@ jobs:
   - name: ^gate-swift3-tox-s3tests_
     voting: false
 
+  # Note(chandankumar): Tempest plugin sanity gate should be
+  # non-voting until we fix all the tempest plugins issue.
+  - name: gate-tempest-tox-plugin-sanity-check-ubuntu-xenial
+    voting: false
+
   # Trusty job needs to run on master as well for now since
   # storyboard is deployed currently on trusty from master.
   - name: gate-storyboard-js-integration-ubuntu-trusty
@@ -17509,7 +17514,7 @@ projects:
       # non voting scenario test
       - gate-tempest-dsvm-neutron-scenario-multinode-lvm-multibackend-ubuntu-xenial-nv
       # tempest plugin sanity
-      - gate-tempest-plugin-sanity-ubuntu-xenial-nv
+      - gate-tempest-tox-plugin-sanity-check-ubuntu-xenial
       - tempest-coverage-ubuntu-xenial-nv
     gate:
       - gate-grenade-dsvm-neutron-multinode-ubuntu-xenial
