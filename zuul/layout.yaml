@@ -1983,13 +1983,16 @@ jobs:
     files: ^upper-constraints.txt$
 
   # Only run the cross 35 unittests on upper-constraints.txt updates
-  - name: ^gate-cross-.*-python35.*$
+  - name: ^gate-cross-(?!networking-midonet).*-python35.*$
     files: ^upper-constraints.txt$
     branch: ^master
 
   # Only run the cross functional tests on upper-constraints.txt updates
   - name: ^gate-cross-.*-func-.*$
     files: ^upper-constraints.txt$
+
+  - name: ^gate-cross-networking-midonet-python35
+    voting: false
 
   # Aims to break when a new version of Puppet is released
   # For now, run the jobs only on master so if the job starts to
@@ -12476,6 +12479,7 @@ projects:
       - gate-grenade-dsvm-neutron-fwaas-multinode-nv
       - gate-neutron-fwaas-v1-dsvm-tempest-multinode-nv
       - gate-neutron-fwaas-v2-dsvm-tempest-multinode-nv
+      - gate-cross-networking-midonet-python35
     gate:
       - gate-neutron-fwaas-v2-dsvm-tempest
       - gate-neutron-fwaas-v1-dsvm-tempest
