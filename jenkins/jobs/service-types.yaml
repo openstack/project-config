@@ -53,3 +53,19 @@
               keep-hierarchy: false
               copy-after-failure: false
       - console-log
+
+- job:
+    name: propose-service-types-update
+    description: Update os-service-types from Service Types Authority
+    node: proposal
+
+    builders:
+      - proposal-slave-cleanup
+      - revoke-sudo
+      - link-logs
+      - net-info
+      - zuul-git-prep
+      - shell: /usr/local/jenkins/slave_scripts/propose_update.sh os-service-types
+
+    publishers:
+      - console-log
