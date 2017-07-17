@@ -11,6 +11,10 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin ec2-api git://git.openstack.org/openstack/ec2-api
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -21,7 +25,6 @@
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
           export PROJECTS="openstack/ec2-api $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin ec2-api git://git.openstack.org/openstack/ec2-api"
 
           if [ "{network}" = "neutron" ] ; then
               export DEVSTACK_GATE_NEUTRON=1
@@ -52,6 +55,11 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin ec2-api git://git.openstack.org/openstack/ec2-api
+            RUN_LONG_TESTS=1
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -59,8 +67,6 @@
 
           export PROJECTS="openstack/ec2-api $PROJECTS"
           export PROJECTS="openstack/swift3 $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin ec2-api git://git.openstack.org/openstack/ec2-api"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"RUN_LONG_TESTS=1"
           export ENABLED_SERVICES+=,swift3
 
           function post_test_hook {{
@@ -89,12 +95,15 @@
     builders:
       - link-logs
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin ec2-api git://git.openstack.org/openstack/ec2-api
+            enable_plugin rally git://git.openstack.org/openstack/rally
       - shell: |
           #!/bin/bash -xe
           export PROJECTS="openstack/ec2-api $PROJECTS"
           export PROJECTS="openstack/rally $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin ec2-api git://git.openstack.org/openstack/ec2-api"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin rally git://git.openstack.org/openstack/rally"
           export DEVSTACK_GATE_VIRT_DRIVER=fake
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_TEMPEST_NOTESTS=1
