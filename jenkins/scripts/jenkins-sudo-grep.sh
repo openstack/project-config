@@ -37,7 +37,7 @@ case "$1" in
     pre)
         rm -fr /tmp/jenkins-sudo-log
         mkdir /tmp/jenkins-sudo-log
-        if [ -f $OLDLOGFILE ]; then
+        if [ -f "$OLDLOGFILE" ]; then
             stat -c %Y $OLDLOGFILE > /tmp/jenkins-sudo-log/mtime-pre
         else
             echo "0" > /tmp/jenkins-sudo-log/mtime-pre
@@ -46,7 +46,7 @@ case "$1" in
         exit 0
         ;;
     post)
-        if [ -f $OLDLOGFILE ]; then
+        if [ -f "$OLDLOGFILE" ]; then
             stat -c %Y $OLDLOGFILE > /tmp/jenkins-sudo-log/mtime-post
         else
             echo "0" > /tmp/jenkins-sudo-log/mtime-post
