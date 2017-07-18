@@ -27,7 +27,7 @@ elif [ -f /var/log/secure ]; then
     LOGFILE=/var/log/secure
 elif [ -f /var/log/messages ]; then
     OLDLOGFILE=$( ls /var/log/messages-* | sort | tail -n1 )
-    LOGFILE=/var/log/messages.log
+    LOGFILE=/var/log/messages
 else
     echo "*** Could not find auth.log/secure/messages log for sudo tracing"
     exit 1
