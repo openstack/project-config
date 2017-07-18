@@ -51,6 +51,8 @@
           conf: |
             [[local|localrc]]
             TEMPEST_PLUGINS='/opt/stack/new/keystone-tempest-plugin'
+            ENABLE_IDENTITY_V2=False
+            enable_plugin keystone git://git.openstack.org/openstack/keystone
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -62,8 +64,6 @@
           fi
 
           export DEVSTACK_GATE_TEMPEST_REGEX='keystone_tempest_plugin'
-          export DEVSTACK_LOCAL_CONFIG="ENABLE_IDENTITY_V2=False"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin keystone git://git.openstack.org/openstack/keystone"
           export ENABLED_SERVICES=keystone-saml2-federation
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
@@ -90,6 +90,13 @@
           conf: |
             [[local|localrc]]
             TEMPEST_PLUGINS='/opt/stack/new/keystone-tempest-plugin'
+            # swift is not ready for python3 yet
+            disable_service s-account
+            disable_service s-container
+            disable_service s-object
+            disable_service s-proxy
+            ENABLE_IDENTITY_V2=False
+            enable_plugin keystone git://git.openstack.org/openstack/keystone
       - shell: |
           #!/bin/bash -xe
           export DEVSTACK_GATE_USE_PYTHON3=True
@@ -97,20 +104,12 @@
           export PROJECTS="openstack/keystone-tempest-plugin $PROJECTS"
           export DEVSTACK_GATE_TEMPEST=1
 
-          # swift is not ready for python3 yet
-          export DEVSTACK_LOCAL_CONFIG="disable_service s-account"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-container"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-object"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-proxy"
-
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
 
           export DEVSTACK_GATE_TEMPEST_REGEX='keystone_tempest_plugin'
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"ENABLE_IDENTITY_V2=False"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin keystone git://git.openstack.org/openstack/keystone"
           export ENABLED_SERVICES=keystone-saml2-federation
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh

@@ -11,6 +11,10 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin kuryr-libnetwork http://git.openstack.org/openstack/kuryr-libnetwork
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -26,7 +30,6 @@
 
           export PROJECTS="openstack/kuryr-libnetwork $PROJECTS"
           export PROJECTS="openstack/devstack-plugin-container $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin kuryr-libnetwork http://git.openstack.org/openstack/kuryr-libnetwork"
 
           # Keep localrc to be able to set some vars in pre_test_hook
           export KEEP_LOCALRC=1
@@ -178,6 +181,10 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin kuryr-libnetwork http://git.openstack.org/openstack/kuryr-libnetwork
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -192,7 +199,6 @@
           fi
 
           export PROJECTS="openstack/kuryr-libnetwork $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin kuryr-libnetwork http://git.openstack.org/openstack/kuryr-libnetwork"
           if [ "{kuryr_lib-src}" == "-kuryr_lib-src" ] ; then
               export DEVSTACK_PROJECT_FROM_GIT="kuryr"
           fi
@@ -229,6 +235,11 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin kuryr-libnetwork http://git.openstack.org/openstack/kuryr-libnetwork
+            enable_plugin rally git://git.openstack.org/openstack/rally
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -242,8 +253,6 @@
           export PROJECTS="openstack/rally $PROJECTS"
           export PROJECTS="openstack/devstack-plugin-container $PROJECTS"
 
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin kuryr-libnetwork http://git.openstack.org/openstack/kuryr-libnetwork"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin rally git://git.openstack.org/openstack/rally"
           if [ "{kuryr_lib-src}" == "-kuryr_lib-src" ] ; then
               export DEVSTACK_PROJECT_FROM_GIT="kuryr"
           fi

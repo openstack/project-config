@@ -13,12 +13,15 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            NOVA_BACKEND=LVM
+            LVM_VOLUME_CLEAR=none
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
-          export DEVSTACK_LOCAL_CONFIG="NOVA_BACKEND=LVM"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"LVM_VOLUME_CLEAR=none"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
