@@ -972,6 +972,7 @@ project-templates:
       - gate-tripleo-ci-centos-7-scenario003-multinode-oooq-container
       - gate-tripleo-ci-centos-7-scenario004-multinode-oooq
       - gate-tripleo-ci-centos-7-scenario004-multinode-oooq-container
+      - gate-tripleo-ci-centos-7-scenario007-multinode-oooq
       - gate-tripleo-ci-centos-7-containers-multinode
       - gate-tripleo-ci-centos-7-nonha-multinode-updates-nv
       - gate-tripleo-ci-centos-7-undercloud-containers
@@ -986,6 +987,7 @@ project-templates:
       - gate-tripleo-ci-centos-7-scenario003-multinode-oooq-container
       - gate-tripleo-ci-centos-7-scenario004-multinode-oooq
       - gate-tripleo-ci-centos-7-scenario004-multinode-oooq-container
+      - gate-tripleo-ci-centos-7-scenario007-multinode-oooq
       - gate-tripleo-ci-centos-7-undercloud-containers
     experimental:
       - gate-tripleo-ci-centos-7-scenario005-multinode-oooq-nv
@@ -1751,6 +1753,15 @@ jobs:
       - ^environments/kubernetes.*$
       - ci/environments/scenario006-multinode.yaml
       - ci/pingtests/scenario006-multinode.yaml
+  - name: ^gate-tripleo-ci-centos-7-scenario007-multinode(-oooq)?(-nv)?$
+    branch: ^(?!stable/(newton|ocata)).*$
+    files:
+      - ci/environments/scenario007-multinode.yaml
+      - ci/pingtests/scenario007-multinode.yaml
+      - ^puppet/services/.*ovn.*$
+      - ^manifests/profile/base/neutron/plugins/ml2/ovn.*$
+      - ^manifests/profile/base/neutron/agents/ovn.*$
+      - ^manifests/profile/base/neutron/ovn.*$
 
   # TripleO Upgrade job has been introduced in Ocata
   - name: ^gate-tripleo-ci-centos-7.*-upgrades.*$
