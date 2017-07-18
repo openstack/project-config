@@ -11,12 +11,15 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin heat git://git.openstack.org/openstack/heat
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=0
           export DEVSTACK_GATE_EXERCISES=0
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
 
           function post_test_hook {
               cd $BASE/new/heat-templates/tools
@@ -152,43 +155,45 @@
 
 
 - job-template:
-   name: '{pipeline}-heatclient-dsvm-functional-{node}{suffix}'
-   node: '{node}'
+    name: '{pipeline}-heatclient-dsvm-functional-{node}{suffix}'
+    node: '{node}'
 
-   wrappers:
-     - build-timeout:
-         timeout: 70
-     - timestamps
+    wrappers:
+      - build-timeout:
+          timeout: 70
+      - timestamps
 
-   builders:
-     - link-logs
-     - net-info
-     - devstack-checkout
-     - shell: |
-         #!/bin/bash -xe
-         export PYTHONUNBUFFERED=true
-         export BRANCH_OVERRIDE={branch-override}
-         export DEVSTACK_PROJECT_FROM_GIT=python-heatclient
-
-         export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
-
-         if [ "$BRANCH_OVERRIDE" != "default" ] ; then
-             export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
-         fi
-
-         function post_test_hook {{
-             # Configure and run functional tests
-             $BASE/new/python-heatclient/heatclient/tests/functional/hooks/post_test_hook.sh
-         }}
-         export -f post_test_hook
-
-         cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-         ./safe-devstack-vm-gate-wrap.sh
-
-   publishers:
-     - test-results
-     - devstack-logs
-     - console-log
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - local_conf:
+           conf: |
+             [[local|localrc]]
+             enable_plugin heat git://git.openstack.org/openstack/heat
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export BRANCH_OVERRIDE={branch-override}
+          export DEVSTACK_PROJECT_FROM_GIT=python-heatclient
+    
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+    
+          function post_test_hook {{
+              # Configure and run functional tests
+              $BASE/new/python-heatclient/heatclient/tests/functional/hooks/post_test_hook.sh
+          }}
+          export -f post_test_hook
+    
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+    
+    publishers:
+      - test-results
+      - devstack-logs
+      - console-log
 
 
 - job-template:
@@ -204,12 +209,15 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin heat git://git.openstack.org/openstack/heat
       - shell: |
           #!/bin/bash -xe
           export PROJECTS="openstack-dev/grenade $PROJECTS"
           export PYTHONUNBUFFERED=true
           export GRENADE_PLUGINRC="enable_grenade_plugin heat https://git.openstack.org/openstack/heat"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin heat git://git.openstack.org/openstack/heat"
 
           export ENABLED_SERVICES
 
