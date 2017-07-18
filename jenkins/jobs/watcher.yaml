@@ -11,10 +11,19 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin watcher git://git.openstack.org/openstack/watcher
       - shell: |
           #!/bin/bash -xe
+          ENABLED_SERVICES=tempest
+          ENABLED_SERVICES+=,watcher-api,watcher-decision-engine,watcher-applier
+          export ENABLED_SERVICES
+
           export PYTHONUNBUFFERED=true
           export BRANCH_OVERRIDE={branch-override}
+          export PROJECTS="openstack/watcher $PROJECTS"
           export DEVSTACK_PROJECT_FROM_GIT=python-watcherclient
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
