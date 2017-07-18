@@ -12,6 +12,14 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin heat git://git.openstack.org/openstack/heat
+            enable_plugin mistral git://git.openstack.org/openstack/mistral
+            enable_plugin congress git://git.openstack.org/openstack/congress
+            MURANO_ENABLE_MODEL_POLICY_ENFORCEMENT=True
+            enable_plugin murano git://git.openstack.org/openstack/murano
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -30,14 +38,8 @@
           export PROJECTS="openstack/python-mistralclient $PROJECTS"
           export KEEP_LOCALRC=1
 
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin heat git://git.openstack.org/openstack/heat"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin mistral git://git.openstack.org/openstack/mistral"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin congress git://git.openstack.org/openstack/congress"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"MURANO_ENABLE_MODEL_POLICY_ENFORCEMENT=True"
-
           # Enable murano devstack plugin. Provided repo should be cloned by zuul before devstack run
           # and below provided link should not be used.
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin murano git://git.openstack.org/openstack/murano"
 
           function pre_test_hook {{
               cd /opt/stack/new/murano/functionaltests
@@ -185,6 +187,11 @@
       - net-info
       - zuul-git-prep
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin murano git://git.openstack.org/openstack/murano
+            disable_service heat h-api h-api-cfn h-api-cw h-eng
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -194,8 +201,6 @@
           export PROJECTS="openstack/murano $PROJECTS"
           export PROJECTS="openstack/python-muranoclient $PROJECTS"
           export PROJECTS="openstack/murano-dashboard $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin murano git://git.openstack.org/openstack/murano"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service heat h-api h-api-cfn h-api-cw h-eng"
           function post_test_hook {{
               # Configure and run functional tests
               . /opt/stack/new/devstack/openrc admin admin

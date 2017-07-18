@@ -11,6 +11,14 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin ironic git://git.openstack.org/openstack/ironic
+            enable_plugin mogan git://git.openstack.org/openstack/mogan
+            IRONIC_TEMPEST_WHOLE_DISK_IMAGE=False
+            IRONIC_VM_EPHEMERAL_DISK=1
+            IRONIC_USE_RESOURCE_CLASSES=True
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -30,11 +38,6 @@
           export PROJECTS="openstack/ironic-lib $PROJECTS"
           export PROJECTS="openstack/ironic-python-agent $PROJECTS"
           export PROJECTS="openstack/python-ironicclient $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin ironic git://git.openstack.org/openstack/ironic"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin mogan git://git.openstack.org/openstack/mogan"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_TEMPEST_WHOLE_DISK_IMAGE=False"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_VM_EPHEMERAL_DISK=1"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_USE_RESOURCE_CLASSES=True"
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh

@@ -12,12 +12,15 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin monasca-api git://git.openstack.org/openstack/monasca-api
+            enable_plugin monasca-transform git://git.openstack.org/openstack/monasca-transform
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export ENABLED_SERVICES=tempest
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin monasca-api git://git.openstack.org/openstack/monasca-api"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin monasca-transform git://git.openstack.org/openstack/monasca-transform"
           export PROJECTS="openstack/monasca-transform $PROJECTS"
           export PROJECTS="openstack/monasca-api $PROJECTS"
           export PROJECTS="openstack/monasca-persister $PROJECTS"
