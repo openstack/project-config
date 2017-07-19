@@ -10603,11 +10603,18 @@ projects:
   - name: openstack/ironic-python-agent-builder
     template:
       - name: merge-check
+      - name: openstack-unified-publish-jobs
       - name: check-requirements
+      - name: openstack-server-release-jobs
+      - name: release-notes-jobs
     check:
+      - gate-ironic-python-agent-builder-pep8-ubuntu-xenial
       - gate-ironic-python-agent-builder-docs-ubuntu-xenial
     gate:
+      - gate-ironic-python-agent-builder-pep8-ubuntu-xenial
       - gate-ironic-python-agent-builder-docs-ubuntu-xenial
+    post:
+      - ironic-python-agent-builder-branch-tarball
 
   - name: openstack/ironic-specs
     template:
