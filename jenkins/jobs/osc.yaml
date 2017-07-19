@@ -20,6 +20,10 @@
             enable_service q-qos
             # NOTE(dtroyer): Functional tests need a bit more volume headroom
             VOLUME_BACKING_FILE_SIZE=20G
+            # NOTE(dtroyer): OSC needs to support Volume v1 for a while yet so re-enable
+            [[post-config|$CINDER_CONF]]
+            [DEFAULT]
+            enable_v1_api = True
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -79,6 +83,10 @@
             VOLUME_BACKING_FILE_SIZE=20G
             # swift is not ready for python3 yet
             disable_python3_package swift
+            # NOTE(dtroyer): OSC needs to support Volume v1 for a while yet so re-enable
+            [[post-config|$CINDER_CONF]]
+            [DEFAULT]
+            enable_v1_api = True
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -135,6 +143,10 @@
             GLANCE_V1_ENABLED=True
             # NOTE(dtroyer): Functional tests need a bit more volume headroom
             VOLUME_BACKING_FILE_SIZE=20G
+            # NOTE(dtroyer): OSC needs to support Volume v1 for a while yet so re-enable
+            [[post-config|$CINDER_CONF]]
+            [DEFAULT]
+            enable_v1_api = True
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
