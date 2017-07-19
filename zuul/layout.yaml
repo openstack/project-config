@@ -313,9 +313,13 @@ project-templates:
     check:
       - 'gate-{name}-ansible-func-ubuntu-xenial-nv'
 
+  # NOTE(hwoarang) same job as non-voting for check and experimental groups
+  # so openSUSE can be isolated on rechecks until stabilizes.
   - name: ansible-role-functional-jobs-opensuse-422
     experimental:
-      - 'gate-{name}-ansible-func-opensuse-422'
+      - 'gate-{name}-ansible-func-opensuse-422-nv'
+    check:
+      - 'gate-{name}-ansible-func-opensuse-422-nv'
 
   - name: bindep-fallback
     check:
@@ -3159,6 +3163,10 @@ jobs:
   # so we remove centos-7 jobs.
   - name: ^gate-openstack-ansible-.*-ansible-.*-centos-7.*$
     branch: ^(?!stable/newton).*$
+
+  # openSUSE support has been added in the Pike release.
+  - name: ^gate-openstack-ansible-.*-ansible-.*-opensuse-422.*$
+    branch: ^(?!stable/(newton|ocata)).*$
 
   # Now some specific conditions for openstack-ansible:
 
