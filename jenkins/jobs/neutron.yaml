@@ -298,13 +298,17 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            IP_VERSION=6
+            SERVICE_IP_VERSION=6
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_TEMPEST_FULL=1
           export DEVSTACK_GATE_NEUTRON=1
-          export DEVSTACK_LOCAL_CONFIG="IP_VERSION=6"$'\n'"SERVICE_IP_VERSION=6"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -331,13 +335,16 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            SERVICE_IP_VERSION=6
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_TEMPEST_FULL=1
           export DEVSTACK_GATE_NEUTRON=1
-          export DEVSTACK_LOCAL_CONFIG="SERVICE_IP_VERSION=6"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -364,6 +371,11 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            Q_AGENT=linuxbridge
+            PHYSICAL_NETWORK=default
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -371,7 +383,6 @@
           export DEVSTACK_GATE_TEMPEST_FULL=1
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_TLSPROXY=1
-          export DEVSTACK_LOCAL_CONFIG="Q_AGENT=linuxbridge"$'\n'"PHYSICAL_NETWORK=default"$'\n'
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -398,6 +409,11 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            Q_AGENT=linuxbridge
+            PHYSICAL_NETWORK=default
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -405,7 +421,6 @@
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_EXERCISES=0
           export BRANCH_OVERRIDE={branch-override}
-          export DEVSTACK_LOCAL_CONFIG="Q_AGENT=linuxbridge"$'\n'"PHYSICAL_NETWORK=default"$'\n'
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi

@@ -13,6 +13,10 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin networking-bagpipe git://git.openstack.org/openstack/networking-bagpipe
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -28,10 +32,6 @@
           # our project repository. This makes zuul do the right
           # reference magic for testing changes.
           export PROJECTS="openstack/networking-bagpipe $PROJECTS"
-          # Note the actual url here is somewhat irrelevant because it
-          # caches in nodepool, however make it a valid url for
-          # documentation purposes.
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin networking-bagpipe git://git.openstack.org/openstack/networking-bagpipe"
 
           function gate_hook {{
               bash -xe $BASE/new/networking-bagpipe/devstack/gate_hook.sh {which}
@@ -62,6 +62,10 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin networking-bagpipe git://git.openstack.org/openstack/networking-bagpipe
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -75,7 +79,6 @@
           fi
 
           export PROJECTS="openstack/networking-bagpipe $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin networking-bagpipe git://git.openstack.org/openstack/networking-bagpipe"
 
           function pre_test_hook {{
               . $BASE/new/networking-bagpipe/devstack/pre_test_hook.sh fullstack

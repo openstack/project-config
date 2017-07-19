@@ -11,6 +11,10 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin nova-lxd git://git.openstack.org/openstack/nova-lxd
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -21,10 +25,6 @@
           export DEVSTACK_GATE_VIRT_DRIVER="lxd"
           export PROJECTS="openstack/nova-lxd $PROJECTS"
 
-          # Enable nova-lxd devstack plugin. Provided repo should be
-          # cloned by zuul before devstack run and below provided
-          # link should not be used.
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin nova-lxd git://git.openstack.org/openstack/nova-lxd"
 
           # keep localrc to be able to set some vars in pre_test hook
           export KEEP_LOCALRC=1
@@ -62,6 +62,13 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin nova-lxd git://git.openstack.org/openstack/nova-lxd
+            # Enable linuxbridge agent and configure physical network
+            Q_AGENT=linuxbridge
+            PHYSICAL_NETWORK=default
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -71,15 +78,6 @@
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_VIRT_DRIVER="lxd"
           export PROJECTS="openstack/nova-lxd $PROJECTS"
-
-          # Enable linuxbridge agent and configure physical network
-          export DEVSTACK_LOCAL_CONFIG="Q_AGENT=linuxbridge"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"PHYSICAL_NETWORK=default"
-
-          # Enable nova-lxd devstack plugin. Provided repo should be
-          # cloned by zuul before devstack run and below provided
-          # link should not be used.
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin nova-lxd git://git.openstack.org/openstack/nova-lxd"
 
           # keep localrc to be able to set some vars in pre_test hook
           export KEEP_LOCALRC=1

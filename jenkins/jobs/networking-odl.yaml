@@ -13,6 +13,10 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin networking-odl git://git.openstack.org/openstack/networking-odl
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -30,10 +34,6 @@
           # our project repository. This makes zuul do the right
           # reference magic for testing changes.
           export PROJECTS="openstack/networking-odl $PROJECTS"
-          # Note the actual url here is somewhat irrelevant because it
-          # caches in nodepool, however make it a valid url for
-          # documentation purposes.
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin networking-odl git://git.openstack.org/openstack/networking-odl"
 
           # Keep localrc to be able to set some vars in pre_test_hook
           export KEEP_LOCALRC=1
@@ -80,6 +80,11 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin networking-odl git://git.openstack.org/openstack/networking-odl
+            enable_plugin rally git://git.openstack.org/openstack/rally
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -91,9 +96,6 @@
           fi
           export PROJECTS="openstack/networking-odl $PROJECTS"
           export PROJECTS="openstack/rally $PROJECTS"
-
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin networking-odl git://git.openstack.org/openstack/networking-odl"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"enable_plugin rally git://git.openstack.org/openstack/rally"
 
           # Keep localrc to be able to set some vars in pre_test_hook
           export KEEP_LOCALRC=1
@@ -173,6 +175,10 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin networking-odl git://git.openstack.org/openstack/networking-odl
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -191,10 +197,6 @@
           # our project repository. This makes zuul do the right
           # reference magic for testing changes.
           export PROJECTS="openstack/networking-odl $PROJECTS"
-          # Note the actual url here is somewhat irrelevant because it
-          # caches in nodepool, however make it a valid url for
-          # documentation purposes.
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin networking-odl git://git.openstack.org/openstack/networking-odl"
 
           # Keep localrc to be able to set some vars in pre_test_hook
           export KEEP_LOCALRC=1
@@ -242,6 +244,13 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin networking-odl git://git.openstack.org/openstack/networking-odl
+            # Fullstack test cases now assumes ODL available at this IP
+            HOST_IP=127.0.0.1
+            UNSTACK_KEEP_ODL=True
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -258,11 +267,6 @@
           fi
 
           export PROJECTS="openstack/networking-odl $PROJECTS"
-
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin networking-odl git://git.openstack.org/openstack/networking-odl"
-          # Fullstack test cases now assumes ODL available at this IP
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"HOST_IP=127.0.0.1"
-          export DEVSTACK_LOCAL_CONFIG+=$'\n'"UNSTACK_KEEP_ODL=True"
 
           # Keep localrc to be able to set some vars in pre_test_hook
           export KEEP_LOCALRC=1
