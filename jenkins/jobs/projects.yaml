@@ -640,7 +640,6 @@
       - python-jobs
       - openstack-publish-jobs
       - pypi-jobs
-      - 'gate-{name}-python35-nv'
 
 - project:
     name: cathead
@@ -8345,7 +8344,6 @@
     jobs:
       - coverage-jobs
       - python-jobs
-      - 'gate-{name}-python35-nv'
       - pypi-jobs
       - infra-publish-jobs
       - '{pipeline}-dsvm-nodepool{python}{suffix}':
@@ -14408,32 +14406,12 @@
           trigger: 'periodic'
           branch-override: default
           timeout: 300
-      # job for basic multinode
-      - '{trigger}-tripleo-ci-{jobname}{suffix}':
-          jobname: 'centos-7-nonha-multinode'
-          suffix:
-            - ''
-            - '-nv'
-          type: 'nonha-multinode'
-          node: centos-7-2-node
-          trigger: 'gate'
-          branch-override: default
-          timeout: 180
       # non-voting job for multinode with 3 nodes
       - '{trigger}-tripleo-ci-{jobname}{suffix}':
           jobname: 'centos-7-3nodes-multinode'
           suffix: '-nv'
           type: '3nodes-multinode'
           node: centos-7-3-node
-          trigger: 'gate'
-          branch-override: default
-          timeout: 180
-      # Experimental scenario for multinode with 4 nodes
-      - '{trigger}-tripleo-ci-{jobname}{suffix}':
-          jobname: 'centos-7-scenario005-multinode'
-          suffix: ''
-          type: 'scenario005-multinode'
-          node: centos-7-4-node
           trigger: 'gate'
           branch-override: default
           timeout: 180
@@ -14529,9 +14507,7 @@
           timeout: 190
       - '{trigger}-tripleo-ci-{jobname}{suffix}':
           jobname: 'centos-7-scenario004-multinode'
-          suffix:
-            - '-upgrades'
-            - '-upgrades-nv'
+          suffix: '-upgrades-nv'
           type: 'scenario004-multinode-upgrades'
           node: centos-7-2-node
           trigger: 'gate'
@@ -14569,9 +14545,7 @@
       # multinode overcloud deploy job w/containers
       - '{trigger}-tripleo-ci-{jobname}{suffix}':
           jobname: 'centos-7-containers-multinode'
-          suffix:
-            - ''
-            - '-nv'
+          suffix: ''
           type: 'multinode-1ctlr-featureset010'
           node: centos-7-2-node
           trigger: 'gate'
@@ -14580,9 +14554,7 @@
       # multinode overcloud upgrade job w/containers
       - '{trigger}-tripleo-ci-{jobname}{suffix}':
           jobname: 'centos-7-containers-multinode-upgrades'
-          suffix:
-            - ''
-            - '-nv'
+          suffix: '-nv'
           type: 'multinode-1ctlr-featureset011'
           node: centos-7-2-node
           trigger: 'gate'
@@ -14725,7 +14697,6 @@
           suffix:
             - ''
             - '-puppet'
-            - '-puppet-nv'
           type: 'multinode-1ctlr-featureset007'
           node: centos-7-2-node
           trigger: 'gate'
@@ -14760,22 +14731,6 @@
           timeout: 180
       # tripleo-ci is branchless, so we need to test changes against all the
       # stable branches as well.
-      - '{trigger}-tripleo-ci-{jobname}{suffix}':
-          jobname: 'centos-7-ovb-nonha-ocata'
-          suffix: ''
-          type: 'ovb-nonha'
-          node: tripleo-centos-7
-          trigger: 'gate'
-          branch-override: 'stable/ocata'
-          timeout: 180
-      - '{trigger}-tripleo-ci-{jobname}{suffix}':
-          jobname: 'centos-7-ovb-nonha-newton'
-          suffix: ''
-          type: 'ovb-nonha'
-          node: tripleo-centos-7
-          trigger: 'gate'
-          branch-override: 'stable/newton'
-          timeout: 180
       - '{trigger}-tripleo-ci-{jobname}{suffix}':
           jobname: 'centos-7-ovb-ha-oooq-ocata'
           suffix: ''
