@@ -11,6 +11,10 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin barbican git://git.openstack.org/openstack/barbican
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -18,7 +22,6 @@
           export PROJECTS="openstack/barbican $PROJECTS"
           export PROJECTS="openstack/barbican-tempest-plugin $PROJECTS"
           export PROJECTS="openstack/castellan $PROJECTS"
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin barbican git://git.openstack.org/openstack/barbican"
           export DEVSTACK_PROJECT_FROM_GIT="python-barbicanclient"
 
           function gate_hook {

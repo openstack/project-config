@@ -76,13 +76,17 @@
       - link-logs
       - net-info
       - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin oaktree git://git.openstack.org/openstack/oaktree
       - shell: |
           #!/bin/bash -xe
           export GOPATH=$HOME/go
           export PATH=$GOPATH/bin:$PATH
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_NEUTRON=1
-          export DEVSTACK_LOCAL_CONFIG="enable_plugin oaktree git://git.openstack.org/openstack/oaktree"
+
           export DEVSTACK_PROJECT_FROM_GIT="shade"
           export DEVSTACK_PROJECT_FROM_GIT+=",oaktree"
           export DEVSTACK_PROJECT_FROM_GIT+=",oaktreemodel"
