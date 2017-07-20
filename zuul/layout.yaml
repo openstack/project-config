@@ -2244,6 +2244,11 @@ jobs:
           - ^magnum/drivers/k8s.*$
           - ^magnum/drivers/mesos.*$
 
+  # Swarm mode was introduced in the Pike cycle, therefore
+  # skip the job for the older releases.
+  - name: ^gate-functional-dsvm-magnum-swarm-mode.*
+    branch: ^(?!stable/(newton|ocata)).*$
+
   - name: ^gate-functional-dsvm-magnum-mesos.*
     skip-if:
       - project: ^openstack/magnum$
