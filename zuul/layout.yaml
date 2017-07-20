@@ -780,6 +780,12 @@ project-templates:
     gate:
       - gate-tripleo-ci-centos-7-scenario004-multinode-oooq-puppet
 
+  - name: tripleo-scenario-jobs-scenario007
+    check:
+      - gate-tripleo-ci-centos-7-scenario007-multinode-oooq-puppet
+    gate:
+      - gate-tripleo-ci-centos-7-scenario007-multinode-oooq-puppet
+
   - name: tripleo-upgrade-jobs
     check:
       - gate-tripleo-ci-centos-7-multinode-upgrades
@@ -1657,6 +1663,18 @@ jobs:
   # tripleo scenario004 started to be used used in ocata
   - name: ^gate-tripleo-ci-centos-7-scenario004-multinode-oooq-puppet.*$
     branch: ^(?!stable/newton).*$
+    skip-if:
+      - project: ^openstack/puppet-.*$
+        all-files-match-any:
+          - ^.*\.md$
+          - ^releasenotes/.*$
+          - ^metadata.json$
+          - ^spec/.*$
+          - ^test-requirements.txt$
+
+  # tripleo scenario007 started to be used used in pike
+  - name: ^gate-tripleo-ci-centos-7-scenario007-multinode-oooq-puppet.*$
+    branch: ^(?!stable/(newton|ocata)).*$
     skip-if:
       - project: ^openstack/puppet-.*$
         all-files-match-any:
@@ -12255,6 +12273,7 @@ projects:
       - name: python35-jobs
       - name: periodic-jobs-with-neutron-lib-master
       - name: periodic-jobs-with-ovsdbapp-master
+      - name: tripleo-scenario-jobs-scenario007
     check:
       - gate-tempest-dsvm-networking-ovn-ovs-master-nv
       - gate-tempest-dsvm-networking-ovn-ovs-release
@@ -15120,6 +15139,7 @@ projects:
       - name: puppet-beaker-jobs-xenial
       - name: release-notes-jobs
       - name: puppet-release-jobs
+      - name: tripleo-scenario-jobs-scenario007
 
   - name: openstack/puppet-pacemaker
     template:
