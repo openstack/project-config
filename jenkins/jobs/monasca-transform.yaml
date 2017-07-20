@@ -1,5 +1,5 @@
-- job:
-    name: gate-tempest-dsvm-monasca-transform-python-functional
+- job-template:
+    name: 'gate-tempest-dsvm-monasca-transform-{pyver}-functional{suffix}'
 
     node: ubuntu-xenial
 
@@ -20,6 +20,13 @@
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
+
+          if [ "{pyver}" == "python35" ]; then
+              export DEVSTACK_GATE_USE_PYTHON3=True
+          else
+              export DEVSTACK_GATE_USE_PYTHON3=False
+          fi
+
           export ENABLED_SERVICES=tempest
           export PROJECTS="openstack/monasca-transform $PROJECTS"
           export PROJECTS="openstack/monasca-api $PROJECTS"
@@ -33,15 +40,15 @@
           export PROJECTS="openstack/monasca-grafana-datasource $PROJECTS"
           export PROJECTS="openstack/monasca-ui $PROJECTS"
 
-          function pre_test_hook {
+          function pre_test_hook {{
               source $BASE/new/monasca-transform/devstack/pre_test_hook.sh
-          }
+          }}
           export -f pre_test_hook
 
-          function post_test_hook {
+          function post_test_hook {{
               # Configure and run tempest on monasca-transform installation
               source $BASE/new/monasca-transform/devstack/post_test_hook.sh
-          }
+          }}
           export -f post_test_hook
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
