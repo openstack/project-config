@@ -192,40 +192,33 @@
     name: devstack-designate-rally-gate
     builders:
       - link-logs
+      - net-info
       - devstack-checkout
       - local_conf:
           conf: |
             [[local|localrc]]
-            enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer
-            enable_plugin aodh git://git.openstack.org/openstack/aodh
+            DESIGNATE_SERVICE_PORT_DNS=5322
+            DESIGNATE_BACKEND_DRIVER={designate-driver}
             enable_plugin rally git://git.openstack.org/openstack/rally
             enable_plugin designate git://git.openstack.org/openstack/designate
       - shell: |
           #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
 
           if [ $ZUUL_PROJECT == "openstack/rally" ] && [ $ZUUL_BRANCH != "master" ]; then
               export DEVSTACK_GATE_FEATURE_MATRIX="/opt/stack/new/rally/devstack/features.yaml"
           fi
 
           export PROJECTS="openstack/rally $PROJECTS"
-          export PROJECTS="openstack/ceilometer $PROJECTS"
-          export PROJECTS="openstack/aodh $PROJECTS"
           export PROJECTS="openstack/designate $PROJECTS"
           export PROJECTS="openstack/python-designateclient $PROJECTS"
           export PROJECTS="openstack/designate-dashboard $PROJECTS"
-          export CEILOMETER_NOTIFICATION_TOPICS=notifications,profiler
-          export DEVSTACK_GATE_NEUTRON={neutron}
+
           export DEVSTACK_GATE_TEMPEST_LARGE_OPS={large_ops}
           export DEVSTACK_GATE_EXERCISES=0
           export RALLY_SCENARIO={scenario}
 
           export IDENTITY_API_VERSION=3
-
-          ENABLED_SERVICES=ceilometer-acompute,ceilometer-acentral,ceilometer-api,
-          ENABLED_SERVICES+=ceilometer-anotification,ceilometer-collector,
-          ENABLED_SERVICES+=aodh-api,aodh-alarm-evaluator,aodh-alarm-notifier,
-          ENABLED_SERVICES+=designate,designate-api,designate-central,designate-sink,designate-mdns,
-          export ENABLED_SERVICES
 
           function gate_hook {{
               cd /opt/stack/new/designate/devstack/gate
@@ -564,7 +557,7 @@
 
 
 - job-template:
-    name: 'gate-rally-dsvm-designate-{name}-{node}{suffix}'
+    name: 'gate-rally-dsvm-designate-{name}-{driver}-{node}{suffix}'
     node: '{node}'
 
     wrappers:
@@ -575,8 +568,8 @@
     builders:
         - devstack-designate-rally-gate:
             scenario: '{name}-designate'
-            neutron: '0'
             large_ops: '0'
+            designate-driver: '{driver}'
 
     publishers:
       - devstack-logs
