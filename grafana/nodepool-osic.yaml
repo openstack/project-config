@@ -115,9 +115,6 @@ dashboard:
           leftYAxisLabel: "events / min"
           targets:
             - target: alias(smartSummarize(sumSeries(stats_counts.nodepool.launch.provider.osic-cloud1-disk.error.*), '1m'), 'CLOUD1-DISK')
-            - target: alias(smartSummarize(sumSeries(stats_counts.nodepool.launch.provider.osic-cloud1-s3500.error.*), '1m'), 'CLOUD1-S3500')
-            - target: alias(smartSummarize(sumSeries(stats_counts.nodepool.launch.provider.osic-cloud1-s3700.error.*), '1m'), 'CLOUD1-S3700')
-            - target: alias(smartSummarize(sumSeries(stats_counts.nodepool.launch.provider.osic-cloud8.error.*), '1m'), 'CLOUD8')
         - title: Time to Ready
           type: graph
           span: 4
@@ -143,54 +140,6 @@ dashboard:
           seriesOverrides:
             - alias: Max
               stack: False
-        - title: Test Nodes (Cloud 1 - S3500)
-          type: graph
-          span: 4
-          stack: true
-          tooltip:
-            value_type: individual
-          leftYAxisLabel: "nodes"
-          targets:
-            - target: alias(stats.gauges.nodepool.provider.osic-cloud1-s3500.nodes.building, 'Building')
-            - target: alias(stats.gauges.nodepool.provider.osic-cloud1-s3500.nodes.ready, 'Available')
-            - target: alias(stats.gauges.nodepool.provider.osic-cloud1-s3500.nodes.used, 'In Use')
-            - target: alias(stats.gauges.nodepool.provider.osic-cloud1-s3500.nodes.delete, 'Deleting')
-            - target: alias(stats.gauges.nodepool.provider.osic-cloud1-s3500.max_servers, 'Max')
-          seriesOverrides:
-            - alias: Max
-              stack: False
-        - title: Test Nodes (Cloud 1 - S3700)
-          type: graph
-          span: 4
-          stack: true
-          tooltip:
-            value_type: individual
-          leftYAxisLabel: "nodes"
-          targets:
-            - target: alias(stats.gauges.nodepool.provider.osic-cloud1-s3700.nodes.building, 'Building')
-            - target: alias(stats.gauges.nodepool.provider.osic-cloud1-s3700.nodes.ready, 'Available')
-            - target: alias(stats.gauges.nodepool.provider.osic-cloud1-s3700.nodes.used, 'In Use')
-            - target: alias(stats.gauges.nodepool.provider.osic-cloud1-s3700.nodes.delete, 'Deleting')
-            - target: alias(stats.gauges.nodepool.provider.osic-cloud1-s3700.max_servers, 'Max')
-          seriesOverrides:
-            - alias: Max
-              stack: False
-        - title: Test Nodes (Cloud 8)
-          type: graph
-          span: 4
-          stack: true
-          tooltip:
-            value_type: individual
-          leftYAxisLabel: "nodes"
-          targets:
-            - target: alias(stats.gauges.nodepool.provider.osic-cloud8.nodes.building, 'Building')
-            - target: alias(stats.gauges.nodepool.provider.osic-cloud8.nodes.ready, 'Available')
-            - target: alias(stats.gauges.nodepool.provider.osic-cloud8.nodes.used, 'In Use')
-            - target: alias(stats.gauges.nodepool.provider.osic-cloud8.nodes.delete, 'Deleting')
-            - target: alias(stats.gauges.nodepool.provider.osic-cloud8.max_servers, 'Max')
-          seriesOverrides:
-            - alias: Max
-              stack: False
     - title: Job Runtimes
       showTitle: true
       height: 250px
@@ -204,9 +153,6 @@ dashboard:
             - none
           targets:
             - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-full-ubuntu-xenial.master.ubuntu-xenial.osic-cloud1-disk.runtime.mean, '0.001'), 'CLOUD1-DISK')
-            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-full-ubuntu-xenial.master.ubuntu-xenial.osic-cloud1-s3700.runtime.mean, '0.001'), 'CLOUD1-S3700')
-            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-full-ubuntu-xenial.master.ubuntu-xenial.osic-cloud1-s3500.runtime.mean, '0.001'), 'CLOUD1-S3500')
-            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-full-ubuntu-xenial.master.ubuntu-xenial.osic-cloud8.runtime.mean, '0.001'), 'CLOUD8')
         - title: gate-tempest-dsvm-neutron-full
           type: graph
           span: 6
@@ -216,6 +162,3 @@ dashboard:
             - none
           targets:
             - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-neutron-full-ubuntu-xenial.master.ubuntu-xenial.osic-cloud1-disk.runtime.mean, '0.001'), 'CLOUD1-DISK')
-            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-neutron-full-ubuntu-xenial.master.ubuntu-xenial.osic-cloud1-s3700.runtime.mean, '0.001'), 'CLOUD1-S3700')
-            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-neutron-full-ubuntu-xenial.master.ubuntu-xenial.osic-cloud1-s3500.runtime.mean, '0.001'), 'CLOUD1-S3500')
-            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-neutron-full-ubuntu-xenial.master.ubuntu-xenial.osic-cloud8.runtime.mean, '0.001'), 'CLOUD8')
