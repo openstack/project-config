@@ -87,9 +87,13 @@ if [[ ! -e /etc/rc.local ]] && [[ ! -e /etc/debian_version ]]; then
     # end of build.
 fi
 
+
+# And furthermore on SUSE systems rc.local is called /etc/init.d/boot.local
+rclocal=/etc/rc.local
+[ -f /etc/init.d/boot.local ] && rclocal=/etc/init.d/boot.local
 # Overwrite /etc/resolv.conf at boot (let's hope nothing else is using
 # rc.local...)
-dd of=/etc/rc.local <<EOF
+dd of=$rclocal <<EOF
 #!/bin/bash
 set -o xtrace
 
@@ -97,6 +101,7 @@ set -o xtrace
 # for DNS nameservers. This is expected to fail on some nodes so remove -e.
 set +e
 sed -i -e 's/^\(DNS[0-9]*=[.0-9]\+\)/#\1/g' /etc/sysconfig/network-scripts/ifcfg-*
+sed -i -e 's/^NETCONFIG_DNS_POLICY=.*/NETCONFIG_DNS_POLICY=""/g' /etc/sysconfig/network/config
 set -e
 
 echo 'nameserver 127.0.0.1' > /etc/resolv.conf
@@ -108,7 +113,7 @@ EOF
 # CentOS (and the file we created for Fedora) do not ... this is to
 # avoid it holding up the boot as it relies on the network being up).
 # Add +x so it runs.
-chmod a+x /etc/rc.local
+chmod a+x $rclocal
 
 echo 'include: /etc/unbound/forwarding.conf' >> /etc/unbound/unbound.conf
 
