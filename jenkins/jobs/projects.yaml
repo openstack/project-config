@@ -260,7 +260,6 @@
     jobs:
       - coverage-jobs
       - python-jobs
-      - 'gate-{name}-python35-nv'
       - hook-{name}-rtfd
       - 'gate-ara-integration-{python_version}-{ansible_version}-{ostype}{suffix}':
           python_version: py27
@@ -277,9 +276,12 @@
           suffix: '-nv'
       - 'gate-ara-integration-{python_version}-{ansible_version}-{ostype}{suffix}':
           python_version: py35
-          ansible_version:
-            - latest
-            - devel
+          ansible_version: latest
+          ostype: ubuntu-xenial
+          suffix: ''
+      - 'gate-ara-integration-{python_version}-{ansible_version}-{ostype}{suffix}':
+          python_version: py35
+          ansible_version: devel
           ostype: ubuntu-xenial
           suffix: '-nv'
       - 'gate-ara-integration-openstack-ansible-func-{ostype}':
