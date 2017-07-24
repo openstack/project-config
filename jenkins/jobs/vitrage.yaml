@@ -1,5 +1,5 @@
 - job-template:
-    name: '{pipeline}-vitrage-dsvm-{suite}-{node}{suffix}'
+    name: '{pipeline}-vitrage-dsvm-{suite}-{python}-{node}{suffix}'
     node: '{node}'
 
     wrappers:
@@ -23,6 +23,12 @@
           export PROJECTS="openstack/vitrage-dashboard $PROJECTS"
           export PROJECTS="openstack/aodh $PROJECTS"
           export ENABLED_SERVICES=tempest
+
+          if [ "{python}" == "py35" ] ; then
+             export DEVSTACK_GATE_USE_PYTHON3=True
+          else
+             export DEVSTACK_GATE_USE_PYTHON3=False
+          fi
 
           function pre_test_hook {{
               source $BASE/new/vitrage/devstack/pre_test_hook.sh
