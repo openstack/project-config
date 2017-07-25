@@ -52,6 +52,33 @@
       - console-log
 
 
+- job-template:
+    name: '{pipeline}-mistral-ha-{node}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 70
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - zuul-git-prep
+      - install-distro-packages
+      - shell: |
+          # TODO: this is a temporary solution that puts all installation
+          # code into a script residing in mistral repo just for more
+          # convenient debugging (since we'll be able to send patchsets to
+          # mistral with "check experimental" and trigger the gate). After
+          # it's ready it'll be better to create a special builder in this
+          # file.
+          ha_gate/install.sh
+          ha_gate/run_tests.sh
+    publishers:
+      - console-log
+
+
 - job:
     name: gate-mistral-docker-buildimage
     node: ubuntu-xenial
