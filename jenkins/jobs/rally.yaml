@@ -90,8 +90,14 @@
           ENABLED_SERVICES+=n-api,n-crt,n-cpu,n-sch,n-cond,
           ENABLED_SERVICES+=q-qos,
 
-          if [ $DEVSTACK_GATE_SWIFT -ne 1 ]; then
+          if [ $DEVSTACK_GATE_SWIFT -ne 1 ];
+          then
               ENABLED_SERVICES+=s-proxy,s-account,s-container,s-object,
+          else
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-account"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-container"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-object"
+              export DEVSTACK_LOCAL_CONFIG+=$'\n'"disable_service s-proxy"
           fi
 
           if [ $DEVSTACK_GATE_HEAT -ne 0 ]; then
