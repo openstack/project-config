@@ -3465,6 +3465,14 @@ jobs:
   - name: ^gate-nodepool-python35
     branch: feature/zuulv3
 
+  # Run python35 job only on the master branch
+  - name: ^gate-vitrage-dsvm-api-py35-ubuntu-xenial
+    branch: master
+
+  # Run python35 job only on the master branch
+  - name: ^gate-vitrage-dsvm-datasources-py35-ubuntu-xenial
+    branch: master
+
   #########
   # Mutexes
   #########
@@ -18155,11 +18163,14 @@ projects:
       - name: openstack-unified-publish-jobs
       - name: release-notes-jobs
     check:
-      - gate-vitrage-dsvm-api-ubuntu-xenial
-      - gate-vitrage-dsvm-datasources-ubuntu-xenial
+      - gate-vitrage-dsvm-api-py27-ubuntu-xenial
+      - gate-vitrage-dsvm-datasources-py27-ubuntu-xenial
     gate:
-      - gate-vitrage-dsvm-api-ubuntu-xenial
-      - gate-vitrage-dsvm-datasources-ubuntu-xenial
+      - gate-vitrage-dsvm-api-py27-ubuntu-xenial
+      - gate-vitrage-dsvm-datasources-py27-ubuntu-xenial
+    experimental:
+      - gate-vitrage-dsvm-api-py35-ubuntu-xenial
+      - gate-vitrage-dsvm-datasources-py35-ubuntu-xenial
 
   - name: openstack/vitrage-dashboard
     template:
