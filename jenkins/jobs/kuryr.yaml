@@ -76,6 +76,7 @@
 
           export PROJECTS="openstack/kuryr-kubernetes $PROJECTS"
           export PROJECTS="openstack/dragonflow $PROJECTS"
+          export PROJECTS="openstack/devstack-plugin-container $PROJECTS"
 
           function gate_hook {{
               bash -xe $BASE/new/kuryr-kubernetes/devstack/gate_hook.sh {variant}
@@ -127,7 +128,8 @@
             enable_service mysql
             enable_service rabbit
             # Docker
-            enable_service docker
+            enable_plugin devstack-plugin-container \
+                git://git.openstack.org/openstack/devstack-plugin-container
             # Etcd
             enable_service etcd3
             # Kubernetes
@@ -157,6 +159,7 @@
 
           export PROJECTS="openstack/kuryr-kubernetes $PROJECTS"
           export PROJECTS="openstack/kuryr-tempest-plugin $PROJECTS"
+          export PROJECTS="openstack/devstack-plugin-container $PROJECTS"
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
