@@ -1002,6 +1002,7 @@ project-templates:
     experimental:
       - gate-tripleo-ci-centos-7-scenario005-multinode-oooq-nv
       - gate-tripleo-ci-centos-7-scenario006-multinode-oooq-nv
+      - gate-tripleo-ci-centos-7-scenario008-multinode-oooq-nv
       - gate-tripleo-ci-centos-7-scenario001-multinode-oooq-container-upgrades
       - gate-tripleo-ci-centos-7-scenario002-multinode-oooq-container-upgrades
       - gate-tripleo-ci-centos-7-scenario003-multinode-oooq-container-upgrades
@@ -1794,6 +1795,17 @@ jobs:
       - ^manifests/profile/base/neutron/plugins/ml2/ovn.*$
       - ^manifests/profile/base/neutron/agents/ovn.*$
       - ^manifests/profile/base/neutron/ovn.*$
+  - name: ^gate-tripleo-ci-centos-7-scenario008-multinode(-oooq)?(-nv)?$
+    branch: ^(?!stable/(newton|ocata)).*$
+    files:
+      - ^environments/.*opendaylight.*$
+      - ^puppet/services/.*opendaylight.*$
+      - manifests/profile/base/neutron/opendaylight.pp
+      - manifests/profile/base/neutron/plugins/ml2/opendaylight.pp
+      - manifests/profile/base/neutron/plugins/ovs/opendaylight.pp
+      - ^manifests/profile/base/neutron/opendaylight/.*$
+      - ci/environments/scenario008-multinode.yaml
+      - ci/pingtests/scenario008-multinode.yaml
 
   # TripleO Upgrade job has been introduced in Ocata
   - name: ^gate-tripleo-ci-centos-7.*-upgrades.*$
