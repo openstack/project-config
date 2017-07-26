@@ -2449,6 +2449,12 @@ jobs:
   - name: ^gate-python-cinderclient-pylint.*$
     voting: false
 
+  # TODO(lin-a-yang): To start with empty repository, mark all
+  # python-rsdclient and rsd-lib jobs non-voting to not block any changes.
+  # Once the jobs all run fine, change back to voting.
+  - name: ^gate-(python-rsdclient|rsd-lib)-python.*$
+    voting: false
+
   - name: ^gate-os-brick-pylint.*$
     voting: false
 
@@ -16152,6 +16158,16 @@ projects:
       - name: publish-to-pypi
       - name: check-requirements
 
+  - name: openstack/python-rsdclient
+    template:
+      - name: merge-check
+    check:
+      - gate-python-rsdclient-pep8-ubuntu-xenial
+      - gate-python-rsdclient-python27-ubuntu-xenial
+      - gate-python-rsdclient-python35
+    gate:
+      - gate-python-rsdclient-pep8-ubuntu-xenial
+
   - name: openstack/python-saharaclient
     template:
       - name: merge-check
@@ -16684,6 +16700,16 @@ projects:
       - gate-rpm-packaging-tools-pep8-ubuntu-xenial
     gate:
       - gate-rpm-packaging-tools-pep8-ubuntu-xenial
+
+  - name: openstack/rsd-lib
+    template:
+      - name: merge-check
+    check:
+      - gate-rsd-lib-pep8-ubuntu-xenial
+      - gate-rsd-lib-python27-ubuntu-xenial
+      - gate-rsd-lib-python35
+    gate:
+      - gate-rsd-lib-pep8-ubuntu-xenial
 
   - name: openstack/rst2bash
     template:
