@@ -81,7 +81,14 @@
             enable_service q-qos
             # NOTE(dtroyer): Functional tests need a bit more volume headroom
             VOLUME_BACKING_FILE_SIZE=20G
-            # swift is not ready for python3 yet
+            # Swift is not ready for python3 yet: At a minimum keystonemiddleware needs
+            # to be installed in the py2 env, there are probably other things too...
+            disable_service s-account
+            disable_service s-container
+            disable_service s-object
+            disable_service s-proxy
+            # This is insufficient, but I'm leaving it here as a reminder of what may
+            # someday be all we need to make this work
             disable_python3_package swift
             # NOTE(dtroyer): OSC needs to support Volume v1 for a while yet so re-enable
             [[post-config|$CINDER_CONF]]
