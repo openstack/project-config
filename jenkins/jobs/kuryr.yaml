@@ -170,6 +170,89 @@
       - console-log
 
 - job-template:
+    name: '{pipeline}-tempest-dsvm-kuryr-kubernetes-multinode-{node-release}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 125
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            enable_plugin kuryr-kubernetes \
+                https://git.openstack.org/openstack/kuryr-kubernetes
+            ENABLED_SERVICES=""
+            # Neutron services
+            enable_service neutron
+            enable_service q-agt
+            enable_service q-dhcp
+            enable_service q-l3
+            enable_service q-svc
+            # LBaaSv2 service and Haproxy agent
+            enable_plugin neutron-lbaas \
+                git://git.openstack.org/openstack/neutron-lbaas
+            enable_service q-lbaasv2
+            NEUTRON_LBAAS_SERVICE_PROVIDERV2="LOADBALANCERV2:Haproxy:neutron_lbaas.drivers.haproxy.plugin_driver.HaproxyOnHostPluginDriver:default"
+            # Keystone
+            enable_service key
+            # dependencies
+            enable_service mysql
+            enable_service rabbit
+            # Docker
+            enable_plugin devstack-plugin-container \
+                git://git.openstack.org/openstack/devstack-plugin-container
+            # Etcd
+            enable_service etcd3
+            # Kubernetes
+            enable_service kubernetes-api
+            enable_service kubernetes-controller-manager
+            enable_service kubernetes-scheduler
+            KURYR_K8S_API_PORT="8080"
+            # Kubelet
+            enable_service kubelet
+            # Kuryr watcher
+            enable_service kuryr-kubernetes
+            # Enable Tempest
+            enable_service tempest
+            # Enable Tempest plugin
+            TEMPEST_PLUGINS='/opt/stack/new/kuryr-tempest-plugin'
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_TEMPEST=1
+          export DEVSTACK_GATE_NEUTRON=1
+          export DEVSTACK_GATE_TEMPEST_REGEX="kuryr_tempest_plugin.tests"
+          export BRANCH_OVERRIDE={branch-override}
+
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+
+          export PROJECTS="openstack/kuryr-kubernetes $PROJECTS"
+          export PROJECTS="openstack/kuryr-tempest-plugin $PROJECTS"
+          export PROJECTS="openstack/devstack-plugin-container $PROJECTS"
+
+          export DEVSTACK_GATE_TOPOLOGY="multinode"
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - test-results
+      - devstack-logs
+      - console-log
+
+
+
+- job-template:
     name: '{pipeline}-kuryr-libnetwork{kuryr_lib-src}-dsvm-fullstack-{node}{suffix}'
     node: '{node}'
 
