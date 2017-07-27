@@ -14,10 +14,12 @@
       - local_conf:
           conf: |
             [[local|localrc]]
+            # NOTE(amotoki): Some neutron features are enabled by devstack plugin
             enable_plugin neutron https://git.openstack.org/openstack/neutron
+            enable_service q-qos
+            enable_service neutron-segments
             # NOTE(dtroyer): OSC needs to support Image v1 for a while yet so re-enable
             GLANCE_V1_ENABLED=True
-            enable_service q-qos
             # NOTE(dtroyer): Functional tests need a bit more volume headroom
             VOLUME_BACKING_FILE_SIZE=20G
             # NOTE(dtroyer): OSC needs to support Volume v1 for a while yet so re-enable
@@ -75,10 +77,12 @@
       - local_conf:
           conf: |
             [[local|localrc]]
+            # NOTE(amotoki): Some neutron features are enabled by devstack plugin
             enable_plugin neutron https://git.openstack.org/openstack/neutron
+            enable_service q-qos
+            enable_service neutron-segments
             # NOTE(dtroyer): OSC needs to support Image v1 for a while yet so re-enable
             GLANCE_V1_ENABLED=True
-            enable_service q-qos
             # NOTE(dtroyer): Functional tests need a bit more volume headroom
             VOLUME_BACKING_FILE_SIZE=20G
             # Swift is not ready for python3 yet: At a minimum keystonemiddleware needs
