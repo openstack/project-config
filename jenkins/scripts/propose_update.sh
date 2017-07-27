@@ -72,6 +72,13 @@ elif [ "$OWN_PROJECT" == "openstack-ansible-tests" ] ; then
     function update {
         bash /usr/local/jenkins/slave_scripts/sync_openstack_ansible_common_files.sh $1
     }
+elif [ "$OWN_PROJECT" == "os-service-types" ] ; then
+    INITIAL_COMMIT_MSG="Updated from OpenStack Service Type Authority"
+    TOPIC="openstack/os-service-types/sync-service-types-authority"
+    PROJECTS="openstack/os-service-types"
+    function update {
+        curl https://service-types.openstack.org/service-types.json > os_service_types/data/service-types.json
+    }
 else
     echo "Unknown project $1" >2
     exit 1
