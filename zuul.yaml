@@ -6,12 +6,29 @@
         - event: patchset-created
         - event: comment-added
           comment: (?i)^(Patch Set [0-9]+:)?( [\w\\+-]*)*(\n\n)?\s*(recheck|reverify)
+      github:
+        - event: pull_request
+          action:
+            - opened
+            - changed
+            - reopened
+        - event: pull_request
+          action: comment
+          comment: (?i)^\s*recheck\s*$
+    start:
+      github:
+        status: pending
+        comment: false
     success:
       gerrit:
         Verified: 1
+      github:
+          status: 'success'
     failure:
       gerrit:
         Verified: -1
+      github:
+          status: 'failure'
 
 - job:
     name: base
