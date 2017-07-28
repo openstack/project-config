@@ -2075,12 +2075,6 @@ jobs:
       - '^tox.ini'
       - '^upper-constraints.txt'
 
-  # TODO(lin-a-yang): To start with empty repository, mark all
-  # python-valenceclient jobs non-voting to not block any changes. Once the
-  # jobs all run fine, change back to voting.
-  - name: ^gate-python-valenceclient-(docs|python|requirements).*$
-    voting: false
-
   # NOTE(mriedem): This job uses xenial nodes which restricts it to >= newton
   # changes. It also uses nova-network which is deprecated and not the default
   # in Ocata so we need to just restrict it to running on stable/newton
@@ -16323,14 +16317,8 @@ projects:
     template:
       - name: merge-check
       - name: check-requirements
-    check:
-      - gate-python-valenceclient-docs-ubuntu-xenial
-      - gate-python-valenceclient-pep8-ubuntu-xenial
-      - gate-python-valenceclient-python27-ubuntu-xenial
-      - gate-python-valenceclient-python35
-      - gate-python-valenceclient-requirements
-    gate:
-      - gate-python-valenceclient-pep8-ubuntu-xenial
+      - name: python-jobs
+      - name: python35-jobs
 
   - name: openstack/python-vitrageclient
     template:
