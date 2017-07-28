@@ -2382,16 +2382,30 @@ jobs:
           - ^tools/.*$
           - ^tox.ini$
 
-  - name: ^gate-tempest-dsvm-networking-midonet-v2-.*
+  # gate-tempest-dsvm-networking-midonet variants
+  #
+  #    v2                    <=Ocata
+  #    v2-full   >=Ocata and <=Ocata  (That is, Ocata only)
+  #    ml2       all branches
+  #    ml2-full  >=Ocata
+  #
+  # NOTE(yamamoto): v2 is going to be removed in Pike.
+  # NOTE(yamamoto): -full variants have been introduced in Ocata.
+  # NOTE(yamamoto): The last matching entry wins.
+
+  - name: ^gate-tempest-dsvm-networking-midonet-v2
     branch: ^stable/(newton|ocata)
 
-  - name: ^gate-networking-midonet-rally-dsvm-v2-ubuntu-xenial
-    branch: ^stable/(newton|ocata)
+  - name: ^gate-tempest-dsvm-networking-midonet-v2-full
+    branch: ^stable/ocata
 
-  - name: ^gate-tempest-dsvm-networking-midonet-.+-full-ubuntu-xenial
+  - name: ^gate-tempest-dsvm-networking-midonet-ml2-full
     branch: ^(?!stable/newton).*$
 
-  - name: ^gate-tempest-dsvm-networking-midonet-.+-full-legacy-ubuntu-xenial
+  - name: ^gate-tempest-dsvm-networking-midonet-ml2.*-centos-7
+    branch: ^(?!stable/(newton|ocata)).*$
+
+  - name: ^gate-tempest-dsvm-networking-midonet-ml2-full-legacy-ubuntu-xenial
     branch: ^(?!stable/(newton|ocata)).*$
 
   - name: ^gate-grenade-dsvm-networking-midonet-ml2-ubuntu-xenial
@@ -2400,10 +2414,17 @@ jobs:
   - name: ^gate-grenade-dsvm-networking-midonet-v2-ubuntu-xenial
     branch: ^(?!stable/(newton|ocata)).*$
 
-  - name: ^gate-tempest-dsvm-networking-midonet-.*-centos-7
-    branch: ^(?!stable/(newton|ocata)).*$
+  # gate-networking-midonet-rally-dsvm variants
+  #
+  #    v2        >=Ocata and <=Ocata  (That is, Ocata only)
+  #    ml2       >=Ocata
+  #
+  # NOTE(yamamoto): v2 is going to be removed in Pike.
 
-  - name: ^gate-networking-midonet-rally-dsvm-.+-ubuntu-xenial
+  - name: ^gate-networking-midonet-rally-dsvm-v2-ubuntu-xenial
+    branch: ^stable/ocata
+
+  - name: ^gate-networking-midonet-rally-dsvm-ml2-ubuntu-xenial
     branch: ^(?!stable/newton).*$
 
   - name: ^gate-tempest-dsvm-networking-odl-.+-snapshot-v2driver
