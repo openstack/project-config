@@ -34,6 +34,24 @@
       mysql:
         score: -1
 
+- pipeline:
+    name: release
+    # NOTE(pabelanger): release pipeline needs access to credentials (eg: pypi).
+    allow-secrets: true
+    description: When a commit is tagged as a release, this pipeline runs jobs that publish archives and documentation.
+    manager: independent
+    precedence: high
+    trigger:
+      gerrit:
+        - event: ref-updated
+          ref: ^refs/tags/[0-9]+(\.[0-9]+)*$
+# TODO(pabelanger): Uncomment for production
+#    failure:
+#      smtp:
+#        from: zuul@openstack.org
+#        to: release-job-failures@lists.openstack.org
+#        subject: 'Release of {change.project} failed'
+
 - job:
     name: base
     description: |
