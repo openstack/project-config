@@ -92,6 +92,14 @@
       - name: ubuntu-xenial
         label: ubuntu-xenial
 
+- job:
+    name: publish-openstack-python-tarball
+    description: |
+      Publish the results of the tox-tarball job to tarballs.openstack.org.
+    parent: tox-tarball
+    post-run:
+      - playbook/publish/openstack-python-tarball
+
 - project:
     name: openstack-infra/zuul-jobs
     check:
