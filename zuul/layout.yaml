@@ -585,9 +585,9 @@ project-templates:
 
   - name: openstack-doc-translation
     check:
-      - gate-{name}-tox-checklang-ubuntu-xenial
+      - gate-{name}-tox-doc-publish-checklang
     gate:
-      - gate-{name}-tox-checklang-ubuntu-xenial
+      - gate-{name}-tox-doc-publish-checklang
     post:
       - '{name}-upstream-translation-update'
       - '{name}-tox-doc-publishlang'
@@ -2665,7 +2665,8 @@ jobs:
   - name: ^gate-.*-tox-doc-publish-checkbuild.*$
     success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/publish-docs/
 
-  - name: ^gate-.*-tox-checklang.*ubuntu-xenial$
+  - name: ^gate-.*-tox-doc-publish-checklang$
+    success-pattern: http://docs-draft.openstack.org/{build.parameters[LOG_PATH]}/publish-docs/
     # Only run job if at least one po or pot file was changed
     files:
       - '^.*\.po$'
@@ -5528,9 +5529,9 @@ projects:
       - name: merge-check
       - name: openstack-doc-rst-gate
     check:
-      - gate-api-site-tox-checklang-ubuntu-xenial
+      - gate-api-site-tox-doc-publish-checklang
     gate:
-      - gate-api-site-tox-checklang-ubuntu-xenial
+      - gate-api-site-tox-doc-publish-checklang
     post:
       - api-site-upstream-translation-update
       - openstack-api-ref
