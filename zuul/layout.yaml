@@ -805,7 +805,6 @@ project-templates:
   - name: tripleo-upgrade-jobs
     check:
       - gate-tripleo-ci-centos-7-multinode-upgrades
-      - gate-tripleo-ci-centos-7-multinode-upgrades-nv
       - gate-tripleo-ci-centos-7-containers-multinode-upgrades-nv
     gate:
       - gate-tripleo-ci-centos-7-multinode-upgrades
@@ -813,27 +812,27 @@ project-templates:
   - name: tripleo-upgrade-jobs-scenario001
     check:
       - gate-tripleo-ci-centos-7-scenario001-multinode-upgrades
-      - gate-tripleo-ci-centos-7-scenario001-multinode-upgrades-nv
+      - gate-tripleo-ci-centos-7-scenario001-multinode-oooq-container-upgrades-nv
     gate:
       - gate-tripleo-ci-centos-7-scenario001-multinode-upgrades
 
   - name: tripleo-upgrade-jobs-scenario002
     check:
       - gate-tripleo-ci-centos-7-scenario002-multinode-upgrades
-      - gate-tripleo-ci-centos-7-scenario002-multinode-upgrades-nv
+      - gate-tripleo-ci-centos-7-scenario002-multinode-oooq-container-upgrades-nv
     gate:
       - gate-tripleo-ci-centos-7-scenario002-multinode-upgrades
 
   - name: tripleo-upgrade-jobs-scenario003
     check:
       - gate-tripleo-ci-centos-7-scenario003-multinode-upgrades
-      - gate-tripleo-ci-centos-7-scenario003-multinode-upgrades-nv
+      - gate-tripleo-ci-centos-7-scenario003-multinode-oooq-container-upgrades-nv
     gate:
       - gate-tripleo-ci-centos-7-scenario003-multinode-upgrades
 
   - name: tripleo-upgrade-jobs-scenario004
     check:
-      - gate-tripleo-ci-centos-7-scenario004-multinode-upgrades-nv
+      - gate-tripleo-ci-centos-7-scenario004-multinode-oooq-container-upgrades-nv
 
   - name: puppet-openstack-integration-jobs-all
     check:
@@ -1011,10 +1010,6 @@ project-templates:
       - gate-tripleo-ci-centos-7-scenario005-multinode-oooq-nv
       - gate-tripleo-ci-centos-7-scenario006-multinode-oooq-nv
       - gate-tripleo-ci-centos-7-scenario008-multinode-oooq-nv
-      - gate-tripleo-ci-centos-7-scenario001-multinode-oooq-container-upgrades
-      - gate-tripleo-ci-centos-7-scenario002-multinode-oooq-container-upgrades
-      - gate-tripleo-ci-centos-7-scenario003-multinode-oooq-container-upgrades
-      - gate-tripleo-ci-centos-7-scenario004-multinode-oooq-container-upgrades
 
   - name: check-tripleo-undercloud-jobs
     check:
@@ -1828,16 +1823,6 @@ jobs:
   # For now, we only want these jobs on stable/ocata in check & gate
   - name: ^gate-tripleo-ci-centos-7(-scenario00(1|2|3))?-multinode-upgrades$
     branch: ^stable/ocata$
-
-  # TripleO Upgrade jobs are non-voting for scenario001,002,003,004
-  # and classic multinode-upgrades job on master (future Pike).
-  # For now, we only want these jobs in master
-  - name: ^gate-tripleo-ci-centos-7(-scenario00(1|2|3|4))?-multinode-upgrades-nv$
-    branch: ^(?!stable/(newton|ocata)).*$
-
-  # TripleO scenario004 job has been introduced in Ocata so we don't want to run the upgrade job yet.
-  - name: ^gate-tripleo-ci-centos-7-scenario004-multinode-upgrades.*$
-    branch: ^(?!stable/(newton|ocata)).*$
 
   # Test TripleO stable/newton in Puppet OpenStack CI
   - name: ^gate-tripleo-ci-centos-7-ovb-1ctlr_1comp_1ceph-featureset024-puppet-newton$
