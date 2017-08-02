@@ -5603,8 +5603,14 @@ projects:
       - gate-ara-integration-py35-latest-fedora-25
       - gate-ara-integration-openstack-ansible-func-centos-7
       - gate-ara-integration-openstack-ansible-func-ubuntu-xenial
-    post:
-      - ara-coverage-ubuntu-xenial
+    pre-release:
+      - ara-tarball:
+          - ara-tarball-signing
+          - ara-pypi-both-upload
+    release:
+      - ara-tarball:
+          - ara-tarball-signing
+          - ara-pypi-both-upload
 
   - name: openstack/arch-wg
     template:
