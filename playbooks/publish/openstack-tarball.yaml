@@ -1,0 +1,34 @@
+- hosts: localhost
+  tasks:
+    - name: Add tarball server ssh key
+      command: ssh-add /var/lib/zuul/ssh/static_id_rsa
+
+    - name: Add tarball server to inventory
+      add_host:
+        name: tarball.openstack.org
+        ansible_user: jenkins
+
+    - name: Add tarball server to known hosts
+      known_hosts:
+        name: tarball.openstack.org
+        key: tarball.openstack.org,23.253.108.137,2001:4800:7817:104:be76:4eff:fe05:dbee ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDDcvLuGLagUAZfc0BThLus8ufSPCrIhDtG0BdXvhblJjvIbkuELD3dRWRZVSYZAdzGZRY3t6vTAcguTrkbQg5ngXfdfF+OKPkaH8DiZwAX/1g/iRXhInkZTGBVqHo9pLAMeNNwviSy2JjpTqdD6fLEkHwW+uw4E2YZhYivctTSbOepMkzAtFV0w5cpyBzjAT/Hax2x5un6es8R0Iw3AAnUmtapn5e5NCrg2rPNpd0nve84wUavvbC2DeGDOZQdnIahwo60Sder5ZE/x6cG39bkSDdgFQArAzrNrH6BHmNGjfFPpnGmfc7P8gQwDPtMf02HvKapqATXpIxdbSGimWLL
+
+- hosts: tarballs.openstack.org
+  tasks:
+    - name: Set tarball path
+      set_fact:
+        tarball_path: "/src/static/tarballs/{{ zuul.project.short_name }}"
+
+    - name: Ensure project directory exists
+      file:
+        path: "{{ tarball_path }}"
+        state: directory
+        recurse: yes
+        mode: 0775
+
+    - name: Upload contents of the artifacts folder
+      synchronize:
+        src: "{{ zuul.executor.work_root }}/artifacts/"
+        dest: "{{ tarball_path }}"
+        verify_host: true
+      no_log: true
