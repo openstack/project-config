@@ -1729,6 +1729,9 @@ jobs:
       - ^manifests/profile/base/cinder.*$
       - ci/environments/scenario001.*$
       - ci/pingtests/scenario001.*$
+      - config/general_config/featureset005.yml
+      - config/general_config/featureset012.yml
+      - config/general_config/featureset016.yml
   - name: ^gate-tripleo-ci-centos-7-scenario002-multinode(-oooq)?(-container)?(-upgrades)?(-nv)?$
     files:
       - ^(docker|puppet)/services/glance.*$
@@ -1746,6 +1749,9 @@ jobs:
       - ^manifests/profile/base/zaqar.*$
       - ci/environments/scenario002.*$
       - ci/pingtests/scenario002.*$
+      - config/general_config/featureset006.yml
+      - config/general_config/featureset013.yml
+      - config/general_config/featureset017.yml
   - name: ^gate-tripleo-ci-centos-7-scenario003-multinode(-oooq)?(-container)?(-upgrades)?(-nv)?$
     files:
       - ^(docker|puppet)/services/glance.*$
@@ -1757,6 +1763,9 @@ jobs:
       - ^manifests/profile/base/mistral.*$
       - ci/environments/scenario003.*$
       - ci/pingtests/scenario003.*$
+      - config/general_config/featureset007.yml
+      - config/general_config/featureset014.yml
+      - config/general_config/featureset018.yml
   - name: ^gate-tripleo-ci-centos-7-scenario004-multinode(-oooq)?(-container)?(-upgrades)?(-nv)?$
     branch: ^(?!stable/newton).*$
     files:
@@ -1770,6 +1779,9 @@ jobs:
       - ^manifests/profile/pacemaker/manila.*$
       - ci/environments/scenario004.*$
       - ci/pingtests/scenario004.*$
+      - config/general_config/featureset008.yml
+      - config/general_config/featureset015.yml
+      - config/general_config/featureset019.yml
   - name: ^gate-tripleo-ci-centos-7-scenario005-multinode(-oooq)?(-nv)?$
     branch: ^(?!stable/newton).*$
     files:
@@ -1780,6 +1792,7 @@ jobs:
       - manifests/profile/base/pacemaker.pp
       - ci/environments/scenario005-multinode.yaml
       - ci/pingtests/scenario005-multinode.yaml
+      - config/general_config/featureset009.yml
   - name: ^gate-tripleo-ci-centos-7-scenario006-multinode(-oooq)?(-nv)?$
     branch: ^(?!stable/(newton|ocata)).*$
     files:
@@ -1788,6 +1801,7 @@ jobs:
       - ^environments/kubernetes.*$
       - ci/environments/scenario006-multinode.yaml
       - ci/pingtests/scenario006-multinode.yaml
+      - config/general_config/featureset026.yml
   - name: ^gate-tripleo-ci-centos-7-scenario007-multinode(-oooq)?(-nv)?$
     branch: ^(?!stable/(newton|ocata)).*$
     files:
@@ -1797,6 +1811,7 @@ jobs:
       - ^manifests/profile/base/neutron/plugins/ml2/ovn.*$
       - ^manifests/profile/base/neutron/agents/ovn.*$
       - ^manifests/profile/base/neutron/ovn.*$
+      - config/general_config/featureset028.yml
   - name: ^gate-tripleo-ci-centos-7-scenario008-multinode(-oooq)?(-nv)?$
     branch: ^(?!stable/(newton|ocata)).*$
     files:
@@ -1808,6 +1823,7 @@ jobs:
       - ^manifests/profile/base/neutron/opendaylight/.*$
       - ci/environments/scenario008-multinode.yaml
       - ci/pingtests/scenario008-multinode.yaml
+      - config/general_config/featureset031.yml
 
   # TripleO Upgrade job has been introduced in Ocata
   - name: ^gate-tripleo-ci-centos-7.*-upgrades.*$
@@ -18028,22 +18044,14 @@ projects:
       - name: openstack-unified-publish-jobs
       - name: openstack-server-release-jobs
       - name: release-notes-jobs
-      - name: tripleo-scenario-jobs-scenario001
-      - name: tripleo-scenario-jobs-scenario002
-      - name: tripleo-scenario-jobs-scenario003
-      - name: tripleo-scenario-jobs-scenario004
+      - name: check-tripleo-jobs
     check:
       - gate-tripleo-quickstart-linters-ubuntu-xenial
       - gate-tripleo-quickstart-docs-ubuntu-xenial
-      - gate-tripleo-ci-centos-7-nonha-multinode-oooq
       - gate-tripleo-ci-centos-7-3nodes-multinode-nv
-    check-tripleo:
-      - gate-tripleo-ci-centos-7-ovb-ha-oooq
-      - gate-tripleo-ci-centos-7-ovb-containers-oooq
     gate:
       - gate-tripleo-quickstart-linters-ubuntu-xenial
       - gate-tripleo-quickstart-docs-ubuntu-xenial
-      - gate-tripleo-ci-centos-7-nonha-multinode-oooq
     experimental-tripleo:
       - gate-tripleo-ci-centos-7-ovb-ha-tempest-oooq
 
