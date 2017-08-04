@@ -42,6 +42,18 @@ dashboard:
             - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-tempest-dsvm-networking-midonet-ml2-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-tempest-dsvm-networking-midonet-ml2-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-tempest-dsvm-networking-midonet-ml2-ubuntu-xenial')
             - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-tempest-dsvm-networking-midonet-ml2-centos-7.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-tempest-dsvm-networking-midonet-ml2-centos-7.{SUCCESS,FAILURE})),'24hours'), 'gate-tempest-dsvm-networking-midonet-ml2-centos-7')
           type: graph
+        - title: Grenade Failure Rates (Check queue)
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-grenade-dsvm-networking-midonet-ml2-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-grenade-dsvm-networking-midonet-ml2-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-grenade-dsvm-networking-midonet-ml2-ubuntu-xenial')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-grenade-dsvm-networking-midonet-v2-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-grenade-dsvm-networking-midonet-v2-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-grenade-dsvm-networking-midonet-v2-ubuntu-xenial')
+          type: graph
+        - title: Grenade Failure Rates (Gate queue)
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-grenade-dsvm-networking-midonet-ml2-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-grenade-dsvm-networking-midonet-ml2-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-grenade-dsvm-networking-midonet-ml2-ubuntu-xenial')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-grenade-dsvm-networking-midonet-v2-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-grenade-dsvm-networking-midonet-v2-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-grenade-dsvm-networking-midonet-v2-ubuntu-xenial')
+          type: graph
         - title: Rally Failure Rates (Check queue)
           span: 4
           targets:
