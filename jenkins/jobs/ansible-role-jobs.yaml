@@ -81,10 +81,10 @@
           # default that can cause package conflicts. We must disable all of
           # them here and only enable base, updates, and epel.
           if [[ -e /usr/bin/yum ]] && [[ -x /usr/bin/yum-config-manager ]]; then
-            sudo yum-config-manager --disable \*
-            sudo yum-config-manager --enable base
-            sudo yum-config-manager --enable epel
-            sudo yum-config-manager --enable updates
+            sudo yum-config-manager --disable \* >/dev/null
+            sudo yum-config-manager --enable base >/dev/null
+            sudo yum-config-manager --enable epel >/dev/null
+            sudo yum-config-manager --enable updates >/dev/null
           fi
       - install-distro-packages
       - shell: |
@@ -92,7 +92,7 @@
           # packages with bindep. Individual roles may re-enable EPEL if they
           # need it for their package installation tasks.
           if [[ -e /usr/bin/yum ]] && [[ -x /usr/bin/yum-config-manager ]]; then
-            sudo yum-config-manager --disable epel
+            sudo yum-config-manager --disable epel >/dev/null
           fi
       - shell: |
           # Allow Jenkins user to ssh into localhost
