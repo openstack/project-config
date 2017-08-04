@@ -130,3 +130,61 @@
     publishers:
       - devstack-logs
       - console-log
+
+- job-template:
+    name: 'gate-tempest-dsvm-monasca-pipeline-{pipeline}-{node}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 130
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_NEUTRON=0
+          export OVERRIDE_ENABLED_SERVICES=key,mysql,rabbit,tempest,dstat
+
+          devstack_plugin=''
+          if [ {pipeline} == 'logs']; then
+            devstack_plugin='log-api'
+          elif [ {pipeline} == 'events' ]; then
+            devstack_plugin='events-api'
+          else
+            echo "Unknown pipeline {pipeline}"
+            exit 1
+          fi
+
+          pre_test_hook_script=$BASE/new/monasca-$devstack_plugin/devstack/pre_test_hook.sh
+          post_test_hook_script=$BASE/new/monasca-$devstack_plugin/devstack/post_test_hook.sh
+          devstack_rc_script=/opt/stack/new/monasca-$devstack_plugin/devstack/devstackgaterc
+
+          if [ -f $pre_test_hook_script ]; then
+              function pre_test_hook {{
+                  source $pre_test_hook_script
+              }}
+              export -f pre_test_hook
+          fi
+
+          if [ -f $post_test_hook_script ]; then
+              function post_test_hook {{
+                  source $post_test_hook_script
+              }}
+              export -f post_test_hook
+          fi
+
+          if [ -f $devstack_rc_script ]; then
+              export DEVSTACK_GATE_SETTINGS=$devstack_rc_script
+          fi
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log

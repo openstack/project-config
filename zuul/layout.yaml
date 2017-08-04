@@ -1174,6 +1174,11 @@ jobs:
   - name: ^gate-tempest-dsvm-monasca-log-api-ubuntu-xenial$
     branch: ^(?!stable/newton).*$
 
+  # do not run unified tempest gate on stable/(newton|ocata|pike)
+  # it is meant to replace existing gate in the Queens release
+  - name: ^gate-tempest-dsvm-monasca-pipeline-(logs|events)-ubuntu-xenial(-nv)?$
+    branch: ^(?!stable/(newton|ocata|pike)).*$
+
   # disable requirement control @ stable/mitaka for networking-arista
   # networking-arista was not managed in requirements for mitaka.
   - name: ^gate-networking-arista-requirements$
@@ -11793,6 +11798,7 @@ projects:
       - name: api-ref-jobs
     check:
       - monasca-events-api-coverage-ubuntu-xenial
+      - gate-tempest-dsvm-monasca-pipeline-events-ubuntu-xenial-nv
     post:
       - monasca-events-api-coverage-ubuntu-xenial
 
@@ -11809,6 +11815,7 @@ projects:
       - name: nodejs4-publish-to-npm
     check:
       - gate-tempest-dsvm-monasca-log-api-ubuntu-xenial-nv
+      - gate-tempest-dsvm-monasca-pipeline-logs-ubuntu-xenial-nv
 
   - name: openstack/monasca-log-api
     template:
@@ -11825,6 +11832,7 @@ projects:
     check:
       - monasca-log-api-coverage-ubuntu-xenial
       - gate-tempest-dsvm-monasca-log-api-ubuntu-xenial
+      - gate-tempest-dsvm-monasca-pipeline-logs-ubuntu-xenial-nv
     gate:
       - gate-tempest-dsvm-monasca-log-api-ubuntu-xenial
     post:
