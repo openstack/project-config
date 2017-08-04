@@ -1234,7 +1234,7 @@ jobs:
   # Skip these long-running and expensive devstack jobs when the
   # change is only to documentation, release notes, unit tests or
   # similar components that won't be exercised by the job anyway.
-  - name: ^.*(devstack|tempest|grenade|rally|cinder|swift|install|neutron-lbaas|neutron-vpnaas|ironic|ironic-inspector|heat)-dsvm.*$
+  - name: ^.*(devstack|tempest|grenade|rally|cinder|swift|install|neutron-lbaas|neutron-vpnaas|ironic|ironic-inspector|heat|mogan)-dsvm.*$
     skip-if:
       - project: ^openstack/cinder$
         all-files-match-any:
@@ -1353,6 +1353,16 @@ jobs:
           - ^tox.ini$
           - ^api-ref/.*$
           - ^install-guide/.*$
+      - project: ^openstack/mogan$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+          - ^mogan/tests/functional.*$
+          - ^mogan/tests/unit.*$
+          - ^releasenotes/.*$
+          - ^tools/.*$
+          - ^tox.ini$
+          - ^api-ref/.*$
       - project: ^openstack/monasca-api
         all-files-match-any:
           - ^.*\.md$
