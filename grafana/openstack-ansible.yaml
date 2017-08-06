@@ -1,0 +1,116 @@
+dashboard:
+  title: "OpenStack-Ansible"
+  rows:
+    - title: Description
+      height: 100px
+      panels:
+        - title: Description
+          content: |
+            **This dashboard is managed by [Grafyaml](http://docs.openstack.org/infra/system-config/grafyaml.html).**
+
+            If you would like to make changes to this dashboard, please see the grafana directory in [project-config](https://git.openstack.org/cgit/openstack-infra/project-config/tree/grafana/openstack-ansible.yaml).
+          type: text
+    - title: openstack-ansible check job runtimes
+      showTitle: true
+      height: 300px
+      panels:
+        - title: gate-openstack-ansible-openstack-ansible-aio-ubuntu-xenial
+          type: graph
+          span: 3
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
+          targets:
+            - target: alias(scale(averageSeries(stats.timers.nodepool.job.gate-openstack-ansible-openstack-ansible-aio-ubuntu-xenial.master.ubuntu-xenial.runtime.mean), '0.001'), 'Average')
+        - title: gate-openstack-ansible-openstack-ansible-ceph-ubuntu-xenial
+          type: graph
+          span: 3
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
+          targets:
+            - target: alias(scale(averageSeries(stats.timers.nodepool.job.gate-openstack-ansible-openstack-ansible-ceph-ubuntu-xenial.master.ubuntu-xenial.runtime.mean), '0.001'), 'Average')
+        - title: gate-openstack-ansible-openstack-ansible-aio-centos-7-nv
+          type: graph
+          span: 3
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
+          targets:
+            - target: alias(scale(averageSeries(stats.timers.nodepool.job.gate-openstack-ansible-openstack-ansible-aio-centos-7-nv.master.centos-7.runtime.mean), '0.001'), 'Average')
+        - title: gate-openstack-ansible-openstack-ansible-ceph-centos-7-nv
+          type: graph
+          span: 3
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
+          targets:
+            - target: alias(scale(averageSeries(stats.timers.nodepool.job.gate-openstack-ansible-openstack-ansible-ceph-centos-7-nv.master.centos-7.runtime.mean), '0.001'), 'Average')
+    - title: openstack-ansible check job failures
+      showTitle: true
+      height: 300px
+      panels:
+        - title: openstack-ansible job failure rates (Check queue)
+          span: 12
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-openstack-ansible-openstack-ansible-aio-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-openstack-ansible-openstack-ansible-aio-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-openstack-ansible-openstack-ansible-aio-ubuntu-xenial')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-openstack-ansible-openstack-ansible-ceph-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-openstack-ansible-openstack-ansible-ceph-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-openstack-ansible-openstack-ansible-ceph-ubuntu-xenial')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-openstack-ansible-openstack-ansible-aio-centos-7-nv.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-openstack-ansible-openstack-ansible-aio-centos-7-nv.{SUCCESS,FAILURE})),'24hours'), 'gate-openstack-ansible-openstack-ansible-aio-centos-7-nv')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-openstack-ansible-openstack-ansible-ceph-centos-7-nv.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-openstack-ansible-openstack-ansible-ceph-centos-7-nv.{SUCCESS,FAILURE})),'24hours'), 'gate-openstack-ansible-openstack-ansible-ceph-centos-7-nv')
+          type: graph
+    - title: openstack-ansible-tests job runtimes
+      showTitle: true
+      height: 300px
+      panels:
+        - title: gate-openstack-ansible-tests-ansible-func-centos-7
+          type: graph
+          span: 3
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
+          targets:
+            - target: alias(scale(averageSeries(stats.timers.nodepool.job.gate-openstack-ansible-tests-ansible-func-centos-7.master.centos-7.runtime.mean), '0.001'), 'Average')
+        - title: gate-openstack-ansible-tests-ansible-func-ubuntu-xenial
+          type: graph
+          span: 3
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
+          targets:
+            - target: alias(scale(averageSeries(stats.timers.nodepool.job.gate-openstack-ansible-tests-ansible-func-ubuntu-xenial.master.ubuntu-xenial.runtime.mean), '0.001'), 'Average')
+        - title: gate-openstack-ansible-tests-ansible-func-opensuse-422-nv
+          type: graph
+          span: 3
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
+          targets:
+            - target: alias(scale(averageSeries(stats.timers.nodepool.job.gate-openstack-ansible-tests-ansible-func-opensuse-422-nv.master.opensuse-422.runtime.mean), '0.001'), 'Average')
+        - title: gate-openstack-ansible-tests-ansible-func-opensuse-423-nv
+          type: graph
+          span: 3
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
+          targets:
+            - target: alias(scale(averageSeries(stats.timers.nodepool.job.gate-openstack-ansible-tests-ansible-func-opensuse-423-nv.master.opensuse-423.runtime.mean), '0.001'), 'Average')
+    - title: openstack-ansible-tests check job failures
+      showTitle: true
+      height: 300px
+      panels:
+        - title: openstack-ansible-tests job failure rates (Check queue)
+          span: 12
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-openstack-ansible-tests-ansible-func-centos-7.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-openstack-ansible-tests-ansible-func-centos-7.{SUCCESS,FAILURE})),'24hours'), 'gate-openstack-ansible-tests-ansible-func-centos-7')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-openstack-ansible-tests-ansible-func-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-openstack-ansible-tests-ansible-func-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-openstack-ansible-tests-ansible-func-ubuntu-xenial')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-openstack-ansible-tests-ansible-func-opensuse-422-nv.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-openstack-ansible-tests-ansible-func-opensuse-422-nv.{SUCCESS,FAILURE})),'24hours'), 'gate-openstack-ansible-tests-ansible-func-opensuse-422-nv')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-openstack-ansible-tests-ansible-func-opensuse-423-nv.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-openstack-ansible-tests-ansible-func-opensuse-423-nv.{SUCCESS,FAILURE})),'24hours'), 'gate-openstack-ansible-tests-ansible-func-opensuse-423-nv')
+          type: graph
