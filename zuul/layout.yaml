@@ -11689,17 +11689,17 @@ projects:
   - name: openstack/monasca-ceilometer
     template:
       - name: merge-check
-      - name: python35-jobs-nv
+      - name: python35-jobs
+      - name: publish-to-pypi
+      - name: check-requirements
     check:
-      - gate-monasca-ceilometer-pep8-ubuntu-trusty
-      - gate-monasca-ceilometer-python27-ubuntu-trusty
       - gate-monasca-ceilometer-pep8-ubuntu-xenial
       - gate-monasca-ceilometer-python27-ubuntu-xenial
     gate:
-      - gate-monasca-ceilometer-pep8-ubuntu-trusty
-      - gate-monasca-ceilometer-python27-ubuntu-trusty
       - gate-monasca-ceilometer-pep8-ubuntu-xenial
       - gate-monasca-ceilometer-python27-ubuntu-xenial
+    post:
+      - monasca-ceilometer-branch-tarball
 
   - name: openstack/monasca-common
     template:
