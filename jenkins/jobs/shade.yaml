@@ -5,6 +5,7 @@
           conf: |
             [[local|localrc]]
             ENABLE_IDENTITY_V2=False
+            Q_SERVICE_PLUGIN_CLASSES="qos"
             enable_plugin heat https://git.openstack.org/openstack/heat
             disable_service ceilometer-acentral
             disable_service ceilometer-acompute
@@ -42,6 +43,7 @@
               # redefines the /tmp/dg-local.conf location in the local_conf:
               # macro.
               sed -i -e 's/ENABLE_IDENTITY_V2=False/ENABLE_IDENTITY_V2=True/' /tmp/dg-local.conf
+              sed -i -e '/Q_SERVICE_PLUGIN_CLASSES="qos"/d' /tmp/dg-local.conf
               export SHADE_USE_KEYSTONE_V2=1
           else
               export DEVSTACK_GATE_NEUTRON=1
