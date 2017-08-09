@@ -41,6 +41,7 @@ labels:
       - name: citycloud-kna1
       - name: citycloud-la1
       - name: citycloud-sto2
+      - name: vexxhost-ca-ymq-1
   - name: ubuntu-trusty
     image: ubuntu-trusty
     ready-script: configure_mirror.sh
@@ -58,6 +59,7 @@ labels:
       - name: citycloud-kna1
       - name: citycloud-la1
       - name: citycloud-sto2
+      - name: vexxhost-ca-ymq-1
   - name: ubuntu-trusty-2-node
     image: ubuntu-trusty
     ready-script: multinode_setup.sh
@@ -76,6 +78,7 @@ labels:
       - name: citycloud-kna1
       - name: citycloud-la1
       - name: citycloud-sto2
+      - name: vexxhost-ca-ymq-1
   - name: ubuntu-xenial
     image: ubuntu-xenial
     ready-script: configure_mirror.sh
@@ -93,6 +96,7 @@ labels:
       - name: citycloud-kna1
       - name: citycloud-la1
       - name: citycloud-sto2
+      - name: vexxhost-ca-ymq-1
   - name: ubuntu-xenial-2-node
     image: ubuntu-xenial
     ready-script: multinode_setup.sh
@@ -111,6 +115,7 @@ labels:
       - name: citycloud-kna1
       - name: citycloud-la1
       - name: citycloud-sto2
+      - name: vexxhost-ca-ymq-1
   - name: ubuntu-xenial-3-node
     image: ubuntu-xenial
     ready-script: multinode_setup.sh
@@ -129,6 +134,7 @@ labels:
       - name: citycloud-kna1
       - name: citycloud-la1
       - name: citycloud-sto2
+      - name: vexxhost-ca-ymq-1
   - name: centos-7
     image: centos-7
     ready-script: configure_mirror.sh
@@ -146,6 +152,7 @@ labels:
       - name: citycloud-kna1
       - name: citycloud-la1
       - name: citycloud-sto2
+      - name: vexxhost-ca-ymq-1
   - name: fedora-25
     image: fedora-25
     ready-script: configure_mirror.sh
@@ -163,6 +170,7 @@ labels:
       - name: citycloud-kna1
       - name: citycloud-la1
       - name: citycloud-sto2
+      - name: vexxhost-ca-ymq-1
   - name: fedora-26
     image: fedora-26
     ready-script: configure_mirror.sh
@@ -180,6 +188,7 @@ labels:
       - name: citycloud-kna1
       - name: citycloud-la1
       - name: citycloud-sto2
+      - name: vexxhost-ca-ymq-1
   - name: opensuse-422
     image: opensuse-422
     ready-script: configure_mirror.sh
@@ -197,6 +206,7 @@ labels:
       - name: citycloud-kna1
       - name: citycloud-la1
       - name: citycloud-sto2
+      - name: vexxhost-ca-ymq-1
   - name: opensuse-423
     image: opensuse-423
     ready-script: configure_mirror.sh
@@ -214,6 +224,7 @@ labels:
       - name: citycloud-kna1
       - name: citycloud-la1
       - name: citycloud-sto2
+      - name: vexxhost-ca-ymq-1
   - name: centos-7-2-node
     image: centos-7
     ready-script: multinode_setup.sh
@@ -232,6 +243,7 @@ labels:
       - name: citycloud-kna1
       - name: citycloud-la1
       - name: citycloud-sto2
+      - name: vexxhost-ca-ymq-1
   - name: centos-7-3-node
     image: centos-7
     ready-script: multinode_setup.sh
@@ -250,6 +262,7 @@ labels:
       - name: citycloud-kna1
       - name: citycloud-la1
       - name: citycloud-sto2
+      - name: vexxhost-ca-ymq-1
   - name: centos-7-4-node
     image: centos-7
     ready-script: multinode_setup.sh
@@ -268,6 +281,7 @@ labels:
       - name: citycloud-kna1
       - name: citycloud-la1
       - name: citycloud-sto2
+      - name: vexxhost-ca-ymq-1
   - name: tripleo-centos-7
     image: centos-7
     ready-script: configure_mirror.sh
@@ -1185,6 +1199,78 @@ providers:
       - name: opensuse-423
         min-ram: 8000
         name-filter: '8C-8GB-100GB'
+        diskimage: opensuse-423
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+        key-name: infra-root-keys
+  - name: vexxhost-ca-ymq-1
+    region-name: 'ca-ymq-1'
+    cloud: vexxhost
+    api-timeout: 60
+    boot-timeout: 120
+    max-servers: 0
+    rate: 0.001
+    images:
+      - name: ubuntu-trusty
+        min-ram: 8000
+        name-filter: 'performance'
+        diskimage: ubuntu-trusty
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+        key-name: infra-root-keys
+      - name: ubuntu-xenial
+        min-ram: 8000
+        name-filter: 'performance'
+        diskimage: ubuntu-xenial
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+        key-name: infra-root-keys
+      - name: debian-jessie
+        min-ram: 8000
+        name-filter: 'performance'
+        diskimage: debian-jessie
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+        key-name: infra-root-keys
+      - name: fedora-25
+        min-ram: 8000
+        name-filter: 'performance'
+        diskimage: fedora-25
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+        key-name: infra-root-keys
+      - name: fedora-26
+        min-ram: 8000
+        name-filter: 'performance'
+        diskimage: fedora-26
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+        key-name: infra-root-keys
+      - name: centos-7
+        min-ram: 8000
+        name-filter: 'performance'
+        diskimage: centos-7
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+        key-name: infra-root-keys
+      - name: opensuse-422
+        min-ram: 8000
+        name-filter: 'performance'
+        diskimage: opensuse-422
+        username: jenkins
+        private-key: /home/nodepool/.ssh/id_rsa
+        config-drive: true
+        key-name: infra-root-keys
+      - name: opensuse-423
+        min-ram: 8000
+        name-filter: 'performance'
         diskimage: opensuse-423
         username: jenkins
         private-key: /home/nodepool/.ssh/id_rsa
