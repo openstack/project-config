@@ -77,3 +77,19 @@ dashboard:
             - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.periodic-stable.job.periodic-networking-midonet-python27-newton.FAILURE),sum(stats_counts.zuul.pipeline.periodic-stable.job.periodic-networking-midonet-python27-newton.{SUCCESS,FAILURE})),'24hours'), 'periodic-networking-midonet-python27-newton')
             - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.periodic.job.periodic-networking-midonet-py35-with-neutron-lib-master.FAILURE),sum(stats_counts.zuul.pipeline.periodic.job.periodic-networking-midonet-py35-with-neutron-lib-master.{SUCCESS,FAILURE})),'24hours'), 'periodic-networking-midonet-py35-with-neutron-lib-master')
           type: graph
+    - title: Job Runtimes
+      showTitle: true
+      height: 250px
+      panels:
+        - title: Tempest Jobs
+          type: graph
+          span: 6
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
+          targets:
+            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-networking-midonet-ml2-ubuntu-xenial.master.runtime.mean, '0.001'), 'gate-tempest-dsvm-networking-midonet-ml2-ubuntu-xenial')
+            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-networking-midonet-ml2-full-ubuntu-xenial-nv.master.runtime.mean, '0.001'), 'gate-tempest-dsvm-networking-midonet-ml2-full-ubuntu-xenial-nv')
+            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-networking-midonet-ml2-centos-7.master.runtime.mean, '0.001'), 'gate-tempest-dsvm-networking-midonet-ml2-centos-7')
+            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-networking-midonet-ml2-full-centos-7-nv.master.runtime.mean, '0.001'), 'gate-tempest-dsvm-networking-midonet-ml2-full-centos-7-nv')
