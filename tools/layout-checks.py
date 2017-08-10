@@ -40,6 +40,10 @@ def check_merge_template():
     print("\nChecking for usage of merge template")
     print("====================================")
     for project in layout['projects']:
+        # TODO(jeblair): Temporarily (for the zuul v3 transition)
+        # disable this check for infra repos
+        if project['name'].startswith('openstack-infra'):
+            continue
         if project['name'] == 'z/tempest':
             continue
         try:
@@ -181,6 +185,10 @@ def check_empty_check():
     print("====================================")
 
     for project in layout['projects']:
+        # TODO(jeblair): Temporarily (for the zuul v3 transition)
+        # disable this check for infra repos
+        if project['name'].startswith('openstack-infra'):
+            continue
         # z/tempest is a fake project with no check queue
         if project['name'] == 'z/tempest':
             continue
@@ -199,6 +207,10 @@ def check_empty_gate():
     print("====================================")
 
     for project in layout['projects']:
+        # TODO(jeblair): Temporarily (for the zuul v3 transition)
+        # disable this check for infra repos
+        if project['name'].startswith('openstack-infra'):
+            continue
         gate_jobs = collect_pipeline_jobs(project, 'gate')
         if not gate_jobs:
             print("Project %s has no gate jobs" % project['name'])
@@ -235,6 +247,10 @@ def check_gerrit_zuul_projects():
     print("===================================================")
 
     for gp in gerrit_projects:
+        # TODO(jeblair): Temporarily (for the zuul v3 transition)
+        # disable this check for infra repos
+        if gp.startswith('openstack-infra'):
+            continue
 
         # Check the gerrit config for a different acl file
         acls = [ x['acl-config'] if 'acl-config' in x else None \
