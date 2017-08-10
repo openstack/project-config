@@ -98,6 +98,7 @@ export NODEPOOL_MARIADB_MIRROR=${NODEPOOL_MARIADB_MIRROR:-http://$NODEPOOL_MIRRO
 export NODEPOOL_BUILDLOGS_CENTOS_PROXY=${NODEPOOL_BUILDLOGS_CENTOS_PROXY:-http://$NODEPOOL_MIRROR_HOST:8080/buildlogs.centos}
 export NODEPOOL_DOCKER_REGISTRY_PROXY=${NODEPOOL_DOCKER_REGISTRY_PROXY:-http://$NODEPOOL_MIRROR_HOST:8081/registry-1.docker}
 export NODEPOOL_RDO_PROXY=${NODEPOOL_RDO_PROXY:-http://$NODEPOOL_MIRROR_HOST:8080/rdo}
+export NODEPOOL_NPM_REGISTRY_PROXY=${NODEPOOL_NPM_REGISTRY_PROXY:-http://$NODEPOOL_MIRROR_HOST:8080/registry.npmjs}
 export NODEPOOL_TARBALLS_PROXY=${NODEPOOL_TARBALLS_PROXY:-http://$NODEPOOL_MIRROR_HOST:8080/tarballs}
 EOF
 
@@ -137,6 +138,14 @@ PYDISTUTILS_CFG="\
 [easy_install]
 index_url = $NODEPOOL_PYPI_MIRROR
 allow_hosts = *.openstack.org"
+
+NPMRC="\
+registry = $NODEPOOL_NPM_REGISTRY_PROXY
+
+# Retry settings
+fetch-retries=10              # The number of times to retry getting a package.
+fetch-retry-mintimeout=60000  # Minimum fetch timeout: 1 minute (default 10 seconds)
+fetch-retry-maxtimeout=300000 # Maximum fetch timeout: 5 minute (default 1 minute)"
 
 UBUNTU_SOURCES_LIST="\
 deb $NODEPOOL_UBUNTU_MIRROR $LSBDISTCODENAME main universe
@@ -264,10 +273,16 @@ sudo chmod 0644 /etc/pip.conf
 # Write jenkins user distutils/setuptools configuration used by easy_install
 echo "$PYDISTUTILS_CFG" | sudo tee /home/jenkins/.pydistutils.cfg
 sudo chown jenkins:jenkins /home/jenkins/.pydistutils.cfg
+# Write jenkins user npm configuration
+echo "$NPMRC" | sudo tee /home/jenkins/.npmrc
+sudo chown jenkins:jenkins /home/jenkins/.npmrc
 
 # Write zuul user distutils/setuptools configuration used by easy_install
 echo "$PYDISTUTILS_CFG" | sudo tee /home/zuul/.pydistutils.cfg
 sudo chown zuul:zuul /home/zuul/.pydistutils.cfg
+# Write zuul user npm configuration
+echo "$NPMRC" | sudo tee /home/zuul/.npmrc
+sudo chown zuul:zuul /home/zuul/.npmrc
 
 if [ "$LSBDISTID" == "Ubuntu" ]; then
     echo "$UBUNTU_SOURCES_LIST" >/tmp/sources.list
