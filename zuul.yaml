@@ -150,11 +150,93 @@
     description: |
       Publish job to upload artifacts to tarballs.openstack.org
     post-run: playbooks/publish/openstack-artifacts
+    secrets:
+      - site_zuulv3_dev
 
 - project:
     name: openstack-infra/project-config
     check:
       jobs: []
+
+- secret:
+    name: site_zuulv3_dev
+    data:
+      fqdn: zuulv3-dev.openstack.org
+      path: /opt/zuul-logs
+      ssh_known_hosts: |
+          zuulv3-dev.openstack.org,166.78.174.236,2001:4800:7815:105:be76:4eff:fe04:cc26 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC5uXlWx5DHzdDr0hdAF9ztw0g8LrS74u9WXLpSs7x+Toy1b5gHVJB73p42RhxRWE4+301BrARmsVjlTDgb6wRPCTAMzqkOEYS3OlBrVj37Ep9Z7GJ/I0fLd2Yk6Lr/nlCZmq66Q+foJNGxKZLrL3VXKhWgd4vme8TBx4GLJfBs5tkUdDGQ74q23A1H+m2PtWcTc+LZQegkuJ1JPdduRETcB6QasnK2gqE7KCBysll+tzBcZ8ccaW922CJ6pOH/uE3UJP5n+eiwozluQHVNFJmy1Rz42f0/gbhMYWkE5uUfLXevYA5HPbSSLNU59b/CzhQle8lrHBudg/pCzG82sxTb
+      ssh_username: zuul
+      ssh_private_key: !encrypted/pkcs1-oaep
+        - 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
 
 - project:
     name: openstack-infra/zuul-jobs
