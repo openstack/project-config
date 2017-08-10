@@ -3415,6 +3415,10 @@ jobs:
   - name: ^gate-(automaton|ceilometermiddleware|cloudkitty|cloudkitty-dashboard|debtcollector|freezer|freezer-api|futurist|instack.*|kuryr|kuryr-libnetwork|networking-sfc|osprofiler|oslo.(i18n|middleware|reports|serialization|utils|versionedobjects)|oslosphinx|oslotest|puppet-tripleo|stevedore|swift|taskflow|tooz|tripleo.*)-releasenotes$
     branch: ^(?!stable/newton).*$
 
+  # Some python client projects do not have releasenotes tox envs until the Queens cycle
+  - name: ^gate-python-(swift)client-releasenotes$
+    branch: ^(?!stable/(newton|ocata|pike)).*$
+
   - name: gate-python-fuelclient-python34
     branch: ^stable/(8\.0|mitaka).*$
 
@@ -16374,6 +16378,7 @@ projects:
       - name: publish-to-pypi
       - name: pypy-jobs
       - name: lib-forward-testing
+      - name: release-notes-jobs
     check:
       - gate-swift-dsvm-functional-ubuntu-xenial
       - gate-swift-dsvm-functional-identity-v3-only-ubuntu-xenial-nv
