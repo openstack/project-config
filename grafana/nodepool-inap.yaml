@@ -1,0 +1,155 @@
+dashboard:
+  title: 'Nodepool: INAP'
+  templating:
+    - name: provider
+      includeAll: true
+      multi: true
+      query: stats.gauges.nodepool.provider.inap-*
+      refresh: true
+      type: query
+  rows:
+    - title: Description
+      height: 100px
+      panels:
+        - title: Description
+          content: |
+            **This dashboard is managed by [Grafyaml](http://docs.openstack.org/infra/system-config/grafyaml.html).**
+
+            If you would like to make changes to this dashboard, please see the grafana directory in [project-config](https://git.openstack.org/cgit/openstack-infra/project-config/tree/grafana/nodepool-inap.yaml).
+          type: text
+    - title: Nodes
+      showTitle: true
+      height: 150px
+      panels:
+        - title: Building
+          span: 3
+          sparkline:
+            full: true
+            show: true
+          targets:
+            - target: sumSeries(stats.gauges.nodepool.provider.$provider.nodes.building)
+          type: singlestat
+          valueName: current
+        - title: Ready
+          span: 3
+          sparkline:
+            full: true
+            show: true
+          targets:
+            - target: sumSeries(stats.gauges.nodepool.provider.$provider.nodes.ready)
+          type: singlestat
+          valueName: current
+        - title: In Use
+          span: 3
+          sparkline:
+            full: true
+            show: true
+          targets:
+            - target: sumSeries(stats.gauges.nodepool.provider.$provider.nodes.used)
+          type: singlestat
+          valueName: current
+        - title: Deleting
+          span: 3
+          sparkline:
+            full: true
+            show: true
+          targets:
+              - target: sumSeries(stats.gauges.nodepool.provider.$provider.nodes.delete)
+          type: singlestat
+          valueName: current
+    - title: API Operations
+      showTitle: true
+      height: 250px
+      panels:
+        - title: Create Server
+          type: graph
+          span: 4
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
+          targets:
+            - target: aliasSub(aliasByNode(scale(stats.timers.nodepool.task.$provider.ServerCreate.mean, '0.001'), 4), 'inap-', '')
+        - title: Get Server
+          type: graph
+          span: 4
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
+          targets:
+            - target: aliasSub(aliasByNode(scale(stats.timers.nodepool.task.$provider.ServerGet.mean, '0.001'), 4), 'inap-', '')
+        - title: Delete Server
+          type: graph
+          span: 4
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
+          targets:
+            - target: aliasSub(aliasByNode(scale(stats.timers.nodepool.task.$provider.ServerDelete.mean, '0.001'), 4), 'inap-', '')
+        - title: List Servers
+          type: graph
+          span: 4
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
+          targets:
+            - target: aliasSub(aliasByNode(scale(stats.timers.nodepool.task.$provider.ServerList.mean, '0.001'), 4), 'inap-', '')
+    - title: Node Launches
+      showTitle: true
+      height: 250px
+      panels:
+        - title: Ready Node Launch Attempts
+          type: graph
+          span: 4
+          nullPointMode: null as zero
+          leftYAxisLabel: "events / min"
+          targets:
+            - target: aliasSub(aliasByNode(summarize(stats_counts.nodepool.launch.provider.$provider.ready, '1m'), 4), 'inap-', '')
+        - title: Error Node Launch Attempts
+          type: graph
+          span: 4
+          nullPointMode: null as zero
+          leftYAxisLabel: "events / min"
+          targets:
+            - target: aliasSub(aliasByNode(smartSummarize(sumSeries(stats_counts.nodepool.launch.provider.$provider.error.*), '1m'), 4), 'inap-', '')
+        - title: Time to Ready
+          type: graph
+          span: 4
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
+          targets:
+            - target: aliasSub(aliasByNode(scale(stats.timers.nodepool.launch.provider.$provider.ready.mean, '0.001'), 5), 'inap-', '')
+        - title: Test Nodes (MTL01)
+          type: graph
+          span: 4
+          stack: true
+          tooltip:
+            value_type: individual
+          leftYAxisLabel: "nodes"
+          targets:
+            - target: alias(stats.gauges.nodepool.provider.inap-mtl01.nodes.building, 'Building')
+            - target: alias(stats.gauges.nodepool.provider.inap-mtl01.nodes.ready, 'Available')
+            - target: alias(stats.gauges.nodepool.provider.inap-mtl01.nodes.used, 'In Use')
+            - target: alias(stats.gauges.nodepool.provider.inap-mtl01.nodes.delete, 'Deleting')
+            - target: alias(stats.gauges.nodepool.provider.inap-mtl01.max_servers, 'Max')
+          seriesOverrides:
+            - alias: Max
+              stack: False
+    - title: Job Runtimes
+      showTitle: true
+      height: 250px
+      panels:
+        - title: gate-tempest-dsvm-neutron-full
+          type: graph
+          span: 6
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
+          targets:
+            - target: alias(scale(stats.timers.nodepool.job.gate-tempest-dsvm-neutron-full-ubuntu-xenial.master.ubuntu-xenial.inap-mtl01.runtime.mean, '0.001'), 'MTL01')

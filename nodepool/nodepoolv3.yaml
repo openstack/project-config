@@ -70,6 +70,25 @@ providers:
             name-filter: 'A1.8'
             diskimage: ubuntu-xenial
             key-name: infra-root-keys
+  - name: inap-mtl01
+    region-name: 'mtl01'
+    cloud: inap
+    api-timeout: 60
+    boot-timeout: 120
+    rate: 0.001
+    image-name-format: '{image.name}-{timestamp}'
+    diskimages:
+      - name: ubuntu-xenial
+        config-drive: true
+    pools:
+      - name: main
+        max-servers: 0
+        labels:
+          - name: ubuntu-xenial
+            min-ram: 8000
+            name-filter: 'A1.8'
+            diskimage: ubuntu-xenial
+            key-name: infra-root-keys
 
 diskimages:
   - name: ubuntu-xenial
