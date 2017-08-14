@@ -112,7 +112,7 @@
       - console-log
 
 - job-template:
-    name: gate-placement-api-ref-nv
+    name: gate-placement-api-ref
     description: Build and draft the placement API Reference from source.
     node: ubuntu-xenial
 
@@ -165,6 +165,34 @@
           source: 'api-ref/build/html/**'
           target: 'api-ref/{service}'
           remove-prefix: 'api-ref/build/html/'
+      - test-results
+      - console-log
+
+# Because placement is hosted within nova, which has its own api-ref,
+# we need a separate job for placement, to handle the separate
+# directories.
+# TODO(cdent): When placement gets its own repo, remove the special
+# jobs, this one and 'gate-placement-api-ref'.
+- job:
+    name: 'placement-api-ref'
+    description: Build and publish the Placement API Reference from source.
+    node: ubuntu-xenial
+
+    builders:
+      - zuul-git-prep-upper-constraints
+      - install-distro-packages
+      - revoke-sudo
+      - run-tox:
+          envlist: 'placement-api-ref'
+      - add-docs-root-marker:
+          docsrootdir: placement-api-ref/build/html
+
+    publishers:
+      - afs:
+          site: afs-developer-docs
+          source: 'placement-api-ref/build/html/**'
+          target: 'api-ref/placement'
+          remove-prefix: 'placement-api-ref/build/html/'
       - test-results
       - console-log
 
