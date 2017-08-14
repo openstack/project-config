@@ -98,7 +98,7 @@ export NODEPOOL_MARIADB_MIRROR=${NODEPOOL_MARIADB_MIRROR:-http://$NODEPOOL_MIRRO
 export NODEPOOL_BUILDLOGS_CENTOS_PROXY=${NODEPOOL_BUILDLOGS_CENTOS_PROXY:-http://$NODEPOOL_MIRROR_HOST:8080/buildlogs.centos}
 export NODEPOOL_DOCKER_REGISTRY_PROXY=${NODEPOOL_DOCKER_REGISTRY_PROXY:-http://$NODEPOOL_MIRROR_HOST:8081/registry-1.docker}
 export NODEPOOL_RDO_PROXY=${NODEPOOL_RDO_PROXY:-http://$NODEPOOL_MIRROR_HOST:8080/rdo}
-export NODEPOOL_RUGYGEMS_PROXY=${NODEPOOL_RUBYGEMS_PROXY:-http://$NODEPOOL_MIRROR_HOST:8080/api.rubygems/}
+export NODEPOOL_RUGYGEMS_PROXY=${NODEPOOL_RUBYGEMS_PROXY:-http://$NODEPOOL_MIRROR_HOST:8080/rubygems/}
 export NODEPOOL_NPM_REGISTRY_PROXY=${NODEPOOL_NPM_REGISTRY_PROXY:-http://$NODEPOOL_MIRROR_HOST:8080/registry.npmjs}
 export NODEPOOL_TARBALLS_PROXY=${NODEPOOL_TARBALLS_PROXY:-http://$NODEPOOL_MIRROR_HOST:8080/tarballs}
 export NODEPOOL_LXC_IMAGE_PROXY=${NODEPOOL_LXC_IMAGE_PROXY:-$NODEPOOL_MIRROR_HOST:8080/images.linuxcontainers}
@@ -152,6 +152,9 @@ fetch-retry-maxtimeout=300000 # Maximum fetch timeout: 5 minute (default 1 minut
 GEMRC="\
 :sources:
 - $NODEPOOL_RUGYGEMS_PROXY"
+
+BUNDLE_CONFIG="\
+BUNDLE_MIRROR__HTTPS://RUBYGEMS__ORG/: \"$NODEPOOL_RUGYGEMS_PROXY\""
 
 UBUNTU_SOURCES_LIST="\
 deb $NODEPOOL_UBUNTU_MIRROR $LSBDISTCODENAME main universe
@@ -285,6 +288,10 @@ sudo chown jenkins:jenkins /home/jenkins/.npmrc
 # Write jenkins user gem configuration
 echo "$GEMRC" | sudo tee /home/jenkins/.gemrc
 sudo chown jenkins:jenkins /home/jenkins/.gemrc
+# Write jenkins user bundle configuration
+sudo mkdir -p /home/jenkins/.bundle
+echo "$BUNDLE_CONFIG" | sudo tee /home/jenkins/.bundle/config
+sudo chown -R jenkins:jenkins /home/jenkins/.bundle
 
 # Write zuul user distutils/setuptools configuration used by easy_install
 echo "$PYDISTUTILS_CFG" | sudo tee /home/zuul/.pydistutils.cfg
@@ -295,6 +302,10 @@ sudo chown zuul:zuul /home/zuul/.npmrc
 # Write zuul user gem configuration
 echo "$GEMRC" | sudo tee /home/zuul/.gemrc
 sudo chown zuul:zuul /home/zuul/.gemrc
+# Write zuul user bundle configuration
+sudo mkdir -p /home/zuul/.bundle
+echo "$BUNDLE_CONFIG" | sudo tee /home/zuul/.bundle/config
+sudo chown -R zuul:zuul /home/zuul/.bundle
 
 if [ "$LSBDISTID" == "Ubuntu" ]; then
     echo "$UBUNTU_SOURCES_LIST" >/tmp/sources.list
