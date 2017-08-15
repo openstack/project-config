@@ -80,7 +80,8 @@
           # NOTE(mhayden): The CentOS CI image has many repositories enabled by
           # default that can cause package conflicts. We must disable all of
           # them here and only enable base, updates, and epel.
-          if [[ -e /usr/bin/yum ]] && [[ -x /usr/bin/yum-config-manager ]]; then
+          # We also don't want to run this on Fedora.
+          if [[ -x /usr/bin/yum-config-manager ]] && [[ -e /etc/centos-release ]]; then
             sudo yum-config-manager --disable \* >/dev/null
             sudo yum-config-manager --enable base >/dev/null
             sudo yum-config-manager --enable epel >/dev/null
@@ -91,7 +92,8 @@
           # NOTE(mhayden): EPEL is no longer required after installing distro
           # packages with bindep. Individual roles may re-enable EPEL if they
           # need it for their package installation tasks.
-          if [[ -e /usr/bin/yum ]] && [[ -x /usr/bin/yum-config-manager ]]; then
+          # We also don't want to run this on Fedora.
+          if [[ -x /usr/bin/yum-config-manager ]] && [[ -e /etc/centos-release ]]; then
             sudo yum-config-manager --disable epel >/dev/null
           fi
       - shell: |
