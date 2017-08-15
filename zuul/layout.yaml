@@ -1218,7 +1218,7 @@ jobs:
   # Skip these long-running and expensive devstack jobs when the
   # change is only to documentation, release notes, unit tests or
   # similar components that won't be exercised by the job anyway.
-  - name: ^.*(devstack|tempest|grenade|rally|cinder|swift|install|neutron-lbaas|neutron-vpnaas|ironic|ironic-inspector|heat|mogan)-dsvm.*$
+  - name: ^.*(devstack|tempest|grenade|rally|cinder|keystone|keystoneclient|swift|install|neutron-lbaas|neutron-vpnaas|ironic|ironic-inspector|heat|mogan)-dsvm.*$
     skip-if:
       - project: ^openstack/cinder$
         all-files-match-any:
@@ -1326,6 +1326,14 @@ jobs:
           - ^releasenotes/.*$
           - ^tools/.*$
           - ^tox.ini$
+      - project: ^openstack/keystone$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^api-ref/.*$
+          - ^doc/.*$
+          - ^etc/.*$
+          - ^releasenotes/.*$
+          - ^keystone/tests/unit/.*$
       - project: ^openstack/manila$
         all-files-match-any:
           - ^.*\.rst$
@@ -1569,6 +1577,16 @@ jobs:
           - ^contrib/block-box.*$
           - ^releasenotes/.*$
           - ^tools/.*$
+
+  - name: ^.*keystone-(python27-ubuntu-xenial|python35|coverage-ubuntu-xenial)$
+    skip-if:
+      - project: ^openstack/keystone$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^api-ref/.*$
+          - ^doc/.*$
+          - ^etc/.*$
+          - ^releasenotes/.*$
 
   # Skip non-doc jobs for doc-only or translation-only heat changes.
   # Since doc/source/* is checked by heat-pep8, this job should not be
