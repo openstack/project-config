@@ -16,9 +16,11 @@
             [[local|localrc]]
             enable_plugin dragonflow git://git.openstack.org/openstack/dragonflow
             Q_ENABLE_DRAGONFLOW_LOCAL_CONTROLLER=True
-            # Add bgp project to fullstack gate job.
+            # Add bgp project to tempest gate job.
             enable_plugin neutron-dynamic-routing git://git.openstack.org/openstack/neutron-dynamic-routing
             DR_MODE=df-bgp
+            # Add networking-sfc
+            enable_plugin networking-sfc git://git.openstack.org/openstack/networking-sfc
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
@@ -33,6 +35,7 @@
           # reference magic for testing changes.
           export PROJECTS="openstack/dragonflow $PROJECTS"
           export PROJECTS="openstack/neutron-dynamic-routing $PROJECTS"
+          export PROJECTS="openstack/networking-sfc $PROJECTS"
 
           # Keep localrc to be able to set some vars in pre_test_hook
           export KEEP_LOCALRC=1
