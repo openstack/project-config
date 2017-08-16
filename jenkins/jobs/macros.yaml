@@ -503,6 +503,7 @@
     name: puppet-agent-install
     builders:
       - shell: |
+          #!/bin/bash -xe
           if [ -f /usr/bin/yum ]; then
               sudo yum install -y https://yum.puppetlabs.com/puppetlabs-release-pc1-el-7.noarch.rpm
               sudo yum install -y puppet-agent
@@ -518,6 +519,7 @@
     name: puppet-prepare-node
     builders:
       - shell: |
+          #!/bin/bash -xe
           if [ -f /usr/bin/yum ]; then
               sudo yum -y remove facter puppet hiera rdo-release "centos-release-openstack-*" "centos-release-ceph-*"
               sudo yum -y install libxml2-devel libxslt-devel ruby-devel zlib-devel
