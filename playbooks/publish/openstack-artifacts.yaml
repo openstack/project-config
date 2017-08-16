@@ -1,44 +1,8 @@
 - hosts: localhost
-  tasks:
-    - name: Create SSH private key from secret
-      copy:
-        content: "{{ site_zuulv3_dev.ssh_private_key }}"
-        dest: ~/.ssh/tarballs_id_rsa
-        mode: 0600
+  roles:
+    - add-fileserver
 
-    - name: Add tarballs server ssh key
-      command: ssh-add ~/.ssh/tarballs_id_rsa
-
-    - name: Remove SSH private key from disk
-      file:
-        path: ~/.ssh/tarballs_id_rsa
-        state: absent
-
-    - name: Add tarballs server to inventory
-      add_host:
-        name: "{{ site_zuulv3_dev.fqdn }}"
-        ansible_user: "{{ site_zuulv3_dev.ssh_username }}"
-
-    - name: Add tarballs server to known hosts
-      known_hosts:
-        name: "{{ site_zuulv3_dev.fqdn }}"
-        key: "{{ site_zuulv3_dev.ssh_known_hosts }}"
-
-- hosts: "{{ site_zuulv3_dev.fqdn }}"
+- hosts: "{{ fileserver.fqdn }}"
   gather_facts: False
-  tasks:
-    - name: Set tarball path
-      set_fact:
-        tarball_path: "{{ site_zuulv3_dev.path }}/{{ zuul.project.short_name }}"
-
-    - name: Ensure project directory exists
-      file:
-        path: "{{ tarball_path }}"
-        state: directory
-        recurse: yes
-        mode: 0775
-
-    - name: Upload contents of the artifacts folder
-      synchronize:
-        src: "{{ zuul.executor.work_root }}/artifacts/"
-        dest: "{{ tarball_path }}/"
+  roles:
+    - publish-artifacts-to-fileserver
