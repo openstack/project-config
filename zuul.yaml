@@ -80,6 +80,16 @@
     window-increase-factor: 2
 
 - pipeline:
+    name: post
+    description: This pipeline runs jobs that operate after each change is merged.
+    manager: independent
+    precedence: low
+    trigger:
+      gerrit:
+        - event: ref-updated
+          ref: ^(?!refs/).*$
+
+- pipeline:
     name: release
     # NOTE(pabelanger): release pipeline needs access to credentials (eg: pypi).
     post-review: true
