@@ -3281,6 +3281,11 @@ jobs:
   - name: ^gate-openstack-ansible-openstack-ansible-ceph-(centos-7|ubuntu-xenial).*$
     branch: ^(?!stable/newton).*$
 
+  # Skip the OpenStack-Ansible Octavia job for the openstack-ansible repository if
+  # the branch is anything before pike.
+  - name: ^gate-openstack-ansible-openstack-ansible-octavia-(centos-7|ubuntu-xenial).*$
+    branch: ^(?!stable/newton|ocata).*$
+
   # Skip the OpenStack-Ansible CentOS job for the openstack-ansible repository if
   # the branch is anything before ocata.
   - name: ^gate-openstack-ansible-openstack-ansible-aio-centos-7.*$
@@ -13159,6 +13164,7 @@ projects:
     experimental:
       - gate-openstack-ansible-openstack-ansible-ceph-opensuse-423-nv
       - gate-openstack-ansible-openstack-ansible-aio-opensuse-423-nv
+      - gate-openstack-ansible-openstack-ansible-octavia-ubuntu-xenial-nv
     release:
       - openstack-ansible-announce-release
     periodic:
