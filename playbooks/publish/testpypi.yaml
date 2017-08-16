@@ -1,0 +1,10 @@
+- hosts: localhost
+  tasks:
+    - name: Install twine python package
+      command: pip install --user twine
+
+    - name: Create credentials for pypi
+      template:
+        dest: ~/.pypirc
+        mode: 0400
+        src: publish/testpypi/pypirc.j2
