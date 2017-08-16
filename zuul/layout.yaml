@@ -3531,13 +3531,13 @@ jobs:
   - name: ^gate-nodepool-python35
     branch: feature/zuulv3
 
-  # Run python35 job only on the master branch
+  # python3 is supported only in queens and forward
   - name: ^gate-vitrage-dsvm-api-py35-ubuntu-xenial
-    branch: master
+    branch: ^(?!stable/(newton|ocata|pike)).*$
 
-  # Run python35 job only on the master branch
+  # python3 is supported only in queens and forward
   - name: ^gate-vitrage-dsvm-datasources-py35-ubuntu-xenial
-    branch: master
+    branch: ^(?!stable/(newton|ocata|pike)).*$
 
   #########
   # Mutexes
@@ -18435,12 +18435,11 @@ projects:
     check:
       - gate-vitrage-dsvm-api-py27-ubuntu-xenial
       - gate-vitrage-dsvm-datasources-py27-ubuntu-xenial
+      - gate-vitrage-dsvm-api-py35-ubuntu-xenial-nv
+      - gate-vitrage-dsvm-datasources-py35-ubuntu-xenial-nv
     gate:
       - gate-vitrage-dsvm-api-py27-ubuntu-xenial
       - gate-vitrage-dsvm-datasources-py27-ubuntu-xenial
-    experimental:
-      - gate-vitrage-dsvm-api-py35-ubuntu-xenial
-      - gate-vitrage-dsvm-datasources-py35-ubuntu-xenial
 
   - name: openstack/vitrage-dashboard
     template:
