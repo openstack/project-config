@@ -1239,6 +1239,7 @@ jobs:
           - ^cinder/locale/.*$
           - ^cinder/tests/functional.*$
           - ^cinder/tests/unit.*$
+          - ^contrib/block-box.*$
           - ^releasenotes/.*$
           - ^tools/.*$
           - ^tox.ini$
@@ -1471,6 +1472,23 @@ jobs:
           - ^.*\.rst$
           - ^doc/.*$
 
+  # Skip these long-running and expensive jobs when the
+  # change is only to documentation, release notes, unit tests or
+  # similar components that won't be exercised by the job anyway
+  # in Cinder.
+  - name: ^gate-cinder-(tox-(compliance|bandit-baseline|functional)|pylint)-ubuntu.*$
+    skip-if:
+      - project: ^openstack/cinder$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^api-ref/.*$
+          - ^doc/.*$
+          - ^cinder/hacking/.*$
+          - ^cinder/locale/.*$
+          - ^cinder/tests/unit.*$
+          - ^contrib/block-box.*$
+          - ^releasenotes/.*$
+
   # Skip non-doc jobs for doc-only or translation-only neutron
   # changes. Since doc/source/conf.py is checked by
   # neutron-(pep8|pylint), those jobs should not be skipped.
@@ -1546,7 +1564,12 @@ jobs:
           - ^.*\.rst$
           - ^api-ref/.*$
           - ^doc/.*$
+          - ^cinder/hacking/.*$
           - ^releasenotes/.*$
+          - ^cinder/locale/.*$
+          - ^contrib/block-box.*$
+          - ^releasenotes/.*$
+          - ^tools/.*$
 
   # Skip non-doc jobs for doc-only or translation-only heat changes.
   # Since doc/source/* is checked by heat-pep8, this job should not be
