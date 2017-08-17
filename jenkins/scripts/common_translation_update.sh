@@ -282,7 +282,7 @@ function setup_review {
 Imported Translations from Zanata
 
 For more information about this automatic import see:
-http://docs.openstack.org/developer/i18n/reviewing-translation-import.html
+https://docs.openstack.org/i18n/latest/reviewing-translation-import.html
 EOF
     set -e
     git review -s
