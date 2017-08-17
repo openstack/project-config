@@ -16,6 +16,7 @@
 
 import io
 import glob
+import requests
 import sys
 import voluptuous as v
 
@@ -211,7 +212,8 @@ def validate_service_types():
     print("========================")
     count = 0
     # Load the current service-type-authority data
-    service_types = os_service_types.ServiceTypes()
+    service_types = os_service_types.ServiceTypes(session=requests.Session(),
+                                                  only_remote=True)
     # Load the project job definitions
     with io.open('jenkins/jobs/projects.yaml', 'r', encoding='utf-8') as f:
         file_contents = local_yaml.load(f.read())
