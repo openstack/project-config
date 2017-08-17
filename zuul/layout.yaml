@@ -1003,6 +1003,7 @@ project-templates:
       - gate-tripleo-ci-centos-7-scenario005-multinode-oooq-nv
       - gate-tripleo-ci-centos-7-scenario006-multinode-oooq-nv
       - gate-tripleo-ci-centos-7-scenario008-multinode-oooq-nv
+      - gate-tripleo-ci-centos-7-scenario007-multinode-oooq-container-nv
 
   - name: check-tripleo-undercloud-jobs
     check:
@@ -1854,6 +1855,17 @@ jobs:
       - ^manifests/profile/base/neutron/agents/ovn.*$
       - ^manifests/profile/base/neutron/ovn.*$
       - config/general_config/featureset028.yml
+  - name: ^gate-tripleo-ci-centos-7-scenario007-multinode(-oooq)?(-container)?(-nv)?$
+    branch: ^(?!stable/(newton|ocata)).*$
+    files:
+      - ci/environments/scenario007-multinode-containers.yaml
+      - ci/pingtests/scenario007-multinode.yaml
+      - ^(docker|puppet)/services/.*ovn.*$
+      - ^manifests/profile/pacemaker/ovn.*$
+      - ^manifests/profile/base/neutron/plugins/ml2/ovn.*$
+      - ^manifests/profile/base/neutron/agents/ovn.*$
+      - ^manifests/profile/base/neutron/ovn.*$
+      - config/general_config/featureset030.yml
   - name: ^gate-tripleo-ci-centos-7-scenario008-multinode(-oooq)?(-nv)?$
     branch: ^(?!stable/(newton|ocata)).*$
     files:
