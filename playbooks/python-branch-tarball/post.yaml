@@ -1,0 +1,38 @@
+- hosts: all
+  roles:
+    - fetch-tox-output
+
+  post_tasks:
+    - name: Rename files to branch specific name
+      shell: "mv *.{{ item }} {{ zuul.project.short_name }}-{{ zuul.branch | replace('/', '-') }}.{{ item }}"
+      args:
+        chdir: "src/{{ zuul.project.canonical_name }}/dist"
+      with_items:
+        - "tar.gz"
+        - "whl"
+
+    - name: Find tarballs and wheels in dist folder
+      find:
+        file_type: file
+        paths: "src/{{ zuul.project.canonical_name }}/dist"
+        patterns: "*.tar.gz,*.whl"
+      register: result
+
+    - name: Display stat for tarballs and wheels
+      stat:
+        path: "{{ item.path }}"
+      with_items: "{{ result.files }}"
+
+    - name: Ensure artifacts directory exists
+      file:
+        path: "{{ zuul.executor.work_root }}/artifacts"
+        state: directory
+      delegate_to: localhost
+
+    - name: Collect artifacts
+      synchronize:
+        dest: "{{ zuul.executor.work_root }}/artifacts/"
+        mode: pull
+        src: "{{ item.path }}"
+        verify_host: true
+      with_items: "{{ result.files }}"
