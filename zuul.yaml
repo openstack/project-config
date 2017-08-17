@@ -164,10 +164,36 @@
     secrets:
       - site_zuulv3_dev
 
+- job:
+    name: release-openstack-python
+    parent: publish-openstack-tarball
+    description: |
+      Release python tarballs / wheels to pypi.
+    post-run: playbooks/publish/testpypi
+    secrets:
+      - testpypi_secret
+
 - project:
     name: openstack-infra/project-config
     check:
       jobs: []
+
+- secret:
+    name: testpypi_secret
+    data:
+      repository: https://test.pypi.org/legacy/
+      username: openstackci
+      password: !encrypted/pkcs1-oaep
+        - ev0vtSMICZsT/LjfT/f9prqvwdPibwY/88nxJxoJNF4syUW2S/5ine9vZoK+atJEzlFbq
+          J9VrHbc3RokVxR3bjiur/MH5hH5Kk+tZGdRQwk6eoroI5dtyO23lWr86LTRG8BJJPbQmd
+          jrdPp9E+Tea/C/xAoTGhUbNnofOPEaxsS1T0RqdphCA2FAfefnVR5oWURQpa/XaBKZLAS
+          H2fBSr0un0mxV+67SlyOFkTTbtF9x72DE9clw3gBX1uArMnKSXdl3SK2LgB/POiGH5YoU
+          GTFOs6qBxNP/jV8cIBxSf80IHUfspv49LoMNTPfwDRMie4lGCNUgTINzgtkCwuysY0wcC
+          LYd1NA1RYd57coHKEftCIC1NQYRriTA543kdnCWoZPU6DVaswgEJai0Pg1vC8b5NPYYPw
+          YZm011oEN6bnVOEfsnhwYCl6GCibELolyW4vv4xGMrOGLFwt6/DXBWpbktwrGqbG4Ku06
+          hneCGOGjjzy09LmkdjCMi9cbe01udaIB+MA9Bqgt1Jh8AM4OIJaUsCX014g5OUDSNw/VZ
+          A55ES2jKpwFCottqtgiZSO4n0+0TmjsVwYPwKbyxYEvmxkeldRFwKSz8T3EpV2HQi++aT
+          aR6LCLkViHsSTluDbv5dJESSQDVjyXyd3gp4jTvXmHlSxSenfSbyV7Rqkia0tk=
 
 - secret:
     name: site_zuulv3_dev
