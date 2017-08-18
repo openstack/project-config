@@ -58,52 +58,6 @@
       - local_conf:
           conf: |
             [[local|localrc]]
-            enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer
-            # Enable watcher devstack plugin.
-            enable_plugin watcher git://git.openstack.org/openstack/watcher
-
-      - shell: |
-          #!/bin/bash -xe
-
-          export DEVSTACK_SUBNODE_CONFIG=" "
-          export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_TEMPEST=1
-          export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
-          export DEVSTACK_GATE_TEMPEST_REGEX="watcher_tempest_plugin"
-          export DEVSTACK_GATE_NEUTRON=1
-          export DEVSTACK_GATE_TOPOLOGY="multinode"
-          export PROJECTS="openstack/watcher $PROJECTS"
-          export PROJECTS="openstack/python-watcherclient $PROJECTS"
-
-          export BRANCH_OVERRIDE={branch-override}
-          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
-              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
-          fi
-
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
-
-    publishers:
-      - test-results
-      - devstack-logs
-      - console-log
-
-- job-template:
-    name: '{pipeline}-watcher-dsvm-multinode-split-{node-release}{suffix}'
-    node: '{node}'
-
-    wrappers:
-      - build-timeout:
-          timeout: 70
-      - timestamps
-
-    builders:
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - local_conf:
-          conf: |
-            [[local|localrc]]
             TEMPEST_PLUGINS='/opt/stack/new/watcher-tempest-plugin'
             enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer
             # Enable watcher devstack plugin.
