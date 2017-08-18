@@ -6481,9 +6481,18 @@
       - openstack-publish-jobs
       - openstack-releasenotes-jobs
       - pypi-jobs
-      - '{pipeline}-install-dsvm-kuryr-libnetwork-{node}{suffix}':
+      - '{pipeline}-install-dsvm-kuryr-libnetwork{topology}-{node-release}{suffix}':
           pipeline: gate
+          topology: ''
+          node-release: ubuntu-xenial
           node: ubuntu-xenial
+          suffix: '-nv'
+          branch-override: default
+      - '{pipeline}-install-dsvm-kuryr-libnetwork{topology}-{node-release}{suffix}':
+          pipeline: gate
+          topology: '-multinode'
+          node-release: ubuntu-xenial
+          node: ubuntu-xenial-2-node
           suffix: '-nv'
           branch-override: default
       - '{pipeline}-kuryr-libnetwork{kuryr_lib-src}-dsvm-fullstack-{node}{suffix}':

@@ -1,5 +1,5 @@
 - job-template:
-    name: '{pipeline}-install-dsvm-kuryr-libnetwork-{node}{suffix}'
+    name: '{pipeline}-install-dsvm-kuryr-libnetwork{topology}-{node-release}{suffix}'
     node: '{node}'
 
     wrappers:
@@ -22,10 +22,13 @@
 
           export DEVSTACK_GATE_TEMPEST=0
 
-          export ENABLED_SERVICES=kuryr-libnetwork,etcd-server,docker-engine
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+
+          if [ "{topology}" == "-multinode" ]; then
+              export CAPABILITY_SCOPE="global"
           fi
 
           export PROJECTS="openstack/kuryr-libnetwork $PROJECTS"
@@ -287,7 +290,6 @@
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_INSTALL_TESTONLY=1
 
-          export ENABLED_SERVICES=kuryr-libnetwork,etcd-server,docker-engine
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -349,7 +351,6 @@
           export DEVSTACK_GATE_NEUTRON=1
           export DEVSTACK_GATE_INSTALL_TESTONLY=1
 
-          export ENABLED_SERVICES=kuryr-libnetwork,etcd-server,docker-engine
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -414,7 +415,6 @@
               export DEVSTACK_PROJECT_FROM_GIT="kuryr"
           fi
 
-          export ENABLED_SERVICES=kuryr-libnetwork,etcd-server,docker-engine
 
           function gate_hook {{
               bash -xe $BASE/new/kuryr-libnetwork/kuryr_libnetwork/tests/contrib/gate_hook.sh
