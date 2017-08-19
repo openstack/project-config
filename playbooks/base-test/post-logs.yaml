@@ -4,12 +4,6 @@
       fileserver: "{{ site_logs }}"
     - emit-ara-html
 
-  post_tasks:
-    - name: Copy inventory to logs dir
-      copy:
-        src: "{{ inventory_file }}"
-        dest: "{{ zuul.executor.log_root  }}"
-
 - hosts: "{{ site_logs.fqdn }}"
   roles:
     - role: upload-logs
