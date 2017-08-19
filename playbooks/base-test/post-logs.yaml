@@ -12,12 +12,5 @@
 
 - hosts: "{{ site_logs.fqdn }}"
   roles:
-    - upload-logs
-
-  post_tasks:
-    - name: Return log URL to Zuul
-      delegate_to: localhost
-      zuul_return:
-        data:
-          zuul:
-            log_url: "http://logs.openstack.org/{{ log_path }}/"
+    - role: upload-logs
+      zuul_log_url: "http://logs.openstack.org"
