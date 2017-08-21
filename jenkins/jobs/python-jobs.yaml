@@ -305,6 +305,32 @@
 
     node: ubuntu-xenial
 
+# Initial Python3.6 testing.
+- job-template:
+    name: 'gate-{name}-python36-{node}-nv'
+
+    wrappers:
+      - build-timeout:
+          timeout: 40
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - zuul-git-prep-upper-constraints
+      - install-distro-packages
+      - extra-test-setup
+      - revoke-sudo
+      - python36
+      - assert-no-extra-files
+
+    publishers:
+      - test-results
+      - console-log
+
+    node: '{node}'
+
+
 - job-template:
     name: 'gate-{name}-pypy'
 
