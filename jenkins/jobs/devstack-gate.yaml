@@ -603,9 +603,9 @@
       - devstack-logs
       - console-log
 
-# dsvm-updown builds up a devstack and shuts it down, this ensures
-# that things like unstack.sh and clean.sh work correctly. This should
-# only be run on the devstack tree.
+# devstack-dsvm-py35-updown builds up a devstack and shuts it down,
+# this ensures that things like unstack.sh and clean.sh work
+# correctly. This should only be run on the devstack tree.
 - job-template:
     name: '{pipeline}-devstack-dsvm-py35-updown-{node}{suffix}'
     node: '{node}'
@@ -655,6 +655,59 @@
     publishers:
       - devstack-logs
       - console-log
+
+# devstack-dsvm-py36-updown is similar to py35 but for platforms
+# running python36 (may diverge if additional changes required).
+- job-template:
+    name: '{pipeline}-devstack-dsvm-py36-updown-{node}{suffix}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 70
+      - timestamps
+
+    builders:
+      - print-template-name:
+          template-name: "{template-name}"
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - local_conf:
+          conf: |
+            [[local|localrc]]
+            # swift is not ready for python3 yet
+            disable_service s-account
+            disable_service s-container
+            disable_service s-object
+            disable_service s-proxy
+      - shell: |
+          #!/bin/bash -xe
+          export DEVSTACK_GATE_USE_PYTHON3=True
+          export PYTHONUNBUFFERED=true
+          export DEVSTACK_GATE_HEAT=1
+          export DEVSTACK_GATE_SAHARA=1
+          export DEVSTACK_GATE_TLSPROXY=1
+
+          export BRANCH_OVERRIDE={branch-override}
+          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
+              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+          # ensure that the unstack.sh and clean.sh scripts run
+          # without errors, so that we can
+          function post_test_hook {{
+              cd /opt/stack/new/devstack
+              ./gate/updown.sh
+          }}
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
 
 - job-template:
     name: '{pipeline}-tempest-dsvm-nova-wsgi-full-{node}{suffix}'
