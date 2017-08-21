@@ -170,7 +170,8 @@
       Release python tarballs / wheels to pypi.
     post-run: playbooks/publish/testpypi
     secrets:
-      - testpypi_secret
+      - secret: testpypi_secret
+        name: pypi_info
 
 - job:
     name: publish-openstack-python-branch-tarball
@@ -189,7 +190,8 @@
 - secret:
     name: testpypi_secret
     data:
-      repository: https://test.pypi.org/legacy/
+      repository: testpypi
+      repository_url: https://test.pypi.org/legacy/
       username: openstackci
       password: !encrypted/pkcs1-oaep
         - ev0vtSMICZsT/LjfT/f9prqvwdPibwY/88nxJxoJNF4syUW2S/5ine9vZoK+atJEzlFbq
