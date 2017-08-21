@@ -23,7 +23,6 @@
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_TEMPEST_FULL=1
           export DEVSTACK_GATE_NEUTRON=1
-          export PROJECTS="openstack/networking-bagpipe $PROJECTS"
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
@@ -32,6 +31,9 @@
           # our project repository. This makes zuul do the right
           # reference magic for testing changes.
           export PROJECTS="openstack/networking-bagpipe $PROJECTS"
+          # we need to add networking-bgpvpn as well, which we
+          # depend on
+          export PROJECTS="openstack/networking-bgpvpn $PROJECTS"
 
           function gate_hook {{
               bash -xe $BASE/new/networking-bagpipe/devstack/gate_hook.sh {which}
@@ -78,7 +80,13 @@
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
 
+          # Because we are testing a non standard project, add
+          # our project repository. This makes zuul do the right
+          # reference magic for testing changes.
           export PROJECTS="openstack/networking-bagpipe $PROJECTS"
+          # we need to add networking-bgpvpn as well, which we
+          # depend on
+          export PROJECTS="openstack/networking-bgpvpn $PROJECTS"
 
           function pre_test_hook {{
               . $BASE/new/networking-bagpipe/devstack/pre_test_hook.sh fullstack
