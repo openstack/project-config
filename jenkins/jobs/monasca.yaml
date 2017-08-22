@@ -153,8 +153,10 @@
           devstack_plugin=''
           if [ {pipeline} == 'logs' ]; then
             devstack_plugin='log-api'
+            export DEVSTACK_LOCAL_CONFIG="enable_plugin monasca-log-api git://git.openstack.org/openstack/monasca-log-api"
           elif [ {pipeline} == 'events' ]; then
             devstack_plugin='events-api'
+            export DEVSTACK_LOCAL_CONFIG="enable_plugin monasca-events-api git://git.openstack.org/openstack/monasca-events-api"
           else
             echo "Unknown pipeline {pipeline}"
             exit 1
