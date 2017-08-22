@@ -2642,12 +2642,6 @@ jobs:
     voting: false
     failure-message: WARNING broken links in docs
 
-  - name: gate-dsvm-nodepool
-    voting: false
-
-  - name: gate-dsvm-nodepool-py35
-    voting: false
-
   - name: gate-bashate-devstack
     voting: false
 
@@ -3556,28 +3550,9 @@ jobs:
   - name: gate-storyboard-js-integration-ubuntu-trusty
     branch: ^master$
 
-  # Disable devstack tests on the zk-shim branch of nodepool
-  - name: ^gate-dsvm-nodepool
-    branch: ^(?!feature/gearman-zk-shim).*$
-
   # Disable python27 devstack tests on the feature/zuulv3 branch of nodepool
-  - name: ^gate-dsvm-nodepool$
+  - name: ^gate-dsvm-nodepool(-src)?-nv$
     branch: ^(?!feature/zuulv3).*$
-
-  - name: ^gate-dsvm-nodepool-src
-    branch: ^(?!feature/zuulv3).*$
-
-  # Only run python35 devstack test on the feature/zuulv3 branch of nodepool
-  - name: ^gate-dsvm-nodepool-py35
-    branch: feature/zuulv3
-
-  # Disable coverage tests on the zk-shim branch of nodepool
-  - name: nodepool-coverage-ubuntu-xenial
-    branch: ^(?!feature/gearman-zk-shim).*$
-
-  # Disable docs jobs on the zk-shim branch of nodepool
-  - name: gate-nodepool-docs-ubuntu-xenial
-    branch: ^(?!feature/gearman-zk-shim).*$
 
   # Only run python27 job on the master branch of zuul
   - name: ^gate-zuul-python27
@@ -4206,9 +4181,9 @@ projects:
       - name: infra-publish-jobs
     check:
       - nodepool-coverage-ubuntu-xenial
-      - gate-dsvm-nodepool
-      - gate-dsvm-nodepool-py35
+      - gate-dsvm-nodepool-nv
       - gate-dsvm-nodepool-src-nv
+      - gate-dsvm-nodepool-py35-nv
       - gate-dsvm-nodepool-py35-src-nv
     post:
       - nodepool-coverage-ubuntu-xenial
