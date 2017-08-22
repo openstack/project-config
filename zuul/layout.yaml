@@ -3357,6 +3357,10 @@ jobs:
   - name: ^gate-openstack-ansible-galera_server-ansible-ssl.*$
     branch: ^(?!stable/newton|ocata).*$
 
+  # Skip galera_server upgrade scenario on Pike and earlier branches
+  - name: ^gate-openstack-ansible-galera_server-ansible-upgrade.*$
+    branch: ^(?!stable/(newton|ocata|pike)).*$
+
   # Ignore requirements on the keystoneclient/keystoneauth integration branch
   - name: gate-python-keystoneclient-requirements
     branch: ^(?!feature/keystoneauth_integration).*$
@@ -13333,6 +13337,8 @@ projects:
     check:
       - gate-openstack-ansible-galera_server-ansible-ssl-centos-7-nv
       - gate-openstack-ansible-galera_server-ansible-ssl-ubuntu-xenial-nv
+      - gate-openstack-ansible-galera_server-ansible-upgrade-centos-7-nv
+      - gate-openstack-ansible-galera_server-ansible-upgrade-ubuntu-xenial-nv
 
   - name: openstack/openstack-ansible-haproxy_server
     template:
