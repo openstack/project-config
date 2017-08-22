@@ -41,6 +41,12 @@ check_and_ignore() {
 }
 
 for x in ${files_to_sync[@]}; do
+    # If the source repo does not have the file to copy
+    # then skip to the next file. This covers the situation
+    # where this script runs against old branches which
+    # do not have the same set of files.
+    [[ ! -e ${x} ]] && continue
+
     # If the target repo does not have such a file already
     # then it's probably best to leave it alone.
     [[ ! -e ${OSA_PROJECT}/${x} ]] && continue
