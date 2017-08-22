@@ -117,6 +117,13 @@ chmod a+x $rclocal
 
 echo 'include: /etc/unbound/forwarding.conf' >> /etc/unbound/unbound.conf
 
+# Disable dlv. Per the unbound.conf manpage this should not be used
+# anymore but is in use by some of our distros. The problem here is it
+# does lookasides for DNSSEC which increases the number of queries and
+# introduces more points of lookup failure. Disable it to avoid these
+# problems.
+sed -i -e 's/dlv-anchor-file:/#dlv-anchor-file:/g' /etc/unbound/unbound.conf
+
 # This defaults file must be in place to work around this bug:
 # https://bugs.launchpad.net/ubuntu/+source/unbound/+bug/988513
 # The issue is fixed for Xenial so this is only required for Trusty.
