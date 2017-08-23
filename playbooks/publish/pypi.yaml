@@ -1,5 +1,24 @@
 - hosts: localhost
-
   roles:
     - role: upload-pypi
       pypi_path: "{{ zuul.executor.work_root }}/artifacts"
+
+  pre_tasks:
+    - name: Check for twine install
+      command: which twine
+      ignore_errors: yes
+      register: register_twine
+
+    - name: Set pypi_twine_executable
+      set_fact:
+        pypi_twine_executable: "{{ register_twine.stdout }}"
+      when: register_twine|succeeded
+
+    - name: Ensure twine is installed
+      command: pip install twine --user
+      when: pypi_twine_executable is not defined
+
+    - name: Set pypi twine executable
+      set_fact:
+        pypi_twine_executable: ~/.local/bin/twine
+      when: pypi_twine_executable is not defined
