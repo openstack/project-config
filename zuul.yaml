@@ -168,7 +168,11 @@
     parent: publish-openstack-artifacts
     description: |
       Release python tarballs / wheels to pypi.
-    post-run: playbooks/publish/testpypi
+    pre-run: playbooks/python-tarball/pre
+    run: playbooks/python-tarball/run
+    post-run:
+      - playbooks/python-tarball/post
+      - playbooks/publish/pypi
     secrets:
       - secret: testpypi_secret
         name: pypi_info
