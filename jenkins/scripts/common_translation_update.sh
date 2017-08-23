@@ -521,6 +521,12 @@ function filter_commits {
     # the creation date, the version number, the revision date,
     # name of last translator, comment lines, or diff file information.
     REAL_CHANGE=0
+    # Always remove obsolete log level translations.
+    for f in $(git diff --cached --name-only --diff-filter=D); do
+        if [[ $f =~ -log-(critical|error|info|warning).po$ ]] ; then
+            REAL_CHANGE=1
+        fi
+    done
     # Don't iterate over deleted files
     for f in $(git diff --cached --name-only --diff-filter=AM); do
         # It's ok if the grep fails
