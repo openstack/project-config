@@ -3,6 +3,14 @@
     builders:
       - shell: |
           #!/bin/bash -xe
+          ZUUL_BRANCH_REAL=${ZUUL_BRANCH:-master}
+          # Workaround for puppet-ceph, where we need to checkout
+          # puppet-openstack-integration from stable/pike when working on
+          # stable/jewel.
+          # Ceph Jewel works with Newton to Pike
+          if [[ "$ZUUL_BRANCH" == "stable/jewel" ]]; then
+              ZUUL_BRANCH_REAL='stable/pike'
+          fi
           export ZUUL_REF=${ZUUL_REF:-None}
           CLONEMAP=`mktemp`
           function cleanup {
@@ -16,6 +24,7 @@
           EOF
           /usr/zuul-env/bin/zuul-cloner -m $CLONEMAP \
               --cache-dir /opt/git \
+              --zuul-branch $ZUUL_BRANCH_REAL \
               git://git.openstack.org openstack/puppet-openstack-integration
 
 - job-template:
