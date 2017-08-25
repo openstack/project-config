@@ -187,6 +187,19 @@
     run: playbooks/python-tarball/run
     post-run: playbooks/python-branch-tarball/post
 
+- job:
+    name: propose-updates
+    pre-run: playbooks/proposal/pre
+    secrets:
+      - proposal_ssh_key
+
+- job:
+    parent: propose-updates
+    name: propose-update-constraints
+    run: playbooks/propose-update-constraints
+    dependencies:
+      - release-openstack-python
+
 - project:
     name: openstack-infra/project-config
     check:
@@ -435,6 +448,51 @@
           uZuKVSU0Ph85gZo6cataBuLydNJ5HqQPx/TInFg1zebTjY31kyYIW1TQRsSAIt0ytHhrm
           eVqjTotOZtPsslRS0gKw5io0GXkDsCTBsTFU3Doj+rNNry9k4TGDtWQKXXQ69Od2SYZWX
           QP1bNWdWJ4Cy1tMJqg8X21NSd58MKTvV/vbL5/N7jx3KGj/V/ug7lLCSil1jMg=
+
+- secret:
+    name: proposal_ssh_key
+    data:
+      private_key: !encrypted/pkcs1-oaep
+        - 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
 
 - project:
     name: openstack-infra/zuul-jobs
