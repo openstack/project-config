@@ -192,7 +192,8 @@
     pre-run: playbooks/proposal/pre
     run: playbooks/propose-updates
     secrets:
-      - proposal_ssh_key
+      - secret: proposal_ssh_key
+        name: ssh_key
 
 - job:
     parent: propose-updates
@@ -453,7 +454,10 @@
 - secret:
     name: proposal_ssh_key
     data:
-      private_key: !encrypted/pkcs1-oaep
+      fqdn: review.openstack.org
+      ssh_known_hosts: |
+          review.openstack.org,23.253.232.87,2001:4800:7815:104:3bc3:d7f6:ff03:bf5d ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCfsIj/jqpI+2CFdjCL6kOiqdORWvxQ2sQbCzSzzmLXic8yVhCCbwarkvEpfUOHG4eyB0vqVZfMffxf0Yy3qjURrsroBCiuJ8GdiAcGdfYwHNfBI0cR6kydBZL537YDasIk0Z3ILzhwf7474LmkVzS7V2tMTb4ZiBS/jUeiHsVp88FZhIBkyhlb/awAGcUxT5U4QBXCAmerYXeB47FPuz9JFOVyF08LzH9JRe9tfXtqaCNhlSdRe/2pPRvn2EIhn5uHWwATACG9MBdrK8xv8LqPOik2w1JkgLWyBj11vDd5I3IjrmREGw8dqImqp0r6MD8rxqADlc1elfDIXYsy+TVH gerrit-code-review@gerrit.openstack.org
+      ssh_private_key: !encrypted/pkcs1-oaep
         - ZtYinMMMMXChMzdA6ZPkt2sPmIEoumSAT6oD+Cc82b56Euv+mbetJRsDydH+PNRzLpzPB
           DM8KuW2a9AsWutC/x/oCxtijmfUzUifCsUWUbBr9zVPhpIDcsw/BfyLCRIhW3/DUu1X8e
           rFtClxs6DM19HIuuRJq9XD9PQ2o9CNM4tbdLNEFLOMlVqR0rwtJ/++ZaSdNLRtThINrCy
