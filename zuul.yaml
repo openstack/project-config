@@ -155,6 +155,15 @@
       - site_logs
 
 - job:
+    name: publish-openstack-afs
+    description: |
+      Publish job to upload artifacts to AFS backend.
+    post-run: playbooks/publish/openstack-afs
+    secrets:
+      - secret: afsdocs_secret
+        name: afs
+
+- job:
     name: publish-openstack-artifacts
     description: |
       Publish job to upload artifacts to tarballs.openstack.org
@@ -205,6 +214,24 @@
     name: openstack-infra/project-config
     check:
       jobs: []
+
+- secret:
+    name: afsdocs_secret
+    data:
+      keytab: !encrypted/pkcs1-oaep
+        - n+axpDtVoZKfH8i1LgIcBtIAse9eYKCthb+I8d5Jw6SnoN3/TZyu/fDKeteeHIroAUacV
+          syO2zQQG6aTOKP6kFILz1DzTcujIrjIQnYLZDrLLL0d384r/Opz2+A6mdM7B2tsgGbtI9
+          rgsh1TjBrcJinGaJZRcLKI+ZRWjkN1+0AwPYJYSsP20xNDa4jeKKnPKrEn8KphpFJe4y8
+          aYwvLpwV/4li/pko6MII7rCwmU3lcmTFKXVIwq2RHozLNcsxoFeT4182ye8gPOjmmuin9
+          RHaZ7UJA55JkgwmxJwR9cG+CTH5N2678cCzLuXyve0fRDrDTCsEDxxwh2Xm3F8PQAlbPR
+          OWMFvXcjlXYaMJ1Ne7yMOq1diFF9ZsqgnwNlGhju3EMCxKOZ0GBVp96DwFGj6rgaOVsSu
+          BczPoy7W5BCXuWQsZBxhReFEMs3muaWVPqya5fRZXylZlMnOI6xh3Yij3uZV5Nxrg0uJK
+          sDBrgIZFKQNWfvzFqaxjZPMsRRNmXZVeHpEy1WlkT5PN4jJn7+B6qo4iudPnCmMySzk4X
+          eTxHgwr8HS4uBvqLoKRZGMDXwl2abB2vEkIrlW41HVqpHOqGXLniGf7tEDIKb1pmrPe/P
+          OR1+bLumZ6acM1HpNjwqdAxCLRx0ZMswzK9ZHfnHhp52GMPo3rkpNk9pEOT4I0=
+      path: /afs/.openstack.org/docs
+      # TODO(pabelanger): Update AFS credentials to say zuul-executor.
+      service_name: service/zuul-launcher
 
 - secret:
     name: testpypi_secret
