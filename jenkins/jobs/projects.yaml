@@ -9553,26 +9553,33 @@
     name: openstack-helm
 
     jobs:
-      - gate-openstack-helm{sub}-{integration}-{type}-{node}{suffix}:
+      - gate-openstack-helm{sub}-{integration}-{type}-{sdn}-{node}{suffix}:
           integration: nocluster
           type: linter
+          sdn: ovs
           node: ubuntu-xenial
           sub: ''
           suffix: ''
-      - gate-openstack-helm{sub}-{integration}-{type}-{node}{suffix}:
+      - gate-openstack-helm{sub}-{integration}-{type}-{sdn}-{node}{suffix}:
           integration: aio
           type: basic
+          sdn:
+            - ovs
+            - linuxbridge
           node:
             - ubuntu-xenial
             - centos-7
             - fedora-26
           sub: ''
           suffix: '-nv'
-      - gate-openstack-helm{sub}-{integration}-{type}-{node}{suffix}:
+      - gate-openstack-helm{sub}-{integration}-{type}-{sdn}-{node}{suffix}:
           integration: multi
           type:
             - armada
             - basic
+          sdn:
+            - ovs
+            - linuxbridge
           node: ubuntu-xenial-3-node
           sub: ''
           suffix: '-nv'
@@ -9584,16 +9591,18 @@
     name: openstack-helm-addons
 
     jobs:
-      - gate-openstack-helm{sub}-{integration}-{type}-{node}{suffix}:
+      - gate-openstack-helm{sub}-{integration}-{type}-{sdn}-{node}{suffix}:
           integration: nocluster
           type: linter
           node: ubuntu-xenial
+          sdn: ovs
           sub: '-addons'
           suffix: ''
-      - gate-openstack-helm{sub}-{integration}-{type}-{node}{suffix}:
+      - gate-openstack-helm{sub}-{integration}-{type}-{sdn}-{node}{suffix}:
           integration: multi
           type: basic
           node: ubuntu-xenial-3-node
+          sdn: ovs
           sub: '-addons'
           suffix: '-nv'
 
@@ -9601,19 +9610,21 @@
     name: openstack-helm-infra
 
     jobs:
-      - gate-openstack-helm{sub}-{integration}-{type}-{node}{suffix}:
+      - gate-openstack-helm{sub}-{integration}-{type}-{sdn}-{node}{suffix}:
           integration: nocluster
           type: linter
           node: ubuntu-xenial
+          sdn: ovs
           sub: '-infra'
           suffix: ''
-      - gate-openstack-helm{sub}-{integration}-{type}-{node}{suffix}:
+      - gate-openstack-helm{sub}-{integration}-{type}-{sdn}-{node}{suffix}:
           integration: aio
           type: basic
           node:
             - ubuntu-xenial
             - centos-7
             - fedora-26
+          sdn: ovs
           sub: '-infra'
           suffix: '-nv'
 
