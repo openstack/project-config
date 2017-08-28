@@ -12,7 +12,8 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-source /usr/local/jenkins/slave_scripts/common.sh
+SCRIPTSDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source $SCRIPTSDIR/common.sh
 
 OWN_PROJECT=$1
 if [ -z "$OWN_PROJECT" ] ; then
