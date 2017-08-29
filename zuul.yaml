@@ -91,6 +91,24 @@
           ref: ^(?!refs/).*$
 
 - pipeline:
+    name: pre-release
+    # NOTE(mordred): pre-release pipeline needs access to credentials (eg: pypi).
+    post-review: true
+    description: When a commit is tagged with a pre-release tag, this pipeline runs jobs that publish archives and documentation.
+    manager: independent
+    precedence: high
+    trigger:
+      gerrit:
+        - event: ref-updated
+          ref: ^refs/tags/[0-9]+(\.[0-9]+)*(a|b|rc)[0-9]+$
+# TODO(pabelanger): Uncomment for production
+#    failure:
+#      smtp:
+#        from: zuul@openstack.org
+#        to: release-job-failures@lists.openstack.org
+#        subject: 'Pre-release of {change.project} failed'
+
+- pipeline:
     name: release
     # NOTE(pabelanger): release pipeline needs access to credentials (eg: pypi).
     post-review: true
