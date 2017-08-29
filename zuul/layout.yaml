@@ -337,17 +337,6 @@ project-templates:
       - gate-{name}-bindep-fallback-ubuntu-trusty
       - gate-{name}-bindep-fallback-ubuntu-xenial
 
-  - name: build-deb-package
-    check:
-      - 'gate-{name}-dpkg-debian-jessie'
-    gate:
-      - 'gate-{name}-dpkg-debian-jessie'
-    post:
-      - '{name}-dpkg-debian-jessie':
-        - reprepro-import-debian-openstack-jessie:
-          - reprepro-sign-jessie:
-            - reprepro-release-deb-openstack
-
   - name: fuel-ccp-component
     check:
       - 'gate-{name}-linters-ubuntu-xenial'
@@ -3597,18 +3586,6 @@ jobs:
   #########
   # Mutexes
   #########
-
-  - name: reprepro-import-debian-openstack-jessie
-    mutex: mirror.deb-openstack
-
-  - name: reprepro-sign-jessie
-    mutex: mirror.deb-openstack
-
-  - name: reprepro-sign-jessie-backports
-    mutex: mirror.deb-openstack
-
-  - name: reprepro-release-deb-openstack
-    mutex: mirror.deb-openstack
 
   - name: wheel-build-ubuntu-trusty-amd64-python2
     mutex: mirror.wheel.trustyx64
@@ -7059,613 +7036,597 @@ projects:
   - name: openstack/deb-alembic
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-aodh
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-auto-backports
     template:
       - name: merge-check
-    check:
-      - pkgdeb-build-auto-backports
-    gate:
-      - pkgdeb-build-auto-backports
-    post:
-      - pkgdeb-publish-auto-backports:
-        - reprepro-import-debian-openstack-jessie-backports:
-          - reprepro-sign-jessie-backports:
-            - reprepro-release-deb-openstack
+      - name: noop-jobs
 
   - name: openstack/deb-bandit
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-barbican
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-ceilometer
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-ceilometermiddleware
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-cinder
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-congress
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-designate
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-designate-dashboard
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-fonts-materialdesignicons-webfont
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-fonts-roboto-fontface
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-git-review
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-glance
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-glare
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-gnocchi
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-heat
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-heat-cfntools
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-horizon
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-ironic
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-ironic-inspector
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-ironic-ui
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-kazoo
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-keystone
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-liberasurecode
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-libisal
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-magnum
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-manila
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-manila-ui
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-migrate
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-mistral
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-msgpack-python
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-murano
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-murano-agent
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-murano-dashboard
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-networking-arista
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-networking-cisco
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-networking-hyperv
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-networking-l2gw
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-networking-midonet
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-networking-mlnx
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-networking-nec
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-networking-odl
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-networking-ovn
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-neutron
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-neutron-fwaas
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-neutron-lbaas
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-neutron-taas
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-neutron-vpnaas
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-nodepool
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-nova
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-novnc
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-openstack-doc-tools
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-openstack-meta-packages
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-openstack-nose
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-openstack-pkg-tools
     template:
       - name: merge-check
-    check:
-      - pkgdeb-build-openstack-pkg-tools
-    gate:
-      - pkgdeb-build-openstack-pkg-tools
-    post:
-      - pkgdeb-publish-openstack-pkg-tools:
-        - reprepro-import-debian-openstack-jessie:
-          - reprepro-sign-jessie:
-            - reprepro-release-deb-openstack
+      - name: noop-jobs
 
   - name: openstack/deb-openstack-trove
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-oslosphinx
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-aioeventlet
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-aodhclient
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-autobahn
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-automaton
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-barbicanclient
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-bashate
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-cassandra-driver
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-castellan
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-ceilometerclient
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-ceilometermiddleware
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-cinderclient
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-cliff
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-coffin
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-colander
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-concurrent.futures
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-congressclient
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-cotyledon
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-couleur
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-crank
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-croniter
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-csscompressor
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-cursive
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-daemonize
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-dcos
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-ddt
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-debtcollector
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-designateclient
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-dib-utils
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-diskimage-builder
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-django-appconf
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-django-babel
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-django-bootstrap-form
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-django-compressor
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-django-discover-runner
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-django-formtools
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-django-openstack-auth
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-django-overextends
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-django-pyscss
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-doc8
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-dogpile.cache
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-dogpile.core
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-editor
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-eventlet
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-extras
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-falcon
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-fasteners
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-fixtures
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-frozendict
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-fuelclient
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-funcsigs
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-functools32
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-futurist
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-gabbi
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-glance-store
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-glanceclient
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-gnocchiclient
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-greenio
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-hacking
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-happybase
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-heatclient
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-hplefthandclient
     template:
@@ -7675,977 +7636,977 @@ projects:
   - name: openstack/deb-python-httpretty
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-ironic-inspector-client
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-ironic-lib
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-ironicclient
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-jingo
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-json-patch
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-json-pointer
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-jsonpath-rw
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-jsonpath-rw-ext
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-jsonrpclib
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-jsonschema
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-k8sclient
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-kafka
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-keystoneauth1
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-keystoneclient
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-keystonemiddleware
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-kmip
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-ldappool
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-lesscpy
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-linecache2
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-magnumclient
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-manilaclient
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-memcache
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-microversion-parse
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-misaka
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-mistralclient
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-monascaclient
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-monotonic
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-mox3
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-multi-key-dict
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-muranoclient
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-neutron-lib
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-neutronclient
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-nose-exclude
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-nose-parameterized
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-nose-timer
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-nosehtmloutput
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-novaclient
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-oauth2client
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-openstackclient
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-openstackdocstheme
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-openstacksdk
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-os-api-ref
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-os-apply-config
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-os-brick
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-os-client-config
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-os-cloud-config
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-os-collect-config
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-os-net-config
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-os-refresh-config
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-os-testr
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-os-vif
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-os-win
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-osc-lib
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-oslo.cache
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-oslo.concurrency
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-oslo.config
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-oslo.context
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-oslo.db
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-oslo.i18n
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-oslo.log
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-oslo.messaging
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-oslo.middleware
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-oslo.policy
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-oslo.privsep
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-oslo.reports
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-oslo.rootwrap
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-oslo.serialization
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-oslo.service
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-oslo.utils
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-oslo.versionedobjects
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-oslo.vmware
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-oslotest
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-osprofiler
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-pager
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-pbr
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-pecan
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-pika-pool
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-pint
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-positional
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-proliantutils
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-pulp
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-pycadf
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-pydot-ng
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-pydotplus
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-pyeclib
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-pyghmi
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-pygit2
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-pykmip
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-pyldap
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-pymemcache
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-pymysql
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-pyngus
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-pysaml2
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-pytimeparse
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-pyvmomi
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-quantumclient
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-rcssmin
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-rednose
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-reno
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-requestbuilder
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-requests-kerberos
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-requests-mock
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-requests-unixsocket
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-requestsexceptions
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-retrying
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-rfc3986
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-rjsmin
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-rtslib-fb
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-saharaclient
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-scciclient
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-seamicroclient
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-semantic-version
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-semver
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-senlinclient
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-shotgun
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-sqlalchemy-utils
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-steadymark
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-swiftclient
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-tackerclient
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-taskflow
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-tempest-lib
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-testtools
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-toml
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-tooz
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-tosca-parser
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-traceback2
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-trollius
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-troveclient
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-tuskarclient
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-txaio
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-warlock
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-watcherclient
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-weakrefmethod
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-websocket-client
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-wrapt
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-wsgi-intercept
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-wsme
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-xstatic
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-xstatic-angular
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-xstatic-angular-bootstrap
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-xstatic-angular-cookies
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-xstatic-angular-fileupload
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-xstatic-angular-gettext
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-xstatic-angular-lrdragndrop
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-xstatic-angular-mock
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-xstatic-angular-schema-form
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-xstatic-bootstrap-datepicker
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-xstatic-bootstrap-scss
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-xstatic-bootswatch
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-xstatic-d3
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-xstatic-font-awesome
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-xstatic-hogan
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-xstatic-jasmine
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-xstatic-jquery
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-xstatic-jquery-migrate
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-xstatic-jquery-ui
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-xstatic-jquery.bootstrap.wizard
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-xstatic-jquery.quicksearch
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-xstatic-jquery.tablesorter
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-xstatic-jsencrypt
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-xstatic-magic-search
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-xstatic-mdi
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-xstatic-objectpath
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-xstatic-qunit
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-xstatic-rickshaw
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-xstatic-roboto-fontface
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-xstatic-smart-table
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-xstatic-spin
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-xstatic-term.js
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-xstatic-tv4
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-xvfbwrapper
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-yaql
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-python-zaqarclient
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-rally
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-ryu
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-sahara
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-sahara-dashboard
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-senlin
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-senlin-dashboard
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-spice-html5
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-stevedore
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-subunit
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-swauth
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-swift
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-swift-bench
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-swift-plugin-s3
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-tempest
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-testresources
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-trove
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-trove-dashboard
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-watcher
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-websockify
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-zaqar
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/deb-zaqar-ui
     template:
       - name: merge-check
-      - name: build-deb-package
+      - name: noop-jobs
 
   - name: openstack/debtcollector
     template:
