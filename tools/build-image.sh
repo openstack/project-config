@@ -109,3 +109,7 @@ disk-image-create -x --no-tmpfs -o $IMAGE_NAME \
     growroot \
     infra-package-needs \
     $EXTRA_ELEMENTS
+
+echo "Created new image: $IMAGE_NAME"
+echo "You can now upload it with:"
+echo "  openstack image create "${DISTRO}" --file $IMAGE_NAME --disk-format=qcow2 --container-format bare"
