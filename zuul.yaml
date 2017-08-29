@@ -359,6 +359,18 @@
     vars:
       wheel_python: python3
 
+- job:
+    name: tag-releases
+    pre-run: playbooks/release/pre
+    run: playbooks/release/tag
+    post-run: playbooks/release/post
+    final: true
+    secrets:
+      - name: lp_creds
+        secret: lp_creds
+      - name: ssh_key
+        secret: release_ssh_key
+
 - project:
     name: openstack-infra/project-config
     check:
@@ -804,6 +816,78 @@
           7sLWCda77CbqspQvDuKxIam7ttlHbmJBzP9Ldt9rzAPiAkfmmHZD6+MXz6YqWBlPB+jim
           QSGRUH4KXR0iFvsbK5mtFUYLJLmyF67EVDEECzUK5wKASb5SQOxhXsru5Yh7IqpSWEd8J
           +rfHhSdeahDbBRBWShs/otfEFzy4Rgaoxnnpi04jBLO+H0z7XVJ+RLMe18zcNE=
+
+- secret:
+    name: release_ssh_key
+    data:
+      private_key: !encrypted/pkcs1-oaep
+        - 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
+
+- secret:
+    name: lp_creds
+    data:
+      access_secret: !encrypted/pkcs1-oaep
+        - rExmNViAyTgd3irnBVvLFXa0cxEOF/u1PlUhHixru8KAnO3T3FGM+9qgKH0SG7bLYlE0c
+          kAEYDsdyYRqsRq7v0GgzwMfhkmK6atSrzkQomvbysv3y64bzfwPYWAqw7cI8uesfiBlBw
+          kL9RsxfYolps/fhDl5SnSwAPaRWZdTnM4m+mmLeGPxT6iQsWamvi8VWX8coUaTSa37lWm
+          I+sfqREHkUAGVF/p0YvDvCiwDOsCRqaOOFl+E/a1ny73G0+htFWjeVQuyPY6zB8xXu5YL
+          COnMqAsso7coT/+9QU6xDVE48NZwaeA5ulXQbsbtfCsyVDj6jkcaGkOgoBoTLGzUqjNnO
+          FGFZ/4+nC6hRK4Iw3km9hb8n2g1svf5OT6sNGmpUZIpriAMK5JLGV9TQwtOFUsD/JF9OR
+          r5Nvwy5Rf+4vdxMxoOQfZ6N/Z1UdTdBaiWF6GxecKSB8btMslyX0U62C6jgUtpqtsAh6v
+          zXc2NnDgxY8Jq6591Qvpm6/RujFt8nvLGCJTIfdUimvXYevINbdhwUDRtQ5AGzD5JNEDU
+          FVlt/Vpko9EN1npl5deCuY04CO0P2REpF3XHLrg6Y6Nvdkj4sj3HnUTL259/ivgaZOrgu
+          bFYaV0YMLOfFKpCuFuWwIHbQaDTTiOH2FPLnD8O0rtzPB0297GIfSkuUYSWCCY=
+      access_token: !encrypted/pkcs1-oaep
+        - Lp5fdfh8RhvORJEdrTZbe63DdufwYoQAejH/6D9wboOJpd+mVUUxWi6gV+2ljBqXdMFsh
+          txqjO2RxWfRqtezDxqeO4cha6mUKW3ebwlWiWqRKXVWxjOiSAnhP1mASHA3Z3s0drHKt0
+          qlEzReODGBj8s2k0UIZwwKsgWimhRBejVhYYDC2Yo/Zk4aqAaSTbxPxurBohsMSQkAISS
+          sw6Vax/h1rEb9NWz+FJY6n6QP6HZjJh2WJGAitjuEkglN6U9DDkRSsgj3JsMUFf20ECEj
+          AOP7STrvVTdq2ptVzqAtyGMhIXz+GTAMUqGsgHrMj1/OWFYiCvi76QNv09YS/qXCluwpd
+          OagX40i7tjDPBBNOCuqWaO6QlFhefbtcjUklAzDpsKbU5blBfYFkEl4uLgPem2vet7Pzh
+          Z37GoRP/CmH0KbTAtxkMwEFqrlj/jP0my6H/u79/yuV5Ufk2k5lAxRe6PYWwc2+kH11+N
+          UYUxkWiH21RHbKGs5aTegydQmB/Pgw/HoF7yz9XbktfZ4PVghZJ4ssD/S1rq55wE+VwjE
+          Nx5z/lAk0hzM5MWQj0ZtHsqWs/xqodo4i7ucLNWs9UInT+1e2Md9SphQa3COK9FadhmfM
+          9zPvfZpEiF/0aC5VoZyKKwFUJvgTj+vxnN2P2JTQVQvTlxnIXxFZANV8LcHmBI=
+      consumer_key: 'System-wide: Ubuntu (review.openstack.org)'
 
 # This project definition is here so that the only zuul config in
 # zuul-jobs are the jobs themselves (to make it easy for other users
