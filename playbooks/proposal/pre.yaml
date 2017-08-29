@@ -1,13 +1,4 @@
 - hosts: all
-  tasks:
-
-    - name: Copy the scripts directory to the remote node
-      synchronize:
-        # src is relative to the dir the playbook is in on the executor
-        src: ../../jenkins/scripts
-        dest: "{{ ansible_user_dir }}"
-
-    - name: Write out ssh key
-      file:
-        path: "~/.ssh/id_rsa"
-        content: "{{ proposal_ssh_key.private_key }}"
+  roles:
+    - legacy-copy-project-config-scripts
+    - add-sshkey
