@@ -2543,7 +2543,7 @@ jobs:
     voting: false
 
   # Special handling for cinder driverfixes branches:
-  # Only pep8 should run on it, nothing else.
+  # Only pep8 and unit tests should run on it, nothing else.
 
   - name: ^gate-cinder-(api-ref|requirements)$
     branch: ^(?!driverfixes/).*$
@@ -2552,8 +2552,11 @@ jobs:
     branch: ^(?!driverfixes/).*
 
   # Xenial jobs
-  - name: ^gate-cinder-(docs|python27|pylint)-ubuntu-xenial$
+  - name: ^gate-cinder-(docs|pylint)-ubuntu-xenial$
     branch: ^(?!driverfixes/).*$
+
+  - name: ^gate-cinder-python27-ubuntu-xenial$
+    branch: ^(?!driverfixes/(mitaka|newton)).*$
 
   - name: ^gate-cinder-python35
     branch: ^(?!driverfixes/).*$
