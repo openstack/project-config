@@ -18,13 +18,4 @@ script_path=/usr/local/jenkins/slave_scripts
 sed -i "s/${project}.*/-e git+https:\/\/git.openstack.org\/openstack\/${project}.git#egg=${project}/g" requirements.txt
 sed -i "s/${project}.*/-e git+https:\/\/git.openstack.org\/openstack\/${project}.git#egg=${project}/g" upper-constraints.txt
 
-cat << EOF >> tox.ini
-
-[testenv:${venv}-${project}-master]
-basepython={[${venv}]basepython}
-setenv={[${venv}]setenv}
-deps={[${venv}]deps}
-commands={[${venv}]commands}
-EOF
-
-$script_path/run-tox.sh $venv-$project-master
+$script_path/run-tox.sh $venv
