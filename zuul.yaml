@@ -471,10 +471,19 @@
           CDih/PpK9ofisCqVyvl0E+4l75l4P4TCdi7d96/9qTQSIP0b8uraGnw1QvGj46j4Cus1o
           4tjgrxleCEIUTCykp5IWhjbfYUIMK1dqaaEoGE27qBC8FY5rrq9cEVtFvGCUOM=
 
+# This project definition is here so that the only zuul config in
+# zuul-jobs are the jobs themselves (to make it easy for other users
+# to consume).
 - project:
     name: openstack-infra/zuul-jobs
     check:
       jobs:
+        - tox-linters
+        - openstack-doc-build
+        - tox-py35-on-zuul
+    gate:
+      jobs:
+        - tox-linters
         - openstack-doc-build
         - tox-py35-on-zuul
 
