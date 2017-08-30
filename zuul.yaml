@@ -181,6 +181,11 @@
     name: publish-openstack-afs
     description: |
       Publish job to upload artifacts to AFS backend.
+
+      .. zuul:jobvar:: afs_target
+
+        Target directory within /afs/.openstack.org/docs
+
     post-run: playbooks/publish/openstack-afs
     secrets:
       - secret: afsdocs_secret
@@ -209,6 +214,15 @@
       - secret: testpypi_secret
         name: pypi_info
       - gpg_key
+
+- job:
+    name: publish-openstack-python-docs
+    parent: publish-openstack-afs
+    description: |
+      Publish the results of the tox-docs job to /afs/.openstack.org/docs
+    pre-run: playbooks/python-docs/pre
+    run: playbooks/python-docs/run
+    post-run: playbook/python-docs/post
 
 - job:
     name: publish-openstack-python-branch-tarball
