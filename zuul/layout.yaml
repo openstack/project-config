@@ -1484,6 +1484,15 @@ jobs:
           - ^contrib/block-box.*$
           - ^releasenotes/.*$
 
+  # Skip non-doc/linter jobs for doc-only changes
+  - name: ^.*openstack-helm-(aio|multi)-.*$
+    skip-if:
+      - project: ^openstack/openstack-helm.*$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^doc/.*$
+          - ^releasenotes/.*$
+
   # Skip non-doc jobs for doc-only or translation-only neutron
   # changes. Since doc/source/conf.py is checked by
   # neutron-(pep8|pylint), those jobs should not be skipped.
