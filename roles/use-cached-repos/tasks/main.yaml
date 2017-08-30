@@ -11,7 +11,7 @@
   when: item.1.stat.exists
   with_together:
     - "{{ zuul.projects }}"
-    - "{{ cached_repos }}"
+    - "{{ cached_repos.results }}"
 
 - name: Clone upstream repo to workspace
   command: "git clone https://{{ item.0.canonical_hostname }}/{{ item.0.name}} {{ ansible_user_dir }}/{{ item.0.src_dir}}"
@@ -20,7 +20,7 @@
   when: not item.1.stat.exists
   with_together:
     - "{{ zuul.projects }}"
-    - "{{ cached_repos }}"
+    - "{{ cached_repos.results }}"
 
 - name: Remove origin from local git repos
   command: "git remote rm origin"
