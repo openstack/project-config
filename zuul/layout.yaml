@@ -1641,6 +1641,10 @@ jobs:
           - ^doc/.*$
           - ^releasenotes/.*$
 
+  # temporarily set centos tinyipa job to non voting
+  - name: gate-bifrost-integration-tinyipa-centos-7
+    voting: false
+
   # Skip non-doc jobs for doc-only python-tripleoclient changes. Since documents
   # are checked by python-tripleoclient-pep8 it should not be skipped.
   # Tripleo-ci gate jobs are disabled for docs-only patches elsewhere.
@@ -5921,17 +5925,17 @@ projects:
       - name: openstack-server-release-jobs
       - name: release-notes-jobs
     experimental:
-      - gate-bifrost-integration-tinyipa-centos-7
-      - gate-bifrost-integration-dibipa-debian-centos-7-nv
-      - gate-bifrost-integration-dhcp-centos-7-nv
       - gate-bifrost-integration-tinyipa-opensuse-423
     check:
+      - gate-bifrost-integration-tinyipa-centos-7
+      - gate-bifrost-integration-dibipa-debian-centos-7-nv
       - gate-bifrost-integration-tinyipa-ubuntu-xenial
       - gate-bifrost-integration-tinyipa-opensuse-423
       - gate-bifrost-integration-dibipa-debian-ubuntu-xenial-nv
       - gate-bifrost-integration-dibipa-debian-opensuse-423-nv
       - gate-bifrost-integration-dhcp-ubuntu-xenial-nv
       - gate-bifrost-integration-dhcp-opensuse-423-nv
+      - gate-bifrost-integration-dhcp-centos-7-nv
     gate:
       - gate-bifrost-integration-tinyipa-ubuntu-xenial
       - gate-bifrost-integration-tinyipa-opensuse-423
