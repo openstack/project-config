@@ -36,6 +36,7 @@
             export DEVSTACK_GATE_OS_TEST_TIMEOUT=2400
             export DEVSTACK_GATE_TEMPEST_BAREMETAL_BUILD_TIMEOUT=1200
             export DEVSTACK_LOCAL_CONFIG+=$'\n'"IRONIC_BUILD_DEPLOY_RAMDISK=False"
+            export DEVSTACK_GATE_TLSPROXY=0
 
 - builder:
     name: ironic-cinder
@@ -271,6 +272,10 @@
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
+          fi
+
+          if [[ ! "stable/newton stable/ocata stable/pike" =~ $ZUUL_BRANCH ]] ; then
+              export DEVSTACK_GATE_TLSPROXY=1
           fi
 
           if [ "{deploy_driver}" == "pxe_snmp" ] ; then
