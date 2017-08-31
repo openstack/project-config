@@ -2,10 +2,9 @@
 
 # Working variables
 WHEELHOUSE_DIR=$1
-PROJECT=openstack/requirements
-WORKING_DIR=`pwd`/$PROJECT
+WORKING_DIR=$(pwd)/src/git.openstack.org/openstack/requirements
 PYTHON_VERSION=$2
-LOGS=$WORKSPACE/logs
+LOGS=$(pwd)/logs
 
 FAIL_LOG=${LOGS}/failed.txt
 
