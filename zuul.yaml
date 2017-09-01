@@ -280,13 +280,12 @@
 
 - job:
     name: build-wheel-mirror
+    pre-run: playbooks/wheel/pre
     run: playbooks/wheel/build
     post-run: playbooks/wheel/release
     nodes: []
-    final: True
-    # 4.5 hours - double the v2 runtime, since we're running python2 and
-    # python3 in series
-    timeout: 16200
+    # 2.5 hours
+    timeout: 9000
     allowed-projects:
       - openstack/requirements
     semaphore: wheel-mirror
@@ -295,7 +294,27 @@
       - wheel_mirror_ubuntu_trusty_key
       - wheel_mirror_ubuntu_xenial_key
       - name: afs
+        secret: wheel_keytab
+
+- job:
+    name: release-wheel-mirror
+    run: playbooks/wheel/release
+    nodes: []
+    secrets:
+      - name: afs
         secret: afsadmin_keytab
+
+- job:
+    name: build-wheel-mirror-python2
+    parent: build-wheel-mirror
+    vars:
+      wheel_python: python2
+
+- job:
+    name: build-wheel-mirror-python3
+    parent: build-wheel-mirror
+    vars:
+      wheel_python: python3
 
 - project:
     name: openstack-infra/project-config
@@ -578,6 +597,22 @@
       service_name: service/afsadmin@OPENSTACK.ORG
 
 - secret:
+    name: wheel_keytab
+    data:
+      keytab: !encrypted/pkcs1-oaep
+        - B12EKQPl+E46VynbYHYNOyzbpIYkxLjia3uDsYjah39m2e/VtrnfprDAk/xOzxqZiC4/u
+          uG9bnvzHaUZE6BpoUNja1Tr5Mlzk9UY9OGxnb7KGEzIxxyS3s2H6r50FhlSSwK9VZc8fB
+          Qn2Gp1Vo+Z5VgJoi/W0S7HSPcc9RW+nLdO6S0yX4TLc7EQUlwgQCWowZg5F9V7iouYccz
+          hJ/ZpM3aAK/77vF70gkX2mXKAtu6/AyCUBnEaEG13KrSiONw95xW7+re1WIuHQxDNGbOH
+          FInMT0NxDm7hJp8NycY5F5Otwtx1rVOoAK3ReWYKxiTz6JsaM70jpnwc6Ps3eTXwk2B12
+          mxBsOtjNXJVVF+Np8lKQ/lk7DweHC0uqM+qbX40er1mcYfT9X+Z8W6lqP3FFgWj3cYqBf
+          CsTmqIk+W7PaBG6BCe2635L2Ai7gtlAqavo/J+Cry89zsuaj+AkcVzA6impXhNR9bu0Vm
+          ptwYcxQLEjC+AMUAYwLGhtNGG1wpz1s3kjHyq4ggYUep7C58M3Sk8K58xjVnzAKOldAL1
+          EN/khW6Dz+h7qOktic0Nia2AXRG3U8EQY8G/ZL6GGhvlldABqTi7uyLwtUHq+edirlO+5
+          rk1ilszKDQOr+gBfweJGrJVcTCTOv+uKf4V8jeSTn6d7Wlu5k3tchI41A3pWeA=
+      service_name: service/wheel@OPENSTACK.ORG
+
+- secret:
     name: wheel_mirror_ubuntu_xenial_key
     data:
       fqdn: wheel-mirror-ubuntu-xenial-amd64.slave.openstack.org
@@ -754,7 +789,10 @@
     periodic:
       jobs:
         # This is a periodic job to ensure that our wheels are reasonably
-        # up-to-date. Adding it to the requirements project seems to be the
-        # best place to put it, though it's not strictly a requirement for
-        # requirements.
-        - build-wheel-mirror
+        # up-to-date. It uses the upper-constraints files from requirements.
+        - build-wheel-mirror-python2
+        - build-wheel-mirror-python3
+        - release-wheel-mirror:
+            dependencies:
+              - build-wheel-mirror-python2
+              - build-wheel-mirror-python3

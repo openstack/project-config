@@ -10,17 +10,3 @@
 
 - name: Build the wheel mirror
   shell: bash -x scripts/wheel-build.sh {{ wheel_dir }} {{ wheel_python }}
-
-- name: Get an afs token and copy the wheels to AFS
-  command: <
-    k5start -t -f /etc/wheel.keytab
-        service/wheel
-        -- timeout -k 2m 30m
-        scripts/wheel-copy.sh {{ wheel_dir }} {{ afs_dir }}
-
-- name: Obtaining token and rebuilding mirror index
-  command: <
-    k5start -t -f /etc/wheel.keytab
-        service/wheel
-        -- timeout -k 2m 30m
-        scripts/wheel-index.sh {{ afs_dir }}
