@@ -11,7 +11,6 @@ venv=${1:-venv}
 tags_handling=${2:both}
 
 mkdir -p doc/build
-export HUDSON_PUBLISH_DOCS=1
 export UPPER_CONSTRAINTS_FILE=$(pwd)/upper-constraints.txt
 # The "python setup.py build_sphinx" is intentionally executed instead of
 # "tox -edocs", because it's the standard python project build interface
