@@ -10,6 +10,8 @@ zookeeper-servers:
     port: 2181
 
 labels:
+  - name: centos-7
+    min-ready: 1
   - name: ubuntu-xenial
     min-ready: 2
 
@@ -21,11 +23,17 @@ providers:
     boot-timeout: 120
     rate: 0.25
     diskimages:
+      - name: centos-7
       - name: ubuntu-xenial
     pools:
       - name: main
         max-servers: 5
         labels:
+          - name: centos-7
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: centos-7
+            key-name: infra-root-keys
           - name: ubuntu-xenial
             min-ram: 8000
             flavor-name: '8C-8GB-100GB'
@@ -39,11 +47,17 @@ providers:
     boot-timeout: 120
     rate: 0.25
     diskimages:
+      - name: centos-7
       - name: ubuntu-xenial
     pools:
       - name: main
         max-servers: 0
         labels:
+          - name: centos-7
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: centos-7
+            key-name: infra-root-keys
           - name: ubuntu-xenial
             min-ram: 8000
             flavor-name: '8C-8GB-100GB'
@@ -57,11 +71,17 @@ providers:
     boot-timeout: 120
     rate: 0.25
     diskimages:
+      - name: centos-7
       - name: ubuntu-xenial
     pools:
       - name: main
         max-servers: 0
         labels:
+          - name: centos-7
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: centos-7
+            key-name: infra-root-keys
           - name: ubuntu-xenial
             min-ram: 8000
             flavor-name: '8C-8GB-100GB'
@@ -75,11 +95,17 @@ providers:
     boot-timeout: 120
     rate: 0.25
     diskimages:
+      - name: centos-7
       - name: ubuntu-xenial
     pools:
       - name: main
         max-servers: 5
         labels:
+          - name: centos-7
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: centos-7
+            key-name: infra-root-keys
           - name: ubuntu-xenial
             min-ram: 8000
             flavor-name: '8C-8GB-100GB'
@@ -92,11 +118,17 @@ providers:
     boot-timeout: 120
     rate: 0.25
     diskimages:
+      - name: centos-7
       - name: ubuntu-xenial
     pools:
       - name: main
         max-servers: 15
         labels:
+          - name: centos-7
+            min-ram: 8000
+            flavor-name: 'nodepool'
+            diskimage: centos-7
+            key-name: infra-root-keys
           - name: ubuntu-xenial
             min-ram: 8000
             flavor-name: 'nodepool'
@@ -109,11 +141,17 @@ providers:
     boot-timeout: 120
     rate: 0.25
     diskimages:
+      - name: centos-7
       - name: ubuntu-xenial
     pools:
       - name: main
         max-servers: 15
         labels:
+          - name: centos-7
+            min-ram: 8000
+            flavor-name: 'nodepool'
+            diskimage: centos-7
+            key-name: infra-root-keys
           - name: ubuntu-xenial
             min-ram: 8000
             flavor-name: 'nodepool'
@@ -127,11 +165,17 @@ providers:
     boot-timeout: 120
     rate: 0.001
     diskimages:
+      - name: centos-7
       - name: ubuntu-xenial
     pools:
       - name: main
         max-servers: 15
         labels:
+          - name: centos-7
+            min-ram: 8000
+            flavor-name: 'A1.8'
+            diskimage: centos-7
+            key-name: infra-root-keys
           - name: ubuntu-xenial
             min-ram: 8000
             flavor-name: 'A1.8'
@@ -147,11 +191,17 @@ providers:
     # Remove this when glean has support for ipv6 on centos
     ipv6-preferred: false
     diskimages:
+      - name: centos-7
       - name: ubuntu-xenial
     pools:
       - name: main
         max-servers: 10
         labels:
+          - name: centos-7
+            min-ram: 8192
+            flavor-name: 'Performance'
+            diskimage: centos-7
+            key-name: infra-root-keys
           - name: ubuntu-xenial
             min-ram: 8192
             flavor-name: 'Performance'
@@ -167,11 +217,17 @@ providers:
     # Remove this when glean has support for ipv6 on centos
     ipv6-preferred: false
     diskimages:
+      - name: centos-7
       - name: ubuntu-xenial
     pools:
       - name: main
         max-servers: 10
         labels:
+          - name: centos-7
+            min-ram: 8192
+            flavor-name: 'Performance'
+            diskimage: centos-7
+            key-name: infra-root-keys
           - name: ubuntu-xenial
             min-ram: 8192
             flavor-name: 'Performance'
@@ -187,11 +243,17 @@ providers:
     # Remove this when glean has support for ipv6 on centos
     ipv6-preferred: false
     diskimages:
+      - name: centos-7
       - name: ubuntu-xenial
     pools:
       - name: main
         max-servers: 10
         labels:
+          - name: centos-7
+            min-ram: 8192
+            flavor-name: 'Performance'
+            diskimage: centos-7
+            key-name: infra-root-keys
           - name: ubuntu-xenial
             min-ram: 8192
             flavor-name: 'Performance'
@@ -206,11 +268,17 @@ providers:
     max-servers: 5
     rate: 0.001
     diskimages:
+      - name: centos-7
       - name: ubuntu-xenial
     pools:
       - name: main
         max-servers: 5
         labels:
+          - name: centos-7
+            min-ram: 8000
+            flavor-name: 'v1-standard-8'
+            diskimage: centos-7
+            key-name: infra-root-keys
           - name: ubuntu-xenial
             min-ram: 8000
             flavor-name: 'v1-standard-8'
@@ -218,6 +286,24 @@ providers:
             key-name: infra-root-keys
 
 diskimages:
+  - name: centos-7
+    elements:
+      - centos-minimal
+      - vm
+      - simple-init
+      - openstack-repos
+      - nodepool-base
+      - cache-devstack
+      - growroot
+      - infra-package-needs
+      - epel
+    env-vars:
+      TMPDIR: /opt/dib_tmp
+      DIB_CHECKSUM: '1'
+      DIB_IMAGE_CACHE: /opt/dib_cache
+      QEMU_IMG_OPTIONS: compat=0.10
+      DIB_GRUB_TIMEOUT: '0'
+      DIB_EPEL_DISABLED: '1'
   - name: ubuntu-xenial
     elements:
       - ubuntu-minimal
