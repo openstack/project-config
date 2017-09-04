@@ -1,6 +1,7 @@
 - hosts: all
-  tasks:
-    - name: Execute run-docs.sh.
-      shell: /usr/local/jenkins/slave_scripts/run-docs.sh venv
-      args:
-        chdir: "src/{{ zuul.project.canonical_name }}"
+  pre_tasks:
+    - name: Ensure tox is installed
+      shell: type tox || pip install --user tox
+
+  roles:
+    - role: tox
