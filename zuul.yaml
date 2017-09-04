@@ -131,6 +131,17 @@
 #        to: release-job-failures@lists.openstack.org
 #        subject: 'Release of {change.project} failed'
 
+- pipeline:
+    name: periodic
+    description: Jobs in this queue are triggered on a timer.
+    manager: independent
+    source: gerrit
+    precedence: low
+    trigger:
+      timer:
+        - time: '0 6 * * *'
+
+
 - job:
     name: base
     parent: null
