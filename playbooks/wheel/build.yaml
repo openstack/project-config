@@ -1,14 +1,4 @@
-- hosts: localhost
-  roles:
-    # Ansible does not allow with_items on roles.
-    - role: add-fileserver
-      fileserver: "{{ wheel_mirror_centos_7_key }}"
-    - role: add-fileserver
-      fileserver: "{{ wheel_mirror_ubuntu_trusty_key }}"
-    - role: add-fileserver
-      fileserver: "{{ wheel_mirror_ubuntu_xenial_key }}"
-
-- hosts: "wheel-mirror-*"
+- hosts: all
 
   pre_tasks:
     - name: Generate AFS slug
