@@ -1676,6 +1676,15 @@ jobs:
           - ^spec/.*$
           - ^test-requirements.txt$
 
+  # no need to run this functional test job for documentation
+  # or release notes.
+  - name: ^gate-tripleo-buildimage-overcloud-full-centos-.*$
+    skip-if:
+      - project: ^openstack/python-tripleoclient$
+        all-files-match-any:
+          - ^.*\.rst$
+          - ^releasenotes/.*$
+
   # tripleo scenario002 started to be used used in ocata
   - name: ^gate-tripleo-ci-centos-7-scenario002-multinode-oooq-puppet.*$
     branch: ^(?!stable/newton).*$
