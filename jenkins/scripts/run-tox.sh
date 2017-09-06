@@ -32,7 +32,6 @@ function freeze_venv {
 function process_testr_artifacts {
     if [ -d ".stestr" ] ; then
         if [ -f ".stestr/0" ] ; then
-            stestr=1
             $bin_path/stestr last --subunit > ./testrepository.subunit
         fi
     else
