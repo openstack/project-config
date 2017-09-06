@@ -30,14 +30,21 @@ function freeze_venv {
 }
 
 function process_testr_artifacts {
-    if [ ! -d ".testrepository" ] ; then
-        return
-    fi
+    if [ -d ".stestr" ] ; then
+        if [ -f ".stestr/0" ] ; then
+            stestr=1
+            $bin_path/stestr last --subunit > ./testrepository.subunit
+        fi
+    else
+        if [ ! -d ".testrepository" ] ; then
+            return
+        fi
 
-    if [ -f ".testrepository/0.2" ] ; then
-        cp .testrepository/0.2 ./testrepository.subunit
-    elif [ -f ".testrepository/0" ] ; then
-        $bin_path/testr last --subunit > ./testrepository.subunit
+        if [ -f ".testrepository/0.2" ] ; then
+            cp .testrepository/0.2 ./testrepository.subunit
+        elif [ -f ".testrepository/0" ] ; then
+            $bin_path/testr last --subunit > ./testrepository.subunit
+        fi
     fi
     /usr/os-testr-env/bin/subunit2html ./testrepository.subunit testr_results.html
     SUBUNIT_SIZE=$(du -k ./testrepository.subunit | awk '{print $1}')
@@ -54,13 +61,16 @@ function process_testr_artifacts {
         exit 1
     fi
 
-    rancount=$($bin_path/testr last | sed -ne 's/Ran \([0-9]\+\).*tests in.*/\1/p')
-    if [ -z "$rancount" ] || [ "$rancount" -eq "0" ] ; then
-        echo
-        echo "Zero tests were run. At least one test should have been run."
-        echo "Failing this test as a result"
-        echo
-        exit 1
+    # By default stestr will fail if no tests are run.
+    if [[ ! -d ".stestr" ]] ; then
+        rancount=$($bin_path/testr last | sed -ne 's/Ran \([0-9]\+\).*tests in.*/\1/p')
+        if [ -z "$rancount" ] || [ "$rancount" -eq "0" ] ; then
+            echo
+            echo "Zero tests were run. At least one test should have been run."
+            echo "Failing this test as a result"
+            echo
+            exit 1
+        fi
     fi
 }
 
