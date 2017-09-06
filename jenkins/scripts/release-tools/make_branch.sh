@@ -56,7 +56,11 @@ REALSHA=`git show-ref -s $NEW_BRANCH`
 git push gerrit $NEW_BRANCH
 
 update_gitreview "$NEW_BRANCH"
-update_upper_constraints "$NEW_BRANCH"
+
+# Do not update upper constraints on driverfixes branches
+if [[ ! $NEW_BRANCH =~ driverfixes/ ]]; then
+    update_upper_constraints "$NEW_BRANCH"
+fi
 
 if [[ $NEW_BRANCH =~ stable/ ]]; then
     series=$(echo $NEW_BRANCH | cut -f2 -d/)
