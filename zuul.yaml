@@ -242,7 +242,9 @@
     parent: publish-openstack-artifacts
     description: |
       Publish the results of the tox-tarball job to tarballs.openstack.org.
-    pre-run: playbooks/python-tarball/pre
+    pre-run:
+      - playbooks/python-tarball/pre
+      - base/ensure-tox
     run: playbooks/python-tarball/run
     post-run: playbooks/python-branch-tarball/post
 
