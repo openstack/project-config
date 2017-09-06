@@ -21,8 +21,7 @@
          conf: |
              [[local|localrc]]
              enable_plugin aodh git://git.openstack.org/openstack/aodh
-             enable_plugin ceilometer git://git.openstack.org/openstack/ceilometer
-             enable_plugin gnocchi git://git.openstack.org/openstack/gnocchi
+             enable_plugin gnocchi http://github.com/gnocchixyz/gnocchi.git
              enable_plugin collectd-ceilometer-plugin git://git.openstack.org/openstack/collectd-ceilometer-plugin
      - shell: |
          #!/bin/bash -xe
@@ -34,7 +33,6 @@
          # We need to add those projects into repository, they are not available by default
          # and we are using all of them in our plugin
          export PROJECTS="openstack/aodh $PROJECTS"
-         export PROJECTS="openstack/ceilometer $PROJECTS"
          export PROJECTS="openstack/gnocchi $PROJECTS"
          export PROJECTS="openstack/collectd-ceilometer-plugin $PROJECTS"
          # Keep localrc to be able to set some vars in pre_test_hook
