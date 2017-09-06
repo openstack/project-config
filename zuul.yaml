@@ -170,6 +170,29 @@
       - site_logs
 
 - job:
+    name: base-minimal
+    parent: null
+    description: |
+      A subset of what the 'base' job provides: the absolute minimum considered
+      required to run for any one job.
+      It doesn't set up cached git repositories, will not set up mirrors,
+      doesn't validate the node and does not generate an ARA report.
+      These tasks, if required, can be included by the dependant jobs
+      themselves on a need basis.
+    pre-run: playbooks/base-minimal/pre
+    post-run:
+      - playbooks/base-minimal/post-ssh
+      - playbooks/base-minimal/post-logs
+    roles:
+      - zuul: openstack-infra/zuul-jobs
+    timeout: 1800
+    nodes:
+      - name: ubuntu-xenial
+        label: ubuntu-xenial
+    secrets:
+      - site_logs
+
+- job:
     name: base-test
     parent: null
     description: |
