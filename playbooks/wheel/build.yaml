@@ -1,0 +1,47 @@
+- hosts: localhost
+  roles:
+    # Ansible does not allow with_items on roles.
+    - role: add-fileserver
+      fileserver: "{{ wheel_mirror_centos_7_key }}"
+    - role: add-fileserver
+      fileserver: "{{ wheel_mirror_ubuntu_trusty_key }}"
+    - role: add-fileserver
+      fileserver: "{{ wheel_mirror_ubuntu_xenial_key }}"
+
+- hosts: "wheel-mirror-*"
+  gather_facts: False
+  tasks:
+    - name: Build the wheel mirror
+      with-items:
+        - python2
+        - python3
+      shell: |
+        # Generate the AFS Slug from the host system.
+        source scripts/afs-slug.sh
+
+        AFS_DIR=/afs/.openstack.org/mirror/wheel/$AFS_SLUG/
+        WHEEL_DIR=/opt/wheel/workspace
+
+        # Delete any previous build directory
+        rm -rf $WHEEL_DIR
+        mkdir $WHEEL_DIR
+
+        # Build the wheels into staging directory
+        echo "Building wheels"
+        bash -x scripts/wheel-build.sh $WHEEL_DIR {{ item }}
+
+        # Get an afs token and copy the wheels to AFS
+        echo "Obtaining token and copying wheels to AFS"
+        k5start -t -f /etc/wheel.keytab \
+            service/wheel \
+            -- timeout -k 2m 30m \
+            scripts/wheel-copy.sh $WHEEL_DIR $AFS_DIR
+
+        # Get an afs token and rebuild the mirror index.html
+        echo "Obtaining token and rebuilding mirror index."
+        k5start -t -f /etc/wheel.keytab \
+            service/wheel \
+            -- timeout -k 2m 30m \
+            scripts/wheel-index.sh $AFS_DIR
+
+        echo "Done."
