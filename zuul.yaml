@@ -12,8 +12,15 @@
     trigger:
       gerrit:
         - event: patchset-created
+        - event: change-restored
         - event: comment-added
-          comment: (?i)^(Patch Set [0-9]+:)?( [\w\\+-]*)*(\n\n)?\s*(recheck|reverify)
+          comment: (?i)^(Patch Set [0-9]+:)?( [\w\\+-]*)*(\n\n)?\s*recheck
+        - event: comment-added
+          require-approval:
+            - verified: [-1, -2]
+              username: zuul
+          approval:
+            - workflow: 1
       github:
         - event: pull_request
           action:
@@ -106,12 +113,11 @@
       gerrit:
         - event: ref-updated
           ref: ^refs/tags/[0-9]+(\.[0-9]+)*(a|b|rc)[0-9]+$
-# TODO(pabelanger): Uncomment for production
-#    failure:
-#      smtp:
-#        from: zuul@openstack.org
-#        to: release-job-failures@lists.openstack.org
-#        subject: 'Pre-release of {change.project} failed'
+    failure:
+      smtp:
+        from: zuul@openstack.org
+        to: release-job-failures@lists.openstack.org
+        subject: 'Pre-release of {change.project} failed'
 
 - pipeline:
     name: release
@@ -124,12 +130,11 @@
       gerrit:
         - event: ref-updated
           ref: ^refs/tags/[0-9]+(\.[0-9]+)*$
-# TODO(pabelanger): Uncomment for production
-#    failure:
-#      smtp:
-#        from: zuul@openstack.org
-#        to: release-job-failures@lists.openstack.org
-#        subject: 'Release of {change.project} failed'
+    failure:
+      smtp:
+        from: zuul@openstack.org
+        to: release-job-failures@lists.openstack.org
+        subject: 'Release of {change.project} failed'
 
 - pipeline:
     name: periodic
@@ -141,6 +146,141 @@
       timer:
         - time: '0 6 * * *'
 
+- pipeline:
+    name: release-post
+    # NOTE(mordred): release-post needs access to credentials (eg: pypi).
+    post-review: true
+    description: This pipeline runs release-process-critical jobs that operate after specific changes are merged.
+    manager: independent
+    precedence: high
+    trigger:
+      gerrit:
+        - event: ref-updated
+          ref: ^(?!refs/).*$
+    failure:
+      smtp:
+        from: zuul@openstack.org
+        to: release-job-failures@lists.openstack.org
+        subject: 'release-post job for {change.project} failed'
+
+- pipeline:
+    name: tag
+    post-review: true
+    description: This pipeline runs jobs in response to any tag event.
+    manager: independent
+    precedence: high
+    trigger:
+      gerrit:
+        - event: ref-updated
+          ref: ^refs/tags/.*$
+    failure:
+      smtp:
+        from: zuul@openstack.org
+        to: release-job-failures@lists.openstack.org
+        subject: 'Tag of {change.project} failed'
+
+- pipeline:
+    name: periodic-stable
+    post-review: true
+    description: Periodic checks of the stable branches.
+    manager: independent
+    precedence: low
+    trigger:
+      timer:
+        - time: '1 6 * * *'
+    failure:
+      smtp:
+        from: zuul@openstack.org
+        to: openstack-stable-maint@lists.openstack.org
+        subject: 'Stable check of {change.project} failed'
+
+- pipeline:
+    name: experimental
+    description: On-demand pipeline for requesting a run against a set of jobs that are not yet gating. Leave review comment of "check experimental" to run jobs in this pipeline.
+    success-message: Build succeeded (experimental pipeline).
+    failure-message: Build failed (experimental pipeline).
+    manager: independent
+    precedence: normal
+    trigger:
+      gerrit:
+        - event: comment-added
+          comment: (?i)^(Patch Set [0-9]+:)?( [\w\\+-]*)*(\n\n)?\s*check experimental\s*$
+    success:
+      gerrit: {}
+    failure:
+      gerrit: {}
+
+- pipeline:
+    name: check-tripleo
+    description: >
+      Newly uploaded patchsets enter this pipeline to receive an initial +/-1
+      Verified vote from the "zuul" user. This is used for TripleO patchsets
+      only so that if the TripleO cloud suffers a failure, folk looking can
+      tell that there isn't a system infra problem, only a TripleO specific
+      problem.
+      Once the TripleO test cloud is multi region and has some months of
+      proven stability this will be folded back into the normal check pipeline.
+    success-message: Build succeeded (check-tripleo pipeline).
+    failure-message: >
+      Build failed (check-tripleo pipeline).  For information on how to
+      proceed, see
+      http://docs.openstack.org/infra/manual/developers.html#automated-testing
+    manager: independent
+    precedence: normal
+    trigger:
+      gerrit:
+        - event: patchset-created
+        - event: change-restored
+        - event: comment-added
+          comment: (?i)^(Patch Set [0-9]+:)?( [\w\\+-]*)*(\n\n)?\s*recheck
+    require:
+      gerrit:
+        open: True
+        current-patchset: True
+    success:
+      gerrit: {}
+    failure:
+      gerrit: {}
+
+- pipeline:
+    name: experimental-tripleo
+    description: >
+      On-demand pipeline for requesting a run against a tripleo experimental
+      jobs - slower and running without redundancy - so not yet gating. Leave
+      review comment of "check experimental" to run jobs in this pipeline.
+    success-message: Build succeeded (experimental-tripleo).
+    failure-message: Build failed (experimental-tripleo).
+    manager: independent
+    precedence: low
+    trigger:
+      gerrit:
+        - event: comment-added
+          comment: (?i)^(Patch Set [0-9]+:)?( [\w\\+-]*)*(\n\n)?\s*check experimental\s*$
+    success:
+      gerrit: {}
+    failure:
+      gerrit: {}
+
+- pipeline:
+    name: merge-check
+    description: >
+      Each time a change merges, this pipeline verifies that all open changes
+      on the same project are still mergeable.
+    failure-message: Build failed (merge-check pipeline).
+    manager: independent
+    ignore-dependencies: true
+    precedence: low
+    require:
+      gerrit:
+        approval:
+          - verified: [1, 2]
+            username: zuul
+    trigger:
+      zuul:
+        - event: project-change-merged
+    merge-failure:
+      gerrit:
+        verified: -1
 
 - job:
     name: base
