@@ -19,6 +19,15 @@ export UPPER_CONSTRAINTS_FILE=$(pwd)/upper-constraints.txt
 tox -e$venv -- python setup.py build_sphinx
 result=$?
 
+# If the build has not already failed and whereto is installed then
+# test the redirects defined in the project.
+if [ $result -eq 0 ]; then
+    if [ -e .tox/$venv/bin/whereto ]; then
+        tox -e $venv -- whereto doc/source/_extra/.htaccess doc/test/redirect-tests.txt
+        result=$?
+    fi
+fi
+
 [ -e .tox/$venv/bin/pbr ] && freezecmd=pbr || freezecmd=pip
 
 echo "Begin pbr freeze output from test virtualenv:"
