@@ -2,14 +2,10 @@
   roles:
     - add-build-sshkey
     - start-zuul-console
+    - validate-host
     - use-cached-repos
     - mirror-workspace-git-repos
-    - role: validate-host
-      # TODO(mordred) When we have site-local variables, these should go there
-      zuul_traceroute_host: git.openstack.org
-      zuul_image_manifest: /etc/dib-builddate.txt
-    - role: configure-mirrors
-      mirror_fqdn: "{{ zuul_site_mirror_fqdn }}"
+    - configure-mirrors
     - role: fetch-zuul-cloner
       destination: "/usr/zuul-env/bin/zuul-cloner"
       repo_src_dir: "~/src/git.openstack.org"
