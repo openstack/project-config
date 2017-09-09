@@ -1,0 +1,57 @@
+---
+# This is all bad and I feel bad, but it's translated from
+# https://github.com/openstack-infra/puppet-zanata/blob/master/manifests/client.pp
+
+- name: install necessary packages
+  apt:
+    name: default-jre-headless
+
+- name: ensure zanata install dir
+  file:
+    path: /opt/zanata
+    owner: "{{ ansible_ssh_user }}"
+  become: true
+
+- name: extract zanata client tarball
+  unarchive:
+    src: "https://search.maven.org/remotecontent?filepath=org/zanata/zanata-cli/{{ zanata_client_version }}/zanata-cli-{{ zanata_client_version }}-dist.tar.gz"
+    remote_src: yes
+    dest: "/opt/zanata/"
+    creates: "/opt/zanata/zanata-cli-{{ version }}/bin/zanata-cli"
+
+- name: ensure zanata-cli perms
+  file:
+    path: "/opt/zanata/zanata-cli-{{ version }}/bin/zanata-cli"
+    mode: 0755
+
+- name: link zanata-cli
+  file:
+    path: /usr/local/bin/zanata-cli
+    src: "/opt/zanata/zanata-cli-{{ version }}/bin/zanata-cli"
+    state: link
+
+# This is a preview module in Ansible 2.3. It may not work.
+- name: import cert to java keystore
+  java_cert:
+    cert_url: "{{ zanata_api_credentials.server_name }}:443"
+    keystore_path: /etc/ssl/certs/java/cacerts
+    keystore_pass: changeit
+    keystore_create: true
+  become: true
+  # Use sudo to ensure root ownership
+
+- name: set permissions for cacert
+  file:
+    path: /etc/ssl/certs/java/cacerts
+    mode: 0644
+  become: true
+
+- name: ensure zanata config dir
+  file:
+    path: ~/.config
+    state: directory
+
+- name: write out zanata config
+  template:
+    src: zanata.ini
+    dest: ~/.config/zanata.ini

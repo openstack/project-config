@@ -1,0 +1,15 @@
+---
+- hosts: all
+  roles:
+    - prep-zanata
+    - legacy-zuul-git-prep-upper-constraints
+
+  tasks:
+    - name: Run upstream_translation_update.sh script
+      command: "{{ ansible_user_dir }}/scripts/upstream_translation_update.sh {{ zuul.project.short_name }} {{ zuul.job }}"
+      args:
+        chdir: "src/{{ zuul.project.canonical_name }}"
+
+- hosts: all
+  roles:
+    - fetch-translation-output

@@ -20,7 +20,8 @@ JOBNAME=$3
 # allow /'s in version names.
 ZANATA_VERSION=${BRANCH//\//-}
 
-source /usr/local/jenkins/slave_scripts/common_translation_update.sh
+SCRIPTSDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source $SCRIPTSDIR/common_translation_update.sh
 
 init_branch $BRANCH
 
