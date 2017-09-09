@@ -1,0 +1,80 @@
+logstash_gearman_server: logstash.openstack.org
+# For every file found in the logs directory (and its subdirs), the
+# module will attempt to match the filenames below.  If there is a
+# match, the file is submitted to the logstash processing queue, along
+# with the tags for that match.  The first match wins, so be sure to
+# list more specific names first.  The names are un-anchored regular
+# expressions (so if you need to match the root (i.e, the work/logs/
+# directory), be sure to anchor them with ^).
+logstash_processor_config:
+  files:
+    - name: console\.html
+      tags:
+        - console
+    - name: grenade\.sh\.txt
+      tags:
+        - console
+        - console.html
+    - name: devstacklog\.txt
+      tags:
+        - console
+        - console.html
+    - name: apache/keystone\.txt
+      tags:
+        - screen
+        - oslofmt
+    - name: apache/horizon_error\.txt
+      tags:
+        - apacheerror
+    # TODO(clarkb) Add swift proxy logs here.
+    - name: syslog\.txt
+      tags:
+        - syslog
+    - name: libvirtd\.txt
+      tags:
+        - libvirt
+    - name: tempest\.txt
+      tags:
+        - screen
+        - oslofmt
+    - name: javelin\.txt
+      tags:
+        - screen
+        - oslofmt
+    # Neutron index log files (files with messages from all test cases)
+    - name: dsvm-functional-index\.txt
+      tags:
+        - oslofmt
+    - name: dsvm-fullstack-index\.txt
+      tags:
+        - oslofmt
+    - name: screen-s-account\.txt
+      tags:
+        - screen
+        - apachecombined
+    - name: screen-s-container\.txt
+      tags:
+        - screen
+        - apachecombined
+    - name: screen-s-object\.txt
+      tags:
+        - screen
+        - apachecombined
+    # tripleo logs
+    - name: postci\.txt
+      tags:
+        - console
+        - postci
+    - name: var/log/extra/logstash\.txt
+      tags:
+        - console
+        - postci
+    # wildcard logs
+    - name: devstack-gate-.*\.txt
+      tags:
+        - console
+        - console.html
+    - name: screen-.*\.txt
+      tags:
+        - screen
+        - oslofmt

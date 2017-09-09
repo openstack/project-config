@@ -1,0 +1,9 @@
+- name: Submit logstash processing jobs to log processors
+  submit_log_processor_jobs:
+    gearman_server: "{{ logstash_gearman_server }}"
+    job: "push-log"
+    config: "{{ logstash_processor_config }}"
+    success: "{{ success }}"
+    host_vars: "{{ hostvars }}"
+    path: "{{ zuul.executor.log_root }}"
+    log_url: "{{ (lookup('file', zuul.executor.result_data_file) | from_json).get('zuul').get('log_url') }}"
