@@ -1,0 +1,60 @@
+# default-node tells the migration script which node the new base job
+# uses. The migration script reads label names from the nodepool config and
+# replaces node names in jobs with node variants.
+default-node: ubuntu-xenial
+# List of job mapping data. In each entry:
+# old
+#    matches v2 job names. If it starts with a ^ it's a regex. if it doesn't
+#    it's a direct string match
+# new
+#    the new job and can contain python format strings corresponding to
+#    named regex matches from old. It can also be a dict that will be used
+#    verbatim
+# required-projects:
+#    variables to add to the new job and can contain format strings
+#    corresponding to named regex matches from old
+# vars
+#    variables to add to the new job and can contain format strings
+#    corresponding to named regex matches from old
+job-mapping:
+  - old: noop
+    new: noop
+
+  - old: '^gate-.*-python(?P<version>[0-9]{2})'
+    new: 'openstack-tox-py{version}'
+
+  - old: '^gate-.*-pep8'
+    new: 'tox-pep8'
+
+  - old: '^gate-.*-cover'
+    new: 'tox-cover'
+
+  - old: 'gate-.*-docs'
+    new: 'openstack-doc-build'
+
+  - old: '.*-branch-tarball'
+    new: publish-openstack-python-branch-tarball
+
+  - old: hook-{name}-rtfd
+    new: trigger-readthedocs
+
+  - old: '^.*-docs-unified-ubuntu-xenial'
+    new: publish-openstack-python-docs
+# List of project-template mapping data. In each entry:
+# old
+#    v2 project-template name. If a template is listed here, the old template
+#    will not be converted, and references to it will be replaced with new
+# new
+#    v3 project template to use in project pipeline config
+template-mapping:
+  - old: python-jobs
+    new: openstack-python-jobs
+
+  - old: python35-jobs
+    new: openstack-python35-jobs
+
+  - old: publish-to-pypi
+    new: publish-to-pypi
+
+  - old: docs-on-rtfd
+    new: docs-on-readthedocs
