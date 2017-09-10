@@ -20,26 +20,35 @@ job-mapping:
   - old: noop
     new: noop
 
-  - old: '^gate-.*-python(?P<version>[0-9]{2})'
+  - old: '^gate-.*-python(?P<version>[0-9]{2})-ubuntu-xenial'
     new: 'openstack-tox-py{version}'
 
-  - old: '^gate-.*-pep8'
-    new: 'tox-pep8'
+  - old: '^gate-.*-pep8-ubuntu-xenial'
+    new: 'openstack-tox-pep8'
 
-  - old: '^gate-.*-cover'
-    new: 'tox-cover'
+  - old: '^gate-.*-compare-coverage-ubuntu-(trusty|xenial)'
+    new: 'openstack-compare-cover'
 
-  - old: 'gate-.*-docs'
-    new: 'openstack-doc-build'
+  - old: '^.*-coverage-ubuntu-(trusty|xenial)'
+    new: 'openstack-tox-cover'
 
-  - old: '.*-branch-tarball'
-    new: publish-openstack-python-branch-tarball
+  - old: '^gate-.*-linters-ubuntu-(trusty|xenial)'
+    new: 'openstack-tox-linters'
 
-  - old: hook-{name}-rtfd
-    new: trigger-readthedocs
+  - old: '^gate-.*-bashate'
+    new: 'openstack-tox-bashate'
 
   - old: '^.*-docs-unified-ubuntu-xenial'
     new: publish-openstack-python-docs
+
+  - old: '^gate-.*-docs.*'
+    new: 'openstack-doc-build'
+
+  - old: '^.*-branch-tarball'
+    new: publish-openstack-python-branch-tarball
+
+  - old: '^hook-.*-rtfd'
+    new: trigger-readthedocs
 # List of project-template mapping data. In each entry:
 # old
 #    v2 project-template name. If a template is listed here, the old template
