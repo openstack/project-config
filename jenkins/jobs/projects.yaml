@@ -42,8 +42,6 @@
       - openstack-publish-jobs
       - pypi-jobs
 
-# NOTE(mhayden): The 'ansible-hardening' repo will replace
-# 'openstack-ansible-security' in the future.
 - project:
     name: ansible-hardening
 
@@ -7612,25 +7610,6 @@
       - gate-{name}-requirements
       - openstack-publish-jobs
       - openstack-releasenotes-jobs
-
-- project:
-    name: openstack-ansible-security
-
-    jobs:
-      - ansible-role-jobs
-      - gate-{name}-requirements
-      - openstack-publish-jobs
-      - openstack-releasenotes-jobs
-      - '{pipeline}-{name}-ansible-{scenario}-{ostype}{suffix}':
-          suffix: ''
-          ostype: ubuntu-trusty
-          pipeline: gate
-          scenario: func_rhel6
-      - '{pipeline}-{name}-ansible-{scenario}-{ostype}{suffix}':
-          suffix: '-nv'
-          ostype: debian-jessie
-          pipeline: gate
-          scenario: func
 
 - project:
     name: openstack-ansible-specs

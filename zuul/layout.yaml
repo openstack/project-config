@@ -3323,11 +3323,6 @@ jobs:
   - name: ^gate-openstack-ansible.*-ubuntu-trusty.*$
     branch: ^stable/newton$
 
-  # Keep the ansible-hardening gate jobs for RHEL6 STIG content in Pike and
-  # earlier branches.
-  - name: ^gate-ansible-hardening-.*-ubuntu-trusty.*$
-    branch: ^stable/(newton|ocata|pike)$
-
   # Keep in mind that stable/mitaka and stable/newton are ubuntu only,
   # so we remove centos-7 jobs.
   - name: ^gate-openstack-ansible-.*-ansible-.*-centos-7.*$
@@ -3352,20 +3347,20 @@ jobs:
   - name: ^gate-openstack-ansible-openstack-ansible-aio-ubuntu-xenial-nv$
     branch: ^stable/newton$
 
-  # Restrictions for openstack-ansible-security/ansible-hardening
+  # Restrictions for ansible-hardening
   #   - Run centos-7 job on Newton or later (no restriction needed)
   #   - Run debian-jessie job on Pike or later
   #   - Run fedora-26 job on Pike or later
   #   - Run opensuse-423 job on Pike or later
-  #   - Run RHEL 6 content against ubuntu-trusty on Ocata or later
-  - name: ^gate-(openstack-ansible-security|ansible-hardening)-ansible-func-debian-jessie.*$
+  #   - Run RHEL 6 STIG content job on Pike or earlier
+  - name: ^gate-ansible-hardening-ansible-func-debian-jessie.*$
     branch: ^(?!stable/(newton|ocata)).*$
-  - name: ^gate-(openstack-ansible-security|ansible-hardening)-ansible-func-fedora-26.*$
+  - name: ^gate-ansible-hardening-ansible-func-fedora-26.*$
     branch: ^(?!stable/(newton|ocata)).*$
-  - name: ^gate-(openstack-ansible-security|ansible-hardening)-ansible-func-opensuse-423.*$
+  - name: ^gate-ansible-hardening-ansible-func-opensuse-423.*$
     branch: ^(?!stable/(newton|ocata)).*$
-  - name: ^gate-(openstack-ansible-security|ansible-hardening)-ansible-func_rhel6.*$
-    branch: ^(?!stable/newton).*$
+  - name: ^gate-ansible-hardening-.*-ubuntu-trusty.*$
+    branch: ^stable/(newton|ocata|pike)$
 
   # Skip the OpenStack-Ansible voting aio scenario job on xenial for the
   # openstack-ansible repository if the branch is anything before ocata.
@@ -5391,8 +5386,6 @@ projects:
       - name: check-requirements
       - name: publish-to-pypi
 
-  # NOTE(mhayden): This repository will replace openstack-ansible-security in
-  # the future.
   - name: openstack/ansible-hardening
     template:
       - name: merge-check
@@ -14031,20 +14024,7 @@ projects:
   - name: openstack/openstack-ansible-security
     template:
       - name: merge-check
-      - name: ansible-role-jobs
-      - name: check-requirements
-      - name: openstack-unified-publish-jobs
-      - name: release-notes-jobs
-      - name: ansible-role-functional-jobs-centos7
-      - name: ansible-role-functional-jobs-xenial
-      - name: ansible-role-functional-jobs-opensuse-423
-    check:
-      - gate-openstack-ansible-security-ansible-func_rhel6-ubuntu-trusty
-      - gate-openstack-ansible-security-ansible-func-debian-jessie-nv
-    gate:
-      - gate-openstack-ansible-security-ansible-func_rhel6-ubuntu-trusty
-    release:
-      - openstack-ansible-security-announce-release
+      - name: noop-jobs
 
   - name: openstack/openstack-ansible-specs
     template:
