@@ -1,0 +1,10 @@
+- name: Submit subunit processing jobs to log processors
+  when: zuul.pipeline in ['gate', 'periodic', 'post']
+  submit_log_processor_jobs:
+    gearman_server: "{{ subunit_gearman_server }}"
+    job: "push-subunit"
+    config: "{{ subunit_processor_config }}"
+    success: "{{ success }}"
+    host_vars: "{{ hostvars }}"
+    path: "{{ zuul.executor.log_root }}"
+    log_url: "{{ (lookup('file', zuul.executor.result_data_file) | from_json).get('zuul').get('log_url') }}"
