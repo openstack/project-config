@@ -3298,11 +3298,12 @@ jobs:
   - name: periodic-tempest-dsvm-all-master
     tags: periodic-qa
 
-  # Skip all openstack-ansible jobs except the releasenotes/docs/linters/
-  # deploy-guide jobs for files that are not related to functional testing.
-  - name: ^gate-openstack-ansible(?!.*(-docs|-releasenotes|-deploy-guide|-linters-ubuntu-xenial)).*$
+  # Skip all openstack-ansible and ansible-hardening jobs except the
+  # releasenotes/docs/linters/deploy-guide jobs for files that are not related
+  # to functional testing.
+  - name: ^gate-(openstack-ansible|ansible-hardening)(?!.*(-docs|-releasenotes|-deploy-guide|-linters-ubuntu-xenial)).*$
     skip-if:
-      - project: ^openstack/openstack-ansible(?!-specs).*$
+      - project: ^openstack/(openstack-ansible|ansible-hardening)(?!-specs).*$
         all-files-match-any:
           - ^\.git.*
           - ^.*\.(example|md|rst)$
@@ -3312,7 +3313,6 @@ jobs:
           - ^setup\.(cfg|py)$
           - ^tox.ini$
           - ^Vagrantfile
-
 
   # Run all OpenStack-Ansible trusty jobs except the docs and linters jobs
   # for Newton as this is still a supported platform for OpenStack-Ansible.
