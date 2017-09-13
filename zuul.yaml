@@ -461,6 +461,23 @@
     name: wheel-mirror
     max: 1
 
+- nodeset:
+    name: wheel-mirror-builders
+    # NOTE: The python2 and python3 suffix are important, they select the
+    # version of python to build in each job. (we pull the last character of
+    # the inventory_hostname
+    nodes:
+      - name: wheel-mirror-ubuntu-xenial-python2
+        label: ubuntu-xenial
+      - name: wheel-mirror-ubuntu-trusty-python2
+        label: ubuntu-trusty
+      - name: wheel-mirror-centos-7-python2
+        label: centos-7
+      - name: wheel-mirror-ubuntu-xenial-python3
+        label: ubuntu-xenial
+      - name: wheel-mirror-ubuntu-trusty-python3
+        label: ubuntu-trusty
+
 - job:
     name: build-wheel-mirror
     pre-run: playbooks/wheel/pre
@@ -471,11 +488,15 @@
     timeout: 9000
     allowed-projects:
       - openstack/requirements
+    roles:
+      - zuul: openstack-infra/ansible-puppet
+        name: puppet
+    required-projects:
+      - openstack-infra/system-config
+      - openstack-infra/puppet-kerberos
+      - openstack-infra/puppet-openafs
     semaphore: wheel-mirror
     secrets:
-      - wheel_mirror_centos_7_key
-      - wheel_mirror_ubuntu_trusty_key
-      - wheel_mirror_ubuntu_xenial_key
       - name: afs
         secret: wheel_keytab
 
@@ -486,18 +507,6 @@
     secrets:
       - name: afs
         secret: afsadmin_keytab
-
-- job:
-    name: build-wheel-mirror-python2
-    parent: build-wheel-mirror
-    vars:
-      wheel_python: python2
-
-- job:
-    name: build-wheel-mirror-python3
-    parent: build-wheel-mirror
-    vars:
-      wheel_python: python3
 
 - job:
     name: tag-releases
@@ -808,156 +817,6 @@
       service_name: service/wheel@OPENSTACK.ORG
 
 - secret:
-    name: wheel_mirror_ubuntu_xenial_key
-    data:
-      fqdn: wheel-mirror-ubuntu-xenial-amd64.slave.openstack.org
-      path: /home/jenkins
-      ssh_known_hosts: |
-        wheel-mirror-ubuntu-xenial-amd64.slave.openstack.org,104.130.132.233,2001:4800:7818:101:be76:4eff:fe04:cb80 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQD0kJeSCkFHcotNQY2KtuRS1tZQJF5glcUiiWXOyq1QXAWHK/otmK+rlGkKcUW8RyXOdgdAKnmX/r9eo+TUSUNgbz500sWO6RlFgUh6+1r11kdokcdiMqcr+ASAieZDkK6ZlukslZd7GzXDAyv0g77hB3oxAKrOGVgQUezIZyVX0RuYM7pyZTIUQNPUsbKmaIeEPD2yR83/4IetsYClEvDlbwNaM4SC0NHOEqXqednjgXu301iEMzOdmeHit8KsVbyOXgeE/61FiuDybJQANDIVSs9iCo4OdxlJpGMW8lWAN5UUZXXcy/ZaBZoSdJ9I1LPxm2/YU2xkJvYLXK4GLGh1
-      ssh_username: jenkins
-      ssh_private_key: !encrypted/pkcs1-oaep
-        - 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
-
-- secret:
-    name: wheel_mirror_ubuntu_trusty_key
-    data:
-      fqdn: wheel-mirror-ubuntu-trusty-amd64.slave.openstack.org
-      path: /home/jenkins
-      ssh_known_hosts: |
-        wheel-mirror-ubuntu-trusty-amd64.slave.openstack.org,23.253.73.158,2001:4800:7815:103:be76:4eff:fe06:16ab ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDcGz5NOakJmNOfIussf9x+76j9XNan69ZUAwdKZRzV7SHVedGlkk9MjuJKxTSA5O0AKDThRirOWLaW38IH2RRMwMI87xBb0T9EfgboiUCf37En5g8ilFldtkNr14c+1IOMVZHWbUlf+do6k0dQeuqappjgLqUAd5hXGg6HtAj7WNknGHboyJ8guMjI6ZBgfQusIWghPyoYNObg4gG//9VhbII6BRb1EuvdReLOyLZUN92PrLKNBb0K0do7z+zUcoTfBl0boDqZ6bkbHzdGDl8LLodlzU1yx688DYjnac0r2LB6cAybFnvN09GWyMqsghoBNChsBVOhz7iYzwMdB1JZ
-      ssh_username: jenkins
-      ssh_private_key: !encrypted/pkcs1-oaep
-        - RWzoa17cam2pkeCyQJWg13HxmiWNyWQK3Y1VJc+ReZxtPbRTclzZhZGOOTc6MT3HWqiMp
-          OAQds+TVxLmpRTxQBQH6S2f+Mk7IfBt8uNd0kjKDWh7W26GryzFD2fmDa7Tp6QqMlSRbh
-          7PnMJ9gG3O8uVrpTfXO+0wbx7uP5nxM4a1zJQ6SEY/GJ4EiYSX+NU9PzoVcNUs3c0gRWW
-          voIq+9Nvv8QwzwcYy59YWDXIf//yqZeqp7WRDNUDqiH+5R/fnidrlpF6G1Njffipa8unX
-          qsE5pxokpz1QBNkIx4nbyiI9gfDvROKi073R7eAHGbi/Ns4RMfTuSmVk+tLqzfHSaHDvE
-          62xPGdkCtUQqN14W7+KIsqOybzaMXAu7Vjr+0tj+KOMHm5rZ4oJAQFf1UzlOHdTR3lOj9
-          xe1QT9jzWa8ap2JhQg1rLXiKakYNG4J21jYY9G1P0x7+Ukd/CyQEW3TfjoC7TBdSzc5cf
-          3fnckh2HI/OhSSEnBTnrD1OnLnC+UdIVMNjHPR7faIJFkUySYr8ArUXq7P0TZGiaKYI+O
-          I/xx9C7wDb/L8Db1e6F2Wcv6XBwkKGplqEjmiDh64vkK5nvcZQSbYo6Uevh44Jtlr/Wkb
-          LIlmTyz8mhunwilseWNsvUokImyVFv98wxLeVx8Ngm5+Cz+3OII6RJfCHJzHkk=
-        - eTxCD1BKYrfBweMDX5351aJ14FCS1Rj3V+GUYGIPs9XAHO4EnX/cjI+YHR1m65kwCgRbI
-          wTy0MnB8W38W1EslI1vUDoI0TRiZK32g+cc3o1+Fsu5Urq8OWZmXeMPPn93ZSqU6Gpqxr
-          NURbc+EKF5Wp88IzNDN35LdW9lIhj710G6uI/0KL9XBOopF/7kaHEuZg/3xLzWQDiwVrI
-          LJs3uSMmX8XyCPqCaS9mHy4MNGor4WVHB1+4KsIGFS1CZmmhyBzYgsVXC/bn8dLPKvJVE
-          Wd7RF7BmoedQtf4y7eNMt0WorrzCYVmrA2aPQjK2xWCeQqi5+e2qomtiL+LNXIRMNCokb
-          +VdCxx4TDrxPI1BSPJ2PLP+nyRxlzz1d9GSwDYMmr28lmmMMco4lK8zyxL1k2V60kfMxY
-          ei4lHruuogHOodkVIlRYyNBV4BrfjfYp62S7nhWmdgf8DvHNUnwmNvZMMSYKSXmYt5uRS
-          ZdDyP7b6w1QDMunLe7eDOi0NGmV0/bPmHx/8JdWaIAcXMyOZItNhWZkdWsvc8mRd+Id1U
-          nj9jgZ2twAfmyh9SkEsMJmXiLkEsvRemQ0ykGErud3bsAY8HRujUfp+Y2eWtBPIHg3vow
-          6v6Uu3V2Mm4YX16lNQmOhf2LBxsL6S2/GhvakjV1jD7u0FxLWMbjBer6OO3ir4=
-        - mg/AszWE3zYGx9v74/pUE/4YdUwxy2Hn3TpDWf7yQ2XWiYEwab+ERhWci8HLaE8PDi4Kk
-          eA5my/HYDFVyJd1gXN9RtN6MUpMNEDWN2t4LOPb00eFacBppzbnPlelsrzznR/3WVTfia
-          KcX3+loAQwG+0+1zBJG52KWnfR2/YbwgzygbPS5Kq/1p8N/SGElZxozhC/bWD//Gxa9SF
-          bjAoshcAXrrdjer90r0KrN/yvPclxcGbXmd4ZxW/keGPdOfdLMs0pUNTYvN+R8oM1UKJ5
-          nubLWoNYbGXDIN6Xp9inUDT3w0AmIowNJP6+vtjdqWWIInuWBZisZX9crMsCwd/Y3njrX
-          efj/sdFujmGr8Q6bHLsxAt1RwGKazbp3Otaqq7shZDJHaWQofEhI3D2JZAtHOKQQB1xDx
-          CYDUUYds3RNm21bS5Jur+I1poHc3rFpSRHFg2cKb8724J6fKl2CcjoZoWRNICpaZptybG
-          wMQHf318pIb3CVjnf71iAxapvwOIKXU1C3MmCJywZgfFz/DE4M84jijmPbfHllutJV98N
-          DsGkQhaLyE/UYrW8ZgDpz2+o+A3Wdq56tdGGbuZ/EOPtNIU0YTuJDEfSKobP4Ypgs/Zfp
-          o09kEYiCVQnbLtUfxL1qrs5lAdwKDgnZoKywJomEMpjTitp4SCG1y3YZGTIj0E=
-        - j5rzDo34UQOeCKdpQrt///7wlTthN7e+GR5Y2cPO6/3Nj9Cp6GhOhQcuxxZ+1MDcBtqT6
-          8ebN2dnxiiTo3H1qtWraDIbs1axkgYw3r/kBAxiN3YTeJ+ZIiYiq7Tv/8lkalh1elZzcY
-          0tZioduSAqCK6oo4r6Nzlcuej5nKT1hglChvb0WvTDbhxNBT5n2KGt79ZE11WISNLJO2V
-          qVExGToYHF3DqEky965mDgSbGN9hitVwVtTXv+2s24qkulqzPAkB8kR1NVLXTk64tu3iE
-          vLrS/RKhlQ2n96u+Bny19K8QPfepTP8r2ECmzKltaNXLoJTRABANXDu/EyZk8hvn3CdS9
-          SSTMbroPoD0Rm55N+D/3nmusTFPM13vNfX7yrDrPMXVinnqvOkAF6WQMz5cmKMDSD6BuY
-          4EYi855L/7RybGgvup12nHZNrbKZX03kREFID7JSLzfenaXEqQ3R+b9kyJq9mC/mD4oCm
-          7sLWCda77CbqspQvDuKxIam7ttlHbmJBzP9Ldt9rzAPiAkfmmHZD6+MXz6YqWBlPB+jim
-          QSGRUH4KXR0iFvsbK5mtFUYLJLmyF67EVDEECzUK5wKASb5SQOxhXsru5Yh7IqpSWEd8J
-          +rfHhSdeahDbBRBWShs/otfEFzy4Rgaoxnnpi04jBLO+H0z7XVJ+RLMe18zcNE=
-
-- secret:
-    name: wheel_mirror_centos_7_key
-    data:
-      fqdn: wheel-mirror-centos-7-amd64.slave.openstack.org
-      path: /home/jenkins
-      ssh_known_hosts: |
-          wheel-mirror-centos-7-amd64.slave.openstack.org,104.239.149.239,2001:4800:7819:105:be76:4eff:fe06:6256 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCjU6QrFp4U7P9EDvgF6jehVb/RQyX2QsIpOHIFvXIkMtNQVw5Q5wqgoPEdbOB5g/KB9mFF+M9dMeHc/PxPu9tsJaWlba3JTJ0rsL9qCB52O6x22tHgwB/MSapB91iIs28Xwd8Wn8jfV89mnW/htJDo9reJdh/3eFgQBGeOFVc6prrDyYMMtQlFzp5zV5lttAU/jzau6sdkjYn/FfRcd0j3YcvNo6nzs1YbVmFO1tZ1+kMkMDprg1gu4Htp2/t2M0tHAUnyaDtnPo4u9GswcXH7+uG9i5SWJ/3c5B6Cdcvc1C/yIBX2na6Qk0NExoZiOqj7KHk+McQj4cnBbdK0ptgP
-      ssh_username: jenkins
-      ssh_private_key: !encrypted/pkcs1-oaep
-        - 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
-
-- secret:
     name: release_ssh_key
     data:
       private_key: !encrypted/pkcs1-oaep
@@ -1069,12 +928,10 @@
       jobs:
         # This is a periodic job to ensure that our wheels are reasonably
         # up-to-date. It uses the upper-constraints files from requirements.
-        - build-wheel-mirror-python2
-        - build-wheel-mirror-python3
+        - build-wheel-mirror
         - release-wheel-mirror:
             dependencies:
-              - build-wheel-mirror-python2
-              - build-wheel-mirror-python3
+              - build-wheel-mirror
 
 - project:
     name: openstack-infra/project-config
