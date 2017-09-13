@@ -74,11 +74,15 @@ class LogMatcher(object):
 
     def submitJobs(self, jobname, files):
         self.client.waitForServer()
+        ret = []
         for f in files:
             output = self.makeOutput(f)
-            job = gear.TextJob(jobname,
-                               json.dumps(output).encode('utf8'))
+            output = json.dumps(output).encode('utf8')
+            job = gear.TextJob(jobname, output)
             self.client.submitJob(job, background=True)
+            ret.append(dict(handle=job.handle,
+                            arguments=output))
+        return ret
 
     def makeOutput(self, file_object):
         output = {}
@@ -147,7 +151,7 @@ def main():
     )
 
     p = module.params
-    results = dict(files=[])
+    results = dict(files=[], jobs=[], invocation={})
     try:
         l = LogMatcher(p.get('gearman_server'),
                        p.get('gearman_port'),
@@ -158,7 +162,8 @@ def main():
         files = l.findFiles(p['path'])
         for f in files:
             results['files'].append(f.toDict())
-        l.submitJobs(p['job'], files)
+        for handle in l.submitJobs(p['job'], files):
+            results['jobs'].append(handle)
         module.exit_json(**results)
     except Exception:
         e = get_exception()
