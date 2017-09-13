@@ -15,12 +15,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import os
 import json
 import re
 import logging
 
 from ansible.module_utils.six.moves import urllib
-from ansible.module_utils.basic import AnsibleModule
+from ansible.module_utils.basic import AnsibleModule, get_exception
 
 import gear
 import yaml
