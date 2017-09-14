@@ -111,7 +111,7 @@ class LogMatcher(object):
         # TODO: should be build_executor, or removed completely
         fields["build_master"] = zuul['executor']['hostname']
 
-        fields["project"] = zuul['project']
+        fields["project"] = zuul['project']['name']
         # The voting value is "1" for voting, "0" for non-voting
         fields["voting"] = int(zuul['voting'])
         # TODO(clarkb) can we do better without duplicated data here?
