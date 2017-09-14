@@ -612,6 +612,18 @@ project-templates:
             - '{name}-announce-release'
             - 'propose-{name}-update-constraints'
 
+  # Publish wheels and sdists to pypi.python.org but don't update constraints
+  # or announce things.
+  - name: publish-to-pypi-quietly
+    pre-release:
+      - '{name}-tarball':
+          - '{name}-tarball-signing'
+          - '{name}-pypi-both-upload'
+    release:
+      - '{name}-tarball':
+        - '{name}-tarball-signing'
+        - '{name}-pypi-both-upload'
+
   # Do a pre-check on xstatic version numbers matching tags then upload
   # wheels and sdists etc.
   - name: xstatic-publish-jobs
@@ -5680,6 +5692,7 @@ projects:
   - name: openstack/ara
     template:
       - name: merge-check
+      - name: publish-to-pypi-quietly
       - name: python-jobs
       - name: python35-jobs
       - name: docs-on-rtfd
@@ -5699,14 +5712,6 @@ projects:
       - gate-ara-integration-py27-latest-centos-7
       - gate-ara-integration-py35-latest-ubuntu-xenial
       - gate-ara-integration-py35-latest-fedora-26
-    pre-release:
-      - ara-tarball:
-          - ara-tarball-signing
-          - ara-pypi-both-upload
-    release:
-      - ara-tarball:
-          - ara-tarball-signing
-          - ara-pypi-both-upload
 
   - name: openstack/arch-wg
     template:
@@ -13089,38 +13094,24 @@ projects:
   - name: openstack/oaktree
     template:
       - name: merge-check
+      - name: publish-to-pypi-quietly
       - name: python-jobs
       - name: python35-jobs
     check:
       - gate-oaktree-dsvm-functional
     gate:
       - gate-oaktree-dsvm-functional
-    pre-release:
-      - oaktree-tarball:
-          - oaktree-tarball-signing
-          - oaktree-pypi-both-upload
-    release:
-      - oaktree-tarball:
-          - oaktree-tarball-signing
-          - oaktree-pypi-both-upload
 
   - name: openstack/oaktreemodel
     template:
       - name: merge-check
+      - name: publish-to-pypi-quietly
     check:
       - gate-oaktree-dsvm-functional
       - oaktreemodel-distcheck
     gate:
       - gate-oaktree-dsvm-functional
       - oaktreemodel-distcheck
-    pre-release:
-      - oaktreemodel-tarball:
-          - oaktreemodel-tarball-signing
-          - oaktreemodel-pypi-both-upload
-    release:
-      - oaktreemodel-tarball:
-          - oaktreemodel-tarball-signing
-          - oaktreemodel-pypi-both-upload
 
   - name: openstack/octavia
     template:
@@ -17463,14 +17454,10 @@ projects:
   - name: openstack/stackalytics
     template:
       - name: merge-check
+      - name: publish-to-pypi-quietly
       - name: python35-jobs
       - name: docs-on-rtfd
       - name: python-jobs
-    pre-release:
-      - stackalytics-tarball
-    release:
-      - stackalytics-tarball:
-        - stackalytics-pypi-both-upload
 
   - name: openstack/stacklight-integration-tests
     template:
