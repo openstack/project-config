@@ -99,14 +99,14 @@ class LogMatcher(object):
         return out_event
 
     def makeFields(self, filename):
-        hosts = self.hosts
+        hosts = [h for h in self.hosts.values() if 'nodepool' in h]
         zuul = self.zuul
         fields = {}
         fields["filename"] = filename
         fields["build_name"] = zuul['job']
         fields["build_status"] = self.success and 'SUCCESS' or 'FAILURE'
         # TODO: this is too simplistic for zuul v3 multinode jobs
-        node = list(hosts.values())[0]
+        node = hosts[0]
         fields["build_node"] = node['nodepool']['label']
         # TODO: should be build_executor, or removed completely
         fields["build_master"] = zuul['executor']['hostname']
