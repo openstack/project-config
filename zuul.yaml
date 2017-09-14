@@ -354,20 +354,6 @@
       - site_logs
 
 - job:
-    name: publish-openstack-afs
-    description: |
-      Publish job to upload artifacts to AFS backend.
-
-      .. zuul:jobvar:: afs_publisher_target
-
-        Target directory within /afs/.openstack.org/docs
-
-    post-run: playbooks/publish/openstack-afs
-    secrets:
-      - secret: afsdocs_secret
-        name: afs
-
-- job:
     name: publish-openstack-artifacts
     description: |
       Publish job to upload artifacts to tarballs.openstack.org
@@ -411,17 +397,17 @@
     vars:
       tox_constraints_file: "{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt"
 
-# NOTE(pabelanger): We have related untrusted job in openstack-zuul-jobs called
-# openstack-doc-build. We should discuss post PTG how to potentially deal with
-# duplication.
 - job:
     name: publish-openstack-python-docs
-    parent: publish-openstack-afs
     description: |
-      Publish the results of the tox-docs job to /afs/.openstack.org/docs
+      Publish the results of the openstack-build-doc job to
+      /afs/.openstack.org/docs/{{ zuul.project.short_name }}
+    final: True
     pre-run: playbooks/python-docs/pre
     run: playbooks/python-docs/run
-    post-run: playbooks/python-docs/post
+    post-run:
+      - playbooks/python-docs/post
+      - playbooks/publish/openstack-afs
     required-projects:
       - name: openstack/requirements
     roles:
@@ -429,23 +415,44 @@
       - zuul: openstack-infra/openstack-zuul-jobs
     vars:
       tox_upper_constraints_file: "{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt"
+    secrets:
+      - secret: afsdocs_secret
+        name: afs
 
-# NOTE(pabelanger): We have related untrusted job in openstack-zuul-jobs called
-# openstack-doc-build. We should discuss post PTG how to potentially deal with
-# duplication.
 - job:
     name: publish-openstack-python-docs-infra
-    parent: publish-openstack-afs
     description: |
-      Publish the results of the tox-docs job to /afs/.openstack.org/docs
+      Publish the results of the tox-docs job to
+      /afs/.openstack.org/infra/{{ zuul.project.short_name }}
+    final: True
     pre-run: playbooks/python-docs/pre
     run: playbooks/python-docs/run
-    post-run: playbooks/python-docs/post-infra
+    post-run:
+      - playbooks/python-docs/post-infra
+      - playbooks/publish/infra-afs
     roles:
       - zuul: openstack-infra/zuul-jobs
       - zuul: openstack-infra/openstack-zuul-jobs
-    vars:
-      tox_upper_constraints_file: "{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt"
+    secrets:
+      - secret: afsdocs_secret
+        name: afs
+
+- job:
+    name: publish-openstack-python-docs-infra-index
+    description: |
+      Publish the results of the tox-docs job to /afs/.openstack.org/infra
+    final: True
+    pre-run: playbooks/python-docs/pre
+    run: playbooks/python-docs/run
+    post-run:
+      - playbooks/python-docs/post-infra
+      - playbooks/publish/infra-index
+    roles:
+      - zuul: openstack-infra/zuul-jobs
+      - zuul: openstack-infra/openstack-zuul-jobs
+    secrets:
+      - secret: afsdocs_secret
+        name: afs
 
 - job:
     name: publish-openstack-python-branch-tarball
