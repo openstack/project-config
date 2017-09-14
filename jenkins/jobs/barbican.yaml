@@ -105,7 +105,7 @@
       - console-log
 
 - job-template:
-    name: 'gate-python-barbicanclient-devstack-dsvm-{node}'
+    name: 'gate-python-barbicanclient-dsvm-{node}'
     node: '{node}'
 
     wrappers:
@@ -125,6 +125,45 @@
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
           export OVERRIDE_ENABLED_SERVICES=tempest,rabbit,mysql,key
+          export PROJECTS="openstack/barbican $PROJECTS"
+          export PROJECTS="openstack/python-barbicanclient $PROJECTS"
+          export PROJECTS="openstack/barbican-tempest-plugin $PROJECTS"
+
+          function gate_hook {{
+              $BASE/new/barbican/devstack/gate_hook.sh
+          }}
+          export -f gate_hook
+
+          function post_test_hook {{
+              cd /opt/stack/new/python-barbicanclient/functionaltests
+              ./post_test_hook.sh
+          }}
+          export -f post_test_hook
+
+          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
+          ./safe-devstack-vm-gate-wrap.sh
+
+    publishers:
+      - devstack-logs
+      - console-log
+
+- job-template:
+    name: 'gate-python-barbicanclient-devstack-{node}'
+    node: '{node}'
+
+    wrappers:
+      - build-timeout:
+          timeout: 70
+      - timestamps
+
+    builders:
+      - link-logs
+      - net-info
+      - devstack-checkout
+      - shell: |
+          #!/bin/bash -xe
+          export PYTHONUNBUFFERED=true
+          export ENABLED_SERVICES=barbican,tempest,keystone
           export PROJECTS="openstack/barbican $PROJECTS"
           export PROJECTS="openstack/python-barbicanclient $PROJECTS"
           export PROJECTS="openstack/barbican-tempest-plugin $PROJECTS"

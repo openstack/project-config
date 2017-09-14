@@ -2911,9 +2911,18 @@ jobs:
   - name: ^gate-barbican-.*-dsvm-functional-.*$
     branch: ^(?!stable/(newton|ocata)).*$
 
-    # Run the ./*-devstack- jobs only on the stable branches
-    # (the .*-dsvm-functional jobs are replacing them in Pike)
+    # Run the ./*-devstack- jobs only on newton and ocata branches
+    # (the .*-dsvm-functional jobs replace them in Pike)
   - name: ^gate-barbican-.*-devstack-.*$
+    branch: ^(?:stable/(newton|ocata)).*$
+
+    # The .*-dsvm jobs only work on Pike and beyond
+  - name: ^gate-python-barbicanclient-dsvm-.*$
+    branch: ^(?!stable/(newton|ocata)).*$
+
+    # Run the ./*-devstack- jobs only on newton and ocata branches
+    # (the .*-dsvm jobs replace them in Pike)
+  - name: ^gate-python-barbicanclient-devstack-.*$
     branch: ^(?:stable/(newton|ocata)).*$
 
   - name: ^gate-grenade-dsvm-barbican-ubuntu-xenial$
@@ -15841,9 +15850,13 @@ projects:
       - name: check-requirements
       - name: osc-plugin-jobs
     check:
-      - gate-python-barbicanclient-devstack-dsvm-ubuntu-xenial
+      - gate-python-barbicanclient-dsvm-ubuntu-xenial
+      # only run on stable branches
+      - gate-python-barbicanclient-devstack-ubuntu-xenial
     gate:
-      - gate-python-barbicanclient-devstack-dsvm-ubuntu-xenial
+      - gate-python-barbicanclient-dsvm-ubuntu-xenial
+      # only run on stable branches
+      - gate-python-barbicanclient-devstack-ubuntu-xenial
 
   - name: openstack/python-bileanclient
     template:
