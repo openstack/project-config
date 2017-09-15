@@ -32,6 +32,10 @@ elif [[ "$DISTRO_NAME" =~ 'opensuse' ]] ; then
     rules_dir=/etc/sysconfig
     ipv4_rules=${rules_dir}/iptables
     ipv6_rules=${rules_dir}/ip6tables
+elif [[ "$DISTRO_NAME" =~ 'gentoo' ]] ; then
+    rules_dir=/var/lib/iptables  # not needed, part of the package install
+    ipv4_rules=/var/lib/iptables/rules-save
+    ipv6_rules=/var/lib/ip6tables/rules-save
 else
     echo "Unsupported operating system $DISTRO_NAME"
     exit 1
@@ -96,5 +100,9 @@ fw_custom_after_finished() {
     /usr/sbin/ip6tables-restore $ipv6_rules
 }
 EOF
+fi
 
+if [[ "$DISTRO_NAME" =~ 'gentoo' ]] ; then
+    /sbin/iptables-restore $ipv4_rules
+    /sbin/ip6tables-restore $ipv6_rules
 fi

@@ -53,6 +53,10 @@ echo "$UNBOUND_LOGGING_CONF" > /tmp/unbound-logging.conf
 
 if [[ "$DISTRO_NAME" =~ (centos|fedora|opensuse) ]] ; then
     UNBOUND_CONFD=/etc/unbound/conf.d
+elif [[ "$DISTRO_NAME" =~ 'gentoo' ]] ; then
+    UNBOUND_CONFD=/etc/unbound/conf.d
+    mkdir -p $UNBOUND_CONFD
+    echo "include: \"$UNBOUND_CONFD\"" >> /etc/unbound/unbound.conf
 else
     UNBOUND_CONFD=/etc/unbound/unbound.conf.d
 fi
@@ -67,6 +71,8 @@ chmod 0644 /var/log/unbound.log
 
 if [[ "$DISTRO_NAME" =~ (opensuse) ]] ; then
     rclocal=/etc/init.d/boot.local
+elif [[ "${DISTRO_NAME}" =~ "gentoo" ]]; then
+    rclocal=/etc/local.d/unbound.start
 else
     # You'd think rc.local would be simple ...
     #
@@ -147,7 +153,7 @@ fi
 dhcp_file=''
 if [[ "$DISTRO_NAME" =~ (centos|rhel7|fedora) ]] ; then
     dhcp_file=/etc/dhcp/dhclient-eth0.conf
-elif [[ "$DISTRO_NAME" =~ (debian|ubuntu) ]] ; then
+elif [[ "$DISTRO_NAME" =~ (debian|ubuntu|gentoo) ]] ; then
     dhcp_file=/etc/dhcp/dhclient.conf
 fi
 if [ -n "$dhcp_file" ] ; then
@@ -170,7 +176,7 @@ case "$DIB_INIT_SYSTEM" in
         systemctl enable unbound.service
         ;;
     openrc)
-        # let dib-init-system's postinstall handle enabling init scripts
+        rc-update add unbound default
         ;;
     sysv)
         # nothing to do

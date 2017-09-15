@@ -22,6 +22,9 @@ set -e
 
 packages='tox'
 
-for package in $packages ; do
-    pip install $package
-done
+# non-system root installed packages can interfere with things
+if [ "${DISTRO_NAME}" != "gentoo" ]; then
+    for package in $packages ; do
+        pip install $package
+    done
+fi
