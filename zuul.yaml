@@ -391,6 +391,23 @@
         name: pypi_info
       - gpg_key
 
+- job:
+    name: openstack-doc-build
+    pre-run: playbooks/python-docs/pre
+    run: playbooks/python-docs/run
+    post-run:
+      - playbooks/python-docs/post
+      - playbooks/publish/openstack-docs-draft
+    required-projects:
+      - name: openstack/requirements
+    roles:
+      - zuul: openstack-infra/zuul-jobs
+    secrets:
+      - secret: site_docs_draft
+        name: fileserver
+    vars:
+      tox_constraints_file: "{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt"
+
 # NOTE(pabelanger): We have related untrusted job in openstack-zuul-jobs called
 # openstack-doc-build. We should discuss post PTG how to potentially deal with
 # duplication.
