@@ -1,0 +1,21 @@
+- hosts: all
+  roles:
+    - fetch-tox-output
+    - role: fetch-sphinx-output
+      sphinx_output_src: "src/{{ zuul.project.canonical_name }}/doc/build/html/"
+      zuul_executor_dest: "{{ zuul.executor.work_root }}/artifacts"
+
+- hosts: localhost
+  roles:
+    - role: add-fileserver
+      fileserver: "{{ site_logs }}"
+
+- hosts: "{{ site_logs.fqdn }}"
+  gather_facts: False
+  tasks:
+
+    - name: Upload specs to fileserver
+      synchronize:
+        src: "{{ zuul.executor.work_root }}/artifacts/"
+        dest: "/srv/static/specs/{{ zuul.project.short_name }}"
+      no_log: true
