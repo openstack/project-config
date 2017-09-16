@@ -475,6 +475,21 @@
         name: afs
 
 - job:
+    name: publish-service-types-authority
+    description: |
+      Publish OpenStack Service Types Authority to
+      https://service-types.openstack.org
+    final: True
+    pre-run: playbooks/python-docs/pre
+    run: playbooks/service-types/run
+    post-run: playbooks/publish/service-types
+    roles:
+      - zuul: openstack-infra/zuul-jobs
+      - zuul: openstack-infra/openstack-zuul-jobs
+    secrets:
+      - site_logs
+
+- job:
     name: publish-openstack-python-docs-infra-index
     description: |
       Publish the results of the tox-docs job to /afs/.openstack.org/infra
