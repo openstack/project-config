@@ -392,19 +392,22 @@
       - gpg_key
 
 - job:
-    name: openstack-doc-build
-    pre-run: playbooks/openstack-doc-build/pre
-    run: playbooks/openstack-doc-build/run
-    post-run:
-      - playbooks/openstack-doc-build/post
-      - playbooks/publish/openstack-docs-draft
-    required-projects:
-      - name: openstack/requirements
+    name: publish-docs-draft
+    post-run: playbooks/publish/openstack-docs-draft
     roles:
       - zuul: openstack-infra/zuul-jobs
     secrets:
       - secret: site_docs_draft
         name: fileserver
+
+- job:
+    name: openstack-doc-build
+    parent: publish-docs-draft
+    pre-run: playbooks/python-docs/pre
+    run: playbooks/python-docs/run
+    post-run: playbooks/python-docs/post
+    required-projects:
+      - name: openstack/requirements
     vars:
       tox_constraints_file: "{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt"
 
@@ -426,8 +429,6 @@
       - zuul: openstack-infra/openstack-zuul-jobs
     vars:
       tox_upper_constraints_file: "{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt"
-      tox_envlist: venv
-      tox_extra_args: -vv python setup.py build_sphinx
 
 # NOTE(pabelanger): We have related untrusted job in openstack-zuul-jobs called
 # openstack-doc-build. We should discuss post PTG how to potentially deal with
@@ -440,15 +441,11 @@
     pre-run: playbooks/python-docs/pre
     run: playbooks/python-docs/run
     post-run: playbooks/python-docs/post-infra
-    required-projects:
-      - name: openstack/requirements
     roles:
       - zuul: openstack-infra/zuul-jobs
       - zuul: openstack-infra/openstack-zuul-jobs
     vars:
       tox_upper_constraints_file: "{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt"
-      tox_envlist: venv
-      tox_extra_args: -vv python setup.py build_sphinx
 
 - job:
     name: publish-openstack-python-branch-tarball
