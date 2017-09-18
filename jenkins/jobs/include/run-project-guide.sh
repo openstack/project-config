@@ -41,7 +41,7 @@ elif [ "$ZUUL_REFNAME" == "master" ] ; then
 elif echo $ZUUL_REFNAME | grep stable/ >/dev/null ; then
     # Put stable release changes in dir named after stable release under the
     # build dir. When Jenkins copies these files they will be accessible under
-    # the developer docs root using the stable release's name.
+    # the developer docs root using the name of the stable release.
     TARGET=$(echo $ZUUL_REFNAME | sed 's/stable.//')
 else
     # Put other branch changes in dir named after branch under the

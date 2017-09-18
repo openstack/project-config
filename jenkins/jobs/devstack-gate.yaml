@@ -17,17 +17,17 @@
 
           # place calls for all hooks in here
           function pre_test_hook {{
-              echo "I'm totally an awesome pre_test_hook"
+              echo "I am totally an awesome pre_test_hook"
           }}
           export -f pre_test_hook
 
           function gate_hook {{
-              echo "I'm totally an awesome gate_hook"
+              echo "I am totally an awesome gate_hook"
           }}
           export -f gate_hook
 
           function post_test_hook {{
-              echo "I'm totally an awesome post_test_hook"
+              echo "I am totally an awesome post_test_hook"
           }}
           export -f post_test_hook
 
@@ -77,7 +77,7 @@
 # instead of the released library version(s).
 #
 # Purpose: this allows libraries to test their proposed commits to
-# ensure they don't break OpenStack on their next release. It is
+# ensure they do not break OpenStack on their next release. It is
 # expected to eventually be part of all library jobs in OpenStack, as
 # the main tempest-dsvm jobs will be using only released versions of
 # libraries.
@@ -128,7 +128,7 @@
 # version. This uses neutron instead of nova-network.
 #
 # Purpose: this allows libraries to test their proposed commits to
-# ensure they don't break OpenStack on their next release. It is
+# ensure they do not break OpenStack on their next release. It is
 # expected to eventually be part of all library jobs in OpenStack, as
 # the main tempest-dsvm jobs will be using only released versions of
 # libraries.
@@ -405,7 +405,7 @@
 # and it runs tempest slow and scenario tests, and compute live migration
 # tests. Of particular interest is the TestVolumeMigrateRetypeAttached scenario
 # test which performs a volume retype of a volume attached to a server instance
-# as it's root disk.
+# as its root disk.
 - job-template:
     name: '{pipeline}-tempest-dsvm-neutron-scenario-multinode-lvm-multibackend-{node-release}{suffix}'
     node: '{node}'
@@ -768,7 +768,7 @@
             disable_service s-container
             disable_service s-object
             disable_service s-proxy
-            # without Swift, c-bak can't run (in the Gate at least)
+            # without Swift, c-bak cannot run (in the Gate at least)
             disable_service c-bak
       - shell: |
           #!/bin/bash -xe
@@ -1021,7 +1021,7 @@
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_GRENADE=pullup
           # NOTE(mriedem): Be explicit that we need to run nova-network so that
-          # devstack-gate doesn't default to use neutron.
+          # devstack-gate does not default to use neutron.
           export DEVSTACK_GATE_NEUTRON=0
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
@@ -1078,8 +1078,8 @@
 
 - job-template:
     # Note this job runs with nova net so it only needs to run on trusty
-    # for mitaka. It cannot run on newton because nova net doesn't exist
-    # in ocata. For this reason we don't have a xenial version of the job.
+    # for mitaka. It cannot run on newton because nova net does not exist
+    # in ocata. For this reason we do not have a xenial version of the job.
     name: '{pipeline}-grenade-dsvm-forward-{node}{suffix}'
     node: '{node}'
 
@@ -1101,7 +1101,7 @@
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_GRENADE=forward
           # NOTE(mriedem): Be explicit that we need to run nova-network so that
-          # devstack-gate doesn't default to use neutron.
+          # devstack-gate does not default to use neutron.
           export DEVSTACK_GATE_NEUTRON=0
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
@@ -2362,7 +2362,7 @@
           export PYTHONUNBUFFERED=true
           export DEVSTACK_GATE_TEMPEST=1
           export DEVSTACK_GATE_TEMPEST_ALL_PLUGINS=1
-          # BDD driver doesn't support 'in-use' volume attachement so we need to skip such tests
+          # BDD driver does not support 'in-use' volume attachement so we need to skip such tests
           export DEVSTACK_GATE_TEMPEST_REGEX="^(?!.*(volume_in_use|test_volume_boot_pattern)).*volume"
           export TEMPEST_CONCURRENCY=1
           export PROJECTS="openstack/devstack-plugin-bdd $PROJECTS"
@@ -2400,7 +2400,7 @@
           export PROJECTS="openstack-infra/os-loganalyze $PROJECTS"
 
           function post_test_hook {{
-              # Copy the tempest output to os-loganalze's DocumentRoot
+              # Copy the tempest output to the os-loganalyze DocumentRoot
               sudo cp -r logs/* /var/www/logs/
               # Grab normally marked up file
               wget --header="Accept: text/html" http://localhost:8080/tempest.txt.gz
@@ -2479,4 +2479,4 @@
       # from this list as stable/newton grenade jobs upgrade from trusty nodes
       # and ocata changes only run with nova-network in cells v1 configurations
       # which does not apply for the nova-net grenade job. So we just simply
-      # don't run that job anywhere as it's no longer a supported config.
+      # do not run that job anywhere as it is no longer a supported config.
