@@ -1112,19 +1112,6 @@ jobs:
   # -nv jobs are never voting.
   - name: ^.*-nv$
     voting: false
-  # Restrict explicit ubuntu-trusty jobs to < Newton
-  # and xenial to >= Newton. Note we keep liberty here to be defensive
-  # in our defaults even though liberty is largely eol and non existent.
-  - name: ^(?!periodic).*-ubuntu-trusty(-nv)?$
-    branch: ^stable/(liberty|mitaka)
-  - name: ^(?!periodic).*-ubuntu-xenial(-nv)?$
-    branch: ^(?!stable/(liberty|mitaka)).*$
-  # Restrict python34 testing to <= Mitaka.
-  - name: ^gate-.*-python34(-nv)?$
-    branch: ^stable/(liberty|mitaka)
-  # Restrict python35 testing to >= Newton.
-  - name: ^gate-.*-python35(-nv)?$
-    branch: ^(?!stable/(liberty|mitaka)).*$
 
   # Make sure we run ubuntu-trusty on master for puppet-apply.
   - name: ^gate-infra-puppet-apply-.*-ubuntu-trusty$
