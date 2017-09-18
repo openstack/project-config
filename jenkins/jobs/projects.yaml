@@ -7434,6 +7434,13 @@
           scenario:
             - func_lxd
             - upgrade
+      # This non-voting job is to facilitate cross-project tests
+      # in other projects.
+      - '{pipeline}-{name}-ansible-{scenario}-{ostype}{suffix}':
+          suffix: '-nv'
+          ostype: ubuntu-xenial
+          pipeline: gate
+          scenario: func_lxd
 
 - project:
     name: openstack-ansible-os_octavia
