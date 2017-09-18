@@ -516,6 +516,17 @@
     post-run: playbooks/python-branch-tarball/post
 
 - job:
+    name: publish-irc-meetings
+    description: |
+      Publish the IRC meeting calendars to eavesdrop.openstack.org.
+    final: True
+    pre-run: playbooks/yaml2ical/pre
+    run: playbooks/yaml2ical/run
+    post-run: playbooks/yaml2ical/post
+    secrets:
+      - eavesdrop_ssh_key
+
+- job:
     name: propose-updates
     pre-run: playbooks/proposal/pre
     run: playbooks/proposal/propose-updates
@@ -983,6 +994,56 @@
           26m9wQYD7iSQegbu3DeU0rd9JpD89N6ZfxeVE23qrSkw4AcdV2y4jSuOsI4eEtHgKadEv
           12xUZTwqfGpxmA3fPsrTckJJ1XX/KWr0DBcqkYnok5eFECg7YVPO7ektMy3sBhloNeZ+G
           SsB7moteKXGnyIFTw5wYUerJUg5qgmV4vp/QIToROJV2kMdIztWchUAILh7ICk=
+
+- secret:
+    name: eavesdrop_ssh_key
+    data:
+      fqdn: eavesdrop.openstack.org
+      path: '/srv/yaml2ical'
+      ssh_username: 'jenkins'
+      ssh_known_hosts: |
+          eavesdrop.openstack.org,2001:4800:7818:101:be76:4eff:fe05:31bf ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDBYnHbYizq+kmYZB8NprCSPc9oJ/mvCY7nKpH/k5EnCaJ+K0vnVM4s327/MnCbxls4cbftJNHiL92JiS6W4EWRLvRMVWg85OkNI9ieF5nZcVXNrkU0KmqqpZesDJ6RnEbbzQOQXmEtW0vJTl/EG3N11Gzz6znGo23+q4ywFibNbiz0FOAlkd8WSD7EHWLLg1DQ34UD9cT5wS2524CfSXvLSWiFOktNX8XA808lWPk2d6w58bpGM33ODBdNm+xWp5btbzqn+yng/UnAOj3H7kkL4JuyE9hH6CdCSbQfv2eqBjdzq7K4sA5yRuZT4EL9a3RxtWig3tViDmbB55YwjNXh
+      ssh_private_key: !encrypted/pkcs1-oaep
+        - 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
 
 - secret:
     name: lp_creds
