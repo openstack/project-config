@@ -1184,11 +1184,6 @@ jobs:
   - name: ^gate-tempest-dsvm-monasca-pipeline-(logs|events)-ubuntu-xenial(-nv)?$
     branch: ^(?!stable/(newton|ocata|pike)).*$
 
-  # disable requirement control @ stable/mitaka for networking-arista
-  # networking-arista was not managed in requirements for mitaka.
-  - name: ^gate-networking-arista-requirements$
-    branch: ^(?!stable/mitaka).*$
-
   # because of global requirements overrides, there is no reason to
   # run tempest/grenade tests after a requirements sync, as they've
   # already been run in the requirements job with the override.
@@ -2192,14 +2187,10 @@ jobs:
   - name: gate-requirements-integration-dsvm-ubuntu-trusty
     branch: ^stable/(mitaka|newton)$
 
-  - name: ^gate-requirements-tox-validate-ubuntu-xenial$
-    branch: ^(?!stable/mitaka).*$
-
   - name: ^gate-requirements-tox-validate-projects-ubuntu-xenial$
     branch: master
 
   - name: gate-requirements-tox-babel-ubuntu-xenial
-    branch: ^(?!stable/mitaka).*$
     files:
       - '^babel-test/.*'
       - '^tox.ini'
@@ -3268,9 +3259,6 @@ jobs:
   - name: ^gate-fuel-mirror-python.*$
     branch: ^stable/(?:8\.0|mitaka).*$
 
-  - name: ^gate-fuel-ostf-python27-ubuntu-trusty
-    branch: ^(stable/mitaka).*$
-
   - name: ^gate-fuel-ostf-python27-ubuntu-xenial
     branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0|mitaka)).*$
 
@@ -3279,10 +3267,6 @@ jobs:
 
   - name: ^gate-fuel-stats-python.*$
     branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
-
-  - name: ^gate-fuel-web-docs-ubuntu-trusty
-    branch: ^(stable/mitaka).*$
-    voting: false
 
   - name: ^gate-fuel-web-docs-ubuntu-xenial
     branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0|8\.0|mitaka)).*$
@@ -9625,12 +9609,10 @@ projects:
       - name: merge-check
     check:
       - gate-fuel-ostf-pep8-ubuntu-trusty
-      - gate-fuel-ostf-python27-ubuntu-trusty
       - gate-fuel-ostf-pep8-ubuntu-xenial
       - gate-fuel-ostf-python27-ubuntu-xenial
     gate:
       - gate-fuel-ostf-pep8-ubuntu-trusty
-      - gate-fuel-ostf-python27-ubuntu-trusty
       - gate-fuel-ostf-pep8-ubuntu-xenial
       - gate-fuel-ostf-python27-ubuntu-xenial
 
@@ -10192,7 +10174,13 @@ projects:
     template:
       - name: merge-check
       - name: python-jobs
-      - name: python-jobs-trusty
+    check:
+      - gate-fuel-web-pep8-ubuntu-trusty
+      - gate-fuel-web-python27-ubuntu-trusty
+    gate:
+      - gate-fuel-web-pep8-ubuntu-trusty
+      - gate-fuel-web-python27-ubuntu-trusty
+
 
   - name: openstack/futurist
     template:
