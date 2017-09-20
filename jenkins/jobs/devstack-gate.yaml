@@ -1077,45 +1077,6 @@
 
 
 - job-template:
-    # Note this job runs with nova net so it only needs to run on trusty
-    # for mitaka. It cannot run on newton because nova net does not exist
-    # in ocata. For this reason we do not have a xenial version of the job.
-    name: '{pipeline}-grenade-dsvm-forward-{node}{suffix}'
-    node: '{node}'
-
-    wrappers:
-      - build-timeout:
-          timeout: 180
-      - timestamps
-
-    builders:
-      - print-template-name:
-          template-name: "{template-name}"
-      - link-logs
-      - net-info
-      - devstack-checkout
-      - shell: |
-          #!/bin/bash -xe
-          export PROJECTS="openstack-dev/grenade $PROJECTS"
-          export PYTHONUNBUFFERED=true
-          export DEVSTACK_GATE_TEMPEST=1
-          export DEVSTACK_GATE_GRENADE=forward
-          # NOTE(mriedem): Be explicit that we need to run nova-network so that
-          # devstack-gate does not default to use neutron.
-          export DEVSTACK_GATE_NEUTRON=0
-          export BRANCH_OVERRIDE={branch-override}
-          if [ "$BRANCH_OVERRIDE" != "default" ] ; then
-              export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
-          fi
-          cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
-          ./safe-devstack-vm-gate-wrap.sh
-
-    publishers:
-      - devstack-logs
-      - console-log
-
-
-- job-template:
     name: '{pipeline}-grenade-dsvm-neutron-{node}{suffix}'
     node: '{node}'
 
