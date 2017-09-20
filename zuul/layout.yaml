@@ -1147,6 +1147,17 @@ jobs:
   - name: ^gate-dib-dsvm-functests-python2-ubuntu-trusty.*$
     branch: (master|feature/v2)
 
+  # These projects have retained mitaka branches.  We only wish to run
+  # their trusty-based jobs on Mitaka
+  - name: ^gate-(python-)?group-based-policy-.*-ubuntu-trusty(-nv)?$
+    branch: ^stable/mitaka
+  - name: ^gate-(python-)?group-based-policy-.*-ubuntu-xenial(-nv)?$
+    branch: ^(?!stable/mitaka).*$
+  - name: ^gate-networking-bigswitch-.*-ubuntu-trusty(-nv)?$
+    branch: ^stable/mitaka
+  - name: ^gate-networking-bigswitch-.*-ubuntu-xenial(-nv)?$
+    branch: ^(?!stable/mitaka).*$
+
   - name: ^gate-logstash-filters-ubuntu-xenial$
     voting: false
 
