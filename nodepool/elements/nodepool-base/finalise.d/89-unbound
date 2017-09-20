@@ -60,37 +60,38 @@ touch /var/log/unbound.log
 chown unbound /var/log/unbound.log
 chmod 0644 /var/log/unbound.log
 
-# You'd think rc.local would be simple ...
-#
-# On Redhat systems, systemd's rc-local service looks for an
-# executable /etc/rc.d/rc.local file to run.  On Debian/Ubuntu, the
-# eqivalent file is /etc/rc.local, which is missing on Debian stretch.
-#
-# Centos' systemd package symlinks /etc/rc.local to /etc/rc.d/rc.local
-# correctly. Fedora, however, does not come with an rc.local file at
-# all.  Thus if we have a rc.d directory, but no rc.local file, we
-# need to create it (if you don't have an rc.d directory, and don't
-# have /etc/rc.local, then it's not clear what platform you are on).
-#
-# Bug [1] is filed to bring Fedora in-line with Centos, and has more
-# details on all this.  As at 2016-10-18 is unresolved.
-#
-# [1] https://bugzilla.redhat.com/show_bug.cgi?id=1386052
-if [[ ! -e /etc/rc.local ]] && [[ ! -e /etc/debian_version ]]; then
-    if [[ ! -d /etc/rc.d ]]; then
-        echo "No rc.local and no rc.d directory!  See comments in 89-unbound"
-        exit 1
+if [[ "$DISTRO_NAME" =~ (opensuse) ]] ; then
+    rclocal=/etc/init.d/boot.local
+else
+    # You'd think rc.local would be simple ...
+    #
+    # On Redhat systems, systemd's rc-local service looks for an
+    # executable /etc/rc.d/rc.local file to run.  On Debian/Ubuntu, the
+    # eqivalent file is /etc/rc.local, which is missing on Debian stretch.
+    #
+    # Centos' systemd package symlinks /etc/rc.local to /etc/rc.d/rc.local
+    # correctly. Fedora, however, does not come with an rc.local file at
+    # all.  Thus if we have a rc.d directory, but no rc.local file, we
+    # need to create it (if you don't have an rc.d directory, and don't
+    # have /etc/rc.local, then it's not clear what platform you are on).
+    #
+    # Bug [1] is filed to bring Fedora in-line with Centos, and has more
+    # details on all this.  As at 2016-10-18 is unresolved.
+    #
+    # [1] https://bugzilla.redhat.com/show_bug.cgi?id=1386052
+    if [[ ! -e /etc/rc.local ]] && [[ ! -e /etc/debian_version ]]; then
+        if [[ ! -d /etc/rc.d ]]; then
+            echo "No rc.local and no rc.d directory!  See comments in 89-unbound"
+            exit 1
+        fi
+        touch /etc/rc.d/rc.local
+        ln -sf /etc/rc.d/rc.local /etc/rc.local
+        # permissions added below.  selinux context will be fixed up at
+        # end of build.
     fi
-    touch /etc/rc.d/rc.local
-    ln -sf /etc/rc.d/rc.local /etc/rc.local
-    # permissions added below.  selinux context will be fixed up at
-    # end of build.
+    rclocal=/etc/rc.local
 fi
 
-
-# And furthermore on SUSE systems rc.local is called /etc/init.d/boot.local
-rclocal=/etc/rc.local
-[ -f /etc/init.d/boot.local ] && rclocal=/etc/init.d/boot.local
 # Overwrite /etc/resolv.conf at boot (let's hope nothing else is using
 # rc.local...)
 dd of=$rclocal <<EOF
