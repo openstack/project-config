@@ -420,6 +420,43 @@
         name: afs
 
 - job:
+    name: publish-openstack-specs
+    description: |
+      Publish OpenStack specs to static.openstack.org
+      specs/{{ zuul.project.short_name }}
+    final: True
+    pre-run: playbooks/python-docs/pre
+    run: playbooks/python-docs/run
+    post-run: playbooks/publish/openstack-specs
+    required-projects:
+      - name: openstack/requirements
+    roles:
+      - zuul: openstack-infra/zuul-jobs
+      - zuul: openstack-infra/openstack-zuul-jobs
+    vars:
+      tox_upper_constraints_file: "{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt"
+    secrets:
+      - site_logs
+
+- job:
+    name: publish-openstack-specs-site
+    description: |
+      Publish OpenStack specs site to static.openstack.org specs/
+    final: True
+    pre-run: playbooks/python-docs/pre
+    run: playbooks/python-docs/run
+    post-run: playbooks/publish/openstack-specs-site
+    required-projects:
+      - name: openstack/requirements
+    roles:
+      - zuul: openstack-infra/zuul-jobs
+      - zuul: openstack-infra/openstack-zuul-jobs
+    vars:
+      tox_upper_constraints_file: "{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt"
+    secrets:
+      - site_logs
+
+- job:
     name: publish-openstack-python-docs-infra
     description: |
       Publish the results of the tox-docs job to
