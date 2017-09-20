@@ -2054,7 +2054,7 @@ jobs:
 
   # Puppet 3 is not supported in Pike and beyond, so we don't want to test it anymore.
   - name: ^gate-(tripleo-heat-templates|tripleo-.*|puppet-.*)-(syntax|unit)-3.*-legacy-centos-7$
-    branch: ^(stable/(mitaka|newton|ocata)).*$
+    branch: ^(stable/(newton|ocata)).*$
 
   # no need to run the jobs for doc / releasenotes / unittests patches
   - name: ^gate-(puppet-.*-(syntax|unit|beaker)-|tripleo-ci-centos-7-).*$
@@ -2177,7 +2177,6 @@ jobs:
 
   # For some projects, python35 is not passing on stable/newton
   # but passing on master, thus do not run it on newton.
-  # Note networking-arista still has mitaka-hpi branch.
   - name: ^gate-(requirements|murano-agent|networking-arista)-python35
     branch: ^(?!stable/newton).*$
 
@@ -3233,16 +3232,16 @@ jobs:
     branch: ^(?!stable(-mu)?/(?:4\.0|4\.1|5\.0|5\.1|6\.0|6\.1|7\.0|8\.0)).*$
 
   - name: ^gate-fuel-qa-python27-ubuntu-trusty
-    branch: ^stable(-mu)?/(mitaka|8\.0|7\.0|6\.1).*$
+    branch: ^stable(-mu)?/(8\.0|7\.0|6\.1).*$
 
   - name: ^gate-fuel-qa-pep8-ubuntu-trusty
-    branch: ^stable(-mu)?/(mitaka|8\.0|7\.0|6\.1).*$
+    branch: ^stable(-mu)?/(8\.0|7\.0|6\.1).*$
 
   - name: ^gate-fuel-qa-pep8-ubuntu-xenial$
-    branch: ^(?!stable(-mu)?/(?:4\.0|4\.1|5\.0|5\.1|6\.0|6\.1|7\.0|8\.0|mitaka)).*$
+    branch: ^(?!stable(-mu)?/(?:4\.0|4\.1|5\.0|5\.1|6\.0|6\.1|7\.0|8\.0)).*$
 
   - name: ^gate-fuel-qa-python27-ubuntu-xenial$
-    branch: ^(?!stable(-mu)?/(?:4\.0|4\.1|5\.0|5\.1|6\.0|6\.1|7\.0|8\.0|mitaka)).*$
+    branch: ^(?!stable(-mu)?/(?:4\.0|4\.1|5\.0|5\.1|6\.0|6\.1|7\.0|8\.0)).*$
 
   - name: ^gate-fuel-library-puppet-syntax.*$
     branch: ^(?!stable/(?:4\.0|4\.1|5\.0|5\.1|6\.0|6\.1|7\.0)).*$
@@ -3254,13 +3253,13 @@ jobs:
     branch: ^(?!stable/(?:4\.0|4\.1|5\.0|5\.1|6\.0|6\.1|7\.0|8\.0)).*$
 
   - name: ^gate-fuel-library-puppet-unit-4\.5-centos-7
-    branch: ^(?!stable/(?:4\.0|4\.1|5\.0|5\.1|6\.0|6\.1|7\.0|8\.0|mitaka)).*$
+    branch: ^(?!stable/(?:4\.0|4\.1|5\.0|5\.1|6\.0|6\.1|7\.0|8\.0)).*$
 
   - name: ^gate-fuel-mirror-python.*$
-    branch: ^stable/(?:8\.0|mitaka).*$
+    branch: ^stable/8\.0.*$
 
   - name: ^gate-fuel-ostf-python27-ubuntu-xenial
-    branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0|mitaka)).*$
+    branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
 
   - name: ^gate-fuel-plugins-python.*$
     branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
@@ -3269,14 +3268,14 @@ jobs:
     branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
 
   - name: ^gate-fuel-web-docs-ubuntu-xenial
-    branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0|8\.0|mitaka)).*$
+    branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0|8\.0)).*$
     voting: false
 
   - name: ^gate-fuel-web-python27-ubuntu-trusty
-    branch: ^(stable/(8\.0|mitaka)).*$
+    branch: ^stable/8\.0.*$
 
   - name: ^gate-fuel-web-python27-ubuntu-xenial
-    branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0|8\.0|mitaka)).*$
+    branch: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0|8\.0)).*$
 
   - name: ^gate-ceilometer-dsvm-functional-.*ubuntu-xenial
     branch: ^stable/newton$
@@ -3335,11 +3334,11 @@ jobs:
   # Trusty support is removed after Newton, so don't run any ubuntu-trusty
   # jobs against branches > stable/newton.
   # Since regexes override each other (last one wins), we can stage this.
-  # First, we run all trusty jobs on both mitaka and newton:
+  # First, we run all trusty jobs on newton:
   - name: ^gate-openstack-ansible.*-ubuntu-trusty.*$
     branch: ^stable/newton$
 
-  # Keep in mind that stable/mitaka and stable/newton are ubuntu only,
+  # Keep in mind that stable/newton is ubuntu only,
   # so we remove centos-7 jobs.
   - name: ^gate-openstack-ansible-.*-ansible-.*-centos-7.*$
     branch: ^(?!stable/newton).*$
@@ -3546,13 +3545,13 @@ jobs:
     branch: ^(?!stable/(newton|ocata|pike)).*$
 
   - name: gate-python-fuelclient-python34
-    branch: ^stable/(8\.0|mitaka).*$
+    branch: ^stable/8\.0.*$
 
   - name: ^gate-python-fuelclient-python27-ubuntu-trusty
-    branch: ^(stable/(7\.0|8\.0|mitaka)).*$
+    branch: ^(stable/(7\.0|8\.0)).*$
 
   - name: ^gate-python-fuelclient-python27-ubuntu-xenial
-    branch: ^(?!stable/(?:6\.1|7\.0|8\.0|mitaka)).*$
+    branch: ^(?!stable/(?:6\.1|7\.0|8\.0)).*$
 
   - name: ^gate-tooz-tox-py35-.+-ubuntu-xenial
     branch: ^(?!stable/newton).*$
@@ -3578,10 +3577,10 @@ jobs:
     branch: ^(?!stable/(6.[01]|[78].0)).*$
 
   - name: ^fuel-octane-coverage-ubuntu-trusty.*$
-    branch: ^stable/(mitaka|[87]\.0).*$
+    branch: ^stable/[87]\.0.*$
 
   - name: ^fuel-octane-coverage-ubuntu-xenial.*$
-    branch: ^(?!stable/(?:[456]\.[01]|[78]\.0|mitaka)).*$
+    branch: ^(?!stable/(?:[456]\.[01]|[78]\.0)).*$
 
   - name: gate-fuel-ccp-validate
     queue-name: fuel-ccp
