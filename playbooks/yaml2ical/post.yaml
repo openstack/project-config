@@ -1,0 +1,21 @@
+- hosts: localhost
+  roles:
+    - role: add-fileserver
+      fileserver: "{{ eavesdrop_ssh_key }}"
+
+- hosts: "{{ fileserver.fqdn }}"
+  gather_facts: False
+  tasks:
+
+    - name: Upload index files
+      copy:
+        src: "{{ zuul.executor.work_root }}/yaml2ical/{{ item }}"
+        dest: "{{ fileserver.path }}/{{ item }}"
+      with_items:
+        - index.html
+        - irc-meetings.ical
+
+    - name: Copy calendars
+      synchronize:
+        src: "{{ zuul.executor.work_root }}/yaml2ical/calendars"
+        dest: "{{ fileserver.path }}/calendars/"
