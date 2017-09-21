@@ -38,12 +38,18 @@ mv /tmp/forwarding.conf /etc/unbound/
 chown root:root /etc/unbound/forwarding.conf
 chmod a+r /etc/unbound/forwarding.conf
 
-dd of=/tmp/unbound-logging.conf <<EOF
+if [[ "$DISTRO_NAME" =~ (centos|fedora) ]] ; then
+    LOG_FILE="/var/lib/unbound/unbound.log"
+else
+    LOG_FILE="/var/log/unbound.log"
+fi
+
+UNBOUND_LOGGING_CONF="\
 server:
-  logfile: "/var/log/unbound.log"
+  logfile: \"$LOG_FILE\"
   # Log only errors
-  verbosity: 0
-EOF
+  verbosity: 0"
+echo "$UNBOUND_LOGGING_CONF" > /tmp/unbound-logging.conf
 
 if [[ "$DISTRO_NAME" =~ (centos|fedora|opensuse) ]] ; then
     UNBOUND_CONFD=/etc/unbound/conf.d
@@ -54,7 +60,6 @@ fi
 mv /tmp/unbound-logging.conf $UNBOUND_CONFD
 chown root:root $UNBOUND_CONFD/unbound-logging.conf
 chmod a+r $UNBOUND_CONFD/unbound-logging.conf
-
 
 touch /var/log/unbound.log
 chown unbound /var/log/unbound.log
