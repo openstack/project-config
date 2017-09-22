@@ -1,7 +1,10 @@
 - name: Install puppet
-  command: ./install_puppet.sh
+  shell: ./install_puppet.sh
   args:
     chdir: "{{ ansible_user_dir }}/src/git.openstack.org/openstack-infra/system-config"
+  environment:
+    # Skip setting up pip, our images have already done this.
+    SETUP_PIP: false
   become: yes
 
 - name: Copy reduced scope modules.env into place
@@ -16,7 +19,7 @@
   become: yes
 
 - name: Copy manifest
-  file:
+  copy:
     src: manifest.pp
     dest: "{{ ansible_user_dir }}/manifest.pp"
 
