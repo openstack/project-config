@@ -1,4 +1,4 @@
-class { 'openafs::client':
+class { '::openafs::client':
   cell         => 'openstack.org',
   realm        => 'OPENSTACK.ORG',
   admin_server => 'kdc.openstack.org',
