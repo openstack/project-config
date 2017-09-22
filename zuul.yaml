@@ -381,17 +381,6 @@
       - gpg_key
 
 - job:
-    name: openstack-doc-build
-    pre-run: playbooks/python-docs/pre
-    run: playbooks/python-docs/run
-    post-run: playbooks/python-docs/post
-    success-url: html/
-    required-projects:
-      - name: openstack/requirements
-    vars:
-      tox_constraints_file: "{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt"
-
-- job:
     name: publish-openstack-python-docs
     description: |
       Publish the results of the openstack-build-doc job to
