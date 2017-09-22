@@ -23,16 +23,36 @@ job-mapping:
   - old: '^gate(?!-cross)-.*-python(?P<version>[0-9]{2})-ubuntu-xenial'
     new: 'openstack-tox-py{version}'
 
-  - old: '^gate-.*-pep8-ubuntu-(trusty|xenial)'
+  - old: '^gate(?!-cross)-.*-python(?P<version>[0-9]{2})-ubuntu-trusty'
+    new:
+      'openstack-tox-py{version}':
+        nodes: ubuntu-trusty
+
+  - old: '^gate-.*-pep8-ubuntu-xenial'
     new: 'openstack-tox-pep8'
 
-  - old: '^gate-.*-compare-coverage-ubuntu-(trusty|xenial)'
+  - old: '^gate-.*-pep8-ubuntu-trusty'
+    new:
+      openstack-tox-pep8:
+        nodes: ubuntu-trusty
+
+  - old: '^gate-.*-compare-coverage-ubuntu-xenial'
     new: 'openstack-compare-cover'
 
-  - old: '^.*-coverage-ubuntu-(trusty|xenial)'
+  - old: '^gate-.*-compare-coverage-ubuntu-trusty'
+    new:
+      openstack-compare-cover:
+        nodes: ubuntu-trusty
+
+  - old: '^.*-coverage-ubuntu-xenial'
     new: 'openstack-tox-cover'
 
-  - old: '^gate-.*-linters-ubuntu-(trusty|xenial)'
+  - old: '^.*-coverage-ubuntu-trusty'
+    new:
+      openstack-tox-cover:
+        nodes: ubuntu-trusty
+
+  - old: '^gate-.*-linters-ubuntu-xenial'
     new: 'openstack-tox-linters'
 
   - old: '^gate-.*-bashate'
@@ -50,11 +70,8 @@ job-mapping:
   - old: publish-infra-docs-index
     new: publish-openstack-python-docs-infra-index
 
-  - old: gate-infra-docs-index
-    new: openstack-doc-build
-
   - old: '^gate-.*-docs.*'
-    new: 'openstack-doc-build'
+    new: build-openstack-docs
 
   - old: '^.*-branch-tarball'
     new: publish-openstack-python-branch-tarball
