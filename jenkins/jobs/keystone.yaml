@@ -156,12 +156,12 @@
       - console-log
 
 - job-template:
-    name: '{pipeline}-keystone-dsvm-functional-ldap-domain-specific-driver-{node}{suffix}'
+    name: '{pipeline}-tempest-dsvm-ldap-domain-specific-driver-{node}{suffix}'
     node: '{node}'
 
     wrappers:
       - build-timeout:
-          timeout: 70
+          timeout: 180
       - timestamps
 
     builders:
@@ -171,7 +171,6 @@
       - local_conf:
           conf: |
             [[local|localrc]]
-            TEMPEST_PLUGINS='/opt/stack/new/keystone-tempest-plugin'
             # Enables ldap service and sets its password
             enable_service ldap
             KEYSTONE_CLEAR_LDAP=yes
@@ -179,15 +178,12 @@
       - shell: |
           #!/bin/bash -xe
           export PYTHONUNBUFFERED=true
-          export PROJECTS="openstack/keystone-tempest-plugin $PROJECTS"
           export DEVSTACK_GATE_TEMPEST=1
-          export DEVSTACK_PROJECT_FROM_GIT=python-keystoneclient
+          export DEVSTACK_GATE_TEMPEST_FULL=1
           export BRANCH_OVERRIDE={branch-override}
           if [ "$BRANCH_OVERRIDE" != "default" ] ; then
               export OVERRIDE_ZUUL_BRANCH=$BRANCH_OVERRIDE
           fi
-
-          export DEVSTACK_GATE_TEMPEST_REGEX='keystone_tempest_plugin'
 
           cp devstack-gate/devstack-vm-gate-wrap.sh ./safe-devstack-vm-gate-wrap.sh
           ./safe-devstack-vm-gate-wrap.sh
