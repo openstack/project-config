@@ -13,8 +13,8 @@ mkdir -p ${LOGS}
 rm -rf ${LOGS}/*
 
 # Extract and iterate over all the branch names.
-BRANCHES=`git --git-dir=$WORKING_DIR/.git branch -r | grep '^  origin/[^H]'`
-for BRANCH in $BRANCHES; do
+BRANCHES=`git --git-dir=$WORKING_DIR/.git branch -a | grep '^  stable'`
+for BRANCH in master $BRANCHES; do
     git --git-dir=$WORKING_DIR/.git show $BRANCH:upper-constraints.txt \
         2>/dev/null > /tmp/upper-constraints.txt  || true
 
