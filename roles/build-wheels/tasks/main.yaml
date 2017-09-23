@@ -2,15 +2,11 @@
   set_fact:
     wheel_python: "python{{ inventory_hostname[-1] }}"
 
-- name: Ensure old version of wheel dir is gone
-  file:
-    path: "{{ wheel_dir }}"
-    state: absent
-
 - name: Ensure wheel dir exists
   file:
     path: "{{ wheel_dir }}"
     state: directory
+  become: yes
 
 - name: Build the wheel mirror
   shell: bash -x scripts/wheel-build.sh {{ wheel_dir }} {{ wheel_python }}
