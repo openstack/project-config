@@ -4,9 +4,13 @@
 
 - name: Ensure wheel dir exists
   file:
+    group: zuul
+    owner: zuul
     path: "{{ wheel_dir }}"
     state: directory
   become: yes
 
 - name: Build the wheel mirror
-  shell: bash -x scripts/wheel-build.sh {{ wheel_dir }} {{ wheel_python }}
+  shell: ./scripts/wheel-build.sh {{ wheel_dir }} {{ wheel_python }}
+  args:
+    executable: /bin/bash
