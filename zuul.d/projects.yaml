@@ -48,9 +48,52 @@
 
 - project:
     name: openstack-infra/project-config
+    templates:
+      - bindep-fallback
+      - merge-check
     check:
       jobs:
-        - project-config-check-main-yaml
+        - build-openstack-specs-site
+        - openstack-tox-linters:
+            files:
+              - ^.*\.sh$
+              - ^.*\.py$
+              - bindep.txt
+              - other-requirements.txt
+              - test-requirements.txt
+              - tox.ini
+        - project-config-dib
+        - project-config-gerrit
+        - project-config-grafyaml
+        - project-config-infra-docs-index
+        - project-config-irc-access
+        - project-config-nodepool
         - zuul-migrate:
             files:
               - zuul/mapping.yaml
+    gate:
+      queue: project-config
+      jobs:
+        - build-openstack-specs-site
+        - openstack-tox-linters:
+            files:
+              - ^.*\.sh$
+              - ^.*\.py$
+              - bindep.txt
+              - other-requirements.txt
+              - test-requirements.txt
+              - tox.ini
+        - project-config-dib
+        - project-config-gerrit
+        - project-config-grafyaml
+        - project-config-infra-docs-index
+        - project-config-irc-access
+        - project-config-nodepool
+    post:
+      jobs:
+        - publish-openstack-python-docs-infra-index
+        - publish-openstack-specs-site
+    periodic:
+      jobs:
+        - propose-project-config-update
+        - project-config-build-openafs-centos
