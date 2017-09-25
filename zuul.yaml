@@ -528,27 +528,25 @@
     name: wheel-mirror
     max: 1
 
-- nodeset:
-    name: wheel-mirror-builders
-    # NOTE: The python2 and python3 suffix are important, they select the
-    # version of python to build in each job. (we pull the last character of
-    # the inventory_hostname
-    nodes:
-      - name: wheel-mirror-ubuntu-xenial-python2
-        label: ubuntu-xenial
-      - name: wheel-mirror-ubuntu-trusty-python2
-        label: ubuntu-trusty
-      - name: wheel-mirror-ubuntu-xenial-python3
-        label: ubuntu-xenial
-      - name: wheel-mirror-ubuntu-trusty-python3
-        label: ubuntu-trusty
-
 - job:
     name: build-wheel-mirror
     pre-run: playbooks/wheel/pre
     run: playbooks/wheel/build
     post-run: playbooks/wheel/release
-    nodeset: wheel-mirror-builders
+    nodeset:
+      # NOTE: The python2 and python3 suffix are important, they select the
+      # version of python to build in each job. (we pull the last character of
+      # the inventory_hostname)
+      # TODO(mordred): Replace the suffix with host_vars once we have them.
+      nodes:
+        - name: wheel-mirror-ubuntu-xenial-python2
+          label: ubuntu-xenial
+        - name: wheel-mirror-ubuntu-trusty-python2
+          label: ubuntu-trusty
+        - name: wheel-mirror-ubuntu-xenial-python3
+          label: ubuntu-xenial
+        - name: wheel-mirror-ubuntu-trusty-python3
+          label: ubuntu-trusty
     # 2.5 hours
     timeout: 9000
     allowed-projects:
