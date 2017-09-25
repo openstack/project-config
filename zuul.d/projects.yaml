@@ -1,0 +1,56 @@
+# Shared zuul config specific to the OpenStack Project
+# Contains project pipeline definitions
+
+# This project definition is here so that the only zuul config in
+# zuul-jobs are the jobs themselves (to make it easy for other users
+# to consume).
+- project:
+    name: openstack-infra/zuul-jobs
+    templates:
+      - publish-openstack-python-docs-infra
+    check:
+      jobs:
+        - base-integration-centos-7
+        - base-integration-debian-jessie
+        - base-integration-fedora-26
+        - base-integration-ubuntu-trusty
+        - base-integration-ubuntu-xenial
+        - base-integration-opensuse423
+        - tox-linters
+        - tox-py35-on-zuul
+    gate:
+      jobs:
+        - base-integration-centos-7
+        - base-integration-debian-jessie
+        - base-integration-fedora-26
+        - base-integration-ubuntu-trusty
+        - base-integration-ubuntu-xenial
+        - base-integration-opensuse423
+        - tox-linters
+        - tox-py35-on-zuul
+
+- project:
+    name: openstack-dev/sandbox
+    release:
+      jobs:
+        - release-openstack-python
+
+- project:
+    name: openstack/requirements
+    periodic:
+      jobs:
+        # This is a periodic job to ensure that our wheels are reasonably
+        # up-to-date. It uses the upper-constraints files from requirements.
+        - build-wheel-mirror
+        - release-wheel-mirror:
+            dependencies:
+              - build-wheel-mirror
+
+- project:
+    name: openstack-infra/project-config
+    check:
+      jobs:
+        - project-config-check-main-yaml
+        - zuul-migrate:
+            files:
+              - zuul/mapping.yaml
