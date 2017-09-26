@@ -1,0 +1,9 @@
+- hosts: all
+  roles:
+    - role: tox
+      tox_envlist: add-projects-to-main
+
+- hosts: all
+  tasks:
+    - name: Check for changes to zuul/main.yaml
+      command: git diff-files --quiet
