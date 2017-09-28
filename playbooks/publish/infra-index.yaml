@@ -1,5 +1,11 @@
 - hosts: localhost
   roles:
+    - fetch-tox-output
+    - role: write-root-marker
+      doc_build_dir: "src/{{ zuul.project.canonical_name }}/docs-site/output"
+    - role: fetch-sphinx-output
+      sphinx_output_src: "src/{{ zuul.project.canonical_name }}/docs-site/output/"
+      zuul_executor_dest: "{{ zuul.executor.work_root }}/artifacts"
     - create-afs-token
     - role: upload-afs
       afs_target: "{{ afs.path }}/infra"
