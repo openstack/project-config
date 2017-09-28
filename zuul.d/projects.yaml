@@ -1644,18 +1644,10 @@
     name: openstack-infra/project-config
     templates:
       - merge-check
-      - noop-jobs
     check:
       jobs:
         - build-openstack-specs-site
-        - openstack-tox-linters:
-            files:
-              - ^.*\.sh$
-              - ^.*\.py$
-              - bindep.txt
-              - other-requirements.txt
-              - test-requirements.txt
-              - tox.ini
+        - openstack-tox-linters
         - project-config-dib
         - project-config-gerrit
         - project-config-grafyaml
@@ -1705,14 +1697,7 @@
       queue: project-config
       jobs:
         - build-openstack-specs-site
-        - openstack-tox-linters:
-            files:
-              - ^.*\.sh$
-              - ^.*\.py$
-              - bindep.txt
-              - other-requirements.txt
-              - test-requirements.txt
-              - tox.ini
+        - openstack-tox-linters
         - project-config-dib
         - project-config-gerrit
         - project-config-grafyaml
