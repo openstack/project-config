@@ -2726,20 +2726,17 @@
     name: openstack-infra/release-tools
     templates:
       - merge-check
+      - openstack-python35-jobs
     check:
       jobs:
         - openstack-tox-pep8
         - openstack-tox-py27
         - openstack-tox-bashate
-        - legacy-python35:
-            voting: false
     gate:
       jobs:
         - openstack-tox-pep8
         - openstack-tox-py27
         - openstack-tox-bashate
-        - legacy-python35:
-            voting: false
 
 - project:
     name: openstack-infra/releasestatus
@@ -2877,6 +2874,7 @@
       - openstack-python-jobs
       - release-notes-jobs
       - check-requirements
+      - openstack-python35-jobs
     check:
       jobs:
         - openstack-tox-cover
@@ -2900,8 +2898,6 @@
             branches: ^(?!feature/zuulv3).*$
             voting: false
         - legacy-dsvm-nodepool-src-zuulv3
-        - legacy-python35:
-            voting: false
     gate:
       jobs:
         - legacy-shade-functional
@@ -2912,8 +2908,6 @@
             branches: ^(?!feature/zuulv3).*$
             voting: false
         - legacy-dsvm-nodepool-src-zuulv3
-        - legacy-python35:
-            voting: false
     post:
       jobs:
         - openstack-tox-cover
@@ -3974,10 +3968,7 @@
       - merge-check
       - openstack-python-jobs
       - check-requirements
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs-nonvoting
 
 - project:
     name: openstack/almanach
@@ -4527,16 +4518,13 @@
     templates:
       - merge-check
       - openstack-python-jobs
+      - openstack-python35-jobs
     check:
       jobs:
         - legacy-app-catalog-nodejs4-npm-run-lint
-        - legacy-python35:
-            voting: false
     gate:
       jobs:
         - legacy-app-catalog-nodejs4-npm-run-lint
-        - legacy-python35:
-            voting: false
 
 - project:
     name: openstack/app-catalog-common
@@ -4566,6 +4554,7 @@
       - publish-to-pypi-quietly
       - openstack-python-jobs
       - docs-on-readthedocs
+      - openstack-python35-jobs
     check:
       jobs:
         - legacy-ara-integration-py27-2.2.3.0-centos-7
@@ -4583,16 +4572,12 @@
         - legacy-ara-integration-openstack-ansible-func:
             voting: false
         - openstack-tox-cover
-        - legacy-python35:
-            voting: false
     gate:
       jobs:
         - legacy-ara-integration-py27-2.2.3.0-centos-7
         - legacy-ara-integration-py27-latest-centos-7
         - legacy-ara-integration-py35-latest
         - legacy-ara-integration-py35-latest-fedora-26
-        - legacy-python35:
-            voting: false
 
 - project:
     name: openstack/arch-wg
@@ -5302,6 +5287,7 @@
       - merge-check
       - openstack-python-jobs
       - check-requirements
+      - openstack-python35-jobs-nonvoting
     check:
       jobs:
         - legacy-blazar-devstack-dsvm
@@ -5312,8 +5298,6 @@
               - ^releasenotes/.*
               - ^tox.ini
               - ^.*requirements.txt$
-        - legacy-python35:
-            voting: false
     gate:
       jobs:
         - legacy-blazar-devstack-dsvm
@@ -5335,6 +5319,7 @@
       - merge-check
       - openstack-python-jobs
       - check-requirements
+      - openstack-python35-jobs-nonvoting
     check:
       jobs:
         - legacy-blazar-dashboard-releasenotes:
@@ -5342,8 +5327,6 @@
               - ^releasenotes/.*
               - ^tox.ini
               - ^.*requirements.txt$
-        - legacy-python35:
-            voting: false
     gate:
       jobs:
         - legacy-blazar-dashboard-releasenotes:
@@ -5366,12 +5349,11 @@
     templates:
       - merge-check
       - check-requirements
+      - openstack-python35-jobs-nonvoting
     check:
       jobs:
         - openstack-tox-pep8
         - openstack-tox-py27
-        - legacy-python35:
-            voting: false
     gate:
       jobs:
         - openstack-tox-pep8
@@ -5769,184 +5751,112 @@
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/charm-aodh
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/charm-barbican
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/charm-barbican-softhsm
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/charm-ceilometer
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs-nonvoting
 
 - project:
     name: openstack/charm-ceilometer-agent
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs-nonvoting
 
 - project:
     name: openstack/charm-ceph
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs-nonvoting
 
 - project:
     name: openstack/charm-ceph-fs
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/charm-ceph-mon
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs-nonvoting
 
 - project:
     name: openstack/charm-ceph-osd
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs-nonvoting
 
 - project:
     name: openstack/charm-ceph-proxy
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs-nonvoting
 
 - project:
     name: openstack/charm-ceph-radosgw
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs-nonvoting
 
 - project:
     name: openstack/charm-cinder
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs-nonvoting
 
 - project:
     name: openstack/charm-cinder-backup
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs-nonvoting
 
 - project:
     name: openstack/charm-cinder-ceph
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs-nonvoting
 
 - project:
     name: openstack/charm-cloudkitty
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/charm-deployment-guide
@@ -5965,66 +5875,35 @@
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/charm-designate-bind
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/charm-glance
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs-nonvoting
 
 - project:
     name: openstack/charm-glusterfs
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/charm-gnocchi
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/charm-guide
@@ -6043,20 +5922,14 @@
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs-nonvoting
 
 - project:
     name: openstack/charm-heat
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs-nonvoting
 
 - project:
     name: openstack/charm-interface-barbican-hsm
@@ -6177,24 +6050,14 @@
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs-nonvoting
 
 - project:
     name: openstack/charm-keystone-ldap
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/charm-layer-ceph-base
@@ -6225,104 +6088,56 @@
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs-nonvoting
 
 - project:
     name: openstack/charm-manila
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/charm-manila-generic
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/charm-manila-glusterfs
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/charm-mistral
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/charm-murano
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/charm-neutron-api
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs-nonvoting
 
 - project:
     name: openstack/charm-neutron-api-odl
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/charm-neutron-api-plumgrid
@@ -6335,94 +6150,63 @@
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs-nonvoting
 
 - project:
     name: openstack/charm-neutron-openvswitch
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs-nonvoting
 
 - project:
     name: openstack/charm-nova-cloud-controller
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs-nonvoting
 
 - project:
     name: openstack/charm-nova-compute
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs-nonvoting
 
 - project:
     name: openstack/charm-nova-compute-proxy
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs-nonvoting
 
 - project:
     name: openstack/charm-odl-controller
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs-nonvoting
 
 - project:
     name: openstack/charm-openstack-dashboard
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs-nonvoting
 
 - project:
     name: openstack/charm-openvswitch-odl
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/charm-percona-cluster
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs-nonvoting
 
 - project:
     name: openstack/charm-plumgrid-director
@@ -6447,10 +6231,7 @@
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs-nonvoting
 
 - project:
     name: openstack/charm-specs
@@ -6471,76 +6252,42 @@
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs-nonvoting
 
 - project:
     name: openstack/charm-swift-storage
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs-nonvoting
 
 - project:
     name: openstack/charm-tempest
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/charm-trove
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/charms.ceph
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/charms.openstack
     templates:
       - merge-check
       - python-charm-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/ci-cd-pipeline-app-murano
@@ -7734,26 +7481,24 @@
     templates:
       - merge-check
       - docs-on-readthedocs
+      - openstack-python35-jobs
     check:
       jobs:
         - openstack-tox-pep8
         - build-openstack-sphinx-docs: {}
         - legacy-craton-tox-functional
-        - legacy-python35:
-            voting: false
     gate:
       jobs:
         - openstack-tox-pep8
         - build-openstack-sphinx-docs: {}
         - legacy-craton-tox-functional
-        - legacy-python35:
-            voting: false
 
 - project:
     name: openstack/craton-dashboard
     templates:
       - merge-check
       - openstack-python-jobs
+      - openstack-python35-jobs-nonvoting
     check:
       jobs:
         - legacy-craton-dashboard-nodejs4-npm-run-lint
@@ -7761,8 +7506,6 @@
             voting: false
         - legacy-craton-dashboard-tox-py27dj19
         - legacy-craton-dashboard-tox-py27dj110
-        - legacy-python35:
-            voting: false
     gate:
       jobs:
         - legacy-craton-dashboard-nodejs4-npm-run-lint
@@ -7775,13 +7518,12 @@
       - merge-check
       - openstack-python-jobs
       - check-requirements
+      - openstack-python35-jobs-nonvoting
     check:
       jobs:
         - openstack-tox-cover
         - legacy-cue-integration-dsvm-rabbitmq
         - legacy-rally-dsvm-cue-rabbitmq:
-            voting: false
-        - legacy-python35:
             voting: false
     gate:
       jobs:
@@ -9816,14 +9558,7 @@
       - merge-check
       - openstack-python-jobs
       - check-requirements
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/designate
@@ -10518,14 +10253,7 @@
       - merge-check
       - openstack-python-jobs
       - check-requirements
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/distil-ui
@@ -10533,14 +10261,7 @@
       - merge-check
       - openstack-python-jobs
       - check-requirements
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/django_openstack_auth
@@ -10907,31 +10628,21 @@
       - merge-check
       - check-requirements
       - openstack-python-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/election
     templates:
       - merge-check
       - check-requirements
+      - openstack-python35-jobs
     check:
       jobs:
         - openstack-tox-py27
         - build-openstack-sphinx-docs: {}
-        - legacy-python35:
-            voting: false
     gate:
       jobs:
         - build-openstack-sphinx-docs: {}
-        - legacy-python35:
-            voting: false
     post:
       jobs:
         - legacy-static-election-publish
@@ -10947,10 +10658,7 @@
     templates:
       - merge-check
       - openstack-python-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs-nonvoting
 
 - project:
     name: openstack/eslint-config-openstack
@@ -11031,14 +10739,7 @@
     templates:
       - merge-check
       - openstack-python-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/foxnut
@@ -11325,14 +11026,7 @@
       - openstack-python-jobs
       - docs-on-readthedocs
       - fuel-ccp-cross-repo-gate
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/fuel-ccp-ceph
@@ -11376,14 +11070,7 @@
       - merge-check
       - openstack-python-jobs
       - fuel-ccp-cross-repo-gate
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/fuel-ccp-etcd
@@ -12709,14 +12396,7 @@
       - merge-check
       - openstack-python-jobs
       - check-requirements
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/gantt
@@ -18130,14 +17810,7 @@
       - check-requirements
       - merge-check
       - openstack-python-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/kosmos-specs
@@ -19319,14 +18992,7 @@
     templates:
       - merge-check
       - openstack-python-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/microversion-parse
@@ -19678,6 +19344,7 @@
       - merge-check
       - openstack-python-jobs
       - check-requirements
+      - openstack-python35-jobs
     check:
       jobs:
         - openstack-tox-cover:
@@ -19693,8 +19360,6 @@
               - ^releasenotes/.*$
               - ^tools/.*$
               - ^tox.ini$
-        - legacy-python35:
-            voting: false
     gate:
       jobs:
         - legacy-mogan-tox-functional
@@ -19708,8 +19373,6 @@
               - ^releasenotes/.*$
               - ^tools/.*$
               - ^tox.ini$
-        - legacy-python35:
-            voting: false
 
 - project:
     name: openstack/mogan-specs
@@ -19729,14 +19392,7 @@
       - merge-check
       - openstack-python-jobs
       - check-requirements
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/molteniron
@@ -20911,14 +20567,7 @@
     templates:
       - merge-check
       - openstack-python-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/murano-specs
@@ -22355,14 +22004,7 @@
     templates:
       - merge-check
       - openstack-python-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/networking-odl
@@ -25061,17 +24703,14 @@
       - merge-check
       - publish-to-pypi-quietly
       - openstack-python-jobs
+      - openstack-python35-jobs
     check:
       jobs:
         - legacy-oaktree-dsvm-functional
-        - legacy-python35:
-            voting: false
     gate:
       queue: oaktree
       jobs:
         - legacy-oaktree-dsvm-functional
-        - legacy-python35:
-            voting: false
 
 - project:
     name: openstack/oaktreemodel
@@ -28135,14 +27774,7 @@
       - merge-check
       - openstack-python-jobs
       - nodejs4-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/openstack-helm
@@ -28341,14 +27973,7 @@
       - merge-check
       - check-requirements
       - openstack-python-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/openstackdocstheme
@@ -33330,22 +32955,19 @@
     name: openstack/ospurge
     templates:
       - merge-check
+      - openstack-python35-jobs
     check:
       jobs:
         - openstack-tox-pep8
         - openstack-tox-cover
         - build-openstack-sphinx-docs: {}
         - legacy-ospurge-dsvm-functional
-        - legacy-python35:
-            voting: false
     gate:
       jobs:
         - openstack-tox-pep8
         - openstack-tox-cover
         - build-openstack-sphinx-docs: {}
         - legacy-ospurge-dsvm-functional
-        - legacy-python35:
-            voting: false
 
 - project:
     name: openstack/ossa
@@ -33367,14 +32989,7 @@
       - merge-check
       - openstack-python-jobs
       - check-requirements
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/ovsdbapp
@@ -36932,12 +36547,11 @@
     templates:
       - merge-check
       - check-requirements
+      - openstack-python35-jobs-nonvoting
     check:
       jobs:
         - openstack-tox-pep8
         - openstack-tox-py27
-        - legacy-python35:
-            voting: false
     gate:
       jobs:
         - openstack-tox-pep8
@@ -37265,14 +36879,7 @@
       - openstack-python-jobs
       - check-requirements
       - docs-on-readthedocs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/python-cueclient
@@ -38867,18 +38474,15 @@
     name: openstack/python-opentsdbclient
     templates:
       - merge-check
+      - openstack-python35-jobs
     check:
       jobs:
         - openstack-tox-pep8
         - openstack-tox-py27
-        - legacy-python35:
-            voting: false
     gate:
       jobs:
         - openstack-tox-pep8
         - openstack-tox-py27
-        - legacy-python35:
-            voting: false
 
 - project:
     name: openstack/python-pankoclient
@@ -40324,14 +39928,7 @@
       - merge-check
       - check-requirements
       - openstack-python-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/python-vitrageclient
@@ -41533,17 +41130,12 @@
     templates:
       - merge-check
       - openstack-python-jobs
+      - openstack-python35-jobs
     check:
       jobs:
         - legacy-labs-ig-cluster-kvm-ubuntu:
             voting: false
         - legacy-labs-ig-cluster-vbox-ubuntu:
-            voting: false
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
             voting: false
 
 - project:
@@ -42580,14 +42172,7 @@
     templates:
       - merge-check
       - openstack-python-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/sqlalchemy-migrate
@@ -42648,14 +42233,7 @@
       - publish-to-pypi-quietly
       - docs-on-readthedocs
       - openstack-python-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/stacklight-integration-tests
@@ -42823,17 +42401,10 @@
       - nodejs4-jobs
       - openstack-python-jobs
       - publish-openstack-python-docs
+      - openstack-python35-jobs
     periodic:
       jobs:
         - legacy-periodic-package-stackviz-element
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
 
 - project:
     name: openstack/steth
@@ -43674,6 +43245,7 @@
       - merge-check
       - check-requirements
       - openstack-python-jobs
+      - openstack-python35-jobs
     check:
       jobs:
         - legacy-tempest-dsvm-tap-as-a-service:
@@ -43686,8 +43258,6 @@
               - ^specs/.*$
         - openstack-tox-cover:
             voting: false
-        - legacy-python35:
-            voting: false
     gate:
       jobs:
         - legacy-tempest-dsvm-tap-as-a-service:
@@ -43698,8 +43268,6 @@
               - ^neutron_taas/tests/unit/.*$
               - ^setup.cfg$
               - ^specs/.*$
-        - legacy-python35:
-            voting: false
 
 - project:
     name: openstack/tap-as-a-service-dashboard
@@ -43707,14 +43275,7 @@
       - merge-check
       - check-requirements
       - openstack-python-jobs
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/taskflow
@@ -50918,14 +50479,7 @@
       - merge-check
       - openstack-python-jobs
       - check-requirements
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/valence-specs
@@ -51257,14 +50811,7 @@
       - merge-check
       - openstack-python-jobs
       - check-requirements
-    check:
-      jobs:
-        - legacy-python35:
-            voting: false
-    gate:
-      jobs:
-        - legacy-python35:
-            voting: false
+      - openstack-python35-jobs
 
 - project:
     name: openstack/vmware-nsxlib
