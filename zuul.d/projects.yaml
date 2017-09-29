@@ -38355,8 +38355,15 @@
         - legacy-osc-dsvm-functional
         - legacy-osc-dsvm-functional-tips:
             voting: false
+            # The functional-tips job only tests the latest and shouldn't be run
+            # on the stable branches
+            branches: ^(?!stable)
         - legacy-osc-dsvm-functional-n-net:
             voting: false
+            # The job testing nova-network no longer works before Pike, and
+            # should be disabled until the New Way of testing against old clouds
+            # is ready and backported
+            branches: ^(?!stable/(newton|ocata)).*$
         - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
             voting: false
             irrelevant-files:
