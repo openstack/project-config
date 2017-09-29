@@ -15,8 +15,13 @@ useradd -m zuul -g zuul -s /bin/bash
 cat > /etc/sudoers.d/zuul << EOF
 zuul ALL=(ALL) NOPASSWD:ALL
 EOF
-
 chmod 0440 /etc/sudoers.d/zuul
+
+cat > /etc/sudoers.d/zuul-sudo-grep <<EOF
+zuul ALL = NOPASSWD:/usr/local/jenkins/slave_scripts/zuul-sudo-grep.sh
+EOF
+chmod 0440 /etc/sudoers.d/zuul-sudo-grep
+
 visudo -c || die "Error setting zuul sudo!"
 
 # this was copied from outside the chroot by extras.d
