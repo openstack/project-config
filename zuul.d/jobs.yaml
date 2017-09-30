@@ -123,6 +123,28 @@
         name: afs
 
 - job:
+    name: publish-openstack-sphinx-docs
+    description: |
+      Publish the results of the buld-openstack-sphinx-docs job to
+      /afs/.openstack.org/docs/{{ zuul.project.short_name }}
+    final: True
+    pre-run: playbooks/python-docs/pre
+    run: playbooks/python-docs/run
+    post-run:
+      - playbooks/python-docs/post
+      - playbooks/publish/openstack-afs
+    required-projects:
+      - name: openstack/requirements
+    roles:
+      - zuul: openstack-infra/zuul-jobs
+      - zuul: openstack-infra/openstack-zuul-jobs
+    vars:
+      tox_constraints_file: "{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt"
+    secrets:
+      - secret: afsdocs_secret
+        name: afs
+
+- job:
     name: publish-openstack-specs
     description: |
       Publish OpenStack specs to static.openstack.org
@@ -178,6 +200,24 @@
         name: afs
 
 - job:
+    name: publish-openstack-sphinx-docs-infra
+    description: |
+      Publish the results of the openstack-build-sphinx-docs job to
+      /afs/.openstack.org/infra/{{ zuul.project.short_name }}
+    final: True
+    pre-run: playbooks/python-docs/pre
+    run: playbooks/python-docs/run
+    post-run:
+      - playbooks/python-docs/post-infra
+      - playbooks/publish/infra-afs
+    roles:
+      - zuul: openstack-infra/zuul-jobs
+      - zuul: openstack-infra/openstack-zuul-jobs
+    secrets:
+      - secret: afsdocs_secret
+        name: afs
+
+- job:
     name: publish-infra-manual
     description: |
       Publish the Infra Manual to /afs/.openstack.org/docs/infra/manual
@@ -212,14 +252,16 @@
       - site_logs
 
 - job:
-    name: publish-openstack-python-docs-infra-index
+    name: publish-infra-index
     description: |
-      Publish the results of the tox-docs job to /afs/.openstack.org/infra
+      Publish the infrascructure documentation index
     final: True
     pre-run: playbooks/python-docs/pre
     run: playbooks/docs-infra-index/run
     post-run:
       - playbooks/publish/infra-index
+    allowed-projects:
+      - openstack-infra/project-config
     roles:
       - zuul: openstack-infra/zuul-jobs
       - zuul: openstack-infra/openstack-zuul-jobs
