@@ -178,6 +178,25 @@
         name: afs
 
 - job:
+    name: publish-infra-manual
+    description: |
+      Publish the Infra Manual to /afs/.openstack.org/infra/manual
+    final: True
+    pre-run: playbooks/python-docs/pre
+    run: playbooks/python-docs/run
+    post-run:
+      - playbooks/python-docs/post-infra
+      - playbooks/publish/infra-manual
+    allowed-projects:
+      - openstack-infra/infra-manual
+    roles:
+      - zuul: openstack-infra/zuul-jobs
+      - zuul: openstack-infra/openstack-zuul-jobs
+    secrets:
+      - secret: afsdocs_secret
+        name: afs
+
+- job:
     name: publish-service-types-authority
     description: |
       Publish OpenStack Service Types Authority to
