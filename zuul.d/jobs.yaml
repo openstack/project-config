@@ -101,28 +101,6 @@
       - gpg_key
 
 - job:
-    name: publish-openstack-python-docs
-    description: |
-      Publish the results of the openstack-build-doc job to
-      /afs/.openstack.org/docs/{{ zuul.project.short_name }}
-    final: True
-    pre-run: playbooks/python-docs/pre
-    run: playbooks/python-docs/run
-    post-run:
-      - playbooks/python-docs/post
-      - playbooks/publish/openstack-afs
-    required-projects:
-      - name: openstack/requirements
-    roles:
-      - zuul: openstack-infra/zuul-jobs
-      - zuul: openstack-infra/openstack-zuul-jobs
-    vars:
-      tox_constraints_file: "{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt"
-    secrets:
-      - secret: afsdocs_secret
-        name: afs
-
-- job:
     name: publish-openstack-sphinx-docs
     description: |
       Publish the results of the buld-openstack-sphinx-docs job to
@@ -180,24 +158,6 @@
       tox_constraints_file: "{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt"
     secrets:
       - site_logs
-
-- job:
-    name: publish-openstack-python-docs-infra
-    description: |
-      Publish the results of the tox-docs job to
-      /afs/.openstack.org/infra/{{ zuul.project.short_name }}
-    final: True
-    pre-run: playbooks/python-docs/pre
-    run: playbooks/python-docs/run
-    post-run:
-      - playbooks/python-docs/post-infra
-      - playbooks/publish/infra-afs
-    roles:
-      - zuul: openstack-infra/zuul-jobs
-      - zuul: openstack-infra/openstack-zuul-jobs
-    secrets:
-      - secret: afsdocs_secret
-        name: afs
 
 - job:
     name: publish-openstack-sphinx-docs-infra
