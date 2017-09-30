@@ -7,7 +7,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
     check:
       jobs:
@@ -65,7 +65,7 @@
       - integrated-gate-py35
       # TODO(mordred) Uncomment this when the variant bug is fixed
       # - integrated-gate-nova-net
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
     check:
       jobs:
         - build-openstack-sphinx-docs:
@@ -324,7 +324,7 @@
     name: openstack-dev/hacking
     templates:
       - merge-check
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - openstack-python-jobs
       - openstack-python35-jobs
       - openstack-pypy-jobs-nonvoting
@@ -435,7 +435,7 @@
       - openstack-python35-jobs
       - lib-forward-testing
       - openstack-pypy-jobs-nonvoting
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - periodic-newton
       - periodic-ocata
       - periodic-pike
@@ -557,7 +557,7 @@
         - openstack-tox-cover
     release:
       jobs:
-        - publish-openstack-python-docs-infra
+        - publish-openstack-sphinx-docs-infra
         - publish-openstack-python-tarball:
             dependencies:
               - publish-openstack-python-tarball
@@ -953,7 +953,7 @@
       - openstack-python35-jobs
     release:
       jobs:
-        - publish-openstack-python-docs-infra
+        - publish-openstack-sphinx-docs-infra
         - publish-openstack-python-tarball:
             dependencies:
               - publish-openstack-python-tarball
@@ -991,7 +991,7 @@
       - openstack-python35-jobs
     release:
       jobs:
-        - publish-openstack-python-docs-infra
+        - publish-openstack-sphinx-docs-infra
         - publish-openstack-python-tarball:
             dependencies:
               - publish-openstack-python-tarball
@@ -1041,7 +1041,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs-infra
+      - publish-openstack-sphinx-docs-infra
     check:
       jobs:
         - legacy-dsvm-nodepool-redhat-src
@@ -1094,7 +1094,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs-infra
+      - publish-openstack-sphinx-docs-infra
     check:
       jobs:
         - openstack-tox-cover
@@ -1249,7 +1249,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs-infra
+      - publish-openstack-sphinx-docs-infra
     check:
       jobs:
         - openstack-tox-cover
@@ -1368,7 +1368,7 @@
     templates:
       - merge-check
       - openstack-python-jobs
-      - publish-openstack-python-docs-infra
+      - publish-openstack-sphinx-docs-infra
     pre-release:
       jobs:
         - publish-openstack-python-tarball:
@@ -1491,7 +1491,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs-infra
+      - publish-openstack-sphinx-docs-infra
     check:
       jobs:
         - openstack-tox-cover
@@ -1591,7 +1591,7 @@
     name: openstack-infra/openstack-zuul-jobs
     post:
       jobs:
-        - publish-openstack-python-docs-infra:
+        - publish-openstack-sphinx-docs-infra:
             branches: ^(?!bug/).*$
 
 - project:
@@ -1604,7 +1604,7 @@
     name: openstack-infra/openstackid
     templates:
       - merge-check
-      - publish-openstack-python-docs-infra
+      - publish-openstack-sphinx-docs-infra
     check:
       jobs:
         - legacy-laravel-openstackid-unittests
@@ -2270,7 +2270,7 @@
       - merge-check
       - infra-puppet-check-jobs
       - infra-puppet-apply-jobs
-      - publish-openstack-python-docs-infra
+      - publish-openstack-sphinx-docs-infra
     check:
       jobs:
         - legacy-puppet-openstackci-puppet-beaker-rspec-ubuntu-trusty
@@ -2591,7 +2591,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
     pre-release:
       jobs:
         - publish-openstack-python-tarball:
@@ -2677,13 +2677,13 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs-infra
+      - publish-openstack-sphinx-docs-infra
     post:
       jobs:
         - openstack-tox-cover
     release:
       jobs:
-        - publish-openstack-python-docs-infra:
+        - publish-openstack-sphinx-docs-infra:
             branches: ^(?!bug/).*$
         - publish-openstack-python-tarball:
             dependencies:
@@ -2955,7 +2955,7 @@
 - project:
     name: openstack-infra/storyboard
     templates:
-      - publish-openstack-python-docs-infra
+      - publish-openstack-sphinx-docs-infra
       - merge-check
       - openstack-python35-jobs
     check:
@@ -2972,7 +2972,7 @@
         - openstack-tox-cover
     pre-release:
       jobs:
-        - publish-openstack-python-docs-infra:
+        - publish-openstack-sphinx-docs-infra:
             branches: ^(?!bug/).*$
         - publish-openstack-python-tarball:
             dependencies:
@@ -2989,7 +2989,7 @@
         - publish-openstack-python-tarball
     release:
       jobs:
-        - publish-openstack-python-docs-infra:
+        - publish-openstack-sphinx-docs-infra:
             branches: ^(?!bug/).*$
         - publish-openstack-python-tarball:
             dependencies:
@@ -3046,7 +3046,7 @@
       - openstack-python-jobs
       - openstack-python35-jobs
       - release-notes-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
     pre-release:
       jobs:
         - publish-openstack-python-tarball:
@@ -3083,7 +3083,7 @@
     templates:
       - merge-check
       - infra-puppet-apply-jobs
-      - publish-openstack-python-docs-infra
+      - publish-openstack-sphinx-docs-infra
       - infra-logstash-filter-jobs
     check:
       jobs:
@@ -3798,7 +3798,7 @@
 - project:
     name: openstack-infra/zuul-jobs
     templates:
-      - publish-openstack-python-docs-infra
+      - publish-openstack-sphinx-docs-infra
     check:
       jobs:
         - base-integration-centos-7
@@ -3821,7 +3821,7 @@
         - tox-py35-on-zuul
     post:
       jobs:
-        - publish-openstack-python-docs-infra:
+        - publish-openstack-sphinx-docs-infra:
             branches: ^(?!bug/).*$
 
 - project:
@@ -3834,7 +3834,7 @@
     name: openstack-infra/zuul-sphinx
     templates:
       - merge-check
-      - publish-openstack-python-docs-infra
+      - publish-openstack-sphinx-docs-infra
     pre-release:
       jobs:
         - publish-openstack-python-tarball:
@@ -4014,7 +4014,7 @@
       - openstack-python-jobs
       - openstack-python35-jobs
       - openstack-pypy-jobs-nonvoting
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
     pre-release:
       jobs:
@@ -4053,7 +4053,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - ansible-role-functional-jobs-centos7
       - ansible-role-functional-jobs-xenial
       - ansible-role-functional-jobs-opensuse-423
@@ -4376,7 +4376,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - translation-jobs
       - release-notes-jobs
       - install-guide-jobs
@@ -4721,7 +4721,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - lib-forward-testing
       - release-notes-jobs
@@ -4765,7 +4765,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
     check:
       jobs:
@@ -4842,7 +4842,7 @@
       - openstack-python-jobs
       - openstack-python35-jobs
       - translation-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - check-requirements
       - api-guide-jobs
@@ -5136,7 +5136,7 @@
       - merge-check
       - openstack-python-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
     experimental:
       jobs:
@@ -5436,7 +5436,7 @@
       - openstack-python-jobs
       - openstack-python35-jobs
       - release-notes-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - periodic-newton
       - periodic-ocata
@@ -5489,7 +5489,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
     pre-release:
       jobs:
@@ -5541,7 +5541,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - periodic-newton
       - periodic-ocata
       - periodic-pike
@@ -5687,7 +5687,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - lib-forward-testing-plugin
     pre-release:
@@ -5854,7 +5854,7 @@
     name: openstack/charm-deployment-guide
     templates:
       - merge-check
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
     check:
       jobs:
         - build-openstack-sphinx-docs: {}
@@ -5901,7 +5901,7 @@
     name: openstack/charm-guide
     templates:
       - merge-check
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
     check:
       jobs:
         - build-openstack-sphinx-docs: {}
@@ -6293,7 +6293,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-openstack-server
       - periodic-newton
       - periodic-ocata
@@ -6839,7 +6839,7 @@
       - openstack-python35-jobs
       - openstack-pypy-jobs-nonvoting
       - lib-forward-testing
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
     check:
       jobs:
@@ -6942,7 +6942,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
     check:
       jobs:
@@ -6978,7 +6978,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
     pre-release:
       jobs:
@@ -7194,7 +7194,7 @@
       - openstack-python-jobs
       - openstack-python35-jobs
       - release-notes-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - periodic-newton
       - periodic-ocata
       - periodic-pike
@@ -7432,7 +7432,7 @@
       - openstack-python-jobs
       - openstack-python35-jobs
       - release-notes-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
     check:
       jobs:
         - openstack-tox-cover:
@@ -9506,7 +9506,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - lib-forward-testing
       - release-notes-jobs
@@ -9558,7 +9558,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - periodic-newton
       - periodic-ocata
       - periodic-pike
@@ -9600,7 +9600,7 @@
     templates:
       - merge-check
       - openstack-python-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - translation-jobs
       - translation-jobs-ocata
@@ -9647,7 +9647,7 @@
       - merge-check
       - check-requirements
       - designate-dsvm-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
     check:
       jobs:
         - openstack-tox-pep8
@@ -10096,7 +10096,7 @@
     templates:
       - merge-check
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - openstack-python-jobs
       - openstack-python35-jobs
       - release-notes-jobs
@@ -10261,7 +10261,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - lib-forward-testing
       - translation-jobs
@@ -10454,7 +10454,7 @@
       - merge-check
       - openstack-python-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - openstack-python35-jobs
     check:
       jobs:
@@ -10658,7 +10658,7 @@
       - merge-check
       - nodejs4-jobs
       - nodejs4-docs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
     release:
       jobs:
         - publish-openstack-python-tarball:
@@ -10716,7 +10716,7 @@
     name: openstack/faafo
     templates:
       - merge-check
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
     check:
       jobs:
         - build-openstack-sphinx-docs: {}
@@ -10745,7 +10745,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - release-notes-jobs
     check:
@@ -10850,7 +10850,7 @@
       - openstack-python-jobs
       - openstack-python35-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
     check:
       jobs:
         - legacy-freezer-dr-pylint
@@ -12302,7 +12302,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - lib-forward-testing
       - release-notes-jobs
@@ -12347,7 +12347,7 @@
       - openstack-python-jobs
       - openstack-python35-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
     check:
       jobs:
@@ -12618,7 +12618,7 @@
       - merge-check
       - openstack-python35-jobs
       - openstack-python-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-openstack-server
       - periodic-newton
       - periodic-ocata
@@ -12760,7 +12760,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - check-requirements
       - translation-jobs
@@ -13134,7 +13134,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - periodic-newton
       - periodic-ocata
       - periodic-pike
@@ -13344,7 +13344,7 @@
       - openstack-python-jobs
       - openstack-python35-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
     pre-release:
       jobs:
         - publish-openstack-python-tarball:
@@ -13381,7 +13381,7 @@
     templates:
       - merge-check
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - openstack-python35-jobs
       - openstack-python-jobs
     pre-release:
@@ -13445,7 +13445,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
     check:
       jobs:
@@ -13492,7 +13492,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - periodic-newton
       - periodic-ocata
       - periodic-pike
@@ -15427,7 +15427,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - periodic-newton
       - periodic-ocata
       - periodic-pike
@@ -15935,7 +15935,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - translation-jobs
       - release-notes-jobs
@@ -16098,7 +16098,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
     check:
       jobs:
@@ -16233,7 +16233,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - release-notes-jobs
     check:
@@ -16476,7 +16476,7 @@
     name: openstack/ironic-python-agent-builder
     templates:
       - merge-check
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - release-notes-jobs
     check:
@@ -16601,7 +16601,7 @@
       - openstack-python-jobs
       - openstack-python35-jobs
       - nodejs4-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - translation-jobs
       - translation-jobs-ocata
       - translation-jobs-pike
@@ -16740,7 +16740,7 @@
       - openstack-python-jobs
       - openstack-python35-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - api-ref-jobs
       - translation-jobs
     check:
@@ -16843,7 +16843,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-openstack-server
       - periodic-newton
       - periodic-ocata
@@ -17049,7 +17049,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - lib-forward-testing
       - release-notes-jobs
@@ -17090,7 +17090,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - lib-forward-testing
       - release-notes-jobs
@@ -17260,7 +17260,7 @@
       - openstack-python-jobs
       - openstack-python35-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - periodic-newton
       - periodic-ocata
@@ -17435,7 +17435,7 @@
       - openstack-python-jobs
       - openstack-python35-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - deploy-guide-jobs
     check:
@@ -17594,7 +17594,7 @@
       - openstack-python-jobs
       - openstack-python35-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
     check:
       jobs:
@@ -17816,7 +17816,7 @@
       - openstack-python-jobs
       - openstack-python35-jobs
       - release-notes-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
     check:
       jobs:
@@ -17859,7 +17859,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
     check:
       jobs:
@@ -17924,7 +17924,7 @@
       - openstack-python-jobs
       - openstack-python35-jobs
       - release-notes-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
     check:
       jobs:
@@ -17987,7 +17987,7 @@
     templates:
       - merge-check
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
     check:
       jobs:
         - openstack-tox-pep8
@@ -18097,7 +18097,7 @@
       - openstack-python-jobs
       - openstack-python35-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - translation-jobs
       - install-guide-jobs
@@ -18219,7 +18219,7 @@
       - openstack-python35-jobs
       - nodejs4-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - translation-jobs
       - translation-jobs-ocata
@@ -18247,7 +18247,7 @@
     name: openstack/manila
     templates:
       - merge-check
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - openstack-python-jobs
       - openstack-python35-jobs
       - check-requirements
@@ -18942,7 +18942,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - experimental-tripleo-jobs
       - check-requirements
       - release-notes-jobs
@@ -19445,7 +19445,7 @@
       - openstack-python-jobs
       - openstack-python35-jobs-nonvoting
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - api-ref-jobs
     check:
@@ -19646,7 +19646,7 @@
       - openstack-python35-jobs
       - periodic-jobs-with-oslo-master
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - api-ref-jobs
     check:
@@ -19749,7 +19749,7 @@
       - openstack-python35-jobs
       - periodic-jobs-with-oslo-master
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - api-guide-jobs
       - api-ref-jobs
@@ -20173,7 +20173,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - periodic-newton
       - periodic-ocata
@@ -20215,7 +20215,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - periodic-newton
       - periodic-ocata
@@ -20710,7 +20710,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - check-requirements
       - periodic-newton
@@ -20782,7 +20782,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - release-notes-jobs
     pre-release:
@@ -20822,7 +20822,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - periodic-newton
       - periodic-ocata
@@ -21656,7 +21656,7 @@
       - periodic-ocata
       - periodic-pike
       - periodic-jobs-with-neutron-lib-master
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - translation-jobs
     check:
@@ -21920,7 +21920,7 @@
       - periodic-ocata
       - periodic-pike
       - periodic-jobs-with-neutron-lib-master
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - release-notes-jobs
       - translation-jobs
@@ -22173,7 +22173,7 @@
     templates:
       - merge-check
       - openstack-python-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - translation-jobs
       - check-requirements
@@ -22464,7 +22464,7 @@
     templates:
       - merge-check
       - openstack-python-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - openstack-python35-jobs
       - periodic-jobs-with-neutron-lib-master
@@ -22620,7 +22620,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-openstack-server
       - periodic-newton
       - periodic-ocata
@@ -23136,7 +23136,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - periodic-jobs-with-neutron-lib-master
     check:
@@ -23197,7 +23197,7 @@
       - openstack-python35-jobs
       - release-notes-jobs
       - translation-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - periodic-jobs-with-neutron-lib-master
     check:
       jobs:
@@ -23255,7 +23255,7 @@
     templates:
       - check-requirements
       - merge-check
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - openstack-python-jobs
       - openstack-python35-jobs
       - release-notes-jobs
@@ -23383,7 +23383,7 @@
       - check-requirements
       - merge-check
       - openstack-python-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - translation-jobs
       - translation-jobs-ocata
       - translation-jobs-pike
@@ -23431,7 +23431,7 @@
     templates:
       - check-requirements
       - merge-check
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - openstack-python-jobs
       - openstack-python35-jobs
       - lib-forward-testing
@@ -23637,7 +23637,7 @@
       - openstack-python-jobs
       - openstack-python35-jobs
       - periodic-jobs-with-oslo-master
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-openstack-server
       - periodic-newton
       - periodic-ocata
@@ -24660,7 +24660,7 @@
       - periodic-jobs-with-oslo-master
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - translation-jobs
       - api-ref-jobs
@@ -24854,7 +24854,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - translation-jobs
     check:
       jobs:
@@ -24900,7 +24900,7 @@
     templates:
       - merge-check
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
     check:
       jobs:
         - openstack-tox-pep8
@@ -25017,7 +25017,7 @@
     templates:
       - merge-check
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - deploy-guide-jobs
       - ansible-role-jobs
     check:
@@ -25236,7 +25236,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
     check:
@@ -25274,7 +25274,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
@@ -25293,7 +25293,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
@@ -25313,7 +25313,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
@@ -25404,7 +25404,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
@@ -25427,7 +25427,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
@@ -25447,7 +25447,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
@@ -25467,7 +25467,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
@@ -25490,7 +25490,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
@@ -25510,7 +25510,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
@@ -25529,7 +25529,7 @@
     templates:
       - merge-check
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - ansible-role-jobs
     check:
       jobs:
@@ -25566,7 +25566,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - ansible-role-functional-jobs-xenial
     release:
       jobs:
@@ -25606,7 +25606,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
@@ -25629,7 +25629,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
     experimental:
@@ -25696,7 +25696,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
@@ -25755,7 +25755,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
@@ -25800,7 +25800,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
     experimental:
@@ -25867,7 +25867,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
@@ -25890,7 +25890,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - ansible-role-functional-jobs-xenial
     release:
@@ -25911,7 +25911,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
@@ -25970,7 +25970,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
@@ -25993,7 +25993,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
@@ -26016,7 +26016,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
@@ -26039,7 +26039,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
     experimental:
@@ -26106,7 +26106,7 @@
       - merge-check
       - check-requirements
       - ansible-role-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - ansible-role-functional-jobs-xenial
     check:
       jobs:
@@ -26143,7 +26143,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
@@ -26332,7 +26332,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
     experimental:
@@ -26399,7 +26399,7 @@
       - merge-check
       - check-requirements
       - ansible-role-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - ansible-role-functional-jobs-xenial
     check:
       jobs:
@@ -26436,7 +26436,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
     experimental:
@@ -26503,7 +26503,7 @@
       - merge-check
       - check-requirements
       - ansible-role-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - ansible-role-functional-jobs-xenial
     check:
       jobs:
@@ -26540,7 +26540,7 @@
       - merge-check
       - check-requirements
       - ansible-role-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - ansible-role-functional-jobs-xenial
     check:
       jobs:
@@ -26577,7 +26577,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
@@ -26700,7 +26700,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
@@ -26788,7 +26788,7 @@
       - merge-check
       - check-requirements
       - ansible-role-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - ansible-role-functional-jobs-xenial
     check:
       jobs:
@@ -26825,7 +26825,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
     experimental:
@@ -26892,7 +26892,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
@@ -26938,7 +26938,7 @@
       - merge-check
       - check-requirements
       - ansible-role-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - ansible-role-functional-jobs-xenial
     check:
       jobs:
@@ -26975,7 +26975,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
@@ -27101,7 +27101,7 @@
       - merge-check
       - check-requirements
       - ansible-role-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - ansible-role-functional-jobs-xenial
     check:
       jobs:
@@ -27138,7 +27138,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
@@ -27155,7 +27155,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
     experimental:
@@ -27222,7 +27222,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
     experimental:
@@ -27289,7 +27289,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
     experimental:
@@ -27356,7 +27356,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
@@ -27376,7 +27376,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial-nv
     experimental:
@@ -27428,7 +27428,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
@@ -27476,7 +27476,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
@@ -27499,7 +27499,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
@@ -27519,7 +27519,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
@@ -27539,7 +27539,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
@@ -27559,7 +27559,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
@@ -27602,7 +27602,7 @@
       - merge-check
       - ansible-role-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - ansible-role-functional-jobs-trusty
       - ansible-role-functional-jobs-xenial
@@ -27641,7 +27641,7 @@
       - release-notes-jobs
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
     pre-release:
       jobs:
         - publish-openstack-python-tarball:
@@ -27886,7 +27886,7 @@
       - merge-check
       - check-requirements
       - release-notes-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
     check:
       jobs:
         - openstack-tox-pep8
@@ -27966,7 +27966,7 @@
     templates:
       - merge-check
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - openstack-python-jobs
     check:
       jobs:
@@ -28789,7 +28789,7 @@
     templates:
       - check-requirements
       - merge-check
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - openstack-python-jobs
       - openstack-python35-jobs
       - lib-forward-testing
@@ -28852,7 +28852,7 @@
     templates:
       - check-requirements
       - merge-check
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - openstack-python-jobs
       - openstack-python35-jobs
       - openstack-pypy-jobs-nonvoting
@@ -30584,7 +30584,7 @@
     templates:
       - merge-check
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - openstack-python-jobs
       - openstack-python35-jobs
     pre-release:
@@ -31406,7 +31406,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - release-notes-jobs
     pre-release:
@@ -31447,7 +31447,7 @@
       - check-requirements
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
     pre-release:
       jobs:
         - publish-openstack-python-tarball:
@@ -31484,7 +31484,7 @@
     templates:
       - merge-check
       - openstack-python-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - openstack-python35-jobs
       - release-notes-jobs
@@ -31524,7 +31524,7 @@
     templates:
       - merge-check
       - openstack-python-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - openstack-python35-jobs
       - release-notes-jobs
@@ -31652,7 +31652,7 @@
       - openstack-python35-jobs
       - openstack-pypy-jobs-nonvoting
       - lib-forward-testing
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
     check:
       jobs:
@@ -31705,7 +31705,7 @@
       - merge-check
       - openstack-python-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
     check:
       jobs:
         - legacy-osc-placement-dsvm-functional:
@@ -31752,7 +31752,7 @@
     templates:
       - merge-check
       - openstack-python-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - translation-jobs
       - openstack-python35-jobs
@@ -31797,7 +31797,7 @@
     templates:
       - merge-check
       - openstack-python-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - openstack-python35-jobs
       - translation-jobs
@@ -31846,7 +31846,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - lib-forward-testing
       - release-notes-jobs
@@ -31890,7 +31890,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - lib-forward-testing
       - release-notes-jobs
@@ -31934,7 +31934,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - translation-jobs
       - lib-forward-testing
@@ -31985,7 +31985,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - translation-jobs
       - lib-forward-testing
@@ -32033,7 +32033,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - translation-jobs
       - lib-forward-testing
@@ -32085,7 +32085,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - translation-jobs
       - lib-forward-testing
@@ -32213,7 +32213,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - openstack-pypy-jobs-nonvoting
       - translation-jobs
@@ -32259,7 +32259,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - translation-jobs
       - lib-forward-testing
@@ -32304,7 +32304,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - translation-jobs
       - lib-forward-testing
@@ -32349,7 +32349,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - translation-jobs
       - lib-forward-testing
@@ -32392,7 +32392,7 @@
     name: openstack/oslo.rootwrap
     templates:
       - merge-check
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - openstack-python-jobs
       - openstack-python35-jobs
       - check-requirements
@@ -32438,7 +32438,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - lib-forward-testing
       - release-notes-jobs
@@ -32482,7 +32482,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs-nonvoting
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - translation-jobs
       - lib-forward-testing
@@ -32533,7 +32533,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - translation-jobs
       - lib-forward-testing
@@ -32578,7 +32578,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - translation-jobs
       - lib-forward-testing
@@ -32630,7 +32630,7 @@
       - merge-check
       - openstack-python35-jobs
       - openstack-python-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - translation-jobs
       - lib-forward-testing
@@ -32670,7 +32670,7 @@
     name: openstack/oslosphinx
     templates:
       - merge-check
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - release-notes-jobs
       - periodic-newton
@@ -32725,7 +32725,7 @@
       - openstack-python-jobs
       - openstack-python35-jobs
       - openstack-pypy-jobs-nonvoting
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - release-notes-jobs
       - periodic-newton
@@ -32813,7 +32813,7 @@
       - openstack-python-jobs
       - openstack-python35-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - lib-forward-testing
       - periodic-newton
@@ -33038,7 +33038,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - translation-jobs
       - release-notes-jobs
     check:
@@ -33118,7 +33118,7 @@
       - openstack-python-jobs
       - openstack-python35-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
     check:
       jobs:
@@ -33226,7 +33226,7 @@
     templates:
       - merge-check
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - openstack-python-jobs
       - release-notes-jobs
     pre-release:
@@ -33302,7 +33302,7 @@
     templates:
       - merge-check
       - openstack-python-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
 
 - project:
     name: openstack/picasso
@@ -34553,7 +34553,7 @@
     name: openstack/puppet-openstack-guide
     templates:
       - merge-check
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
     check:
       jobs:
         - build-openstack-sphinx-docs: {}
@@ -36019,7 +36019,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - lib-forward-testing
     post:
@@ -36154,7 +36154,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - periodic-newton
       - periodic-ocata
@@ -36196,7 +36196,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
     pre-release:
       jobs:
@@ -36317,7 +36317,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - openstack-pypy-jobs-nonvoting
       - osc-plugin-jobs
     pre-release:
@@ -36363,7 +36363,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - osc-plugin-jobs
     check:
@@ -36477,7 +36477,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
     check:
       jobs:
@@ -36522,7 +36522,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - openstack-pypy-jobs-nonvoting
       - lib-forward-testing-plugin
     check:
@@ -36578,7 +36578,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - lib-forward-testing
       - release-notes-jobs
@@ -36745,7 +36745,7 @@
       - check-requirements
       - osc-plugin-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
     pre-release:
       jobs:
         - publish-openstack-python-tarball:
@@ -36829,7 +36829,7 @@
     templates:
       - merge-check
       - openstack-python-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - osc-plugin-jobs
       - designate-dsvm-jobs
@@ -37005,7 +37005,7 @@
       - openstack-python-jobs
       - openstack-python35-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
     check:
       jobs:
@@ -37115,7 +37115,7 @@
       - openstack-python-jobs
       - openstack-python35-jobs
       - release-notes-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - lib-forward-testing
     check:
@@ -37245,7 +37245,7 @@
       - openstack-pypy-jobs-nonvoting
       - translation-jobs
       - osc-plugin-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
     check:
       jobs:
         - legacy-heatclient-dsvm-functional
@@ -37367,7 +37367,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - release-notes-jobs
       - osc-plugin-jobs
@@ -37436,7 +37436,7 @@
       - merge-check
       - openstack-python35-jobs
       - openstack-python-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - openstack-pypy-jobs-nonvoting
       - release-notes-jobs
@@ -37559,7 +37559,7 @@
       - openstack-python-jobs
       - openstack-python35-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - translation-jobs
       - osc-plugin-jobs
     check:
@@ -37603,7 +37603,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - lib-forward-testing
       - translation-jobs
@@ -37695,7 +37695,7 @@
       - openstack-python-jobs
       - openstack-python35-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - translation-jobs
     check:
       jobs:
@@ -37736,7 +37736,7 @@
     name: openstack/python-manilaclient
     templates:
       - merge-check
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - openstack-python-jobs
       - openstack-python35-jobs
       - check-requirements
@@ -37839,7 +37839,7 @@
       - openstack-python35-jobs
       - check-requirements
       - osc-plugin-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
     check:
       jobs:
@@ -37976,7 +37976,7 @@
       - openstack-python35-jobs
       - check-requirements
       - release-notes-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - translation-jobs
       - osc-plugin-jobs
     check:
@@ -38034,7 +38034,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - openstack-pypy-jobs-nonvoting
       - lib-forward-testing
@@ -38127,7 +38127,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - lib-forward-testing
       - translation-jobs
@@ -38183,7 +38183,7 @@
     templates:
       - merge-check
       - openstack-python-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - openstack-python35-jobs
       - osc-plugin-jobs
@@ -38265,7 +38265,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - translation-jobs
       - release-notes-jobs
@@ -38402,7 +38402,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - osc-plugin-jobs
     pre-release:
       jobs:
@@ -38577,7 +38577,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - release-notes-jobs
       - osc-plugin-jobs
@@ -38680,7 +38680,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - openstack-pypy-jobs-nonvoting
       - osc-plugin-jobs
@@ -38722,7 +38722,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - translation-jobs
       - osc-plugin-jobs
       - release-notes-jobs
@@ -38770,7 +38770,7 @@
       - check-requirements
       - openstack-pypy-jobs-nonvoting
       - translation-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
     post:
       jobs:
         - openstack-tox-cover
@@ -38854,7 +38854,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - openstack-pypy-jobs-nonvoting
       - lib-forward-testing
@@ -38956,7 +38956,7 @@
       - openstack-python-jobs
       - openstack-python35-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
     check:
       jobs:
         - openstack-tox-cover:
@@ -39785,7 +39785,7 @@
     templates:
       - merge-check
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - openstack-python-jobs
       - openstack-python35-jobs
       - openstack-pypy-jobs-nonvoting
@@ -39848,7 +39848,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - osc-plugin-jobs
       - release-notes-jobs
@@ -39889,7 +39889,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - osc-plugin-jobs
     check:
@@ -39939,7 +39939,7 @@
       - openstack-python35-jobs
       - check-requirements
       - osc-plugin-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
     check:
       jobs:
@@ -39985,7 +39985,7 @@
       - openstack-python-jobs
       - openstack-python35-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
     check:
       jobs:
         - legacy-zunclient-devstack-dsvm-docker-sql
@@ -40111,7 +40111,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - docs-on-readthedocs
     check:
       jobs:
@@ -40541,7 +40541,7 @@
     templates:
       - merge-check
       - nodejs4-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - openstack-python-jobs
       - openstack-python35-jobs
     check:
@@ -40672,7 +40672,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
     pre-release:
       jobs:
@@ -40711,7 +40711,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
     pre-release:
       jobs:
         - publish-openstack-python-tarball:
@@ -40802,7 +40802,7 @@
     templates:
       - merge-check
       - openstack-pypy-jobs-nonvoting
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - openstack-python35-jobs
       - publish-to-pypi
     check:
@@ -41059,7 +41059,7 @@
       - periodic-newton
       - periodic-ocata
       - periodic-pike
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - translation-jobs
       - release-notes-jobs
@@ -41328,7 +41328,7 @@
     templates:
       - merge-check
       - openstack-python-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - openstack-python35-jobs
       - release-notes-jobs
     check:
@@ -41480,7 +41480,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - translation-jobs
       - release-notes-jobs
@@ -41522,7 +41522,7 @@
       - check-requirements
       - merge-check
       - openstack-python-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - translation-jobs
       - translation-jobs-ocata
@@ -41570,7 +41570,7 @@
     name: openstack/security-analysis
     templates:
       - merge-check
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
     check:
       jobs:
         - build-openstack-sphinx-docs: {}
@@ -41605,7 +41605,7 @@
     templates:
       - check-requirements
       - merge-check
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - openstack-python-jobs
       - openstack-python35-jobs
       - release-notes-jobs
@@ -41714,7 +41714,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs-nonvoting
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - translation-jobs
       - release-notes-jobs
     check:
@@ -41935,7 +41935,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - openstack-pypy-jobs-nonvoting
       - release-notes-jobs
       - check-requirements
@@ -42312,7 +42312,7 @@
       - merge-check
       - nodejs4-jobs
       - openstack-python-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - openstack-python35-jobs
     periodic:
       jobs:
@@ -42366,7 +42366,7 @@
       - openstack-pypy-jobs-nonvoting
       - check-requirements
       - lib-forward-testing
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - periodic-newton
       - periodic-ocata
@@ -42420,7 +42420,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
     check:
       jobs:
         - legacy-storlets-functional
@@ -42498,7 +42498,7 @@
       - openstack-python-jobs
       - openstack-python35-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
     check:
       jobs:
@@ -42627,7 +42627,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-openstack-server
       - periodic-newton
       - periodic-ocata
@@ -42990,7 +42990,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
     pre-release:
       jobs:
@@ -43041,7 +43041,7 @@
       - merge-check
       - check-requirements
       - openstack-python-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - translation-jobs
       - openstack-python35-jobs
@@ -43197,7 +43197,7 @@
       - openstack-python-jobs
       - openstack-python35-jobs
       - openstack-pypy-jobs-nonvoting
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - lib-forward-testing
       - release-notes-jobs
       - periodic-newton
@@ -43277,7 +43277,7 @@
       # - integrated-gate-nova-net
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - publish-to-pypi
       - release-notes-jobs
     check:
@@ -43814,7 +43814,7 @@
     templates:
       - merge-check
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - lib-forward-testing
       - openstack-python-jobs
       - openstack-python35-jobs
@@ -43975,7 +43975,7 @@
       - check-requirements
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - lib-forward-testing
       - release-notes-jobs
       - periodic-newton
@@ -44089,7 +44089,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
     post:
       jobs:
@@ -44176,7 +44176,7 @@
       - openstack-python-jobs
       - openstack-python35-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
     check:
       jobs:
@@ -44265,7 +44265,7 @@
     templates:
       - merge-check
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - publish-to-pypi
       - openstack-python-jobs
       - openstack-python35-jobs
@@ -45043,7 +45043,7 @@
     name: openstack/tripleo-docs
     templates:
       - merge-check
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
     check:
       jobs:
         - build-openstack-sphinx-docs: {}
@@ -46637,7 +46637,7 @@
     templates:
       - merge-check
       - experimental-tripleo-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
     check:
       jobs:
         - build-openstack-sphinx-docs: {}
@@ -48182,7 +48182,7 @@
     name: openstack/tripleo-quickstart
     templates:
       - merge-check
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-openstack-server
       - release-notes-jobs
       - tripleo-upgrade-jobs
@@ -50004,7 +50004,7 @@
       - merge-check
       - openstack-python-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
     pre-release:
       jobs:
@@ -50044,7 +50044,7 @@
       - openstack-python-jobs
       - openstack-python35-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
     pre-release:
       jobs:
@@ -50083,7 +50083,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - periodic-newton
       - periodic-ocata
       - periodic-pike
@@ -50507,7 +50507,7 @@
       - openstack-python-jobs
       - openstack-python35-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
     check:
       jobs:
@@ -50560,7 +50560,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - release-notes-jobs
     pre-release:
@@ -50780,7 +50780,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - translation-jobs
       - check-requirements
       - release-notes-jobs
@@ -50829,7 +50829,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - check-requirements
       - translation-jobs
@@ -51975,7 +51975,7 @@
       - periodic-pike
       - check-requirements
       - translation-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - api-ref-jobs
       - install-guide-jobs
@@ -52083,7 +52083,7 @@
       - openstack-python-jobs
       - openstack-python35-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - translation-jobs
       - translation-jobs-ocata
@@ -52119,7 +52119,7 @@
       - merge-check
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - check-requirements
       - api-ref-jobs
     check:
@@ -52194,7 +52194,7 @@
       - openstack-python-jobs
       - openstack-python35-jobs
       - check-requirements
-      - publish-openstack-python-docs
+      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - translation-jobs
     check:
