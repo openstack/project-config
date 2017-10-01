@@ -145,6 +145,26 @@
         name: afs
 
 - job:
+    name: publish-openstack-releasenotes
+    description: |
+      Publish the results of build-openstack-releasenotes to
+      /afs/.openstack.org/docs/releasenotes/{{ zuul.project.short_name }}
+    final: True
+    pre-run: playbooks/python-docs/pre
+    run: playbooks/releasenotes/run
+    post-run: playbooks/publish/releasenotes
+    required-projects:
+      - name: openstack/requirements
+    roles:
+      - zuul: openstack-infra/zuul-jobs
+      - zuul: openstack-infra/openstack-zuul-jobs
+    vars:
+      tox_constraints_file: "{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt"
+    secrets:
+      - secret: afsdocs_secret
+        name: afs
+
+- job:
     name: publish-openstack-specs
     description: |
       Publish OpenStack specs to static.openstack.org
