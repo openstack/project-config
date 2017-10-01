@@ -2867,46 +2867,14 @@
       - release-notes-jobs
       - check-requirements
       - openstack-python35-jobs
+      - publish-to-pypi
     check:
       jobs:
-        - openstack-tox-cover
-        - legacy-shade-functional
-        - legacy-shade-functional-legacy
-        - legacy-shade-functional-legacy-libs:
+        - openstack-tox-cover:
             voting: false
-        - legacy-shade-functional-legacy-libs-py35:
-            voting: false
-        - legacy-shade-functional-libs:
-            voting: false
-        - legacy-shade-functional-libs-py35:
-            voting: false
-        - legacy-shade-functional-py35
-        - legacy-shade-ansible
-        - legacy-shade-ansible-dev:
-            voting: false
-        - legacy-dsvm-nodepool-src-old:
-            voting: false
-        - legacy-dsvm-nodepool-src:
-            branches: ^(?!feature/zuulv3).*$
-            voting: false
-        - legacy-dsvm-nodepool-src-zuulv3
-    gate:
-      jobs:
-        - legacy-shade-functional
-        - legacy-shade-functional-legacy
-        - legacy-shade-functional-py35
-        - legacy-shade-ansible
-        - legacy-dsvm-nodepool-src:
-            branches: ^(?!feature/zuulv3).*$
-            voting: false
-        - legacy-dsvm-nodepool-src-zuulv3
     post:
       jobs:
         - openstack-tox-cover
-    experimental:
-      jobs:
-        - legacy-shade-functional-magnum:
-            voting: false
 
 - project:
     name: openstack-infra/statusbot
