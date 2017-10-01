@@ -35,7 +35,6 @@ venv=$(pwd)/$venv_name
 
 # install known OpenStackClient plugins
 install_from_source python-openstackclient
-install_from_source python-aodhclient
 install_from_source python-barbicanclient
 install_from_source python-cloudkittyclient
 install_from_source python-congressclient
