@@ -8216,13 +8216,25 @@
     name: openstack/dragonflow
     templates:
       - merge-check
-      - openstack-python-jobs
+      - openstack-python-jobs-neutron
       - check-requirements
       - publish-openstack-sphinx-docs
-      - openstack-python35-jobs
+      - openstack-python35-jobs-neutron
       - publish-to-pypi
     check:
       jobs:
+        - build-openstack-sphinx-docs:
+            required-projects:
+              - openstack/networking-sfc
+        - openstack-tox-pep8:
+            required-projects:
+              - openstack/networking-sfc
+        - openstack-tox-py27:
+            required-projects:
+              - openstack/networking-sfc
+        - openstack-tox-py35:
+            required-projects:
+              - openstack/networking-sfc
         - legacy-tempest-dsvm-dragonflow:
             voting: false
             irrelevant-files:
@@ -8240,7 +8252,30 @@
             branches: ^(?!stable/newton).*$
     gate:
       jobs:
+        - build-openstack-sphinx-docs:
+            required-projects:
+              - openstack/networking-sfc
+        - openstack-tox-pep8:
+            required-projects:
+              - openstack/networking-sfc
+        - openstack-tox-py27:
+            required-projects:
+              - openstack/networking-sfc
+        - openstack-tox-py27:
+            required-projects:
+              - openstack/networking-sfc
+        - openstack-tox-py35:
+            required-projects:
+              - openstack/networking-sfc
         - legacy-dragonflow-dsvm-fullstack
+    post:
+      jobs:
+        - publish-openstack-python-branch-tarball:
+            required-projects:
+              - openstack/networking-sfc
+        - publish-openstack-sphinx-docs:
+            required-projects:
+              - openstack/networking-sfc
 
 - project:
     name: openstack/drbd-devstack
