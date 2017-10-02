@@ -1107,37 +1107,6 @@
       - rally-plot
       - console-log
 
-- job:
-    name: 'gate-rally-dsvm-keystone-v2api-rally'
-    node: ubuntu-xenial
-
-    wrappers:
-      - build-timeout:
-          timeout: 65
-      - timestamps
-
-    builders:
-        - devstack-rally-gate:
-            scenario: 'rally-keystone-api-v2'
-            ironic: '0'
-            neutron_extensions: '0'
-            zaqar: '0'
-            large_ops: '0'
-            keystone_use_v2api: '1'
-            senlin: '0'
-            magnum: '0'
-            prepopulate_users: '0'
-            watcher: '0'
-            telemetry: '0'
-            swift: '0'
-            heat: '1'
-            py35: 'False'
-
-    publishers:
-      - devstack-logs
-      - rally-plot
-      - console-log
-
 - job-template:
     name: 'gate-rally-dsvm-senlin-{name}-{node}{suffix}'
     node: '{node}'
