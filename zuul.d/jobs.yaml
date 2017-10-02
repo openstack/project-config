@@ -267,7 +267,21 @@
     run: playbooks/yaml2ical/run
     post-run: playbooks/yaml2ical/post
     secrets:
-      - eavesdrop_ssh_key
+      - name: fileserver
+        secret: eavesdrop_ssh_key
+
+- job:
+    name: publish-static
+    description: |
+      Publish content to static.openstack.org to
+      /srv/static/{{ zuul.project.short_name }}
+    final: True
+    pre-run: playbooks/python-docs/pre
+    run: playbooks/python-docs/run
+    post-run: playbooks/publish/static
+    secrets:
+      - name: fileserver
+        secret: static_ssh_key
 
 - job:
     name: propose-updates
