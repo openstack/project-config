@@ -16457,6 +16457,38 @@
       - publish-to-pypi
     check:
       jobs:
+        - build-openstack-sphinx-docs:
+            required-projects:
+              - openstack/ceilometer
+              - openstack/neutron-fwaas
+              - openstack/neutron-lbaas
+              - openstack/networking-l2gw
+              - openstack/networking-sfc
+              - openstack/networking-bgpvpn
+        - openstack-tox-pep8:
+            required-projects:
+              - openstack/ceilometer
+              - openstack/neutron-fwaas
+              - openstack/neutron-lbaas
+              - openstack/networking-l2gw
+              - openstack/networking-sfc
+              - openstack/networking-bgpvpn
+        - openstack-tox-py27:
+            required-projects:
+              - openstack/ceilometer
+              - openstack/neutron-fwaas
+              - openstack/neutron-lbaas
+              - openstack/networking-l2gw
+              - openstack/networking-sfc
+              - openstack/networking-bgpvpn
+        - openstack-tox-py35:
+            required-projects:
+              - openstack/ceilometer
+              - openstack/neutron-fwaas
+              - openstack/neutron-lbaas
+              - openstack/networking-l2gw
+              - openstack/networking-sfc
+              - openstack/networking-bgpvpn
         - legacy-grenade-dsvm-networking-odl:
             voting: false
             branches: ^(?!(driverfixes|stable/(mitaka|newton))).*$
@@ -16544,9 +16576,49 @@
               - ^.*\.rst$
               - ^doc/.*$
               - ^releasenotes/.*$
-        - openstack-tox-cover
+        - openstack-tox-cover:
+            required-projects:
+              - openstack/ceilometer
+              - openstack/neutron
+              - openstack/neutron-fwaas
+              - openstack/neutron-lbaas
+              - openstack/networking-l2gw
+              - openstack/networking-sfc
+              - openstack/networking-bgpvpn
     gate:
       jobs:
+        - build-openstack-sphinx-docs:
+            required-projects:
+              - openstack/ceilometer
+              - openstack/neutron-fwaas
+              - openstack/neutron-lbaas
+              - openstack/networking-l2gw
+              - openstack/networking-sfc
+              - openstack/networking-bgpvpn
+        - openstack-tox-pep8:
+            required-projects:
+              - openstack/ceilometer
+              - openstack/neutron-fwaas
+              - openstack/neutron-lbaas
+              - openstack/networking-l2gw
+              - openstack/networking-sfc
+              - openstack/networking-bgpvpn
+        - openstack-tox-py27:
+            required-projects:
+              - openstack/ceilometer
+              - openstack/neutron-fwaas
+              - openstack/neutron-lbaas
+              - openstack/networking-l2gw
+              - openstack/networking-sfc
+              - openstack/networking-bgpvpn
+        - openstack-tox-py35:
+            required-projects:
+              - openstack/ceilometer
+              - openstack/neutron-fwaas
+              - openstack/neutron-lbaas
+              - openstack/networking-l2gw
+              - openstack/networking-sfc
+              - openstack/networking-bgpvpn
         - legacy-rally-dsvm-networking-odl-carbon-snapshot:
             branches: ^(?!stable/newton).*$
             irrelevant-files:
@@ -16583,7 +16655,25 @@
               - ^.*\.rst$
               - ^doc/.*$
               - ^releasenotes/.*$
-        - openstack-tox-cover
+        - openstack-tox-cover:
+            required-projects:
+              - openstack/ceilometer
+              - openstack/neutron
+              - openstack/neutron-fwaas
+              - openstack/neutron-lbaas
+              - openstack/networking-l2gw
+              - openstack/networking-sfc
+              - openstack/networking-bgpvpn
+    post:
+      jobs:
+        - publish-openstack-python-branch-tarball:
+            required-projects:
+              - openstack/ceilometer
+              - openstack/neutron-fwaas
+              - openstack/neutron-lbaas
+              - openstack/networking-l2gw
+              - openstack/networking-sfc
+              - openstack/networking-bgpvpn
 
 - project:
     name: openstack/networking-onos
