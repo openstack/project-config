@@ -23,6 +23,8 @@ if [ -d /opt/cache/files ] ; then
     mkdir -p /home/jenkins/cache
     ln -sf /opt/cache/files /home/jenkins/cache/files
     chown -R jenkins:jenkins /opt/cache/files
+    # but make sure the cache is readable by everyone
+    chmod -R a+rX /opt/cache/files/*
 fi
 
 # this was copied from outside the chroot by extras.d
