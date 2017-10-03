@@ -3868,19 +3868,50 @@
       - openstack-python35-jobs-nonvoting
     check:
       jobs:
-        - build-openstack-releasenotes
+        - build-openstack-sphinx-docs:
+            required-projects:
+              - openstack/horizon
+        - openstack-tox-pep8:
+            required-projects:
+              - openstack/horizon
+        - openstack-tox-py27:
+            required-projects:
+              - openstack/horizon
+        - openstack-tox-py35:
+            required-projects:
+              - openstack/horizon
+        - build-openstack-releasenotes:
+            required-projects:
+              - openstack/horizon
     gate:
       jobs:
-        - build-openstack-releasenotes
+        - build-openstack-sphinx-docs:
+            required-projects:
+              - openstack/horizon
+        - openstack-tox-pep8:
+            required-projects:
+              - openstack/horizon
+        - openstack-tox-py27:
+            required-projects:
+              - openstack/horizon
+        - build-openstack-releasenotes:
+            required-projects:
+              - openstack/horizon
     post:
       jobs:
-        - publish-openstack-python-branch-tarball
+        - publish-openstack-python-branch-tarball:
+            required-projects:
+              - openstack/horizon
     pre-release:
       jobs:
-        - publish-openstack-python-tarball
+        - publish-openstack-python-tarball:
+            required-projects:
+              - openstack/horizon
     release:
       jobs:
-        - publish-openstack-python-tarball
+        - publish-openstack-python-tarball:
+            required-projects:
+              - openstack/horizon
 
 - project:
     name: openstack/blazar-nova
