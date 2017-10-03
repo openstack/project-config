@@ -2825,8 +2825,10 @@
 
 - project:
     name: openstack-infra/zuul-jobs
-    templates:
-      - publish-openstack-sphinx-docs-infra
+    # TODO(jaegerandi): Use template again once we do not need the
+    # infra-X pipelines.
+    # templates:
+    #  - publish-openstack-sphinx-docs-infra
     infra-check:
       jobs:
         - base-integration-centos-7
@@ -2837,6 +2839,7 @@
         - base-integration-opensuse423
         - tox-linters
         - tox-py35-on-zuul
+        - build-openstack-sphinx-docs
     infra-gate:
       jobs:
         - base-integration-centos-7
@@ -2847,10 +2850,12 @@
         - base-integration-opensuse423
         - tox-linters
         - tox-py35-on-zuul
+        - build-openstack-sphinx-docs
     infra-post:
       jobs:
         - publish-openstack-sphinx-docs-infra:
             branches: ^(?!bug/).*$
+        - build-openstack-sphinx-docs
 
 - project:
     name: openstack-infra/zuul-packaging
