@@ -15,7 +15,7 @@ dashboard:
       height: 150px
       panels:
         - title: Building
-          span: 3
+          span: 2
           sparkline:
             full: true
             show: true
@@ -33,7 +33,16 @@ dashboard:
           type: singlestat
           valueName: current
         - title: In Use
-          span: 2
+          span: 1
+          sparkline:
+            full: true
+            show: true
+          targets:
+            - target: sumSeries(stats.gauges.nodepool.provider.*.nodes.in-use)
+          type: singlestat
+          valueName: current
+        - title: Used
+          span: 1
           sparkline:
             full: true
             show: true
@@ -47,16 +56,25 @@ dashboard:
             full: true
             show: true
           targets:
-              - target: sumSeries(stats.gauges.nodepool.provider.*.nodes.delete)
+              - target: sumSeries(stats.gauges.nodepool.provider.*.nodes.deleting)
           type: singlestat
           valueName: current
         - title: Hold
-          span: 3
+          span: 2
           sparkline:
             full: true
             show: true
           targets:
               - target: sumSeries(stats.gauges.nodepool.provider.*.nodes.hold)
+          type: singlestat
+          valueName: current
+        - title: Failed
+          span: 2
+          sparkline:
+            full: true
+            show: true
+          targets:
+              - target: sumSeries(stats.gauges.nodepool.provider.*.nodes.failed)
           type: singlestat
           valueName: current
     - title: Zuul Launchers
@@ -97,15 +115,15 @@ dashboard:
           targets:
             - target: aliasByNode(stats.gauges.nodepool.label.*.nodes.ready, 4)
           type: graph
-        - title: Used Nodes
+        - title: In-use Nodes
           span: 3
           targets:
-            - target: aliasByNode(stats.gauges.nodepool.label.*.nodes.used, 4)
+            - target: aliasByNode(stats.gauges.nodepool.label.*.nodes.in-use, 4)
           type: graph
         - title: Deleting Nodes
           span: 3
           targets:
-            - target: aliasByNode(stats.gauges.nodepool.label.*.nodes.delete, 4)
+            - target: aliasByNode(stats.gauges.nodepool.label.*.nodes.deleting, 4)
           type: graph
     - title: Node Launches
       showTitle: true
