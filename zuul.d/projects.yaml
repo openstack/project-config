@@ -16144,6 +16144,38 @@
       - publish-to-pypi
     check:
       jobs:
+        - build-openstack-sphinx-docs:
+            required-projects:
+              - openstack/neutron-fwaas
+              - openstack/neutron-vpnaas
+              - openstack/neutron-lbaas
+              - openstack/neutron-dynamic-routing
+              - openstack/networking-l2gw
+              - openstack/tap-as-a-service
+        - openstack-tox-pep8:
+            required-projects:
+              - openstack/neutron-fwaas
+              - openstack/neutron-vpnaas
+              - openstack/neutron-lbaas
+              - openstack/neutron-dynamic-routing
+              - openstack/networking-l2gw
+              - openstack/tap-as-a-service
+        - openstack-tox-py27:
+            required-projects:
+              - openstack/neutron-fwaas
+              - openstack/neutron-vpnaas
+              - openstack/neutron-lbaas
+              - openstack/neutron-dynamic-routing
+              - openstack/networking-l2gw
+              - openstack/tap-as-a-service
+        - openstack-tox-py35:
+            required-projects:
+              - openstack/neutron-fwaas
+              - openstack/neutron-vpnaas
+              - openstack/neutron-lbaas
+              - openstack/neutron-dynamic-routing
+              - openstack/networking-l2gw
+              - openstack/tap-as-a-service
         - legacy-tempest-dsvm-networking-midonet-aio-v2:
             branches: ^stable/(newton|ocata)
             irrelevant-files:
@@ -16212,6 +16244,14 @@
               - ^specs/.*$
         - openstack-tox-cover:
             voting: false
+            required-projects:
+              - openstack/neutron
+              - openstack/neutron-fwaas
+              - openstack/neutron-vpnaas
+              - openstack/neutron-lbaas
+              - openstack/neutron-dynamic-routing
+              - openstack/networking-l2gw
+              - openstack/tap-as-a-service
         - legacy-grenade-dsvm-networking-midonet-ml2:
             branches: ^(?!stable/newton).*$
             irrelevant-files:
@@ -16246,6 +16286,38 @@
               - ^specs/.*$
     gate:
       jobs:
+        - build-openstack-sphinx-docs:
+            required-projects:
+              - openstack/neutron-fwaas
+              - openstack/neutron-vpnaas
+              - openstack/neutron-lbaas
+              - openstack/neutron-dynamic-routing
+              - openstack/networking-l2gw
+              - openstack/tap-as-a-service
+        - openstack-tox-pep8:
+            required-projects:
+              - openstack/neutron-fwaas
+              - openstack/neutron-vpnaas
+              - openstack/neutron-lbaas
+              - openstack/neutron-dynamic-routing
+              - openstack/networking-l2gw
+              - openstack/tap-as-a-service
+        - openstack-tox-py27:
+            required-projects:
+              - openstack/neutron-fwaas
+              - openstack/neutron-vpnaas
+              - openstack/neutron-lbaas
+              - openstack/neutron-dynamic-routing
+              - openstack/networking-l2gw
+              - openstack/tap-as-a-service
+        - openstack-tox-py35:
+            required-projects:
+              - openstack/neutron-fwaas
+              - openstack/neutron-vpnaas
+              - openstack/neutron-lbaas
+              - openstack/neutron-dynamic-routing
+              - openstack/networking-l2gw
+              - openstack/tap-as-a-service
         - legacy-tempest-dsvm-networking-midonet-aio-v2:
             branches: ^stable/(newton|ocata)
             irrelevant-files:
@@ -16349,6 +16421,16 @@
               - ^midonet/neutron/tests/unit/.*$
               - ^setup.cfg$
               - ^specs/.*$
+    post:
+      jobs:
+        - publish-openstack-python-branch-tarball:
+            required-projects:
+              - openstack/neutron-fwaas
+              - openstack/neutron-vpnaas
+              - openstack/neutron-lbaas
+              - openstack/neutron-dynamic-routing
+              - openstack/networking-l2gw
+              - openstack/tap-as-a-service
 
 - project:
     name: openstack/networking-mlnx
