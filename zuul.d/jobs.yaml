@@ -271,14 +271,80 @@
         secret: eavesdrop_ssh_key
 
 - job:
+    name: base-publish-static
+    description: |
+      Base job for job that publish content to static.openstack.org.
+    pre-run: playbooks/python-docs/pre
+    run: playbooks/python-docs/run
+
+- job:
     name: publish-static
+    parent: base-publish-static
     description: |
       Publish content to static.openstack.org to
       /srv/static/{{ zuul.project.short_name }}
     final: True
-    pre-run: playbooks/python-docs/pre
-    run: playbooks/python-docs/run
     post-run: playbooks/publish/static
+    secrets:
+      - name: fileserver
+        secret: static_ssh_key
+
+- job:
+    name: publish-governance-tc
+    parent: base-publish-static
+    description: |
+      Publish content to static.openstack.org to /srv/static/tc
+    final: True
+    post-run: playbooks/publish/static-special
+    allowed-projects:
+      - openstack/governance
+    vars:
+      static_target: tc
+    secrets:
+      - name: fileserver
+        secret: static_ssh_key
+
+- job:
+    name: publish-governance-uc
+    parent: base-publish-static
+    description: |
+      Publish content to static.openstack.org to /srv/static/uc
+    final: True
+    post-run: playbooks/publish/static-special
+    allowed-projects:
+      - openstack/governance-uc
+    vars:
+      static_target: uc
+    secrets:
+      - name: fileserver
+        secret: static_ssh_key
+
+- job:
+    name: publish-governance-website
+    parent: base-publish-static
+    description: |
+      Publish content to static.openstack.org to /srv/static/governance
+    final: True
+    post-run: playbooks/publish/static-special
+    allowed-projects:
+      - openstack/governance-website
+    vars:
+      static_target: governance
+    secrets:
+      - name: fileserver
+        secret: static_ssh_key
+
+- job:
+    name: publish-security
+    parent: base-publish-static
+    description: |
+      Publish content to static.openstack.org to /srv/static/security
+    final: True
+    post-run: playbooks/publish/static-special
+    allowed-projects:
+      - openstack/ossa
+    vars:
+      static_target: security
     secrets:
       - name: fileserver
         secret: static_ssh_key

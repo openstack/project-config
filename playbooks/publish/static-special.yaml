@@ -1,0 +1,19 @@
+- hosts: all
+  roles:
+    - fetch-tox-output
+    - role: fetch-sphinx-output
+      sphinx_output_src: "src/{{ zuul.project.canonical_name }}/doc/build/html/"
+      zuul_executor_dest: "{{ zuul.executor.work_root }}/artifacts"
+
+- hosts: localhost
+  roles:
+    - add-fileserver
+
+- hosts: "{{ fileserver.fqdn }}"
+  gather_facts: False
+  tasks:
+
+    - name: Upload docs to static site
+      copy:
+        src: "{{ zuul.executor.work_root }}/artifacts/"
+        dest: "{{ fileserver.path }}/{{ static_target }}/"
