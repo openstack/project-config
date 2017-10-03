@@ -63,7 +63,7 @@
         open: True
         current-patchset: True
         approval:
-          - Verified: [1, 2]
+          - Verified: [3]
             username: ^(zuul|jenkins)$
           - Workflow: 1
     trigger:
@@ -95,6 +95,13 @@
     description: This pipeline runs jobs that operate after each change is merged.
     manager: independent
     precedence: low
+    require:
+      gerrit:
+        open: True
+        current-patchset: True
+        approval:
+          - Verified: [3]
+            username: ^(zuul|jenkins)$
     trigger:
       gerrit:
         - event: ref-updated
@@ -107,6 +114,13 @@
     description: When a commit is tagged with a pre-release tag, this pipeline runs jobs that publish archives and documentation.
     manager: independent
     precedence: high
+    require:
+      gerrit:
+        open: True
+        current-patchset: True
+        approval:
+          - Verified: [3]
+            username: ^(zuul|jenkins)$
     trigger:
       gerrit:
         - event: ref-updated
@@ -124,6 +138,13 @@
     description: When a commit is tagged as a release, this pipeline runs jobs that publish archives and documentation.
     manager: independent
     precedence: high
+    require:
+      gerrit:
+        open: True
+        current-patchset: True
+        approval:
+          - Verified: [3]
+            username: ^(zuul|jenkins)$
     trigger:
       gerrit:
         - event: ref-updated
@@ -151,6 +172,13 @@
     description: This pipeline runs release-process-critical jobs that operate after specific changes are merged.
     manager: independent
     precedence: high
+    require:
+      gerrit:
+        open: True
+        current-patchset: True
+        approval:
+          - Verified: [3]
+            username: ^(zuul|jenkins)$
     trigger:
       gerrit:
         - event: ref-updated
@@ -167,6 +195,13 @@
     description: This pipeline runs jobs in response to any tag event.
     manager: independent
     precedence: high
+    require:
+      gerrit:
+        open: True
+        current-patchset: True
+        approval:
+          - Verified: [3]
+            username: ^(zuul|jenkins)$
     trigger:
       gerrit:
         - event: ref-updated
@@ -199,6 +234,13 @@
     failure-message: Build failed (experimental pipeline).
     manager: independent
     precedence: normal
+    require:
+      gerrit:
+        open: True
+        current-patchset: True
+        approval:
+          - Verified: [3]
+            username: ^(zuul|jenkins)$
     trigger:
       gerrit:
         - event: comment-added
@@ -250,6 +292,13 @@
     failure-message: Build failed (experimental-tripleo).
     manager: independent
     precedence: low
+    require:
+      gerrit:
+        open: True
+        current-patchset: True
+        approval:
+          - Verified: [3]
+            username: ^(zuul|jenkins)$
     trigger:
       gerrit:
         - event: comment-added
@@ -269,3 +318,105 @@
     ignore-dependencies: true
     precedence: low
     trigger: {}
+
+- pipeline:
+    name: infra-check
+    description: |
+      Newly uploaded patchsets enter this pipeline to receive an
+      initial +/-1 Verified vote.
+    manager: independent
+    precedence: high
+    trigger:
+      gerrit:
+        - event: patchset-created
+        - event: change-restored
+        - event: comment-added
+          comment: (?i)^(Patch Set [0-9]+:)?( [\w\\+-]*)*(\n\n)?\s*recheck
+        - event: comment-added
+          require-approval:
+            - Verified: [-1, -2]
+              username: zuul
+          approval:
+            - Workflow: 1
+      github:
+        - event: pull_request
+          action:
+            - opened
+            - changed
+            - reopened
+        - event: pull_request
+          action: comment
+          comment: (?i)^\s*recheck\s*$
+    start:
+      github:
+        status: pending
+        comment: false
+    success:
+      gerrit:
+        # Note that gerrit keywords are case-sensitive.
+        Verified: 1
+      github:
+        status: 'success'
+      mysql:
+    failure:
+      gerrit:
+        Verified: -1
+      github:
+        status: 'failure'
+      mysql:
+
+- pipeline:
+    name: infra-gate
+    description: |
+      Infra-specific pipeline for Changes that have been approved by core
+      developers. Changes are enqueued in order in this pipeline, and if they
+      pass tests, will be merged.
+    success-message: Build succeeded (gate pipeline).
+    failure-message: |
+      Build failed (gate pipeline).  For information on how to proceed, see
+      http://docs.openstack.org/infra/manual/developers.html#automated-testing
+    manager: dependent
+    precedence: high
+    require:
+      gerrit:
+        open: True
+        current-patchset: True
+        approval:
+          - Verified: [1,2]
+            username: ^(zuul|jenkins)$
+          - Workflow: 1
+    trigger:
+      gerrit:
+        - event: comment-added
+          approval:
+            - Workflow: 1
+        - event: comment-added
+          approval:
+            - Verified: 1
+          username: zuul
+    start:
+      gerrit:
+        Verified: 0
+    success:
+      gerrit:
+        Verified: 2
+        submit: true
+      mysql:
+    failure:
+      gerrit:
+        Verified: -2
+      mysql:
+    window-floor: 20
+    window-increase-factor: 2
+
+- pipeline:
+    name: infra-post
+    description: |
+      Infra-specific pipeline for running jobs that operate after each change
+      is merged.
+    manager: independent
+    precedence: high
+    trigger:
+      gerrit:
+        - event: ref-updated
+          ref: ^refs/heads/.*$
