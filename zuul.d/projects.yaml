@@ -968,7 +968,7 @@
 
 - project:
     name: openstack-infra/openstack-zuul-jobs
-    post:
+    infra-post:
       jobs:
         - publish-openstack-sphinx-docs-infra:
             branches: ^(?!bug/).*$
@@ -1030,7 +1030,7 @@
     name: openstack-infra/project-config
     templates:
       - merge-check
-    check:
+    infra-check:
       jobs:
         - build-openstack-specs-site
         - openstack-tox-linters
@@ -1079,7 +1079,7 @@
               - bindep.txt
               - jenkins/data/bindep-fallback.txt
               - other-requirements.txt
-    gate:
+    infra-gate:
       queue: project-config
       jobs:
         - build-openstack-specs-site
@@ -1126,7 +1126,7 @@
               - bindep.txt
               - jenkins/data/bindep-fallback.txt
               - other-requirements.txt
-    post:
+    infra-post:
       jobs:
         - publish-infra-index
         - publish-openstack-specs-site
@@ -2827,7 +2827,7 @@
     name: openstack-infra/zuul-jobs
     templates:
       - publish-openstack-sphinx-docs-infra
-    check:
+    infra-check:
       jobs:
         - base-integration-centos-7
         - base-integration-debian-jessie
@@ -2837,7 +2837,7 @@
         - base-integration-opensuse423
         - tox-linters
         - tox-py35-on-zuul
-    gate:
+    infra-gate:
       jobs:
         - base-integration-centos-7
         - base-integration-debian-jessie
@@ -2847,7 +2847,7 @@
         - base-integration-opensuse423
         - tox-linters
         - tox-py35-on-zuul
-    post:
+    infra-post:
       jobs:
         - publish-openstack-sphinx-docs-infra:
             branches: ^(?!bug/).*$
