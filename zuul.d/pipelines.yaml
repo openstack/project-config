@@ -106,6 +106,10 @@
       gerrit:
         - event: ref-updated
           ref: ^refs/heads/.*$
+    success:
+      mysql:
+    failure:
+      mysql:
 
 - pipeline:
     name: pre-release
@@ -125,11 +129,14 @@
       gerrit:
         - event: ref-updated
           ref: ^refs/tags/[0-9]+(\.[0-9]+)*(a|b|rc)[0-9]+$
+    success:
+      mysql:
     failure:
       smtp:
         from: zuul@openstack.org
         to: release-job-failures@lists.openstack.org
         subject: 'Pre-release of {change.project} failed'
+      mysql:
 
 - pipeline:
     name: release
@@ -149,11 +156,14 @@
       gerrit:
         - event: ref-updated
           ref: ^refs/tags/[0-9]+(\.[0-9]+)*$
+    success:
+      mysql:
     failure:
       smtp:
         from: zuul@openstack.org
         to: release-job-failures@lists.openstack.org
         subject: 'Release of {change.project} failed'
+      mysql:
 
 - pipeline:
     name: periodic
@@ -164,6 +174,10 @@
     trigger:
       timer:
         - time: '0 6 * * *'
+    success:
+      mysql:
+    failure:
+      mysql:
 
 - pipeline:
     name: release-post
@@ -183,7 +197,10 @@
       gerrit:
         - event: ref-updated
           ref: ^refs/heads/.*$
+    success:
+      mysql:
     failure:
+      mysql:
       smtp:
         from: zuul@openstack.org
         to: release-job-failures@lists.openstack.org
@@ -206,7 +223,10 @@
       gerrit:
         - event: ref-updated
           ref: ^refs/tags/.*$
+    success:
+      mysql:
     failure:
+      mysql:
       smtp:
         from: zuul@openstack.org
         to: release-job-failures@lists.openstack.org
@@ -221,7 +241,10 @@
     trigger:
       timer:
         - time: '1 6 * * *'
+    success:
+      mysql:
     failure:
+      mysql:
       smtp:
         from: zuul@openstack.org
         to: openstack-stable-maint@lists.openstack.org
@@ -420,3 +443,7 @@
       gerrit:
         - event: ref-updated
           ref: ^refs/heads/.*$
+    success:
+      mysql:
+    failure:
+      mysql:
