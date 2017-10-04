@@ -2698,6 +2698,14 @@ jobs:
   - name: gate-bashate-devstack
     voting: false
 
+  - name: gate-project-config-jenkins-project
+    files:
+      - 'bindep.txt'
+      - 'jenkins/jobs/.*'
+      - 'other-requirements.txt'
+      - 'tools/jenkins-projects-checks.py'
+      - 'tox.ini'
+
   - name: ^gate-bindep-bindep-fallback.*$
     # Add explicit branch so that this overrides earlier
     # restrictions.
@@ -4192,6 +4200,14 @@ projects:
       - gate-os-loganalyze-python27-ubuntu-xenial
     experimental:
       - gate-dsvm-os-loganalyze-nv
+
+  - name: openstack-infra/project-config
+    template:
+      - name: merge-check
+    check:
+      - gate-project-config-layout
+      - gate-project-config-jenkins-project
+    # gating is done by Zuul v3, therefore no gate job set here
 
   - name: openstack-infra/project-config-example
     template:
