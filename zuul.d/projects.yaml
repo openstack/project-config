@@ -770,13 +770,13 @@
     name: openstack-infra/infra-manual
     templates:
       - merge-check
-    check:
+    infra-check:
       jobs:
         - build-openstack-sphinx-docs
-    gate:
+    infra-gate:
       jobs:
         - build-openstack-sphinx-docs
-    post:
+    infra-post:
       jobs:
         - publish-infra-manual
 
@@ -784,7 +784,19 @@
     name: openstack-infra/infra-specs
     templates:
       - merge-check
-      - openstack-specs-jobs
+      # TODO(jaegerandi): use the openstack-specs-jobs once we moved 
+      # to zuul v3 everywhere:
+      # - openstack-specs-jobs
+    infra-check:
+      jobs:
+        - build-openstack-sphinx-docs
+    infra-gate:
+      jobs:
+        - build-openstack-sphinx-docs
+    infra-post:
+      jobs:
+        - publish-openstack-specs
+
 
 - project:
     name: openstack-infra/irc-meetings
