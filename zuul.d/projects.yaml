@@ -3453,26 +3453,17 @@
     templates:
       - merge-check
       - docs-on-readthedocs
+      - check-requirements
     check:
       jobs:
         - openstack-tox-pep8
         - openstack-tox-py27
         - legacy-functional-dsvm-astara-appliance-src
-        - legacy-requirements:
-            files:
-              - ^tools/.*-requires$
-              - ^.*requirements.txt$
-              - ^.*requirements-py[2,3].txt$
     gate:
       jobs:
         - openstack-tox-pep8
         - openstack-tox-py27
         - legacy-functional-dsvm-astara-appliance-src
-        - legacy-requirements:
-            files:
-              - ^tools/.*-requires$
-              - ^.*requirements.txt$
-              - ^.*requirements-py[2,3].txt$
     post:
       jobs:
         - legacy-astara-appliance-buildimage
@@ -5136,20 +5127,7 @@
     templates:
       - merge-check
       - openstack-python-jobs
-    check:
-      jobs:
-        - legacy-requirements:
-            files:
-              - ^tools/.*-requires$
-              - ^.*requirements.txt$
-              - ^.*requirements-py[2,3].txt$
-    gate:
-      jobs:
-        - legacy-requirements:
-            files:
-              - ^tools/.*-requires$
-              - ^.*requirements.txt$
-              - ^.*requirements-py[2,3].txt$
+      - check-requirements
 
 - project:
     name: openstack/cinder-specs
@@ -5414,20 +5392,7 @@
     templates:
       - merge-check
       - openstack-python-jobs
-    check:
-      jobs:
-        - legacy-requirements:
-            files:
-              - ^tools/.*-requires$
-              - ^.*requirements.txt$
-              - ^.*requirements-py[2,3].txt$
-    gate:
-      jobs:
-        - legacy-requirements:
-            files:
-              - ^tools/.*-requires$
-              - ^.*requirements.txt$
-              - ^.*requirements-py[2,3].txt$
+      - check-requirements
 
 - project:
     name: openstack/cookbook-openstack-application-catalog
@@ -5524,20 +5489,7 @@
     templates:
       - merge-check
       - openstack-python-jobs
-    check:
-      jobs:
-        - legacy-requirements:
-            files:
-              - ^tools/.*-requires$
-              - ^.*requirements.txt$
-              - ^.*requirements-py[2,3].txt$
-    gate:
-      jobs:
-        - legacy-requirements:
-            files:
-              - ^tools/.*-requires$
-              - ^.*requirements.txt$
-              - ^.*requirements-py[2,3].txt$
+      - check-requirements
 
 - project:
     name: openstack/coverage2sql
@@ -5637,22 +5589,11 @@
     templates:
       - merge-check
       - openstack-python-jobs
+      - check-requirements
     check:
       jobs:
         - legacy-cyborg-devstack:
             voting: false
-        - legacy-requirements:
-            files:
-              - ^tools/.*-requires$
-              - ^.*requirements.txt$
-              - ^.*requirements-py[2,3].txt$
-    gate:
-      jobs:
-        - legacy-requirements:
-            files:
-              - ^tools/.*-requires$
-              - ^.*requirements.txt$
-              - ^.*requirements-py[2,3].txt$
 
 - project:
     name: openstack/daisycloud-core
@@ -8410,40 +8351,14 @@
     templates:
       - merge-check
       - openstack-python-jobs
-    check:
-      jobs:
-        - legacy-requirements:
-            files:
-              - ^tools/.*-requires$
-              - ^.*requirements.txt$
-              - ^.*requirements-py[2,3].txt$
-    gate:
-      jobs:
-        - legacy-requirements:
-            files:
-              - ^tools/.*-requires$
-              - ^.*requirements.txt$
-              - ^.*requirements-py[2,3].txt$
+      - check-requirements
 
 - project:
     name: openstack/evoque-dashboard
     templates:
       - merge-check
       - openstack-python-jobs
-    check:
-      jobs:
-        - legacy-requirements:
-            files:
-              - ^tools/.*-requires$
-              - ^.*requirements.txt$
-              - ^.*requirements-py[2,3].txt$
-    gate:
-      jobs:
-        - legacy-requirements:
-            files:
-              - ^tools/.*-requires$
-              - ^.*requirements.txt$
-              - ^.*requirements-py[2,3].txt$
+      - check-requirements
 
 - project:
     name: openstack/faafo
@@ -8550,22 +8465,13 @@
     name: openstack/freezer-tempest-plugin
     templates:
       - merge-check
+      - check-requirements
     check:
       jobs:
         - openstack-tox-pep8
-        - legacy-requirements:
-            files:
-              - ^tools/.*-requires$
-              - ^.*requirements.txt$
-              - ^.*requirements-py[2,3].txt$
     gate:
       jobs:
         - openstack-tox-pep8
-        - legacy-requirements:
-            files:
-              - ^tools/.*-requires$
-              - ^.*requirements.txt$
-              - ^.*requirements-py[2,3].txt$
 
 - project:
     name: openstack/freezer-web-ui
@@ -10731,24 +10637,15 @@
     templates:
       - merge-check
       - translation-jobs
+      - check-requirements
     check:
       jobs:
         - openstack-tox-pep8
         - build-openstack-sphinx-docs: {}
-        - legacy-requirements:
-            files:
-              - ^tools/.*-requires$
-              - ^.*requirements.txt$
-              - ^.*requirements-py[2,3].txt$
     gate:
       jobs:
         - openstack-tox-pep8
         - build-openstack-sphinx-docs: {}
-        - legacy-requirements:
-            files:
-              - ^tools/.*-requires$
-              - ^.*requirements.txt$
-              - ^.*requirements-py[2,3].txt$
     post:
       jobs:
         - legacy-i18n-tox-doc-docs:
@@ -13016,23 +12913,14 @@
     name: openstack/ironic-inspector-tempest-plugin
     templates:
       - merge-check
+      - check-requirements
     check:
       jobs:
         - openstack-tox-pep8
-        - legacy-requirements:
-            files:
-              - ^tools/.*-requires$
-              - ^.*requirements.txt$
-              - ^.*requirements-py[2,3].txt$
     gate:
       queue: ironic-inspector-tempest-plugin
       jobs:
         - openstack-tox-pep8
-        - legacy-requirements:
-            files:
-              - ^tools/.*-requires$
-              - ^.*requirements.txt$
-              - ^.*requirements-py[2,3].txt$
 
 - project:
     name: openstack/ironic-lib
@@ -13413,23 +13301,14 @@
     name: openstack/ironic-tempest-plugin
     templates:
       - merge-check
+      - check-requirements
     check:
       jobs:
         - openstack-tox-pep8
-        - legacy-requirements:
-            files:
-              - ^tools/.*-requires$
-              - ^.*requirements.txt$
-              - ^.*requirements-py[2,3].txt$
     gate:
       queue: ironic-inspector-tempest-plugin
       jobs:
         - openstack-tox-pep8
-        - legacy-requirements:
-            files:
-              - ^tools/.*-requires$
-              - ^.*requirements.txt$
-              - ^.*requirements-py[2,3].txt$
 
 - project:
     name: openstack/ironic-ui
@@ -13451,20 +13330,7 @@
     templates:
       - merge-check
       - openstack-python-jobs
-    check:
-      jobs:
-        - legacy-requirements:
-            files:
-              - ^tools/.*-requires$
-              - ^.*requirements.txt$
-              - ^.*requirements-py[2,3].txt$
-    gate:
-      jobs:
-        - legacy-requirements:
-            files:
-              - ^tools/.*-requires$
-              - ^.*requirements.txt$
-              - ^.*requirements-py[2,3].txt$
+      - check-requirements
 
 - project:
     name: openstack/jenkins-plugins-for-murano
@@ -14693,6 +14559,7 @@
     name: openstack/manila-image-elements
     templates:
       - merge-check
+      - check-requirements
     check:
       jobs:
         - openstack-tox-pep8
@@ -14712,21 +14579,11 @@
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^setup.cfg$
-        - legacy-requirements:
-            files:
-              - ^tools/.*-requires$
-              - ^.*requirements.txt$
-              - ^.*requirements-py[2,3].txt$
     gate:
       jobs:
         - openstack-tox-pep8
         - build-openstack-sphinx-docs: {}
         - legacy-manila-buildimage-generic
-        - legacy-requirements:
-            files:
-              - ^tools/.*-requires$
-              - ^.*requirements.txt$
-              - ^.*requirements-py[2,3].txt$
     post:
       jobs:
         - legacy-manila-publishimage-generic
@@ -14794,20 +14651,7 @@
     templates:
       - merge-check
       - openstack-python-jobs
-    check:
-      jobs:
-        - legacy-requirements:
-            files:
-              - ^tools/.*-requires$
-              - ^.*requirements.txt$
-              - ^.*requirements-py[2,3].txt$
-    gate:
-      jobs:
-        - legacy-requirements:
-            files:
-              - ^tools/.*-requires$
-              - ^.*requirements.txt$
-              - ^.*requirements-py[2,3].txt$
+      - check-requirements
 
 - project:
     name: openstack/masakari
@@ -16082,20 +15926,7 @@
     templates:
       - merge-check
       - openstack-python-jobs-neutron
-    check:
-      jobs:
-        - legacy-requirements:
-            files:
-              - ^tools/.*-requires$
-              - ^.*requirements.txt$
-              - ^.*requirements-py[2,3].txt$
-    gate:
-      jobs:
-        - legacy-requirements:
-            files:
-              - ^tools/.*-requires$
-              - ^.*requirements.txt$
-              - ^.*requirements-py[2,3].txt$
+      - check-requirements
 
 - project:
     name: openstack/networking-fortinet
@@ -16158,20 +15989,7 @@
     templates:
       - merge-check
       - openstack-python-jobs-neutron
-    check:
-      jobs:
-        - legacy-requirements:
-            files:
-              - ^tools/.*-requires$
-              - ^.*requirements.txt$
-              - ^.*requirements-py[2,3].txt$
-    gate:
-      jobs:
-        - legacy-requirements:
-            files:
-              - ^tools/.*-requires$
-              - ^.*requirements.txt$
-              - ^.*requirements-py[2,3].txt$
+      - check-requirements
 
 - project:
     name: openstack/networking-h3c
@@ -17482,20 +17300,7 @@
     templates:
       - merge-check
       - openstack-python-jobs
-    check:
-      jobs:
-        - legacy-requirements:
-            files:
-              - ^tools/.*-requires$
-              - ^.*requirements.txt$
-              - ^.*requirements-py[2,3].txt$
-    gate:
-      jobs:
-        - legacy-requirements:
-            files:
-              - ^tools/.*-requires$
-              - ^.*requirements.txt$
-              - ^.*requirements-py[2,3].txt$
+      - check-requirements
 
 - project:
     name: openstack/neutron-dynamic-routing
@@ -18473,20 +18278,7 @@
     templates:
       - merge-check
       - openstack-python-jobs
-    check:
-      jobs:
-        - legacy-requirements:
-            files:
-              - ^tools/.*-requires$
-              - ^.*requirements.txt$
-              - ^.*requirements-py[2,3].txt$
-    gate:
-      jobs:
-        - legacy-requirements:
-            files:
-              - ^tools/.*-requires$
-              - ^.*requirements.txt$
-              - ^.*requirements-py[2,3].txt$
+      - check-requirements
 
 - project:
     name: openstack/nova-lxd
@@ -20857,20 +20649,7 @@
     templates:
       - merge-check
       - openstack-specs-jobs
-    check:
-      jobs:
-        - legacy-requirements:
-            files:
-              - ^tools/.*-requires$
-              - ^.*requirements.txt$
-              - ^.*requirements-py[2,3].txt$
-    gate:
-      jobs:
-        - legacy-requirements:
-            files:
-              - ^tools/.*-requires$
-              - ^.*requirements.txt$
-              - ^.*requirements-py[2,3].txt$
+      - check-requirements
 
 - project:
     name: openstack/openstack-ansible-tests
@@ -27610,20 +27389,7 @@
     templates:
       - merge-check
       - openstack-python-jobs
-    check:
-      jobs:
-        - legacy-requirements:
-            files:
-              - ^tools/.*-requires$
-              - ^.*requirements.txt$
-              - ^.*requirements-py[2,3].txt$
-    gate:
-      jobs:
-        - legacy-requirements:
-            files:
-              - ^tools/.*-requires$
-              - ^.*requirements.txt$
-              - ^.*requirements-py[2,3].txt$
+      - check-requirements
 
 - project:
     name: openstack/python-freezerclient
