@@ -15796,7 +15796,22 @@
       - publish-to-pypi
     check:
       jobs:
-        - openstack-tox-cover
+        - build-openstack-sphinx-docs:
+            required-projects:
+              - openstack/networking-bgpvpn
+        - openstack-tox-pep8:
+            required-projects:
+              - openstack/networking-bgpvpn
+        - openstack-tox-py27:
+            required-projects:
+              - openstack/networking-bgpvpn
+        - openstack-tox-py35:
+            required-projects:
+              - openstack/networking-bgpvpn
+        - openstack-tox-cover:
+            required-projects:
+              - openstack/neutron
+              - openstack/networking-bgpvpn
         - legacy-tempest-dsvm-networking-bagpipe:
             branches: ^(?!stable/newton).*$
             irrelevant-files:
@@ -15810,9 +15825,23 @@
             voting: false
             branches: ^(?!stable/(newton|ocata)).*$
     gate:
-      queue: networking-bagpipe
       jobs:
-        - openstack-tox-cover
+        - build-openstack-sphinx-docs:
+            required-projects:
+              - openstack/networking-bgpvpn
+        - openstack-tox-pep8:
+            required-projects:
+              - openstack/networking-bgpvpn
+        - openstack-tox-py27:
+            required-projects:
+              - openstack/networking-bgpvpn
+        - openstack-tox-py35:
+            required-projects:
+              - openstack/networking-bgpvpn
+        - openstack-tox-cover:
+            required-projects:
+              - openstack/neutron
+              - openstack/networking-bgpvpn
         - legacy-tempest-dsvm-networking-bagpipe:
             branches: ^(?!stable/newton).*$
             irrelevant-files:
@@ -15822,6 +15851,22 @@
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^setup.cfg$
+    post:
+      jobs:
+        - publish-openstack-python-branch-tarball:
+            required-projects:
+              - openstack/networking-bgpvpn
+        - publish-openstack-sphinx-docs:
+            required-projects:
+              - openstack/networking-bgpvpn
+        - publish-openstack-releasenotes:
+            required-projects:
+              - openstack/networking-bgpvpn
+    release:
+      jobs:
+        - release-openstack-python:
+            required-projects:
+              - openstack/networking-bgpvpn
 
 - project:
     name: openstack/networking-baremetal
@@ -15851,26 +15896,97 @@
       - publish-to-pypi
     check:
       jobs:
+        - build-openstack-sphinx-docs:
+            required-projects:
+              - openstack/networking-bagpipe
+              - openstack/horizon
+        - openstack-tox-pep8:
+            required-projects:
+              - openstack/networking-bagpipe
+              - openstack/networking-odl
+              - openstack/horizon
+        - openstack-tox-py27:
+            required-projects:
+              - openstack/networking-bagpipe
+              - openstack/networking-odl
+              - openstack/horizon
+        - openstack-tox-py35:
+            required-projects:
+              - openstack/networking-bagpipe
+              - openstack/networking-odl
+              - openstack/horizon
         - legacy-tempest-dsvm-networking-bgpvpn-bagpipe:
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^setup.cfg$
-        - openstack-tox-cover
+        - openstack-tox-cover:
+            required-projects:
+              - openstack/neutron
+              - openstack/networking-bagpipe
+              - openstack/networking-odl
+              - openstack/horizon
         - legacy-networking-bgpvpn-dsvm-functional
     gate:
-      queue: networking-bagpipe
       jobs:
+        - build-openstack-sphinx-docs:
+            required-projects:
+              - openstack/networking-bagpipe
+              - openstack/horizon
+        - openstack-tox-pep8:
+            required-projects:
+              - openstack/networking-bagpipe
+              - openstack/networking-odl
+              - openstack/horizon
+        - openstack-tox-py27:
+            required-projects:
+              - openstack/networking-bagpipe
+              - openstack/networking-odl
+              - openstack/horizon
+        - openstack-tox-py35:
+            required-projects:
+              - openstack/networking-bagpipe
+              - openstack/networking-odl
+              - openstack/horizon
         - legacy-tempest-dsvm-networking-bgpvpn-bagpipe:
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^setup.cfg$
-        - openstack-tox-cover
+        - openstack-tox-cover:
+            required-projects:
+              - openstack/neutron
+              - openstack/networking-bagpipe
+              - openstack/networking-odl
+              - openstack/horizon
         - legacy-networking-bgpvpn-dsvm-functional
     experimental:
       jobs:
         - legacy-networking-bgpvpn-dsvm-install
         - legacy-networking-bgpvpn-bagpipe-dsvm-install
         - legacy-networking-bgpvpn-bagpipe-dsvm-functional
+    post:
+      jobs:
+        - publish-openstack-python-branch-tarball:
+            required-projects:
+              - openstack/networking-bagpipe
+              - openstack/networking-odl
+              - openstack/horizon
+        - publish-openstack-sphinx-docs:
+            required-projects:
+              - openstack/networking-bagpipe
+              - openstack/networking-odl
+              - openstack/horizon
+        - publish-openstack-releasenotes:
+            required-projects:
+              - openstack/networking-bagpipe
+              - openstack/networking-odl
+              - openstack/horizon
+    release:
+      jobs:
+        - release-openstack-python:
+            required-projects:
+              - openstack/networking-bagpipe
+              - openstack/networking-odl
+              - openstack/horizon
 
 - project:
     name: openstack/networking-bigswitch
