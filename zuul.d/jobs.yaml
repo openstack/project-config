@@ -263,8 +263,10 @@
       Publish the IRC meeting calendars to eavesdrop.openstack.org.
     final: True
     pre-run: playbooks/yaml2ical/pre
-    run: playbooks/yaml2ical/run
+    run: playbooks/project-config/run-tox
     post-run: playbooks/yaml2ical/post
+    vars:
+      tox_envlist: ical
     secrets:
       - name: fileserver
         secret: eavesdrop_ssh_key
@@ -431,10 +433,13 @@
 - job:
     name: project-config-check-main-yaml
     pre-run: playbooks/check-main-yaml/pre
-    run: playbooks/check-main-yaml/run
+    run: playbooks/project-config/run-tox
     post-run: playbooks/check-main-yaml/post
     allowed-projects:
       - openstack-infra/project-config
+    final: true
+    vars:
+      tox_envlist: add-projects-to-main
     files:
       - zuul/main.yaml
       - gerrit/projects.yaml
