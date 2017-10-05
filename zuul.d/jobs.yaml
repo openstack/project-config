@@ -169,6 +169,8 @@
     pre-run: playbooks/python-docs/pre
     run: playbooks/project-config/run-tox
     post-run: playbooks/publish/openstack-specs-site
+    allowed-projects:
+      - openstack-infra/project-config
     roles:
       - zuul: openstack-infra/zuul-jobs
       - zuul: openstack-infra/openstack-zuul-jobs
@@ -223,6 +225,8 @@
     pre-run: playbooks/python-docs/pre
     run: playbooks/project-config/run-tox
     post-run: playbooks/publish/service-types
+    allowed-projects:
+      - openstack/service-types-authority
     roles:
       - zuul: openstack-infra/zuul-jobs
       - zuul: openstack-infra/openstack-zuul-jobs
@@ -267,6 +271,8 @@
     pre-run: playbooks/yaml2ical/pre
     run: playbooks/project-config/run-tox
     post-run: playbooks/yaml2ical/post
+    allowed-projects:
+      - openstack-infra/irc-meetings
     vars:
       tox_envlist: ical
     secrets:
@@ -397,6 +403,7 @@
           label: ubuntu-trusty
     # 2.5 hours
     timeout: 9000
+    final: true
     allowed-projects:
       - openstack/requirements
     roles:
