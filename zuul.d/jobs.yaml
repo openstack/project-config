@@ -221,11 +221,13 @@
       https://service-types.openstack.org
     final: True
     pre-run: playbooks/python-docs/pre
-    run: playbooks/service-types/run
+    run: playbooks/project-config/run-tox
     post-run: playbooks/publish/service-types
     roles:
       - zuul: openstack-infra/zuul-jobs
       - zuul: openstack-infra/openstack-zuul-jobs
+    vars:
+      tox_envlist: publish
     secrets:
       - site_logs
 
