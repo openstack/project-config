@@ -19,14 +19,15 @@ JOBNAME=$2
 # allow /'s in version names.
 ZANATA_VERSION=${ZUUL_REFNAME//\//-}
 
-source /usr/local/jenkins/slave_scripts/common_translation_update.sh
+SCRIPTSDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source $SCRIPTSDIR/common_translation_update.sh
 
 init_branch $ZUUL_REFNAME
 
 # List of all modules to copy POT files from
 ALL_MODULES=""
 
-if ! /usr/local/jenkins/slave_scripts/query-zanata-project-version.py \
+if ! $SCRIPTSDIR/query-zanata-project-version.py \
     -p $PROJECT -v $ZANATA_VERSION; then
     # Exit successfully so that lack of a version doesn't cause the jenkins
     # jobs to fail. This is necessary because not all branches of a project

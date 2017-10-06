@@ -463,3 +463,26 @@
     files:
       - zuul/layout.yaml
       - ^jenkins/jobs/.*
+
+- job:
+    name: upstream-translation-update
+    parent: propose-updates
+    run: playbooks/translation/upstream-translation-update
+    post-run: playbooks/publish/openstack-artifacts.yaml
+    vars:
+      fileserver_leading_path: translation-source
+    required-projects:
+      - openstack/requirements
+    secrets:
+      - secret: site_tarballs
+        name: fileserver
+      - zanata_api_credentials
+
+- job:
+    name: propose-translation-update
+    parent: propose-updates
+    run: playbooks/translation/propose-translation-update
+    required-projects:
+      - openstack/requirements
+    secrets:
+      - zanata_api_credentials

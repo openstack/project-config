@@ -57,7 +57,7 @@ function get_modulename {
     local project=$1
     local target=$2
 
-    /usr/local/jenkins/slave_scripts/get-modulename.py \
+    $SCRIPTSDIR/get-modulename.py \
         -p $project -t $target
 }
 
@@ -134,7 +134,7 @@ function setup_project {
 
     local exclude='.tox/**'
 
-    /usr/local/jenkins/slave_scripts/create-zanata-xml.py \
+    $SCRIPTSDIR/create-zanata-xml.py \
         -p $project -v $version --srcdir . --txdir . \
         -r '**/*.pot' '{path}/{locale_with_underscore}/LC_MESSAGES/{filename}.po' \
         -e "$exclude" -f zanata.xml
@@ -214,7 +214,7 @@ function setup_manuals {
         ZANATA_RULES="$ZANATA_RULES -r ./releasenotes/source/locale/releasenotes.pot releasenotes/source/locale/{locale_with_underscore}/LC_MESSAGES/releasenotes.po"
     fi
 
-    /usr/local/jenkins/slave_scripts/create-zanata-xml.py \
+    $SCRIPTSDIR/create-zanata-xml.py \
         -p $project -v $version --srcdir . --txdir . \
         $ZANATA_RULES -e "$EXCLUDE" \
         -f zanata.xml
@@ -228,7 +228,7 @@ function setup_training_guides {
     # Update the .pot file
     tox -e generatepot-training
 
-    /usr/local/jenkins/slave_scripts/create-zanata-xml.py \
+    $SCRIPTSDIR/create-zanata-xml.py \
         -p $project -v $version \
         --srcdir doc/upstream-training/source/locale \
         --txdir doc/upstream-training/source/locale \
@@ -243,7 +243,7 @@ function setup_i18n {
     # Update the .pot file
     tox -e generatepot
 
-    /usr/local/jenkins/slave_scripts/create-zanata-xml.py \
+    $SCRIPTSDIR/create-zanata-xml.py \
         -p $project -v $version \
         --srcdir doc/source/locale \
         --txdir doc/source/locale \
@@ -265,7 +265,7 @@ function setup_reactjs_project {
     # Transform them into .pot files
     npm run json2pot
 
-    /usr/local/jenkins/slave_scripts/create-zanata-xml.py \
+    $SCRIPTSDIR/create-zanata-xml.py \
         -p $project -v $version --srcdir . --txdir . \
         -r '**/*.pot' '{path}/{locale}.po' \
         -e "$exclude" -f zanata.xml
