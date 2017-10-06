@@ -1,19 +1,20 @@
 - hosts: all
-  tasks:
+  pre_tasks:
     # TODO(mordred) We should really extract this into a role, but that's a
     #               refactor for a different day.
     - name: Write marker text
       copy:
         dest: "{{ zuul.project.src_dir }}/html/.root-marker"
         content: "Project: {{ zuul.project.name }} Branch: {{ zuul.branch }} Build: {{ zuul.build }} Revision: {{ zuul.ref }}"
-
-- hosts: localhost
   roles:
     - role: fetch-tox-output
       tox_envlist: releasenotes
     - role: fetch-sphinx-output
       sphinx_output_src: "{{ zuul.project.src_dir }}/releasenotes/build/html/"
       zuul_executor_dest: "{{ zuul.executor.work_root }}/artifacts"
+
+- hosts: localhost
+  roles:
     - create-afs-token
     - role: upload-afs
       afs_target: "{{ afs.path }}/releasenotes/{{ zuul.project.short_name }}"
