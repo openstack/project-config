@@ -434,8 +434,8 @@
       - bindep-fallback
       - merge-check
       - openstack-pypy-jobs-nonvoting
-      - openstack-python-jobs
-      - openstack-python35-jobs
+      - openstack-python-jobs-no-constraints
+      - openstack-python35-jobs-no-constraints
       - publish-to-pypi
       - release-openstack-sphinx-docs-infra
     post:
@@ -461,7 +461,7 @@
     name: openstack-infra/ciwatch
     templates:
       - merge-check
-      - openstack-python-jobs
+      - openstack-python-jobs-no-constraints
 
 - project:
     name: openstack-infra/devstack-gate
@@ -578,8 +578,8 @@
     name: openstack-infra/gear
     templates:
       - merge-check
-      - openstack-python-jobs
-      - openstack-python35-jobs
+      - openstack-python-jobs-no-constraints
+      - openstack-python35-jobs-no-constraints
       - docs-on-readthedocs
       - publish-to-pypi
 
@@ -607,8 +607,8 @@
     name: openstack-infra/germqtt
     templates:
       - merge-check
-      - openstack-python-jobs
-      - openstack-python35-jobs
+      - openstack-python-jobs-no-constraints
+      - openstack-python35-jobs-no-constraints
       - publish-to-pypi
 
 - project:
@@ -651,16 +651,16 @@
     name: openstack-infra/gerritlib
     templates:
       - merge-check
-      - openstack-python-jobs
-      - openstack-python35-jobs
+      - openstack-python-jobs-no-constraints
+      - openstack-python35-jobs-no-constraints
       - publish-to-pypi
 
 - project:
     name: openstack-infra/git-restack
     templates:
       - merge-check
-      - openstack-python-jobs
-      - openstack-python35-jobs
+      - openstack-python-jobs-no-constraints
+      - openstack-python35-jobs-no-constraints
       - publish-to-pypi
       - release-openstack-sphinx-docs-infra
 
@@ -668,8 +668,8 @@
     name: openstack-infra/git-review
     templates:
       - merge-check
-      - openstack-python-jobs
-      - openstack-python35-jobs
+      - openstack-python-jobs-no-constraints
+      - openstack-python35-jobs-no-constraints
       - publish-to-pypi
       - release-openstack-sphinx-docs-infra
 
@@ -691,8 +691,8 @@
     name: openstack-infra/glean
     templates:
       - merge-check
-      - openstack-python-jobs
-      - openstack-python35-jobs
+      - openstack-python-jobs-no-constraints
+      - openstack-python35-jobs-no-constraints
       - publish-openstack-sphinx-docs-infra
       - publish-to-pypi
     check:
@@ -715,8 +715,8 @@
     name: openstack-infra/grafyaml
     templates:
       - merge-check
-      - openstack-python-jobs
-      - openstack-python35-jobs
+      - openstack-python-jobs-no-constraints
+      - openstack-python35-jobs-no-constraints
       - publish-openstack-sphinx-docs-infra
       - publish-to-pypi
     check:
@@ -824,8 +824,8 @@
     name: openstack-infra/jenkins-job-builder
     templates:
       - merge-check
-      - openstack-python-jobs
-      - openstack-python35-jobs
+      - openstack-python-jobs-no-constraints
+      - openstack-python35-jobs-no-constraints
       - publish-openstack-sphinx-docs-infra
       - publish-to-pypi
     check:
@@ -897,7 +897,7 @@
     name: openstack-infra/log_processor
     templates:
       - merge-check
-      - openstack-python-jobs
+      - openstack-python-jobs-no-constraints
       - publish-openstack-sphinx-docs-infra
       - publish-to-pypi
 
@@ -911,8 +911,8 @@
     name: openstack-infra/lpmqtt
     templates:
       - merge-check
-      - openstack-python-jobs
-      - openstack-python35-jobs
+      - openstack-python-jobs-no-constraints
+      - openstack-python35-jobs-no-constraints
       - publish-to-pypi
 
 - project:
@@ -925,20 +925,20 @@
     name: openstack-infra/mqtt_statsd
     templates:
       - merge-check
-      - openstack-python-jobs
+      - openstack-python-jobs-no-constraints
       - publish-to-pypi
 
 - project:
     name: openstack-infra/nodepool
     templates:
       - merge-check
-      - openstack-python-jobs
-      - openstack-python35-jobs
+      - openstack-python-jobs-no-constraints
+      - openstack-python35-jobs-no-constraints
       - publish-openstack-sphinx-docs-infra
       - publish-to-pypi
     check:
       jobs:
-        - openstack-tox-cover
+        - tox-cover
         - legacy-dsvm-nodepool:
             voting: false
             branches: ^(?!feature/zuulv3).*$
@@ -951,7 +951,7 @@
             voting: false
     post:
       jobs:
-        - openstack-tox-cover
+        - tox-cover
     experimental:
       jobs:
         - legacy-zuul-nodepool
@@ -1982,8 +1982,8 @@
     name: openstack-infra/pynotedb
     templates:
       - merge-check
-      - openstack-python-jobs
-      - openstack-python35-jobs
+      - openstack-python-jobs-no-constraints
+      - openstack-python35-jobs-no-constraints
       - publish-openstack-sphinx-docs
       - publish-to-pypi
 
@@ -2010,8 +2010,8 @@
     name: openstack-infra/python-storyboardclient
     templates:
       - merge-check
-      - openstack-python-jobs
-      - openstack-python35-jobs
+      - openstack-python-jobs-no-constraints
+      - openstack-python35-jobs-no-constraints
       - release-openstack-sphinx-docs-infra
       - publish-to-pypi
     post:
@@ -2026,16 +2026,13 @@
     name: openstack-infra/release-tools
     templates:
       - merge-check
+      - openstack-python-jobs
       - openstack-python35-jobs
     check:
       jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
         - openstack-tox-bashate
     gate:
       jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
         - openstack-tox-bashate
 
 - project:
@@ -2076,8 +2073,8 @@
     name: openstack-infra/reviewstats
     templates:
       - merge-check
-      - openstack-python-jobs
-      - openstack-python35-jobs
+      - openstack-python-jobs-no-constraints
+      - openstack-python35-jobs-no-constraints
       - publish-to-pypi
 
 - project:
@@ -2104,10 +2101,10 @@
       - publish-to-pypi
     check:
       jobs:
-        - openstack-tox-pep8
+        - tox-pep8
     gate:
       jobs:
-        - openstack-tox-pep8
+        - tox-pep8
     post:
       jobs:
         - publish-openstack-python-branch-tarball
@@ -2170,8 +2167,8 @@
     name: openstack-infra/subunit2sql
     templates:
       - merge-check
-      - openstack-python-jobs
-      - openstack-python35-jobs
+      - openstack-python-jobs-no-constraints
+      - openstack-python35-jobs-no-constraints
       - release-notes-jobs
       - publish-openstack-sphinx-docs
       - publish-to-pypi
@@ -2185,11 +2182,11 @@
       - publish-openstack-sphinx-docs-infra
     check:
       jobs:
-        - openstack-tox-linters
+        - tox-linters
         - legacy-system-config-puppet-syntax-3
     gate:
       jobs:
-        - openstack-tox-linters
+        - tox-linters
         - legacy-system-config-puppet-syntax-3
 
 - project:
@@ -2787,14 +2784,14 @@
     name: openstack-infra/yaml2ical
     templates:
       - merge-check
-      - openstack-python35-jobs
+      - openstack-python35-jobs-no-constraints
       - publish-to-pypi
     check:
       jobs:
-        - openstack-tox-pep8
+        - tox-pep8
     gate:
       jobs:
-        - openstack-tox-pep8
+        - tox-pep8
 
 - project:
     name: openstack-infra/zmq-event-publisher
