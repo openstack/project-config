@@ -167,15 +167,13 @@
       Publish OpenStack specs site to static.openstack.org specs/
     final: True
     pre-run: playbooks/python-docs/pre
-    run: playbooks/specs-site/run
+    run: playbooks/project-config/run-tox
     post-run: playbooks/publish/openstack-specs-site
-    required-projects:
-      - name: openstack/requirements
     roles:
       - zuul: openstack-infra/zuul-jobs
       - zuul: openstack-infra/openstack-zuul-jobs
     vars:
-      tox_constraints_file: "{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt"
+      tox_envlist: specs
     secrets:
       - site_logs
 
@@ -237,14 +235,15 @@
       Publish the infrastructure documentation index
     final: True
     pre-run: playbooks/python-docs/pre
-    run: playbooks/docs-infra-index/run
-    post-run:
-      - playbooks/publish/infra-index
+    run: playbooks/project-config/run-tox
+    post-run: playbooks/publish/infra-index
     allowed-projects:
       - openstack-infra/project-config
     roles:
       - zuul: openstack-infra/zuul-jobs
       - zuul: openstack-infra/openstack-zuul-jobs
+    vars:
+      tox_envlist: infra-docs
     secrets:
       - secret: afsdocs_secret
         name: afs
