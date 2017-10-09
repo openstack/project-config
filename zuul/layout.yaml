@@ -803,24 +803,18 @@ project-templates:
 
   - name: tripleo-upgrade-jobs-scenario001
     check:
-      - gate-tripleo-ci-centos-7-scenario001-multinode-upgrades
+      - gate-tripleo-ci-centos-7-scenario001-multinode-upgrades-nv
       - gate-tripleo-ci-centos-7-scenario001-multinode-oooq-container-upgrades-nv
-    gate:
-      - gate-tripleo-ci-centos-7-scenario001-multinode-upgrades
 
   - name: tripleo-upgrade-jobs-scenario002
     check:
-      - gate-tripleo-ci-centos-7-scenario002-multinode-upgrades
+      - gate-tripleo-ci-centos-7-scenario002-multinode-upgrades-nv
       - gate-tripleo-ci-centos-7-scenario002-multinode-oooq-container-upgrades-nv
-    gate:
-      - gate-tripleo-ci-centos-7-scenario002-multinode-upgrades
 
   - name: tripleo-upgrade-jobs-scenario003
     check:
-      - gate-tripleo-ci-centos-7-scenario003-multinode-upgrades
+      - gate-tripleo-ci-centos-7-scenario003-multinode-upgrades-nv
       - gate-tripleo-ci-centos-7-scenario003-multinode-oooq-container-upgrades-nv
-    gate:
-      - gate-tripleo-ci-centos-7-scenario003-multinode-upgrades
 
   - name: tripleo-upgrade-jobs-scenario004
     check:
@@ -1939,10 +1933,15 @@ jobs:
   - name: ^gate-tripleo-ci-centos-7-.*container.*$
     branch: ^(?!stable/(newton|ocata)).*$
 
-  # TripleO Upgrade jobs are voting for scenario001,002,003 and
-  # classic multinode-upgrades job on Ocata.
-  # For now, we only want these jobs on stable/ocata in check & gate
-  - name: ^gate-tripleo-ci-centos-7(-scenario00(1|2|3))?-multinode-upgrades$
+  # TripleO Upgrade jobs are voting for the classic multinode-upgrades job on
+  # Ocata. For now, we only want these jobs on stable/ocata in check & gate
+  - name: ^gate-tripleo-ci-centos-7-multinode-upgrades$
+    branch: ^stable/ocata$
+
+  # TripleO Upgrade jobs are non-voting for scenario001,002,003 on Ocata.
+  # The scenario jobs take too long and have been switched to nv
+  # For now, we only want these jobs on stable/ocata in check
+  - name: ^gate-tripleo-ci-centos-7(-scenario00(1|2|3))-multinode-upgrades-nv$
     branch: ^stable/ocata$
 
   # Test TripleO stable/newton in Puppet OpenStack CI
