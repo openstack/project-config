@@ -778,7 +778,7 @@
     name: openstack-infra/infra-specs
     templates:
       - merge-check
-      # TODO(jaegerandi): use the openstack-specs-jobs once we moved 
+      # TODO(jaegerandi): use the openstack-specs-jobs once we moved
       # to zuul v3 everywhere:
       # - openstack-specs-jobs
     infra-check:
@@ -2942,86 +2942,12 @@
     name: openstack/ansible-hardening
     templates:
       - merge-check
-      - ansible-role-jobs
       - check-requirements
       - publish-openstack-sphinx-docs
-      - ansible-role-functional-jobs-centos7
-      - ansible-role-functional-jobs-xenial
-      - ansible-role-functional-jobs-opensuse-423
       - release-notes-jobs
-    check:
-      jobs:
-        - legacy-ansible-hardening-ansible-func_rhel6-ubuntu-trusty:
-            branches: ^stable/(newton|ocata|pike)$
-            irrelevant-files:
-              - ^.*\.(example|md|rst)$
-              - ^Vagrantfile
-              - ^\.git.*
-              - ^deploy-guide/.*
-              - ^doc/.*
-              - ^releasenotes/.*
-              - ^setup\.(cfg|py)$
-              - ^tox.ini$
-        - legacy-ansible-hardening-ansible-func-debian-jessie:
-            branches: ^(?!stable/(newton|ocata)).*$
-            irrelevant-files:
-              - ^.*\.(example|md|rst)$
-              - ^Vagrantfile
-              - ^\.git.*
-              - ^deploy-guide/.*
-              - ^doc/.*
-              - ^releasenotes/.*
-              - ^setup\.(cfg|py)$
-              - ^tox.ini$
-        - legacy-ansible-hardening-ansible-func-fedora-26:
-            branches: ^(?!stable/(newton|ocata)).*$
-            irrelevant-files:
-              - ^.*\.(example|md|rst)$
-              - ^Vagrantfile
-              - ^\.git.*
-              - ^deploy-guide/.*
-              - ^doc/.*
-              - ^releasenotes/.*
-              - ^setup\.(cfg|py)$
-              - ^tox.ini$
-    gate:
-      jobs:
-        - legacy-ansible-hardening-ansible-func_rhel6-ubuntu-trusty:
-            branches: ^stable/(newton|ocata|pike)$
-            irrelevant-files:
-              - ^.*\.(example|md|rst)$
-              - ^Vagrantfile
-              - ^\.git.*
-              - ^deploy-guide/.*
-              - ^doc/.*
-              - ^releasenotes/.*
-              - ^setup\.(cfg|py)$
-              - ^tox.ini$
-        - legacy-ansible-hardening-ansible-func-debian-jessie:
-            branches: ^(?!stable/(newton|ocata)).*$
-            irrelevant-files:
-              - ^.*\.(example|md|rst)$
-              - ^Vagrantfile
-              - ^\.git.*
-              - ^deploy-guide/.*
-              - ^doc/.*
-              - ^releasenotes/.*
-              - ^setup\.(cfg|py)$
-              - ^tox.ini$
-        - legacy-ansible-hardening-ansible-func-fedora-26:
-            branches: ^(?!stable/(newton|ocata)).*$
-            irrelevant-files:
-              - ^.*\.(example|md|rst)$
-              - ^Vagrantfile
-              - ^\.git.*
-              - ^deploy-guide/.*
-              - ^doc/.*
-              - ^releasenotes/.*
-              - ^setup\.(cfg|py)$
-              - ^tox.ini$
     release:
       jobs:
-        - legacy-ansible-hardening-announce-release
+        - announce-release
 
 - project:
     name: openstack/ansible-role-ara
