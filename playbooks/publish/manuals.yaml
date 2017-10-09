@@ -1,0 +1,13 @@
+- hosts: all
+  roles:
+    - fetch-tox-output
+    - role: fetch-sphinx-output
+      sphinx_output_src: "{{ zuul.project.src_dir }}/publish-docs"
+      zuul_executor_dest: "{{ zuul.executor.work_root }}/artifacts"
+
+- hosts: localhost
+  roles:
+    - create-afs-token
+    - role: upload-afs
+      afs_target: "{{ afs.path }}"
+    - destroy-afs-token

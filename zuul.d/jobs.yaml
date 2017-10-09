@@ -359,6 +359,74 @@
         secret: static_ssh_key
 
 - job:
+    name: publish-openstack-manuals-base
+    description: |
+      Base job to publish manual related documents. These build jobs
+      invoke a tox command and expect the published content to be in
+      publish-docs directory. This content is published on the root of
+      the website.
+
+      Note that this build job does not create a root-marker file,
+      this has to be done by scripts called from tox.
+    pre-run: playbooks/python-docs/pre
+    run: playbooks/project-config/run-tox
+    roles:
+      - zuul: openstack-infra/zuul-jobs
+      - zuul: openstack-infra/openstack-zuul-jobs
+    vars:
+      tox_envlist: publishdocs
+
+- job:
+    name: publish-openstack-manuals
+    parent: publish-openstack-manuals-base
+    final: True
+    post-run: playbooks/publish/manuals
+    allowed-projects:
+      - openstack/openstack-manuals
+      - openstack/security-doc
+    secrets:
+      - secret: afsdocs_secret
+        name: afs
+
+- job:
+    name: publish-openstack-manuals-developer
+    parent: publish-openstack-manuals-base
+    post-run: playbooks/publish/manuals
+    final: True
+    allowed-projects:
+      - openstack/api-site
+    secrets:
+      - secret: afsdeveloper_secret
+        name: afs
+
+- job:
+    name: publish-openstack-manuals-lang
+    parent: publish-openstack-manuals-base
+    post-run: playbooks/publish/manuals
+    final: True
+    allowed-projects:
+      - openstack/openstack-manuals
+      - openstack/security-doc
+    vars:
+      tox_envlist: publishlang
+    secrets:
+      - secret: afsdocs_secret
+        name: afs
+
+- job:
+    name: publish-openstack-manuals-developer-lang
+    parent: publish-openstack-manuals-base
+    post-run: playbooks/publish/manuals
+    final: True
+    allowed-projects:
+      - openstack/api-site
+    vars:
+      tox_envlist: publishlang
+    secrets:
+      - secret: afsdeveloper_secret
+        name: afs
+
+- job:
     name: propose-updates
     pre-run: playbooks/proposal/pre
     run: playbooks/proposal/propose-updates
