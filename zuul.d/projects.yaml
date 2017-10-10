@@ -3235,28 +3235,7 @@
     name: openstack/api-site
     templates:
       - merge-check
-      - openstack-doc-rst-gate
-    check:
-      jobs:
-        - legacy-api-site-tox-doc-publish-checklang:
-            files:
-              - ^.*\.po$
-              - ^.*\.pot$
-    gate:
-      jobs:
-        - legacy-api-site-tox-doc-publish-checklang:
-            files:
-              - ^.*\.po$
-              - ^.*\.pot$
-    post:
-      jobs:
-        - legacy-api-site-upstream-translation-update
-        - legacy-openstack-api-ref:
-            branches: master
-        - legacy-openstack-api-ref-publish-lang
-    periodic:
-      jobs:
-        - legacy-api-site-propose-translation-update
+      - translation-jobs
 
 - project:
     name: openstack/api-wg
@@ -20684,13 +20663,11 @@
     name: openstack/openstack-manuals
     templates:
       - merge-check
-      - openstack-doc-rst-gate
-      - openstack-doc-translation
+      - translation-jobs
       - translation-jobs-ocata
       - release-notes-jobs
     post:
       jobs:
-        - legacy-openstack-manuals-tox-doc-publishdocs
         - propose-updates:
             vars:
               update_target: openstack-manuals
@@ -30035,11 +30012,7 @@
     name: openstack/security-doc
     templates:
       - merge-check
-      - openstack-doc-rst-gate
-      - openstack-doc-translation
-    post:
-      jobs:
-        - legacy-security-doc-tox-doc-publishdocs
+      - translation-jobs
 
 - project:
     name: openstack/security-specs
