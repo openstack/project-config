@@ -36,3 +36,19 @@ cp $_pub_key /home/zuul/.ssh/authorized_keys
 
 # cleanup everything to the right owner
 chown -R zuul:zuul /home/zuul
+
+# a lot of caching happens in extra-data.d (for "historical" reasons).
+# We've put the cache stuff into /opt/cache/files, but again, for
+# "historical" reasons, ensure this is available in /home/zuul
+#
+# We do this for zuul as well as jenkins users as relative paths to
+# the current user's homedir are used in places like devstack-gate.
+#
+# Check if the cache exists as we don't have a strict dependency on the
+# devstack-cache element. This allows you to build an image without
+# incurring the cost of caching all the things.
+if [ -d /opt/cache/files ] ; then
+    mkdir -p /home/zuul/cache
+    chown zuul:zuul /home/zuul/cache
+    ln -sf /opt/cache/files /home/zuul/cache/files
+fi
