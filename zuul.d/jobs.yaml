@@ -427,6 +427,46 @@
         name: afs
 
 - job:
+    name: publish-api-guide
+    description: |
+      Publish api-guide document to
+      https://developer.openstack.org/api-guide.
+    pre-run: playbooks/python-docs/pre
+    run: playbooks/project-config/run-tox
+    post-run: playbooks/publish/api-guide
+    roles:
+      - zuul: openstack-infra/zuul-jobs
+      - zuul: openstack-infra/openstack-zuul-jobs
+    # We only publish the master branch, so no need to run
+    # for changes on other branches.
+    branches: master
+    vars:
+      tox_envlist: api-guide
+    secrets:
+      - secret: afsdeveloper_secret
+        name: afs
+
+- job:
+    name: publish-api-ref
+    description: |
+      Publish api-ref document to
+      https://developer.openstack.org/api-ref.
+    pre-run: playbooks/python-docs/pre
+    run: playbooks/project-config/run-tox
+    post-run: playbooks/publish/api-ref
+    roles:
+      - zuul: openstack-infra/zuul-jobs
+      - zuul: openstack-infra/openstack-zuul-jobs
+    # We only publish the master branch, so no need to run
+    # for changes on other branches.
+    branches: master
+    vars:
+      tox_envlist: api-ref
+    secrets:
+      - secret: afsdeveloper_secret
+        name: afs
+
+- job:
     name: release-openstack-javascript
     parent: publish-openstack-artifacts
     description: |
