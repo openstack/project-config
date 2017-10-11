@@ -427,6 +427,18 @@
         name: afs
 
 - job:
+    name: release-openstack-javascript
+    parent: publish-openstack-artifacts
+    description: |
+      Release javascript tarballs to npm.
+    pre-run: playbooks/javascript/pre
+    run: playbooks/javascript/run
+    post-run: playbooks/javascript/post
+    secrets:
+      - npm_credentials
+      - gpg_key
+
+- job:
     name: propose-updates
     pre-run: playbooks/proposal/pre
     run: playbooks/proposal/propose-updates
