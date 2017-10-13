@@ -3803,18 +3803,8 @@
     templates:
       - system-required
       - check-requirements
+      - openstack-python-jobs
       - openstack-python35-jobs-nonvoting
-    check:
-      jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
-    gate:
-      jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
-    post:
-      jobs:
-        - publish-openstack-python-branch-tarball
     pre-release:
       jobs:
         - publish-openstack-python-tarball
@@ -8157,17 +8147,7 @@
     name: openstack/driverlog
     templates:
       - system-required
-    check:
-      jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
-    gate:
-      jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
-    post:
-      jobs:
-        - publish-openstack-python-branch-tarball
+      - openstack-python-jobs
     pre-release:
       jobs:
         - publish-openstack-python-tarball
@@ -9796,19 +9776,9 @@
     name: openstack/giftwrap
     templates:
       - system-required
+      - openstack-python-jobs
       - openstack-python35-jobs
       - publish-to-pypi
-    check:
-      jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
-    gate:
-      jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
-    post:
-      jobs:
-        - publish-openstack-python-branch-tarball
 
 - project:
     name: openstack/git-repo-manifests
@@ -14807,12 +14777,11 @@
     name: openstack/monasca-agent
     templates:
       - system-required
+      - openstack-python-jobs
       - openstack-python35-jobs-nonvoting
       - publish-to-pypi
     check:
       jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
         - legacy-tempest-dsvm-monasca-python-mysql-full:
             voting: false
             irrelevant-files:
@@ -14823,13 +14792,6 @@
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^setup.cfg$
-    gate:
-      jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
-    post:
-      jobs:
-        - publish-openstack-python-branch-tarball
 
 - project:
     name: openstack/monasca-analytics
@@ -14913,32 +14875,21 @@
     name: openstack/monasca-ceilometer
     templates:
       - system-required
+      - openstack-python-jobs
       - openstack-python35-jobs
       - check-requirements
       - publish-to-pypi
-    check:
-      jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
-    gate:
-      jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
-    post:
-      jobs:
-        - publish-openstack-python-branch-tarball
 
 - project:
     name: openstack/monasca-common
     templates:
       - system-required
+      - openstack-python-jobs
       - openstack-python35-jobs
       - check-requirements
       - publish-to-pypi
     check:
       jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
         - legacy-monasca-common-maven-build
         - legacy-tempest-dsvm-monasca-python-mysql-full:
             voting: false
@@ -14952,13 +14903,10 @@
               - ^setup.cfg$
     gate:
       jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
         - legacy-monasca-common-maven-build
     post:
       jobs:
         - legacy-monasca-common-localrepo-upload
-        - publish-openstack-python-branch-tarball
 
 - project:
     name: openstack/monasca-events-api
@@ -15066,13 +15014,12 @@
     name: openstack/monasca-notification
     templates:
       - system-required
+      - openstack-python-jobs
       - openstack-python35-jobs
       - check-requirements
       - publish-to-pypi
     check:
       jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
         - legacy-tempest-dsvm-monasca-python-mysql-full:
             voting: false
             irrelevant-files:
@@ -15086,24 +15033,18 @@
         - openstack-tox-cover
     gate:
       jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
         - openstack-tox-cover
-    post:
-      jobs:
-        - publish-openstack-python-branch-tarball
 
 - project:
     name: openstack/monasca-persister
     templates:
       - system-required
+      - openstack-python-jobs
       - openstack-python35-jobs
       - check-requirements
       - publish-to-pypi
     check:
       jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
         - legacy-monasca-persister-maven-build
         - legacy-tempest-dsvm-monasca-python-mysql-full:
             voting: false
@@ -15118,14 +15059,11 @@
         - openstack-tox-cover
     gate:
       jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
         - legacy-monasca-persister-maven-build
         - openstack-tox-cover
     post:
       jobs:
         - legacy-monasca-persister-localrepo-upload
-        - publish-openstack-python-branch-tarball
 
 - project:
     name: openstack/monasca-specs
@@ -15137,13 +15075,12 @@
     name: openstack/monasca-statsd
     templates:
       - system-required
+      - openstack-python-jobs
       - openstack-python35-jobs
       - check-requirements
       - publish-to-pypi
     check:
       jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
         - legacy-tempest-dsvm-monasca-python-mysql-full:
             voting: false
             irrelevant-files:
@@ -15157,12 +15094,7 @@
         - openstack-tox-cover
     gate:
       jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
         - openstack-tox-cover
-    post:
-      jobs:
-        - publish-openstack-python-branch-tarball
 
 - project:
     name: openstack/monasca-thresh
@@ -15221,22 +15153,14 @@
     name: openstack/monasca-ui
     templates:
       - system-required
+      - openstack-python-jobs
       - openstack-python35-jobs-nonvoting
       - translation-jobs
       - check-requirements
       - publish-to-pypi
-    check:
-      jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
-    gate:
-      jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
     post:
       jobs:
         - openstack-tox-cover
-        - publish-openstack-python-branch-tarball
 
 - project:
     name: openstack/monasca-vagrant
@@ -15374,6 +15298,7 @@
       - system-required
       - check-requirements
       - release-notes-jobs
+      - openstack-python-jobs
       - openstack-python35-jobs
       - translation-jobs
       - translation-jobs-ocata
@@ -15384,15 +15309,8 @@
       jobs:
         - openstack-tox-cover:
             voting: false
-        - openstack-tox-pep8
-        - openstack-tox-py27
-    gate:
-      jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
     post:
       jobs:
-        - publish-openstack-python-branch-tarball
         - openstack-tox-cover:
             voting: false
     experimental:
@@ -20857,12 +20775,11 @@
       - system-required
       - check-requirements
       - publish-to-pypi
+      - openstack-python-jobs
       - openstack-python35-jobs
       - experimental-tripleo-jobs
     check:
       jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
         - openstack-tox-cover:
             voting: false
         - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
@@ -21188,8 +21105,6 @@
               - ^test-requirements.txt$
     gate:
       jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
         - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
             irrelevant-files:
               - ^.*\.md$
@@ -21500,9 +21415,6 @@
               - ^metadata.json$
               - ^releasenotes/.*$
               - ^test-requirements.txt$
-    post:
-      jobs:
-        - publish-openstack-python-branch-tarball
     check-tripleo:
       jobs:
         - legacy-tripleo-ci-centos-7-ovb-ha-oooq:
@@ -21689,12 +21601,11 @@
       - system-required
       - check-requirements
       - publish-to-pypi
+      - openstack-python-jobs
       - openstack-python35-jobs
       - experimental-tripleo-jobs
     check:
       jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
         - openstack-tox-cover:
             voting: false
         - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
@@ -22020,8 +21931,6 @@
               - ^test-requirements.txt$
     gate:
       jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
         - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
             irrelevant-files:
               - ^.*\.md$
@@ -22332,9 +22241,6 @@
               - ^metadata.json$
               - ^releasenotes/.*$
               - ^test-requirements.txt$
-    post:
-      jobs:
-        - publish-openstack-python-branch-tarball
     check-tripleo:
       jobs:
         - legacy-tripleo-ci-centos-7-ovb-ha-oooq:
@@ -22503,11 +22409,10 @@
       - check-requirements
       - publish-to-pypi
       - experimental-tripleo-jobs
+      - openstack-python-jobs
       - openstack-python35-jobs
     check:
       jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
         - openstack-tox-cover:
             voting: false
         - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
@@ -22833,8 +22738,6 @@
               - ^test-requirements.txt$
     gate:
       jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
         - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
             irrelevant-files:
               - ^.*\.md$
@@ -23145,9 +23048,6 @@
               - ^metadata.json$
               - ^releasenotes/.*$
               - ^test-requirements.txt$
-    post:
-      jobs:
-        - publish-openstack-python-branch-tarball
     check-tripleo:
       jobs:
         - legacy-tripleo-ci-centos-7-ovb-ha-oooq:
@@ -23294,12 +23194,11 @@
       - system-required
       - check-requirements
       - publish-to-pypi
+      - openstack-python-jobs
       - openstack-python35-jobs
       - experimental-tripleo-jobs
     check:
       jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
         - openstack-tox-cover:
             voting: false
         - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
@@ -23625,8 +23524,6 @@
               - ^test-requirements.txt$
     gate:
       jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
         - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
             irrelevant-files:
               - ^.*\.md$
@@ -23937,9 +23834,6 @@
               - ^metadata.json$
               - ^releasenotes/.*$
               - ^test-requirements.txt$
-    post:
-      jobs:
-        - publish-openstack-python-branch-tarball
     check-tripleo:
       jobs:
         - legacy-tripleo-ci-centos-7-ovb-ha-oooq:
@@ -27017,18 +26911,8 @@
     templates:
       - system-required
       - check-requirements
+      - openstack-python-jobs
       - openstack-python35-jobs-nonvoting
-    check:
-      jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
-    gate:
-      jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
-    post:
-      jobs:
-        - publish-openstack-python-branch-tarball
     pre-release:
       jobs:
         - publish-openstack-python-tarball
@@ -27572,22 +27456,16 @@
     name: openstack/python-monascaclient
     templates:
       - system-required
+      - openstack-python-jobs
       - openstack-python35-jobs
       - check-requirements
       - publish-to-pypi
     check:
       jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
         - openstack-tox-cover
     gate:
       jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
         - openstack-tox-cover
-    post:
-      jobs:
-        - publish-openstack-python-branch-tarball
 
 - project:
     name: openstack/python-muranoclient
@@ -29435,14 +29313,13 @@
       - system-required
       - openstack-pypy-jobs-nonvoting
       - publish-openstack-sphinx-docs
+      - openstack-python-jobs
       - openstack-python35-jobs
       - publish-to-pypi
     check:
       jobs:
         - build-openstack-sphinx-docs:
             branches: master
-        - openstack-tox-pep8
-        - openstack-tox-py27
         - legacy-requirements-integration-dsvm-ubuntu-trusty:
             branches: ^stable/newton$
         - legacy-requirements-integration-dsvm
@@ -29516,8 +29393,6 @@
       jobs:
         - build-openstack-sphinx-docs:
             branches: master
-        - openstack-tox-pep8
-        - openstack-tox-py27
         - legacy-requirements-integration-dsvm-ubuntu-trusty:
             branches: ^stable/newton$
         - legacy-requirements-integration-dsvm
@@ -29591,7 +29466,6 @@
         - propose-updates:
             vars:
               update_target: requirements
-        - publish-openstack-python-branch-tarball
     experimental:
       jobs:
         - legacy-tempest-dsvm-neutron-pg-full:
@@ -37649,19 +37523,9 @@
       - translation-jobs-ocata
       - translation-jobs-pike
       - release-notes-jobs
+      - openstack-python-jobs
       - openstack-python35-jobs-nonvoting
       - publish-to-pypi
-    check:
-      jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
-    gate:
-      jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
-    post:
-      jobs:
-        - publish-openstack-python-branch-tarball
 
 - project:
     name: openstack/trove-integration
@@ -37967,19 +37831,9 @@
     name: openstack/wsme
     templates:
       - system-required
+      - openstack-python-jobs
       - openstack-python35-jobs
       - publish-to-pypi
-    check:
-      jobs:
-        - openstack-tox-py27
-        - openstack-tox-pep8
-    gate:
-      jobs:
-        - openstack-tox-py27
-        - openstack-tox-pep8
-    post:
-      jobs:
-        - publish-openstack-python-branch-tarball
 
 - project:
     name: openstack/xenapi-os-testing
