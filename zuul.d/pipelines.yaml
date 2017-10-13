@@ -9,13 +9,13 @@
     manager: independent
     trigger:
       gerrit:
-        #- event: patchset-created
-        #- event: change-restored
-        #- event: comment-added
-        #  comment: (?i)^(Patch Set [0-9]+:)?( [\w\\+-]*)*(\n\n)?\s*recheck
+        - event: patchset-created
+        - event: change-restored
+        - event: comment-added
+          comment: (?i)^(Patch Set [0-9]+:)?( [\w\\+-]*)*(\n\n)?\s*recheck
         - event: comment-added
           require-approval:
-            - Verified: [3]
+            - Verified: [-1, -2]
               username: zuul
           approval:
             - Workflow: 1
@@ -171,7 +171,9 @@
     description: Jobs in this queue are triggered on a timer.
     manager: independent
     precedence: low
-    trigger: {}
+    trigger:
+      timer:
+        - time: '0 6 * * *'
     success:
       mysql:
     failure:
@@ -236,7 +238,9 @@
     description: Periodic checks of the stable branches.
     manager: independent
     precedence: low
-    trigger: {}
+    trigger:
+      timer:
+        - time: '1 6 * * *'
     success:
       mysql:
     failure:
@@ -286,12 +290,12 @@
       http://docs.openstack.org/infra/manual/developers.html#automated-testing
     manager: independent
     precedence: normal
-    trigger: {}
-      #gerrit:
-      #  - event: patchset-created
-      #  - event: change-restored
-      #  - event: comment-added
-      #    comment: (?i)^(Patch Set [0-9]+:)?( [\w\\+-]*)*(\n\n)?\s*recheck
+    trigger:
+      gerrit:
+        - event: patchset-created
+        - event: change-restored
+        - event: comment-added
+          comment: (?i)^(Patch Set [0-9]+:)?( [\w\\+-]*)*(\n\n)?\s*recheck
     require:
       gerrit:
         open: True
