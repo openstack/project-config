@@ -469,6 +469,26 @@
         name: afs
 
 - job:
+    name: publish-deploy-guide
+    description: |
+      Publish deploy-guide document to
+      https://docs.openstack.org/project-deploy-guide/
+    pre-run: playbooks/python-docs/pre
+    run: playbooks/project-config/run-tox
+    post-run: playbooks/publish/deploy-guide
+    roles:
+      - zuul: openstack-infra/zuul-jobs
+      - zuul: openstack-infra/openstack-zuul-jobs
+    # We only publish the master branch, so no need to run
+    # for changes on other branches.
+    branches: master
+    vars:
+      tox_envlist: deploy-guide
+    secrets:
+      - secret: afsdocs_secret
+        name: afs
+
+- job:
     name: release-openstack-javascript
     parent: publish-openstack-artifacts
     description: |
