@@ -9,7 +9,8 @@
 
 - hosts: localhost
   roles:
+    - set-service-type-data-fact
     - create-afs-token
     - role: upload-afs
-      afs_target: "{{ afs.path }}/api-ref/{{ zuul.project.short_name }}"
+      afs_target: "{{ afs.path }}/api-ref/{{ service_type_data.service_type }}"
     - destroy-afs-token
