@@ -15633,16 +15633,59 @@
       jobs:
         - openstack-tox-compare-cover:
             voting: false
-        - legacy-networking-cisco-tox-newton
-        - legacy-networking-cisco-tox-ocata
+            required-projects:
+              - openstack/python-neutronclient
+        - build-openstack-sphinx-docs:
+            required-projects:
+              - openstack/python-neutronclient
+        - openstack-tox-pep8:
+            required-projects:
+              - openstack/python-neutronclient
+        - openstack-tox-py27:
+            required-projects:
+              - openstack/python-neutronclient
+        - openstack-tox-py35:
+            required-projects:
+              - openstack/python-neutronclient
+        - legacy-networking-cisco-tox-newton:
+            required-projects:
+              - openstack/python-neutronclient
+        - legacy-networking-cisco-tox-ocata:
+            required-projects:
+              - openstack/python-neutronclient
         - legacy-networking-cisco-tox-pike:
             voting: false
+            required-projects:
+              - openstack/python-neutronclient
         - legacy-networking-cisco-tox-master:
             voting: false
+            required-projects:
+              - openstack/python-neutronclient
     gate:
       jobs:
-        - legacy-networking-cisco-tox-newton
-        - legacy-networking-cisco-tox-ocata
+        - build-openstack-sphinx-docs:
+            required-projects:
+              - openstack/python-neutronclient
+        - openstack-tox-pep8:
+            required-projects:
+              - openstack/python-neutronclient
+        - openstack-tox-py27:
+            required-projects:
+              - openstack/python-neutronclient
+        - openstack-tox-py35:
+            required-projects:
+              - openstack/python-neutronclient
+        - legacy-networking-cisco-tox-newton:
+            required-projects:
+              - openstack/python-neutronclient
+        - legacy-networking-cisco-tox-ocata:
+            required-projects:
+              - openstack/python-neutronclient
+    post:
+      jobs:
+        - publish-openstack-python-branch-tarball:
+            required-projects:
+              - openstack/python-neutronclient
 
 - project:
     name: openstack/networking-cumulus
