@@ -3748,18 +3748,12 @@
     name: openstack/blazar-dashboard
     templates:
       - system-required
-      - openstack-python-jobs
+      - openstack-python-jobs-horizon
       - check-requirements
       - openstack-python35-jobs-nonvoting
     check:
       jobs:
         - build-openstack-sphinx-docs:
-            required-projects:
-              - openstack/horizon
-        - openstack-tox-pep8:
-            required-projects:
-              - openstack/horizon
-        - openstack-tox-py27:
             required-projects:
               - openstack/horizon
         - openstack-tox-py35:
@@ -3773,18 +3767,7 @@
         - build-openstack-sphinx-docs:
             required-projects:
               - openstack/horizon
-        - openstack-tox-pep8:
-            required-projects:
-              - openstack/horizon
-        - openstack-tox-py27:
-            required-projects:
-              - openstack/horizon
         - build-openstack-releasenotes:
-            required-projects:
-              - openstack/horizon
-    post:
-      jobs:
-        - publish-openstack-python-branch-tarball:
             required-projects:
               - openstack/horizon
     pre-release:
@@ -29583,13 +29566,13 @@
     templates:
       - system-required
       - check-requirements
-      - openstack-python-jobs
-      - openstack-python35-jobs
+      - openstack-python-jobs-horizon
+      - openstack-python35-jobs-horizon
       - translation-jobs
       - translation-jobs-ocata
       - translation-jobs-pike
-      - release-notes-jobs
-      - publish-to-pypi
+      - release-notes-jobs-horizon
+      - publish-to-pypi-horizon
     check:
       jobs:
         - legacy-sahara-dashboard-dsvm-integration:
@@ -37485,10 +37468,15 @@
       - translation-jobs
       - translation-jobs-ocata
       - translation-jobs-pike
-      - release-notes-jobs
-      - openstack-python-jobs
+      - release-notes-jobs-horizon
+      - openstack-python-jobs-horizon
       - openstack-python35-jobs-nonvoting
-      - publish-to-pypi
+      - publish-to-pypi-horizon
+    check:
+      jobs:
+        - openstack-tox-py35:
+            required-projects:
+              - openstack/horizon
 
 - project:
     name: openstack/trove-integration
