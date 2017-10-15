@@ -47,6 +47,52 @@
       mysql:
 
 - pipeline:
+    name: infra-check
+    description: |
+      Newly uploaded patchsets enter this pipeline to receive an
+      initial +/-1 Verified vote.
+    manager: independent
+    precedence: high
+    trigger:
+      gerrit:
+        - event: patchset-created
+        - event: change-restored
+        - event: comment-added
+          comment: (?i)^(Patch Set [0-9]+:)?( [\w\\+-]*)*(\n\n)?\s*recheck
+        - event: comment-added
+          require-approval:
+            - Verified: [-1, -2]
+              username: zuul
+          approval:
+            - Workflow: 1
+      github:
+        - event: pull_request
+          action:
+            - opened
+            - changed
+            - reopened
+        - event: pull_request
+          action: comment
+          comment: (?i)^\s*recheck\s*$
+    start:
+      github:
+        status: pending
+        comment: false
+    success:
+      gerrit:
+        # Note that gerrit keywords are case-sensitive.
+        Verified: 1
+      github:
+        status: 'success'
+      mysql:
+    failure:
+      gerrit:
+        Verified: -1
+      github:
+        status: 'failure'
+      mysql:
+
+- pipeline:
     name: gate
     description: |
       Changes that have been approved by core developers are enqueued
@@ -64,7 +110,7 @@
         open: True
         current-patchset: True
         approval:
-          - Verified: [3]
+          - Verified: [1, 2]
             username: ^(zuul|jenkins)$
           - Workflow: 1
     trigger:
@@ -97,13 +143,6 @@
     manager: independent
     precedence: low
     post-review: True
-    require:
-      gerrit:
-        open: True
-        current-patchset: True
-        approval:
-          - Verified: [3]
-            username: ^(zuul|jenkins)$
     trigger:
       gerrit:
         - event: ref-updated
@@ -121,13 +160,6 @@
     manager: independent
     precedence: high
     post-review: True
-    require:
-      gerrit:
-        open: True
-        current-patchset: True
-        approval:
-          - Verified: [3]
-            username: ^(zuul|jenkins)$
     trigger:
       gerrit:
         - event: ref-updated
@@ -149,13 +181,6 @@
     manager: independent
     precedence: high
     post-review: True
-    require:
-      gerrit:
-        open: True
-        current-patchset: True
-        approval:
-          - Verified: [3]
-            username: ^(zuul|jenkins)$
     trigger:
       gerrit:
         - event: ref-updated
@@ -190,13 +215,6 @@
     description: This pipeline runs release-process-critical jobs that operate after specific changes are merged.
     manager: independent
     precedence: high
-    require:
-      gerrit:
-        open: True
-        current-patchset: True
-        approval:
-          - Verified: [3]
-            username: ^(zuul|jenkins)$
     trigger:
       gerrit:
         - event: ref-updated
@@ -216,13 +234,6 @@
     description: This pipeline runs jobs in response to any tag event.
     manager: independent
     precedence: high
-    require:
-      gerrit:
-        open: True
-        current-patchset: True
-        approval:
-          - Verified: [3]
-            username: ^(zuul|jenkins)$
     trigger:
       gerrit:
         - event: ref-updated
@@ -261,13 +272,6 @@
     failure-message: Build failed (experimental pipeline).
     manager: independent
     precedence: normal
-    require:
-      gerrit:
-        open: True
-        current-patchset: True
-        approval:
-          - Verified: [3]
-            username: ^(zuul|jenkins)$
     trigger:
       gerrit:
         - event: comment-added
@@ -319,13 +323,6 @@
     failure-message: Build failed (experimental-tripleo).
     manager: independent
     precedence: low
-    require:
-      gerrit:
-        open: True
-        current-patchset: True
-        approval:
-          - Verified: [3]
-            username: ^(zuul|jenkins)$
     trigger:
       gerrit:
         - event: comment-added
@@ -345,52 +342,6 @@
     ignore-dependencies: true
     precedence: low
     trigger: {}
-
-- pipeline:
-    name: infra-check
-    description: |
-      Newly uploaded patchsets enter this pipeline to receive an
-      initial +/-1 Verified vote.
-    manager: independent
-    precedence: high
-    trigger:
-      gerrit:
-        - event: patchset-created
-        - event: change-restored
-        - event: comment-added
-          comment: (?i)^(Patch Set [0-9]+:)?( [\w\\+-]*)*(\n\n)?\s*recheck
-        - event: comment-added
-          require-approval:
-            - Verified: [-1, -2]
-              username: zuul
-          approval:
-            - Workflow: 1
-      github:
-        - event: pull_request
-          action:
-            - opened
-            - changed
-            - reopened
-        - event: pull_request
-          action: comment
-          comment: (?i)^\s*recheck\s*$
-    start:
-      github:
-        status: pending
-        comment: false
-    success:
-      gerrit:
-        # Note that gerrit keywords are case-sensitive.
-        Verified: 1
-      github:
-        status: 'success'
-      mysql:
-    failure:
-      gerrit:
-        Verified: -1
-      github:
-        status: 'failure'
-      mysql:
 
 - pipeline:
     name: infra-gate
