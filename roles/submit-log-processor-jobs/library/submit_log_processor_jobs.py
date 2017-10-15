@@ -73,7 +73,7 @@ class LogMatcher(object):
         return results
 
     def submitJobs(self, jobname, files):
-        self.client.waitForServer()
+        self.client.waitForServer(90)
         ret = []
         for f in files:
             output = self.makeOutput(f)
