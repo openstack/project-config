@@ -48,6 +48,7 @@ install_from_source python-muranoclient
 install_from_source python-neutronclient
 install_from_source python-octaviaclient
 install_from_source python-pankoclient
+install_from_source python-rsdclient
 install_from_source python-saharaclient
 install_from_source python-searchlightclient
 install_from_source python-senlinclient
