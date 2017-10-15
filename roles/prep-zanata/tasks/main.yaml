@@ -19,17 +19,17 @@
     src: "https://search.maven.org/remotecontent?filepath=org/zanata/zanata-cli/{{ zanata_client_version }}/zanata-cli-{{ zanata_client_version }}-dist.tar.gz"
     remote_src: yes
     dest: "/opt/zanata/"
-    creates: "/opt/zanata/zanata-cli-{{ version }}/bin/zanata-cli"
+    creates: "/opt/zanata/zanata-cli-{{ zanata_client_version }}/bin/zanata-cli"
 
 - name: ensure zanata-cli perms
   file:
-    path: "/opt/zanata/zanata-cli-{{ version }}/bin/zanata-cli"
+    path: "/opt/zanata/zanata-cli-{{ zanata_client_version }}/bin/zanata-cli"
     mode: 0755
 
 - name: link zanata-cli
   file:
     path: /usr/local/bin/zanata-cli
-    src: "/opt/zanata/zanata-cli-{{ version }}/bin/zanata-cli"
+    src: "/opt/zanata/zanata-cli-{{ zanata_client_version }}/bin/zanata-cli"
     state: link
 
 # This is a preview module in Ansible 2.3. It may not work.
