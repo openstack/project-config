@@ -15845,7 +15845,7 @@
       - publish-openstack-sphinx-docs-neutron
       - release-notes-jobs-neutron
       - translation-jobs
-      - publish-to-pypi
+      - publish-to-pypi-neutron
     check:
       jobs:
         - build-openstack-sphinx-docs:
@@ -16152,6 +16152,26 @@
               - openstack/networking-l2gw
               - openstack/tap-as-a-service
         - publish-openstack-releasenotes:
+            required-projects:
+              - openstack/neutron-fwaas
+              - openstack/neutron-vpnaas
+              - openstack/neutron-lbaas
+              - openstack/neutron-dynamic-routing
+              - openstack/networking-l2gw
+              - openstack/tap-as-a-service
+    pre-release:
+      jobs:
+        - release-openstack-python:
+            required-projects:
+              - openstack/neutron-fwaas
+              - openstack/neutron-vpnaas
+              - openstack/neutron-lbaas
+              - openstack/neutron-dynamic-routing
+              - openstack/networking-l2gw
+              - openstack/tap-as-a-service
+    release:
+      jobs:
+        - release-openstack-python:
             required-projects:
               - openstack/neutron-fwaas
               - openstack/neutron-vpnaas
