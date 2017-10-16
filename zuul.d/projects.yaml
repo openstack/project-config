@@ -15843,12 +15843,20 @@
       - periodic-pike
       - periodic-jobs-with-neutron-lib-master
       - publish-openstack-sphinx-docs-neutron
-      - release-notes-jobs
+      - release-notes-jobs-neutron
       - translation-jobs
       - publish-to-pypi
     check:
       jobs:
         - build-openstack-sphinx-docs:
+            required-projects:
+              - openstack/neutron-fwaas
+              - openstack/neutron-vpnaas
+              - openstack/neutron-lbaas
+              - openstack/neutron-dynamic-routing
+              - openstack/networking-l2gw
+              - openstack/tap-as-a-service
+        - build-openstack-releasenotes:
             required-projects:
               - openstack/neutron-fwaas
               - openstack/neutron-vpnaas
@@ -15998,6 +16006,14 @@
               - openstack/neutron-dynamic-routing
               - openstack/networking-l2gw
               - openstack/tap-as-a-service
+        - build-openstack-releasenotes:
+            required-projects:
+              - openstack/neutron-fwaas
+              - openstack/neutron-vpnaas
+              - openstack/neutron-lbaas
+              - openstack/neutron-dynamic-routing
+              - openstack/networking-l2gw
+              - openstack/tap-as-a-service
         - openstack-tox-pep8:
             required-projects:
               - openstack/neutron-fwaas
@@ -16128,6 +16144,24 @@
     post:
       jobs:
         - publish-openstack-python-branch-tarball:
+            required-projects:
+              - openstack/neutron-fwaas
+              - openstack/neutron-vpnaas
+              - openstack/neutron-lbaas
+              - openstack/neutron-dynamic-routing
+              - openstack/networking-l2gw
+              - openstack/tap-as-a-service
+        - publish-openstack-releasenotes:
+            required-projects:
+              - openstack/neutron-fwaas
+              - openstack/neutron-vpnaas
+              - openstack/neutron-lbaas
+              - openstack/neutron-dynamic-routing
+              - openstack/networking-l2gw
+              - openstack/tap-as-a-service
+    tag:
+      jobs:
+        - publish-openstack-releasenotes:
             required-projects:
               - openstack/neutron-fwaas
               - openstack/neutron-vpnaas
