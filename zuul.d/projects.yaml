@@ -16166,14 +16166,6 @@
       - publish-to-pypi-neutron
     check:
       jobs:
-        - build-openstack-sphinx-docs:
-            required-projects:
-              - openstack/ceilometer
-              - openstack/neutron-fwaas
-              - openstack/neutron-lbaas
-              - openstack/networking-l2gw
-              - openstack/networking-sfc
-              - openstack/networking-bgpvpn
         - openstack-tox-pep8:
             required-projects:
               - openstack/ceilometer
@@ -16191,6 +16183,23 @@
               - openstack/networking-sfc
               - openstack/networking-bgpvpn
         - openstack-tox-py35:
+            required-projects:
+              - openstack/ceilometer
+              - openstack/neutron-fwaas
+              - openstack/neutron-lbaas
+              - openstack/networking-l2gw
+              - openstack/networking-sfc
+              - openstack/networking-bgpvpn
+        - openstack-tox-cover:
+            required-projects:
+              - openstack/ceilometer
+              - openstack/neutron
+              - openstack/neutron-fwaas
+              - openstack/neutron-lbaas
+              - openstack/networking-l2gw
+              - openstack/networking-sfc
+              - openstack/networking-bgpvpn
+        - build-openstack-sphinx-docs:
             required-projects:
               - openstack/ceilometer
               - openstack/neutron-fwaas
@@ -16293,25 +16302,8 @@
               - ^.*\.rst$
               - ^doc/.*$
               - ^releasenotes/.*$
-        - openstack-tox-cover:
-            required-projects:
-              - openstack/ceilometer
-              - openstack/neutron
-              - openstack/neutron-fwaas
-              - openstack/neutron-lbaas
-              - openstack/networking-l2gw
-              - openstack/networking-sfc
-              - openstack/networking-bgpvpn
     gate:
       jobs:
-        - build-openstack-sphinx-docs:
-            required-projects:
-              - openstack/ceilometer
-              - openstack/neutron-fwaas
-              - openstack/neutron-lbaas
-              - openstack/networking-l2gw
-              - openstack/networking-sfc
-              - openstack/networking-bgpvpn
         - openstack-tox-pep8:
             required-projects:
               - openstack/ceilometer
@@ -16329,6 +16321,23 @@
               - openstack/networking-sfc
               - openstack/networking-bgpvpn
         - openstack-tox-py35:
+            required-projects:
+              - openstack/ceilometer
+              - openstack/neutron-fwaas
+              - openstack/neutron-lbaas
+              - openstack/networking-l2gw
+              - openstack/networking-sfc
+              - openstack/networking-bgpvpn
+        - openstack-tox-cover:
+            required-projects:
+              - openstack/ceilometer
+              - openstack/neutron
+              - openstack/neutron-fwaas
+              - openstack/neutron-lbaas
+              - openstack/networking-l2gw
+              - openstack/networking-sfc
+              - openstack/networking-bgpvpn
+        - build-openstack-sphinx-docs:
             required-projects:
               - openstack/ceilometer
               - openstack/neutron-fwaas
@@ -16380,15 +16389,6 @@
               - ^.*\.rst$
               - ^doc/.*$
               - ^releasenotes/.*$
-        - openstack-tox-cover:
-            required-projects:
-              - openstack/ceilometer
-              - openstack/neutron
-              - openstack/neutron-fwaas
-              - openstack/neutron-lbaas
-              - openstack/networking-l2gw
-              - openstack/networking-sfc
-              - openstack/networking-bgpvpn
     post:
       jobs:
         - publish-openstack-python-branch-tarball:
@@ -16399,6 +16399,64 @@
               - openstack/networking-l2gw
               - openstack/networking-sfc
               - openstack/networking-bgpvpn
+        - publish-openstack-sphinx-docs:
+            required-projects:
+              - openstack/ceilometer
+              - openstack/neutron-fwaas
+              - openstack/neutron-lbaas
+              - openstack/networking-l2gw
+              - openstack/networking-sfc
+              - openstack/networking-bgpvpn
+        - publish-openstack-releasenotes:
+            required-projects:
+              - openstack/ceilometer
+              - openstack/neutron-fwaas
+              - openstack/neutron-lbaas
+              - openstack/networking-l2gw
+              - openstack/networking-sfc
+              - openstack/networking-bgpvpn
+    tag:
+      jobs:
+        - publish-openstack-releasenotes:
+            required-projects:
+              - openstack/ceilometer
+              - openstack/neutron-fwaas
+              - openstack/neutron-lbaas
+              - openstack/networking-l2gw
+              - openstack/networking-sfc
+              - openstack/networking-bgpvpn
+    pre-release:
+      jobs:
+        - release-openstack-python:
+            required-projects:
+              - openstack/ceilometer
+              - openstack/neutron-fwaas
+              - openstack/neutron-lbaas
+              - openstack/networking-l2gw
+              - openstack/networking-sfc
+              - openstack/networking-bgpvpn
+        - announce-release:
+            dependencies:
+              - release-openstack-python
+        - propose-update-constraints:
+            dependencies:
+              - release-openstack-python
+    release:
+      jobs:
+        - release-openstack-python:
+            required-projects:
+              - openstack/ceilometer
+              - openstack/neutron-fwaas
+              - openstack/neutron-lbaas
+              - openstack/networking-l2gw
+              - openstack/networking-sfc
+              - openstack/networking-bgpvpn
+        - announce-release:
+            dependencies:
+              - release-openstack-python
+        - propose-update-constraints:
+            dependencies:
+              - release-openstack-python
 
 - project:
     name: openstack/networking-onos
