@@ -158,7 +158,6 @@ fi
 
 # Make sure it is up to date compared to the upstream remote.
 (cd $local_dir &&
-        git remote update &&
         git fetch origin --tags
 )
 
