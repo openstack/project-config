@@ -1,10 +1,12 @@
 - hosts: all
   roles:
+    - prepare-docs-for-afs
+      doc_build_dir: "{{ zuul_work_dir }}/deploy-guide/build"
     - fetch-tox-output
     - role: write-root-marker
-      root_marker_dir: "src/{{ zuul.project.canonical_name }}/deploy-guide/doc/build/html"
+      root_marker_dir: "src/{{ zuul.project.canonical_name }}/deploy-guide/build/html"
     - role: fetch-sphinx-output
-      sphinx_output_src: "{{ zuul.project.src_dir }}/deploy-guide/doc/build/html"
+      sphinx_output_src: "{{ zuul.project.src_dir }}/deploy-guide/build/html"
       zuul_executor_dest: "{{ zuul.executor.work_root }}/artifacts"
 
 - hosts: localhost
