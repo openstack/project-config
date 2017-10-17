@@ -156,6 +156,23 @@
         name: afs
 
 - job:
+    name: publish-openstack-contributor-guide
+    description: |
+      Publish contributor-guide documents to
+      https://docs.openstack.org/contributors
+    final: True
+    pre-run: playbooks/python-docs/pre
+    run: playbooks/project-config/run-tox
+    post-run: playbooks/publish/openstack-contributor-guide-afs
+    roles:
+      - zuul: openstack-infra/zuul-jobs
+      - zuul: openstack-infra/openstack-zuul-jobs
+    branches: master
+    secrets:
+      - secret: afsdocs_secret
+        name: afs
+
+- job:
     name: publish-openstack-releasenotes
     description: |
       Publish the results of build-openstack-releasenotes to
