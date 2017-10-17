@@ -17,12 +17,19 @@ JOBNAME=$2
 
 # Replace /'s in branch names with -'s because Zanata doesn't
 # allow /'s in version names.
-ZANATA_VERSION=${ZUUL_REFNAME//\//-}
+# Zuul v3 native job passes the branch in as parameter but
+# does not set ZUUL_REFNAME.
+if [ -z "$ZUUL_REFNAME" ] ; then
+    BRANCHNAME=$3
+else
+    BRANCHNAME=$ZUUL_REFNAME
+fi
+ZANATA_VERSION=${BRANCHNAME//\//-}
 
 SCRIPTSDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $SCRIPTSDIR/common_translation_update.sh
 
-init_branch $ZUUL_REFNAME
+init_branch $BRANCHNAME
 
 # List of all modules to copy POT files from
 ALL_MODULES=""
