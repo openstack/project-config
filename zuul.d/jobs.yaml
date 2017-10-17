@@ -2,6 +2,27 @@
 # Contains definitions of trusted jobs
 # Overrides jobs from:
 #    https://git.openstack.org/cgit/openstack-infra/zuul-jobs
+
+
+# Changes to this job require a special procedure, because they can
+# not be tested before landing, and if they are faulty, they will
+# break all jobs, meaning subsequent corrections will not be able to
+# land.  To make a change:
+#
+# 1) Ensure that base-test and its playbooks are identical to base.
+# 2) Make the change to base-test and/or its playbooks.
+# 3) Merge the change from step 2.  No jobs normally use base-test, so
+#    this is safe.
+# 4) Propose a change to a job to reparent it to base-test.  Choose a
+#    job which will exercise whatever you are changing.  The
+#    "unittests" job in zuul-jobs is a good choice.  Use [DNM] in the
+#    commit subject so that people know not to merge the change.  Set
+#    it to "Work in progress" so people don't review it.
+# 5) Once test results arrive for the change in step 2, make a change
+#    which copies the job and/or playbooks of base-test to base.  In
+#    the commit message, link to (without using Depends-On:) the
+#    change from step 4 so reviewers can see the test results.
+# 6) Once the change in step 5 merges, abandon the change from step 4.
 - job:
     name: base
     parent: null
@@ -62,6 +83,8 @@
     secrets:
       - site_logs
 
+# See the procedure described above "base" before making changes to
+# this job.
 - job:
     name: base-test
     parent: null
