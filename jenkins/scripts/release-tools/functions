@@ -3,6 +3,8 @@
 # Shared functions for shell scripts
 #
 
+_functions_bindir=$(realpath $(dirname $0))
+
 # Make sure custom grep options don't get in the way
 unset GREP_OPTIONS
 
@@ -103,23 +105,8 @@ function clone_repo {
 
     set -e
 
-    if [[ ! -z "$branch" ]]; then
-        branch="--branch $branch"
-    fi
-
-    # Find zuul-cloner. We look first in the spot where it is
-    # installed on the CI node, but that is not likely to be in
-    # $PATH. It won't be in that location on other systems where the
-    # tools are run by hand, so fall back to looking in $PATH
-    # otherwise.
-    if [[ -f /usr/zuul-env/bin/zuul-cloner ]]; then
-        zc=/usr/zuul-env/bin/zuul-cloner
-    else
-        zc=zuul-cloner
-    fi
-
-    # Clone the repository using the given branch, if possible.
-    $zc $branch git://git.openstack.org $repo
+    # Clone the repository using the given branch.
+    $_functions_bindir/clone_repo.sh --branch $branch $repo
 
     # Configure git-review so we can propose patches to the repo if
     # needed. Some of the release scripts are still run by hand to
@@ -132,10 +119,6 @@ function clone_repo {
     if ! (cd $repo && git review -s); then
         (cd $repo && configure_git_review && git review -s)
     fi
-
-    # Make sure we have all of the existing tags so we can refer to
-    # them for building the release notes.
-    (cd $repo && git fetch -v --tags)
 
     return 0
 }
