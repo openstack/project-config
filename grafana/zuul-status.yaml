@@ -186,10 +186,17 @@ dashboard:
             - target: alias(stats.gauges.logstash.geard.queue.total, 'Total Jobs')
             - target: alias(stats.gauges.logstash.geard.workers, 'Workers')
           type: graph
-        - title: Tempest Check Runs
+    - title: Executors
+      showTitle: true
+      height: 250px
+      panels:
+        - title: Running Builds
           span: 4
           targets:
-            - target: alias(smartSummarize(sumSeries(stats_counts.zuul.pipeline.check.job.gate-tempest-dsvm-neutron-full-ubuntu-xenial.SUCCESS,stats_counts.zuul.pipeline.check.job.gate-tempest-dsvm-neutron-full-ubuntu-xenial.FAILURE), '1h', 'avg'), 'Tempest')
-            - target: alias(smartSummarize(sumSeries(stats_counts.zuul.pipeline.check.job.gate-grenade-dsvm-neutron-ubuntu-xenial.SUCCESS,stats_counts.zuul.pipeline.check.job.gate-grenade-dsvm-neutron-ubuntu-xenial.FAILURE), '1h', 'avg'), 'Grenade')
+            - target: aliasByNode(stats.gauges.zuul.executor.*.openstack.org.running_builds, 4)
           type: graph
-          leftYAxisLabel: "Runs / Hour"
+        - title: Load Average
+          span: 4
+          targets:
+            - target: aliasByNode(stats.gauges.zuul.executor.*.openstack.org.load_average, 4)
+          type: graph
