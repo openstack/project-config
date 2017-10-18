@@ -5,9 +5,6 @@
 
 _functions_bindir=$(realpath $(dirname $0))
 
-# clone_repo requires configure_git_review from ../common.sh
-source $_functions_bindir/../common.sh
-
 # Make sure custom grep options don't get in the way
 unset GREP_OPTIONS
 
@@ -101,6 +98,14 @@ function update_upper_constraints {
 }
 
 
+function configure_git_review_for_release {
+    echo "Configuring git review for the release user"
+    git config user.name "OpenStack Release Bot"
+    git config user.email "openstack-infra@lists.openstack.org"
+    git config gitreview.username "release"
+}
+
+
 function clone_repo {
     typeset repo="$1"
     typeset branch="$2"
@@ -122,11 +127,9 @@ function clone_repo {
     # recover from failure, in which case we don't want to set the git
     # review user. So try to make git review work by itself first, and
     # only if that fails update the git configuration.
-    #
-    # NOTE(dhellmann): configure_git_review is in ../common.sh, which
-    # must be sourced by the script calling this function.
+    echo "Testing git review configuration"
     if ! (cd $repo && git review -s); then
-        (cd $repo && configure_git_review && git review -s)
+        (cd $repo && configure_git_review_for_release && git review -s)
     fi
 
     return 0
