@@ -20,6 +20,7 @@ if [ -z "$OWN_PROJECT" ] ; then
     echo "usage: $0 project"
     exit 1
 fi
+
 if [ "$OWN_PROJECT" == "requirements" ] ; then
     INITIAL_COMMIT_MSG="Updated from global requirements"
     TOPIC="openstack/requirements"
@@ -87,9 +88,16 @@ fi
 USERNAME="proposal-bot"
 ALL_SUCCESS=0
 
+# In periodic pipelines, ZUUL_REFNAME is not set, use BRANCH_NAME
+# instead here. The JJB scripts in v2 set always ZUUL_REFNAME, in v3
+# we pass in the branch as additional parameter.
 if [ -z "$ZUUL_REFNAME" ] ; then
-    echo "No ZUUL_REFNAME set, exiting."
-    exit 1
+    BRANCH_NAME=$2
+    if [ -z "$BRANCH_NAME" ] ; then
+        echo "usage: $0 project branch"
+        exit 1
+    fi
+    ZUUL_REFNAME=$BRANCH_NAME
 fi
 
 setup_git

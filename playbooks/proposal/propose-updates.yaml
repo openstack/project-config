@@ -2,7 +2,7 @@
   tasks:
 
     - name: Run propose_update.sh script
-      command: "{{ ansible_user_dir }}/scripts/propose_update.sh {{ update_target }}"
+      command: "{{ ansible_user_dir }}/scripts/propose_update.sh {{ update_target }} {{zuul.branch}}"
       args:
         chdir: "src/{{ zuul.project.canonical_name }}"
       environment: '{{ zuul | zuul_legacy_vars }}'
