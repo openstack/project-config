@@ -22,7 +22,6 @@ set -ex
 
 TOOLSDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $TOOLSDIR/functions
-source $TOOLSDIR/../common.sh
 
 function usage {
     echo "Usage: release.sh [-a] repository series version diff_start SHA include_pypi first-full-release extra-metadata"
