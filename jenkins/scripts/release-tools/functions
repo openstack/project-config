@@ -105,8 +105,14 @@ function clone_repo {
 
     set -e
 
+    # Sometimes we aren't given a branch, and when we aren't we don't
+    # want to pass the wrong arguments to clone_repo.sh.
+    if [ ! -z "$branch" ]; then
+        branch_arg="--branch"
+    fi
+
     # Clone the repository using the given branch.
-    $_functions_bindir/clone_repo.sh --branch $branch $repo
+    $_functions_bindir/clone_repo.sh $branch_arg $branch $repo
 
     # Configure git-review so we can propose patches to the repo if
     # needed. Some of the release scripts are still run by hand to
