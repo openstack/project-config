@@ -27,7 +27,11 @@ init_branch $ZUUL_REFNAME
 # List of all modules to copy POT files from
 ALL_MODULES=""
 
-if ! $SCRIPTSDIR/query-zanata-project-version.py \
+# Setup venv - needed for all projects for subunit and also
+# for our own python tools.
+setup_venv
+
+if ! $VENV/bin/python $SCRIPTSDIR/query-zanata-project-version.py \
     -p $PROJECT -v $ZANATA_VERSION; then
     # Exit successfully so that lack of a version doesn't cause the jenkins
     # jobs to fail. This is necessary because not all branches of a project
@@ -39,9 +43,6 @@ if ! $SCRIPTSDIR/query-zanata-project-version.py \
 fi
 
 setup_git
-
-# Setup venv - needed for all projects for subunit
-setup_venv
 
 # Project setup and updating POT files.
 case "$PROJECT" in
