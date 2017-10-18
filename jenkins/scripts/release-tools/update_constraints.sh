@@ -21,7 +21,6 @@ set -x
 
 TOOLSDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $TOOLSDIR/functions
-source $TOOLSDIR/../common.sh
 
 function usage {
     echo "Usage: update_constraints.sh version"
