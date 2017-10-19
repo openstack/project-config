@@ -139,7 +139,7 @@ function setup_project {
 
     local exclude='.tox/**'
 
-    $VENV/bin/python $VENV/bin/python $SCRIPTSDIR/create-zanata-xml.py \
+    $VENV/bin/python $SCRIPTSDIR/create-zanata-xml.py \
         -p $project -v $version --srcdir . --txdir . \
         -r '**/*.pot' '{path}/{locale_with_underscore}/LC_MESSAGES/{filename}.po' \
         -e "$exclude" -f zanata.xml
