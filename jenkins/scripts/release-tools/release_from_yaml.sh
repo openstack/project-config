@@ -89,10 +89,13 @@ else
 fi
 RELEASE_META=$(git show --format=full --show-notes=review $parent | egrep -i '(Author|Commit:|Code-Review|Workflow|Change-Id)' | sed -e 's/^    //g' -e 's/^/meta:release:/g')
 
+RC=0
+
 $TOOLSDIR/list_deliverable_changes.py -r $RELEASES_REPO $DELIVERABLES \
 | while read deliverable series version diff_start repo hash pypi first_full; do
     echo "$deliverable $series $version $diff_start $repo $hash $pypi $first_full"
     $TOOLSDIR/release.sh $repo $series $version $diff_start $hash $pypi $first_full "$RELEASE_META"
+    RC=$(($RC + $?))
 done
 
-exit 0
+exit $RC

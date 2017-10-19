@@ -13,6 +13,10 @@
         # release_from_yaml.sh explicitly so it knows where to scan to
         # look for modified files.
         ~/scripts/release-tools/release_from_yaml.sh $RELEASES_DIR
+        RC1=$?
 
         # After we have tagged, create any new branches.
         ~/scripts/release-tools/branch_from_yaml.sh $RELEASES_DIR
+        RC2=$?
+
+        exit $(($RC1 + $RC2))

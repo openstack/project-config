@@ -41,10 +41,13 @@ RELEASES_REPO="$1"
 shift
 DELIVERABLES="$@"
 
+RC=0
+
 $TOOLSDIR/list_deliverable_branches.py -r $RELEASES_REPO $DELIVERABLES \
 | while read repo branch ref; do
     echo "$repo $branch $ref"
     $TOOLSDIR/make_branch.sh $repo $branch $ref
+    RC=$(($RC + $?))
 done
 
-exit 0
+exit $RC
