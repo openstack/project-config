@@ -123,8 +123,10 @@ function clone_repo {
     $_functions_bindir/clone_repo.sh $branch_arg $branch $repo
 
     # TODO(fungi) this can be cleaned up once we're sure it's not the issue
-    ( ls -al ~/.ssh/ ; cat ~/.gitconfig; cd $repo ; cat .git/config ;
-        ssh  -vvv -p 29418 release@review.openstack.org gerrit version )
+    ls -al ~/.ssh/ || echo "could not ls ~/.ssh"
+    cat ~/.gitconfig || echo "could not cat ~/.gitconfig file"
+    (cd $repo && cat .git/config) || echo "could not cat .git/config in $(pwd)"
+    (cd $repo && ssh  -vvv -p 29418 release@review.openstack.org gerrit version ) || echo "could not connect to gerrit via ssh"
 
     # Configure git-review so we can propose patches to the repo if
     # needed. Some of the release scripts are still run by hand to
