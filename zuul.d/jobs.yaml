@@ -128,6 +128,19 @@
     post-run:
       - playbooks/python-tarball/post
       - playbooks/publish/pypi
+    required-projects:
+      # NOTE(dhellmann): Several projects that depend on neutron or
+      # horizon for their testing use a special install script run via
+      # tox that tries to use zuul-cloner to make the dependency
+      # available before installing it from source. Until we change
+      # the PTI for building sdists and wheels from Python projects so
+      # that it does not use tox, we need to ensure those repos are
+      # present for zuul-cloner to copy. Both openstack/neutron and
+      # openstack/horizon can be removed from the list of
+      # required-projects for this job when the job is modified to not
+      # use tox.
+      - name: openstack/neutron
+      - name: openstack/horizon
     secrets:
       - secret: pypi_secret
         name: pypi_info
