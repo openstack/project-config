@@ -122,14 +122,22 @@ function clone_repo {
     # Clone the repository using the given branch.
     $_functions_bindir/clone_repo.sh $branch_arg $branch $repo
 
+    # TODO(fungi) this can be cleaned up once we're sure it's not the issue
+    ( ls -al ~/.ssh/ ; cat ~/.gitconfig; cd $repo ; cat .git/config ;
+        ssh  -vvv -p 29418 release@review.openstack.org gerrit version )
+
     # Configure git-review so we can propose patches to the repo if
     # needed. Some of the release scripts are still run by hand to
     # recover from failure, in which case we don't want to set the git
     # review user. So try to make git review work by itself first, and
     # only if that fails update the git configuration.
-    echo "Testing git review configuration"
-    if ! (cd $repo && git review -s); then
-        (cd $repo && configure_git_review_for_release && git review -s)
+    echo "Testing git review configuration. It is safe to ignore a failure here."
+    if ! (cd $repo && git review -s -v); then
+        (cd $repo &&
+                configure_git_review_for_release &&
+                echo "Retrying git review. Do not ignore failures" &&
+                git review -s -v
+        )
     fi
 
     return 0
