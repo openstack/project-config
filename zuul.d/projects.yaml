@@ -5212,7 +5212,15 @@
     name: openstack/contributor-guide
     templates:
       - system-required
-      - publish-openstack-sphinx-docs
+    check:
+      jobs:
+        - build-openstack-sphinx-docs
+    gate:
+      jobs:
+        - build-openstack-sphinx-docs
+    post:
+      jobs:
+        - publish-openstack-contributor-guide
 
 - project:
     name: openstack/cookbook-openstack-application-catalog
