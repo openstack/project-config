@@ -14703,9 +14703,20 @@
     templates:
       - system-required
       - openstack-python-jobs-neutron
-      - openstack-python35-jobs-neutron
       - check-requirements
       - publish-to-pypi
+    check:
+      jobs:
+        - openstack-tox-py35:
+            branches: ^(?!stable/newton).*$
+            required-projects:
+              - openstack/neutron
+    gate:
+      jobs:
+        - openstack-tox-py35:
+            branches: ^(?!stable/newton).*$
+            required-projects:
+              - openstack/neutron
 
 - project:
     name: openstack/networking-avaya
