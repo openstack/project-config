@@ -4156,7 +4156,7 @@
       - publish-to-pypi
 
 - project:
-    name: openstack/collectd-ceilometer-plugin
+    name: openstack/collectd-openstack-plugins
     templates:
       - system-required
       - openstack-python-jobs
@@ -11658,6 +11658,20 @@
         - publish-openstack-python-branch-tarball
 
 - project:
+    name: openstack/openstacksdk
+    templates:
+      - system-required
+      - openstack-python-jobs
+      - openstack-python35-jobs
+      - check-requirements
+      - publish-openstack-sphinx-docs
+      - release-notes-jobs
+      - publish-to-pypi
+    post:
+      jobs:
+        - openstack-tox-cover
+
+- project:
     name: openstack/ops-tags-team
     templates:
       - system-required
@@ -13647,20 +13661,6 @@
       - translation-jobs
       - release-notes-jobs
       - lib-forward-testing
-      - publish-to-pypi
-    post:
-      jobs:
-        - openstack-tox-cover
-
-- project:
-    name: openstack/python-openstacksdk
-    templates:
-      - system-required
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - check-requirements
-      - publish-openstack-sphinx-docs
-      - release-notes-jobs
       - publish-to-pypi
     post:
       jobs:
