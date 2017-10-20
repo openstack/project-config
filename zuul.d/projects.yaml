@@ -16736,10 +16736,12 @@
       - periodic-pike
       - openstack-python-jobs-neutron
       - openstack-python35-jobs-neutron
-      - publish-to-pypi
+      - publish-to-pypi-neutron
     check:
       jobs:
-        - build-openstack-releasenotes
+        - build-openstack-releasenotes:
+            required-projects:
+              - openstack/neutron
         - legacy-neutron-vpnaas-dsvm-functional-sswan:
             irrelevant-files:
               - ^.*\.rst$
@@ -16752,7 +16754,9 @@
               - openstack/neutron
     gate:
       jobs:
-        - build-openstack-releasenotes
+        - build-openstack-releasenotes:
+            required-projects:
+              - openstack/neutron
         - legacy-neutron-vpnaas-dsvm-functional-sswan:
             irrelevant-files:
               - ^.*\.rst$
