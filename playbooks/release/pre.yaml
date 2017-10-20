@@ -1,14 +1,18 @@
 - hosts: all
   pre_tasks:
-
     # This is tempoarary until v2 is gone and we can rework things
     - name: Add origin remote to enable notes fetching
       command: "git remote add origin https://{{ item.canonical_name }}"
       args:
         chdir: "{{ ansible_user_dir }}/src/{{ item.canonical_name }}"
       with_items: "{{ zuul.projects }}"
-
   roles:
+    - role: configure-git
+      git_config:
+        user.name: OpenStack Release Bot
+        user.email: infra-root@openstack.org
+        user.signingkey: infra-root@openstack.org
+        gitreview.username: release
     - role: bindep
       bindep_profile: test
       bindep_dir: "src/{{ zuul.project.canonical_name }}"

@@ -98,15 +98,6 @@ function update_upper_constraints {
 }
 
 
-function configure_git_review_for_release {
-    echo "Configuring git review for the release user"
-    git config --global user.name "OpenStack Release Bot"
-    git config --global user.email "infra-root@openstack.org"
-    git config --global user.signingkey "infra-root@openstack.org"
-    git config --global gitreview.username "release"
-}
-
-
 function clone_repo {
     typeset repo="$1"
     typeset branch="$2"
@@ -129,19 +120,9 @@ function clone_repo {
     (cd $repo && cat .git/config) || echo "could not cat .git/config in $(pwd)"
     (cd $repo && ssh  -vvv -p 29418 release@review.openstack.org gerrit version ) || echo "could not connect to gerrit via ssh"
 
-    # Configure git-review so we can propose patches to the repo if
-    # needed. Some of the release scripts are still run by hand to
-    # recover from failure, in which case we don't want to set the git
-    # review user. So try to make git review work by itself first, and
-    # only if that fails update the git configuration.
-    echo "Testing git review configuration. It is safe to ignore a failure here."
-    if ! (cd $repo && git review -s -v); then
-        (cd $repo &&
-                configure_git_review_for_release &&
-                echo "Retrying git review. Do not ignore failures" &&
-                git review -s -v
-        )
-    fi
+    # We assume the job uses a git_config task to configure git
+    # properly.
+    (cd $repo && git review -s -v)
 
     return 0
 }
