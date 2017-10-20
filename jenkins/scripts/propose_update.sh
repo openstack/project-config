@@ -122,9 +122,9 @@ for PROJECT in $PROJECTS; do
     fi
     pushd $PROJECT_DIR
 
-    # check whether the project has this branch or a suitable fallback
+    # check whether the project has this branch
     BRANCH=""
-    if git branch -a | grep -q "^  remotes/origin/$ZUUL_REFNAME$" ; then
+    if git branch | grep -q "^  $ZUUL_REFNAME$" ; then
         BRANCH=$ZUUL_REFNAME
     fi
 
