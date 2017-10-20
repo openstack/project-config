@@ -99,6 +99,8 @@ if [ -z "$ZUUL_REFNAME" ] ; then
     fi
     ZUUL_REFNAME=$BRANCH_NAME
 fi
+# Zuul v3 adds refs/heads, remove that to get the branch
+ZUUL_REFNAME=${ZUUL_REFNAME#refs/heads/}
 
 setup_git
 
