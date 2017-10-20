@@ -169,6 +169,6 @@ else
     # directory already existed we might have checked out something else
     # before so just do it again).
     (cd $local_dir &&
-            git checkout $BRANCH &&
+            (git checkout $BRANCH || git checkout master) &&
             git pull --ff-only)
 fi
