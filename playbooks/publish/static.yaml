@@ -12,8 +12,7 @@
 - hosts: "{{ fileserver.fqdn }}"
   gather_facts: False
   tasks:
-
     - name: Upload docs to static site
-      copy:
+      synchronize:
         src: "{{ zuul.executor.work_root }}/artifacts/"
         dest: "{{ fileserver.path }}/{{ zuul.project.short_name }}/"
