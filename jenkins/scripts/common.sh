@@ -10,17 +10,10 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-# Setup git so that git review works
-function configure_git_review {
-    git config user.name "OpenStack Proposal Bot"
-    git config user.email "openstack-infra@lists.openstack.org"
-    git config gitreview.username "proposal-bot"
-}
-
-# Setup git so that git review works, including creating a branch in
-# case the repo started with a detached head.
+# Setup git so that git review works:
+# * git review set up is done as part of the playbooks
+# * Set up a branch in case the repo started with a detached head.
 function setup_git {
-    configure_git_review
 
     # Initial state of repository is detached, create a branch to work
     # from. Otherwise git review will complain.
