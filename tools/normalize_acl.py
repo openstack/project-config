@@ -76,8 +76,7 @@ valid_keys = {'abandon',
               'requireChangeId',
               'requireContributorAgreement',
               'state',
-              'value'
-}
+              'value'}
 
 if '0' in transformations or not transformations:
     dry_run = True

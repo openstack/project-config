@@ -138,10 +138,10 @@ def _is_requirement_in_global_reqs(req, global_reqs):
     # example: oslo.db[xyz]<1.2.3
     for req2 in global_reqs:
         if (req.package == req2.package and
-                    req.location == req2.location and
-                    req.specifiers == req2.specifiers and
-                    req.markers == req2.markers and
-                    req.comment == req2.comment):
+                req.location == req2.location and
+                req.specifiers == req2.specifiers and
+                req.markers == req2.markers and
+                req.comment == req2.comment):
             return True
     return False
 
@@ -220,7 +220,7 @@ def main():
             for name, reqs in freqs.items():
                 counts = {}
                 if (name in branch_reqs.reqs and
-                            reqs == branch_reqs.reqs[name]):
+                        reqs == branch_reqs.reqs[name]):
                     # Unchanged [or a change that preserves a current value]
                     continue
                 if name in blacklist:
@@ -256,7 +256,6 @@ def main():
                                   name,
                                   ('[%s]' % extra) if extra else '',
                                   len(global_reqs[name])))
-
 
     # report the results
     if failed or head_reqs.failed or branch_reqs.failed:

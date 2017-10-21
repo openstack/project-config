@@ -76,7 +76,7 @@ def find_duplicates():
             # example: quota_show = openstackclient.common.quota:ShowQuota
             # and plugin entrypoints will not, for
             # example: orchestration = heatclient.osc.plugin
-            if not ':' in str(ep):
+            if ':' not in str(ep):
                 continue
 
             # cliff does a mapping between spaces and underscores
@@ -109,7 +109,7 @@ def find_duplicates():
         print(overlap_cmds)
         # FIXME(stevemar): when we determine why commands are overlapping
         # we can uncomment the line below.
-        #return True
+        # return True
 
     # Safely return False here with the full set of commands
     print("Final set of commands...")

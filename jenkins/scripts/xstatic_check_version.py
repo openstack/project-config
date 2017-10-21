@@ -35,4 +35,4 @@ if xs is None:
 git_version = get_version()
 if git_version != xs.PACKAGE_VERSION:
     sys.exit('git tag version ({}) does not match package version ({})'.
-        format(git_version, xs.PACKAGE_VERSION))
+             format(git_version, xs.PACKAGE_VERSION))

@@ -19,6 +19,7 @@ import yaml
 from collections import OrderedDict
 import projectconfig_yamllib as pcy
 
+
 def main():
     yaml.add_constructor(yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG,
                          pcy.construct_yaml_map)

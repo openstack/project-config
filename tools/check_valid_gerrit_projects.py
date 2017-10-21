@@ -178,7 +178,7 @@ def main():
                       (entry, name))
         # Check for valid options
         for option in p.get('options', []):
-            if not option in VALID_OPTIONS:
+            if option not in VALID_OPTIONS:
                 found_errors += 1
                 print("ERROR: Unknown option '%s' in project %s" %
                       (option, name))

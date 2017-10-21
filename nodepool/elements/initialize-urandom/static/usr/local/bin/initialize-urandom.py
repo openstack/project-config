@@ -153,9 +153,12 @@ short-lived as the nonblocking generator is being replaced[4] in
 current kernel versions and should not suffer from the same problem.
 
 [1] http://lxr.free-electrons.com/source/drivers/char/random.c?v=3.17#L1385
-[2] https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=c6e9d6f38894798696f23c8084ca7edbf16ee895
-[3] https://www.freedesktop.org/software/systemd/man/systemd-random-seed.service.html
-[4] https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/?id=e192be9d9a30555aae2ca1dc3aad37cba484cd4a
+[2] https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/\
+?id=c6e9d6f38894798696f23c8084ca7edbf16ee895
+[3] https://www.freedesktop.org/software/systemd/man/systemd-random-seed.\
+service.html
+[4] https://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/commit/\
+?id=e192be9d9a30555aae2ca1dc3aad37cba484cd4a
 """
 
 
@@ -180,7 +183,7 @@ class Pump(object):
 
     # Flags for getrandom:
     GRND_NONBLOCK = 0x0001  # Do not block
-    GRND_RANDOM   = 0x0002  # Use /dev/random instead of urandom
+    GRND_RANDOM = 0x0002  # Use /dev/random instead of urandom
 
     def __init__(self):
         # Use ctypes to invoke getrandom since it is not available in
