@@ -31,7 +31,7 @@ def main():
 
     for project in data:
         if ('upstream' in project and
-            'track-upstream' not in project.get('options', [])):
+                'track-upstream' not in project.get('options', [])):
             del project['upstream']
 
     with open('gerrit/projects.yaml', 'w') as out:
