@@ -1,0 +1,1 @@
+Configure git with specific options

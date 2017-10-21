@@ -4,6 +4,11 @@
       command: pip install git-review
       become: yes
   roles:
+    - role: configure-git
+      git_config:
+        user.name: OpenStack Proposal Bot
+        user.email: openstack-infra@lists.openstack.org
+        gitreview.username: proposal-bot
     - legacy-copy-project-config-scripts
     - add-sshkey
     - role: bindep

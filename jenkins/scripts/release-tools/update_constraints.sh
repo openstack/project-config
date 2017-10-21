@@ -99,7 +99,7 @@ if [[ -z "$dist_name" ]]; then
     echo "Could not determine the name of the constraint to update"
 else
     setup_temp_space update-constraints-$SHORTNAME
-    # NOTE(dhellmann): zuul-cloner defaults to checking out master if
+    # NOTE(dhellmann): clone_repo defaults to checking out master if
     # the named branch doesn't exist.
     clone_repo openstack/requirements stable/$SERIES
     cd openstack/requirements
