@@ -34,13 +34,13 @@ def access_gerrit_check():
     gerrit_config = yaml.load(open('gerritbot/channels.yaml'))
 
     print("Basic check of gerritbot/channels.yaml")
-    REQUIRED_ENTRIES=("branches", "events", "projects")
-    VALID_EVENTS=("change-merged", "patchset-created", "x-vrif-minus-2")
+    REQUIRED_ENTRIES = ("branches", "events", "projects")
+    VALID_EVENTS = ("change-merged", "patchset-created", "x-vrif-minus-2")
     for channel in gerrit_config:
         for entry in REQUIRED_ENTRIES:
             if entry not in gerrit_config[channel]:
-                print("ERROR: Required entry '%s' not specified for channel '%s'"
-                      % (entry, channel))
+                print("ERROR: Required entry '%s' not specified for channel "
+                      "'%s'" % (entry, channel))
                 errors = True
             elif not gerrit_config[channel][entry]:
                 print("ERROR: Entry '%s' has no content for channel '%s'"

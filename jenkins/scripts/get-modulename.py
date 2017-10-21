@@ -16,7 +16,6 @@ from __future__ import print_function
 
 import argparse
 import ConfigParser as configparser
-import os
 import sys
 
 

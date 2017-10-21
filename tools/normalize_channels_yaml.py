@@ -16,11 +16,11 @@
 # limitations under the License.
 
 import locale
-import os
 import sys
 import yaml
 from collections import OrderedDict
 import projectconfig_yamllib as pcy
+
 
 def main():
     locale.setlocale(locale.LC_COLLATE, 'C')
@@ -32,7 +32,7 @@ def main():
                          Dumper=pcy.IndentedDumper)
 
     chandata = yaml.load(open('gerritbot/channels.yaml'))
-    for k,v in chandata.items():
+    for k, v in chandata.items():
         v['projects'] = sorted(v['projects'])
 
     sys.stdout.write('# This file is sorted alphabetically by channel name.\n')
@@ -42,7 +42,8 @@ def main():
             sys.stdout.write('\n')
         first = False
         sys.stdout.write(yaml.dump({k: chandata[k]}, default_flow_style=False,
-                            Dumper=pcy.IndentedDumper, width=80, indent=2))
+                                   Dumper=pcy.IndentedDumper, width=80,
+                                   indent=2))
 
 if __name__ == '__main__':
     main()

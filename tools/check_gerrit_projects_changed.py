@@ -17,7 +17,6 @@
 import argparse
 import contextlib
 import git
-import os
 import shutil
 import sys
 import tempfile
@@ -39,12 +38,13 @@ def check_repo(repo_path):
     print("Checking git repo '%s':" % repo_path)
     try:
         with tempdir() as repopath:
-            repo = git.Repo.clone_from(repo_path, repopath)
+            git.Repo.clone_from(repo_path, repopath)
         print("Can be cloned")
     except Exception as e:
         print("Failure: %s" % e)
         found_errors += 1
     return found_errors
+
 
 def main():
     found_errors = 0
@@ -67,7 +67,7 @@ def main():
     projects_old = yaml.load(open(args.oldfile, 'r'))
     projects_new = yaml.load(open(args.newfile, 'r'))
 
-    ps_old={}
+    ps_old = {}
     for p in projects_old:
         name = p.get('project')
         ps_old[name] = p
@@ -81,7 +81,7 @@ def main():
         else:
             upstream_old = ""
         if (upstream != upstream_old and
-            'track-upstream' in p.get('options', [])):
+                'track-upstream' in p.get('options', [])):
             print("%s has changed" % name)
             found_errors += check_repo(upstream)
 

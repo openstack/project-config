@@ -18,13 +18,11 @@
 import os
 import json
 import re
-import logging
 
 from ansible.module_utils.six.moves import urllib
 from ansible.module_utils.basic import AnsibleModule, get_exception
 
 import gear
-import yaml
 
 
 class FileMatcher(object):
@@ -65,7 +63,7 @@ class LogMatcher(object):
         for (dirpath, dirnames, filenames) in os.walk(path):
             for filename in filenames:
                 fn = os.path.join(dirpath, filename)
-                partial_name = fn[len(path)+1:]
+                partial_name = fn[len(path) + 1:]
                 for matcher in self.matchers:
                     if matcher.matches(partial_name):
                         results.append(File(partial_name, matcher.tags))
@@ -140,7 +138,7 @@ def main():
         argument_spec=dict(
             gearman_server=dict(type='str'),
             gearman_port=dict(type='int', default=4730),
-            #TODO: add ssl support
+            # TODO: add ssl support
             host_vars=dict(type='dict'),
             path=dict(type='path'),
             config=dict(type='dict'),

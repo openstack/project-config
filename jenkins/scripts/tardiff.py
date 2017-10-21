@@ -96,7 +96,7 @@ class OpenStackTarDiff:
             if file not in self.sdist_files:
                 self.missing_files.append(file)
             else:
-                #self.debug("file %s matches" % file)
+                # self.debug("file %s matches" % file)
                 pass
         if len(self.missing_files) > 0:
             self.error("files missing in package: %s" % self.missing_files)
@@ -167,7 +167,7 @@ class OpenStackTarDiff:
             (status, out) = commands.getstatusoutput(tar_cmd)
             if status != 0:
                 self.error("command '%s' failed" % tar_cmd)
-            #self.debug(out)
+            # self.debug(out)
             self.sdist_files = out.split('\n')
         except Exception as err:
             self.error("command '%s' failed: %s" % (tar_cmd, err))
