@@ -533,6 +533,26 @@
         name: afs
 
 - job:
+    name: publish-placement-api-ref
+    description: |
+      Publish placement-api-ref document to
+      https://developer.openstack.org/api-ref/placement.
+    pre-run: playbooks/python-docs/pre
+    run: playbooks/project-config/run-tox
+    post-run: playbooks/publish/placement-api-ref
+    roles:
+      - zuul: openstack-infra/zuul-jobs
+      - zuul: openstack-infra/openstack-zuul-jobs
+    # We only publish the master branch, so no need to run
+    # for changes on other branches.
+    branches: master
+    vars:
+      tox_envlist: placement-api-ref
+    secrets:
+      - secret: afsdeveloper_secret
+        name: afs
+
+- job:
     name: publish-deploy-guide
     description: |
       Publish deploy-guide document to
