@@ -869,18 +869,18 @@
         - openstack-tox-py27
 
 - project:
+    name: openstack-infra/logstash-filters
+    templates:
+      - system-required
+      - infra-logstash-filter-jobs
+
+- project:
     name: openstack-infra/log_processor
     templates:
       - system-required
       - openstack-python-jobs-no-constraints
       - publish-openstack-sphinx-docs-infra
       - publish-to-pypi
-
-- project:
-    name: openstack-infra/logstash-filters
-    templates:
-      - system-required
-      - infra-logstash-filter-jobs
 
 - project:
     name: openstack-infra/lpmqtt
@@ -1282,7 +1282,7 @@
       - puppet-beaker-jobs-xenial
 
 - project:
-    name: openstack-infra/puppet-elastic_recheck
+    name: openstack-infra/puppet-elasticsearch
     templates:
       - system-required
       - infra-puppet-check-jobs
@@ -1291,7 +1291,7 @@
       - puppet-beaker-jobs-xenial
 
 - project:
-    name: openstack-infra/puppet-elasticsearch
+    name: openstack-infra/puppet-elastic_recheck
     templates:
       - system-required
       - infra-puppet-check-jobs
@@ -1497,15 +1497,6 @@
       - puppet-beaker-jobs-xenial
 
 - project:
-    name: openstack-infra/puppet-log_processor
-    templates:
-      - system-required
-      - infra-puppet-check-jobs
-      - infra-puppet-apply-jobs
-      - puppet-beaker-jobs
-      - puppet-beaker-jobs-xenial
-
-- project:
     name: openstack-infra/puppet-logrotate
     templates:
       - system-required
@@ -1515,6 +1506,15 @@
 
 - project:
     name: openstack-infra/puppet-logstash
+    templates:
+      - system-required
+      - infra-puppet-check-jobs
+      - infra-puppet-apply-jobs
+      - puppet-beaker-jobs
+      - puppet-beaker-jobs-xenial
+
+- project:
+    name: openstack-infra/puppet-log_processor
     templates:
       - system-required
       - infra-puppet-check-jobs
@@ -1607,30 +1607,6 @@
       - puppet-beaker-jobs-xenial
 
 - project:
-    name: openstack-infra/puppet-openstack_health
-    templates:
-      - system-required
-      - infra-puppet-check-jobs
-      - infra-puppet-apply-jobs
-      - puppet-beaker-jobs
-      - puppet-beaker-jobs-xenial
-
-- project:
-    name: openstack-infra/puppet-openstack_infra_spec_helper
-    templates:
-      - system-required
-    check:
-      jobs:
-        - legacy-puppet-openstack-infra-spec-helper-unit-centos-7
-        - legacy-puppet-openstack-infra-spec-helper-unit
-        - legacy-puppet-openstack-infra-spec-helper-unit-ubuntu-trusty
-    gate:
-      jobs:
-        - legacy-puppet-openstack-infra-spec-helper-unit-centos-7
-        - legacy-puppet-openstack-infra-spec-helper-unit
-        - legacy-puppet-openstack-infra-spec-helper-unit-ubuntu-trusty
-
-- project:
     name: openstack-infra/puppet-openstackci
     templates:
       - system-required
@@ -1656,6 +1632,30 @@
       - infra-puppet-apply-jobs
       - puppet-beaker-jobs
       - puppet-beaker-jobs-xenial
+
+- project:
+    name: openstack-infra/puppet-openstack_health
+    templates:
+      - system-required
+      - infra-puppet-check-jobs
+      - infra-puppet-apply-jobs
+      - puppet-beaker-jobs
+      - puppet-beaker-jobs-xenial
+
+- project:
+    name: openstack-infra/puppet-openstack_infra_spec_helper
+    templates:
+      - system-required
+    check:
+      jobs:
+        - legacy-puppet-openstack-infra-spec-helper-unit-centos-7
+        - legacy-puppet-openstack-infra-spec-helper-unit
+        - legacy-puppet-openstack-infra-spec-helper-unit-ubuntu-trusty
+    gate:
+      jobs:
+        - legacy-puppet-openstack-infra-spec-helper-unit-centos-7
+        - legacy-puppet-openstack-infra-spec-helper-unit
+        - legacy-puppet-openstack-infra-spec-helper-unit-ubuntu-trusty
 
 - project:
     name: openstack-infra/puppet-os_client_config
@@ -5188,13 +5188,6 @@
         - openstack-tox-py27
 
 - project:
-    name: openstack/conveyor
-    templates:
-      - system-required
-      - openstack-python-jobs
-      - check-requirements
-
-- project:
     name: openstack/contributor-guide
     templates:
       - system-required
@@ -5207,6 +5200,13 @@
     post:
       jobs:
         - publish-openstack-contributor-guide
+
+- project:
+    name: openstack/conveyor
+    templates:
+      - system-required
+      - openstack-python-jobs
+      - check-requirements
 
 - project:
     name: openstack/cookbook-openstack-application-catalog
@@ -23252,7 +23252,7 @@
         - openstack-tox-py27
 
 - project:
-    name: openstack/puppet-openstack_extras
+    name: openstack/puppet-openstacklib
     templates:
       - system-required
       - puppet-openstack-check-jobs
@@ -23267,14 +23267,7 @@
         - publish-openstack-python-branch-tarball
 
 - project:
-    name: openstack/puppet-openstack_spec_helper
-    templates:
-      - system-required
-      - puppet-openstack-libraries-jobs
-      - release-notes-jobs
-
-- project:
-    name: openstack/puppet-openstacklib
+    name: openstack/puppet-openstack_extras
     templates:
       - system-required
       - puppet-openstack-check-jobs
@@ -23288,6 +23281,13 @@
     post:
       jobs:
         - publish-openstack-python-branch-tarball
+
+- project:
+    name: openstack/puppet-openstack_spec_helper
+    templates:
+      - system-required
+      - puppet-openstack-libraries-jobs
+      - release-notes-jobs
 
 - project:
     name: openstack/puppet-oslo
@@ -25487,6 +25487,12 @@
       - publish-to-pypi
 
 - project:
+    name: openstack/python-tempestconf
+    templates:
+      - system-required
+      - openstack-python-jobs
+
+- project:
     name: openstack/python-tricircleclient
     templates:
       - system-required
@@ -25499,12 +25505,6 @@
       jobs:
         - openstack-tox-cover:
             voting: false
-
-- project:
-    name: openstack/python-tempestconf
-    templates:
-      - system-required
-      - openstack-python-jobs
 
 - project:
     name: openstack/python-tripleoclient
