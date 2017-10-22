@@ -553,6 +553,28 @@
         name: afs
 
 - job:
+    name: publish-install-guide
+    description: |
+      Publish install-guide document to
+      https://docs.openstack.org/project-install-guide/
+    pre-run: playbooks/python-docs/pre
+    run: playbooks/project-config/run-tox
+    post-run: playbooks/publish/install-guide
+    roles:
+      - zuul: openstack-infra/zuul-jobs
+      - zuul: openstack-infra/openstack-zuul-jobs
+    # This job runs only pre-pike, with pike the documents have been
+    # integrated into normal builds.
+    branches:
+      - stable/newton
+      - stable/ocata
+    vars:
+      tox_envlist: install-guide
+    secrets:
+      - secret: afsdocs_secret
+        name: afs
+
+- job:
     name: publish-deploy-guide
     description: |
       Publish deploy-guide document to
