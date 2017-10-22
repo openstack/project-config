@@ -74,12 +74,12 @@ function check_already_approved {
         change_info=$(ssh -p 29418 proposal-bot@review.openstack.org gerrit query --current-patch-set --format=JSON $CHANGE_ID)
         # Check for:
         # 1) Workflow approval (+1)
-        # 2) no -1/-2 by Jenkins
+        # 2) no -1/-2 by Zuul
         # 3) no -2 by reviewers
         # 4) no Workflow -1 (WIP)
         #
         if echo $change_info|grep -q '{"type":"Workflow","description":"Workflow","value":"1"' \
-            && ! echo $change_info|grep -q '{"type":"Verified","description":"Verified","value":"-[12]","grantedOn":[0-9]*,"by":{"name":"Jenkins","username":"jenkins"}}'  \
+            && ! echo $change_info|grep -q '{"type":"Verified","description":"Verified","value":"-[12]","grantedOn":[0-9]*,"by":{"name":"Zuul","username":"zuul"}}'  \
             && ! echo $change_info|grep -q '{"type":"Code-Review","description":"Code-Review","value":"-2"' \
             && ! echo $change_info|grep -q '{"type":"Workflow","description":"Workflow","value":"-1"' ; then
             echo "Job already approved, exiting"
