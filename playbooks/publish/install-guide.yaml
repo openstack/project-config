@@ -1,0 +1,17 @@
+- hosts: all
+  roles:
+    - prepare-docs-for-afs
+      doc_build_dir: "{{ zuul_work_dir }}/install-guide/build"
+    - fetch-tox-output
+    - role: write-root-marker
+      root_marker_dir: "src/{{ zuul.project.canonical_name }}/install-guide/build/html"
+    - role: fetch-sphinx-output
+      sphinx_output_src: "{{ zuul.project.src_dir }}/install-guide/build/html/"
+      zuul_executor_dest: "{{ zuul.executor.work_root }}/artifacts"
+
+- hosts: localhost
+  roles:
+    - create-afs-token
+    - role: upload-afs
+      afs_target: "{{ afs.path }}/project-install-guide/{{ zuul.project.short_name }}"
+    - destroy-afs-token
