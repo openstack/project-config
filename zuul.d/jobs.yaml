@@ -190,8 +190,11 @@
 - job:
     name: publish-openstack-sphinx-docs
     description: |
-      Publish the results of the buld-openstack-sphinx-docs job to
-      /afs/.openstack.org/docs/{{ zuul.project.short_name }}
+      Publish the results of the build-openstack-sphinx-docs job to
+      /afs/.openstack.org/docs/{{ zuul.project.short_name }}.
+
+      Publishes depending on branch to latest/ (for master), or the
+      basename of the branch like pike (for stable/pike).
     final: true
     pre-run: playbooks/python-docs/pre.yaml
     run: playbooks/python-docs/run.yaml
@@ -205,6 +208,32 @@
       - zuul: openstack-infra/openstack-zuul-jobs
     vars:
       tox_constraints_file: '{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt'
+    secrets:
+      - secret: afsdocs_secret
+        name: afs
+
+- job:
+    name: publish-openstack-sphinx-docs-direct
+    description: |
+      Publish the results of the build-openstack-sphinx-docs job to
+      /afs/.openstack.org/docs/{{ zuul.project.short_name }}
+
+      Publishing is done from master branch directly without using /latest.
+    final: true
+    pre-run: playbooks/python-docs/pre.yaml
+    run: playbooks/python-docs/run.yaml
+    post-run:
+      - playbooks/python-docs/post-direct.yaml
+      - playbooks/publish/openstack-afs.yaml
+    required-projects:
+      - name: openstack/requirements
+    roles:
+      - zuul: openstack-infra/zuul-jobs
+      - zuul: openstack-infra/openstack-zuul-jobs
+    vars:
+      tox_constraints_file: "{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt"
+    branches:
+      - master
     secrets:
       - secret: afsdocs_secret
         name: afs
