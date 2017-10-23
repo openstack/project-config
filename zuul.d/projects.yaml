@@ -26985,15 +26985,6 @@
 
 - project:
     name: openstack/requirements
-    periodic:
-      jobs:
-        - build-wheel-mirror
-        - release-wheel-mirror:
-            dependencies:
-              - build-wheel-mirror
-        - propose-updates:
-            vars:
-              update_target: requirements-constraints
     templates:
       - system-required
       - openstack-pypy-jobs-nonvoting
@@ -27075,9 +27066,18 @@
     post:
       jobs:
         - propose-updates:
-            branches: master
             vars:
               update_target: requirements
+    periodic:
+      jobs:
+        - build-wheel-mirror
+        - release-wheel-mirror:
+            dependencies:
+              - build-wheel-mirror
+        - propose-updates:
+            branches: master
+            vars:
+              update_target: requirements-constraints
     experimental:
       jobs:
         - legacy-tempest-dsvm-neutron-pg-full:
