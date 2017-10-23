@@ -94,7 +94,7 @@ BUGS=$(git log $PREVIOUS..$VERSION | egrep -i "Closes(.| )Bug:" | egrep -o "[0-9
 if [[ -z "$BUGS" ]]; then
     echo "No bugs found $PREVIOUS .. $VERSION"
 else
-    $TOOLSDIR/launchpad_add_comment.py \
+    python2 -u $TOOLSDIR/launchpad_add_comment.py \
         --subject="Fix included in $REPO $VERSION" \
         --content="This issue was fixed in the $REPO $VERSION $RELEASETYPE." \
         $BUGS
