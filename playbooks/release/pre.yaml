@@ -5,7 +5,7 @@
       command: "git remote add origin https://{{ item.canonical_name }}"
       args:
         chdir: "{{ ansible_user_dir }}/src/{{ item.canonical_name }}"
-      with_items: "{{ zuul.projects }}"
+      with_items: "{{ zuul._projects.values() | list }}"
   roles:
     - role: configure-git
       git_config:

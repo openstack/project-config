@@ -1,7 +1,7 @@
 - name: Find locally cached git repos
   stat:
     path: "/opt/git/{{ item.name }}"
-  with_items: "{{ zuul.projects }}"
+  with_items: "{{ zuul._projects.values() | list }}"
   register: cached_repos
 
 - name: Clone cached repo to workspace
@@ -10,7 +10,7 @@
     creates: "{{ ansible_user_dir }}/{{ item.0.src_dir}}"
   when: item.1.stat.exists
   with_together:
-    - "{{ zuul.projects }}"
+    - "{{ zuul._projects.values() | list }}"
     - "{{ cached_repos.results }}"
 
 - name: Clone upstream repo to workspace
@@ -19,11 +19,11 @@
     creates: "{{ ansible_user_dir }}/{{ item.0.src_dir}}"
   when: not item.1.stat.exists
   with_together:
-    - "{{ zuul.projects }}"
+    - "{{ zuul._projects.values() | list }}"
     - "{{ cached_repos.results }}"
 
 - name: Remove origin from local git repos
   command: "git remote rm origin"
   args:
     chdir: "{{ ansible_user_dir }}/{{ item.src_dir}}"
-  with_items: "{{ zuul.projects }}"
+  with_items: "{{ zuul._projects.values() | list }}"
