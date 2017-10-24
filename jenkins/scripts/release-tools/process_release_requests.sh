@@ -68,8 +68,6 @@ RELEASES_REPO="$1"
 shift
 DELIVERABLES="$@"
 
-setup_temp_space
-
 # Configure git to pull the notes where gerrit stores review history
 # like who approved a patch.
 cd $RELEASES_REPO
