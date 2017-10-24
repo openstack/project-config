@@ -68,6 +68,8 @@ RELEASES_REPO="$1"
 shift
 DELIVERABLES="$@"
 
+setup_temp_space
+
 # Configure git to pull the notes where gerrit stores review history
 # like who approved a patch.
 cd $RELEASES_REPO
@@ -99,16 +101,16 @@ echo "Changed files in the latest commit"
 # what files have been touched.
 (cd $RELEASES_REPO && git diff --name-only --pretty=format: HEAD^)
 
+change_list_file=$MYTMPDIR/change_list.txt
 
 echo "Discovered deliverable updates"
-$TOOLSDIR/list_deliverable_changes.py -r $RELEASES_REPO $DELIVERABLES
+$TOOLSDIR/list_deliverable_changes.py -r $RELEASES_REPO $DELIVERABLES | tee $change_list_file
 
 echo "Starting tagging"
-$TOOLSDIR/list_deliverable_changes.py -r $RELEASES_REPO $DELIVERABLES \
-| while read deliverable series version diff_start repo hash pypi first_full; do
+while read deliverable series version diff_start repo hash pypi first_full; do
     echo "$deliverable $series $version $diff_start $repo $hash $pypi $first_full"
     $TOOLSDIR/release.sh $repo $series $version $diff_start $hash $pypi $first_full "$RELEASE_META"
     RC=$(($RC + $?))
-done
+done < $change_list_file
 
 exit $RC

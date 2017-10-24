@@ -41,13 +41,27 @@ RELEASES_REPO="$1"
 shift
 DELIVERABLES="$@"
 
+setup_temp_space
+
+echo "Current state of $RELEASES_REPO"
+(cd $RELEASES_REPO && git show)
+
+echo "Changed files in the latest commit"
+# This is the command list_deliverable_branches.py uses to figure out
+# what files have been touched.
+(cd $RELEASES_REPO && git diff --name-only --pretty=format: HEAD^)
+
+change_list_file=$MYTMPDIR/change_list.txt
+
+echo "Discovered deliverable updates"
+$TOOLSDIR/list_deliverable_branches.py -r $RELEASES_REPO $DELIVERABLES | tee $change_list_file
+
 RC=0
 
-$TOOLSDIR/list_deliverable_branches.py -r $RELEASES_REPO $DELIVERABLES \
-| while read repo branch ref; do
+while read repo branch ref; do
     echo "$repo $branch $ref"
     $TOOLSDIR/make_branch.sh $repo $branch $ref
     RC=$(($RC + $?))
-done
+done < $change_list_file
 
 exit $RC
