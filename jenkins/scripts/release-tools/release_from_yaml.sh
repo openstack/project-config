@@ -36,7 +36,7 @@ if [ $? != 0 ] ; then
     exit 1
 fi
 eval set -- "$OPTS"
-set -ex
+set -x
 
 BOT_RUNNING=true
 
