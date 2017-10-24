@@ -21,12 +21,12 @@ TOOLSDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $TOOLSDIR/functions
 
 function usage {
-    echo "Usage: release_from_yaml.sh [(-m|--manual)] releases_repository [deliverable_files]"
-    echo "       release_from_yaml.sh (-h|--help)"
+    echo "Usage: process_release_requests.sh [(-m|--manual)] releases_repository [deliverable_files]"
+    echo "       process_release_requests.sh (-h|--help)"
     echo
-    echo "Example: release_from_yaml.sh -m ~/repos/openstack/releases"
-    echo "Example: release_from_yaml.sh ~/repos/openstack/releases"
-    echo "Example: release_from_yaml.sh -m ~/repos/openstack/releases deliverables/mitaka/oslo.config.yaml"
+    echo "Example: process_release_requests.sh -m ~/repos/openstack/releases"
+    echo "Example: process_release_requests.sh ~/repos/openstack/releases"
+    echo "Example: process_release_requests.sh -m ~/repos/openstack/releases deliverables/mitaka/oslo.config.yaml"
 }
 
 OPTS=$(getopt -o hm --long manual,help -n $0 -- "$@")
@@ -91,26 +91,9 @@ else
 fi
 RELEASE_META=$(git show --format=full --show-notes=review $parent | egrep -i '(Author|Commit:|Code-Review|Workflow|Change-Id)' | sed -e 's/^    //g' -e 's/^/meta:release:/g')
 
-RC=0
+$TOOLSDIR/process_release_requests.py \
+    --meta-data "$RELEASE_META" \
+    -r $RELEASES_REPO \
+    $DELIVERABLES
 
-echo "Current state of $RELEASES_REPO"
-(cd $RELEASES_REPO && git show)
-
-echo "Changed files in the latest commit"
-# This is the command list_deliverable_changes.py uses to figure out
-# what files have been touched.
-(cd $RELEASES_REPO && git diff --name-only --pretty=format: HEAD^)
-
-change_list_file=$MYTMPDIR/change_list.txt
-
-echo "Discovered deliverable updates"
-$TOOLSDIR/list_deliverable_changes.py -r $RELEASES_REPO $DELIVERABLES | tee $change_list_file
-
-echo "Starting tagging"
-while read deliverable series version diff_start repo hash pypi first_full; do
-    echo "$deliverable $series $version $diff_start $repo $hash $pypi $first_full"
-    $TOOLSDIR/release.sh $repo $series $version $diff_start $hash $pypi $first_full "$RELEASE_META"
-    RC=$(($RC + $?))
-done < $change_list_file
-
-exit $RC
+exit $?
