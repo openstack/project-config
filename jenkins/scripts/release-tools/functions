@@ -114,12 +114,6 @@ function clone_repo {
     # Clone the repository using the given branch.
     $_functions_bindir/clone_repo.sh $branch_arg $branch $repo
 
-    # TODO(fungi) this can be cleaned up once we're sure it's not the issue
-    ls -al ~/.ssh/ || echo "could not ls ~/.ssh"
-    cat ~/.gitconfig || echo "could not cat ~/.gitconfig file"
-    (cd $repo && cat .git/config) || echo "could not cat .git/config in $(pwd)"
-    (cd $repo && ssh  -vvv -p 29418 release@review.openstack.org gerrit version ) || echo "could not connect to gerrit via ssh"
-
     # We assume the job uses a git_config task to configure git
     # properly.
     (cd $repo && git review -s -v)
