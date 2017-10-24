@@ -91,6 +91,19 @@ RELEASE_META=$(git show --format=full --show-notes=review $parent | egrep -i '(A
 
 RC=0
 
+echo "Current state of $RELEASES_REPO"
+(cd $RELEASES_REPO && git show)
+
+echo "Changed files in the latest commit"
+# This is the command list_deliverable_changes.py uses to figure out
+# what files have been touched.
+(cd $RELEASES_REPO && git diff --name-only --pretty=format: HEAD^)
+
+
+echo "Discovered deliverable updates"
+$TOOLSDIR/list_deliverable_changes.py -r $RELEASES_REPO $DELIVERABLES
+
+echo "Starting tagging"
 $TOOLSDIR/list_deliverable_changes.py -r $RELEASES_REPO $DELIVERABLES \
 | while read deliverable series version diff_start repo hash pypi first_full; do
     echo "$deliverable $series $version $diff_start $repo $hash $pypi $first_full"
