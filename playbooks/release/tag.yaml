@@ -1,24 +1,24 @@
 - hosts: all
   tasks:
     - name: Run release scripts
-      shell: |
-        set -x
+      shell:
+        cmd: |
+          set -x
 
-        RELEASES_DIR=$HOME/src/{{ zuul.project.canonical_name }}
-        # Tell the launchpad script run from release.sh where its
-        # credentials file is.
-        export LP_CREDS_FILE=~/.launchpadlib/creds
+          RELEASES_DIR=$HOME/src/{{ zuul.project.canonical_name }}
+          # Tell the launchpad script run from release.sh where its
+          # credentials file is.
+          export LP_CREDS_FILE=~/.launchpadlib/creds
 
-        # Pass the location of the openstack/releases repo to
-        # release_from_yaml.sh explicitly so it knows where to scan to
-        # look for modified files.
-        ~/scripts/release-tools/release_from_yaml.sh $RELEASES_DIR
-        RC1=$?
+          # Pass the location of the openstack/releases repo to
+          # release_from_yaml.sh explicitly so it knows where to scan to
+          # look for modified files.
+          ~/scripts/release-tools/release_from_yaml.sh $RELEASES_DIR
+          RC1=$?
 
-        # After we have tagged, create any new branches.
-        ~/scripts/release-tools/branch_from_yaml.sh $RELEASES_DIR
-        RC2=$?
+          # After we have tagged, create any new branches.
+          ~/scripts/release-tools/branch_from_yaml.sh $RELEASES_DIR
+          RC2=$?
 
-        exit $(($RC1 + $RC2))
-      args:
+          exit $(($RC1 + $RC2))
         executable: /bin/bash
