@@ -119,6 +119,27 @@
         name: fileserver
 
 - job:
+    name: release-openstack-python-without-pypi
+    parent: publish-openstack-artifacts
+    description: |
+      Sign and release python tarballs to tarballs.openstack.org, but
+      do not upload to PyPI.
+    pre-run: playbooks/python-tarball/pre
+    run: playbooks/python-tarball/run
+    post-run:
+      - playbooks/python-tarball/post
+    required-projects:
+      - name: openstack/requirements
+    secrets:
+      - gpg_key
+    vars:
+      # NOTE(dhellmann): Library projects using a custom installation
+      # script need to be told where the constraints file is. We can
+      # remove this when tox is no longer part of the CTI for building
+      # sdists.
+      tox_constraints_file: "{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt"
+
+- job:
     name: release-openstack-python
     parent: publish-openstack-artifacts
     description: |
