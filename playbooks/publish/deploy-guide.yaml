@@ -2,16 +2,22 @@
   roles:
     - prepare-docs-for-afs
       doc_build_dir: "{{ zuul_work_dir }}/deploy-guide/build"
+      when: zuul_success | bool
     - fetch-tox-output
     - role: write-root-marker
       root_marker_dir: "src/{{ zuul.project.canonical_name }}/deploy-guide/build/html"
+      when: zuul_success | bool
     - role: fetch-sphinx-output
       sphinx_output_src: "{{ zuul.project.src_dir }}/deploy-guide/build/html/"
       zuul_executor_dest: "{{ zuul.executor.work_root }}/artifacts"
+      when: zuul_success | bool
 
 - hosts: localhost
   roles:
     - create-afs-token
+      when: zuul_success | bool
     - role: upload-afs
       afs_target: "{{ afs.path }}/project-deploy-guide/{{ zuul.project.short_name }}"
+      when: zuul_success | bool
     - destroy-afs-token
+      when: zuul_success | bool

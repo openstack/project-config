@@ -4,10 +4,14 @@
     - role: fetch-sphinx-output
       sphinx_output_src: "{{ zuul.project.src_dir }}/publish-docs/"
       zuul_executor_dest: "{{ zuul.executor.work_root }}/artifacts"
+      when: zuul_success | bool
 
 - hosts: localhost
   roles:
     - create-afs-token
+      when: zuul_success | bool
     - role: upload-afs
       afs_target: "{{ afs.path }}"
+      when: zuul_success | bool
     - destroy-afs-token
+      when: zuul_success | bool

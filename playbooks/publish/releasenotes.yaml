@@ -4,13 +4,18 @@
       tox_envlist: releasenotes
     - role: write-root-marker
       root_marker_dir: "{{ zuul.project.src_dir }}/releasenotes/build/html/"
+      when: zuul_success | bool
     - role: fetch-sphinx-output
       sphinx_output_src: "{{ zuul.project.src_dir }}/releasenotes/build/html/"
       zuul_executor_dest: "{{ zuul.executor.work_root }}/artifacts"
+      when: zuul_success | bool
 
 - hosts: localhost
   roles:
     - create-afs-token
+      when: zuul_success | bool
     - role: upload-afs
       afs_target: "{{ afs.path }}/releasenotes/{{ zuul.project.short_name }}"
+      when: zuul_success | bool
     - destroy-afs-token
+      when: zuul_success | bool
