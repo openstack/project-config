@@ -1954,15 +1954,11 @@
     check:
       jobs:
         - openstack-tox-pep8
-        - legacy-requirements-integration-dsvm-ubuntu-trusty:
-            branches: ^stable/newton$
         - legacy-requirements-integration-dsvm
     gate:
       queue: integrated
       jobs:
         - openstack-tox-pep8
-        - legacy-requirements-integration-dsvm-ubuntu-trusty:
-            branches: ^stable/newton$
         - legacy-requirements-integration-dsvm
 
 - project:
@@ -3160,7 +3156,6 @@
               - ^test-requirements.txt$
         - legacy-tripleo-ci-centos-7-scenario002-multinode-oooq-puppet:
             voting: false
-            branches: ^(?!stable/newton).*$
             irrelevant-files:
               - ^.*\.md$
               - ^.*\.rst$
@@ -7957,8 +7952,6 @@
     check:
       jobs:
         - legacy-functional-neutron-dsvm-ec2api
-        - legacy-functional-nova-network-dsvm-ec2api:
-            branches: ^stable/newton$
         - legacy-tripleo-ci-centos-7-scenario002-multinode-oooq-puppet:
             voting: false
             irrelevant-files:
@@ -9535,9 +9528,6 @@
       jobs:
         - legacy-functional-neutron-dsvm-gceapi:
             voting: false
-        - legacy-functional-nova-network-dsvm-gceapi:
-            voting: false
-            branches: ^stable/newton$
 
 - project:
     name: openstack/gerrit-dash-creator
@@ -10224,8 +10214,6 @@
               - ^horizon/locale/.*$
               - ^openstack_dashboard/locale/.*$
               - ^releasenotes/.*$
-        - legacy-horizon-selenium-headless-legacy:
-            branches: ^(stable/newton).*$
         - legacy-horizon-selenium-headless:
             irrelevant-files:
               - ^.*\.rst$
@@ -10265,8 +10253,6 @@
               - ^horizon/locale/.*$
               - ^openstack_dashboard/locale/.*$
               - ^releasenotes/.*$
-        - legacy-horizon-selenium-headless-legacy:
-            branches: ^(stable/newton).*$
         - legacy-horizon-selenium-headless:
             irrelevant-files:
               - ^.*\.rst$
@@ -12024,7 +12010,6 @@
               - ^.*\.rst$
               - ^doc/.*$
         - legacy-grenade-dsvm-ironic-inspector:
-            branches: ^(?!stable/newton).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^.*\.rst$
@@ -12064,7 +12049,6 @@
               - ^.*\.rst$
               - ^doc/.*$
         - legacy-grenade-dsvm-ironic-inspector:
-            branches: ^(?!stable/newton).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^.*\.rst$
@@ -12513,7 +12497,6 @@
               - ^releasenotes/.*$
               - ^setup.cfg$
         - legacy-grenade-dsvm-neutron:
-            branches: ^(?!stable/newton).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^.*\.rst$
@@ -12546,7 +12529,6 @@
               - ^releasenotes/.*$
               - ^setup.cfg$
         - legacy-grenade-dsvm-neutron:
-            branches: ^(?!stable/newton).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^.*\.rst$
@@ -12591,7 +12573,7 @@
               - ^setup.cfg$
         - legacy-tempest-dsvm-neutron-full-opensuse-423:
             voting: false
-            branches: ^(?!stable/(newton|ocata)).*$
+            branches: ^(?!stable/ocata).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^.*\.rst$
@@ -13153,7 +13135,7 @@
             voting: false
         - legacy-manila-ui-dsvm:
             voting: false
-            branches: ^(?!driverfixes|stable/newton).*$
+            branches: ^(?!driverfixes).*$
     post:
       jobs:
         - openstack-tox-cover:
@@ -13167,26 +13149,24 @@
     check:
       jobs:
         - openstack-tox-pep8
-        - build-openstack-sphinx-docs: {}
+        - build-openstack-sphinx-docs
         - legacy-manila-buildimage-generic
         - legacy-manila-buildimage-docker:
             voting: false
         - manila-tempest-dsvm-container-scenario-custom-image:
             voting: false
-            branches: ^(?!stable/newton).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^setup.cfg$
         - manila-tempest-dsvm-generic-scenario-custom-image:
             voting: false
-            branches: ^(?!stable/newton).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^setup.cfg$
     gate:
       jobs:
         - openstack-tox-pep8
-        - build-openstack-sphinx-docs: {}
+        - build-openstack-sphinx-docs
         - legacy-manila-buildimage-generic
     post:
       jobs:
@@ -13253,7 +13233,7 @@
             voting: false
         - legacy-manila-ui-dsvm:
             voting: false
-            branches: ^(?!driverfixes|stable/newton).*$
+            branches: ^(?!driverfixes/).*$
     gate:
       jobs:
         - legacy-manila-ui-tox-py27dj19:
@@ -13533,7 +13513,7 @@
         - openstack-tox-cover
         - legacy-tempest-dsvm-monasca-pipeline-events:
             voting: false
-            branches: ^(?!stable/(newton|ocata|pike)).*$
+            branches: ^(?!stable/(ocata|pike)).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^setup.cfg$
@@ -13666,20 +13646,18 @@
     check:
       jobs:
         - legacy-tempest-dsvm-monasca-transform-python-functional:
-            branches: ^(?!stable/newton).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^setup.cfg$
         - legacy-tempest-dsvm-monasca-transform-python35-functional:
             voting: false
-            branches: ^(?!stable/(newton|ocata)).*$
+            branches: ^(?!stable/ocata).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^setup.cfg$
     gate:
       jobs:
         - legacy-tempest-dsvm-monasca-transform-python-functional:
-            branches: ^(?!stable/newton).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^setup.cfg$
@@ -13959,13 +13937,11 @@
     check:
       jobs:
         - openstack-tox-py35:
-            branches: ^(?!stable/newton).*$
             required-projects:
               - openstack/neutron
     gate:
       jobs:
         - openstack-tox-py35:
-            branches: ^(?!stable/newton).*$
             required-projects:
               - openstack/neutron
 
@@ -14010,7 +13986,6 @@
               - openstack/neutron
               - openstack/networking-bgpvpn
         - legacy-tempest-dsvm-networking-bagpipe:
-            branches: ^(?!stable/newton).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^setup.cfg$
@@ -14020,7 +13995,7 @@
               - ^setup.cfg$
         - legacy-networking-bagpipe-dsvm-fullstack:
             voting: false
-            branches: ^(?!stable/(newton|ocata)).*$
+            branches: ^(?!stable/ocata).*$
     gate:
       jobs:
         - build-openstack-sphinx-docs:
@@ -14043,7 +14018,6 @@
               - openstack/neutron
               - openstack/networking-bgpvpn
         - legacy-tempest-dsvm-networking-bagpipe:
-            branches: ^(?!stable/newton).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^setup.cfg$
@@ -14561,7 +14535,7 @@
               - openstack/networking-l2gw
               - openstack/tap-as-a-service
         - legacy-tempest-dsvm-networking-midonet-aio-v2:
-            branches: ^stable/(newton|ocata)
+            branches: ^stable/ocata$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^.*\.rst$
@@ -14589,7 +14563,6 @@
               - ^specs/.*$
         - legacy-tempest-dsvm-networking-midonet-aio-ml2-full:
             voting: false
-            branches: ^(?!stable/newton).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^.*\.rst$
@@ -14599,7 +14572,7 @@
               - ^specs/.*$
         - legacy-tempest-dsvm-networking-midonet-aio-ml2-full-legacy:
             voting: false
-            branches: ^(?!stable/(newton|ocata|pike)).*$
+            branches: ^(?!stable/(ocata|pike)).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^.*\.rst$
@@ -14608,7 +14581,6 @@
               - ^setup.cfg$
               - ^specs/.*$
         - legacy-tempest-dsvm-networking-midonet-aio-ml2-centos-7:
-            branches: ^(?!stable/newton).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^.*\.rst$
@@ -14618,7 +14590,6 @@
               - ^specs/.*$
         - legacy-tempest-dsvm-networking-midonet-aio-ml2-full-centos-7:
             voting: false
-            branches: ^(?!stable/newton).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^.*\.rst$
@@ -14637,7 +14608,6 @@
               - openstack/networking-l2gw
               - openstack/tap-as-a-service
         - legacy-grenade-dsvm-networking-midonet-ml2:
-            branches: ^(?!stable/newton).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^.*\.rst$
@@ -14655,7 +14625,6 @@
               - ^setup.cfg$
               - ^specs/.*$
         - legacy-networking-midonet-rally-dsvm-ml2:
-            branches: ^(?!stable/newton).*$
             irrelevant-files:
               - ^.*\.rst$
               - ^doc/.*$
@@ -14711,7 +14680,7 @@
               - openstack/networking-l2gw
               - openstack/tap-as-a-service
         - legacy-tempest-dsvm-networking-midonet-aio-v2:
-            branches: ^stable/(newton|ocata)
+            branches: ^stable/ocata$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^.*\.rst$
@@ -14728,7 +14697,6 @@
               - ^setup.cfg$
               - ^specs/.*$
         - legacy-tempest-dsvm-networking-midonet-aio-ml2-centos-7:
-            branches: ^(?!stable/newton).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^.*\.rst$
@@ -14737,7 +14705,6 @@
               - ^setup.cfg$
               - ^specs/.*$
         - legacy-grenade-dsvm-networking-midonet-ml2:
-            branches: ^(?!stable/newton).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^.*\.rst$
@@ -14755,7 +14722,6 @@
               - ^setup.cfg$
               - ^specs/.*$
         - legacy-networking-midonet-rally-dsvm-ml2:
-            branches: ^(?!stable/newton).*$
             irrelevant-files:
               - ^.*\.rst$
               - ^doc/.*$
@@ -14770,22 +14736,6 @@
               - ^specs/.*$
     periodic:
       jobs:
-        - legacy-periodic-tempest-dsvm-networking-midonet-aio-v2-newton:
-            irrelevant-files:
-              - ^(test-|)requirements.txt$
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^midonet/neutron/tests/unit/.*$
-              - ^setup.cfg$
-              - ^specs/.*$
-        - legacy-periodic-tempest-dsvm-networking-midonet-aio-ml2-newton:
-            irrelevant-files:
-              - ^(test-|)requirements.txt$
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^midonet/neutron/tests/unit/.*$
-              - ^setup.cfg$
-              - ^specs/.*$
         - legacy-periodic-tempest-dsvm-networking-midonet-aio-v2-full-ocata:
             irrelevant-files:
               - ^(test-|)requirements.txt$
@@ -15349,7 +15299,6 @@
               - ^tools/.*$
               - ^tox.ini$
         - legacy-grenade-dsvm-neutron-multinode:
-            branches: ^(?!stable/newton).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^.*\.rst$
@@ -15361,7 +15310,6 @@
               - ^tools/.*$
               - ^tox.ini$
         - legacy-grenade-dsvm-neutron-dvr-multinode:
-            branches: ^(?!(driverfixes|stable/newton)).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^.*\.rst$
@@ -15460,7 +15408,6 @@
               - ^tools/.*$
               - ^tox.ini$
         - legacy-grenade-dsvm-neutron:
-            branches: ^(?!stable/newton).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^.*\.rst$
@@ -15511,7 +15458,6 @@
               - ^tools/.*$
               - ^tox.ini$
         - legacy-grenade-dsvm-neutron-multinode:
-            branches: ^(?!stable/newton).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^.*\.rst$
@@ -15523,7 +15469,7 @@
               - ^tools/.*$
               - ^tox.ini$
         - legacy-grenade-dsvm-neutron-dvr-multinode:
-            branches: ^(?!(driverfixes|stable/newton)).*$
+            branches: ^(?!driverfixes).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^.*\.rst$
@@ -15547,7 +15493,6 @@
               - ^tools/.*$
               - ^tox.ini$
         - legacy-grenade-dsvm-neutron:
-            branches: ^(?!stable/newton).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^.*\.rst$
@@ -15565,7 +15510,7 @@
       jobs:
         - openstack-tox-py35:
             voting: false
-            branches: ^(?!stable/(newton|ocata)).*$
+            branches: ^(?!stable/ocata).*$
             irrelevant-files:
               - ^.*\.rst$
               - ^doc/.*$
@@ -15573,7 +15518,7 @@
               - ^releasenotes/.*$
         - openstack-tox-py35:
             voting: false
-            branches: ^(?!stable/(newton|ocata)).*$
+            branches: ^(?!stable/ocata).*$
             irrelevant-files:
               - ^.*\.rst$
               - ^doc/.*$
@@ -15581,7 +15526,6 @@
               - ^releasenotes/.*$
         - legacy-grenade-dsvm-neutron-linuxbridge-multinode:
             voting: false
-            branches: ^(?!(driverfixes|stable/(mitaka|newton))).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^.*\.rst$
@@ -15594,7 +15538,6 @@
               - ^tox.ini$
         - legacy-grenade-dsvm-neutron-forward:
             voting: false
-            branches: ^(?!stable/newton).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^.*\.rst$
@@ -15716,7 +15659,7 @@
               - ^tox.ini$
         - legacy-tempest-dsvm-neutron-full-opensuse-423:
             voting: false
-            branches: ^(?!stable/(newton|ocata)).*$
+            branches: ^(?!stable/ocata).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^.*\.rst$
@@ -15793,13 +15736,10 @@
         - legacy-neutron-dynamic-routing-dsvm-tempest-api
         - legacy-neutron-dynamic-routing-dsvm-tempest-scenario-ipv4:
             voting: false
-            branches: ^(?!stable/newton).*$
         - legacy-neutron-dynamic-routing-dsvm-tempest-scenario-ipv6:
             voting: false
-            branches: ^(?!stable/newton).*$
         - legacy-neutron-dynamic-routing-dsvm-tempest-scenario-basic:
             voting: false
-            branches: ^(?!stable/newton).*$
     gate:
       jobs:
         - legacy-neutron-dynamic-routing-dsvm-functional
@@ -15838,16 +15778,13 @@
         - legacy-neutron-fwaas-dsvm-functional
         - legacy-grenade-dsvm-neutron-fwaas-multinode:
             voting: false
-            branches: ^(?!(driverfixes|stable/(mitaka|newton))).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^setup.cfg$
         - legacy-neutron-fwaas-v1-dsvm-tempest-multinode:
             voting: false
-            branches: ^(?!stable/newton).*$
         - legacy-neutron-fwaas-v2-dsvm-tempest-multinode:
             voting: false
-            branches: ^(?!stable/newton).*$
         - legacy-cross-networking-midonet-python35:
             voting: false
     gate:
@@ -15859,7 +15796,6 @@
       jobs:
         - legacy-neutron-fwaas-dsvm-fullstack:
             voting: false
-            branches: ^(?!stable/newton).*$
     post:
       jobs:
         - openstack-tox-cover
@@ -16676,14 +16612,12 @@
     check:
       jobs:
         - legacy-tempest-dsvm-lxd-ovs:
-            branches: ^(?!stable/newton).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^setup.cfg$
     gate:
       jobs:
         - legacy-tempest-dsvm-lxd-ovs:
-            branches: ^(?!stable/newton).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^setup.cfg$
@@ -16691,7 +16625,6 @@
       jobs:
         - legacy-tempest-dsvm-lxd-linuxbridge:
             voting: false
-            branches: ^(?!stable/newton).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^setup.cfg$
@@ -16808,21 +16741,8 @@
       - release-openstack-server
     check:
       jobs:
-        - neutron-lbaasv2-dsvm-minimal:
-            branches: ^stable/newton
-        - neutron-lbaasv2-dsvm-loadbalancer:
-            branches: ^stable/newton
-        - neutron-lbaasv2-dsvm-listener:
-            branches: ^stable/newton
-        - neutron-lbaasv2-dsvm-pool:
-            branches: ^stable/newton
-        - neutron-lbaasv2-dsvm-member:
-            branches: ^stable/newton
-        - neutron-lbaasv2-dsvm-healthmonitor:
-            branches: ^stable/newton
         - openstack-tox-cover
-        - neutron-lbaasv2-dsvm-api:
-            branches: ^(?!stable/newton).*$
+        - neutron-lbaasv2-dsvm-api
         - neutron-lbaasv2-dsvm-py3x-api:
             branches: ^(?!stable)
         - neutron-lbaasv2-dsvm-scenario:
@@ -16830,10 +16750,9 @@
         - neutron-lbaasv2-dsvm-py3x-scenario:
             voting: false
             branches: ^(?!stable)
-        - octavia-tox-functional:
-            branches: ^(?!stable/newton).*$
+        - octavia-tox-functional
         - octavia-tox-functional-py35:
-            branches: ^(?!stable/(newton|ocata)).*$
+            branches: ^(?!stable/ocata).*$
         - octavia-v1-dsvm-scenario:
             irrelevant-files:
               - ^.*\.rst$
@@ -16854,7 +16773,6 @@
               - ^tempest/hacking/.*$
               - ^tempest/tests/.*$
         - octavia-v1-dsvm-scenario-multinode:
-            branches: ^(?!stable/newton).*$
             irrelevant-files:
               - ^.*\.rst$
               - ^api-ref/.*$
@@ -16885,7 +16803,7 @@
               - ^tempest/tests/.*$
         - octavia-v1-dsvm-scenario-lxd:
             voting: false
-            branches: ^(?!stable/(newton|ocata)).*$
+            branches: ^(?!stable/ocata).*$
             irrelevant-files:
               - ^.*\.rst$
               - ^api-ref/.*$
@@ -16897,21 +16815,10 @@
     gate:
       queue: neutron-lbaas
       jobs:
-        - neutron-lbaasv2-dsvm-loadbalancer:
-            branches: ^stable/newton
-        - neutron-lbaasv2-dsvm-listener:
-            branches: ^stable/newton
-        - neutron-lbaasv2-dsvm-pool:
-            branches: ^stable/newton
-        - neutron-lbaasv2-dsvm-member:
-            branches: ^stable/newton
-        - neutron-lbaasv2-dsvm-healthmonitor:
-            branches: ^stable/newton
         - openstack-tox-cover
-        - octavia-tox-functional:
-            branches: ^(?!stable/newton).*$
+        - octavia-tox-functional
         - octavia-tox-functional-py35:
-            branches: ^(?!stable/(newton|ocata)).*$
+            branches: ^(?!stable/ocata).*$
         - octavia-v1-dsvm-scenario:
             irrelevant-files:
               - ^.*\.rst$
@@ -16932,7 +16839,6 @@
               - ^tempest/hacking/.*$
               - ^tempest/tests/.*$
         - octavia-v1-dsvm-scenario-multinode:
-            branches: ^(?!stable/newton).*$
             irrelevant-files:
               - ^.*\.rst$
               - ^api-ref/.*$
@@ -16951,8 +16857,7 @@
               - ^releasenotes/.*$
               - ^tempest/hacking/.*$
               - ^tempest/tests/.*$
-        - neutron-lbaasv2-dsvm-api:
-            branches: ^(?!stable/newton).*$
+        - neutron-lbaasv2-dsvm-api
         - neutron-lbaasv2-dsvm-py3x-api:
             branches: ^(?!stable)
 
@@ -21628,7 +21533,6 @@
               - ^test-requirements.txt$
         - legacy-tripleo-ci-centos-7-scenario002-multinode-oooq-puppet:
             voting: false
-            branches: ^(?!stable/newton).*$
             irrelevant-files:
               - ^.*\.md$
               - ^.*\.rst$
@@ -21959,38 +21863,6 @@
       - puppet-openstack-integration-jobs-scenario004
       - tripleo-scenario-jobs-scenario004
       - puppet-release-jobs
-    check-tripleo:
-      jobs:
-        - legacy-tripleo-ci-centos-7-ovb-1ctlr_1comp_1ceph-featureset024-puppet-newton:
-            branches: ^(stable/newton).*$
-            irrelevant-files:
-              - ^.*\.md$
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^metadata.json$
-              - ^releasenotes/.*$
-              - ^test-requirements.txt$
-        - legacy-tripleo-ci-centos-7-ovb-1ctlr_1comp_1ceph-featureset024-puppet-ocata:
-            branches: ^(stable/ocata).*$
-            irrelevant-files:
-              - ^.*\.md$
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^metadata.json$
-              - ^releasenotes/.*$
-              - ^test-requirements.txt$
-        - legacy-tripleo-ci-centos-7-ovb-1ctlr_1comp_1ceph-featureset024-puppet-pike:
-            branches: ^(stable/pike).*$
-            irrelevant-files:
-              - ^.*\.md$
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^metadata.json$
-              - ^releasenotes/.*$
-              - ^test-requirements.txt$
     check:
       jobs:
         - legacy-tripleo-ci-centos-7-scenario001-multinode-oooq-puppet:
@@ -23866,15 +23738,15 @@
     check:
       jobs:
         - legacy-python-barbicanclient-dsvm:
-            branches: ^(?!stable/(newton|ocata)).*$
+            branches: ^(?!stable/ocata).*$
         - legacy-python-barbicanclient-devstack:
-            branches: ^(?:stable/(newton|ocata)).*$
+            branches: ^(?:stable/ocata).*$
     gate:
       jobs:
         - legacy-python-barbicanclient-dsvm:
-            branches: ^(?!stable/(newton|ocata)).*$
+            branches: ^(?!stable/ocata).*$
         - legacy-python-barbicanclient-devstack:
-            branches: ^(?:stable/(newton|ocata)).*$
+            branches: ^(?:stable/ocata).*$
 
 - project:
     name: openstack/python-bileanclient
@@ -24376,10 +24248,8 @@
         - legacy-manilaclient-dsvm-neutron-functional
         - rally-dsvm-manila-multibackend:
             voting: false
-            branches: ^(?!stable/newton|driverfixes/).*$
         - rally-dsvm-manila-multibackend-no-ss:
             voting: false
-            branches: ^(?!stable/newton|driverfixes/).*$
     gate:
       jobs:
         - legacy-manilaclient-dsvm-neutron-functional
@@ -24535,7 +24405,6 @@
       jobs:
         - legacy-grenade-dsvm-neutron-libs:
             voting: false
-            branches: ^(?!(driverfixes|stable/(mitaka|newton))).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^setup.cfg$
@@ -24554,15 +24423,11 @@
       - publish-to-pypi
     check:
       jobs:
-        - legacy-novaclient-dsvm-functional:
-            branches: ^stable/newton$
         - legacy-novaclient-dsvm-functional-identity-v3-only:
             voting: false
         - legacy-novaclient-dsvm-functional-neutron
     gate:
       jobs:
-        - legacy-novaclient-dsvm-functional:
-            branches: ^stable/newton$
         - legacy-novaclient-dsvm-functional-neutron
     post:
       jobs:
@@ -25864,7 +25729,6 @@
               - ^tox.ini$
         - rally-dsvm-manila-multibackend:
             voting: false
-            branches: ^(?!stable/newton|driverfixes/).*$
             irrelevant-files:
               - ^.*\.rst$
               - ^Dockerfile$
@@ -25875,7 +25739,6 @@
               - ^tox.ini$
         - rally-dsvm-manila-multibackend-no-ss:
             voting: false
-            branches: ^(?!stable/newton|driverfixes/).*$
             irrelevant-files:
               - ^.*\.rst$
               - ^Dockerfile$
@@ -26446,7 +26309,6 @@
             voting: false
         - legacy-grenade-dsvm-sahara:
             voting: false
-            branches: ^(?!(driverfixes|stable/(mitaka|newton))).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^setup.cfg$
@@ -26457,7 +26319,7 @@
               - ^releasenotes/.*$
         - legacy-sahara-dsvm-scenario-mod-wsgi:
             voting: false
-            branches: ^(?!stable/(newton|ocata)).*$
+            branches: ^(?!stable/ocata).*$
             irrelevant-files:
               - ^.*\.rst$
               - ^doc/.*$
@@ -26481,7 +26343,7 @@
       jobs:
         - legacy-sahara-dsvm-scenario-multinode-spark:
             voting: false
-            branches: ^(?!stable/(newton|ocata)).*$
+            branches: ^(?!stable/ocata).*$
             irrelevant-files:
               - ^.*\.rst$
               - ^doc/.*$
@@ -26492,7 +26354,7 @@
             voting: false
         - legacy-sahara-dsvm-scenario-py3:
             voting: false
-            branches: ^(?!stable/(newton|ocata)).*$
+            branches: ^(?!stable/ocata).*$
             irrelevant-files:
               - ^.*\.rst$
               - ^doc/.*$
@@ -26635,7 +26497,7 @@
       jobs:
         - legacy-sahara-dsvm-scenario-multinode-spark:
             voting: false
-            branches: ^(?!stable/(newton|ocata)).*$
+            branches: ^(?!stable/ocata).*$
             irrelevant-files:
               - ^.*\.rst$
               - ^doc/.*$
@@ -27343,13 +27205,10 @@
         - legacy-swift-tox-xfs-tmp-py27
         - legacy-swift-tox-xfs-tmp-py35
         - legacy-swift-tox-xfs-tmp-func
-        - legacy-swift-tox-xfs-tmp-func-fast-post:
-            branches: ^stable/newton$
-        - legacy-swift-tox-xfs-tmp-func-post-as-copy:
-            branches: ^(?!stable/newton).*$
+        - legacy-swift-tox-xfs-tmp-func-post-as-copy
         - legacy-swift-tox-xfs-tmp-func-encryption
         - legacy-swift-tox-xfs-tmp-func-ec:
-            branches: ^(?!stable/(newton|ocata)).*$
+            branches: ^(?!stable/ocata).*$
         - legacy-swift-dsvm-functional:
             irrelevant-files:
               - ^api-ref/.*$
@@ -27366,7 +27225,6 @@
               - ^releasenotes/.*$
               - ^test/unit/.*$
         - legacy-tempest-dsvm-neutron-full:
-            branches: ^(?!driverfixes/).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^api-ref/.*$
@@ -27376,7 +27234,6 @@
               - ^setup.cfg$
               - ^test/unit/.*$
         - legacy-grenade-dsvm-neutron:
-            branches: ^(?!stable/newton).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^api-ref/.*$
@@ -27391,13 +27248,10 @@
         - legacy-swift-tox-xfs-tmp-py27
         - legacy-swift-tox-xfs-tmp-py35
         - legacy-swift-tox-xfs-tmp-func
-        - legacy-swift-tox-xfs-tmp-func-fast-post:
-            branches: ^stable/newton$
-        - legacy-swift-tox-xfs-tmp-func-post-as-copy:
-            branches: ^(?!stable/newton).*$
+        - legacy-swift-tox-xfs-tmp-func-post-as-copy
         - legacy-swift-tox-xfs-tmp-func-encryption
         - legacy-swift-tox-xfs-tmp-func-ec:
-            branches: ^(?!stable/(newton|ocata)).*$
+            branches: ^(?!stable/ocata).*$
         - legacy-swift-dsvm-functional:
             irrelevant-files:
               - ^api-ref/.*$
@@ -27406,7 +27260,6 @@
               - ^releasenotes/.*$
               - ^test/unit/.*$
         - legacy-tempest-dsvm-neutron-full:
-            branches: ^(?!driverfixes/).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^api-ref/.*$
@@ -27416,7 +27269,6 @@
               - ^setup.cfg$
               - ^test/unit/.*$
         - legacy-grenade-dsvm-neutron:
-            branches: ^(?!stable/newton).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^api-ref/.*$
@@ -27432,14 +27284,11 @@
       jobs:
         - legacy-swift-tox-xfs-tmp-py27-centos-7
         - legacy-swift-tox-xfs-tmp-func-centos-7
-        - legacy-swift-tox-xfs-tmp-func-fast-post-centos-7:
-            branches: ^stable/newton$
-        - legacy-swift-tox-xfs-tmp-func-post-as-copy-centos-7:
-            branches: ^(?!stable/newton).*$
+        - legacy-swift-tox-xfs-tmp-func-post-as-copy-centos-7
         - legacy-swift-tox-xfs-tmp-func-encryption-centos-7
         - legacy-swift-tox-xfs-tmp-func-ec-centos-7:
             voting: false
-            branches: ^(?!stable/(newton|ocata)).*$
+            branches: ^(?!stable/ocata).*$
         - legacy-tempest-dsvm-neutron-pg-full:
             voting: false
             irrelevant-files:
@@ -27452,7 +27301,7 @@
               - ^test/unit/.*$
         - legacy-tempest-dsvm-neutron-full-opensuse-423:
             voting: false
-            branches: ^(?!stable/(newton|ocata)).*$
+            branches: ^(?!stable/ocata).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^api-ref/.*$
