@@ -8181,28 +8181,26 @@
       jobs:
         - openstack-tox-pep8:
             nodeset: ubuntu-trusty
-            branches: ^(driverfixes/mitaka).*$
+            branches: ^stable/8\.0$
         - openstack-tox-py27:
             nodeset: ubuntu-trusty
-            branches: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
-        - openstack-tox-pep8
+            branches: ^stable/8\.0$
+        - openstack-tox-pep8:
+            branches: ^(?!stable/8\.0).*$
         - openstack-tox-py27:
-            branches: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
-        - openstack-tox-py34:
-            branches: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
+            branches: ^(?!stable/8\.0).*$
     gate:
       jobs:
         - openstack-tox-pep8:
             nodeset: ubuntu-trusty
-            branches: ^(driverfixes/mitaka).*$
+            branches: ^stable/8\.0$
         - openstack-tox-py27:
             nodeset: ubuntu-trusty
-            branches: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
-        - openstack-tox-pep8
+            branches: ^stable/8\.0$
+        - openstack-tox-pep8:
+            branches: ^(?!stable/8\.0).*$
         - openstack-tox-py27:
-            branches: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
-        - openstack-tox-py34:
-            branches: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
+            branches: ^(?!stable/8\.0).*$
 
 - project:
     name: openstack/fuel-astute
@@ -8419,26 +8417,12 @@
       - system-required
     check:
       jobs:
-        - openstack-tox-pep8:
-            nodeset: ubuntu-trusty
-            branches: ^(driverfixes/mitaka).*$
-        - openstack-tox-py27:
-            nodeset: ubuntu-trusty
-            branches: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
         - openstack-tox-pep8
-        - openstack-tox-py27:
-            branches: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
+        - openstack-tox-py27
     gate:
       jobs:
-        - openstack-tox-pep8:
-            nodeset: ubuntu-trusty
-            branches: ^(driverfixes/mitaka).*$
-        - openstack-tox-py27:
-            nodeset: ubuntu-trusty
-            branches: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
         - openstack-tox-pep8
-        - openstack-tox-py27:
-            branches: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
+        - openstack-tox-py27
 
 - project:
     name: openstack/fuel-devops
@@ -8454,14 +8438,12 @@
             branches: ^(?!(release/(?:2\.9)|stable)).*$
         - openstack-tox-py35:
             branches: ^(?!(release/(?:2\.9)|stable)).*$
-            voting: false
     gate:
       jobs:
         - openstack-tox-cover:
             branches: ^(?!(release/(?:2\.9)|stable)).*$
         - openstack-tox-py35:
             branches: ^(?!(release/(?:2\.9)|stable)).*$
-            voting: false
 
 - project:
     name: openstack/fuel-docs
@@ -8469,10 +8451,10 @@
       - system-required
     check:
       jobs:
-        - build-openstack-sphinx-docs: {}
+        - build-openstack-sphinx-docs
     gate:
       jobs:
-        - build-openstack-sphinx-docs: {}
+        - build-openstack-sphinx-docs
 
 - project:
     name: openstack/fuel-library
@@ -8481,25 +8463,21 @@
     check:
       jobs:
         - legacy-fuel-library-puppet-lint
-        - legacy-fuel-library-puppet-unit-3.8-centos-7:
-            branches: ^(?!stable/(?:4\.0|4\.1|5\.0|5\.1|6\.0|6\.1|7\.0)).*$
+        - legacy-fuel-library-puppet-unit-3.8-centos-7
         - legacy-fuel-library-puppet-unit-4.5-centos-7:
-            branches: ^(?!stable/(?:4\.0|4\.1|5\.0|5\.1|6\.0|6\.1|7\.0|8\.0)).*$
-        - legacy-puppet-syntax-3-centos-7:
-            branches: ^(?!stable/(?:4\.0|4\.1|5\.0|5\.1|6\.0|6\.1|7\.0)).*$
+            branches: ^(?!stable/8\.0).*$
+        - legacy-puppet-syntax-3-centos-7
         - legacy-puppet-syntax-4-centos-7:
-            branches: ^(?!stable/(?:4\.0|4\.1|5\.0|5\.1|6\.0|6\.1|7\.0|8\.0)).*$
+            branches: ^(?!stable/8\.0).*$
     gate:
       jobs:
         - legacy-fuel-library-puppet-lint
-        - legacy-fuel-library-puppet-unit-3.8-centos-7:
-            branches: ^(?!stable/(?:4\.0|4\.1|5\.0|5\.1|6\.0|6\.1|7\.0)).*$
+        - legacy-fuel-library-puppet-unit-3.8-centos-7
         - legacy-fuel-library-puppet-unit-4.5-centos-7:
-            branches: ^(?!stable/(?:4\.0|4\.1|5\.0|5\.1|6\.0|6\.1|7\.0|8\.0)).*$
-        - legacy-puppet-syntax-3-centos-7:
-            branches: ^(?!stable/(?:4\.0|4\.1|5\.0|5\.1|6\.0|6\.1|7\.0)).*$
+            branches: ^(?!stable/8\.0).*$
+        - legacy-puppet-syntax-3-centos-7
         - legacy-puppet-syntax-4-centos-7:
-            branches: ^(?!stable/(?:4\.0|4\.1|5\.0|5\.1|6\.0|6\.1|7\.0|8\.0)).*$
+            branches: ^(?!stable/8\.0).*$
 
 - project:
     name: openstack/fuel-main
@@ -8515,22 +8493,26 @@
       jobs:
         - openstack-tox-pep8:
             nodeset: ubuntu-trusty
-            branches: ^(driverfixes/mitaka).*$
+            branches: ^stable/8\.0$
         - openstack-tox-py27:
             nodeset: ubuntu-trusty
-            branches: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
-        - openstack-tox-pep8
-        - openstack-tox-py27
+            branches: ^stable/8\.0$
+        - openstack-tox-pep8:
+            branches: ^(?!stable/8\.0).*$
+        - openstack-tox-py27:
+            branches: ^(?!stable/8\.0).*$
     gate:
       jobs:
         - openstack-tox-pep8:
             nodeset: ubuntu-trusty
-            branches: ^(driverfixes/mitaka).*$
+            branches: ^stable/8\.0$
         - openstack-tox-py27:
             nodeset: ubuntu-trusty
-            branches: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
-        - openstack-tox-pep8
-        - openstack-tox-py27
+            branches: ^stable/8\.0$
+        - openstack-tox-pep8:
+            branches: ^(?!stable/8\.0).*$
+        - openstack-tox-py27:
+            branches: ^(?!stable/8\.0).*$
 
 - project:
     name: openstack/fuel-mirror
@@ -8541,28 +8523,26 @@
       jobs:
         - openstack-tox-pep8:
             nodeset: ubuntu-trusty
-            branches: ^(driverfixes/mitaka).*$
+            branches: ^stable/8\.0$
         - openstack-tox-py27:
             nodeset: ubuntu-trusty
             branches: ^stable/8\.0.*$
-        - openstack-tox-pep8
+        - openstack-tox-pep8:
+            branches: ^(?!stable/8\.0).*$
         - openstack-tox-py27:
-            branches: ^stable/8\.0.*$
-        - openstack-tox-py34:
-            branches: ^stable/8\.0.*$
+            branches: ^(?!stable/8\.0).*$
     gate:
       jobs:
         - openstack-tox-pep8:
             nodeset: ubuntu-trusty
-            branches: ^(driverfixes/mitaka).*$
+            branches: ^stable/8\.0$
         - openstack-tox-py27:
             nodeset: ubuntu-trusty
             branches: ^stable/8\.0.*$
-        - openstack-tox-pep8
+        - openstack-tox-pep8:
+            branches: ^(?!stable/8\.0).*$
         - openstack-tox-py27:
-            branches: ^stable/8\.0.*$
-        - openstack-tox-py34:
-            branches: ^stable/8\.0.*$
+            branches: ^(?!stable/8\.0).*$
 
 - project:
     name: openstack/fuel-nailgun-agent
@@ -8581,22 +8561,10 @@
       - system-required
     check:
       jobs:
-        - openstack-tox-pep8:
-            nodeset: ubuntu-trusty
-            branches: ^(driverfixes/mitaka).*$
-        - openstack-tox-py27:
-            nodeset: ubuntu-trusty
-            branches: ^stable/8\.0.*$
         - openstack-tox-pep8
         - openstack-tox-py27
     gate:
       jobs:
-        - openstack-tox-pep8:
-            nodeset: ubuntu-trusty
-            branches: ^(driverfixes/mitaka).*$
-        - openstack-tox-py27:
-            nodeset: ubuntu-trusty
-            branches: ^stable/8\.0.*$
         - openstack-tox-pep8
         - openstack-tox-py27
 
@@ -8606,22 +8574,10 @@
       - system-required
     check:
       jobs:
-        - openstack-tox-pep8:
-            nodeset: ubuntu-trusty
-            branches: ^(driverfixes/mitaka).*$
-        - openstack-tox-py27:
-            nodeset: ubuntu-trusty
-            branches: ^stable/8\.0.*$
         - openstack-tox-pep8
         - openstack-tox-py27
     gate:
       jobs:
-        - openstack-tox-pep8:
-            nodeset: ubuntu-trusty
-            branches: ^(driverfixes/mitaka).*$
-        - openstack-tox-py27:
-            nodeset: ubuntu-trusty
-            branches: ^stable/8\.0.*$
         - openstack-tox-pep8
         - openstack-tox-py27
 
@@ -8631,22 +8587,10 @@
       - system-required
     check:
       jobs:
-        - openstack-tox-pep8:
-            nodeset: ubuntu-trusty
-            branches: ^(driverfixes/mitaka).*$
-        - openstack-tox-py27:
-            nodeset: ubuntu-trusty
-            branches: ^stable/8\.0.*$
         - openstack-tox-pep8
         - openstack-tox-py27
     gate:
       jobs:
-        - openstack-tox-pep8:
-            nodeset: ubuntu-trusty
-            branches: ^(driverfixes/mitaka).*$
-        - openstack-tox-py27:
-            nodeset: ubuntu-trusty
-            branches: ^stable/8\.0.*$
         - openstack-tox-pep8
         - openstack-tox-py27
 
@@ -8657,12 +8601,10 @@
       - docs-on-readthedocs
     check:
       jobs:
-        - build-openstack-sphinx-docs: {}
-        - build-openstack-sphinx-docs: {}
+        - build-openstack-sphinx-docs
     gate:
       jobs:
-        - build-openstack-sphinx-docs: {}
-        - build-openstack-sphinx-docs: {}
+        - build-openstack-sphinx-docs
 
 - project:
     name: openstack/fuel-octane
@@ -8672,41 +8614,45 @@
       jobs:
         - openstack-tox-pep8:
             nodeset: ubuntu-trusty
-            branches: ^(driverfixes/mitaka).*$
+            branches: ^stable/8\.0.*$
         - openstack-tox-py27:
             nodeset: ubuntu-trusty
             branches: ^stable/8\.0.*$
-        - openstack-tox-pep8
-        - openstack-tox-py27
+        - openstack-tox-pep8:
+            branches: ^(?!stable/8\.0).*$
+        - openstack-tox-py27:
+            branches: ^(?!stable/8\.0).*$
         - openstack-tox-cover:
             nodeset: ubuntu-trusty
             voting: false
-            branches: ^stable/[87]\.0.*$
+            branches: ^stable/8\.0$
         - openstack-tox-cover:
             voting: false
-            branches: ^(?!stable/(?:[456]\.[01]|[78]\.0)).*$
+            branches: ^(?!stable/8\.0).*$
         - legacy-fuel-octane-puppet-lint:
-            branches: ^(?!stable/(6.[01]|[78].0)).*$
+            branches: ^(?!stable/8\.0).*$
         - legacy-puppet-syntax-3-centos-7:
-            branches: ^(?!stable/(6.[01]|[78].0)).*$
+            branches: ^(?!stable/8\.0).*$
         - legacy-puppet-syntax-4-centos-7:
-            branches: ^(?!stable/(6.[01]|[78].0)).*$
+            branches: ^(?!stable/8\.0).*$
     gate:
       jobs:
         - openstack-tox-pep8:
             nodeset: ubuntu-trusty
-            branches: ^(driverfixes/mitaka).*$
+            branches: ^stable/8\.0.*$
         - openstack-tox-py27:
             nodeset: ubuntu-trusty
             branches: ^stable/8\.0.*$
-        - openstack-tox-pep8
-        - openstack-tox-py27
+        - openstack-tox-pep8:
+            branches: ^(?!stable/8\.0).*$
+        - openstack-tox-py27:
+            branches: ^(?!stable/8\.0).*$
         - legacy-fuel-octane-puppet-lint:
-            branches: ^(?!stable/(6.[01]|[78].0)).*$
+            branches: ^(?!stable/8\.0).*$
         - legacy-puppet-syntax-3-centos-7:
-            branches: ^(?!stable/(6.[01]|[78].0)).*$
+            branches: ^(?!stable/8\.0).*$
         - legacy-puppet-syntax-4-centos-7:
-            branches: ^(?!stable/(6.[01]|[78].0)).*$
+            branches: ^(?!stable/8\.0).*$
 
 - project:
     name: openstack/fuel-ostf
@@ -8716,18 +8662,20 @@
       jobs:
         - openstack-tox-pep8:
             nodeset: ubuntu-trusty
-            branches: ^(driverfixes/mitaka).*$
-        - openstack-tox-pep8
+            branches: ^stable/8\.0.*$
+        - openstack-tox-pep8:
+            branches: ^(?!stable/8\.0).*$
         - openstack-tox-py27:
-            branches: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
+            branches: ^(?!stable/8\.0).*$
     gate:
       jobs:
         - openstack-tox-pep8:
             nodeset: ubuntu-trusty
-            branches: ^(driverfixes/mitaka).*$
-        - openstack-tox-pep8
+            branches: ^stable/8\.0.*$
+        - openstack-tox-pep8:
+            branches: ^(?!stable/8\.0).*$
         - openstack-tox-py27:
-            branches: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
+            branches: ^(?!stable/8\.0).*$
 
 - project:
     name: openstack/fuel-plugin-6wind-virtual-accelerator
@@ -9318,26 +9266,12 @@
       - publish-to-pypi
     check:
       jobs:
-        - openstack-tox-pep8:
-            nodeset: ubuntu-trusty
-            branches: ^(driverfixes/mitaka).*$
-        - openstack-tox-py27:
-            nodeset: ubuntu-trusty
-            branches: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
         - openstack-tox-pep8
-        - openstack-tox-py27:
-            branches: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
+        - openstack-tox-py27
     gate:
       jobs:
-        - openstack-tox-pep8:
-            nodeset: ubuntu-trusty
-            branches: ^(driverfixes/mitaka).*$
-        - openstack-tox-py27:
-            nodeset: ubuntu-trusty
-            branches: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
         - openstack-tox-pep8
-        - openstack-tox-py27:
-            branches: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
+        - openstack-tox-py27
 
 - project:
     name: openstack/fuel-qa
@@ -9347,30 +9281,30 @@
       jobs:
         - openstack-tox-py27:
             nodeset: ubuntu-trusty
-            branches: ^(?!stable(-mu)?/(?:4\.0|4\.1|5\.0|5\.1|6\.0|6\.1|7\.0|8\.0)).*$
+            branches: ^(stable(-mu)?/(?:6\.1|7\.0|8\.0)).*$
         - openstack-tox-pep8:
             nodeset: ubuntu-trusty
-            branches: ^(?!stable(-mu)?/(?:4\.0|4\.1|5\.0|5\.1|6\.0|6\.1|7\.0|8\.0)).*$
+            branches: ^(stable(-mu)?/(?:6\.1|7\.0|8\.0)).*$
         - openstack-tox-py27:
-            branches: ^(?!stable(-mu)?/(?:4\.0|4\.1|5\.0|5\.1|6\.0|6\.1|7\.0|8\.0)).*$
+            branches: ^(?!stable(-mu)?/(?:6\.1|7\.0|8\.0)).*$
         - openstack-tox-pep8:
-            branches: ^(?!stable(-mu)?/(?:4\.0|4\.1|5\.0|5\.1|6\.0|6\.1|7\.0|8\.0)).*$
+            branches: ^(?!stable(-mu)?/(?:6\.1|7\.0|8\.0)).*$
         - openstack-tox-pylint:
-            branches: ^(?!stable(-mu)?/(?:4\.0|4\.1|5\.0|5\.1|6\.0|6\.1|7\.0|8\.0)).*$
+            branches: ^(?!stable(-mu)?/(?:6\.1|7\.0|8\.0)).*$
     gate:
       jobs:
         - openstack-tox-py27:
             nodeset: ubuntu-trusty
-            branches: ^(?!stable(-mu)?/(?:4\.0|4\.1|5\.0|5\.1|6\.0|6\.1|7\.0|8\.0)).*$
+            branches: ^(stable(-mu)?/(?:6\.1|7\.0|8\.0)).*$
         - openstack-tox-pep8:
             nodeset: ubuntu-trusty
-            branches: ^(?!stable(-mu)?/(?:4\.0|4\.1|5\.0|5\.1|6\.0|6\.1|7\.0|8\.0)).*$
+            branches: ^(stable(-mu)?/(?:6\.1|7\.0|8\.0)).*$
         - openstack-tox-py27:
-            branches: ^(?!stable(-mu)?/(?:4\.0|4\.1|5\.0|5\.1|6\.0|6\.1|7\.0|8\.0)).*$
+            branches: ^(?!stable(-mu)?/(?:6\.1|7\.0|8\.0)).*$
         - openstack-tox-pep8:
-            branches: ^(?!stable(-mu)?/(?:4\.0|4\.1|5\.0|5\.1|6\.0|6\.1|7\.0|8\.0)).*$
+            branches: ^(?!stable(-mu)?/(?:6\.1|7\.0|8\.0)).*$
         - openstack-tox-pylint:
-            branches: ^(?!stable(-mu)?/(?:4\.0|4\.1|5\.0|5\.1|6\.0|6\.1|7\.0|8\.0)).*$
+            branches: ^(?!stable(-mu)?/(?:6\.1|7\.0|8\.0)).*$
 
 - project:
     name: openstack/fuel-specs
@@ -9390,26 +9324,12 @@
       - system-required
     check:
       jobs:
-        - openstack-tox-pep8:
-            nodeset: ubuntu-trusty
-            branches: ^stable(-mu)?/(8\.0|7\.0|6\.1).*$
-        - openstack-tox-py27:
-            nodeset: ubuntu-trusty
-            branches: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
         - openstack-tox-pep8
-        - openstack-tox-py27:
-            branches: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
+        - openstack-tox-py27
     gate:
       jobs:
-        - openstack-tox-pep8:
-            nodeset: ubuntu-trusty
-            branches: ^stable(-mu)?/(8\.0|7\.0|6\.1).*$
-        - openstack-tox-py27:
-            nodeset: ubuntu-trusty
-            branches: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
         - openstack-tox-pep8
-        - openstack-tox-py27:
-            branches: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0)).*$
+        - openstack-tox-py27
 
 - project:
     name: openstack/fuel-ui
@@ -9436,30 +9356,29 @@
       jobs:
         - openstack-tox-pep8:
             nodeset: ubuntu-trusty
-            branches: ^stable(-mu)?/(8\.0|7\.0|6\.1).*$
+            branches: ^stable/8\.0$
         - openstack-tox-py27:
             nodeset: ubuntu-trusty
-            branches: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0|8\.0)).*$
+            branches: ^stable/8\.0$
         - build-openstack-sphinx-docs:
-            branches: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0|8\.0)).*$
+            branches: ^(?!stable/8\.0).*$
             voting: false
-        - openstack-tox-pep8
+        - openstack-tox-pep8:
+            branches: ^(?!stable/8\.0).*$
         - openstack-tox-py27:
-            branches: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0|8\.0)).*$
+            branches: ^(?!stable/8\.0).*$
     gate:
       jobs:
         - openstack-tox-pep8:
             nodeset: ubuntu-trusty
-            branches: ^stable(-mu)?/(8\.0|7\.0|6\.1).*$
+            branches: ^stable/8\.0$
         - openstack-tox-py27:
             nodeset: ubuntu-trusty
-            branches: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0|8\.0)).*$
-        - build-openstack-sphinx-docs:
-            branches: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0|8\.0)).*$
-            voting: false
-        - openstack-tox-pep8
+            branches: ^stable/8\.0$
+        - openstack-tox-pep8:
+            branches: ^(?!stable/8\.0).*$
         - openstack-tox-py27:
-            branches: ^(?!stable/(?:5\.0|5\.1|6\.0|6\.1|7\.0|8\.0)).*$
+            branches: ^(?!stable/8\.0).*$
     post:
       jobs:
         - publish-openstack-python-branch-tarball
@@ -23948,26 +23867,12 @@
       - publish-to-pypi
     check:
       jobs:
-        - openstack-tox-pep8:
-            nodeset: ubuntu-trusty
-            branches: ^stable(-mu)?/(8\.0|7\.0|6\.1).*$
-        - openstack-tox-py27:
-            nodeset: ubuntu-trusty
-            branches: ^(?!stable/(?:6\.1|7\.0|8\.0)).*$
         - openstack-tox-pep8
-        - openstack-tox-py27:
-            branches: ^(?!stable/(?:6\.1|7\.0|8\.0)).*$
+        - openstack-tox-py27
     gate:
       jobs:
-        - openstack-tox-pep8:
-            nodeset: ubuntu-trusty
-            branches: ^stable(-mu)?/(8\.0|7\.0|6\.1).*$
-        - openstack-tox-py27:
-            nodeset: ubuntu-trusty
-            branches: ^(?!stable/(?:6\.1|7\.0|8\.0)).*$
         - openstack-tox-pep8
-        - openstack-tox-py27:
-            branches: ^(?!stable/(?:6\.1|7\.0|8\.0)).*$
+        - openstack-tox-py27
 
 - project:
     name: openstack/python-ganttclient
