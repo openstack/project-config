@@ -1,6 +1,6 @@
 - hosts: all
   roles:
-    - prepare-docs-for-afs
+    - role: prepare-docs-for-afs
       doc_build_dir: "{{ zuul_work_dir }}/install-guide/build"
       when: zuul_success | bool
     - fetch-tox-output
@@ -14,10 +14,10 @@
 
 - hosts: localhost
   roles:
-    - create-afs-token
+    - role: create-afs-token
       when: zuul_success | bool
     - role: upload-afs
       afs_target: "{{ afs.path }}/project-install-guide/{{ zuul.project.short_name }}"
       when: zuul_success | bool
-    - destroy-afs-token
+    - role: destroy-afs-token
       when: zuul_success | bool

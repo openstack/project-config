@@ -11,12 +11,12 @@
 
 - hosts: localhost
   roles:
-    - set-service-type-data-fact
+    - role: set-service-type-data-fact
       when: zuul_success | bool
-    - create-afs-token
+    - role: create-afs-token
       when: zuul_success | bool
     - role: upload-afs
       afs_target: "{{ afs.path }}/api-guide/{{ service_type_data.service_type }}"
       when: zuul_success | bool
-    - destroy-afs-token
+    - role: destroy-afs-token
       when: zuul_success | bool

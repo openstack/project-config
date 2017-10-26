@@ -11,10 +11,10 @@
 
 - hosts: localhost
   roles:
-    - create-afs-token
+    - role: create-afs-token
       when: zuul_success | bool
     - role: upload-afs
       afs_target: "{{ afs.path }}/infra"
       when: zuul_success | bool
-    - destroy-afs-token
+    - role: destroy-afs-token
       when: zuul_success | bool
