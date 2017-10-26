@@ -470,7 +470,13 @@
       - zuul: openstack-infra/openstack-zuul-jobs
     vars:
       tox_envlist: publishdocs
-
+      tox_environment:
+        # The tox job writes the root-marker file directly and thus
+        # needs the following variables set:
+        ZUUL_PROJECT: "{{ zuul.project.name }}"
+        ZUUL_BRANCH: "{{ zuul.branch }}"
+        ZUUL_UUID: "{{ zuul.build }}"
+        ZUUL_NEWREF: "{{ zuul.ref }}"
 - job:
     name: publish-openstack-manuals
     parent: publish-openstack-manuals-base
