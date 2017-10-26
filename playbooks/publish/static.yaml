@@ -4,6 +4,7 @@
     - role: fetch-sphinx-output
       sphinx_output_src: "src/{{ zuul.project.canonical_name }}/doc/build/html/"
       zuul_executor_dest: "{{ zuul.executor.work_root }}/artifacts"
+      when: zuul_success | bool
 
 - hosts: localhost
   roles:
@@ -16,3 +17,4 @@
       synchronize:
         src: "{{ zuul.executor.work_root }}/artifacts/"
         dest: "{{ fileserver.path }}/{{ zuul.project.short_name }}/"
+      when: zuul_success | bool
