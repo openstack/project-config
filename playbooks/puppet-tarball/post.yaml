@@ -1,0 +1,15 @@
+- hosts: all
+  roles:
+    - fetch-puppet-module-output
+
+  pre_tasks:
+    # NOTE(pabelanger): Here we are converting openstack-neutron-8.0.0.tar.gz to
+    # puppet-neutron-8.0.0.tar.gz.
+    - name: Convert filename to puppet prefix
+      shell: "find . -name openstack-*.tar.gz | sed -e 'p;s/openstack-/puppet-/' | xargs -n2 mv"
+      args:
+        chdir: "{{ zuul.project.src_dir }}/pkg"
+
+- hosts: localhost
+  roles:
+    - sign-artifacts

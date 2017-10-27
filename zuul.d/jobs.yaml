@@ -119,6 +119,17 @@
         name: fileserver
 
 - job:
+    name: release-openstack-puppet
+    parent: publish-openstack-artifacts
+    description: |
+      Sign and release puppet tarballs to tarballs.o.o.
+    pre-run: playbooks/puppet-tarball/pre
+    run: playbooks/puppet-tarball/run
+    post-run: playbooks/puppet-tarball/post
+    secrets:
+      - gpg_key
+
+- job:
     name: release-openstack-python-without-pypi
     parent: publish-openstack-artifacts
     description: |
@@ -354,8 +365,8 @@
     parent: publish-openstack-artifacts
     description: |
       Publish the results of the puppet-tarball job to tarballs.openstack.org.
-    pre-run: playbooks/puppet-branch-tarball/pre
-    run: playbooks/puppet-branch-tarball/run
+    pre-run: playbooks/puppet-tarball/pre
+    run: playbooks/puppet-tarball/run
     post-run: playbooks/puppet-branch-tarball/post
 
 - job:
