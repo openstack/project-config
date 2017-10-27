@@ -1,5 +1,7 @@
 - hosts: localhost
   roles:
-    - ensure-twine
+    - role: ensure-twine
+      when: zuul_success | bool
     - role: upload-pypi
       pypi_path: "{{ zuul.executor.work_root }}/artifacts"
+      when: zuul_success | bool
