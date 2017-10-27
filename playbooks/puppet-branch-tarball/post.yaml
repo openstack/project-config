@@ -1,0 +1,9 @@
+- hosts: all
+  roles:
+    - fetch-puppet-module-output
+
+  pre_tasks:
+    - name: Rename files to branch specific name
+      shell: "mv *.tar.gz {{ zuul.project.short_name }}-{{ zuul.branch | replace('/', '-') }}.tar.gz"
+      args:
+        chdir: "{{ zuul.project.src_dir }}/pkg"

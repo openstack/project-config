@@ -329,6 +329,15 @@
         name: afs
 
 - job:
+    name: publish-openstack-puppet-branch-tarball
+    parent: publish-openstack-artifacts
+    description: |
+      Publish the results of the puppet-tarball job to tarballs.openstack.org.
+    pre-run: playbooks/puppet-branch-tarball/pre
+    run: playbooks/puppet-branch-tarball/run
+    post-run: playbooks/puppet-branch-tarball/post
+
+- job:
     name: publish-openstack-python-branch-tarball
     parent: publish-openstack-artifacts
     description: |
