@@ -390,6 +390,44 @@
         name: afs
 
 - job:
+    name: publish-infra-publications-index
+    description: |
+      Publish the publication index
+    final: true
+    pre-run: playbooks/python-docs/pre.yaml
+    run: playbooks/publications-index/run.yaml
+    post-run: playbooks/publish/publications-index.yaml
+    allowed-projects:
+      - openstack-infra/publications
+    roles:
+      - zuul: openstack-infra/zuul-jobs
+      - zuul: openstack-infra/openstack-zuul-jobs
+    vars:
+      tox_envlist: infra-docs
+    secrets:
+      - secret: afsdocs_secret
+        name: afs
+
+- job:
+    name: publish-infra-publications
+    description: |
+      Publish one publication from openstack-infra/publications
+    final: true
+    pre-run: playbooks/python-docs/pre.yaml
+    run: playbooks/publications/run.yaml
+    post-run: playbooks/publish/publications.yaml
+    allowed-projects:
+      - openstack-infra/publications
+    roles:
+      - zuul: openstack-infra/zuul-jobs
+      - zuul: openstack-infra/openstack-zuul-jobs
+    vars:
+      tox_envlist: infra-docs
+    secrets:
+      - secret: afsdocs_secret
+        name: afs
+
+- job:
     name: publish-openstack-python-branch-tarball
     parent: publish-openstack-artifacts
     description: |

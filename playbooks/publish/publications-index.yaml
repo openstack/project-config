@@ -1,0 +1,20 @@
+- hosts: all
+  roles:
+    - fetch-tox-output
+    - role: write-root-marker
+      root_marker_dir: "{{ zuul.project.src_dir }}/output"
+      when: zuul_success | bool
+    - role: fetch-sphinx-output
+      sphinx_output_src: "{{ zuul.project.src_dir }}/output/"
+      zuul_executor_dest: "{{ zuul.executor.work_root }}/artifacts"
+      when: zuul_success | bool
+
+- hosts: localhost
+  roles:
+    - role: create-afs-token
+      when: zuul_success | bool
+    - role: upload-afs
+      afs_target: "{{ afs.path }}/infra/publications/"
+      when: zuul_success | bool
+    - role: destroy-afs-token
+      when: zuul_success | bool
