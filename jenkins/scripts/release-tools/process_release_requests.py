@@ -49,6 +49,7 @@ def find_modified_deliverable_files(reporoot):
 
 def tag_release(repo, series_name, version, diff_start, hash,
                 include_pypi_link, first_full_release, meta_data):
+    print('Tagging {} in {}'.format(version, repo))
     try:
         subprocess.check_call(
             [RELEASE_SCRIPT, repo, series_name, version,
@@ -63,6 +64,7 @@ def tag_release(repo, series_name, version, diff_start, hash,
 
 
 def make_branch(repo, name, ref):
+    print('Branching {} in {}'.format(name, repo))
     try:
         subprocess.check_call([BRANCH_SCRIPT, repo, name, ref])
     except subprocess.CalledProcessError:
@@ -94,15 +96,18 @@ def process_release_requests(reporoot, filenames, meta_data):
     error_count = 0
 
     for basename in deliverable_files:
+        print('Looking at changes in {}'.format(basename))
         filename = os.path.join(reporoot, basename)
         if not os.path.exists(filename):
             # The file must have been deleted, skip it.
+            print('  {} was deleted'.format(basename))
             continue
         with open(filename, 'r', encoding='utf-8') as f:
             deliverable_data = yaml.load(f.read())
 
         # If there are no releases listed in this file, skip it.
         if not deliverable_data.get('releases'):
+            print('  {} contains no releases, skipping'.format(basename))
             continue
 
         # Map the release version to the release contents so we can
