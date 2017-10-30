@@ -6,6 +6,10 @@
     # Skip setting up pip, our images have already done this.
     SETUP_PIP: "false"
   become: yes
+  # ANSIBLE0013 complains about shell. TODO(jaegerandi): Use command instead,
+  # for now we just silence the warning.
+  tags:
+    - skip_ansible_lint
 
 - name: Copy reduced scope modules.env into place
   template:
