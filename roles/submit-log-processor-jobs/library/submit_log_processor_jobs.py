@@ -40,6 +40,10 @@ class File(object):
     def __init__(self, name, tags):
         # Note that even if we upload a .gz we want to use the logical
         # non compressed name for handling (it is easier on humans).
+        # The reason we can get away with this is that this name is used
+        # to construct the log_url below. The server serving that
+        # log_url treats foo.txt and foo.txt.gz as being the same content
+        # and serves both paths from the same backend content.
         if name.endswith('.gz'):
             self._name = name[:-3]
         else:
