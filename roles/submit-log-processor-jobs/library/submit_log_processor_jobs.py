@@ -38,12 +38,44 @@ class FileMatcher(object):
 
 class File(object):
     def __init__(self, name, tags):
-        self.name = name
-        self.tags = tags
+        # Note that even if we upload a .gz we want to use the logical
+        # non compressed name for handling (it is easier on humans).
+        if name.endswith('.gz'):
+            self._name = name[:-3]
+        else:
+            self._name = name
+        self._tags = tags
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, value):
+        raise Exception("Cannot update File() objects they must be hashable")
+
+    @property
+    def tags(self):
+        return self._tags
+
+    @tags.setter
+    def tags(self, value):
+        raise Exception("Cannot update File() objects they must be hashable")
 
     def toDict(self):
         return dict(name=self.name,
                     tags=self.tags)
+
+    # We need these objects to be hashable so that we can use sets
+    # below.
+    def __eq__(self, other):
+        return self.name == other.name
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def __hash__(self):
+        return hash(self.name)
 
 
 class LogMatcher(object):
@@ -59,14 +91,14 @@ class LogMatcher(object):
             self.matchers.append(FileMatcher(f['name'], f.get('tags', [])))
 
     def findFiles(self, path):
-        results = []
+        results = set()
         for (dirpath, dirnames, filenames) in os.walk(path):
             for filename in filenames:
                 fn = os.path.join(dirpath, filename)
                 partial_name = fn[len(path) + 1:]
                 for matcher in self.matchers:
                     if matcher.matches(partial_name):
-                        results.append(File(partial_name, matcher.tags))
+                        results.add(File(partial_name, matcher.tags))
                         break
         return results
 
