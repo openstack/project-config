@@ -2128,6 +2128,7 @@
     templates:
       - system-required
       - check-tripleo-undercloud-jobs
+      - tripleo-puppet-jobs
       - tripleo-scenario-jobs-scenario001
       - tripleo-scenario-jobs-scenario002
       - tripleo-scenario-jobs-scenario003
@@ -2143,7 +2144,6 @@
         - legacy-tripleo-ci-centos-7-3nodes-multinode:
             voting: false
             branches: ^(?!stable/newton).*$
-        - legacy-tripleo-ci-centos-7-nonha-multinode-oooq
         - legacy-tripleo-ci-centos-7-scenario001-multinode-oooq:
             files:
               - ^(docker|puppet)/services/glance.*$
@@ -2404,7 +2404,6 @@
     gate:
       queue: tripleo
       jobs:
-        - legacy-tripleo-ci-centos-7-nonha-multinode-oooq
         - legacy-tripleo-ci-centos-7-containers-multinode:
             branches: ^(?!stable/(newton|ocata)).*$
         - legacy-tripleo-ci-centos-7-scenario001-multinode-oooq:
@@ -10157,21 +10156,13 @@
       - system-required
       - openstack-python-jobs
       - publish-to-pypi
+      - tripleo-puppet-jobs
       - experimental-tripleo-jobs
       - check-requirements
     check:
       jobs:
         - openstack-tox-cover:
             voting: false
-        - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
-            irrelevant-files:
-              - ^.*\.md$
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^metadata.json$
-              - ^releasenotes/.*$
-              - ^test-requirements.txt$
         - legacy-tripleo-ci-centos-7-scenario001-multinode-oooq:
             files:
               - ^(docker|puppet)/services/glance.*$
@@ -10516,15 +10507,6 @@
               - ^test-requirements.txt$
     gate:
       jobs:
-        - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
-            irrelevant-files:
-              - ^.*\.md$
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^metadata.json$
-              - ^releasenotes/.*$
-              - ^test-requirements.txt$
         - legacy-tripleo-ci-centos-7-containers-multinode:
             branches: ^(?!stable/(newton|ocata)).*$
             irrelevant-files:
@@ -10932,6 +10914,7 @@
       - system-required
       - openstack-python-jobs
       - openstack-python35-jobs
+      - tripleo-puppet-jobs
       - check-tripleo-undercloud-jobs
       - publish-to-pypi
       - experimental-tripleo-jobs
@@ -10943,15 +10926,6 @@
         - legacy-instack-undercloud-puppet-lint
         - openstack-tox-cover:
             voting: false
-        - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
-            irrelevant-files:
-              - ^.*\.md$
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^metadata.json$
-              - ^releasenotes/.*$
-              - ^test-requirements.txt$
         - legacy-tripleo-ci-centos-7-scenario001-multinode-oooq:
             files:
               - ^(docker|puppet)/services/glance.*$
@@ -11267,15 +11241,6 @@
     gate:
       jobs:
         - legacy-instack-undercloud-puppet-lint
-        - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
-            irrelevant-files:
-              - ^.*\.md$
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^metadata.json$
-              - ^releasenotes/.*$
-              - ^test-requirements.txt$
         - legacy-tripleo-ci-centos-7-containers-multinode:
             branches: ^(?!stable/(newton|ocata)).*$
             irrelevant-files:
@@ -17229,19 +17194,11 @@
       - openstack-python-jobs
       - openstack-python35-jobs
       - experimental-tripleo-jobs
+      - tripleo-puppet-jobs
     check:
       jobs:
         - openstack-tox-cover:
             voting: false
-        - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
-            irrelevant-files:
-              - ^.*\.md$
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^metadata.json$
-              - ^releasenotes/.*$
-              - ^test-requirements.txt$
         - legacy-tripleo-ci-centos-7-scenario001-multinode-oooq:
             files:
               - ^(docker|puppet)/services/glance.*$
@@ -17556,15 +17513,6 @@
               - ^test-requirements.txt$
     gate:
       jobs:
-        - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
-            irrelevant-files:
-              - ^.*\.md$
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^metadata.json$
-              - ^releasenotes/.*$
-              - ^test-requirements.txt$
         - legacy-tripleo-ci-centos-7-containers-multinode:
             branches: ^(?!stable/(newton|ocata)).*$
             irrelevant-files:
@@ -18050,20 +17998,12 @@
       - publish-to-pypi
       - openstack-python-jobs
       - openstack-python35-jobs
+      - tripleo-puppet-jobs
       - experimental-tripleo-jobs
     check:
       jobs:
         - openstack-tox-cover:
             voting: false
-        - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
-            irrelevant-files:
-              - ^.*\.md$
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^metadata.json$
-              - ^releasenotes/.*$
-              - ^test-requirements.txt$
         - legacy-tripleo-ci-centos-7-scenario001-multinode-oooq:
             files:
               - ^(docker|puppet)/services/glance.*$
@@ -18378,15 +18318,6 @@
               - ^test-requirements.txt$
     gate:
       jobs:
-        - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
-            irrelevant-files:
-              - ^.*\.md$
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^metadata.json$
-              - ^releasenotes/.*$
-              - ^test-requirements.txt$
         - legacy-tripleo-ci-centos-7-containers-multinode:
             branches: ^(?!stable/(newton|ocata)).*$
             irrelevant-files:
@@ -18855,6 +18786,7 @@
       - system-required
       - check-requirements
       - publish-to-pypi
+      - tripleo-puppet-jobs
       - experimental-tripleo-jobs
       - openstack-python-jobs
       - openstack-python35-jobs
@@ -18862,15 +18794,6 @@
       jobs:
         - openstack-tox-cover:
             voting: false
-        - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
-            irrelevant-files:
-              - ^.*\.md$
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^metadata.json$
-              - ^releasenotes/.*$
-              - ^test-requirements.txt$
         - legacy-tripleo-ci-centos-7-scenario001-multinode-oooq:
             files:
               - ^(docker|puppet)/services/glance.*$
@@ -19185,15 +19108,6 @@
               - ^test-requirements.txt$
     gate:
       jobs:
-        - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
-            irrelevant-files:
-              - ^.*\.md$
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^metadata.json$
-              - ^releasenotes/.*$
-              - ^test-requirements.txt$
         - legacy-tripleo-ci-centos-7-containers-multinode:
             branches: ^(?!stable/(newton|ocata)).*$
             irrelevant-files:
@@ -19643,20 +19557,12 @@
       - publish-to-pypi
       - openstack-python-jobs
       - openstack-python35-jobs
+      - tripleo-puppet-jobs
       - experimental-tripleo-jobs
     check:
       jobs:
         - openstack-tox-cover:
             voting: false
-        - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
-            irrelevant-files:
-              - ^.*\.md$
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^metadata.json$
-              - ^releasenotes/.*$
-              - ^test-requirements.txt$
         - legacy-tripleo-ci-centos-7-scenario001-multinode-oooq:
             files:
               - ^(docker|puppet)/services/glance.*$
@@ -19971,15 +19877,6 @@
               - ^test-requirements.txt$
     gate:
       jobs:
-        - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
-            irrelevant-files:
-              - ^.*\.md$
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^metadata.json$
-              - ^releasenotes/.*$
-              - ^test-requirements.txt$
         - legacy-tripleo-ci-centos-7-containers-multinode:
             branches: ^(?!stable/(newton|ocata)).*$
             irrelevant-files:
@@ -22021,6 +21918,7 @@
       - puppet-release-jobs
       - experimental-tripleo-jobs
       - release-notes-jobs
+      - tripleo-puppet-jobs
       - tripleo-upgrade-jobs
       - tripleo-upgrade-jobs-scenario001
       - tripleo-upgrade-jobs-scenario002
@@ -22040,15 +21938,6 @@
         - legacy-puppet-tripleo-puppet-unit-latest-centos-7:
             voting: false
             branches: ^master
-            irrelevant-files:
-              - ^.*\.md$
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^metadata.json$
-              - ^releasenotes/.*$
-              - ^test-requirements.txt$
-        - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
             irrelevant-files:
               - ^.*\.md$
               - ^.*\.rst$
@@ -22372,15 +22261,6 @@
     gate:
       jobs:
         - legacy-puppet-tripleo-puppet-unit-4.8-centos-7:
-            irrelevant-files:
-              - ^.*\.md$
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^metadata.json$
-              - ^releasenotes/.*$
-              - ^test-requirements.txt$
-        - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
             irrelevant-files:
               - ^.*\.md$
               - ^.*\.rst$
@@ -23992,21 +23872,13 @@
       - check-tripleo-undercloud-jobs
       - openstackclient-plugin-jobs
       - release-notes-jobs
+      - tripleo-puppet-jobs
     check:
       jobs:
         - legacy-tripleo-buildimage-overcloud-full-centos-7:
             irrelevant-files:
               - ^.*\.rst$
               - ^releasenotes/.*$
-        - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
-            irrelevant-files:
-              - ^.*\.md$
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^metadata.json$
-              - ^releasenotes/.*$
-              - ^test-requirements.txt$
         - legacy-tripleo-ci-centos-7-scenario001-multinode-oooq:
             files:
               - ^(docker|puppet)/services/glance.*$
@@ -24325,15 +24197,6 @@
             irrelevant-files:
               - ^.*\.rst$
               - ^releasenotes/.*$
-        - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
-            irrelevant-files:
-              - ^.*\.md$
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^metadata.json$
-              - ^releasenotes/.*$
-              - ^test-requirements.txt$
         - legacy-tripleo-ci-centos-7-containers-multinode:
             branches: ^(?!stable/(newton|ocata)).*$
             irrelevant-files:
@@ -27478,21 +27341,13 @@
       - openstack-python-jobs
       - openstack-python35-jobs
       - tripleo-upgrade-jobs
+      - tripleo-puppet-jobs
       - experimental-tripleo-jobs
       - release-notes-jobs
     check:
       jobs:
         - openstack-tox-cover:
             voting: false
-        - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
-            irrelevant-files:
-              - ^.*\.md$
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^metadata.json$
-              - ^releasenotes/.*$
-              - ^test-requirements.txt$
         - legacy-tripleo-ci-centos-7-scenario001-multinode-oooq:
             files:
               - ^(docker|puppet)/services/glance.*$
@@ -27838,15 +27693,6 @@
     gate:
       queue: tripleo
       jobs:
-        - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
-            irrelevant-files:
-              - ^.*\.md$
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^metadata.json$
-              - ^releasenotes/.*$
-              - ^test-requirements.txt$
         - legacy-tripleo-ci-centos-7-containers-multinode:
             branches: ^(?!stable/(newton|ocata)).*$
             irrelevant-files:
@@ -28280,6 +28126,7 @@
       - experimental-tripleo-jobs
       - check-requirements
       - release-notes-jobs
+      - tripleo-puppet-jobs
       - tripleo-upgrade-jobs
       - tripleo-upgrade-jobs-scenario001
       - tripleo-upgrade-jobs-scenario002
@@ -28291,15 +28138,6 @@
         - legacy-tripleo-ci-centos-7-3nodes-multinode:
             voting: false
             branches: ^(?!stable/newton).*$
-            irrelevant-files:
-              - ^.*\.md$
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^metadata.json$
-              - ^releasenotes/.*$
-              - ^test-requirements.txt$
-        - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
             irrelevant-files:
               - ^.*\.md$
               - ^.*\.rst$
@@ -28627,15 +28465,6 @@
       queue: tripleo
       jobs:
         - openstack-tox-pep8
-        - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
-            irrelevant-files:
-              - ^.*\.md$
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^metadata.json$
-              - ^releasenotes/.*$
-              - ^test-requirements.txt$
         - legacy-tripleo-ci-centos-7-containers-multinode:
             branches: ^(?!stable/(newton|ocata)).*$
             irrelevant-files:
@@ -29074,6 +28903,7 @@
       - publish-to-pypi
       - experimental-tripleo-jobs
       - release-notes-jobs
+      - tripleo-puppet-jobs
     post:
       jobs:
         - publish-openstack-python-branch-tarball
@@ -29109,15 +28939,6 @@
               - ^test-requirements.txt$
     check:
       jobs:
-        - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
-            irrelevant-files:
-              - ^.*\.md$
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^metadata.json$
-              - ^releasenotes/.*$
-              - ^test-requirements.txt$
         - legacy-tripleo-ci-centos-7-scenario001-multinode-oooq:
             files:
               - ^(docker|puppet)/services/glance.*$
@@ -29432,15 +29253,6 @@
               - ^test-requirements.txt$
     gate:
       jobs:
-        - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
-            irrelevant-files:
-              - ^.*\.md$
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^metadata.json$
-              - ^releasenotes/.*$
-              - ^test-requirements.txt$
         - legacy-tripleo-ci-centos-7-containers-multinode:
             branches: ^(?!stable/(newton|ocata)).*$
             irrelevant-files:
@@ -29848,18 +29660,10 @@
       - system-required
       - experimental-tripleo-jobs
       - publish-openstack-sphinx-docs
+      - tripleo-puppet-jobs
     check:
       jobs:
         - build-openstack-sphinx-docs: {}
-        - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
-            irrelevant-files:
-              - ^.*\.md$
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^metadata.json$
-              - ^releasenotes/.*$
-              - ^test-requirements.txt$
         - legacy-tripleo-ci-centos-7-scenario001-multinode-oooq:
             files:
               - ^(docker|puppet)/services/glance.*$
@@ -30175,15 +29979,6 @@
     gate:
       jobs:
         - build-openstack-sphinx-docs: {}
-        - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
-            irrelevant-files:
-              - ^.*\.md$
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^metadata.json$
-              - ^releasenotes/.*$
-              - ^test-requirements.txt$
         - legacy-tripleo-ci-centos-7-containers-multinode:
             branches: ^(?!stable/(newton|ocata)).*$
             irrelevant-files:
@@ -30623,6 +30418,7 @@
       - publish-to-pypi
       - release-notes-jobs
       - experimental-tripleo-jobs
+      - tripleo-puppet-jobs
     check-tripleo:
       jobs:
         - legacy-tripleo-ci-centos-7-ovb-ha-oooq:
@@ -30655,15 +30451,6 @@
               - ^test-requirements.txt$
     check:
       jobs:
-        - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
-            irrelevant-files:
-              - ^.*\.md$
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^metadata.json$
-              - ^releasenotes/.*$
-              - ^test-requirements.txt$
         - legacy-tripleo-ci-centos-7-scenario001-multinode-oooq:
             files:
               - ^(docker|puppet)/services/glance.*$
@@ -30978,15 +30765,6 @@
               - ^test-requirements.txt$
     gate:
       jobs:
-        - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
-            irrelevant-files:
-              - ^.*\.md$
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^metadata.json$
-              - ^releasenotes/.*$
-              - ^test-requirements.txt$
         - legacy-tripleo-ci-centos-7-containers-multinode:
             branches: ^(?!stable/(newton|ocata)).*$
             irrelevant-files:
@@ -31396,6 +31174,7 @@
       - release-openstack-server
       - release-notes-jobs
       - tripleo-upgrade-jobs
+      - tripleo-puppet-jobs
     check:
       jobs:
         - openstack-tox-linters
@@ -31403,15 +31182,6 @@
         - legacy-tripleo-ci-centos-7-3nodes-multinode:
             voting: false
             branches: ^(?!stable/newton).*$
-            irrelevant-files:
-              - ^.*\.md$
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^metadata.json$
-              - ^releasenotes/.*$
-              - ^test-requirements.txt$
-        - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
             irrelevant-files:
               - ^.*\.md$
               - ^.*\.rst$
@@ -31737,15 +31507,6 @@
       jobs:
         - openstack-tox-linters
         - build-openstack-sphinx-docs: {}
-        - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
-            irrelevant-files:
-              - ^.*\.md$
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^metadata.json$
-              - ^releasenotes/.*$
-              - ^test-requirements.txt$
         - legacy-tripleo-ci-centos-7-containers-multinode:
             branches: ^(?!stable/(newton|ocata)).*$
             irrelevant-files:
@@ -32194,6 +31955,7 @@
       - system-required
       - release-openstack-server
       - release-notes-jobs
+      - tripleo-puppet-jobs
       - tripleo-upgrade-jobs
       - tripleo-scenario-jobs-scenario001
       - tripleo-scenario-jobs-scenario002
@@ -32201,15 +31963,6 @@
       - tripleo-scenario-jobs-scenario004
     check:
       jobs:
-        - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
-            irrelevant-files:
-              - ^.*\.md$
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^metadata.json$
-              - ^releasenotes/.*$
-              - ^test-requirements.txt$
         - openstack-tox-linters
         - legacy-tripleo-ci-centos-7-containers-multinode:
             branches: ^(?!stable/(newton|ocata)).*$
@@ -32296,15 +32049,6 @@
       queue: tripleo
       jobs:
         - openstack-tox-linters
-        - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
-            irrelevant-files:
-              - ^.*\.md$
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^metadata.json$
-              - ^releasenotes/.*$
-              - ^test-requirements.txt$
         - legacy-tripleo-ci-centos-7-containers-multinode:
             branches: ^(?!stable/(newton|ocata)).*$
             irrelevant-files:
@@ -32360,6 +32104,7 @@
     templates:
       - system-required
       - publish-to-pypi
+      - tripleo-puppet-jobs
       - experimental-tripleo-jobs
       - openstack-python-jobs
       - openstack-python35-jobs
@@ -32368,15 +32113,6 @@
       jobs:
         - openstack-tox-cover:
             voting: false
-        - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
-            irrelevant-files:
-              - ^.*\.md$
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^metadata.json$
-              - ^releasenotes/.*$
-              - ^test-requirements.txt$
         - legacy-tripleo-ci-centos-7-scenario001-multinode-oooq:
             files:
               - ^(docker|puppet)/services/glance.*$
@@ -32721,15 +32457,6 @@
               - ^test-requirements.txt$
     gate:
       jobs:
-        - legacy-tripleo-ci-centos-7-nonha-multinode-oooq:
-            irrelevant-files:
-              - ^.*\.md$
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^metadata.json$
-              - ^releasenotes/.*$
-              - ^test-requirements.txt$
         - legacy-tripleo-ci-centos-7-containers-multinode:
             branches: ^(?!stable/(newton|ocata)).*$
             irrelevant-files:
