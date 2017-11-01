@@ -191,18 +191,40 @@ dashboard:
       showTitle: true
       height: 250px
       panels:
-        - title: Accepting Builds
-          span: 4
+        - title: Executors
+          span: 6
           targets:
-            - target: alias(stats.gauges.zuul.executors.accepting, 'Total Executors')
+            - target: alias(stats.gauges.zuul.executors.online, 'Online')
+            - target: alias(stats.gauges.zuul.executors.accepting, 'Accepting')
+          type: graph
+        - title: Executor Queue
+          span: 6
+          targets:
+            - target: alias(stats.gauges.zuul.executors.jobs_queued, 'Queued Jobs')
+            - target: alias(stats.gauges.zuul.executors.jobs_running, 'Running Jobs')
           type: graph
         - title: Running Builds
-          span: 4
+          span: 6
           targets:
             - target: aliasByNode(stats.gauges.zuul.executor.*.openstack.org.running_builds, 4)
           type: graph
         - title: Load Average
-          span: 4
+          span: 6
           targets:
             - target: aliasByNode(scale(stats.gauges.zuul.executor.*.openstack.org.load_average, 0.01), 4)
+          type: graph
+    - title: Mergers
+      showTitle: true
+      height: 250px
+      panels:
+        - title: Mergers
+          span: 6
+          targets:
+            - target: alias(stats.gauges.zuul.mergers.online, 'Online')
+          type: graph
+        - title: Merger Queue
+          span: 6
+          targets:
+            - target: alias(stats.gauges.zuul.mergers.jobs_queued, 'Queued Jobs')
+            - target: alias(stats.gauges.zuul.mergers.jobs_running, 'Running Jobs')
           type: graph
