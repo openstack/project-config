@@ -1,8 +1,10 @@
 - hosts: localhost
   roles:
-    - add-fileserver
+    - role: add-fileserver
+      when: zuul_success | bool
 
 - hosts: "{{ fileserver.fqdn }}"
   gather_facts: False
   roles:
-    - publish-artifacts-to-fileserver
+    - role: publish-artifacts-to-fileserver
+      when: zuul_success | bool
