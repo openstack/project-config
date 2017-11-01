@@ -42,7 +42,7 @@ def check_repo(repo_path):
         repo = git.Repo.clone_from(repo_path, repopath)
         remotes = repo.git.branch('--remote')
         branches = [r.strip() for r in remotes.splitlines() if r.strip()]
-        print ("  Remote branches:")
+        print("  Remote branches:")
         for r in branches:
             print("    %s" % r)
         if 'origin/master' in branches:
