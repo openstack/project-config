@@ -1,0 +1,22 @@
+- hosts: all
+  roles:
+    - role: write-root-marker
+      root_marker_dir: "{{ zuul.project.src_dir }}/"
+
+  post_tasks:
+    - name: Copy content directly to proper place for publishing
+      shell:
+        cmd: |
+          set -x
+          # NAME will either be the branch name or the tag name
+          NAME=`echo $ZUUL_REFNAME | sed 's/refs.tags.//'`
+          mkdir -p _out/$NAME
+          for FN in * ; do
+              if [ "_out" != "$FN" ] ; then
+                  mv $FN _out/$NAME/
+              fi
+          done
+          # Explicitly copy the root marker file
+          mv .root-marker _out/$NAME/
+        executable: /bin/bash
+        chdir: '{{ zuul.project.src_dir }}'
