@@ -510,17 +510,16 @@
     name: openstack-infra/elastic-recheck
     templates:
       - system-required
+      - build-openstack-sphinx-docs
     check:
       jobs:
         - openstack-tox-pep8
-        - build-openstack-sphinx-docs: {}
         - openstack-tox-py27
         - legacy-elastic-recheck-tox-queries:
             voting: false
     gate:
       jobs:
         - openstack-tox-pep8
-        - build-openstack-sphinx-docs: {}
         - openstack-tox-py27
     post:
       jobs:
@@ -729,12 +728,7 @@
     name: openstack-infra/infra-manual
     templates:
       - system-required
-    check:
-      jobs:
-        - build-openstack-sphinx-docs
-    gate:
-      jobs:
-        - build-openstack-sphinx-docs
+      - build-openstack-sphinx-docs
     post:
       jobs:
         - publish-infra-manual
@@ -912,12 +906,8 @@
 
 - project:
     name: openstack-infra/openstack-zuul-jobs
-    check:
-      jobs:
-        - build-openstack-sphinx-docs
-    gate:
-      jobs:
-        - build-openstack-sphinx-docs
+    templates:
+      - build-openstack-sphinx-docs
     post:
       jobs:
         - publish-openstack-sphinx-docs-infra:
@@ -3798,12 +3788,6 @@
     templates:
       - system-required
       - publish-openstack-sphinx-docs
-    check:
-      jobs:
-        - build-openstack-sphinx-docs: {}
-    gate:
-      jobs:
-        - build-openstack-sphinx-docs: {}
 
 - project:
     name: openstack/charm-hacluster
@@ -4895,12 +4879,7 @@
     name: openstack/contributor-guide
     templates:
       - system-required
-    check:
-      jobs:
-        - build-openstack-sphinx-docs
-    gate:
-      jobs:
-        - build-openstack-sphinx-docs
+      - build-openstack-sphinx-docs
     post:
       jobs:
         - publish-openstack-contributor-guide
@@ -5029,15 +5008,14 @@
       - system-required
       - docs-on-readthedocs
       - openstack-python35-jobs
+      - build-openstack-sphinx-docs
     check:
       jobs:
         - openstack-tox-pep8
-        - build-openstack-sphinx-docs: {}
         - legacy-craton-tox-functional
     gate:
       jobs:
         - openstack-tox-pep8
-        - build-openstack-sphinx-docs: {}
         - legacy-craton-tox-functional
 
 - project:
@@ -7098,11 +7076,9 @@
     check:
       jobs:
         - openstack-tox-pep8
-        - build-openstack-sphinx-docs: {}
     gate:
       jobs:
         - openstack-tox-pep8
-        - build-openstack-sphinx-docs: {}
 
 - project:
     name: openstack/development-proposals
@@ -7700,14 +7676,11 @@
     templates:
       - system-required
       - check-requirements
+      - build-openstack-sphinx-docs
       - openstack-python35-jobs
     check:
       jobs:
         - openstack-tox-py27
-        - build-openstack-sphinx-docs
-    gate:
-      jobs:
-        - build-openstack-sphinx-docs
     post:
       jobs:
         - publish-static
@@ -7760,11 +7733,9 @@
       - publish-openstack-sphinx-docs
     check:
       jobs:
-        - build-openstack-sphinx-docs: {}
         - openstack-tox-pep8
     gate:
       jobs:
-        - build-openstack-sphinx-docs: {}
         - openstack-tox-pep8
 
 - project:
@@ -8161,12 +8132,7 @@
     name: openstack/fuel-docs
     templates:
       - system-required
-    check:
-      jobs:
-        - build-openstack-sphinx-docs
-    gate:
-      jobs:
-        - build-openstack-sphinx-docs
+      - build-openstack-sphinx-docs
 
 - project:
     name: openstack/fuel-library
@@ -8311,12 +8277,7 @@
     templates:
       - system-required
       - docs-on-readthedocs
-    check:
-      jobs:
-        - build-openstack-sphinx-docs
-    gate:
-      jobs:
-        - build-openstack-sphinx-docs
+      - build-openstack-sphinx-docs
 
 - project:
     name: openstack/fuel-octane
@@ -9436,10 +9397,10 @@
     name: openstack/governance
     templates:
       - system-required
+      - build-openstack-sphinx-docs
     check:
       jobs:
         - openstack-tox-linters
-        - build-openstack-sphinx-docs
         - openstack-tox-validate:
             voting: false
             files:
@@ -9447,7 +9408,6 @@
     gate:
       jobs:
         - openstack-tox-linters
-        - build-openstack-sphinx-docs
     post:
       jobs:
         - publish-governance-tc
@@ -9456,12 +9416,7 @@
     name: openstack/governance-uc
     templates:
       - system-required
-    check:
-      jobs:
-        - build-openstack-sphinx-docs
-    gate:
-      jobs:
-        - build-openstack-sphinx-docs
+      - build-openstack-sphinx-docs
     post:
       jobs:
         - publish-governance-uc
@@ -9470,12 +9425,7 @@
     name: openstack/governance-website
     templates:
       - system-required
-    check:
-      jobs:
-        - build-openstack-sphinx-docs
-    gate:
-      jobs:
-        - build-openstack-sphinx-docs
+      - build-openstack-sphinx-docs
     post:
       jobs:
         - publish-governance-website
@@ -9914,14 +9864,13 @@
       - system-required
       - translation-jobs
       - check-requirements
+      - build-openstack-sphinx-docs
     check:
       jobs:
         - openstack-tox-pep8
-        - build-openstack-sphinx-docs: {}
     gate:
       jobs:
         - openstack-tox-pep8
-        - build-openstack-sphinx-docs: {}
     post:
       jobs:
         - legacy-i18n-tox-doc-docs:
@@ -11019,15 +10968,14 @@
     name: openstack/interop
     templates:
       - system-required
+      - build-openstack-sphinx-docs
     check:
       jobs:
-        - build-openstack-sphinx-docs: {}
         - legacy-interop-tox-doc8
         - legacy-interop-tox-jsonlint
         - legacy-interop-tox-jsonschema
     gate:
       jobs:
-        - build-openstack-sphinx-docs: {}
         - legacy-interop-tox-doc8
         - legacy-interop-tox-jsonlint
         - legacy-interop-tox-jsonschema
@@ -11036,12 +10984,7 @@
     name: openstack/interop-workloads
     templates:
       - system-required
-    check:
-      jobs:
-        - build-openstack-sphinx-docs: {}
-    gate:
-      jobs:
-        - build-openstack-sphinx-docs: {}
+      - build-openstack-sphinx-docs
 
 - project:
     name: openstack/iotronic
@@ -11186,11 +11129,9 @@
     check:
       jobs:
         - openstack-tox-pep8
-        - build-openstack-sphinx-docs: {}
     gate:
       jobs:
         - openstack-tox-pep8
-        - build-openstack-sphinx-docs: {}
     post:
       jobs:
         - publish-openstack-python-branch-tarball
@@ -11316,13 +11257,12 @@
     templates:
       - system-required
       - docs-on-readthedocs
+      - build-openstack-sphinx-docs
     check:
       jobs:
-        - build-openstack-sphinx-docs: {}
         - build-openstack-releasenotes
     gate:
       jobs:
-        - build-openstack-sphinx-docs: {}
         - build-openstack-releasenotes
 
 - project:
@@ -11897,11 +11837,9 @@
     check:
       jobs:
         - openstack-tox-pep8
-        - build-openstack-sphinx-docs: {}
     gate:
       jobs:
         - openstack-tox-pep8
-        - build-openstack-sphinx-docs: {}
     post:
       jobs:
         - publish-openstack-python-branch-tarball
@@ -12091,10 +12029,10 @@
     templates:
       - system-required
       - check-requirements
+      - build-openstack-sphinx-docs
     check:
       jobs:
         - openstack-tox-pep8
-        - build-openstack-sphinx-docs
         - legacy-manila-buildimage-generic
         - legacy-manila-buildimage-docker:
             voting: false
@@ -12111,7 +12049,6 @@
     gate:
       jobs:
         - openstack-tox-pep8
-        - build-openstack-sphinx-docs
         - legacy-manila-buildimage-generic
     post:
       jobs:
@@ -15631,11 +15568,9 @@
     check:
       jobs:
         - openstack-tox-pep8
-        - build-openstack-sphinx-docs: {}
     gate:
       jobs:
         - openstack-tox-pep8
-        - build-openstack-sphinx-docs: {}
 
 - project:
     name: openstack/omni
@@ -19006,11 +18941,9 @@
     check:
       jobs:
         - openstack-tox-pep8
-        - build-openstack-sphinx-docs: {}
     gate:
       jobs:
         - openstack-tox-pep8
-        - build-openstack-sphinx-docs: {}
     post:
       jobs:
         - publish-openstack-python-branch-tarball
@@ -19096,29 +19029,23 @@
     templates:
       - system-required
       - openstack-python35-jobs
+      - build-openstack-sphinx-docs
     check:
       jobs:
         - openstack-tox-pep8
         - openstack-tox-cover
-        - build-openstack-sphinx-docs: {}
         - legacy-ospurge-dsvm-functional
     gate:
       jobs:
         - openstack-tox-pep8
         - openstack-tox-cover
-        - build-openstack-sphinx-docs: {}
         - legacy-ospurge-dsvm-functional
 
 - project:
     name: openstack/ossa
     templates:
       - system-required
-    check:
-      jobs:
-        - build-openstack-sphinx-docs
-    gate:
-      jobs:
-        - build-openstack-sphinx-docs
+      - build-openstack-sphinx-docs
     post:
       jobs:
         - publish-security
@@ -19380,12 +19307,7 @@
     name: openstack/project-team-guide
     templates:
       - system-required
-    check:
-      jobs:
-        - build-openstack-sphinx-docs
-    gate:
-      jobs:
-        - build-openstack-sphinx-docs
+      - build-openstack-sphinx-docs
     post:
       jobs:
         - publish-openstack-sphinx-docs-direct
@@ -19847,12 +19769,6 @@
     templates:
       - system-required
       - publish-openstack-sphinx-docs
-    check:
-      jobs:
-        - build-openstack-sphinx-docs: {}
-    gate:
-      jobs:
-        - build-openstack-sphinx-docs: {}
 
 - project:
     name: openstack/puppet-openstack-integration
@@ -20716,14 +20632,13 @@
       - check-requirements
       - docs-on-readthedocs
       - publish-to-pypi
+      - build-openstack-sphinx-docs
     check:
       jobs:
         - openstack-tox-pep8
-        - build-openstack-sphinx-docs: {}
     gate:
       jobs:
         - openstack-tox-pep8
-        - build-openstack-sphinx-docs: {}
 
 - project:
     name: openstack/python-aodhclient
@@ -23312,12 +23227,6 @@
     templates:
       - system-required
       - publish-openstack-sphinx-docs
-    check:
-      jobs:
-        - build-openstack-sphinx-docs: {}
-    gate:
-      jobs:
-        - build-openstack-sphinx-docs: {}
 
 - project:
     name: openstack/security-doc
@@ -24910,12 +24819,7 @@
     name: openstack/transparency-policy
     templates:
       - system-required
-    check:
-      jobs:
-        - build-openstack-sphinx-docs: {}
-    gate:
-      jobs:
-        - build-openstack-sphinx-docs: {}
+      - build-openstack-sphinx-docs
     post:
       jobs:
         - publish-static
@@ -25489,7 +25393,6 @@
       - publish-openstack-sphinx-docs
     check:
       jobs:
-        - build-openstack-sphinx-docs: {}
         - build-openstack-sphinx-docs:
             files:
               - ^tox.ini$
@@ -25498,7 +25401,6 @@
               - other-requirements.txt
     gate:
       jobs:
-        - build-openstack-sphinx-docs: {}
         - build-openstack-sphinx-docs:
             files:
               - ^tox.ini$
@@ -26575,7 +26477,6 @@
       - tripleo-puppet-jobs
     check:
       jobs:
-        - build-openstack-sphinx-docs: {}
         - legacy-tripleo-ci-centos-7-scenario001-multinode-oooq:
             files:
               - ^(docker|puppet)/services/glance.*$
@@ -26802,7 +26703,6 @@
               - ^test-requirements.txt$
     gate:
       jobs:
-        - build-openstack-sphinx-docs: {}
         - legacy-tripleo-ci-centos-7-containers-multinode:
             branches: ^(?!stable/(newton|ocata)).*$
         - legacy-tripleo-ci-centos-7-scenario001-multinode-oooq:
@@ -27621,7 +27521,6 @@
     check:
       jobs:
         - openstack-tox-linters
-        - build-openstack-sphinx-docs: {}
         - legacy-tripleo-ci-centos-7-3nodes-multinode:
             voting: false
             branches: ^(?!stable/newton).*$
@@ -27853,7 +27752,6 @@
       queue: tripleo
       jobs:
         - openstack-tox-linters
-        - build-openstack-sphinx-docs: {}
         - legacy-tripleo-ci-centos-7-containers-multinode:
             branches: ^(?!stable/(newton|ocata)).*$
         - legacy-tripleo-ci-centos-7-scenario001-multinode-oooq:
@@ -29305,12 +29203,7 @@
     name: openstack/workload-ref-archs
     templates:
       - system-required
-    check:
-      jobs:
-        - build-openstack-sphinx-docs: {}
-    gate:
-      jobs:
-        - build-openstack-sphinx-docs: {}
+      - build-openstack-sphinx-docs
 
 - project:
     name: openstack/wsme
