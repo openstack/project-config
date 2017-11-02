@@ -119,7 +119,7 @@ def tempdir():
 
 def install_and_load_requirements(reqroot, reqdir):
     sha = run_command("git --git-dir %s/.git rev-parse HEAD" % reqdir)[0]
-    print "requirements git sha: %s" % sha
+    print("requirements git sha: %s" % sha)
     req_venv = os.path.join(reqroot, 'venv')
     req_pip = os.path.join(req_venv, 'bin/pip')
     req_lib = os.path.join(req_venv, 'lib/python2.7/site-packages')
@@ -168,8 +168,8 @@ def main():
                                    "git://git.openstack.org "
                                    "openstack/requirements"
                                    % dict(zc=zc, root=reqroot))
-            print out
-            print err
+            print(out)
+            print(err)
         else:
             reqdir = args.reqs
 

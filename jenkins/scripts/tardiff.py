@@ -100,7 +100,7 @@ class OpenStackTarDiff:
                 pass
         if len(self.missing_files) > 0:
             self.error("files missing in package: %s" % self.missing_files)
-        print "SUCCESS: Generated package '%s' is valid" % self.package
+        print("SUCCESS: Generated package '%s' is valid" % self.package)
 
     def get_project_name(self):
         """ get git project name """

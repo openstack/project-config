@@ -71,6 +71,6 @@ while not done:
                 continue
             if value['name'] == 'Jenkins':
                 continue
-            print "%s\t%s" % (change['project'], value['name'])
+            print("%s\t%s" % (change['project'], value['name']))
     last_change = change
     done = not last_change.get('_more_changes', False)
