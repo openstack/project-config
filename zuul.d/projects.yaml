@@ -510,7 +510,7 @@
     name: openstack-infra/elastic-recheck
     templates:
       - system-required
-      - build-openstack-sphinx-docs
+      - publish-openstack-sphinx-docs-infra
     check:
       jobs:
         - openstack-tox-pep8
@@ -521,10 +521,6 @@
       jobs:
         - openstack-tox-pep8
         - openstack-tox-py27
-    post:
-      jobs:
-        - legacy-elastic-recheck-docs:
-            branches: ^(?!bug/).*$
 
 - project:
     name: openstack-infra/err2d2
@@ -908,11 +904,7 @@
     name: openstack-infra/openstack-zuul-jobs
     templates:
       - system-required
-      - build-openstack-sphinx-docs
-    post:
-      jobs:
-        - publish-openstack-sphinx-docs-infra:
-            branches: ^(?!bug/).*$
+      - publish-openstack-sphinx-docs-infra
 
 - project:
     name: openstack-infra/openstack-zuul-roles
