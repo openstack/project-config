@@ -39,9 +39,12 @@ def check_system_templates():
             if not correct:
                 raise
         except:
-            print("Project %s has no system-required template" %
+            print("ERROR: Project %s has no system-required template" %
                   project['name'])
             errors = True
+
+    if not errors:
+        print("... all fine.")
     return errors
 
 
@@ -53,7 +56,7 @@ def normalize(s):
 def check_projects_sorted():
     """Check that the projects are in alphabetical order per section."""
 
-    print("Checking project list for alphabetical order")
+    print("\nChecking project list for alphabetical order")
     print("============================================")
 
     errors = False
@@ -61,10 +64,47 @@ def check_projects_sorted():
     for entry in projects:
         current = entry['project']['name']
         if (normalize(last) > normalize(current)):
-            print("  Wrong alphabetical order: %(last)s, %(current)s" %
+            print("  ERROR: Wrong alphabetical order: %(last)s, %(current)s" %
                   {"last": last, "current": current})
             errors = True
         last = current
+
+    if not errors:
+        print("... all fine.")
+    return errors
+
+
+def check_release_jobs():
+    """Minimal release job checks."""
+
+    release_templates = [
+        'release-openstack-server',
+        'publish-to-pypi',
+        'publish-to-pypi-neutron',
+        'publish-to-pypi-horizon',
+        'puppet-release-jobs',
+        'nodejs4-publish-to-npm',
+        'nodejs6-publish-to-npm',
+        'xstatic-publish-jobs'
+    ]
+
+    errors = False
+    print("\nChecking release jobs")
+    print("======================")
+    for entry in projects:
+        project = entry['project']
+        name = project['name']
+        found = [tmpl for tmpl in project['templates']
+                 if tmpl in release_templates]
+        if len(found) > 1:
+            errors = True
+            print("  ERROR: Found multiple release jobs for %s:" % name)
+            for x in found:
+                print("    %s" % x)
+            print("  Use only one of them.")
+
+    if not errors:
+        print("... all fine.")
     return errors
 
 
@@ -72,12 +112,14 @@ def check_all():
 
     errors = check_system_templates()
     errors = check_projects_sorted() or errors
+    errors = check_release_jobs() or errors
 
     if errors:
-        print("\nFound errors in zuul.d/projects.yaml!")
+        print("\nFound errors in zuul.d/projects.yaml!\n")
     else:
-        print("\nNo errors found in zuul.d/projects.yaml!")
+        print("\nNo errors found in zuul.d/projects.yaml!\n")
     return errors
+
 
 if __name__ == "__main__":
     sys.exit(check_all())
