@@ -9,6 +9,8 @@ dashboard:
             **This dashboard is managed by [Grafyaml](http://docs.openstack.org/infra/system-config/grafyaml.html).**
 
             If you would like to make changes to this dashboard, please see the grafana directory in [project-config](https://git.openstack.org/cgit/openstack-infra/project-config/tree/grafana/networking-sfc.yaml).
+
+            NOTE - 'No datapoints' in a graph means there have been no job failures reported yet.
           type: text
     - title: Graphs
       height: 320px
@@ -16,31 +18,31 @@ dashboard:
         - title: Unit Test Failure Rates (Check queue)
           span: 4
           targets:
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-networking-sfc-python27-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-networking-sfc-python27-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-networking-sfc-python27-ubuntu-xenial')
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-networking-sfc-python35.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-networking-sfc-python35.{SUCCESS,FAILURE})),'24hours'), 'gate-networking-sfc-python35')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_networking-sfc.master.job.openstack-tox-py27.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_networking-sfc.master.job.openstack-tox-py27.{SUCCESS,FAILURE})),'24hours'), 'openstack-tox-py27')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_networking-sfc.master.job.openstack-tox-py35.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_networking-sfc.master.job.openstack-tox-py35.{SUCCESS,FAILURE})),'24hours'), 'openstack-tox-py35')
           type: graph
         - title: Unit Test Failure Rates (Gate queue)
           span: 4
           targets:
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-networking-sfc-python27-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-networking-sfc-python27-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-networking-sfc-python27-ubuntu-xenial')
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-networking-sfc-python35.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-networking-sfc-python35.{SUCCESS,FAILURE})),'24hours'), 'gate-networking-sfc-python35')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_networking-sfc.master.job.openstack-tox-py27.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_networking-sfc.master.job.openstack-tox-py27.{SUCCESS,FAILURE})),'24hours'), 'openstack-tox-py27')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_networking-sfc.master.job.openstack-tox-py35.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_networking-sfc.master.job.openstack-tox-py35.{SUCCESS,FAILURE})),'24hours'), 'openstack-tox-py35')
           type: graph
         - title: Periodic Job Failure Rates
           span: 4
           targets:
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.periodic.job.periodic-networking-sfc-py35-with-neutron-lib-master.FAILURE),sum(stats_counts.zuul.pipeline.periodic.job.periodic-networking-sfc-py35-with-neutron-lib-master.{SUCCESS,FAILURE})),'24hours'), 'periodic-networking-sfc-py35-with-neutron-lib-master')
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.periodic.job.periodic-tempest-dsvm-networking-sfc-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.periodic.job.periodic-tempest-dsvm-networking-sfc-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'periodic-tempest-dsvm-networking-sfc-ubuntu-xenial')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.periodic.project.git_openstack_org.openstack_networking-sfc.master.job.legacy-periodic-py35-with-neutron-lib-master.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.periodic.project.git_openstack_org.openstack_networking-sfc.master.job.legacy-periodic-py35-with-neutron-lib-master.{SUCCESS,FAILURE})),'24hours'), 'legacy-periodic-py35-with-neutron-lib-master')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.periodic.project.git_openstack_org.openstack_networking-sfc.master.job.networking-sfc-periodic-tempest-dsvm.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.periodic.project.git_openstack_org.openstack_networking-sfc.master.job.networking-sfc-periodic-tempest-dsvm.{SUCCESS,FAILURE})),'24hours'), 'networking-sfc-periodic-tempest-dsvm')
           type: graph
         - title: Integrated Failure Rates (Check queue)
           span: 4
           targets:
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-tempest-dsvm-networking-sfc-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-tempest-dsvm-networking-sfc-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-tempest-dsvm-networking-sfc-ubuntu-xenial')
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-networking-sfc-functional-dsvm-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-networking-sfc-functional-dsvm-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-networking-sfc-functional-dsvm')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_networking-sfc.master.job.networking-sfc-functional-dsvm.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_networking-sfc.master.job.networking-sfc-functional-dsvm.{SUCCESS,FAILURE})),'24hours'), 'networking-sfc-functional-dsvm')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_networking-sfc.master.job.networking-sfc-tempest-dsvm.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_networking-sfc.master.job.networking-sfc-tempest-dsvm.{SUCCESS,FAILURE})),'24hours'), 'networking-sfc-tempest-dsvm')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_networking-sfc.master.job.networking-sfc-tempest-dsvm-multinode.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_networking-sfc.master.job.networking-sfc-tempest-dsvm-multinode.{SUCCESS,FAILURE})),'24hours'), 'networking-sfc-tempest-dsvm-multinode')
           type: graph
         - title: Integrated Failure Rates (Gate queue)
           span: 4
           targets:
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-tempest-dsvm-networking-sfc-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-tempest-dsvm-networking-sfc-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-tempest-dsvm-networking-sfc-ubuntu-xenial')
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-networking-sfc-functional-dsvm-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-networking-sfc-functional-dsvm-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-networking-sfc-functional-dsvm')
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-tempest-dsvm-networking-sfc-multinode-ubuntu-xenial-nv.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-tempest-dsvm-networking-sfc-multinode-ubuntu-xenial-nv.{SUCCESS,FAILURE})),'24hours'), 'gate-tempest-dsvm-networking-sfc-multinode-ubuntu-xenial-nv')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_networking-sfc.master.job.networking-sfc-functional-dsvm.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_networking-sfc.master.job.networking-sfc-functional-dsvm.{SUCCESS,FAILURE})),'24hours'), 'networking-sfc-functional-dsvm')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_networking-sfc.master.job.networking-sfc-tempest-dsvm.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_networking-sfc.master.job.networking-sfc-tempest-dsvm.{SUCCESS,FAILURE})),'24hours'), 'networking-sfc-tempest-dsvm')
           type: graph
