@@ -30,6 +30,10 @@ elif [[ "$DISTRO_NAME" =~ (centos|fedora) ]] ; then
     service_name=iptables
 elif [[ "$DISTRO_NAME" == 'opensuse' ]] ; then
     service_name=SuSEfirewall2
+elif [[ "$DISTRO_NAME" == 'gentoo' ]] ; then
+    service_name=iptables  # for systemd
+    service_name1=iptables  # for openrc
+    service_name2=ip6tables  # for openrc
 else
     echo "Unsupported operating system $DISTRO_NAME"
     exit 1
@@ -44,6 +48,10 @@ case "$DIB_INIT_SYSTEM" in
         if [[ "$DISTRO_NAME" =~ (centos|fedora) ]] ; then
             systemctl enable ip6tables.service
         fi
+        ;;
+    openrc)
+        rc-update add ${service_name1} default
+        rc-update add ${service_name2} default
         ;;
     *)
         echo "Unsupported init system $DIB_INIT_SYSTEM"

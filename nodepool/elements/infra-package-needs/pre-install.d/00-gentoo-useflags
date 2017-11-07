@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [ "${DIB_DEBUG_TRACE:-0}" -gt 0 ]; then
+    set -x
+fi
+set -eu
+set -o pipefail
+
+# needed for unbound
+if [ "${DISTRO_NAME}" == "gentoo" ]; then
+    mkdir -p /etc/portage/package.use
+    echo "dev-libs/openssl static-libs -bindist" >> /etc/portage/package.use/openssl
+    echo "net-misc/openssh -bindist" >> /etc/portage/package.use/openssh
+    echo "sys-libs/zlib static-libs" >> /etc/portage/package.use/zlib
+fi
