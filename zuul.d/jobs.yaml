@@ -256,6 +256,33 @@
         name: afs
 
 - job:
+    name: publish-openstack-sphinx-tox-docs
+    description: |
+      Publish the results of the build-openstack-sphinx-docs job to
+      /afs/.openstack.org/docs/{{ zuul.project.short_name }}.
+
+      Publishes depending on branch to latest/ (for master), or the
+      basename of the branch like pike (for stable/pike).
+      This uses the tox "docs" environment for publishing.
+    final: true
+    pre-run: playbooks/python-docs/pre.yaml
+    run: playbooks/project-config/run-tox.yaml
+    post-run:
+      - playbooks/python-docs/post.yaml
+      - playbooks/publish/openstack-afs.yaml
+    required-projects:
+      - name: openstack/requirements
+    roles:
+      - zuul: openstack-infra/zuul-jobs
+      - zuul: openstack-infra/openstack-zuul-jobs
+    vars:
+      tox_constraints_file: '{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt'
+      tox_envlist: docs
+    secrets:
+      - secret: afsdocs_secret
+        name: afs
+
+- job:
     name: publish-openstack-releasenotes
     description: |
       Publish the results of build-openstack-releasenotes to
@@ -560,6 +587,7 @@
         ZUUL_BRANCH: '{{ zuul.branch }}'
         ZUUL_UUID: '{{ zuul.build }}'
         ZUUL_NEWREF: '{{ zuul.ref }}'
+
 - job:
     name: publish-openstack-manuals
     parent: publish-openstack-manuals-base
