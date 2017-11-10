@@ -1138,6 +1138,26 @@ diskimages:
       DIB_IMAGE_CACHE: /opt/dib_cache
       QEMU_IMG_OPTIONS: compat=0.10
       DIB_GRUB_TIMEOUT: '0'
+  - name: gentoo
+    elements:
+      - gentoo
+      - vm
+      - simple-init
+      - openstack-repos
+      - nodepool-base
+      - growroot
+      - infra-package-needs
+    env-vars:
+      TMPDIR: /opt/dib_tmp
+      DIB_CHECKSUM: '1'
+      DIB_IMAGE_CACHE: /opt/dib_cache
+      QEMU_IMG_OPTIONS: compat=0.10
+      DIB_GRUB_TIMEOUT: '0'
+      GENTOO_PORTAGE_CLEANUP: 'True'
+      DIB_INSTALLTYPE_pip_and_virtualenv: 'package'
+      DIB_INSTALLTYPE_simple_init: 'repo'
+      GENTOO_PYTHON_TARGETS: 'python2_7 python3_5'
+      GENTOO_PYTHON_ACTIVE_VERSION: python3.5
   - name: opensuse-423
     elements:
       - opensuse-minimal
