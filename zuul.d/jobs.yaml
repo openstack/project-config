@@ -777,24 +777,10 @@
     max: 1
 
 - job:
-    name: build-wheel-mirror
+    name: build-wheel-mirror-base
     pre-run: playbooks/wheel/pre.yaml
     run: playbooks/wheel/build.yaml
     post-run: playbooks/wheel/release.yaml
-    nodeset:
-      # NOTE: The python2 and python3 suffix are important, they select the
-      # version of python to build in each job. (we pull the last character of
-      # the inventory_hostname)
-      # TODO(mordred): Replace the suffix with host_vars once we have them.
-      nodes:
-        - name: wheel-mirror-ubuntu-xenial-python2
-          label: ubuntu-xenial
-        - name: wheel-mirror-ubuntu-trusty-python2
-          label: ubuntu-trusty
-        - name: wheel-mirror-ubuntu-xenial-python3
-          label: ubuntu-xenial
-        - name: wheel-mirror-ubuntu-trusty-python3
-          label: ubuntu-trusty
     # 2.5 hours
     timeout: 9000
     # The job iterates over all branches, so we only need to run it on
@@ -814,6 +800,34 @@
     secrets:
       - name: afs
         secret: wheel_keytab
+
+- job:
+    name: build-wheel-mirror-ubuntu-trusty
+    parent: build-wheel-mirror-base
+    nodeset:
+      # NOTE: The python2 and python3 suffix are important, they select the
+      # version of python to build in each job. (we pull the last character of
+      # the inventory_hostname)
+      # TODO(mordred): Replace the suffix with host_vars once we have them.
+      nodes:
+        - name: wheel-mirror-ubuntu-trusty-python2
+          label: ubuntu-trusty
+        - name: wheel-mirror-ubuntu-trusty-python3
+          label: ubuntu-trusty
+
+- job:
+    name: build-wheel-mirror-ubuntu-xenial
+    parent: build-wheel-mirror-base
+    nodeset:
+      # NOTE: The python2 and python3 suffix are important, they select the
+      # version of python to build in each job. (we pull the last character of
+      # the inventory_hostname)
+      # TODO(mordred): Replace the suffix with host_vars once we have them.
+      nodes:
+        - name: wheel-mirror-ubuntu-xenial-python2
+          label: ubuntu-xenial
+        - name: wheel-mirror-ubuntu-xenial-python3
+          label: ubuntu-xenial
 
 - job:
     name: release-wheel-mirror

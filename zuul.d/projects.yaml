@@ -22657,10 +22657,12 @@
         - publish-loci-requirements
     periodic:
       jobs:
-        - build-wheel-mirror
+        - build-wheel-mirror-ubuntu-trusty
+        - build-wheel-mirror-ubuntu-xenial
         - release-wheel-mirror:
             dependencies:
-              - build-wheel-mirror
+              - build-wheel-mirror-ubuntu-trusty
+              - build-wheel-mirror-ubuntu-xenial
         - propose-updates:
             branches: master
             vars:
