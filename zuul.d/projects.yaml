@@ -11821,7 +11821,12 @@
     name: openstack/magnum-tempest-plugin
     templates:
       - system-required
-      - openstack-python-jobs
+    check:
+      jobs:
+        - openstack-tox-pep8
+    gate:
+      jobs:
+        - openstack-tox-pep8
     post:
       jobs:
         - publish-openstack-python-branch-tarball
