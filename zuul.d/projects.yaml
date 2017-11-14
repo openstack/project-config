@@ -28372,6 +28372,7 @@
     name: openstack/tripleo-ui
     templates:
       - system-required
+      - nodejs6-jobs
       - nodejs6-publish-to-npm
       - release-notes-jobs
       - translation-jobs
@@ -28379,24 +28380,9 @@
       - translation-jobs-pike
     check:
       jobs:
-        - legacy-tripleo-ui-nodejs6-npm-run-test
-        - legacy-tripleo-ui-nodejs6-npm-run-lint
         - legacy-tripleo-ci-centos-7-undercloud-oooq
-        - legacy-tripleo-ci-centos-7-undercloud-upgrades:
-            voting: false
-            branches: ^(?!stable/newton).*$
-            irrelevant-files:
-              - ^.*\.md$
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^metadata.json$
-              - ^releasenotes/.*$
-              - ^test-requirements.txt$
     gate:
       jobs:
-        - legacy-tripleo-ui-nodejs6-npm-run-test
-        - legacy-tripleo-ui-nodejs6-npm-run-lint
         - legacy-tripleo-ci-centos-7-undercloud-oooq
     post:
       jobs:
