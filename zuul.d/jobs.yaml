@@ -777,7 +777,9 @@
     max: 1
 
 - job:
-    name: build-wheel-mirror-base
+    # NOTE(pabelanger): Please keep in sync with
+    # build-wheel-mirror-ubuntu-xenial
+    name: build-wheel-mirror-ubuntu-trusty
     pre-run: playbooks/wheel/pre.yaml
     run: playbooks/wheel/build.yaml
     post-run: playbooks/wheel/release.yaml
@@ -796,14 +798,6 @@
       - openstack-infra/system-config
       - openstack-infra/puppet-kerberos
       - openstack-infra/puppet-openafs
-    semaphore: wheel-mirror
-    secrets:
-      - name: afs
-        secret: wheel_keytab
-
-- job:
-    name: build-wheel-mirror-ubuntu-trusty
-    parent: build-wheel-mirror-base
     nodeset:
       # NOTE: The python2 and python3 suffix are important, they select the
       # version of python to build in each job. (we pull the last character of
@@ -814,10 +808,33 @@
           label: ubuntu-trusty
         - name: wheel-mirror-ubuntu-trusty-python3
           label: ubuntu-trusty
+    semaphore: wheel-mirror
+    secrets:
+      - name: afs
+        secret: wheel_keytab
 
 - job:
+    # NOTE(pabelanger): Please keep in sync with
+    # build-wheel-mirror-ubuntu-trusty
     name: build-wheel-mirror-ubuntu-xenial
-    parent: build-wheel-mirror-base
+    pre-run: playbooks/wheel/pre.yaml
+    run: playbooks/wheel/build.yaml
+    post-run: playbooks/wheel/release.yaml
+    # 2.5 hours
+    timeout: 9000
+    # The job iterates over all branches, so we only need to run it on
+    # master.
+    branches: master
+    final: true
+    allowed-projects:
+      - openstack/requirements
+    roles:
+      - zuul: openstack-infra/ansible-puppet
+        name: puppet
+    required-projects:
+      - openstack-infra/system-config
+      - openstack-infra/puppet-kerberos
+      - openstack-infra/puppet-openafs
     nodeset:
       # NOTE: The python2 and python3 suffix are important, they select the
       # version of python to build in each job. (we pull the last character of
@@ -828,6 +845,10 @@
           label: ubuntu-xenial
         - name: wheel-mirror-ubuntu-xenial-python3
           label: ubuntu-xenial
+    semaphore: wheel-mirror
+    secrets:
+      - name: afs
+        secret: wheel_keytab
 
 - job:
     name: release-wheel-mirror
