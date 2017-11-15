@@ -22578,10 +22578,12 @@
         - publish-loci-requirements
     periodic:
       jobs:
+        - build-wheel-mirror-centos-7
         - build-wheel-mirror-ubuntu-trusty
         - build-wheel-mirror-ubuntu-xenial
         - release-wheel-mirror:
             dependencies:
+              - build-wheel-mirror-centos-7
               - build-wheel-mirror-ubuntu-trusty
               - build-wheel-mirror-ubuntu-xenial
         - propose-updates:
