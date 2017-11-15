@@ -22,7 +22,7 @@ function setup_git {
 
 # See if there is already open change. If so, get the change id for
 # the existing change for use in the commit msg.
-# Sets variable CHANGE_ID if there is a previous change.
+# Sets the variables CHANGE_ID and CHANGE_NUM if there is a previous change.
 # Sets variable COMMIT_MSG to include change id and INITIAL_COMMIT_MSG.
 function setup_commit_message {
     local PROJECT=$1
@@ -31,13 +31,17 @@ function setup_commit_message {
     local TOPIC=$4
     local INITIAL_COMMIT_MSG=$5
 
+    # Clear any old values
+    CHANGE_ID=""
+    # CHANGE_NUM will be the change number (for example 519105)
+    CHANGE_NUM=""
     # See if there is an open change, if so, get the change id for the
     # existing change for use in the commit message.
     local change_info=$(ssh -p 29418 $USERNAME@review.openstack.org \
         gerrit query --current-patch-set status:open project:$PROJECT \
         owner:$USERNAME branch:$BRANCH topic:$TOPIC)
-    local previous=$(echo "$change_info" | grep "^  number:" | awk '{print $2}')
-    if [ -n "$previous" ]; then
+    CHANGE_NUM=$(echo "$change_info" | grep "^  number:" | awk '{print $2}')
+    if [ -n "$CHANGE_NUM" ]; then
         CHANGE_ID=$(echo "$change_info" | grep "^change" | awk '{print $2}')
         # read returns a non zero value when it reaches EOF. Because we use a
         # heredoc here it will always reach EOF and return a nonzero value.
