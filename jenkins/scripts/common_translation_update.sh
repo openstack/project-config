@@ -321,15 +321,20 @@ function send_patch {
         git commit -F- <<EOF
 $COMMIT_MSG
 EOF
-        # Do error checking manually to ignore one class of failure.
-        set +e
-        # We cannot rely on the default branch in .gitreview being
-        # correct so we are very explicit here.
-        output=$(git review -t $TOPIC $branch)
-        ret=$?
-        [[ "$ret" -eq 0 || "$output" =~ "No changes between prior commit" ]]
-        success=$?
-        set -e
+        CUR_PATCH_ID=$(git show | git patch-id | awk '{print $1}')
+        # Don't submit if we have the same patch id of previously submitted
+        # patchset
+        if [[ "${PREV_PATCH_ID}" != "${CUR_PATCH_ID}" ]]; then
+            # Do error checking manually to ignore one class of failure.
+            set +e
+            # We cannot rely on the default branch in .gitreview being
+            # correct so we are very explicit here.
+            output=$(git review -t $TOPIC $branch)
+            ret=$?
+            [[ "$ret" -eq 0 || "$output" =~ "No changes between prior commit" ]]
+            success=$?
+            set -e
+        fi
     fi
     return $success
 }
