@@ -792,6 +792,22 @@
       - openstack-infra/puppet-openafs
 
 - job:
+    name: build-wheel-mirror-centos-7
+    parent: build-wheel-mirror-base
+    final: true
+    nodeset:
+      # NOTE: The python2 and python3 suffix are important, they select the
+      # version of python to build in each job. (we pull the last character of
+      # the inventory_hostname)
+      # TODO(mordred): Replace the suffix with host_vars once we have them.
+      nodes:
+        - name: wheel-mirror-centos-7-python2
+          label: centos-7
+    secrets:
+      - name: afs
+        secret: wheel_keytab
+
+- job:
     name: build-wheel-mirror-ubuntu-trusty
     parent: build-wheel-mirror-base
     final: true
