@@ -7,12 +7,16 @@
     - legacy-copy-project-config-scripts
 
   pre_tasks:
-    # NOTE(pabelanger): We should consider switching away from parallel so we
-    # don't need to enable EPEL for centos 7.
-    - name: Manually install parallel from EPEL
+    # NOTE(pabelanger): Manually install EPEL dependencies as not to keep EPEL
+    # enabled.
+    - name: Manually install EPEL dependencies
       become: yes
       yum:
-        name: parallel
+        name: "{{ item }}"
         enablerepo: epel
         state: present
       when: ansible_distribution == "CentOS"
+      with_items:
+        - dkms
+        - kstart
+        - parallel
