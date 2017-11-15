@@ -773,9 +773,7 @@
     run: playbooks/proposal/propose-project-config-update.yaml
 
 - job:
-    # NOTE(pabelanger): Please keep in sync with
-    # build-wheel-mirror-ubuntu-xenial
-    name: build-wheel-mirror-ubuntu-trusty
+    name: build-wheel-mirror-base
     pre-run: playbooks/wheel/pre.yaml
     run: playbooks/wheel/build.yaml
     # 2.5 hours
@@ -783,7 +781,6 @@
     # The job iterates over all branches, so we only need to run it on
     # master.
     branches: master
-    final: true
     allowed-projects:
       - openstack/requirements
     roles:
@@ -793,6 +790,11 @@
       - openstack-infra/system-config
       - openstack-infra/puppet-kerberos
       - openstack-infra/puppet-openafs
+
+- job:
+    name: build-wheel-mirror-ubuntu-trusty
+    parent: build-wheel-mirror-base
+    final: true
     nodeset:
       # NOTE: The python2 and python3 suffix are important, they select the
       # version of python to build in each job. (we pull the last character of
@@ -808,26 +810,9 @@
         secret: wheel_keytab
 
 - job:
-    # NOTE(pabelanger): Please keep in sync with
-    # build-wheel-mirror-ubuntu-trusty
     name: build-wheel-mirror-ubuntu-xenial
-    pre-run: playbooks/wheel/pre.yaml
-    run: playbooks/wheel/build.yaml
-    # 2.5 hours
-    timeout: 9000
-    # The job iterates over all branches, so we only need to run it on
-    # master.
-    branches: master
+    parent: build-wheel-mirror-base
     final: true
-    allowed-projects:
-      - openstack/requirements
-    roles:
-      - zuul: openstack-infra/ansible-puppet
-        name: puppet
-    required-projects:
-      - openstack-infra/system-config
-      - openstack-infra/puppet-kerberos
-      - openstack-infra/puppet-openafs
     nodeset:
       # NOTE: The python2 and python3 suffix are important, they select the
       # version of python to build in each job. (we pull the last character of
