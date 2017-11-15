@@ -133,8 +133,8 @@ for PROJECT in $PROJECTS; do
     # don't bother with this project if there's not a usable branch
     if [ -n "$BRANCH" ] ; then
 
-        # Function setup_commit_message will set CHANGE_ID if a change
-        # exists and will always set COMMIT_MSG.
+        # Function setup_commit_message will set CHANGE_ID and CHANGE_NUM if a
+        # change exists and will always set COMMIT_MSG.
         setup_commit_message $PROJECT $USERNAME $BRANCH $TOPIC "$INITIAL_COMMIT_MSG"
 
         git checkout -B ${BRANCH} -t origin/${BRANCH}
@@ -153,6 +153,25 @@ for PROJECT in $PROJECTS; do
             echo "Error in git review -s: Ignoring $PROJECT"
             continue
         fi
+
+        pushd $PROJECT_DIR
+        # If a change already exists, let's pull it in and compute the
+        # 'git patch-id' of it.
+        PREV_PATCH_ID=""
+        if [[ -n ${CHANGE_NUM} ]]; then
+            # Ignore errors we get in case we can't download the patch with
+            # git-review. If that happens then we will submit a new patch.
+            set +e
+            git review -d ${CHANGE_NUM}
+            RET=$?
+            if [[ "$RET" -eq 0 ]]; then
+                PREV_PATCH_ID=$(git show | git patch-id | awk '{print $1}')
+            fi
+            set -e
+            # The git review changed our branch, go back to our correct branch
+            git checkout -f ${BRANCH}
+        fi
+        popd
 
         # Don't short circuit when one project fails to sync.
         set +e
@@ -173,14 +192,19 @@ for PROJECT in $PROJECTS; do
 $COMMIT_MSG
 EOF
             # Do error checking manually to ignore one class of failure.
-            set +e
-            OUTPUT=$(git review -t $TOPIC $BRANCH)
-            RET=$?
-            [[ "$RET" -eq "0" || "$OUTPUT" =~ "no new changes" || "$OUTPUT" =~ "no changes made" ]]
-            SUCCESS=$?
-            [[ "$SUCCESS" -eq "0" && "$ALL_SUCCESS" -eq "0" ]]
-            ALL_SUCCESS=$?
-            set -e
+            CUR_PATCH_ID=$(git show | git patch-id | awk '{print $1}')
+            # Don't submit if we have the same patch id of previously submitted
+            # patchset
+            if [[ "${PREV_PATCH_ID}" != "${CUR_PATCH_ID}" ]]; then
+                set +e
+                OUTPUT=$(git review -t $TOPIC $BRANCH)
+                RET=$?
+                [[ "$RET" -eq "0" || "$OUTPUT" =~ "no new changes" || "$OUTPUT" =~ "no changes made" ]]
+                SUCCESS=$?
+                [[ "$SUCCESS" -eq "0" && "$ALL_SUCCESS" -eq "0" ]]
+                ALL_SUCCESS=$?
+                set -e
+            fi
         fi
     fi
 
