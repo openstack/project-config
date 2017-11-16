@@ -13537,11 +13537,25 @@
       - publish-to-pypi
     check:
       jobs:
+        - openstack-tox-pep8:
+            required-projects:
+              - openstack/networking-sfc
+        - openstack-tox-py27:
+            required-projects:
+              - openstack/networking-sfc
         - legacy-tempest-dsvm-networking-onos:
             voting: false
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^setup.cfg$
+    gate:
+      jobs:
+        - openstack-tox-pep8:
+            required-projects:
+              - openstack/networking-sfc
+        - openstack-tox-py27:
+            required-projects:
+              - openstack/networking-sfc
 
 - project:
     name: openstack/networking-opencontrail
