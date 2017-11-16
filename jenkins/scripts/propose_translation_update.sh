@@ -262,7 +262,26 @@ function propose_reactjs {
 setup_git
 
 # Check whether a review already exists, setup review commit message.
+# Function setup_review calls setup_commit_message which will set CHANGE_ID and
+# CHANGE_NUM if a change exists and will always set COMMIT_MSG.
 setup_review "$BRANCH"
+
+# If a change already exists, let's pull it in and compute the
+# 'git patch-id' of it.
+PREV_PATCH_ID=""
+if [[ -n ${CHANGE_NUM} ]]; then
+    # Ignore errors we get in case we can't download the patch with
+    # git-review. If that happens then we will submit a new patch.
+    set +e
+    git review -d ${CHANGE_NUM}
+    RET=$?
+    if [[ "$RET" -eq 0 ]]; then
+        PREV_PATCH_ID=$(git show | git patch-id | awk '{print $1}')
+    fi
+    set -e
+    # The git review changed our branch, go back to our correct branch
+    git checkout -f ${BRANCH}
+fi
 
 # Setup venv - needed for all projects for subunit
 setup_venv
