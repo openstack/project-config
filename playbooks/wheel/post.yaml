@@ -1,0 +1,20 @@
+- hosts: all
+  strategy: free
+
+  pre_tasks:
+    - name: Generate AFS slug
+      set_fact:
+        afs_slug: "{{ ansible_distribution|lower }}-{{ ansible_distribution_version }}-{{ ansible_architecture }}"
+
+    - name: Set fact for AFS dir
+      set_fact:
+        afs_dir: "/afs/.openstack.org/mirror/wheel/{{ afs_slug }}/"
+
+    - name: Set fact for wheel dir
+      set_fact:
+        wheel_dir: /opt/wheel/workspace
+
+  roles:
+    - create-afs-token
+    - copy-wheels
+    - destroy-afs-token
