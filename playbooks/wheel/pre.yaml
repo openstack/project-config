@@ -7,6 +7,14 @@
     - legacy-copy-project-config-scripts
 
   pre_tasks:
+    # NOTE(pabelanger): Needed by puppet-openafs package.
+    - name: Add OpenAFS OpenStack CI build
+      yum_repository:
+        name: openafs
+        baseurl: https://tarballs.openstack.org/project-config/package-afs-centos7
+        gpgcheck: no
+      when: ansible_distribution == "CentOS"
+
     # NOTE(pabelanger): Manually install EPEL dependencies as not to keep EPEL
     # enabled.
     - name: Manually install EPEL dependencies
