@@ -54,7 +54,11 @@ def main():
     args = parser.parse_args()
 
     # Connect to Launchpad
-    print("Connecting to Launchpad...")
+    print(
+        "Connecting to Launchpad at {!r} using credentials in {!r}...".format(
+            args.lp_service_root,
+            args.lp_creds_file)
+    )
     launchpad = launchpadlib.launchpad.Launchpad.login_with(
         application_name='openstack-releasing',
         service_root=args.lp_service_root,
