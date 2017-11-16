@@ -63,6 +63,6 @@ fi
 # exercise for when the job is stable :) bz2 gave about 20%
 # improvement over gzip in testing.
 pushd ${LOGS}
-tar cvjf build-logs.tar.bz2 ./build
+tar zcvf build-logs.tar.gz ./build
 rm -rf ./build
 popd
