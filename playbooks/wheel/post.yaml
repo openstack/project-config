@@ -2,9 +2,15 @@
   strategy: free
 
   pre_tasks:
-    - name: Generate AFS slug
+    - name: Generate AFS slug - CentOS
+      set_fact:
+        afs_slug: "{{ ansible_distribution|lower }}-{{ ansible_distribution_major_version }}-{{ ansible_architecture }}"
+      when: ansible_distribution == "CentOS"
+
+    - name: Generate AFS slug - Ubuntu
       set_fact:
         afs_slug: "{{ ansible_distribution|lower }}-{{ ansible_distribution_version }}-{{ ansible_architecture }}"
+      when: ansible_distribution == "Ubuntu"
 
     - name: Set fact for AFS dir
       set_fact:
