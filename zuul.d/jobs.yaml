@@ -891,6 +891,7 @@
 - job:
     name: upstream-translation-update
     parent: propose-updates
+    pre-run: playbooks/releasenotes/pre.yaml
     run: playbooks/translation/upstream-translation-update.yaml
     post-run: playbooks/publish/openstack-artifacts.yaml
     semaphore: translations
@@ -906,6 +907,7 @@
 - job:
     name: propose-translation-update
     parent: propose-updates
+    pre-run: playbooks/releasenotes/pre.yaml
     run: playbooks/translation/propose-translation-update.yaml
     semaphore: translations
     required-projects:
