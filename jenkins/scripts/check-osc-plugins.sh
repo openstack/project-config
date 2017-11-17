@@ -20,7 +20,7 @@ function install_from_source {
     repo=$1
     root=$(mktemp -d)
     $zc --cache-dir /opt/git --workspace ${root} \
-        git://git.openstack.org openstack/${repo}
+        https://git.openstack.org openstack/${repo}
     (cd ${root}/openstack/${repo} && $venv/bin/pip install .)
     rm -rf $root
 }

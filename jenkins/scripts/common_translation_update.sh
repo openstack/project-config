@@ -390,7 +390,7 @@ function install_horizon {
     # Checkout same branch of horizon as the project - including
     # same constraints.
     git clone --depth=1 --branch $GIT_BRANCH \
-        git://git.openstack.org/openstack/horizon.git $HORIZON_ROOT/horizon
+        https://git.openstack.org/openstack/horizon.git $HORIZON_ROOT/horizon
     (cd ${HORIZON_ROOT}/horizon && $VENV/bin/pip install -c $UPPER_CONSTRAINTS_FILE .)
     rm -rf HORIZON_ROOT
     HORIZON_ROOT=""
