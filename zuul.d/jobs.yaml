@@ -793,8 +793,6 @@
 - job:
     name: build-wheel-mirror-centos-7
     parent: build-wheel-mirror-base
-    post-run: playbooks/wheel/post.yaml
-    final: true
     nodeset:
       # NOTE: The python2 and python3 suffix are important, they select the
       # version of python to build in each job. (we pull the last character of
@@ -803,6 +801,12 @@
       nodes:
         - name: wheel-mirror-centos-7-python2
           label: centos-7
+
+- job:
+    name: publish-wheel-mirror-centos-7
+    parent: build-wheel-mirror-centos-7
+    post-run: playbooks/publish/wheel-mirror.yaml
+    final: true
     secrets:
       - name: afs
         secret: wheel_keytab
@@ -810,8 +814,6 @@
 - job:
     name: build-wheel-mirror-ubuntu-trusty
     parent: build-wheel-mirror-base
-    post-run: playbooks/wheel/post.yaml
-    final: true
     nodeset:
       # NOTE: The python2 and python3 suffix are important, they select the
       # version of python to build in each job. (we pull the last character of
@@ -822,6 +824,12 @@
           label: ubuntu-trusty
         - name: wheel-mirror-ubuntu-trusty-python3
           label: ubuntu-trusty
+
+- job:
+    name: publish-wheel-mirror-ubuntu-trusty
+    parent: build-wheel-mirror-ubuntu-trusty
+    post-run: playbooks/publish/wheel-mirror.yaml
+    final: true
     secrets:
       - name: afs
         secret: wheel_keytab
@@ -829,8 +837,6 @@
 - job:
     name: build-wheel-mirror-ubuntu-xenial
     parent: build-wheel-mirror-base
-    post-run: playbooks/wheel/post.yaml
-    final: true
     nodeset:
       # NOTE: The python2 and python3 suffix are important, they select the
       # version of python to build in each job. (we pull the last character of
@@ -841,6 +847,12 @@
           label: ubuntu-xenial
         - name: wheel-mirror-ubuntu-xenial-python3
           label: ubuntu-xenial
+
+- job:
+    name: publish-wheel-mirror-ubuntu-xenial
+    parent: build-wheel-mirror-ubuntu-xenial
+    post-run: playbooks/publish/wheel-mirror.yaml
+    final: true
     secrets:
       - name: afs
         secret: wheel_keytab
