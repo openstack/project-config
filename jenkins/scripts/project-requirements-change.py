@@ -165,7 +165,7 @@ def main():
             out, err = run_command("%(zc)s "
                                    "--cache-dir /opt/git "
                                    "--workspace %(root)s "
-                                   "git://git.openstack.org "
+                                   "https://git.openstack.org "
                                    "openstack/requirements"
                                    % dict(zc=zc, root=reqroot))
             print(out)

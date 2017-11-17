@@ -56,7 +56,7 @@ Options:
   --ref -- The git reference to check out. Defaults to HEAD.
 
   --upstream -- The upstream server URL, without the git repo
-                part. Defaults to git://git.openstack.org
+                part. Defaults to https://git.openstack.org
 
 EOF
 }
@@ -66,7 +66,7 @@ WORKSPACE="."
 CACHE_DIR="${ZUUL_CACHE_DIR:-/opt/git}"
 BRANCH="master"
 REF=""
-UPSTREAM="git://git.openstack.org"
+UPSTREAM="https://git.openstack.org"
 
 OPTS=`getopt -o h --long branch:,cache-dir:,ref:,upstream:,workspace: -n $0 -- "$@"`
 if [ $? != 0 ] ; then

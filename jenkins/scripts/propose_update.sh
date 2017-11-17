@@ -114,7 +114,7 @@ for PROJECT in $PROJECTS; do
     #
     # TODO(fungi): switch to zuul-cloner once we add a persistent git cache
     # to proposal.slave.openstack.org
-    if ! git clone git://git.openstack.org/$PROJECT.git; then
+    if ! git clone https://git.openstack.org/$PROJECT.git; then
         # ALL_SUCCESS is being set to 1, which means that a failure condition
         # has been detected. The job will end in failure once it finishes
         # cycling through the remaining projects.
