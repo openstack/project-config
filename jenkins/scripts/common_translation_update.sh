@@ -59,8 +59,7 @@ function get_modulename {
     local project=$1
     local target=$2
 
-    $VENV/bin/python $SCRIPTSDIR/get-modulename.py \
-        -p $project -t $target
+    python $SCRIPTSDIR/get-modulename.py -p $project -t $target
 }
 
 function finish {
@@ -88,42 +87,27 @@ function finish {
     fi
 }
 
-# Setup venv with Babel and needed libraries in it.
-# Also extract version of project.
+# The ensure-babel and ensure-sphinx roles create a venv in ~/.venv containing
+# the needed software. However, it's possible we may want to switch that to
+# using pip install --user and ~/.local instead of a venv, so make this
+# compatible with either.
 function setup_venv {
-
-    # Note that this directory needs to be outside of the source tree,
-    # some other functions will fail if it's inside.
-    VENV=$(mktemp -d)
-    virtualenv $VENV
-
-    # Install babel using global upper constraints.
-    $VENV/bin/pip install 'Babel' -c $UPPER_CONSTRAINTS_FILE
-
-    # query-zanata-project-version.py and create-zanata-xml.py need
-    # lxml and requests.
-    $VENV/bin/pip install 'lxml' -c $UPPER_CONSTRAINTS_FILE
-    $VENV/bin/pip install 'requests' -c $UPPER_CONSTRAINTS_FILE
-
-    # Get version, run this twice - the first one will install pbr
-    # and get extra output.
-    # Note this might fail in some projects if the setup hook includes
-    # additional hooks like in tacker repository. Use
-    set +e
-    $VENV/bin/python setup.py --version
-    VERSION=$($VENV/bin/python setup.py --version)
-    set -e
-    VERSION=${VERSION:-unknown}
-
+    if [ -d ~/.venv ] ; then
+        source ~/.venv/bin/activate
+    else
+        # Ensure ~/.local/bin is in the path
+        export PATH=~/.local/bin:$PATH
+    fi
 }
+
 
 # Setup nodejs within the python venv. Match the nodejs version with
 # the one used in the nodejs6-npm jobs.
 function setup_nodeenv {
 
-    $VENV/bin/pip install -U nodeenv
-    NODE_VENV=$VENV/node_venv
-    $VENV/bin/nodeenv --node 6.9.4 $NODE_VENV
+    pip install --user nodeenv
+    NODE_VENV=~/.local/node_venv
+    ~/.local/bin/nodeenv --node 6.9.4 $NODE_VENV
     source $NODE_VENV/bin/activate
 
 }
@@ -140,7 +124,7 @@ function setup_project {
     # and .venv
     local exclude='.*/**'
 
-    $VENV/bin/python $SCRIPTSDIR/create-zanata-xml.py \
+    python $SCRIPTSDIR/create-zanata-xml.py \
         -p $project -v $version --srcdir . --txdir . \
         -r '**/*.pot' '{path}/{locale_with_underscore}/LC_MESSAGES/{filename}.po' \
         -e "$exclude" -f zanata.xml
@@ -220,7 +204,7 @@ function setup_manuals {
         ZANATA_RULES="$ZANATA_RULES -r ./releasenotes/source/locale/releasenotes.pot releasenotes/source/locale/{locale_with_underscore}/LC_MESSAGES/releasenotes.po"
     fi
 
-    $VENV/bin/python $SCRIPTSDIR/create-zanata-xml.py \
+    python $SCRIPTSDIR/create-zanata-xml.py \
         -p $project -v $version --srcdir . --txdir . \
         $ZANATA_RULES -e "$EXCLUDE" \
         -f zanata.xml
@@ -234,7 +218,7 @@ function setup_training_guides {
     # Update the .pot file
     tox -e generatepot-training
 
-    $VENV/bin/python $SCRIPTSDIR/create-zanata-xml.py \
+    python $SCRIPTSDIR/create-zanata-xml.py \
         -p $project -v $version \
         --srcdir doc/upstream-training/source/locale \
         --txdir doc/upstream-training/source/locale \
@@ -249,7 +233,7 @@ function setup_i18n {
     # Update the .pot file
     tox -e generatepot
 
-    $VENV/bin/python $SCRIPTSDIR/create-zanata-xml.py \
+    python $SCRIPTSDIR/create-zanata-xml.py \
         -p $project -v $version \
         --srcdir doc/source/locale \
         --txdir doc/source/locale \
@@ -271,7 +255,7 @@ function setup_reactjs_project {
     # Transform them into .pot files
     npm run json2pot
 
-    $VENV/bin/python $SCRIPTSDIR/create-zanata-xml.py \
+    python $SCRIPTSDIR/create-zanata-xml.py \
         -p $project -v $version --srcdir . --txdir . \
         -r '**/*.pot' '{path}/{locale}.po' \
         -e "$exclude" -f zanata.xml
@@ -372,7 +356,7 @@ function extract_messages_python {
     # Update the .pot files
     # The "_C" and "_P" prefix are for more-gettext-support blueprint,
     # "_C" for message with context, "_P" for plural form message.
-    $VENV/bin/pybabel ${QUIET} extract \
+    pybabel ${QUIET} extract \
         --add-comments Translators: \
         --msgid-bugs-address="https://bugs.launchpad.net/openstack-i18n/" \
         --project=${PROJECT} --version=${VERSION} \
@@ -385,16 +369,15 @@ function extract_messages_python {
 # our venv. The function setup_venv needs to be called first.
 function install_horizon {
 
-    # TODO(jaegerandi): Switch to zuul-cloner once it's safe to use
-    # zuul-cloner in post jobs and we have a persistent cache on
-    # proposal node.
+    # TODO(mordred) Replace this with something else that uses the horizon
+    # repo on disk
     HORIZON_ROOT=$(mktemp -d)
 
     # Checkout same branch of horizon as the project - including
     # same constraints.
     git clone --depth=1 --branch $GIT_BRANCH \
         https://git.openstack.org/openstack/horizon.git $HORIZON_ROOT/horizon
-    (cd ${HORIZON_ROOT}/horizon && $VENV/bin/pip install -c $UPPER_CONSTRAINTS_FILE .)
+    (cd ${HORIZON_ROOT}/horizon && pip install -c $UPPER_CONSTRAINTS_FILE .)
     rm -rf HORIZON_ROOT
     HORIZON_ROOT=""
 }
@@ -415,7 +398,7 @@ function extract_messages_django {
             mkdir -p ${modulename}/locale
             pot=${modulename}/locale/${DOMAIN}.pot
             touch ${pot}
-            $VENV/bin/pybabel ${QUIET} extract -F babel-${DOMAIN}.cfg \
+            pybabel ${QUIET} extract -F babel-${DOMAIN}.cfg \
                 --add-comments Translators: \
                 --msgid-bugs-address="https://bugs.launchpad.net/openstack-i18n/" \
                 --project=${PROJECT} --version=${VERSION} \
