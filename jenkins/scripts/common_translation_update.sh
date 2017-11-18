@@ -428,7 +428,7 @@ function extract_messages_releasenotes {
     local keep_workdir=$1
 
     # Extract messages
-    sphinx-build -b gettext -d releasenotes/build/doctrees \
+    .venv/bin/sphinx-build -b gettext -d releasenotes/build/doctrees \
         releasenotes/source releasenotes/work
     rm -rf releasenotes/build
     # Concatenate messages into one POT file
