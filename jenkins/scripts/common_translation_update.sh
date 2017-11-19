@@ -137,7 +137,9 @@ function setup_project {
     shift 2
     # All argument(s) contain module names now.
 
-    local exclude='.tox/**'
+    # Exclude all dot-files, particuarly for things such such as .tox
+    # and .venv
+    local exclude='.*/**'
 
     $VENV/bin/python $SCRIPTSDIR/create-zanata-xml.py \
         -p $project -v $version --srcdir . --txdir . \
