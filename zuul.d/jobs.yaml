@@ -909,6 +909,7 @@
     semaphore: translations
     vars:
       fileserver_leading_path: translation-source
+      constraints_file: '{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt'
     required-projects:
       - openstack/requirements
     secrets:
@@ -921,6 +922,8 @@
     parent: propose-updates
     pre-run: playbooks/translation/pre.yaml
     run: playbooks/translation/propose-translation-update.yaml
+    vars:
+      constraints_file: '{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt'
     semaphore: translations
     required-projects:
       - openstack/requirements
