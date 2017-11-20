@@ -16033,9 +16033,11 @@
       - tripleo-puppet-jobs
       - experimental-tripleo-jobs
       - openstack-python-jobs
-      - openstack-python35-jobs
     check:
       jobs:
+        - openstack-tox-py35:
+            # we don't support python3.5 in os-net-config / newton
+            branches: ^(?!stable/newton).*$
         - openstack-tox-cover:
             voting: false
         - legacy-tripleo-ci-centos-7-scenario001-multinode-oooq:
@@ -16267,6 +16269,9 @@
     gate:
       queue: tripleo
       jobs:
+        - openstack-tox-py35:
+            # we don't support python3.5 in os-net-config / newton
+            branches: ^(?!stable/newton).*$
         - legacy-tripleo-ci-centos-7-containers-multinode:
             branches: ^(?!stable/(newton|ocata)).*$
         - legacy-tripleo-ci-centos-7-scenario002-multinode-oooq:
