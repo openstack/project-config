@@ -1,8 +1,18 @@
 - hosts: all
   tasks:
+    - name: Select python version of build
+      set_fact:
+        wheel_python: "python{{ inventory_hostname[-1] }}"
+
+    - name: Ensure build logs directory exists
+      file:
+        path: "{{ zuul.executor.log_root }}/{{ wheel_python }}"
+        state: directory
+      delegate_to: localhost
+
     - name: Collect build logs
       synchronize:
-        dest: "{{ zuul.executor.work_root }}/logs"
+        dest: "{{ zuul.executor.log_root }}/{{ wheel_python }}"
         mode: pull
         src: ~/logs/
         verify_host: true
