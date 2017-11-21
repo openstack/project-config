@@ -1,4 +1,12 @@
 - hosts: all
   roles:
-    - ensure-reno
+    - role: bindep
+      bindep_profile: doc
+      bindep_dir: "{{ zuul_work_dir }}"
+    - role: ensure-sphinx
+      doc_building_packages:
+        - sphinx
+        - reno
+      # TODO(jaegerandi): Remove once all repos are fixed.
+      install_package: yes
     - revoke-sudo
