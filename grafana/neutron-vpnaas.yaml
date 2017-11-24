@@ -9,57 +9,37 @@ dashboard:
             **This dashboard is managed by [Grafyaml](http://docs.openstack.org/infra/system-config/grafyaml.html).**
 
             If you would like to make changes to this dashboard, please see the grafana directory in [project-config](https://git.openstack.org/cgit/openstack-infra/project-config/tree/grafana/neutron-vpnaas.yaml).
+
+            NOTE - 'No datapoints' in a graph means there have been no job failures reported yet.
           type: text
-    - title: Check Queue
+    - title: Graphs
       height: 320px
       panels:
-        - title: Unit Test Failure Rates (check)
+        - title: Unit Test Failure Rates (Check queue)
           span: 4
           targets:
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-neutron-vpnaas-python27-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-neutron-vpnaas-python27-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-vpnaas-python27-ubuntu-xenial')
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-neutron-vpnaas-python35.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-neutron-vpnaas-python35.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-vpnaas-python35')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron-vpnaas.master.job.openstack-tox-pep8.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron-vpnaas.master.job.openstack-tox-pep8.{SUCCESS,FAILURE})),'24hours'), 'openstack-tox-pep8')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron-vpnaas.master.job.openstack-tox-py27.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron-vpnaas.master.job.openstack-tox-py27.{SUCCESS,FAILURE})),'24hours'), 'openstack-tox-py27')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron-vpnaas.master.job.openstack-tox-py35.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron-vpnaas.master.job.openstack-tox-py35.{SUCCESS,FAILURE})),'24hours'), 'openstack-tox-py35')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron-vpnaas.master.job.legacy-neutron-vpnaas-dsvm-functional-sswan.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron-vpnaas.master.job.legacy-neutron-vpnaas-dsvm-functional-sswan.{SUCCESS,FAILURE})),'24hours'), 'legacy-neutron-vpnaas-dsvm-functional-sswan')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron-vpnaas.master.job.legacy-neutron-dsvm-tempest-vpnaas.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron-vpnaas.master.job.legacy-neutron-dsvm-tempest-vpnaas.{SUCCESS,FAILURE})),'24hours'), 'legacy-neutron-dsvm-tempest-vpnaas')
           type: graph
-        - title: Docs/Pep8/Functional Failure Rates (check)
+        - title: Unit Test Failure Rates (Gate queue)
           span: 4
           targets:
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-neutron-vpnaas-docs-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-neutron-vpnaas-docs-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-vpnaas-docs-ubuntu-xenial')
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-neutron-vpnaas-releasenotes.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-neutron-vpnaas-releasenotes.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-vpnaas-releasenotes')
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-neutron-vpnaas-pep8-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-neutron-vpnaas-pep8-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-vpnaas-pep8-ubuntu-xenial')
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-neutron-vpnaas-dsvm-functional-sswan-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-neutron-vpnaas-dsvm-functional-sswan-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-vpnaas-dsvm-functional-sswan-ubuntu-xenial')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron-vpnaas.master.job.openstack-tox-pep8.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron-vpnaas.master.job.openstack-tox-pep8.{SUCCESS,FAILURE})),'24hours'), 'openstack-tox-pep8')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron-vpnaas.master.job.openstack-tox-py27.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron-vpnaas.master.job.openstack-tox-py27.{SUCCESS,FAILURE})),'24hours'), 'openstack-tox-py27')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron-vpnaas.master.job.openstack-tox-py35.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron-vpnaas.master.job.openstack-tox-py35.{SUCCESS,FAILURE})),'24hours'), 'openstack-tox-py35')
           type: graph
-        - title: Tempest Failure Rates (check)
+        - title: Periodic Job Failure Rates
           span: 4
           targets:
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.check.job.gate-neutron-dsvm-tempest-vpnaas-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.check.job.gate-neutron-dsvm-tempest-vpnaas-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-dsvm-tempest-vpnaas-ubuntu-xenial')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.periodic.project.git_openstack_org.openstack_neutron-vpnaas.master.job.periodic-neutron-vpnaas-python27-ocata.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.periodic.project.git_openstack_org.openstack_neutron-vpnaas.master.job.periodic-neutron-vpnaas-python27-ocata.{SUCCESS,FAILURE})),'24hours'), 'periodic-neutron-vpnaas-python27-ocata')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.periodic.project.git_openstack_org.openstack_neutron-vpnaas.master.job.periodic-neutron-vpnaas-python27-newton.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.periodic.project.git_openstack_org.openstack_neutron-vpnaas.master.job.periodic-neutron-vpnaas-python27-newton.{SUCCESS,FAILURE})),'24hours'), 'periodic-neutron-vpnaas-python27-newton')
           type: graph
-    - title: Gate Queue
-      height: 320px
-      panels:
-        - title: Unit Test Failure Rates (gate)
+        - title: Integrated Failure Rates (Gate queue)
           span: 4
           targets:
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-neutron-vpnaas-python27-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-neutron-vpnaas-python27-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-vpnaas-python27-ubuntu-xenial')
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-neutron-vpnaas-python35.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-neutron-vpnaas-python35.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-vpnaas-python35')
-          type: graph
-        - title: Docs/Pep8/Functional Failure Rates (gate)
-          span: 4
-          targets:
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-neutron-vpnaas-docs-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-neutron-vpnaas-docs-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-vpnaas-docs-ubuntu-xenial')
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-neutron-vpnaas-releasenotes.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-neutron-vpnaas-releasenotes.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-vpnaas-releasenotes')
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-neutron-vpnaas-pep8-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-neutron-vpnaas-pep8-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-vpnaas-pep8-ubuntu-xenial')
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-neutron-vpnaas-dsvm-functional-sswan-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-neutron-vpnaas-dsvm-functional-sswan-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-vpnaas-dsvm-functional-sswan-ubuntu-xenial')
-          type: graph
-        - title: Tempest Failure Rates (gate)
-          span: 4
-          targets:
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.gate.job.gate-neutron-dsvm-tempest-vpnaas-ubuntu-xenial.FAILURE),sum(stats_counts.zuul.pipeline.gate.job.gate-neutron-dsvm-tempest-vpnaas-ubuntu-xenial.{SUCCESS,FAILURE})),'24hours'), 'gate-neutron-dsvm-tempest-vpnaas-ubuntu-xenial')
-          type: graph
-    - title: Other Jobs
-      height: 320px
-      panels:
-        - title: Periodic jobs
-          span: 4
-          targets:
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.periodic.job.periodic-neutron-vpnaas-python27-ocata.FAILURE),sum(stats_counts.zuul.pipeline.periodic.job.periodic-neutron-vpnaas-python27-ocata.{SUCCESS,FAILURE})),'24hours'), 'periodic-neutron-vpnaas-python27-ocata')
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.pipeline.periodic.job.periodic-neutron-vpnaas-python27-newton.FAILURE),sum(stats_counts.zuul.pipeline.periodic.job.periodic-neutron-vpnaas-python27-newton.{SUCCESS,FAILURE})),'24hours'), 'periodic-neutron-vpnaas-python27-newton')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron-vpnaas.master.job.legacy-neutron-vpnaas-dsvm-functional-sswan.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron-vpnaas.master.job.legacy-neutron-vpnaas-dsvm-functional-sswan.{SUCCESS,FAILURE})),'24hours'), 'legacy-neutron-vpnaas-dsvm-functional-sswan')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron-vpnaas.master.job.legacy-neutron-dsvm-tempest-vpnaas.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron-vpnaas.master.job.legacy-neutron-dsvm-tempest-vpnaas.{SUCCESS,FAILURE})),'24hours'), 'legacy-neutron-dsvm-tempest-vpnaas')
           type: graph
