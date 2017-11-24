@@ -10838,14 +10838,11 @@
       - periodic-stable-jobs-neutron
       - openstack-python-jobs-neutron
       - openstack-python35-jobs-neutron
+      - publish-openstack-sphinx-docs-neutron
       - publish-to-pypi-neutron
+      - release-notes-jobs
     check:
       jobs:
-        - build-openstack-releasenotes
-        - build-openstack-sphinx-docs:
-            required-projects:
-              - openstack/python-neutronclient
-              - openstack/neutron
         - legacy-neutron-vpnaas-dsvm-functional-sswan:
             irrelevant-files:
               - ^.*\.rst$
@@ -10858,11 +10855,6 @@
               - openstack/neutron
     gate:
       jobs:
-        - build-openstack-releasenotes
-        - build-openstack-sphinx-docs:
-            required-projects:
-              - openstack/python-neutronclient
-              - openstack/neutron
         - legacy-neutron-vpnaas-dsvm-functional-sswan:
             irrelevant-files:
               - ^.*\.rst$
@@ -10884,19 +10876,9 @@
       - system-required
       - openstack-python-jobs-horizon
       - openstack-python35-jobs-horizon
+      - publish-openstack-sphinx-docs-horizon
       - publish-to-pypi-horizon
-    check:
-      jobs:
-        - build-openstack-releasenotes
-        - build-openstack-sphinx-docs:
-            required-projects:
-              - openstack/horizon
-    gate:
-      jobs:
-        - build-openstack-releasenotes
-        - build-openstack-sphinx-docs:
-            required-projects:
-              - openstack/horizon
+      - release-notes-jobs
 
 - project:
     name: openstack/nfv-filters
