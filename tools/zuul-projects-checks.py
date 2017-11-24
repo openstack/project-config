@@ -108,11 +108,63 @@ def check_release_jobs():
     return errors
 
 
+def check_pipeline(project, job_pipeline, pipeline_name):
+
+    errors = False
+
+    for job in job_pipeline:
+        if isinstance(job, dict):
+            for name in job:
+                if ('voting' in job[name]
+                    and (not job[name]['voting'])):
+                    errors = True
+                    print("  Found non-voting job in %s:" % pipeline_name)
+                    print("    project: %s" % project['name'])
+                    print("    job: %s" % name)
+    return errors
+
+
+def check_pipelines(project, pipeline_name):
+
+    errors = False
+
+    if pipeline_name in project and 'jobs' in project[pipeline_name]:
+        errors = check_pipeline(project, project[pipeline_name]['jobs'],
+                                pipeline_name)
+    return errors
+
+
+def check_voting():
+    errors = False
+    print("\nChecking voting status of jobs")
+    print("==============================")
+
+    for entry in projects:
+        project = entry['project']
+        errors |= check_pipelines(project, 'gate')
+        # TODO(jaegerandi): Enable in followup change.
+        # errors |= check_pipelines(project, 'experimental')
+        errors |= check_pipelines(project, 'post')
+        errors |= check_pipelines(project, 'periodic')
+
+    if errors:
+        print(" Note the following about non-voting jobs in pipelines:")
+        print(" * Never run non-voting jobs in gate pipeline, they just")
+        print("   waste resources, remove such jobs.")
+        print(" * Experimental, periodic, and post pipelines are always")
+        print("   non-voting. The 'voting: false' line is redundant, remove")
+        print("   it.")
+    else:
+        print("... all fine.")
+    return errors
+
+
 def check_all():
 
     errors = check_system_templates()
     errors = check_projects_sorted() or errors
     errors = check_release_jobs() or errors
+    errors = check_voting() or errors
 
     if errors:
         print("\nFound errors in zuul.d/projects.yaml!\n")
