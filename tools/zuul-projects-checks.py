@@ -142,10 +142,10 @@ def check_voting():
     for entry in projects:
         project = entry['project']
         errors |= check_pipelines(project, 'gate')
-        # TODO(jaegerandi): Enable in followup change.
-        # errors |= check_pipelines(project, 'experimental')
+        errors |= check_pipelines(project, 'experimental')
         errors |= check_pipelines(project, 'post')
         errors |= check_pipelines(project, 'periodic')
+        errors |= check_pipelines(project, 'periodic-stable')
 
     if errors:
         print(" Note the following about non-voting jobs in pipelines:")
