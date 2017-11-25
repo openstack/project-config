@@ -1,0 +1,13 @@
+- name: Register testrepository.subunit file
+  stat:
+    path: "{{ zuul_work_dir }}/testrepository.subunit.gz"
+  register: subunit
+
+- name: Collect test-results
+  synchronize:
+    dest: "{{ zuul.executor.log_root }}"
+    mode: pull
+    src: "{{ zuul_work_dir }}/testrepository.subunit.gz"
+    verify_host: true
+  when:
+    - subunit.stat.exists
