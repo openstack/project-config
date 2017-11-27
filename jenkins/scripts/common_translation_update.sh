@@ -20,6 +20,8 @@ source $SCRIPTSDIR/common.sh
 # Set start of timestamp for subunit
 TRANS_START_TIME=$(date +%s)
 SUBUNIT_OUTPUT=testrepository.subunit
+# Our images have os-test installed in the following location
+TESTR_VENV=/usr/os-testr-env
 
 # Topic to use for our changes
 TOPIC=zanata/translations
@@ -63,19 +65,19 @@ function get_modulename {
 
 function finish {
 
+    if [[ "$ERROR_ABORT" -eq 1 ]] ; then
+        $TESTR_VENV/bin/generate-subunit $TRANS_START_TIME $SECONDS \
+            'fail' $JOBNAME >> $SUBUNIT_OUTPUT
+
+    else
+        $TESTR_VENV/bin/generate-subunit $TRANS_START_TIME $SECONDS \
+            'success' $JOBNAME >> $SUBUNIT_OUTPUT
+    fi
+
+    gzip -9 $SUBUNIT_OUTPUT
+
     # Only run this if VENV is setup.
     if [ "$VENV" != "" ] ; then
-        if [[ "$ERROR_ABORT" -eq 1 ]] ; then
-            $VENV/bin/generate-subunit $TRANS_START_TIME $SECONDS \
-                'fail' $JOBNAME >> $SUBUNIT_OUTPUT
-
-        else
-            $VENV/bin/generate-subunit $TRANS_START_TIME $SECONDS \
-                'success' $JOBNAME >> $SUBUNIT_OUTPUT
-        fi
-
-        gzip -9 $SUBUNIT_OUTPUT
-
         # Delete temporary directories
         rm -rf $VENV
         VENV=""
@@ -113,9 +115,6 @@ function setup_venv {
     set -e
     VERSION=${VERSION:-unknown}
 
-    # Install subunit for the subunit output stream for
-    # healthcheck.openstack.org.
-    $VENV/bin/pip install -U os-testr
 }
 
 # Setup nodejs within the python venv. Match the nodejs version with
