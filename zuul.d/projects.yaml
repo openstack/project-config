@@ -2895,6 +2895,7 @@
       - openstack-python-jobs-horizon
       - check-requirements
       - openstack-python35-jobs-nonvoting
+      - release-notes-jobs
     check:
       jobs:
         - build-openstack-sphinx-docs:
@@ -2903,15 +2904,9 @@
         - openstack-tox-py35:
             required-projects:
               - openstack/horizon
-        - build-openstack-releasenotes:
-            required-projects:
-              - openstack/horizon
     gate:
       jobs:
         - build-openstack-sphinx-docs:
-            required-projects:
-              - openstack/horizon
-        - build-openstack-releasenotes:
             required-projects:
               - openstack/horizon
     pre-release:
@@ -11042,8 +11037,6 @@
             required-projects:
               - openstack/networking-bgpvpn
         - build-openstack-releasenotes:
-            required-projects:
-              - openstack/networking-bgpvpn
             branches: ^(?!stable/ocata).*$
         - openstack-tox-pep8:
             required-projects:
@@ -11075,8 +11068,6 @@
             required-projects:
               - openstack/networking-bgpvpn
         - build-openstack-releasenotes:
-            required-projects:
-              - openstack/networking-bgpvpn
             branches: ^(?!stable/ocata).*$
         - openstack-tox-pep8:
             required-projects:
@@ -11171,11 +11162,6 @@
               - openstack/networking-bagpipe
               - openstack/networking-odl
               - openstack/horizon
-        - build-openstack-releasenotes:
-            required-projects:
-              - openstack/networking-bagpipe
-              - openstack/networking-odl
-              - openstack/horizon
         - openstack-tox-pep8:
             required-projects:
               - openstack/networking-bagpipe
@@ -11205,11 +11191,6 @@
     gate:
       jobs:
         - build-openstack-sphinx-docs:
-            required-projects:
-              - openstack/networking-bagpipe
-              - openstack/networking-odl
-              - openstack/horizon
-        - build-openstack-releasenotes:
             required-projects:
               - openstack/networking-bagpipe
               - openstack/networking-odl
@@ -11576,14 +11557,6 @@
               - openstack/neutron-dynamic-routing
               - openstack/networking-l2gw
               - openstack/tap-as-a-service
-        - build-openstack-releasenotes:
-            required-projects:
-              - openstack/neutron-fwaas
-              - openstack/neutron-vpnaas
-              - openstack/neutron-lbaas
-              - openstack/neutron-dynamic-routing
-              - openstack/networking-l2gw
-              - openstack/tap-as-a-service
         - openstack-tox-pep8:
             required-projects:
               - openstack/neutron-fwaas
@@ -11715,14 +11688,6 @@
     gate:
       jobs:
         - build-openstack-sphinx-docs:
-            required-projects:
-              - openstack/neutron-fwaas
-              - openstack/neutron-vpnaas
-              - openstack/neutron-lbaas
-              - openstack/neutron-dynamic-routing
-              - openstack/networking-l2gw
-              - openstack/tap-as-a-service
-        - build-openstack-releasenotes:
             required-projects:
               - openstack/neutron-fwaas
               - openstack/neutron-vpnaas
@@ -11964,14 +11929,6 @@
               - openstack/networking-l2gw
               - openstack/networking-sfc
               - openstack/networking-bgpvpn
-        - build-openstack-releasenotes:
-            required-projects:
-              - openstack/ceilometer
-              - openstack/neutron-fwaas
-              - openstack/neutron-lbaas
-              - openstack/networking-l2gw
-              - openstack/networking-sfc
-              - openstack/networking-bgpvpn
     gate:
       jobs:
         - openstack-tox-pep8:
@@ -12008,14 +11965,6 @@
               - openstack/networking-sfc
               - openstack/networking-bgpvpn
         - build-openstack-sphinx-docs:
-            required-projects:
-              - openstack/ceilometer
-              - openstack/neutron-fwaas
-              - openstack/neutron-lbaas
-              - openstack/networking-l2gw
-              - openstack/networking-sfc
-              - openstack/networking-bgpvpn
-        - build-openstack-releasenotes:
             required-projects:
               - openstack/ceilometer
               - openstack/neutron-fwaas
@@ -12904,9 +12853,7 @@
       - publish-to-pypi-neutron
     check:
       jobs:
-        - build-openstack-releasenotes:
-            required-projects:
-              - openstack/neutron
+        - build-openstack-releasenotes
         - build-openstack-sphinx-docs:
             required-projects:
               - openstack/python-neutronclient
@@ -12923,9 +12870,7 @@
               - openstack/neutron
     gate:
       jobs:
-        - build-openstack-releasenotes:
-            required-projects:
-              - openstack/neutron
+        - build-openstack-releasenotes
         - build-openstack-sphinx-docs:
             required-projects:
               - openstack/python-neutronclient
@@ -12954,17 +12899,13 @@
       - publish-to-pypi-horizon
     check:
       jobs:
-        - build-openstack-releasenotes:
-            required-projects:
-              - openstack/horizon
+        - build-openstack-releasenotes
         - build-openstack-sphinx-docs:
             required-projects:
               - openstack/horizon
     gate:
       jobs:
-        - build-openstack-releasenotes:
-            required-projects:
-              - openstack/horizon
+        - build-openstack-releasenotes
         - build-openstack-sphinx-docs:
             required-projects:
               - openstack/horizon
