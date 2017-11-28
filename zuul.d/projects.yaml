@@ -19779,6 +19779,7 @@
       - openstack-python-jobs-neutron
       - check-requirements
       - openstack-python35-jobs-neutron
+      - periodic-stable-jobs-neutron
       - publish-to-pypi-neutron
     check:
       jobs:
@@ -19885,6 +19886,36 @@
     release:
       jobs:
         - release-openstack-python:
+            required-projects:
+              - openstack/networking-l2gw
+              - openstack/networking-sfc
+              - openstack/neutron-lbaas
+              - openstack/vmware-nsxlib
+              - openstack/neutron-fwaas
+              - openstack/neutron-dynamic-routing
+              - openstack/neutron-vpnaas
+              - openstack/tap-as-a-service
+    periodic-stable:
+      jobs:
+        - openstack-tox-py27:
+            timeout: 5400
+            branches:
+              - stable/ocata
+              - stable/pike
+            required-projects:
+              - openstack/networking-l2gw
+              - openstack/networking-sfc
+              - openstack/neutron-lbaas
+              - openstack/vmware-nsxlib
+              - openstack/neutron-fwaas
+              - openstack/neutron-dynamic-routing
+              - openstack/neutron-vpnaas
+              - openstack/tap-as-a-service
+        - openstack-tox-py35:
+            timeout: 5400
+            branches:
+              - stable/ocata
+              - stable/pike
             required-projects:
               - openstack/networking-l2gw
               - openstack/networking-sfc
