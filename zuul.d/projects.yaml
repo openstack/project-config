@@ -6806,7 +6806,6 @@
       - publish-openstack-sphinx-docs
       - check-requirements
       - lib-forward-testing
-      - translation-jobs
       - translation-jobs-ocata
       - translation-jobs-pike
       - publish-to-pypi
@@ -6822,6 +6821,12 @@
             branches: ^(?!stable/ocata).*$
         - legacy-django_openstack_auth-tox-py27dj19
         - legacy-django_openstack_auth-tox-py27dj110
+    post:
+      jobs:
+        - upstream-translation-update:
+            branches:
+              - stable/pike
+              - stable/ocata
 
 - project:
     name: openstack/doc8
