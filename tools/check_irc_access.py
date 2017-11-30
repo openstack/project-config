@@ -93,6 +93,13 @@ class CheckAccess(irc.client.SimpleIRCClient):
             self.current_channel = None
             self.advance()
             return
+        if msg.endswith('not authorized to perform this operation.'):
+            self.failed = True
+            print("%s can not be queried from ChanServ." %
+                  self.current_channel)
+            self.current_channel = None
+            self.advance()
+            return
         if msg.startswith('End of'):
             found = False
             for nick, flags, msg in self.current_list:
