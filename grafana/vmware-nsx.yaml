@@ -1,0 +1,41 @@
+dashboard:
+  title: VMware NSX (vmware-nsx) Failure Rate
+  rows:
+    - title: Description
+      height: 100px
+      panels:
+        - title: Description
+          content: |
+            **This dashboard is managed by [Grafyaml](http://docs.openstack.org/infra/system-config/grafyaml.html).**
+
+            If you would like to make changes to this dashboard, please see the grafana directory in [project-config](https://git.openstack.org/cgit/openstack-infra/project-config/tree/grafana/vmware-nsx.yaml).
+
+            NOTE - 'No datapoints' in a graph means there have been no job failures reported yet.
+          type: text
+    - title: Graphs
+      height: 320px
+      panels:
+        - title: Unit Tests Failure Rates (Master Gate queue)
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_vmware-nsx.master.job.openstack-tox-py27.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_vmware-nsx.master.job.openstack-tox-py27.{SUCCESS,FAILURE})),'24hours'), 'openstack-tox-py27')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_vmware-nsx.master.job.openstack-tox-py35.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_vmware-nsx.master.job.openstack-tox-py35.{SUCCESS,FAILURE})),'24hours'), 'openstack-tox-py35')
+          type: graph
+        - title: Unit Tests Failure Rates (Master Check queue)
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_vmware-nsx.master.job.openstack-tox-py27.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_vmware-nsx.master.job.openstack-tox-py27.{SUCCESS,FAILURE})),'24hours'), 'openstack-tox-py27')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_vmware-nsx.master.job.openstack-tox-py35.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_vmware-nsx.master.job.openstack-tox-py35.{SUCCESS,FAILURE})),'24hours'), 'openstack-tox-py35')
+          type: graph
+        - title: Unit Tests Failure Rates (Stable Ocata)
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.periodic-stable.project.git_openstack_org.openstack_vmware-nsx.stable_ocata.job.openstack-tox-py27.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.periodic-stable.project.git_openstack_org.openstack_vmware-nsx.stable_ocata.job.openstack-tox-py27.{SUCCESS,FAILURE})),'24hours'), 'openstack-tox-py27 (stable/ocata)')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.periodic-stable.project.git_openstack_org.openstack_vmware-nsx.stable_ocata.job.openstack-tox-py35.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.periodic-stable.project.git_openstack_org.openstack_vmware-nsx.stable_ocata.job.openstack-tox-py35.{SUCCESS,FAILURE})),'24hours'), 'openstack-tox-py35 (stable/ocata)')
+          type: graph
+        - title: Unit Tests Failure Rates (Stable Pike)
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.periodic-stable.project.git_openstack_org.openstack_vmware-nsx.stable_pike.job.openstack-tox-py27.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.periodic-stable.project.git_openstack_org.openstack_vmware-nsx.stable_pike.job.openstack-tox-py27.{SUCCESS,FAILURE})),'24hours'), 'openstack-tox-py27 (stable/pike)')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.periodic-stable.project.git_openstack_org.openstack_vmware-nsx.stable_pike.job.openstack-tox-py35.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.periodic-stable.project.git_openstack_org.openstack_vmware-nsx.stable_pike.job.openstack-tox-py35.{SUCCESS,FAILURE})),'24hours'), 'openstack-tox-py35 (stable/pike)')
+          type: graph
