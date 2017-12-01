@@ -14,10 +14,12 @@
 
 - hosts: localhost
   roles:
+    - role: set-service-type-data-fact
+      when: zuul_success | bool
     - role: create-afs-token
       when: zuul_success | bool
     - role: upload-afs
-      afs_target: "{{ afs.path }}/project-install-guide/{{ zuul.project.short_name }}"
+      afs_target: "{{ afs.path }}/project-install-guide/{{ service_type_data.service_type }}"
       when: zuul_success | bool
     - role: destroy-afs-token
       when: zuul_success | bool
