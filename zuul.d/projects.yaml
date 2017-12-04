@@ -2830,16 +2830,11 @@
       - openstack-python35-jobs-nonvoting
       - publish-openstack-sphinx-docs
       - release-notes-jobs
+      - release-openstack-server
     check:
       jobs:
         - openstack-tox-pylint:
             voting: false
-    pre-release:
-      jobs:
-        - release-openstack-python-without-pypi
-    release:
-      jobs:
-        - release-openstack-python-without-pypi
 
 - project:
     name: openstack/blazar-dashboard
@@ -2849,6 +2844,7 @@
       - check-requirements
       - openstack-python35-jobs-nonvoting
       - release-notes-jobs
+      - release-openstack-server
     check:
       jobs:
         - build-openstack-sphinx-docs:
@@ -2860,16 +2856,6 @@
     gate:
       jobs:
         - build-openstack-sphinx-docs:
-            required-projects:
-              - openstack/horizon
-    pre-release:
-      jobs:
-        - release-openstack-python-without-pypi:
-            required-projects:
-              - openstack/horizon
-    release:
-      jobs:
-        - release-openstack-python-without-pypi:
             required-projects:
               - openstack/horizon
 
@@ -2880,6 +2866,7 @@
       - check-requirements
       - openstack-python-jobs
       - openstack-python35-jobs-nonvoting
+      - release-openstack-server
     check:
       jobs:
         - openstack-tox-pep8:
@@ -2899,12 +2886,6 @@
         - openstack-tox-py27:
             required-projects:
               - openstack/nova
-    pre-release:
-      jobs:
-        - release-openstack-python-without-pypi
-    release:
-      jobs:
-        - release-openstack-python-without-pypi
 
 - project:
     name: openstack/boartty
@@ -13967,12 +13948,7 @@
       - check-requirements
       - openstack-python-jobs
       - openstack-python35-jobs-nonvoting
-    pre-release:
-      jobs:
-        - release-openstack-python-without-pypi
-    release:
-      jobs:
-        - release-openstack-python-without-pypi
+      - publish-to-pypi
 
 - project:
     name: openstack/python-brick-cinderclient-ext
