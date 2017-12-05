@@ -196,21 +196,24 @@
       Publishes depending on branch to latest/ (for master), or the
       basename of the branch like pike (for stable/pike).
     final: true
-    pre-run: playbooks/project-config/pre-tox.yaml
-    run: playbooks/project-config/run-tox.yaml
+    pre-run:
+      - playbooks/sphinx/pre.yaml
+      # TODO(mordred) REMOVE THIS HACK
+      - playbooks/sphinx/neutron-horizon-hack.yaml
+    run: playbooks/sphinx/run.yaml
     post-run:
-      - playbooks/project-config/post-tox.yaml
       - playbooks/sphinx/post.yaml
       - playbooks/publish/openstack-afs.yaml
     required-projects:
       - name: openstack/requirements
+      # TODO(mordred) REMOVE THIS HACK ONCE neutron-horizon-hack is removed
+      - name: openstack/neutron
+      - name: openstack/horizon
     roles:
       - zuul: openstack-infra/zuul-jobs
       - zuul: openstack-infra/openstack-zuul-jobs
     vars:
-      tox_constraints_file: '{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt'
-      tox_envlist: venv
-      tox_extra_args: -vv python setup.py build_sphinx
+      constraints_file: '{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt'
     secrets:
       - secret: afsdocs_secret
         name: afs
@@ -362,6 +365,7 @@
       - zuul: openstack-infra/zuul-jobs
     vars:
       constraints_file: '{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt'
+      sphinx_build_dir: releasenotes/build
     secrets:
       - secret: afsdocs_secret
         name: afs
@@ -505,7 +509,6 @@
     description: |
       Publish the publication index
     final: true
-    pre-run: playbooks/project-config/pre-tox.yaml
     run: playbooks/publications-index/run.yaml
     post-run: playbooks/publish/publications-index.yaml
     allowed-projects:
@@ -524,7 +527,6 @@
     description: |
       Publish one publication from openstack-infra/publications
     final: true
-    pre-run: playbooks/project-config/pre-tox.yaml
     run: playbooks/publications/run.yaml
     post-run: playbooks/publish/publications.yaml
     allowed-projects:
@@ -728,8 +730,8 @@
     description: |
       Publish api-guide document to
       https://developer.openstack.org/api-guide.
-    pre-run: playbooks/project-config/pre-tox.yaml
-    run: playbooks/project-config/run-tox.yaml
+    pre-run: playbooks/sphinx/pre.yaml
+    run: playbooks/sphinx/run.yaml
     post-run: playbooks/publish/api-guide.yaml
     roles:
       - zuul: openstack-infra/zuul-jobs
@@ -738,7 +740,8 @@
     # for changes on other branches.
     branches: master
     vars:
-      tox_envlist: api-guide
+      sphinx_source_dir: api-guide/source
+      sphinx_build_dir: api-guide/build
     secrets:
       - secret: afsdeveloper_secret
         name: afs
@@ -748,8 +751,8 @@
     description: |
       Publish api-ref document to
       https://developer.openstack.org/api-ref.
-    pre-run: playbooks/project-config/pre-tox.yaml
-    run: playbooks/project-config/run-tox.yaml
+    pre-run: playbooks/sphinx/pre.yaml
+    run: playbooks/sphinx/run.yaml
     post-run: playbooks/publish/api-ref.yaml
     roles:
       - zuul: openstack-infra/zuul-jobs
@@ -758,7 +761,8 @@
     # for changes on other branches.
     branches: master
     vars:
-      tox_envlist: api-ref
+      sphinx_build_dir: api-ref/build
+      sphinx_source_dir: api-ref/source
     secrets:
       - secret: afsdeveloper_secret
         name: afs
@@ -768,8 +772,10 @@
     description: |
       Publish placement-api-ref document to
       https://developer.openstack.org/api-ref/placement.
-    pre-run: playbooks/project-config/pre-tox.yaml
-    run: playbooks/project-config/run-tox.yaml
+    allowed-projects:
+      - openstack/nova
+    pre-run: playbooks/sphinx/pre.yaml
+    run: playbooks/sphinx/run.yaml
     post-run: playbooks/publish/placement-api-ref.yaml
     roles:
       - zuul: openstack-infra/zuul-jobs
@@ -778,7 +784,8 @@
     # for changes on other branches.
     branches: master
     vars:
-      tox_envlist: placement-api-ref
+      sphinx_build_dir: placement-api-ref/build
+      sphinx_source_dir: placement-api-ref/source
     secrets:
       - secret: afsdeveloper_secret
         name: afs
@@ -788,8 +795,8 @@
     description: |
       Publish install-guide document to
       https://docs.openstack.org/project-install-guide/
-    pre-run: playbooks/project-config/pre-tox.yaml
-    run: playbooks/project-config/run-tox.yaml
+    pre-run: playbooks/sphinx/pre.yaml
+    run: playbooks/sphinx/run.yaml
     post-run: playbooks/publish/install-guide.yaml
     roles:
       - zuul: openstack-infra/zuul-jobs
@@ -799,7 +806,8 @@
     branches:
       - stable/ocata
     vars:
-      tox_envlist: install-guide
+      sphinx_build_dir: install-guide/build
+      sphinx_source_dir: install-guide/source
     secrets:
       - secret: afsdocs_secret
         name: afs
@@ -809,8 +817,8 @@
     description: |
       Publish deploy-guide document to
       https://docs.openstack.org/project-deploy-guide/
-    pre-run: playbooks/project-config/pre-tox.yaml
-    run: playbooks/project-config/run-tox.yaml
+    pre-run: playbooks/sphinx/pre.yaml
+    run: playbooks/sphinx/run.yaml
     post-run: playbooks/publish/deploy-guide.yaml
     roles:
       - zuul: openstack-infra/zuul-jobs
@@ -819,7 +827,8 @@
     # for changes on other branches.
     branches: master
     vars:
-      tox_envlist: deploy-guide
+      sphinx_build_dir: deploy-guide/build
+      sphinx_source_dir: deploy-guide/source
     secrets:
       - secret: afsdocs_secret
         name: afs

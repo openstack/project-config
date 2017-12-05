@@ -1,14 +1,10 @@
 - hosts: all
   roles:
     - role: prepare-docs-for-afs
-      doc_toplevel_dir: "deploy-guide"
       when: zuul_success | bool
-    - fetch-tox-output
     - role: write-root-marker
-      root_marker_dir: "src/{{ zuul.project.canonical_name }}/deploy-guide/build/html"
       when: zuul_success | bool
     - role: fetch-sphinx-output
-      sphinx_output_src: "{{ zuul.project.src_dir }}/deploy-guide/build/html/"
       zuul_executor_dest: "{{ zuul.executor.work_root }}/artifacts"
       when: zuul_success | bool
 
