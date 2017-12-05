@@ -14,12 +14,30 @@
     state: directory
   become: true
 
-- name: extract zanata client tarball
+- name: Look for cached zanata client
+  stat:
+    path: "/opt/cache/files/zanata-cli-{{ zanata_client_version }}-dist.tar.gz"
+    checksum_algorithm: sha256
+  register: cached_client
+
+- name: Ensure correct checksum of cached client
+  assert: cached_client.checksum == "{{ zanata_client_checksum }}"
+  when: cached_client.exists
+
+- name: Extract cached client tarball
+  unarchive:
+    src: "/opt/cache/files/zanata-cli-{{ zanata_client_version }}-dist.tar.gz"
+    dest: "/opt/zanata"
+    creates: "/opt/zanata/zanata-cli-{{ zanata_client_version }}/bin/zanata-cli"
+  when: cached_client.exists
+
+- name: Download and extract zanata client tarball
   unarchive:
     src: "https://search.maven.org/remotecontent?filepath=org/zanata/zanata-cli/{{ zanata_client_version }}/zanata-cli-{{ zanata_client_version }}-dist.tar.gz"
     remote_src: yes
     dest: "/opt/zanata/"
     creates: "/opt/zanata/zanata-cli-{{ zanata_client_version }}/bin/zanata-cli"
+  when: not cached_client.exists
 
 - name: ensure zanata-cli perms
   file:
