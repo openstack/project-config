@@ -30,15 +30,25 @@
   unarchive:
     src: "/opt/cache/files/zanata-cli-{{ zanata_client_version }}-dist.tar.gz"
     remote_src: yes
-    dest: "/opt/zanata"
+    dest: /opt/zanata
     creates: "/opt/zanata/zanata-cli-{{ zanata_client_version }}/bin/zanata-cli"
   when: cached_client.stat.exists
 
-- name: Download and extract zanata client tarball
+- name: Download Zanata client archive
+  get_url:
+    url: "https://search.maven.org/remotecontent?filepath=org/zanata/zanata-cli/{{ zanata_client_version }}/zanata-cli-{{ zanata_client_version }}-dist.tar.gz"
+    dest: "/tmp/zanata-cli-{{ zanata_client_version }}-dist.tar.gz"
+    checksum: "sha256:{{ zanata_client_checksum }}"
+    register: result
+    until: result | success
+    retries: 5
+    delay: 5
+  when: not cached_client.stat.exists
+
+- name: Extract Zanata client archive
   unarchive:
-    src: "https://search.maven.org/remotecontent?filepath=org/zanata/zanata-cli/{{ zanata_client_version }}/zanata-cli-{{ zanata_client_version }}-dist.tar.gz"
-    remote_src: yes
-    dest: "/opt/zanata/"
+    src: "/tmp/zanata-cli-{{ zanata_client_version }}-dist.tar.gz"
+    dest: /opt/zanata
     creates: "/opt/zanata/zanata-cli-{{ zanata_client_version }}/bin/zanata-cli"
   when: not cached_client.stat.exists
 
