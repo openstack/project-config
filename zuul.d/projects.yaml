@@ -2166,7 +2166,17 @@
     name: openstack-infra/zuul-base-jobs
     templates:
       - system-required
-      - noop-jobs
+      - publish-openstack-sphinx-docs-infra
+    check:
+      jobs:
+        - openstack-zuul-jobs-linters
+    gate:
+      jobs:
+        - openstack-zuul-jobs-linters
+    post:
+      jobs:
+        - publish-openstack-sphinx-docs-infra:
+            branches: ^(?!bug/).*$
 
 - project:
     name: openstack-infra/zuul-jobs
