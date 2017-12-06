@@ -14405,14 +14405,21 @@
       - openstack-python35-jobs
       - check-requirements
       - publish-to-pypi
-      - publish-openstack-sphinx-docs
       - release-notes-jobs
     check:
       jobs:
         - openstack-tox-cover
+        - build-openstack-sphinx-docs:
+            branches: ^(?!stable/(ocata|pike)).*$
     gate:
       jobs:
         - openstack-tox-cover
+        - build-openstack-sphinx-docs:
+            branches: ^(?!stable/(ocata|pike)).*$
+    post:
+      jobs:
+        - publish-openstack-sphinx-docs:
+            branches: ^(?!stable/(ocata|pike)).*$
 
 - project:
     name: openstack/python-muranoclient
