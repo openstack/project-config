@@ -8490,7 +8490,6 @@
       - openstack-python-jobs
       - openstack-python35-jobs-nonvoting
       - check-requirements
-      - publish-openstack-sphinx-docs
       - release-notes-jobs
       - api-ref-jobs
       - publish-to-pypi
@@ -8498,13 +8497,19 @@
       jobs:
         - legacy-monasca-api-maven-build
         - openstack-tox-cover
+        - build-openstack-sphinx-docs:
+            branches: ^(?!stable/ocata).*$
     gate:
       jobs:
         - legacy-monasca-api-maven-build
         - openstack-tox-cover
+        - build-openstack-sphinx-docs:
+            branches: ^(?!stable/ocata).*$
     post:
       jobs:
         - legacy-monasca-api-localrepo-upload
+        - publish-openstack-sphinx-docs:
+            branches: ^(?!stable/ocata).*$
 
 - project:
     name: openstack/monasca-ceilometer
