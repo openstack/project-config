@@ -503,6 +503,21 @@
         secret: static_ssh_key
 
 - job:
+    name: publish-governance-sigs
+    parent: base-publish-static
+    description: |
+      Publish content to static.openstack.org to /srv/static/sigs
+    final: true
+    post-run: playbooks/publish/static-special.yaml
+    allowed-projects:
+      - openstack/governance-sigs
+    vars:
+      static_target: sigs
+    secrets:
+      - name: fileserver
+        secret: static_ssh_key
+
+- job:
     name: publish-governance-tc
     parent: base-publish-static
     description: |
