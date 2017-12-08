@@ -17599,10 +17599,16 @@
     name: openstack/tripleo-upgrade
     templates:
       - system-required
-      - openstack-python-jobs
       - check-requirements
       - release-notes-jobs
       - publish-to-pypi
+    check:
+      jobs:
+        - openstack-tox-linters
+    gate:
+      queue: tripleo
+      jobs:
+        - openstack-tox-linters
 
 - project:
     name: openstack/tripleo-validations
