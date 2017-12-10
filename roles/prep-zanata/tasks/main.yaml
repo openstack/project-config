@@ -21,7 +21,9 @@
   register: cached_client
 
 - name: Ensure correct checksum of cached client
-  assert: cached_client.checksum == "{{ zanata_client_checksum }}"
+  assert:
+    that:
+      - cached_client.stat.checksum == "{{ zanata_client_checksum }}"
   when: cached_client.stat.exists
 
 - name: Extract cached client tarball
