@@ -134,6 +134,37 @@ dashboard:
     - title: Graphs
       height: 250px
       panels:
+        - title: Zuul Jobs Launched (per Hour)
+          span: 4
+          targets:
+            - target: alias(summarize(sumSeries(stats_counts.zuul.tenant.openstack.pipeline.*.all_jobs), '1h'), 'All Jobs')
+          type: graph
+        - title: Logstash Job Queue
+          span: 4
+          targets:
+            - target: alias(stats.gauges.logstash.geard.queue.running, 'Running')
+            - target: alias(stats.gauges.logstash.geard.queue.waiting, 'Waiting')
+            - target: alias(stats.gauges.logstash.geard.queue.total, 'Total Jobs')
+          type: graph
+        - title: Node Requests
+          span: 4
+          targets:
+            - target: alias(stats.gauges.zuul.nodepool.current_requests, 'Requests')
+          type: graph
+        - title: Zuul Job Queue
+          span: 4
+          targets:
+            - target: alias(stats.gauges.zuul.geard.queue.running, 'Running')
+            - target: alias(stats.gauges.zuul.geard.queue.waiting, 'Waiting')
+            - target: alias(stats.gauges.zuul.geard.queue.total, 'Total Jobs')
+          type: graph
+        - title: Gerrit Events (per Hour)
+          span: 4
+          targets:
+            - target: alias(summarize(stats_counts.zuul.event.gerrit.comment-added, '1h'), 'Comment added')
+            - target: alias(summarize(stats_counts.zuul.event.gerrit.patchset-created, '1h'), 'Patchset created')
+            - target: alias(summarize(stats_counts.zuul.event.gerrit.change-merged, '1h'), 'Change merged')
+          type: graph
         - title: Test Nodes
           span: 4
           stack: true
@@ -149,37 +180,6 @@ dashboard:
           seriesOverrides:
             - alias: Max
               stack: False
-          type: graph
-        - title: Node Requests
-          span: 4
-          targets:
-            - target: alias(stats.gauges.zuul.nodepool.current_requests, 'Requests')
-          type: graph
-        - title: Zuul Jobs Launched (per Hour)
-          span: 4
-          targets:
-            - target: alias(summarize(sumSeries(stats_counts.zuul.tenant.openstack.pipeline.*.all_jobs), '1h'), 'All Jobs')
-          type: graph
-        - title: Gerrit Events (per Hour)
-          span: 4
-          targets:
-            - target: alias(summarize(stats_counts.zuul.event.gerrit.comment-added, '1h'), 'Comment added')
-            - target: alias(summarize(stats_counts.zuul.event.gerrit.patchset-created, '1h'), 'Patchset created')
-            - target: alias(summarize(stats_counts.zuul.event.gerrit.change-merged, '1h'), 'Change merged')
-          type: graph
-        - title: Zuul Job Queue
-          span: 4
-          targets:
-            - target: alias(stats.gauges.zuul.geard.queue.running, 'Running')
-            - target: alias(stats.gauges.zuul.geard.queue.waiting, 'Waiting')
-            - target: alias(stats.gauges.zuul.geard.queue.total, 'Total Jobs')
-          type: graph
-        - title: Logstash Job Queue
-          span: 4
-          targets:
-            - target: alias(stats.gauges.logstash.geard.queue.running, 'Running')
-            - target: alias(stats.gauges.logstash.geard.queue.waiting, 'Waiting')
-            - target: alias(stats.gauges.logstash.geard.queue.total, 'Total Jobs')
           type: graph
     - title: Executors
       showTitle: true
