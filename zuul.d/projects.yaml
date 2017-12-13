@@ -2466,7 +2466,12 @@
     name: openstack/ansible-role-redhat-subscription
     templates:
       - system-required
-      - ansible-lint-jobs
+    check:
+      jobs:
+        - openstack-tox-linters
+    gate:
+      jobs:
+        - openstack-tox-linters
 
 - project:
     name: openstack/ansible-role-shade
