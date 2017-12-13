@@ -5,7 +5,7 @@
       command: "git remote add origin https://{{ item.canonical_name }}"
       args:
         chdir: "{{ ansible_user_dir }}/src/{{ item.canonical_name }}"
-      with_items: "{{ zuul._projects.values() | list }}"
+      with_items: "{{ zuul.projects.values() | list }}"
       # ANSIBLE0006: git remote add is not supported by ansible module
       tags:
         - skip_ansible_lint

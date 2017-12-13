@@ -1,7 +1,7 @@
 - name: Find locally cached git repos
   stat:
     path: "/opt/git/{{ item.name }}"
-  with_items: "{{ zuul._projects.values() | list }}"
+  with_items: "{{ zuul.projects.values() | list }}"
   register: cached_repos
 
 - name: Clone cached repo to workspace
@@ -10,7 +10,7 @@
     creates: "{{ ansible_user_dir }}/{{ item.0.src_dir}}"
   when: item.1.stat.exists
   with_together:
-    - "{{ zuul._projects.values() | list }}"
+    - "{{ zuul.projects.values() | list }}"
     - "{{ cached_repos.results }}"
   # ANSIBLE0006: If we use the git module, we get warning
   # ANSIBLE0004 since we  do not give an explicit version
@@ -23,7 +23,7 @@
     creates: "{{ ansible_user_dir }}/{{ item.0.src_dir}}"
   when: not item.1.stat.exists
   with_together:
-    - "{{ zuul._projects.values() | list }}"
+    - "{{ zuul.projects.values() | list }}"
     - "{{ cached_repos.results }}"
   # ANSIBLE0006: If we use the git module, we get warning
   # ANSIBLE0004 since we  do not give an explicit version
@@ -34,7 +34,7 @@
   command: "git remote rm origin"
   args:
     chdir: "{{ ansible_user_dir }}/{{ item.src_dir}}"
-  with_items: "{{ zuul._projects.values() | list }}"
+  with_items: "{{ zuul.projects.values() | list }}"
   # ANSIBLE0006: git remote is not supported by ansible module
   tags:
     - skip_ansible_lint
