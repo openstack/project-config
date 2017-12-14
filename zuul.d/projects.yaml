@@ -2032,14 +2032,18 @@
       - system-required
     check:
       jobs:
-        - legacy-storyboard-webclient-nodejs4-npm-run-lint
+        - nodejs-npm-run-lint:
+            vars:
+              node_version: 4
         - legacy-storyboard-webclient-nodejs4-npm-run-test-unit
         - legacy-storyboard-webclient-nodejs4-npm-run-test-functional
         - legacy-storyboard-webclient-nodejs4-npm-run-test-integration
         - legacy-storyboard-webclient-js-draft: {}
     gate:
       jobs:
-        - legacy-storyboard-webclient-nodejs4-npm-run-lint
+        - nodejs-npm-run-lint:
+            vars:
+              node_version: 4
         - legacy-storyboard-webclient-nodejs4-npm-run-test-unit
         - legacy-storyboard-webclient-nodejs4-npm-run-test-functional
         - legacy-storyboard-webclient-nodejs4-npm-run-test-integration
@@ -4340,14 +4344,20 @@
       - openstack-python35-jobs-nonvoting
     check:
       jobs:
-        - legacy-craton-dashboard-nodejs4-npm-run-lint
-        - legacy-craton-dashboard-nodejs4-npm-run-test:
+        - nodejs-npm-run-lint:
+            vars:
+              node_version: 4
+        - nodejs-npm-run-test:
+            vars:
+              node_version: 4
             voting: false
         - legacy-craton-dashboard-tox-py27dj19
         - legacy-craton-dashboard-tox-py27dj110
     gate:
       jobs:
-        - legacy-craton-dashboard-nodejs4-npm-run-lint
+        - nodejs-npm-run-lint:
+            vars:
+              node_version: 4
         - legacy-craton-dashboard-tox-py27dj19
         - legacy-craton-dashboard-tox-py27dj110
 
@@ -4475,9 +4485,13 @@
       jobs:
         - openstack-tox-cover:
             voting: false
-        - legacy-designate-dashboard-nodejs4-npm-run-lint:
+        - nodejs-npm-run-lint:
+            vars:
+              node_version: 4
             voting: false
-        - legacy-designate-dashboard-nodejs4-npm-run-test:
+        - nodejs-npm-run-test:
+            vars:
+              node_version: 4
             voting: false
 
 - project:
@@ -6389,10 +6403,14 @@
       - system-required
     check:
       jobs:
-        - legacy-fuel-ui-nodejs4-npm-run-lint
+        - nodejs-npm-run-lint:
+            vars:
+              node_version: 4
     gate:
       jobs:
-        - legacy-fuel-ui-nodejs4-npm-run-lint
+        - nodejs-npm-run-lint:
+            vars:
+              node_version: 4
 
 - project:
     name: openstack/fuel-virtualbox
@@ -10690,12 +10708,29 @@
       - publish-to-pypi-horizon
     check:
       jobs:
-        - legacy-neutron-lbaas-dashboard-nodejs4-npm-run-lint
-        - legacy-neutron-lbaas-dashboard-nodejs4-npm-run-test
+        - nodejs-npm-run-lint:
+            vars:
+              node_version: 4
+            required-projects:
+              - openstack/horizon
+        - nodejs-npm-run-test:
+            vars:
+              node_version: 4
+            required-projects:
+              - openstack/horizon
     gate:
       jobs:
-        - legacy-neutron-lbaas-dashboard-nodejs4-npm-run-lint
-        - legacy-neutron-lbaas-dashboard-nodejs4-npm-run-test
+        - nodejs-npm-run-lint:
+            vars:
+              node_version: 4
+            required-projects:
+              - openstack/horizon
+        - nodejs-npm-run-test:
+            vars:
+              node_version: 4
+            required-projects:
+              - openstack/horizon
+
 
 - project:
     name: openstack/neutron-lib
@@ -11553,6 +11588,30 @@
       - publish-openstack-sphinx-docs-horizon
       - translation-jobs
       - publish-to-pypi-horizon
+    check:
+      jobs:
+        - nodejs-npm-run-lint:
+            vars:
+              node_version: 4
+            required-projects:
+              - openstack/horizon
+        - nodejs-npm-run-test:
+            vars:
+              node_version: 4
+            required-projects:
+              - openstack/horizon
+    gate:
+      jobs:
+        - nodejs-npm-run-lint:
+            vars:
+              node_version: 4
+            required-projects:
+              - openstack/horizon
+        - nodejs-npm-run-test:
+            vars:
+              node_version: 4
+            required-projects:
+              - openstack/horizon
 
 - project:
     name: openstack/octavia-tempest-plugin
@@ -15766,14 +15825,7 @@
       - translation-jobs-ocata
       - translation-jobs-pike
       - publish-to-pypi
-    check:
-      jobs:
-        - legacy-searchlight-ui-nodejs4-npm-run-lint
-        - legacy-searchlight-ui-nodejs4-npm-run-test
-    gate:
-      jobs:
-        - legacy-searchlight-ui-nodejs4-npm-run-lint
-        - legacy-searchlight-ui-nodejs4-npm-run-test
+      - nodejs4-jobs
 
 - project:
     name: openstack/security-analysis
@@ -15829,10 +15881,13 @@
       - publish-to-pypi
     check:
       jobs:
-        - legacy-senlin-dashboard-nodejs4-npm-run-lint:
+        - nodejs-npm-run-lint:
+            vars:
+              node_version: 4
             voting: false
-        - legacy-senlin-dashboard-nodejs4-npm-run-test:
-            voting: false
+        - nodejs-npm-run-test:
+            vars:
+              node_version: 4
 
 - project:
     name: openstack/senlin-tempest-plugin
@@ -18329,10 +18384,13 @@
       - release-openstack-server
     check:
       jobs:
-        - legacy-zaqar-ui-nodejs4-npm-run-lint:
+        - nodejs-npm-run-lint:
+            vars:
+              node_version: 4
             voting: false
-        - legacy-zaqar-ui-nodejs4-npm-run-test:
-            voting: false
+        - nodejs-npm-run-test:
+            vars:
+              node_version: 4
 
 - project:
     name: openstack/zun
@@ -18369,9 +18427,15 @@
       - publish-to-pypi
     check:
       jobs:
-        - legacy-zun-ui-nodejs4-npm-run-lint
-        - legacy-zun-ui-nodejs4-npm-run-test:
+        - nodejs-npm-run-lint:
+            vars:
+              node_version: 4
+        - nodejs-npm-run-test:
+            vars:
+              node_version: 4
             voting: false
     gate:
       jobs:
-        - legacy-zun-ui-nodejs4-npm-run-lint
+        - nodejs-npm-run-lint:
+            vars:
+              node_version: 4
