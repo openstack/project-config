@@ -234,7 +234,9 @@ function propose_releasenotes {
     # Remove any releasenotes translations from stable branches, they
     # are not needed there.
     if [[ "$version" != "master" && -d releasenotes/source/locale ]]; then
-        git rm -rf releasenotes/source/locale
+        # Note that content might exist, e.g. from downloaded translations,
+        # but are not under git control.
+        git rm --ignore-unmatch -rf releasenotes/source/locale
     fi
 }
 
