@@ -766,6 +766,8 @@
 - job:
     name: propose-updates
     pre-run: playbooks/proposal/pre.yaml
+    description: |
+      Sync content to other projects as a proposed change.
     run: playbooks/proposal/propose-updates.yaml
     secrets:
       - secret: proposal_ssh_key
@@ -774,6 +776,9 @@
 - job:
     name: propose-update-constraints
     parent: propose-updates
+    description: |
+      Update constraint files for requirements project with a
+      proposed change.
     run: playbooks/proposal/propose-update-constraints.yaml
     dependencies:
       - release-openstack-python
@@ -781,10 +786,14 @@
 - job:
     name: propose-project-config-update
     parent: propose-updates
+    description: |
+      Update project-config files with a proposed change.
     run: playbooks/proposal/propose-project-config-update.yaml
 
 - job:
     name: build-wheel-mirror-base
+    description: |
+      Base job for building of wheel for OpenStack CI mirrors.
     pre-run: playbooks/wheel/pre.yaml
     run: playbooks/wheel/build.yaml
     post-run: playbooks/wheel/post-base.yaml
@@ -806,6 +815,8 @@
 - job:
     name: build-wheel-mirror-centos-7
     parent: build-wheel-mirror-base
+    description: |
+      Build CentOS 7 wheels for OpenStaci CI mirrors.
     nodeset:
       # NOTE: The python2 and python3 suffix are important, they select the
       # version of python to build in each job. (we pull the last character of
@@ -817,6 +828,8 @@
 
 - job:
     name: publish-wheel-mirror-centos-7
+    description: |
+      Publish CentOS 7 wheels for OpenStaci CI mirrors.
     parent: build-wheel-mirror-centos-7
     post-run: playbooks/publish/wheel-mirror.yaml
     final: true
@@ -827,6 +840,8 @@
 - job:
     name: build-wheel-mirror-ubuntu-trusty
     parent: build-wheel-mirror-base
+    description: |
+      Build Ubuntu Trusty wheels for OpenStaci CI mirrors.
     nodeset:
       # NOTE: The python2 and python3 suffix are important, they select the
       # version of python to build in each job. (we pull the last character of
@@ -841,6 +856,8 @@
 - job:
     name: publish-wheel-mirror-ubuntu-trusty
     parent: build-wheel-mirror-ubuntu-trusty
+    description: |
+      Publish Ubuntu Trusty wheels for OpenStaci CI mirrors.
     post-run: playbooks/publish/wheel-mirror.yaml
     final: true
     secrets:
@@ -850,6 +867,8 @@
 - job:
     name: build-wheel-mirror-ubuntu-xenial
     parent: build-wheel-mirror-base
+    description: |
+      Build Ubuntu Xenial wheels for OpenStaci CI mirrors.
     nodeset:
       # NOTE: The python2 and python3 suffix are important, they select the
       # version of python to build in each job. (we pull the last character of
@@ -864,6 +883,8 @@
 - job:
     name: publish-wheel-mirror-ubuntu-xenial
     parent: build-wheel-mirror-ubuntu-xenial
+    description: |
+      Publish Ubuntu Xenial wheels for OpenStaci CI mirrors.
     post-run: playbooks/publish/wheel-mirror.yaml
     final: true
     secrets:
@@ -872,6 +893,8 @@
 
 - job:
     name: release-wheel-mirror
+    description: |
+      Release published wheels to OpenStack CI mirrors.
     run: playbooks/wheel/release.yaml
     nodeset:
       nodes: []
@@ -881,6 +904,8 @@
 
 - job:
     name: tag-releases
+    description: |
+      Tag projects for a release.
     pre-run: playbooks/release/pre.yaml
     run: playbooks/release/tag.yaml
     post-run: playbooks/release/post.yaml
@@ -894,6 +919,8 @@
 
 - job:
     name: project-config-check-main-yaml
+    description: |
+      Check file zuul.d/main.yaml in project-config.
     pre-run: playbooks/check-main-yaml/pre.yaml
     run: playbooks/project-config/run-tox.yaml
     post-run: playbooks/check-main-yaml/post.yaml
@@ -915,6 +942,8 @@
 - job:
     name: upstream-translation-update
     parent: propose-updates
+    description: |
+      Push strings for translation to translation server.
     pre-run: playbooks/translation/pre.yaml
     run: playbooks/translation/upstream-translation-update.yaml
     post-run: playbooks/publish/openstack-artifacts.yaml
@@ -932,6 +961,9 @@
 - job:
     name: propose-translation-update
     parent: propose-updates
+    description: |
+      Import translations from translation server to projects as
+      proposed change.
     pre-run: playbooks/translation/pre.yaml
     run: playbooks/translation/propose-translation-update.yaml
     vars:
