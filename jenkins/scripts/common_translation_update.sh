@@ -326,6 +326,8 @@ EOF
         # Don't submit if we have the same patch id of previously submitted
         # patchset
         if [[ "${PREV_PATCH_ID}" != "${CUR_PATCH_ID}" ]]; then
+            # Show current status of tree for debugging purpose
+            git status
             # Do error checking manually to ignore one class of failure.
             set +e
             # We cannot rely on the default branch in .gitreview being
