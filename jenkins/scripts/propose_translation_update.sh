@@ -170,8 +170,11 @@ function handle_python_django {
         if [[ "$kind" == "django" ]] ; then
             install_horizon
         fi
-        # Pull updated translations from Zanata
-        pull_from_zanata "$project"
+        # Pull updated translations from Zanata only the first time
+        if [ ! -f .zanata-pull ] ; then
+            touch .zanata-pull
+            pull_from_zanata "$project"
+        fi
         propose_releasenotes "$ZANATA_VERSION"
         for modulename in $module_names; do
             # Note that we need to generate the pot files so that we
