@@ -16356,8 +16356,6 @@
     name: openstack/swift
     templates:
       - system-required
-      - openstack-python-jobs
-      - openstack-python35-jobs
       - publish-openstack-sphinx-docs
       - release-openstack-server
       - periodic-stable-jobs
@@ -16369,13 +16367,7 @@
       - release-notes-jobs
     check:
       jobs:
-        - legacy-swift-tox-xfs-tmp-py27
-        - legacy-swift-tox-xfs-tmp-py35
-        - legacy-swift-tox-xfs-tmp-func
-        - legacy-swift-tox-xfs-tmp-func-post-as-copy
-        - legacy-swift-tox-xfs-tmp-func-encryption
-        - legacy-swift-tox-xfs-tmp-func-ec:
-            branches: ^(?!stable/ocata).*$
+        - openstack-tox-pep8
         - legacy-swift-dsvm-functional:
             irrelevant-files:
               - ^api-ref/.*$
@@ -16412,13 +16404,7 @@
     gate:
       queue: integrated
       jobs:
-        - legacy-swift-tox-xfs-tmp-py27
-        - legacy-swift-tox-xfs-tmp-py35
-        - legacy-swift-tox-xfs-tmp-func
-        - legacy-swift-tox-xfs-tmp-func-post-as-copy
-        - legacy-swift-tox-xfs-tmp-func-encryption
-        - legacy-swift-tox-xfs-tmp-func-ec:
-            branches: ^(?!stable/ocata).*$
+        - openstack-tox-pep8
         - legacy-swift-dsvm-functional:
             irrelevant-files:
               - ^api-ref/.*$
@@ -16447,14 +16433,9 @@
     post:
       jobs:
         - openstack-tox-cover
+        - publish-openstack-python-branch-tarball
     experimental:
       jobs:
-        - legacy-swift-tox-xfs-tmp-py27-centos-7
-        - legacy-swift-tox-xfs-tmp-func-centos-7
-        - legacy-swift-tox-xfs-tmp-func-post-as-copy-centos-7
-        - legacy-swift-tox-xfs-tmp-func-encryption-centos-7
-        - legacy-swift-tox-xfs-tmp-func-ec-centos-7:
-            branches: ^(?!stable/ocata).*$
         - legacy-tempest-dsvm-neutron-pg-full:
             irrelevant-files:
               - ^(test-|)requirements.txt$
@@ -16480,17 +16461,7 @@
     templates:
       - system-required
       - publish-to-pypi
-    check:
-      jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
-    gate:
-      jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
-    post:
-      jobs:
-        - publish-openstack-python-branch-tarball
+      - openstack-python-jobs
 
 - project:
     name: openstack/swift-ceph-backend
