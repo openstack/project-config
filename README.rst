@@ -57,9 +57,9 @@ nodepool
 ========
 
 This dir contains the nodepool scripts and nodepool disk image builder
-elements that are used to build the images we boot slave nodes off of.
-Edit these files if you need to modify the base images that Jenkins jobs
-run on.
+elements that are used to build the images we boot build nodes off of.
+Edit these files if you need to modify the base images that Nodepool creates
+for Zuul to run content on.
 
 `Nodepool Documentation <http://docs.openstack.org/infra/system-config/nodepool.html>`_
 
@@ -75,10 +75,9 @@ site.
 zuul
 ====
 
-This dir contains the zuul layout.yaml file and its python functions file(s).
-These files determine what jobs are run on Gerrit events for each project.
-Edit these files if you need to change the jobs that your project runs or
-attributes of those jobs (voting, slave node type, etc).
+This dir contains the zuul main.yaml file which defines the Zuul tenants
+and the system-variables.yaml file which contains some global variables.
+Edit these files to add, remove or rename a project from Zuul.
 
 `Zuul Documentation <http://docs.openstack.org/infra/system-config/zuul.html>`_
 
