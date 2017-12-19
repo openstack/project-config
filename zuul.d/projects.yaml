@@ -5034,29 +5034,82 @@
     name: openstack/django_openstack_auth
     templates:
       - system-required
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - publish-openstack-sphinx-docs
-      - check-requirements
-      - lib-forward-testing
       - translation-jobs-ocata
       - translation-jobs-pike
       - publish-to-pypi
     check:
       jobs:
+        - requirements-check:
+            branches:
+              - stable/pike
+              - stable/ocata
+        - openstack-tox-pep8:
+            branches:
+              - stable/pike
+              - stable/ocata
+        - openstack-tox-py27:
+            branches:
+              - stable/pike
+              - stable/ocata
+        - openstack-tox-py35:
+            branches:
+              - stable/pike
+              - stable/ocata
+        - build-openstack-sphinx-docs:
+            branches:
+              - stable/pike
+              - stable/ocata
         - horizon-openstack-tox-py27dj18:
-            branches: ^(?!stable/ocata).*$
-        - horizon-openstack-tox-py27dj19
-        - horizon-openstack-tox-py27dj110
+            branches:
+              - stable/pike
+        - horizon-openstack-tox-py27dj19:
+            branches:
+              - stable/pike
+              - stable/ocata
+        - horizon-openstack-tox-py27dj110:
+            branches:
+              - stable/pike
+              - stable/ocata
     gate:
       jobs:
+        - requirements-check:
+            branches:
+              - stable/pike
+              - stable/ocata
+        - openstack-tox-pep8:
+            branches:
+              - stable/pike
+              - stable/ocata
+        - openstack-tox-py27:
+            branches:
+              - stable/pike
+              - stable/ocata
+        - openstack-tox-py35:
+            branches:
+              - stable/pike
+              - stable/ocata
+        - build-openstack-sphinx-docs:
+            branches:
+              - stable/pike
+              - stable/ocata
         - horizon-openstack-tox-py27dj18:
-            branches: ^(?!stable/ocata).*$
-        - horizon-openstack-tox-py27dj19
-        - horizon-openstack-tox-py27dj110
+            branches:
+              - stable/pike
+        - horizon-openstack-tox-py27dj19:
+            branches:
+              - stable/pike
+              - stable/ocata
+        - horizon-openstack-tox-py27dj110:
+            branches:
+              - stable/pike
+              - stable/ocata
     post:
       jobs:
         - upstream-translation-update:
+            branches:
+              - stable/pike
+              - stable/ocata
+        - publish-openstack-sphinx-docs:
             branches:
               - stable/pike
               - stable/ocata
