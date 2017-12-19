@@ -88,10 +88,10 @@ case "$PROJECT" in
         ;;
     *)
         # Common setup for python and django repositories
+        setup_project "$PROJECT" "$ZANATA_VERSION"
         # ---- Python projects ----
         module_names=$(get_modulename $PROJECT python)
         if [ -n "$module_names" ]; then
-            setup_project "$PROJECT" "$ZANATA_VERSION" $module_names
             if [[ "$ZANATA_VERSION" == "master" && -f releasenotes/source/conf.py ]]; then
                 extract_messages_releasenotes
                 ALL_MODULES="releasenotes $ALL_MODULES"
@@ -105,7 +105,6 @@ case "$PROJECT" in
         # ---- Django projects ----
         module_names=$(get_modulename $PROJECT django)
         if [ -n "$module_names" ]; then
-            setup_project "$PROJECT" "$ZANATA_VERSION" $module_names
             install_horizon
             if [[ "$ZANATA_VERSION" == "master" && -f releasenotes/source/conf.py ]]; then
                 extract_messages_releasenotes
