@@ -196,10 +196,11 @@
       Publishes depending on branch to latest/ (for master), or the
       basename of the branch like pike (for stable/pike).
     final: true
-    pre-run: playbooks/python-docs/pre.yaml
-    run: playbooks/python-docs/run.yaml
+    pre-run: playbooks/project-config/pre-tox.yaml
+    run: playbooks/project-config/run-tox.yaml
     post-run:
-      - playbooks/python-docs/post.yaml
+      - playbooks/project-config/post-tox.yaml
+      - playbooks/sphinx/post.yaml
       - playbooks/publish/openstack-afs.yaml
     required-projects:
       - name: openstack/requirements
@@ -208,6 +209,36 @@
       - zuul: openstack-infra/openstack-zuul-jobs
     vars:
       tox_constraints_file: '{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt'
+      tox_envlist: venv
+      tox_extra_args: -vv python setup.py build_sphinx
+    secrets:
+      - secret: afsdocs_secret
+        name: afs
+
+- job:
+    name: publish-openstack-sphinx-docs-python3
+    description: |
+      Publish the results of the build-openstack-sphinx-docs job to
+      /afs/.openstack.org/docs/{{ zuul.project.short_name }}.
+
+      Builds the docs using Sphinx with Python3.
+
+      Publishes depending on branch to latest/ (for master), or the
+      basename of the branch like pike (for stable/pike).
+    final: true
+    pre-run: playbooks/sphinx/pre.yaml
+    run: playbooks/sphinx/run.yaml
+    post-run:
+      - playbooks/sphinx/post.yaml
+      - playbooks/publish/openstack-afs.yaml
+    required-projects:
+      - name: openstack/requirements
+    roles:
+      - zuul: openstack-infra/zuul-jobs
+      - zuul: openstack-infra/openstack-zuul-jobs
+    vars:
+      tox_constraints_file: '{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt'
+      sphinx_python: python3
     secrets:
       - secret: afsdocs_secret
         name: afs
@@ -220,10 +251,10 @@
 
       Publishing is done from master branch directly without using /latest.
     final: true
-    pre-run: playbooks/python-docs/pre.yaml
-    run: playbooks/python-docs/run.yaml
+    pre-run: playbooks/sphinx/pre.yaml
+    run: playbooks/sphinx/run.yaml
     post-run:
-      - playbooks/python-docs/post-direct.yaml
+      - playbooks/sphinx/post-direct.yaml
       - playbooks/publish/openstack-afs.yaml
     required-projects:
       - name: openstack/requirements
@@ -239,13 +270,42 @@
         name: afs
 
 - job:
+    name: publish-openstack-sphinx-docs-direct-python3
+    description: |
+      Publish the results of the build-openstack-sphinx-docs job to
+      /afs/.openstack.org/docs/{{ zuul.project.short_name }}
+
+      Builds the docs using Sphinx with Python3.
+
+      Publishing is done from master branch directly without using /latest.
+    final: true
+    pre-run: playbooks/sphinx/pre.yaml
+    run: playbooks/sphinx/run.yaml
+    post-run:
+      - playbooks/sphinx/post-direct.yaml
+      - playbooks/publish/openstack-afs.yaml
+    required-projects:
+      - name: openstack/requirements
+    roles:
+      - zuul: openstack-infra/zuul-jobs
+      - zuul: openstack-infra/openstack-zuul-jobs
+    vars:
+      tox_constraints_file: "{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt"
+      sphinx_python: python3
+    branches:
+      - master
+    secrets:
+      - secret: afsdocs_secret
+        name: afs
+
+- job:
     name: publish-openstack-contributor-guide
     description: |
       Publish contributor-guide documents to
       https://docs.openstack.org/contributors
     final: true
-    pre-run: playbooks/python-docs/pre.yaml
-    run: playbooks/python-docs/run.yaml
+    pre-run: playbooks/sphinx/pre.yaml
+    run: playbooks/sphinx/run.yaml
     post-run: playbooks/publish/contributor-guide-afs.yaml
     roles:
       - zuul: openstack-infra/zuul-jobs
@@ -256,19 +316,23 @@
         name: afs
 
 - job:
-    name: publish-openstack-sphinx-tox-docs
+    name: publish-openstack-sphinx-i18n
     description: |
+      Special publication job for the openstack/i18n project.
+
       Publish the results of the build-openstack-sphinx-docs job to
       /afs/.openstack.org/docs/{{ zuul.project.short_name }}.
 
       Publishes depending on branch to latest/ (for master), or the
       basename of the branch like pike (for stable/pike).
-      This uses the tox "docs" environment for publishing.
     final: true
-    pre-run: playbooks/python-docs/pre.yaml
+    pre-run: playbooks/project-config/pre-tox.yaml
     run: playbooks/project-config/run-tox.yaml
+    allowed-projects:
+      - openstack/i18n
     post-run:
-      - playbooks/python-docs/post.yaml
+      - playbooks/project-config/post-tox.yaml
+      - playbooks/sphinx/post.yaml
       - playbooks/publish/openstack-afs.yaml
     required-projects:
       - name: openstack/requirements
@@ -296,7 +360,6 @@
       - name: openstack/requirements
     roles:
       - zuul: openstack-infra/zuul-jobs
-      - zuul: openstack-infra/openstack-zuul-jobs
     vars:
       constraints_file: '{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt'
     secrets:
@@ -309,8 +372,8 @@
       Publish OpenStack specs to static.openstack.org
       specs/{{ zuul.project.short_name }}
     final: true
-    pre-run: playbooks/python-docs/pre.yaml
-    run: playbooks/python-docs/run.yaml
+    pre-run: playbooks/sphinx/pre.yaml
+    run: playbooks/sphinx/run.yaml
     post-run: playbooks/publish/openstack-specs.yaml
     required-projects:
       - name: openstack/requirements
@@ -327,7 +390,7 @@
     description: |
       Publish OpenStack specs site to static.openstack.org specs/
     final: true
-    pre-run: playbooks/python-docs/pre.yaml
+    pre-run: playbooks/project-config/pre-tox.yaml
     run: playbooks/project-config/run-tox.yaml
     post-run: playbooks/publish/openstack-specs-site.yaml
     allowed-projects:
@@ -346,11 +409,33 @@
       Publish the results of the openstack-build-sphinx-docs job to
       /afs/.openstack.org/infra/{{ zuul.project.short_name }}
     final: true
-    pre-run: playbooks/python-docs/pre.yaml
-    run: playbooks/python-docs/run.yaml
+    pre-run: playbooks/sphinx/pre.yaml
+    run: playbooks/sphinx/run.yaml
     post-run:
-      - playbooks/python-docs/post-infra.yaml
+      - playbooks/sphinx/post-infra.yaml
       - playbooks/publish/infra-afs.yaml
+    roles:
+      - zuul: openstack-infra/zuul-jobs
+      - zuul: openstack-infra/openstack-zuul-jobs
+    secrets:
+      - secret: afsdocs_secret
+        name: afs
+
+- job:
+    name: publish-openstack-sphinx-docs-infra-python3
+    description: |
+      Publish the results of the openstack-build-sphinx-docs job to
+      /afs/.openstack.org/infra/{{ zuul.project.short_name }}
+
+      Builds the docs using Sphinx with Python3.
+    final: true
+    pre-run: playbooks/sphinx/pre.yaml
+    run: playbooks/sphinx/run.yaml
+    post-run:
+      - playbooks/sphinx/post-infra.yaml
+      - playbooks/publish/infra-afs.yaml
+    vars:
+      sphinx_python: python3
     roles:
       - zuul: openstack-infra/zuul-jobs
       - zuul: openstack-infra/openstack-zuul-jobs
@@ -363,10 +448,10 @@
     description: |
       Publish the Infra Manual to /afs/.openstack.org/docs/infra/manual
     final: true
-    pre-run: playbooks/python-docs/pre.yaml
-    run: playbooks/python-docs/run.yaml
+    pre-run: playbooks/sphinx/pre.yaml
+    run: playbooks/sphinx/run.yaml
     post-run:
-      - playbooks/python-docs/post-infra.yaml
+      - playbooks/sphinx/post-infra.yaml
       - playbooks/publish/infra-manual.yaml
     allowed-projects:
       - openstack-infra/infra-manual
@@ -383,7 +468,7 @@
       Publish OpenStack Service Types Authority to
       https://service-types.openstack.org
     final: true
-    pre-run: playbooks/python-docs/pre.yaml
+    pre-run: playbooks/project-config/pre-tox.yaml
     run: playbooks/project-config/run-tox.yaml
     post-run: playbooks/publish/service-types.yaml
     allowed-projects:
@@ -401,7 +486,7 @@
     description: |
       Publish the infrastructure documentation index
     final: true
-    pre-run: playbooks/python-docs/pre.yaml
+    pre-run: playbooks/project-config/pre-tox.yaml
     run: playbooks/project-config/run-tox.yaml
     post-run: playbooks/publish/infra-index.yaml
     allowed-projects:
@@ -420,7 +505,7 @@
     description: |
       Publish the publication index
     final: true
-    pre-run: playbooks/python-docs/pre.yaml
+    pre-run: playbooks/project-config/pre-tox.yaml
     run: playbooks/publications-index/run.yaml
     post-run: playbooks/publish/publications-index.yaml
     allowed-projects:
@@ -439,7 +524,7 @@
     description: |
       Publish one publication from openstack-infra/publications
     final: true
-    pre-run: playbooks/python-docs/pre.yaml
+    pre-run: playbooks/project-config/pre-tox.yaml
     run: playbooks/publications/run.yaml
     post-run: playbooks/publish/publications.yaml
     allowed-projects:
@@ -486,9 +571,9 @@
 - job:
     name: base-publish-static
     description: |
-      Base job for job that publish content to static.openstack.org.
-    pre-run: playbooks/python-docs/pre.yaml
-    run: playbooks/python-docs/run.yaml
+      Base job for jobs that publish content to static.openstack.org.
+    pre-run: playbooks/sphinx/pre.yaml
+    run: playbooks/sphinx/run.yaml
 
 - job:
     name: publish-static
@@ -587,7 +672,7 @@
 
       Note that this build job does not create a root-marker file,
       this has to be done by scripts called from tox.
-    pre-run: playbooks/python-docs/pre.yaml
+    pre-run: playbooks/project-config/pre-tox.yaml
     run: playbooks/project-config/run-tox.yaml
     roles:
       - zuul: openstack-infra/zuul-jobs
@@ -658,7 +743,7 @@
     description: |
       Publish api-guide document to
       https://developer.openstack.org/api-guide.
-    pre-run: playbooks/python-docs/pre.yaml
+    pre-run: playbooks/project-config/pre-tox.yaml
     run: playbooks/project-config/run-tox.yaml
     post-run: playbooks/publish/api-guide.yaml
     roles:
@@ -678,7 +763,7 @@
     description: |
       Publish api-ref document to
       https://developer.openstack.org/api-ref.
-    pre-run: playbooks/python-docs/pre.yaml
+    pre-run: playbooks/project-config/pre-tox.yaml
     run: playbooks/project-config/run-tox.yaml
     post-run: playbooks/publish/api-ref.yaml
     roles:
@@ -698,7 +783,7 @@
     description: |
       Publish placement-api-ref document to
       https://developer.openstack.org/api-ref/placement.
-    pre-run: playbooks/python-docs/pre.yaml
+    pre-run: playbooks/project-config/pre-tox.yaml
     run: playbooks/project-config/run-tox.yaml
     post-run: playbooks/publish/placement-api-ref.yaml
     roles:
@@ -718,7 +803,7 @@
     description: |
       Publish install-guide document to
       https://docs.openstack.org/project-install-guide/
-    pre-run: playbooks/python-docs/pre.yaml
+    pre-run: playbooks/project-config/pre-tox.yaml
     run: playbooks/project-config/run-tox.yaml
     post-run: playbooks/publish/install-guide.yaml
     roles:
@@ -739,7 +824,7 @@
     description: |
       Publish deploy-guide document to
       https://docs.openstack.org/project-deploy-guide/
-    pre-run: playbooks/python-docs/pre.yaml
+    pre-run: playbooks/project-config/pre-tox.yaml
     run: playbooks/project-config/run-tox.yaml
     post-run: playbooks/publish/deploy-guide.yaml
     roles:
