@@ -27,9 +27,8 @@
     name: openstack-dev/devstack
     templates:
       - system-required
+      - integrated-gate
       - integrated-gate-py35
-      # TODO(mordred) Uncomment this when the variant bug is fixed
-      # - integrated-gate-nova-net
       - publish-openstack-sphinx-docs
     check:
       jobs:
@@ -83,8 +82,7 @@
             irrelevant-files:
               - ^.*\.rst$
               - ^doc/.*$
-        - legacy-tempest-dsvm-neutron-full:
-            branches: ^(?!driverfixes/).*$
+        - tempest-full:
             irrelevant-files:
               - ^.*\.rst$
               - ^doc/.*$
@@ -106,8 +104,7 @@
             irrelevant-files:
               - ^.*\.rst$
               - ^doc/.*$
-        - legacy-tempest-dsvm-neutron-full:
-            branches: ^(?!driverfixes/).*$
+        - tempest-full:
             irrelevant-files:
               - ^.*\.rst$
               - ^doc/.*$
@@ -428,9 +425,8 @@
     name: openstack-infra/devstack-gate
     templates:
       - system-required
+      - integrated-gate
       - integrated-gate-py35
-      # TODO(mordred) Uncomment this when the variant bug is fixed
-      # - integrated-gate-nova-net
     check:
       jobs:
         - legacy-devstack-gate-tox-run-tests
@@ -468,8 +464,6 @@
         - legacy-tempest-dsvm-neutron-full-opensuse-423:
             voting: false
             branches: ^(?!stable/(newton|ocata)).*$
-        - legacy-tempest-dsvm-neutron-full:
-            branches: ^(?!driverfixes/).*$
     gate:
       queue: integrated
       jobs:
@@ -477,8 +471,6 @@
         - legacy-devstack-gate-tox-py3-run-tests
         - legacy-grenade-dsvm-neutron
         - legacy-grenade-dsvm-neutron-multinode
-        - legacy-tempest-dsvm-neutron-full:
-            branches: ^(?!driverfixes/).*$
     experimental:
       jobs:
         - legacy-tempest-dsvm-neutron-full-fedora-26
@@ -3717,6 +3709,7 @@
       - periodic-stable-jobs
       - periodic-jobs-with-oslo-master
       - check-requirements
+      - integrated-gate
       - integrated-gate-py35
       - translation-jobs
       - translation-jobs-ocata
@@ -3867,8 +3860,7 @@
         # - openstack-tox-pep8:
         #     nodeset: ubuntu-trusty
         #     branches: ^(?!driverfixes/mitaka).*$
-        - legacy-tempest-dsvm-neutron-full:
-            branches: ^(?!driverfixes/).*$
+        - tempest-full:
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^.*\.rst$
@@ -3920,8 +3912,7 @@
         # - openstack-tox-pep8:
         #     nodeset: ubuntu-trusty
         #     branches: ^(?!driverfixes/mitaka).*$
-        - legacy-tempest-dsvm-neutron-full:
-            branches: ^(?!driverfixes/).*$
+        - tempest-full:
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^.*\.rst$
@@ -6781,6 +6772,7 @@
       - periodic-stable-jobs
       - periodic-jobs-with-oslo-master
       - check-requirements
+      - integrated-gate
       - integrated-gate-py35
       - translation-jobs
       - translation-jobs-ocata
@@ -6816,8 +6808,7 @@
               - ^doc/.*$
               - ^releasenotes/.*$
               - ^tox.ini$
-        - legacy-tempest-dsvm-neutron-full:
-            branches: ^(?!driverfixes/).*$
+        - tempest-full:
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^.*\.rst$
@@ -6872,8 +6863,7 @@
     gate:
       queue: integrated
       jobs:
-        - legacy-tempest-dsvm-neutron-full:
-            branches: ^(?!driverfixes/).*$
+        - tempest-full:
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^.*\.rst$
@@ -7670,6 +7660,7 @@
       - periodic-stable-jobs
       - periodic-jobs-with-oslo-master
       - check-requirements
+      - integrated-gate
       - integrated-gate-py35
       - translation-jobs
       - translation-jobs-ocata
@@ -7725,8 +7716,7 @@
               - ^keystone/tests/unit/.*$
               - ^releasenotes/.*$
               - ^setup.cfg$
-        - legacy-tempest-dsvm-neutron-full:
-            branches: ^(?!driverfixes/).*$
+        - tempest-full:
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^.*\.rst$
@@ -7757,8 +7747,7 @@
               - ^etc/.*$
               - ^keystone/tests/unit/.*$
               - ^releasenotes/.*$
-        - legacy-tempest-dsvm-neutron-full:
-            branches: ^(?!driverfixes/).*$
+        - tempest-full:
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^.*\.rst$
@@ -10219,6 +10208,7 @@
       - periodic-jobs-with-neutron-lib-master
       - periodic-jobs-with-ovsdbapp-master
       - check-requirements
+      - integrated-gate
       - integrated-gate-py35
       - translation-jobs
       - translation-jobs-ocata
@@ -10367,8 +10357,7 @@
               - ^setup.cfg$
               - ^tools/.*$
               - ^tox.ini$
-        - legacy-tempest-dsvm-neutron-full:
-            branches: ^(?!driverfixes/).*$
+        - tempest-full:
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^.*\.rst$
@@ -10935,9 +10924,8 @@
       - release-openstack-server
       - periodic-stable-jobs
       - check-requirements
+      - integrated-gate
       - integrated-gate-py35
-      # TODO(mordred) Uncomment this when the variant bug is fixed
-      # - integrated-gate-nova-net
       - translation-jobs
       - translation-jobs-ocata
       - release-notes-jobs
@@ -11105,8 +11093,7 @@
               - ^nova/tests/.*$
               - ^tests-py3.txt$
         - build-placement-api-ref
-        - legacy-tempest-dsvm-neutron-full:
-            branches: ^(?!driverfixes/).*$
+        - tempest-full:
             irrelevant-files:
               - ^(placement-)?api-.*$
               - ^(test-|)requirements.txt$
@@ -11190,8 +11177,7 @@
               - ^tools/.*$
               - ^tox.ini$
         - build-placement-api-ref
-        - legacy-tempest-dsvm-neutron-full:
-            branches: ^(?!driverfixes/).*$
+        - tempest-full:
             irrelevant-files:
               - ^(placement-)?api-.*$
               - ^(test-|)requirements.txt$
@@ -16741,9 +16727,8 @@
     templates:
       - system-required
       - check-requirements
+      - integrated-gate
       - integrated-gate-py35
-      # TODO(mordred) Uncomment this when the variant bug is fixed
-      # - integrated-gate-nova-net
       - openstack-python-jobs
       - openstack-python35-jobs
       - publish-openstack-sphinx-docs
@@ -16903,8 +16888,7 @@
               - ^tempest/tests/.*$
         - openstack-tox-cover:
             voting: false
-        - legacy-tempest-dsvm-neutron-full:
-            branches: ^(?!driverfixes/).*$
+        - tempest-full:
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^.*\.rst$
