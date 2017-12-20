@@ -158,6 +158,17 @@ function propose_python_django {
 
 
 # Handle either python or django proposals
+function handle_python_django_project {
+    local project=$1
+
+    setup_project "$project" "$ZANATA_VERSION"
+    pull_from_zanata "$project"
+    handle_python_django $project python
+    handle_python_django $project django
+
+}
+
+# Handle either python or django proposals
 function handle_python_django {
     local project=$1
     # kind can be "python" or "django"
@@ -166,14 +177,8 @@ function handle_python_django {
 
     module_names=$(get_modulename $project $kind)
     if [ -n "$module_names" ]; then
-        setup_project "$project" "$ZANATA_VERSION" $module_names
         if [[ "$kind" == "django" ]] ; then
             install_horizon
-        fi
-        # Pull updated translations from Zanata only the first time
-        if [ ! -f .zanata-pull ] ; then
-            touch .zanata-pull
-            pull_from_zanata "$project"
         fi
         propose_releasenotes "$ZANATA_VERSION"
         for modulename in $module_names; do
@@ -312,8 +317,7 @@ case "$PROJECT" in
         ;;
     *)
         # Common setup for python and django repositories
-        handle_python_django $PROJECT python
-        handle_python_django $PROJECT django
+        handle_python_django_project $PROJECT
         ;;
 esac
 

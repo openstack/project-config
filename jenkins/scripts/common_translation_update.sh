@@ -113,12 +113,10 @@ function setup_nodeenv {
 }
 
 # Setup a project for Zanata. This is used by both Python and Django projects.
-# syntax: setup_project <project> <zanata_version> <modulename> [<modulename> ...]
+# syntax: setup_project <project> <zanata_version>
 function setup_project {
     local project=$1
     local version=$2
-    shift 2
-    # All argument(s) contain module names now.
 
     # Exclude all dot-files, particuarly for things such such as .tox
     # and .venv
