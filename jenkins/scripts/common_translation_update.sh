@@ -105,9 +105,19 @@ function setup_venv {
 # the one used in the nodejs6-npm jobs.
 function setup_nodeenv {
 
-    pip install --user nodeenv
+    # The ensure-babel and ensure-sphinx roles create a venv in
+    # ~/.venv containing the needed software. However, it's possible
+    # we may want to switch that to using pip install --user and
+    # ~/.local instead of a venv, so make this compatible with either.
+
     NODE_VENV=~/.local/node_venv
-    ~/.local/bin/nodeenv --node 6.9.4 $NODE_VENV
+    if [ -d ~/.venv ] ; then
+        pip install nodeenv
+        nodeenv --node 6.9.4 $NODE_VENV
+    else
+        pip install --user nodeenv
+        ~/.local/bin/nodeenv --node 6.9.4 $NODE_VENV
+    fi
     source $NODE_VENV/bin/activate
 
 }
