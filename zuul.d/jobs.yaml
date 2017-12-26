@@ -849,6 +849,22 @@
         name: afs
 
 - job:
+    name: publish-training-labs-scripts
+    parent: publish-openstack-artifacts
+    description: |
+      Publish training-labs tarball to tarballs.openstack.org.
+    pre-run: playbooks/training-labs/pre.yaml
+    run: playbooks/training-labs/run.yaml
+    post-run: playbooks/publish/openstack-artifacts.yaml
+    vars:
+      fileserver_leading_path: build
+    secrets:
+      - secret: site_tarballs
+        name: fileserver
+    allowed-projects:
+      - openstack/training-labs
+
+- job:
     name: publish-openstack-javascript-content
     parent: publish-openstack-artifacts
     description: |
