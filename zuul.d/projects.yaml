@@ -211,7 +211,7 @@
             irrelevant-files:
               - ^.*\.rst$
               - ^doc/.*$
-        - build-openstack-sphinx-docs:
+        - tox-docs:
             branches: ^(?!stable/newton).*$
         - ironic-grenade-dsvm:
             voting: false
@@ -230,12 +230,11 @@
             irrelevant-files:
               - ^.*\.rst$
               - ^doc/.*$
-        - build-openstack-sphinx-docs:
+        - tox-docs:
             branches: ^(?!stable/newton).*$
     post:
       jobs:
-        - legacy-grenade-publish-docs:
-            branches: ^(?!bug/).*$
+        - publish-openstack-tox-docs
     experimental:
       jobs:
         - legacy-grenade-dsvm-neutron-forward:
@@ -7266,7 +7265,7 @@
         - openstack-tox-pep8
     post:
       jobs:
-        - publish-openstack-sphinx-i18n
+        - publish-openstack-tox-docs
 
 - project:
     name: openstack/i18n-specs
