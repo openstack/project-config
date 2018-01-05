@@ -1080,3 +1080,73 @@
       - openstack/requirements
     secrets:
       - zanata_api_credentials
+
+- job:
+    name: project-config-bindep-fallback
+    description: |
+      Check installation of binary packages for file
+      jenkins/data/bindep-fallback.txt.
+    run: playbooks/bindep-fallback/run.yaml
+    files:
+      - jenkins/data/bindep-fallback.txt
+      - playbooks/bindep-fallback/run.yaml
+
+- job:
+    name: project-config-bindep-fallback-centos-7
+    parent: project-config-bindep-fallback
+    description: |
+      Check installation of binary packages for file
+      jenkins/data/bindep-fallback.txt.
+
+      The testing is done for CentOS 7.
+    nodeset: centos-7
+
+- job:
+    name: project-config-bindep-fallback-fedora-26
+    parent: project-config-bindep-fallback
+    description: |
+      Check installation of binary packages for file
+      jenkins/data/bindep-fallback.txt.
+
+      The testing is done for Fedora 26.
+    nodeset: fedora-26
+
+- job:
+    name: project-config-bindep-fallback-debian-jessie
+    parent: project-config-bindep-fallback
+    description: |
+      Check installation of binary packages for file
+      jenkins/data/bindep-fallback.txt.
+
+      The testing is done for Debian Jessie.
+    nodeset: debian-jessie
+
+- job:
+    name: project-config-bindep-fallback-opensuse-423
+    parent: project-config-bindep-fallback
+    description: |
+      Check installation of binary packages for file
+      jenkins/data/bindep-fallback.txt.
+
+      The testing is done for openSUSE Leap 42.3.
+    nodeset: opensuse-423
+
+- job:
+    name: project-config-bindep-fallback-ubuntu-trusty
+    parent: project-config-bindep-fallback
+    description: |
+      Check installation of binary packages for file
+      jenkins/data/bindep-fallback.txt.
+
+      The testing is done for Ubuntu Trusty.
+    nodeset: ubuntu-trusty
+
+- job:
+    name: project-config-bindep-fallback-ubuntu-xenial
+    parent: project-config-bindep-fallback
+    description: |
+      Check installation of binary packages for file
+      jenkins/data/bindep-fallback.txt.
+
+      The testing is done for Ubuntu Xenial.
+    nodeset: ubuntu-xenial
