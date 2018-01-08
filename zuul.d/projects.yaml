@@ -7733,6 +7733,8 @@
 
 - project:
     name: x/packstack
+    templates:
+      - publish-to-pypi
     check:
       jobs:
         - openstack-tox-pep8
@@ -7743,12 +7745,6 @@
         - openstack-tox-pep8
         - openstack-tox-py27
         - build-openstack-releasenotes
-    pre-release:
-      jobs:
-        - release-openstack-python-without-pypi
-    release:
-      jobs:
-        - release-openstack-python-without-pypi
 
 - project:
     name: x/pandaman
@@ -8407,15 +8403,13 @@
     templates:
       - openstack-cover-jobs
       - openstack-python-jobs
+      - publish-to-pypi
     check:
       jobs:
         - openstack-tox-pylint
     gate:
       jobs:
         - openstack-tox-pylint
-    release:
-      jobs:
-        - release-openstack-python-without-pypi
 
 - project:
     name: x/swiftonfile

@@ -95,21 +95,6 @@
         secret: openstack_puppetforge_credentials
 
 - job:
-    name: release-openstack-python-without-pypi
-    parent: publish-openstack-artifacts
-    description: |
-      Sign and release python tarballs to tarballs.openstack.org, but
-      do not upload to PyPI.
-    pre-run: playbooks/pti-python-tarball/pre.yaml
-    run: playbooks/pti-python-tarball/run.yaml
-    post-run:
-      - playbooks/pti-python-tarball/post.yaml
-    required-projects:
-      - name: openstack/requirements
-    secrets:
-      - gpg_key
-
-- job:
     name: release-openstack-python
     parent: publish-openstack-artifacts
     description: |
