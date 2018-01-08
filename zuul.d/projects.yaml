@@ -2,6 +2,20 @@
 # Contains project pipeline definitions
 
 - project:
+    name: ansible/ansible
+    templates:
+      - system-required
+    check:
+      jobs:
+        - shade-ansible-devel-functional-devstack:
+            files:
+              - ^lib/ansible/modules/cloud/openstack/.*
+              - ^contrib/inventory/openstack.py
+              - ^lib/ansible/plugins/inventory/openstack.py
+              - ^lib/ansible/module_utils/openstack.py
+              - ^lib/ansible/utils/module_docs_fragments/openstack.py
+
+- project:
     name: openstack-dev/bashate
     templates:
       - system-required
