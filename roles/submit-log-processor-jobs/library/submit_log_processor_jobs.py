@@ -166,6 +166,8 @@ class LogMatcher(object):
         fields["node_provider"] = node['nodepool']['provider']
         log_url = urllib.parse.urljoin(self.log_url, filename)
         fields["log_url"] = log_url
+        if 'executor' in zuul and 'hostname' in zuul['executor']:
+            fields["zuul_executor"] = zuul['executor']['hostname']
         return fields
 
 
