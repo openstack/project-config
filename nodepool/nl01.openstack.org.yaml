@@ -12,6 +12,8 @@ labels:
     min-ready: 1
   - name: fedora-26
     min-ready: 1
+  - name: fedora-27
+    min-ready: 1
   - name: opensuse-423
     min-ready: 1
   - name: tripleo-centos-7
@@ -34,6 +36,8 @@ providers:
       - name: debian-jessie
         config-drive: true
       - name: fedora-26
+        config-drive: true
+      - name: fedora-27
         config-drive: true
       - name: opensuse-423
         config-drive: true
@@ -59,6 +63,11 @@ providers:
             min-ram: 8000
             flavor-name: 'A1.8'
             diskimage: fedora-26
+            key-name: infra-root-keys
+          - name: fedora-27
+            min-ram: 8000
+            flavor-name: 'A1.8'
+            diskimage: fedora-27
             key-name: infra-root-keys
           - name: opensuse-423
             min-ram: 8000
@@ -89,6 +98,8 @@ providers:
         config-drive: true
       - name: fedora-26
         config-drive: true
+      - name: fedora-27
+        config-drive: true
       - name: opensuse-423
         config-drive: true
       - name: ubuntu-trusty
@@ -113,6 +124,11 @@ providers:
             min-ram: 8000
             flavor-name: 'Performance'
             diskimage: fedora-26
+            key-name: infra-root-keys
+          - name: fedora-27
+            min-ram: 8000
+            flavor-name: 'Performance'
+            diskimage: fedora-27
             key-name: infra-root-keys
           - name: opensuse-423
             min-ram: 8000
@@ -143,6 +159,8 @@ providers:
         config-drive: true
       - name: fedora-26
         config-drive: true
+      - name: fedora-27
+        config-drive: true
       - name: opensuse-423
         config-drive: true
       - name: ubuntu-trusty
@@ -167,6 +185,11 @@ providers:
             min-ram: 8000
             flavor-name: 'Performance'
             diskimage: fedora-26
+            key-name: infra-root-keys
+          - name: fedora-27
+            min-ram: 8000
+            flavor-name: 'Performance'
+            diskimage: fedora-27
             key-name: infra-root-keys
           - name: opensuse-423
             min-ram: 8000
@@ -197,6 +220,8 @@ providers:
         config-drive: true
       - name: fedora-26
         config-drive: true
+      - name: fedora-27
+        config-drive: true
       - name: opensuse-423
         config-drive: true
       - name: ubuntu-trusty
@@ -221,6 +246,11 @@ providers:
             min-ram: 8000
             flavor-name: 'Performance'
             diskimage: fedora-26
+            key-name: infra-root-keys
+          - name: fedora-27
+            min-ram: 8000
+            flavor-name: 'Performance'
+            diskimage: fedora-27
             key-name: infra-root-keys
           - name: opensuse-423
             min-ram: 8000
@@ -271,6 +301,8 @@ providers:
         config-drive: true
       - name: fedora-26
         config-drive: true
+      - name: fedora-27
+        config-drive: true
       - name: opensuse-423
         config-drive: true
       - name: ubuntu-trusty
@@ -295,6 +327,11 @@ providers:
             min-ram: 8000
             flavor-name: 'v1-standard-8'
             diskimage: fedora-26
+            key-name: infra-root-keys
+          - name: fedora-27
+            min-ram: 8000
+            flavor-name: 'v1-standard-8'
+            diskimage: fedora-27
             key-name: infra-root-keys
           - name: opensuse-423
             min-ram: 8000
@@ -362,6 +399,24 @@ diskimages:
       - growroot
       - infra-package-needs
     release: 26
+    env-vars:
+      TMPDIR: /opt/dib_tmp
+      DIB_CHECKSUM: '1'
+      DIB_IMAGE_CACHE: /opt/dib_cache
+      QEMU_IMG_OPTIONS: compat=0.10
+      DIB_GRUB_TIMEOUT: '0'
+  - name: fedora-27
+    elements:
+      - fedora-minimal
+      - vm
+      - simple-init
+      - openstack-repos
+      - nodepool-base
+      - cache-devstack
+      - initialize-urandom
+      - growroot
+      - infra-package-needs
+    release: 27
     env-vars:
       TMPDIR: /opt/dib_tmp
       DIB_CHECKSUM: '1'
