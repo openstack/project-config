@@ -1,0 +1,30 @@
+dashboard:
+  title: Neutron Tempest Plugin Failure Rate
+  rows:
+    - title: Description
+      height: 100px
+      panels:
+        - title: Description
+          content: |
+            **This dashboard is managed by [Grafyaml](http://docs.openstack.org/infra/system-config/grafyaml.html).**
+
+            If you would like to make changes to this dashboard, please see the grafana directory in [project-config](https://git.openstack.org/cgit/openstack-infra/project-config/tree/grafana/neutron-tempest-plugin.yaml).
+
+            NOTE - 'No datapoints' in a graph means there have been no job failures reported yet.
+          type: text
+    - title: Graphs
+      height: 320px
+      panels:
+        - title: Failure Rates (Gate queue)
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-api.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-api.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-api')
+          type: graph
+        - title: Failure Rates (Check queue)
+          span: 4
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-api.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-api.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-api')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-designate-scenario.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-designate-scenario.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-designate-scenario (non-voting)')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-dvr-multinode-scenario.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-dvr-multinode-scenario.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-dvr-multinode-scenario (non-voting)')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-linuxbridge.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-linuxbridge.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-scenario-linuxbridge (non-voting)')
+          type: graph
