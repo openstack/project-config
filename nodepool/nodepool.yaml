@@ -1,1087 +1,811 @@
 elements-dir: /etc/nodepool/elements
 images-dir: /opt/nodepool_dib
 
-cron:
-  cleanup: '*/1 * * * *'
-  check: '*/15 * * * *'
-
-zmq-publishers:
-  - tcp://zl01.openstack.org:8888
-  - tcp://zl02.openstack.org:8888
-  - tcp://zl03.openstack.org:8888
-  - tcp://zl04.openstack.org:8888
-  - tcp://zl05.openstack.org:8888
-  - tcp://zl06.openstack.org:8888
-  - tcp://zl07.openstack.org:8888
-  - tcp://zl08.openstack.org:8888
-  - tcp://zl09.openstack.org:8888
-
-gearman-servers:
-  - host: zuul.openstack.org
-
 zookeeper-servers:
   - host: nodepool.openstack.org
     port: 2181
 
 labels:
-  - name: debian-jessie
-    image: debian-jessie
-    ready-script: configure_mirror.sh
-    min-ready: 0
-    providers:
-      - name: rax-dfw
-      - name: rax-ord
-      - name: rax-iad
-      - name: ovh-gra1
-      - name: ovh-bhs1
-      - name: inap-mtl01
-      - name: infracloud-chocolate
-      - name: citycloud-lon1
-      - name: citycloud-kna1
-      - name: citycloud-la1
-      - name: citycloud-sto2
-      - name: vexxhost-ca-ymq-1
-  - name: ubuntu-trusty
-    image: ubuntu-trusty
-    ready-script: configure_mirror.sh
-    min-ready: 0
-    providers:
-      - name: rax-dfw
-      - name: rax-ord
-      - name: rax-iad
-      - name: ovh-gra1
-      - name: ovh-bhs1
-      - name: inap-mtl01
-      - name: infracloud-chocolate
-      - name: citycloud-lon1
-      - name: citycloud-kna1
-      - name: citycloud-la1
-      - name: citycloud-sto2
-      - name: vexxhost-ca-ymq-1
-  - name: ubuntu-trusty-2-node
-    image: ubuntu-trusty
-    ready-script: multinode_setup.sh
-    subnodes: 1
-    min-ready: 0
-    providers:
-      - name: rax-dfw
-      - name: rax-ord
-      - name: rax-iad
-      - name: ovh-gra1
-      - name: ovh-bhs1
-      - name: inap-mtl01
-      - name: infracloud-chocolate
-      - name: citycloud-lon1
-      - name: citycloud-kna1
-      - name: citycloud-la1
-      - name: citycloud-sto2
-      - name: vexxhost-ca-ymq-1
-  - name: ubuntu-xenial
-    image: ubuntu-xenial
-    ready-script: configure_mirror.sh
-    min-ready: 0
-    providers:
-      - name: rax-dfw
-      - name: rax-ord
-      - name: rax-iad
-      - name: ovh-gra1
-      - name: ovh-bhs1
-      - name: inap-mtl01
-      - name: infracloud-chocolate
-      - name: citycloud-lon1
-      - name: citycloud-kna1
-      - name: citycloud-la1
-      - name: citycloud-sto2
-      - name: vexxhost-ca-ymq-1
-  - name: ubuntu-xenial-2-node
-    image: ubuntu-xenial
-    ready-script: multinode_setup.sh
-    subnodes: 1
-    min-ready: 0
-    providers:
-      - name: rax-dfw
-      - name: rax-ord
-      - name: rax-iad
-      - name: ovh-gra1
-      - name: ovh-bhs1
-      - name: inap-mtl01
-      - name: infracloud-chocolate
-      - name: citycloud-lon1
-      - name: citycloud-kna1
-      - name: citycloud-la1
-      - name: citycloud-sto2
-      - name: vexxhost-ca-ymq-1
-  - name: ubuntu-xenial-3-node
-    image: ubuntu-xenial
-    ready-script: multinode_setup.sh
-    subnodes: 2
-    min-ready: 0
-    providers:
-      - name: rax-dfw
-      - name: rax-ord
-      - name: rax-iad
-      - name: ovh-gra1
-      - name: ovh-bhs1
-      - name: inap-mtl01
-      - name: infracloud-chocolate
-      - name: citycloud-lon1
-      - name: citycloud-kna1
-      - name: citycloud-la1
-      - name: citycloud-sto2
-      - name: vexxhost-ca-ymq-1
   - name: centos-7
-    image: centos-7
-    ready-script: configure_mirror.sh
-    min-ready: 0
-    providers:
-      - name: rax-dfw
-      - name: rax-ord
-      - name: rax-iad
-      - name: ovh-gra1
-      - name: ovh-bhs1
-      - name: inap-mtl01
-      - name: infracloud-chocolate
-      - name: citycloud-lon1
-      - name: citycloud-kna1
-      - name: citycloud-la1
-      - name: citycloud-sto2
-      - name: vexxhost-ca-ymq-1
+    min-ready: 1
+  - name: debian-jessie
+    min-ready: 1
   - name: fedora-26
-    image: fedora-26
-    ready-script: configure_mirror.sh
-    min-ready: 0
-    providers:
-      - name: rax-dfw
-      - name: rax-ord
-      - name: rax-iad
-      - name: ovh-gra1
-      - name: ovh-bhs1
-      - name: inap-mtl01
-      - name: infracloud-chocolate
-      - name: citycloud-lon1
-      - name: citycloud-kna1
-      - name: citycloud-la1
-      - name: citycloud-sto2
-      - name: vexxhost-ca-ymq-1
+    min-ready: 1
   - name: fedora-27
-    image: fedora-27
-    ready-script: configure_mirror.sh
-    min-ready: 0
-    providers:
-      - name: rax-dfw
-      - name: rax-ord
-      - name: rax-iad
-      - name: ovh-gra1
-      - name: ovh-bhs1
-      - name: inap-mtl01
-      - name: infracloud-chocolate
-      - name: citycloud-lon1
-      - name: citycloud-kna1
-      - name: citycloud-la1
-      - name: citycloud-sto2
-      - name: vexxhost-ca-ymq-1
+    min-ready: 1
   - name: opensuse-423
-    image: opensuse-423
-    ready-script: configure_mirror.sh
-    min-ready: 0
-    providers:
-      - name: rax-dfw
-      - name: rax-ord
-      - name: rax-iad
-      - name: ovh-gra1
-      - name: ovh-bhs1
-      - name: inap-mtl01
-      - name: infracloud-chocolate
-      - name: citycloud-lon1
-      - name: citycloud-kna1
-      - name: citycloud-la1
-      - name: citycloud-sto2
-      - name: vexxhost-ca-ymq-1
-  - name: centos-7-2-node
-    image: centos-7
-    ready-script: multinode_setup.sh
-    subnodes: 1
-    min-ready: 0
-    providers:
-      - name: rax-dfw
-      - name: rax-ord
-      - name: rax-iad
-      - name: ovh-gra1
-      - name: ovh-bhs1
-      - name: inap-mtl01
-      - name: infracloud-chocolate
-      - name: citycloud-lon1
-      - name: citycloud-kna1
-      - name: citycloud-la1
-      - name: citycloud-sto2
-      - name: vexxhost-ca-ymq-1
-  - name: centos-7-3-node
-    image: centos-7
-    ready-script: multinode_setup.sh
-    subnodes: 2
-    min-ready: 0
-    providers:
-      - name: rax-dfw
-      - name: rax-ord
-      - name: rax-iad
-      - name: ovh-gra1
-      - name: ovh-bhs1
-      - name: inap-mtl01
-      - name: infracloud-chocolate
-      - name: citycloud-lon1
-      - name: citycloud-kna1
-      - name: citycloud-la1
-      - name: citycloud-sto2
-      - name: vexxhost-ca-ymq-1
-  - name: centos-7-4-node
-    image: centos-7
-    ready-script: multinode_setup.sh
-    subnodes: 3
-    min-ready: 0
-    providers:
-      - name: rax-dfw
-      - name: rax-ord
-      - name: rax-iad
-      - name: ovh-gra1
-      - name: ovh-bhs1
-      - name: inap-mtl01
-      - name: infracloud-chocolate
-      - name: citycloud-lon1
-      - name: citycloud-kna1
-      - name: citycloud-la1
-      - name: citycloud-sto2
-      - name: vexxhost-ca-ymq-1
+    min-ready: 1
   - name: tripleo-centos-7
-    image: centos-7
-    ready-script: configure_mirror.sh
-    min-ready: 0
-    providers:
-      - name: tripleo-test-cloud-rh1
+    min-ready: 1
+  - name: ubuntu-trusty
+    min-ready: 1
+  - name: ubuntu-xenial
+    min-ready: 10
 
 providers:
-  - name: rax-dfw
-    region-name: 'DFW'
-    cloud: rax
-    api-timeout: 60
+  - name: citycloud-kna1
+    region-name: 'Kna1'
+    cloud: citycloud
     boot-timeout: 120
-    max-servers: 0
-    rate: 0.001
-    # Remove this when glean has support for ipv6 on centos
-    ipv6-preferred: false
-    image-type: vhd
-    template-hostname: '{image.name}-{timestamp}'
-    images:
-      - name: ubuntu-trusty
-        min-ram: 8192
-        diskimage: ubuntu-trusty
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        name-filter: 'Performance'
-        config-drive: true
-        key-name: infra-root-keys
-      - name: ubuntu-xenial
-        min-ram: 8192
-        diskimage: ubuntu-xenial
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        name-filter: 'Performance'
-        config-drive: true
-        key-name: infra-root-keys
-      - name: debian-jessie
-        min-ram: 8192
-        diskimage: debian-jessie
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        name-filter: 'Performance'
-        config-drive: true
-        key-name: infra-root-keys
-      - name: fedora-26
-        min-ram: 8192
-        diskimage: fedora-26
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        name-filter: 'Performance'
-        config-drive: true
-        key-name: infra-root-keys
-      - name: fedora-27
-        min-ram: 8192
-        diskimage: fedora-27
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        name-filter: 'Performance'
-        config-drive: true
-        key-name: infra-root-keys
+    launch-timeout: 600
+    clean-floating-ips: true
+    rate: 0.25
+    diskimages:
       - name: centos-7
-        min-ram: 8192
-        diskimage: centos-7
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        name-filter: 'Performance'
         config-drive: true
-        key-name: infra-root-keys
+      - name: debian-jessie
+        config-drive: true
+      - name: fedora-26
+        config-drive: true
+      - name: fedora-27
+        config-drive: true
       - name: opensuse-423
-        min-ram: 8192
-        diskimage: opensuse-423
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        name-filter: 'Performance'
         config-drive: true
-        key-name: infra-root-keys
-  - name: rax-ord
-    region-name: 'ORD'
-    cloud: rax
-    api-timeout: 60
+      - name: ubuntu-trusty
+        config-drive: true
+      - name: ubuntu-xenial
+        config-drive: true
+    pools:
+      - name: main
+        # Disabled until 2018-02-14 at request of citycloud.
+        # We should contact them before reenabling at this date.
+        max-servers: 0
+        availability-zones:
+          - nova
+        labels:
+          - name: centos-7
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: centos-7
+            key-name: infra-root-keys
+          - name: debian-jessie
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: debian-jessie
+            key-name: infra-root-keys
+          - name: fedora-26
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: fedora-26
+            key-name: infra-root-keys
+          - name: fedora-27
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: fedora-27
+            key-name: infra-root-keys
+          - name: opensuse-423
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: opensuse-423
+            key-name: infra-root-keys
+          - name: ubuntu-trusty
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: ubuntu-trusty
+            key-name: infra-root-keys
+          - name: ubuntu-xenial
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: ubuntu-xenial
+            key-name: infra-root-keys
+
+  - name: citycloud-la1
+    region-name: 'La1'
+    cloud: citycloud
     boot-timeout: 120
-    max-servers: 0
-    rate: 0.001
-    # Remove this when glean has support for ipv6 on centos
-    ipv6-preferred: false
-    image-type: vhd
-    template-hostname: '{image.name}-{timestamp}'
-    images:
-      - name: ubuntu-trusty
-        min-ram: 8192
-        diskimage: ubuntu-trusty
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        name-filter: 'Performance'
-        config-drive: true
-        key-name: infra-root-keys
-      - name: ubuntu-xenial
-        min-ram: 8192
-        diskimage: ubuntu-xenial
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        name-filter: 'Performance'
-        config-drive: true
-        key-name: infra-root-keys
-      - name: debian-jessie
-        min-ram: 8192
-        diskimage: debian-jessie
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        name-filter: 'Performance'
-        config-drive: true
-        key-name: infra-root-keys
-      - name: fedora-26
-        min-ram: 8192
-        diskimage: fedora-26
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        name-filter: 'Performance'
-        config-drive: true
-        key-name: infra-root-keys
-      - name: fedora-27
-        min-ram: 8192
-        diskimage: fedora-27
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        name-filter: 'Performance'
-        config-drive: true
-        key-name: infra-root-keys
+    launch-timeout: 600
+    clean-floating-ips: true
+    rate: 0.25
+    diskimages:
       - name: centos-7
-        min-ram: 8192
-        diskimage: centos-7
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        name-filter: 'Performance'
         config-drive: true
-        key-name: infra-root-keys
+      - name: debian-jessie
+        config-drive: true
+      - name: fedora-26
+        config-drive: true
+      - name: fedora-27
+        config-drive: true
       - name: opensuse-423
-        min-ram: 8192
-        diskimage: opensuse-423
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        name-filter: 'Performance'
         config-drive: true
-        key-name: infra-root-keys
-  - name: rax-iad
-    region-name: 'IAD'
-    cloud: rax
-    api-timeout: 60
+      - name: ubuntu-trusty
+        config-drive: true
+      - name: ubuntu-xenial
+        config-drive: true
+    pools:
+      - name: main
+        max-servers: 0
+        availability-zones:
+          - nova
+        labels:
+          - name: centos-7
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: centos-7
+            key-name: infra-root-keys
+          - name: debian-jessie
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: debian-jessie
+            key-name: infra-root-keys
+          - name: fedora-26
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: fedora-26
+            key-name: infra-root-keys
+          - name: fedora-27
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: fedora-27
+            key-name: infra-root-keys
+          - name: opensuse-423
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: opensuse-423
+            key-name: infra-root-keys
+          - name: ubuntu-trusty
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: ubuntu-trusty
+            key-name: infra-root-keys
+          - name: ubuntu-xenial
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: ubuntu-xenial
+            key-name: infra-root-keys
+
+  - name: citycloud-lon1
+    region-name: 'Lon1'
+    cloud: citycloud
     boot-timeout: 120
-    max-servers: 0
-    rate: 0.001
-    # Remove this when glean has support for ipv6 on centos
-    ipv6-preferred: false
-    image-type: vhd
-    template-hostname: '{image.name}-{timestamp}'
-    images:
-      - name: ubuntu-trusty
-        min-ram: 8192
-        diskimage: ubuntu-trusty
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        name-filter: 'Performance'
-        config-drive: true
-        key-name: infra-root-keys
-      - name: ubuntu-xenial
-        min-ram: 8192
-        diskimage: ubuntu-xenial
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        name-filter: 'Performance'
-        config-drive: true
-        key-name: infra-root-keys
-      - name: debian-jessie
-        min-ram: 8192
-        diskimage: debian-jessie
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        name-filter: 'Performance'
-        config-drive: true
-        key-name: infra-root-keys
-      - name: fedora-26
-        min-ram: 8192
-        diskimage: fedora-26
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        name-filter: 'Performance'
-        config-drive: true
-        key-name: infra-root-keys
-      - name: fedora-27
-        min-ram: 8192
-        diskimage: fedora-27
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        name-filter: 'Performance'
-        config-drive: true
-        key-name: infra-root-keys
+    launch-timeout: 600
+    clean-floating-ips: true
+    rate: 0.25
+    diskimages:
       - name: centos-7
-        min-ram: 8192
-        diskimage: centos-7
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        name-filter: 'Performance'
         config-drive: true
-        key-name: infra-root-keys
+      - name: debian-jessie
+        config-drive: true
+      - name: fedora-26
+        config-drive: true
+      - name: fedora-27
+        config-drive: true
       - name: opensuse-423
-        min-ram: 8192
-        diskimage: opensuse-423
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        name-filter: 'Performance'
         config-drive: true
-        key-name: infra-root-keys
-  - name: ovh-gra1
-    region-name: 'GRA1'
-    cloud: ovh
-    api-timeout: 60
+      - name: ubuntu-trusty
+        config-drive: true
+      - name: ubuntu-xenial
+        config-drive: true
+    pools:
+      - name: main
+        availability-zones:
+          - nova
+        max-servers: 50
+        labels:
+          - name: centos-7
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: centos-7
+            key-name: infra-root-keys
+          - name: debian-jessie
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: debian-jessie
+            key-name: infra-root-keys
+          - name: fedora-26
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: fedora-26
+            key-name: infra-root-keys
+          - name: fedora-27
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: fedora-27
+            key-name: infra-root-keys
+          - name: opensuse-423
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: opensuse-423
+            key-name: infra-root-keys
+          - name: ubuntu-trusty
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: ubuntu-trusty
+            key-name: infra-root-keys
+          - name: ubuntu-xenial
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: ubuntu-xenial
+            key-name: infra-root-keys
+
+  - name: citycloud-sto2
+    region-name: 'Sto2'
+    cloud: citycloud
     boot-timeout: 120
-    max-servers: 0
-    rate: 0.1
-    image-type: 'qcow2'
-    template-hostname: '{image.name}-{timestamp}'
-    images:
-      - name: ubuntu-trusty
-        min-ram: 8000
-        name-filter: 'ssd-osFoundation-3'
-        diskimage: ubuntu-trusty
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: ubuntu-xenial
-        min-ram: 8000
-        name-filter: 'ssd-osFoundation-3'
-        diskimage: ubuntu-xenial
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: debian-jessie
-        min-ram: 8000
-        name-filter: 'ssd-osFoundation-3'
-        diskimage: debian-jessie
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: fedora-26
-        min-ram: 8000
-        name-filter: 'ssd-osFoundation-3'
-        diskimage: fedora-26
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: fedora-27
-        min-ram: 8000
-        name-filter: 'ssd-osFoundation-3'
-        diskimage: fedora-27
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
+    launch-timeout: 600
+    clean-floating-ips: true
+    rate: 0.25
+    diskimages:
       - name: centos-7
-        min-ram: 8000
-        name-filter: 'ssd-osFoundation-3'
-        diskimage: centos-7
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
         config-drive: true
-        key-name: infra-root-keys
+      - name: debian-jessie
+        config-drive: true
+      - name: fedora-26
+        config-drive: true
+      - name: fedora-27
+        config-drive: true
       - name: opensuse-423
-        min-ram: 8000
-        name-filter: 'ssd-osFoundation-3'
-        diskimage: opensuse-423
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
         config-drive: true
-        key-name: infra-root-keys
+      - name: ubuntu-trusty
+        config-drive: true
+      - name: ubuntu-xenial
+        config-drive: true
+    pools:
+      - name: main
+        availability-zones:
+          - nova
+        max-servers: 50
+        labels:
+          - name: centos-7
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: centos-7
+            key-name: infra-root-keys
+          - name: debian-jessie
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: debian-jessie
+            key-name: infra-root-keys
+          - name: fedora-26
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: fedora-26
+            key-name: infra-root-keys
+          - name: fedora-27
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: fedora-27
+            key-name: infra-root-keys
+          - name: opensuse-423
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: opensuse-423
+            key-name: infra-root-keys
+          - name: ubuntu-trusty
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: ubuntu-trusty
+            key-name: infra-root-keys
+          - name: ubuntu-xenial
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: ubuntu-xenial
+            key-name: infra-root-keys
+
+  - name: infracloud-chocolate
+    region-name: 'RegionOne'
+    cloud: infracloud-chocolate
+    boot-timeout: 120
+    rate: 0.25
+    diskimages:
+      - name: centos-7
+        config-drive: true
+      - name: debian-jessie
+        config-drive: true
+      - name: fedora-26
+        config-drive: true
+      - name: fedora-27
+        config-drive: true
+      - name: opensuse-423
+        config-drive: true
+      - name: ubuntu-trusty
+        config-drive: true
+      - name: ubuntu-xenial
+        config-drive: true
+    pools:
+      - name: main
+        max-servers: 56
+        labels:
+          - name: centos-7
+            min-ram: 8000
+            flavor-name: 'nodepool'
+            diskimage: centos-7
+            key-name: infra-root-keys
+          - name: debian-jessie
+            min-ram: 8000
+            flavor-name: 'nodepool'
+            diskimage: debian-jessie
+            key-name: infra-root-keys
+          - name: fedora-26
+            min-ram: 8000
+            flavor-name: 'nodepool'
+            diskimage: fedora-26
+            key-name: infra-root-keys
+          - name: fedora-27
+            min-ram: 8000
+            flavor-name: 'nodepool'
+            diskimage: fedora-27
+            key-name: infra-root-keys
+          - name: opensuse-423
+            min-ram: 8000
+            flavor-name: 'nodepool'
+            diskimage: opensuse-423
+            key-name: infra-root-keys
+          - name: ubuntu-trusty
+            min-ram: 8000
+            flavor-name: 'nodepool'
+            diskimage: ubuntu-trusty
+            key-name: infra-root-keys
+          - name: ubuntu-xenial
+            min-ram: 8000
+            flavor-name: 'nodepool'
+            diskimage: ubuntu-xenial
+            key-name: infra-root-keys
+
   - name: ovh-bhs1
     region-name: 'BHS1'
     cloud: ovh
-    api-timeout: 60
     boot-timeout: 120
-    max-servers: 0
     rate: 0.1
-    image-type: 'qcow2'
-    template-hostname: '{image.name}-{timestamp}'
-    images:
-      - name: ubuntu-trusty
-        min-ram: 8000
-        name-filter: 'ssd-osFoundation-3'
-        diskimage: ubuntu-trusty
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: ubuntu-xenial
-        min-ram: 8000
-        name-filter: 'ssd-osFoundation-3'
-        diskimage: ubuntu-xenial
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: debian-jessie
-        min-ram: 8000
-        name-filter: 'ssd-osFoundation-3'
-        diskimage: debian-jessie
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: fedora-26
-        min-ram: 8000
-        name-filter: 'ssd-osFoundation-3'
-        diskimage: fedora-26
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: fedora-27
-        min-ram: 8000
-        name-filter: 'ssd-osFoundation-3'
-        diskimage: fedora-27
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
+    diskimages:
       - name: centos-7
-        min-ram: 8000
-        name-filter: 'ssd-osFoundation-3'
-        diskimage: centos-7
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
         config-drive: true
-        key-name: infra-root-keys
+      - name: debian-jessie
+        config-drive: true
+      - name: fedora-26
+        config-drive: true
+      - name: fedora-27
+        config-drive: true
       - name: opensuse-423
-        min-ram: 8000
-        name-filter: 'ssd-osFoundation-3'
-        diskimage: opensuse-423
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
         config-drive: true
-        key-name: infra-root-keys
+      - name: ubuntu-trusty
+        config-drive: true
+      - name: ubuntu-xenial
+        config-drive: true
+    pools:
+      - name: main
+        max-servers: 159
+        labels:
+          - name: centos-7
+            min-ram: 8000
+            flavor-name: ssd-osFoundation-3
+            diskimage: centos-7
+            key-name: infra-root-keys
+          - name: debian-jessie
+            min-ram: 8000
+            flavor-name: ssd-osFoundation-3
+            diskimage: debian-jessie
+            key-name: infra-root-keys
+          - name: fedora-26
+            min-ram: 8000
+            flavor-name: ssd-osFoundation-3
+            diskimage: fedora-26
+            key-name: infra-root-keys
+          - name: fedora-27
+            min-ram: 8000
+            flavor-name: ssd-osFoundation-3
+            diskimage: fedora-27
+            key-name: infra-root-keys
+          - name: opensuse-423
+            min-ram: 8000
+            flavor-name: ssd-osFoundation-3
+            diskimage: opensuse-423
+            key-name: infra-root-keys
+          - name: ubuntu-trusty
+            min-ram: 8000
+            flavor-name: ssd-osFoundation-3
+            diskimage: ubuntu-trusty
+            key-name: infra-root-keys
+          - name: ubuntu-xenial
+            min-ram: 8000
+            flavor-name: ssd-osFoundation-3
+            diskimage: ubuntu-xenial
+            key-name: infra-root-keys
+
+  - name: ovh-gra1
+    region-name: 'GRA1'
+    cloud: ovh
+    boot-timeout: 120
+    rate: 0.1
+    diskimages:
+      - name: centos-7
+        config-drive: true
+      - name: debian-jessie
+        config-drive: true
+      - name: fedora-26
+        config-drive: true
+      - name: fedora-27
+        config-drive: true
+      - name: opensuse-423
+        config-drive: true
+      - name: ubuntu-trusty
+        config-drive: true
+      - name: ubuntu-xenial
+        config-drive: true
+    pools:
+      - name: main
+        max-servers: 79
+        labels:
+          - name: centos-7
+            min-ram: 8000
+            flavor-name: ssd-osFoundation-3
+            diskimage: centos-7
+            key-name: infra-root-keys
+          - name: debian-jessie
+            min-ram: 8000
+            flavor-name: ssd-osFoundation-3
+            diskimage: debian-jessie
+            key-name: infra-root-keys
+          - name: fedora-26
+            min-ram: 8000
+            flavor-name: ssd-osFoundation-3
+            diskimage: fedora-26
+            key-name: infra-root-keys
+          - name: fedora-27
+            min-ram: 8000
+            flavor-name: ssd-osFoundation-3
+            diskimage: fedora-27
+            key-name: infra-root-keys
+          - name: opensuse-423
+            min-ram: 8000
+            flavor-name: ssd-osFoundation-3
+            diskimage: opensuse-423
+            key-name: infra-root-keys
+          - name: ubuntu-trusty
+            min-ram: 8000
+            flavor-name: ssd-osFoundation-3
+            diskimage: ubuntu-trusty
+            key-name: infra-root-keys
+          - name: ubuntu-xenial
+            min-ram: 8000
+            flavor-name: ssd-osFoundation-3
+            diskimage: ubuntu-xenial
+            key-name: infra-root-keys
+
   - name: inap-mtl01
     region-name: 'mtl01'
     cloud: inap
-    api-timeout: 60
     boot-timeout: 120
-    max-servers: 0
+    launch-timeout: 600
     rate: 0.001
-    template-hostname: '{image.name}-{timestamp}'
-    images:
-      - name: ubuntu-trusty
-        min-ram: 8000
-        name-filter: 'A1.8'
-        diskimage: ubuntu-trusty
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: ubuntu-xenial
-        min-ram: 8000
-        name-filter: 'A1.8'
-        diskimage: ubuntu-xenial
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: debian-jessie
-        min-ram: 8000
-        name-filter: 'A1.8'
-        diskimage: debian-jessie
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: fedora-26
-        min-ram: 8000
-        name-filter: 'A1.8'
-        diskimage: fedora-26
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: fedora-27
-        min-ram: 8000
-        name-filter: 'A1.8'
-        diskimage: fedora-27
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
+    diskimages:
       - name: centos-7
-        min-ram: 8000
-        name-filter: 'A1.8'
-        diskimage: centos-7
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
         config-drive: true
-        key-name: infra-root-keys
+      - name: debian-jessie
+        config-drive: true
+      - name: fedora-26
+        config-drive: true
+      - name: fedora-27
+        config-drive: true
       - name: opensuse-423
-        min-ram: 8000
-        name-filter: 'A1.8'
-        diskimage: opensuse-423
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
         config-drive: true
-        key-name: infra-root-keys
+      - name: ubuntu-trusty
+        config-drive: true
+      - name: ubuntu-xenial
+        config-drive: true
+    pools:
+      - name: main
+        max-servers: 190
+        labels:
+          - name: centos-7
+            min-ram: 8000
+            flavor-name: 'A1.8'
+            diskimage: centos-7
+            key-name: infra-root-keys
+          - name: debian-jessie
+            min-ram: 8000
+            flavor-name: 'A1.8'
+            diskimage: debian-jessie
+            key-name: infra-root-keys
+          - name: fedora-26
+            min-ram: 8000
+            flavor-name: 'A1.8'
+            diskimage: fedora-26
+            key-name: infra-root-keys
+          - name: fedora-27
+            min-ram: 8000
+            flavor-name: 'A1.8'
+            diskimage: fedora-27
+            key-name: infra-root-keys
+          - name: opensuse-423
+            min-ram: 8000
+            flavor-name: 'A1.8'
+            diskimage: opensuse-423
+            key-name: infra-root-keys
+          - name: ubuntu-trusty
+            min-ram: 8000
+            flavor-name: 'A1.8'
+            diskimage: ubuntu-trusty
+            key-name: infra-root-keys
+          - name: ubuntu-xenial
+            min-ram: 8000
+            flavor-name: 'A1.8'
+            diskimage: ubuntu-xenial
+            key-name: infra-root-keys
+
+  - name: rax-dfw
+    region-name: 'DFW'
+    cloud: rax
+    boot-timeout: 120
+    launch-timeout: 600
+    rate: 0.001
+    diskimages:
+      - name: centos-7
+        config-drive: true
+      - name: debian-jessie
+        config-drive: true
+      - name: fedora-26
+        config-drive: true
+      - name: fedora-27
+        config-drive: true
+      - name: opensuse-423
+        config-drive: true
+      - name: ubuntu-trusty
+        config-drive: true
+      - name: ubuntu-xenial
+        config-drive: true
+    pools:
+      - name: main
+        max-servers: 140
+        labels:
+          - name: centos-7
+            min-ram: 8192
+            flavor-name: 'Performance'
+            diskimage: centos-7
+            key-name: infra-root-keys
+          - name: debian-jessie
+            min-ram: 8000
+            flavor-name: 'Performance'
+            diskimage: debian-jessie
+            key-name: infra-root-keys
+          - name: fedora-26
+            min-ram: 8000
+            flavor-name: 'Performance'
+            diskimage: fedora-26
+            key-name: infra-root-keys
+          - name: fedora-27
+            min-ram: 8000
+            flavor-name: 'Performance'
+            diskimage: fedora-27
+            key-name: infra-root-keys
+          - name: opensuse-423
+            min-ram: 8000
+            flavor-name: 'Performance'
+            diskimage: opensuse-423
+            key-name: infra-root-keys
+          - name: ubuntu-trusty
+            min-ram: 8192
+            flavor-name: 'Performance'
+            diskimage: ubuntu-trusty
+            key-name: infra-root-keys
+          - name: ubuntu-xenial
+            min-ram: 8192
+            flavor-name: 'Performance'
+            diskimage: ubuntu-xenial
+            key-name: infra-root-keys
+
+  - name: rax-iad
+    region-name: 'IAD'
+    cloud: rax
+    boot-timeout: 120
+    launch-timeout: 600
+    rate: 0.001
+    diskimages:
+      - name: centos-7
+        config-drive: true
+      - name: debian-jessie
+        config-drive: true
+      - name: fedora-26
+        config-drive: true
+      - name: fedora-27
+        config-drive: true
+      - name: opensuse-423
+        config-drive: true
+      - name: ubuntu-trusty
+        config-drive: true
+      - name: ubuntu-xenial
+        config-drive: true
+    pools:
+      - name: main
+        max-servers: 145
+        labels:
+          - name: centos-7
+            min-ram: 8192
+            flavor-name: 'Performance'
+            diskimage: centos-7
+            key-name: infra-root-keys
+          - name: debian-jessie
+            min-ram: 8000
+            flavor-name: 'Performance'
+            diskimage: debian-jessie
+            key-name: infra-root-keys
+          - name: fedora-26
+            min-ram: 8000
+            flavor-name: 'Performance'
+            diskimage: fedora-26
+            key-name: infra-root-keys
+          - name: fedora-27
+            min-ram: 8000
+            flavor-name: 'Performance'
+            diskimage: fedora-27
+            key-name: infra-root-keys
+          - name: opensuse-423
+            min-ram: 8000
+            flavor-name: 'Performance'
+            diskimage: opensuse-423
+            key-name: infra-root-keys
+          - name: ubuntu-trusty
+            min-ram: 8192
+            flavor-name: 'Performance'
+            diskimage: ubuntu-trusty
+            key-name: infra-root-keys
+          - name: ubuntu-xenial
+            min-ram: 8192
+            flavor-name: 'Performance'
+            diskimage: ubuntu-xenial
+            key-name: infra-root-keys
+
+  - name: rax-ord
+    region-name: 'ORD'
+    cloud: rax
+    boot-timeout: 120
+    launch-timeout: 600
+    rate: 0.001
+    diskimages:
+      - name: centos-7
+        config-drive: true
+      - name: debian-jessie
+        config-drive: true
+      - name: fedora-26
+        config-drive: true
+      - name: fedora-27
+        config-drive: true
+      - name: opensuse-423
+        config-drive: true
+      - name: ubuntu-trusty
+        config-drive: true
+      - name: ubuntu-xenial
+        config-drive: true
+    pools:
+      - name: main
+        max-servers: 195
+        labels:
+          - name: centos-7
+            min-ram: 8192
+            flavor-name: 'Performance'
+            diskimage: centos-7
+            key-name: infra-root-keys
+          - name: debian-jessie
+            min-ram: 8000
+            flavor-name: 'Performance'
+            diskimage: debian-jessie
+            key-name: infra-root-keys
+          - name: fedora-26
+            min-ram: 8000
+            flavor-name: 'Performance'
+            diskimage: fedora-26
+            key-name: infra-root-keys
+          - name: fedora-27
+            min-ram: 8000
+            flavor-name: 'Performance'
+            diskimage: fedora-27
+            key-name: infra-root-keys
+          - name: opensuse-423
+            min-ram: 8000
+            flavor-name: 'Performance'
+            diskimage: opensuse-423
+            key-name: infra-root-keys
+          - name: ubuntu-trusty
+            min-ram: 8192
+            flavor-name: 'Performance'
+            diskimage: ubuntu-trusty
+            key-name: infra-root-keys
+          - name: ubuntu-xenial
+            min-ram: 8192
+            flavor-name: 'Performance'
+            diskimage: ubuntu-xenial
+            key-name: infra-root-keys
+
   - name: tripleo-test-cloud-rh1
     region-name: 'regionOne'
     cloud: tripleo-test-cloud-rh1
     boot-timeout: 120
-    max-servers: 0
     rate: 0.001
     clean-floating-ips: true
-    networks:
-      - net-label: private
-    template-hostname: '{image.name}-{timestamp}'
-    images:
+    diskimages:
       - name: centos-7
-        min-ram: 6144
-        name-filter: undercloud
-        diskimage: centos-7
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
         config-drive: true
-        key-name: infra-root-keys
-  - name: infracloud-chocolate
-    region-name: 'RegionOne'
-    cloud: infracloud-chocolate
-    api-timeout: 60
-    boot-timeout: 120
-    max-servers: 0
-    nodepool-id: 'nodepool.openstack.org'
-    rate: 0.25
-    image-type: 'qcow2'
-    template-hostname: '{image.name}-{timestamp}'
-    images:
-      - name: ubuntu-trusty
-        min-ram: 8000
-        name-filter: 'nodepool'
-        diskimage: ubuntu-trusty
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: ubuntu-xenial
-        min-ram: 8000
-        name-filter: 'nodepool'
-        diskimage: ubuntu-xenial
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: debian-jessie
-        min-ram: 8000
-        name-filter: 'nodepool'
-        diskimage: debian-jessie
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: fedora-26
-        min-ram: 8000
-        name-filter: 'nodepool'
-        diskimage: fedora-26
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: fedora-27
-        min-ram: 8000
-        name-filter: 'nodepool'
-        diskimage: fedora-27
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: centos-7
-        min-ram: 8000
-        name-filter: 'nodepool'
-        diskimage: centos-7
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: opensuse-423
-        min-ram: 8000
-        name-filter: 'nodepool'
-        diskimage: opensuse-423
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-  - name: citycloud-lon1
-    region-name: 'Lon1'
-    cloud: citycloud
-    api-timeout: 60
-    boot-timeout: 120
-    max-servers: 0
-    rate: 0.25
-    image-type: 'qcow2'
-    template-hostname: '{image.name}-{timestamp}'
-    images:
-      - name: ubuntu-trusty
-        min-ram: 8000
-        name-filter: '8C-8GB-100GB'
-        diskimage: ubuntu-trusty
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: ubuntu-xenial
-        min-ram: 8000
-        name-filter: '8C-8GB-100GB'
-        diskimage: ubuntu-xenial
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: debian-jessie
-        min-ram: 8000
-        name-filter: '8C-8GB-100GB'
-        diskimage: debian-jessie
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: fedora-26
-        min-ram: 8000
-        name-filter: '8C-8GB-100GB'
-        diskimage: fedora-26
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: fedora-27
-        min-ram: 8000
-        name-filter: '8C-8GB-100GB'
-        diskimage: fedora-27
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: centos-7
-        min-ram: 8000
-        name-filter: '8C-8GB-100GB'
-        diskimage: centos-7
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: opensuse-423
-        min-ram: 8000
-        name-filter: '8C-8GB-100GB'
-        diskimage: opensuse-423
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-  - name: citycloud-kna1
-    region-name: 'Kna1'
-    cloud: citycloud
-    api-timeout: 60
-    boot-timeout: 120
-    max-servers: 0
-    rate: 0.25
-    image-type: 'qcow2'
-    template-hostname: '{image.name}-{timestamp}'
-    images:
-      - name: ubuntu-trusty
-        min-ram: 8000
-        name-filter: '8C-8GB-100GB'
-        diskimage: ubuntu-trusty
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: ubuntu-xenial
-        min-ram: 8000
-        name-filter: '8C-8GB-100GB'
-        diskimage: ubuntu-xenial
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: debian-jessie
-        min-ram: 8000
-        name-filter: '8C-8GB-100GB'
-        diskimage: debian-jessie
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: fedora-26
-        min-ram: 8000
-        name-filter: '8C-8GB-100GB'
-        diskimage: fedora-26
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: fedora-27
-        min-ram: 8000
-        name-filter: '8C-8GB-100GB'
-        diskimage: fedora-27
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: centos-7
-        min-ram: 8000
-        name-filter: '8C-8GB-100GB'
-        diskimage: centos-7
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: opensuse-423
-        min-ram: 8000
-        name-filter: '8C-8GB-100GB'
-        diskimage: opensuse-423
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-  - name: citycloud-la1
-    region-name: 'La1'
-    cloud: citycloud
-    api-timeout: 60
-    boot-timeout: 120
-    max-servers: 0
-    rate: 0.25
-    image-type: 'qcow2'
-    template-hostname: '{image.name}-{timestamp}'
-    images:
-      - name: ubuntu-trusty
-        min-ram: 8000
-        name-filter: '8C-8GB-100GB'
-        diskimage: ubuntu-trusty
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: ubuntu-xenial
-        min-ram: 8000
-        name-filter: '8C-8GB-100GB'
-        diskimage: ubuntu-xenial
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: debian-jessie
-        min-ram: 8000
-        name-filter: '8C-8GB-100GB'
-        diskimage: debian-jessie
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: fedora-26
-        min-ram: 8000
-        name-filter: '8C-8GB-100GB'
-        diskimage: fedora-26
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: fedora-27
-        min-ram: 8000
-        name-filter: '8C-8GB-100GB'
-        diskimage: fedora-27
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: centos-7
-        min-ram: 8000
-        name-filter: '8C-8GB-100GB'
-        diskimage: centos-7
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: opensuse-423
-        min-ram: 8000
-        name-filter: '8C-8GB-100GB'
-        diskimage: opensuse-423
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-  - name: citycloud-sto2
-    region-name: 'Sto2'
-    cloud: citycloud
-    api-timeout: 60
-    boot-timeout: 120
-    max-servers: 0
-    rate: 0.25
-    image-type: 'qcow2'
-    template-hostname: '{image.name}-{timestamp}'
-    images:
-      - name: ubuntu-trusty
-        min-ram: 8000
-        name-filter: '8C-8GB-100GB'
-        diskimage: ubuntu-trusty
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: ubuntu-xenial
-        min-ram: 8000
-        name-filter: '8C-8GB-100GB'
-        diskimage: ubuntu-xenial
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: debian-jessie
-        min-ram: 8000
-        name-filter: '8C-8GB-100GB'
-        diskimage: debian-jessie
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: fedora-26
-        min-ram: 8000
-        name-filter: '8C-8GB-100GB'
-        diskimage: fedora-26
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: fedora-27
-        min-ram: 8000
-        name-filter: '8C-8GB-100GB'
-        diskimage: fedora-27
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: centos-7
-        min-ram: 8000
-        name-filter: '8C-8GB-100GB'
-        diskimage: centos-7
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: opensuse-423
-        min-ram: 8000
-        name-filter: '8C-8GB-100GB'
-        diskimage: opensuse-423
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
+    pools:
+      - name: main
+        max-servers: 60
+        networks:
+          - private
+        labels:
+          - name: tripleo-centos-7
+            min-ram: 6144
+            flavor-name: 'undercloud'
+            diskimage: centos-7
+            key-name: infra-root-keys
+
   - name: vexxhost-ca-ymq-1
     region-name: 'ca-ymq-1'
     cloud: vexxhost
-    api-timeout: 60
     boot-timeout: 120
-    max-servers: 0
     rate: 0.001
-    image-type: raw
-    template-hostname: '{image.name}-{timestamp}'
-    images:
-      - name: ubuntu-trusty
-        min-ram: 8000
-        name-filter: 'v1-standard-8'
-        diskimage: ubuntu-trusty
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: ubuntu-xenial
-        min-ram: 8000
-        name-filter: 'v1-standard-8'
-        diskimage: ubuntu-xenial
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: debian-jessie
-        min-ram: 8000
-        name-filter: 'v1-standard-8'
-        diskimage: debian-jessie
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: fedora-26
-        min-ram: 8000
-        name-filter: 'v1-standard-8'
-        diskimage: fedora-26
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
-      - name: fedora-27
-        min-ram: 8000
-        name-filter: 'v1-standard-8'
-        diskimage: fedora-27
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
-        config-drive: true
-        key-name: infra-root-keys
+    diskimages:
       - name: centos-7
-        min-ram: 8000
-        name-filter: 'v1-standard-8'
-        diskimage: centos-7
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
         config-drive: true
-        key-name: infra-root-keys
+      - name: debian-jessie
+        config-drive: true
+      - name: fedora-26
+        config-drive: true
+      - name: fedora-27
+        config-drive: true
       - name: opensuse-423
-        min-ram: 8000
-        name-filter: 'v1-standard-8'
-        diskimage: opensuse-423
-        username: jenkins
-        private-key: /home/nodepool/.ssh/id_rsa
         config-drive: true
-        key-name: infra-root-keys
-
-targets:
-  - name: zuul
-    assign-via-gearman: True
+      - name: ubuntu-trusty
+        config-drive: true
+      - name: ubuntu-xenial
+        config-drive: true
+    pools:
+      - name: main
+        max-servers: 0
+        labels:
+          - name: centos-7
+            min-ram: 8000
+            flavor-name: 'v1-standard-8'
+            diskimage: centos-7
+            key-name: infra-root-keys
+          - name: debian-jessie
+            min-ram: 8000
+            flavor-name: 'v1-standard-8'
+            diskimage: debian-jessie
+            key-name: infra-root-keys
+          - name: fedora-26
+            min-ram: 8000
+            flavor-name: 'v1-standard-8'
+            diskimage: fedora-26
+            key-name: infra-root-keys
+          - name: fedora-27
+            min-ram: 8000
+            flavor-name: 'v1-standard-8'
+            diskimage: fedora-27
+            key-name: infra-root-keys
+          - name: opensuse-423
+            min-ram: 8000
+            flavor-name: 'v1-standard-8'
+            diskimage: opensuse-423
+            key-name: infra-root-keys
+          - name: ubuntu-trusty
+            min-ram: 8000
+            flavor-name: 'v1-standard-8'
+            diskimage: ubuntu-trusty
+            key-name: infra-root-keys
+          - name: ubuntu-xenial
+            min-ram: 8000
+            flavor-name: 'v1-standard-8'
+            diskimage: ubuntu-xenial
+            key-name: infra-root-keys
 
 diskimages:
+  - name: centos-7
+    elements:
+      - centos-minimal
+      - vm
+      - simple-init
+      - openstack-repos
+      - nodepool-base
+      - cache-devstack
+      - growroot
+      - infra-package-needs
+      - epel
+    env-vars:
+      TMPDIR: /opt/dib_tmp
+      DIB_CHECKSUM: '1'
+      DIB_IMAGE_CACHE: /opt/dib_cache
+      QEMU_IMG_OPTIONS: compat=0.10
+      DIB_GRUB_TIMEOUT: '0'
+      DIB_EPEL_DISABLED: '1'
   - name: debian-jessie
     elements:
       - debian-minimal
@@ -1101,67 +825,6 @@ diskimages:
       DIB_DISABLE_APT_CLEANUP: '1'
       DIB_DISTRIBUTION_MIRROR: http://ftp.us.debian.org/debian/
       DIB_GRUB_TIMEOUT: '0'
-  - name: ubuntu-trusty
-    elements:
-      - ubuntu-minimal
-      - vm
-      - simple-init
-      - openstack-repos
-      - nodepool-base
-      - cache-devstack
-      - growroot
-      - infra-package-needs
-    release: trusty
-    env-vars:
-      TMPDIR: /opt/dib_tmp
-      DIB_CHECKSUM: '1'
-      DIB_IMAGE_CACHE: /opt/dib_cache
-      DIB_APT_LOCAL_CACHE: '0'
-      DIB_DISABLE_APT_CLEANUP: '1'
-      DIB_GRUB_TIMEOUT: '0'
-      DIB_DISTRIBUTION_MIRROR: 'http://mirror.dfw.rax.openstack.org/ubuntu'
-      DIB_DEBOOTSTRAP_EXTRA_ARGS: '--no-check-gpg'
-      DIB_DEBIAN_COMPONENTS: 'main,universe'
-  - name: ubuntu-xenial
-    elements:
-      - ubuntu-minimal
-      - vm
-      - simple-init
-      - openstack-repos
-      - nodepool-base
-      - cache-devstack
-      - initialize-urandom
-      - growroot
-      - infra-package-needs
-    release: xenial
-    env-vars:
-      TMPDIR: /opt/dib_tmp
-      DIB_CHECKSUM: '1'
-      DIB_IMAGE_CACHE: /opt/dib_cache
-      DIB_APT_LOCAL_CACHE: '0'
-      DIB_DISABLE_APT_CLEANUP: '1'
-      DIB_GRUB_TIMEOUT: '0'
-      DIB_DISTRIBUTION_MIRROR: 'http://mirror.dfw.rax.openstack.org/ubuntu'
-      DIB_DEBOOTSTRAP_EXTRA_ARGS: '--no-check-gpg'
-      DIB_DEBIAN_COMPONENTS: 'main,universe'
-  - name: centos-7
-    elements:
-      - centos-minimal
-      - vm
-      - simple-init
-      - openstack-repos
-      - nodepool-base
-      - cache-devstack
-      - growroot
-      - infra-package-needs
-      - epel
-    env-vars:
-      TMPDIR: /opt/dib_tmp
-      DIB_CHECKSUM: '1'
-      DIB_IMAGE_CACHE: /opt/dib_cache
-      QEMU_IMG_OPTIONS: compat=0.10
-      DIB_GRUB_TIMEOUT: '0'
-      DIB_EPEL_DISABLED: '1'
   - name: fedora-26
     elements:
       - fedora-minimal
@@ -1235,3 +898,43 @@ diskimages:
       DIB_IMAGE_CACHE: /opt/dib_cache
       QEMU_IMG_OPTIONS: compat=0.10
       DIB_GRUB_TIMEOUT: '0'
+  - name: ubuntu-trusty
+    elements:
+      - ubuntu-minimal
+      - vm
+      - simple-init
+      - openstack-repos
+      - nodepool-base
+      - cache-devstack
+      - initialize-urandom
+      - growroot
+      - infra-package-needs
+    release: trusty
+    env-vars:
+      TMPDIR: /opt/dib_tmp
+      DIB_CHECKSUM: '1'
+      DIB_IMAGE_CACHE: /opt/dib_cache
+      DIB_APT_LOCAL_CACHE: '0'
+      DIB_DISABLE_APT_CLEANUP: '1'
+      DIB_GRUB_TIMEOUT: '0'
+      DIB_DEBIAN_COMPONENTS: 'main,universe'
+  - name: ubuntu-xenial
+    elements:
+      - ubuntu-minimal
+      - vm
+      - simple-init
+      - openstack-repos
+      - nodepool-base
+      - cache-devstack
+      - initialize-urandom
+      - growroot
+      - infra-package-needs
+    release: xenial
+    env-vars:
+      TMPDIR: /opt/dib_tmp
+      DIB_CHECKSUM: '1'
+      DIB_IMAGE_CACHE: /opt/dib_cache
+      DIB_APT_LOCAL_CACHE: '0'
+      DIB_DISABLE_APT_CLEANUP: '1'
+      DIB_GRUB_TIMEOUT: '0'
+      DIB_DEBIAN_COMPONENTS: 'main,universe'
