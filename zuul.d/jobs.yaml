@@ -1166,3 +1166,20 @@
 
       The testing is done for Ubuntu Xenial.
     nodeset: ubuntu-xenial
+
+# Limit number of requirements proposal jobs. We've seen races where
+# two post jobs proposed the same change with different change-ids.
+- semaphore:
+    name: propose-requirements
+    max: 1
+
+- job:
+    name: propose-update-requirements
+    parent: propose-updates
+    description: |
+      Update other projects after changes to requirements project using
+      proposed changes.
+    semaphore: propose-requirements
+    timeout: 5400
+    vars:
+      update_target: requirements
