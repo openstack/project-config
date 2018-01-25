@@ -1,0 +1,58 @@
+- name: Set zuul-log-path fact
+  include_role:
+    name: set-zuul-log-path-fact
+
+# Always upload (true), never upload (false) or only on failure ('failure')
+- when: zuul_site_upload_logs | default(true) | bool or
+        (zuul_site_upload_logs == 'failure' and not zuul_success | bool)
+  block:
+
+    - name: Create log directories
+      file:
+        path: "{{zuul_logserver_root}}/{{ zuul_log_path }}"
+        state: directory
+        recurse: yes
+        mode: 0775
+
+    - name: Ensure logs are readable before uploading
+      delegate_to: localhost
+      file:
+        path: "{{ zuul.executor.log_root }}/"
+        mode: u=rwX,g=rX,o=rX
+        state: directory
+        recurse: yes
+
+    - name: Upload logs to log server
+      synchronize:
+        src: "{{ zuul.executor.log_root }}/"
+        dest: "{{zuul_logserver_root}}/{{ zuul_log_path }}/"
+        rsync_opts:
+          - "--exclude=job-output.txt"
+          - "--exclude=job-output.json"
+      no_log: true
+
+    # After this point there are no more logs
+    - name: gzip console log and json output
+      delegate_to: localhost
+      archive:
+        path: "{{ zuul.executor.log_root }}/{{ item }}"
+      with_items:
+        - job-output.txt
+        - job-output.json
+
+    - name: Upload console log and json output
+      synchronize:
+        src: "{{ zuul.executor.log_root }}/{{ item }}.gz"
+        dest: "{{zuul_logserver_root}}/{{ zuul_log_path }}/{{ item }}.gz"
+        verify_host: true
+      with_items:
+        - job-output.txt
+        - job-output.json
+
+- name: Return log URL to Zuul
+  delegate_to: localhost
+  zuul_return:
+    data:
+      zuul:
+        log_url: "{{ zuul_log_url }}/{{ zuul_log_path }}/"
+  when: zuul_log_url is defined
