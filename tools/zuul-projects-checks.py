@@ -31,6 +31,10 @@ def check_system_templates():
     print("=====================================")
     for entry in projects:
         project = entry['project']
+        # TODO(mordred) Generalize this, but for now, avoid doing this check
+        # on ansible.
+        if project['name'] == 'ansible/ansible':
+            continue
         try:
             correct = False
             for template in project['templates']:
@@ -94,7 +98,7 @@ def check_release_jobs():
     for entry in projects:
         project = entry['project']
         name = project['name']
-        found = [tmpl for tmpl in project['templates']
+        found = [tmpl for tmpl in project.get('templates', [])
                  if tmpl in release_templates]
         if len(found) > 1:
             errors = True
