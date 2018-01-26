@@ -74,7 +74,7 @@ function process_testr_artifacts {
 }
 
 function check_sudo_usage {
-    sudo $script_path/jenkins-sudo-grep.sh post
+    sudo $script_path/zuul-sudo-grep.sh post
     sudoresult=$?
 
     if [ $sudoresult -ne "0" ]; then
@@ -132,7 +132,7 @@ cat /etc/image-hostname.txt
 
 $script_path/jenkins-oom-grep.sh pre
 
-sudo $script_path/jenkins-sudo-grep.sh pre
+sudo $script_path/zuul-sudo-grep.sh pre
 
 tox -vv -e$venv
 result=$?
