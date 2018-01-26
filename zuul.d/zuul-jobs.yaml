@@ -1,0 +1,13 @@
+- job:
+    name: publish-zuul-website
+    description: |
+      Publishes content in artifacts/ to the Zuul website.
+    allowed-projects:
+      - openstack-infra/zuul-website
+    post-run:
+      - playbooks/publish/zuul-afs.yaml
+    roles:
+      - zuul: openstack-infra/zuul-jobs
+    secrets:
+      - secret: afsdocs_secret
+        name: afs
