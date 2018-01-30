@@ -2,6 +2,20 @@
 # Contains project pipeline definitions
 
 - project:
+    name: ansible/ansible
+    # ansible/ansible does not include system-required on purpose. We do not
+    # gate ansible/ansible and we should not be doing merge-check on it.
+    third-party-check:
+      jobs:
+        - shade-ansible-devel-functional-devstack:
+            files:
+              - ^lib/ansible/modules/cloud/openstack/.*
+              - ^contrib/inventory/openstack.py
+              - ^lib/ansible/plugins/inventory/openstack.py
+              - ^lib/ansible/module_utils/openstack.py
+              - ^lib/ansible/utils/module_docs_fragments/openstack.py
+
+- project:
     name: openstack-dev/bashate
     templates:
       - system-required
