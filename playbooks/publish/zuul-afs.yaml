@@ -1,0 +1,9 @@
+- hosts: localhost
+  roles:
+    - role: create-afs-token
+      when: zuul_success | bool
+    - role: upload-afs
+      afs_target: "/afs/.openstack.org/project/zuul-ci.org/www"
+      when: zuul_success | bool
+    - role: destroy-afs-token
+      when: zuul_success | bool
