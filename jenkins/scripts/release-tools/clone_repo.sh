@@ -67,6 +67,7 @@ CACHE_DIR="${ZUUL_CACHE_DIR:-/opt/git}"
 BRANCH="master"
 REF=""
 UPSTREAM="https://git.openstack.org"
+RETRY_LIMIT=3
 export GIT_HTTP_LOW_SPEED_TIME=300
 export GIT_HTTP_LOW_SPEED_LIMIT=1000
 
@@ -134,6 +135,23 @@ if [ ! -d "$WORKSPACE" ]; then
     exit 1
 fi
 
+function retry {
+    typeset n=1
+    typeset RC=0
+
+    while [[ $n -le $RETRY_LIMIT ]]; do
+        echo "Attempt $n of $RETRY_LIMIT : $@"
+        if ( $@ ) ; then
+            return 0
+        fi
+        RC=1
+        let n=$((n + 1))
+    done
+
+    return $RC
+}
+
+
 set -x
 set -e
 
@@ -154,18 +172,18 @@ elif [ ! -z "$cache_remote" ]; then
     # Clone from the cache then update the origin remote to point
     # upstream so we can pull down more recent changes.
     (cd $WORKSPACE &&
-            git clone $cache_remote $REPO &&
+            retry git clone $cache_remote $REPO &&
             cd $REPO &&
             git remote set-url origin "$upstream_remote"
     )
 
 else
-    (cd $WORKSPACE && git clone $upstream_remote $REPO)
+    (cd $WORKSPACE && retry git clone $upstream_remote $REPO)
 fi
 
 # Make sure it is up to date compared to the upstream remote.
 (cd $local_dir &&
-        git fetch origin --tags
+        retry git fetch origin --tags
 )
 
 if [ ! -z "$REF" ]; then
@@ -177,5 +195,5 @@ else
     # before so just do it again).
     (cd $local_dir &&
             (git checkout $BRANCH || git checkout master) &&
-            git pull --ff-only)
+            retry git pull --ff-only)
 fi
