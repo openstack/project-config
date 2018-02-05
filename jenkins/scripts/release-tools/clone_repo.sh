@@ -67,8 +67,10 @@ CACHE_DIR="${ZUUL_CACHE_DIR:-/opt/git}"
 BRANCH="master"
 REF=""
 UPSTREAM="https://git.openstack.org"
+export GIT_HTTP_LOW_SPEED_TIME=300
+export GIT_HTTP_LOW_SPEED_LIMIT=1000
 
-OPTS=`getopt -o h --long branch:,cache-dir:,ref:,upstream:,workspace: -n $0 -- "$@"`
+OPTS=`getopt -o h --long branch:,cache-dir:,ref:,timeout:,upstream:,workspace: -n $0 -- "$@"`
 if [ $? != 0 ] ; then
     echo "Failed parsing options." >&2
     print_help
@@ -93,6 +95,11 @@ while true; do
             ;;
         --ref)
             REF="$2"
+            shift
+            shift
+            ;;
+        --timeout)
+            GIT_HTTP_LOW_SPEED_TIME="$2"
             shift
             shift
             ;;
