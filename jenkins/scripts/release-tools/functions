@@ -90,7 +90,21 @@ function update_upper_constraints {
     sed -i~ -e "s,{\(env:UPPER_CONSTRAINTS_FILE\)[^ ]*},{\1:$uc_url}," tox.ini
     if ! git diff --exit-code >/dev/null 2>&1 ; then
         git add tox.ini
-        git commit -m "Update UPPER_CONSTRAINTS_FILE for $branch"
+        msg="Update UPPER_CONSTRAINTS_FILE for $branch"
+        body="The new stable upper-constraints file is only available
+after the openstack/requirements repository is branched.
+This will happen around the RC1 timeframe.
+
+Recheck and merge this change once the requirements
+repository has been branched.
+
+The CI system will work with this patch before the requirements
+repository is branched because zuul configues the job to run
+with a local copy of the file and defaults to the master branch.
+However, accepting the patch will break the test configuration
+on developers' local systems, so please wait until after the
+requirements repository is branched to merge the patch."
+        git commit -m "$msg" -m "$body"
         git show
         local shortbranch=$(basename $branch)
         git review -t "create-${shortbranch}" --yes
