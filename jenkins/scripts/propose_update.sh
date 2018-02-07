@@ -79,7 +79,9 @@ elif [ "$OWN_PROJECT" == "os-service-types" ] ; then
     TOPIC="openstack/os-service-types/sync-service-types-authority"
     PROJECTS="openstack/os-service-types"
     function update {
+        pushd $1
         curl https://service-types.openstack.org/service-types.json > os_service_types/data/service-types.json
+        popd
     }
 else
     echo "Unknown project $1" >2
