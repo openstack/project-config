@@ -89,3 +89,19 @@
   template:
     src: zanata.ini
     dest: ~/.config/zanata.ini
+
+- name: Copy translation scripts to the script dir on the node
+  copy:
+    dest: '/usr/local/jenkins/slave_scripts/{{ item }}'
+    src: '{{ item }}'
+    mode: 0755
+  with_items:
+    - common.sh
+    - common_translation_update.sh
+    - create-zanata-xml.py
+    - get-modulename.py
+    - propose_translation_update.sh
+    - query-zanata-project-version.py
+    - upstream_translation_update.sh
+    - ZanataUtils.py
+  become: true
