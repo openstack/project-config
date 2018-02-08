@@ -92,7 +92,7 @@
 
 - name: Copy translation scripts to the script dir on the node
   copy:
-    dest: '/usr/local/jenkins/slave_scripts/{{ item }}'
+    dest: '{{ ansible_user_dir }}/scripts/'
     src: '{{ item }}'
     mode: 0755
   with_items:
@@ -104,4 +104,3 @@
     - query-zanata-project-version.py
     - upstream_translation_update.sh
     - ZanataUtils.py
-  become: true
