@@ -2642,12 +2642,27 @@
     templates:
       - system-required
       - publish-to-pypi-quietly
-      - openstack-python-jobs
       - docs-on-readthedocs
-      - openstack-python35-jobs
     check:
       jobs:
-        - openstack-tox-cover
+        - openstack-tox-cover:
+            branches: ^master
+        - openstack-tox-pep8:
+            branches: ^master
+        - openstack-tox-py27:
+            branches: ^master
+        - openstack-tox-py35:
+            branches: ^master
+    gate:
+      jobs:
+        - openstack-tox-cover:
+            branches: ^master
+        - openstack-tox-pep8:
+            branches: ^master
+        - openstack-tox-py27:
+            branches: ^master
+        - openstack-tox-py35:
+            branches: ^master
 
 - project:
     name: openstack/ara-web
