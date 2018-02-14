@@ -105,16 +105,19 @@ def process_release_requests(reporoot, filenames, meta_data):
         with open(filename, 'r', encoding='utf-8') as f:
             deliverable_data = yaml.load(f.read())
 
-        # If there are no releases listed in this file, skip it.
-        if not deliverable_data.get('releases'):
-            print('  {} contains no releases, skipping'.format(basename))
+        deliverable_releases = deliverable_data.get('releases', [])
+
+        # If there are no releases or branches listed in this file, skip it.
+        if not deliverable_releases and not deliverable_data.get('branches'):
+            print('  {} contains no releases nor branches, skipping'.format(
+                  basename))
             continue
 
         # Map the release version to the release contents so we can
         # easily get a list of repositories for stable branches.
         releases_by_version = {
             r['version']: r
-            for r in deliverable_data.get('releases', [])
+            for r in deliverable_releases
         }
 
         # Determine whether announcements should include a PyPI
@@ -135,33 +138,32 @@ def process_release_requests(reporoot, filenames, meta_data):
             os.path.dirname(os.path.abspath(filename))
         ).lstrip('_')
 
-        all_versions = {
-            rel['version']: rel for rel in deliverable_data['releases']
-        }
-        version = deliverable_data['releases'][-1]['version']
-        this_version = all_versions[version]
-        final_versions = [
-            r['version']
-            for r in deliverable_data['releases']
-            if not PRE_RELEASE_RE.search(r['version'])
-        ]
-        first_full_release = 'yes' if (
-            final_versions and
-            this_version['version'] == final_versions[0]
-        ) else 'no'
-        diff_start = this_version.get('diff-start', '-')
+        if deliverable_releases:
+            all_versions = {
+                rel['version']: rel for rel in deliverable_data['releases']
+            }
+            version = deliverable_data['releases'][-1]['version']
+            this_version = all_versions[version]
+            final_versions = [
+                r['version']
+                for r in deliverable_data['releases']
+                if not PRE_RELEASE_RE.search(r['version'])
+            ]
+            first_full_release = 'yes' if (
+                final_versions and
+                this_version['version'] == final_versions[0]
+            ) else 'no'
+            diff_start = this_version.get('diff-start', '-')
 
-        # Tag releases.
-
-        for project in this_version['projects']:
-            error_count += tag_release(
-                project['repo'], series_name, version,
-                diff_start, project['hash'], include_pypi_link,
-                first_full_release, meta_data,
-            )
+            # Tag releases.
+            for project in this_version['projects']:
+                error_count += tag_release(
+                    project['repo'], series_name, version,
+                    diff_start, project['hash'], include_pypi_link,
+                    first_full_release, meta_data,
+                )
 
         # Create branches.
-
         for branch in deliverable_data.get('branches', []):
             location = branch['location']
 
