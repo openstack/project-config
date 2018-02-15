@@ -65,14 +65,14 @@ elif [ "$OWN_PROJECT" == "puppet-openstack-constraints" ] ; then
     TOPIC="openstack/puppet/constraints"
     PROJECTS=openstack/puppet-openstack-integration
     function update {
-        bash /usr/local/jenkins/slave_scripts/generate_puppetfile.sh
+        bash /home/zuul/scripts/generate_puppetfile.sh
     }
 elif [ "$OWN_PROJECT" == "openstack-ansible-tests" ] ; then
     INITIAL_COMMIT_MSG="Updated from OpenStack Ansible Tests"
     TOPIC="openstack/openstack-ansible-tests/sync-tests"
     PROJECTS=$(./gen-projects-list.sh)
     function update {
-        bash /usr/local/jenkins/slave_scripts/sync_openstack_ansible_common_files.sh $1
+        bash /home/zuul/scripts/sync_openstack_ansible_common_files.sh $1
     }
 elif [ "$OWN_PROJECT" == "os-service-types" ] ; then
     INITIAL_COMMIT_MSG="Updated from OpenStack Service Type Authority"
