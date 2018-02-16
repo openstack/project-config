@@ -417,6 +417,51 @@ function extract_messages_django {
     done
 }
 
+# Extract doc messages
+function extract_messages_doc {
+    # Temporary build folder for gettext
+    mkdir -p doc/build/gettext
+
+    # Extract messages
+    sphinx-build -b gettext doc/source \
+        doc/build/gettext/
+    # Manipulates pot translation sources if needed
+    if [[ -f tools/doc-pot-filter.sh ]]; then
+        tools/doc-pot-filter.sh
+    fi
+
+    # New translation target projects may not have locale folder
+    mkdir -p doc/source/locale
+
+    # Sphinx builds a pot file for each directory and for each file
+    # in the top-level directory.
+    # We keep the directory files and concatenate all top-level files.
+    local has_other=0
+    for f in doc/build/gettext/*.pot; do
+        local fn=$(basename $f .pot)
+        # If a pot file corresponds to a directory, we use the pot file as-is.
+        if [ -d doc/source/$fn ]; then
+            # Remove UUIDs, those are not necessary and change too often
+            msgcat --use-first --sort-by-file $f | \
+                awk '$0 !~ /^\# [a-z0-9]+$/' > doc/source/locale/doc-$fn.pot
+            rm $f
+        else
+            has_other=1
+        fi
+    done
+
+    # We concatenate remaining into a single pot file so that
+    # "git add ${DIRECTORY}/source/locale" will only add a
+    # single pot file for all top-level files.
+    if [ "$has_other" = "1" ]; then
+        # Remove UUIDs, those are not necessary and change too often
+        msgcat --use-first --sort-by-file doc/build/gettext/*.pot | \
+            awk '$0 !~ /^\# [a-z0-9]+$/' > doc/source/locale/doc.pot
+    fi
+
+    rm -rf doc/build/gettext/
+}
+
 # Extract releasenotes messages
 function extract_messages_releasenotes {
     local keep_workdir=$1
