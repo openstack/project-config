@@ -1,6 +1,8 @@
 - hosts: all
   roles:
-    - prepare-infra-docs-for-afs
+    - role: prepare-infra-docs-for-afs
+      when: zuul_success | bool
     - role: fetch-sphinx-output
       sphinx_output_suffix: "/"
       zuul_executor_dest: "{{ zuul.executor.work_root }}/artifacts"
+      when: zuul_success | bool
