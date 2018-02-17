@@ -326,11 +326,15 @@
     final: true
     pre-run: playbooks/sphinx/pre.yaml
     run: playbooks/sphinx/run.yaml
-    post-run: playbooks/publish/contributor-guide-afs.yaml
+    post-run:
+      - playbooks/publish/contributor-guide-afs.yaml
+      - playbooks/publish/openstack-afs.yaml
     roles:
       - zuul: openstack-infra/zuul-jobs
       - zuul: openstack-infra/openstack-zuul-jobs
     branches: master
+    vars:
+      afs_subpath: "/contributors"
     secrets:
       - secret: afsdocs_secret
         name: afs
@@ -376,13 +380,16 @@
     final: true
     pre-run: playbooks/releasenotes/pre.yaml
     run: playbooks/releasenotes/run.yaml
-    post-run: playbooks/publish/releasenotes.yaml
+    post-run:
+      - playbooks/publish/releasenotes.yaml
+      - playbooks/publish/openstack-afs.yaml
     override-branch: master
     required-projects:
       - name: openstack/requirements
     roles:
       - zuul: openstack-infra/zuul-jobs
     vars:
+      afs_subpath: "/releasenotes/{{ zuul.project.short_name }}"
       constraints_file: '{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt'
       sphinx_build_dir: releasenotes/build
     secrets:
@@ -436,10 +443,12 @@
     run: playbooks/sphinx/run.yaml
     post-run:
       - playbooks/sphinx/post-infra.yaml
-      - playbooks/publish/infra-afs.yaml
+      - playbooks/publish/openstack-afs.yaml
     roles:
       - zuul: openstack-infra/zuul-jobs
       - zuul: openstack-infra/openstack-zuul-jobs
+    vars:
+      afs_subpath: "/infra/{{ zuul.project.short_name }}"
     secrets:
       - secret: afsdocs_secret
         name: afs
@@ -456,8 +465,9 @@
     run: playbooks/sphinx/run.yaml
     post-run:
       - playbooks/sphinx/post-infra.yaml
-      - playbooks/publish/infra-afs.yaml
+      - playbooks/publish/openstack-afs.yaml
     vars:
+      afs_subpath: "/infra/{{ zuul.project.short_name }}"
       sphinx_python: python3
     roles:
       - zuul: openstack-infra/zuul-jobs
@@ -475,12 +485,14 @@
     run: playbooks/sphinx/run.yaml
     post-run:
       - playbooks/sphinx/post-infra.yaml
-      - playbooks/publish/infra-manual.yaml
+      - playbooks/publish/openstack-afs.yaml
     allowed-projects:
       - openstack-infra/infra-manual
     roles:
       - zuul: openstack-infra/zuul-jobs
       - zuul: openstack-infra/openstack-zuul-jobs
+    vars:
+      afs_subpath: "/infra/manual"
     secrets:
       - secret: afsdocs_secret
         name: afs
@@ -511,7 +523,9 @@
     final: true
     pre-run: playbooks/project-config/pre-tox.yaml
     run: playbooks/project-config/run-tox.yaml
-    post-run: playbooks/publish/infra-index.yaml
+    post-run:
+      - playbooks/publish/infra-index.yaml
+      - playbooks/publish/openstack-afs.yaml
     allowed-projects:
       - openstack-infra/project-config
     roles:
@@ -519,6 +533,7 @@
       - zuul: openstack-infra/openstack-zuul-jobs
     vars:
       tox_envlist: infra-docs
+      afs_path: "/infra"
     secrets:
       - secret: afsdocs_secret
         name: afs
@@ -529,13 +544,16 @@
       Publish the publication index
     final: true
     run: playbooks/publications-index/run.yaml
-    post-run: playbooks/publish/publications-index.yaml
+    post-run:
+      - playbooks/publish/publications-index.yaml
+      - playbooks/publish/openstack-afs.yaml
     allowed-projects:
       - openstack-infra/publications
     roles:
       - zuul: openstack-infra/zuul-jobs
       - zuul: openstack-infra/openstack-zuul-jobs
     vars:
+      afs_subpath: "/infra/publications/"
       tox_envlist: infra-docs
     secrets:
       - secret: afsdocs_secret
@@ -547,13 +565,16 @@
       Publish one publication from openstack-infra/publications
     final: true
     run: playbooks/publications/run.yaml
-    post-run: playbooks/publish/publications.yaml
+    post-run:
+      - playbooks/publish/publications.yaml
+      - playbooks/publish/openstack-afs.yaml
     allowed-projects:
       - openstack-infra/publications
     roles:
       - zuul: openstack-infra/zuul-jobs
       - zuul: openstack-infra/openstack-zuul-jobs
     vars:
+      afs_subpath: "/infra/publications/"
       tox_envlist: infra-docs
     secrets:
       - secret: afsdocs_secret
@@ -716,11 +737,15 @@
     name: publish-openstack-manuals
     parent: publish-openstack-manuals-base
     final: true
-    post-run: playbooks/publish/manuals.yaml
+    post-run:
+      - playbooks/publish/manuals.yaml
+      - playbooks/publish/openstack-afs.yaml
     allowed-projects:
       - openstack/openstack-manuals
       - openstack/security-doc
       - openstack/training-guides
+    vars:
+      afs_subpath: ""
     secrets:
       - secret: afsdocs_secret
         name: afs
@@ -814,7 +839,9 @@
       - openstack/nova
     pre-run: playbooks/sphinx/pre.yaml
     run: playbooks/sphinx/run.yaml
-    post-run: playbooks/publish/placement-api-ref.yaml
+    post-run:
+      - playbooks/publish/placement-api-ref.yaml
+      - playbooks/publish/openstack-afs.yaml
     roles:
       - zuul: openstack-infra/zuul-jobs
       - zuul: openstack-infra/openstack-zuul-jobs
@@ -822,6 +849,7 @@
     # for changes on other branches.
     branches: master
     vars:
+      afs_subpath: "/api-ref/placement"
       sphinx_build_dir: placement-api-ref/build
       sphinx_source_dir: placement-api-ref/source
     secrets:
@@ -857,11 +885,14 @@
       https://docs.openstack.org/project-deploy-guide/
     pre-run: playbooks/sphinx/pre.yaml
     run: playbooks/sphinx/run.yaml
-    post-run: playbooks/publish/deploy-guide.yaml
+    post-run:
+      - playbooks/publish/deploy-guide.yaml
+      - playbooks/publish/openstack-afs.yaml
     roles:
       - zuul: openstack-infra/zuul-jobs
       - zuul: openstack-infra/openstack-zuul-jobs
     vars:
+      afs_subpath: "/project-deploy-guide/{{ zuul.project.short_name }}"
       sphinx_build_dir: deploy-guide/build
       sphinx_source_dir: deploy-guide/source
     secrets:
