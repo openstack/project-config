@@ -961,13 +961,12 @@
     description: |
       Build CentOS 7 wheels for OpenStaci CI mirrors.
     nodeset:
-      # NOTE: The python2 and python3 suffix are important, they select the
-      # version of python to build in each job. (we pull the last character of
-      # the inventory_hostname)
-      # TODO(mordred): Replace the suffix with host_vars once we have them.
       nodes:
         - name: wheel-mirror-centos-7-python2
           label: centos-7
+    host_vars:
+      wheel-mirror-ubuntu-centos-7-python2:
+        wheel_python: python2
 
 - job:
     name: publish-wheel-mirror-centos-7
@@ -986,15 +985,16 @@
     description: |
       Build Ubuntu Trusty wheels for OpenStaci CI mirrors.
     nodeset:
-      # NOTE: The python2 and python3 suffix are important, they select the
-      # version of python to build in each job. (we pull the last character of
-      # the inventory_hostname)
-      # TODO(mordred): Replace the suffix with host_vars once we have them.
       nodes:
         - name: wheel-mirror-ubuntu-trusty-python2
           label: ubuntu-trusty
         - name: wheel-mirror-ubuntu-trusty-python3
           label: ubuntu-trusty
+    host_vars:
+      wheel-mirror-ubuntu-trusty-python2:
+        wheel_python: python2
+      wheel-mirror-ubuntu-trusty-python3:
+        wheel_python: python3
 
 - job:
     name: publish-wheel-mirror-ubuntu-trusty
@@ -1013,15 +1013,16 @@
     description: |
       Build Ubuntu Xenial wheels for OpenStaci CI mirrors.
     nodeset:
-      # NOTE: The python2 and python3 suffix are important, they select the
-      # version of python to build in each job. (we pull the last character of
-      # the inventory_hostname)
-      # TODO(mordred): Replace the suffix with host_vars once we have them.
       nodes:
         - name: wheel-mirror-ubuntu-xenial-python2
           label: ubuntu-xenial
         - name: wheel-mirror-ubuntu-xenial-python3
           label: ubuntu-xenial
+    host_vars:
+      wheel-mirror-ubuntu-xenial-python2:
+        wheel_python: python2
+      wheel-mirror-ubuntu-xenial-python3:
+        wheel_python: python3
 
 - job:
     name: publish-wheel-mirror-ubuntu-xenial
