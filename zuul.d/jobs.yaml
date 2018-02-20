@@ -205,27 +205,19 @@
       tox_constraints_file: '{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt'
 
 - job:
-    name: publish-openstack-sphinx-docs
+    name: publish-openstack-sphinx-docs-base
     description: |
-      Publish the results of the build-openstack-sphinx-docs job to
-      /afs/.openstack.org/docs/{{ zuul.project.short_name }}.
-
-      Publishes depending on branch to latest/ (for master), or the
-      basename of the branch like pike (for stable/pike).
-    final: true
+      Base job for publishing sphinx documentation to
+      /afs/.openstack.org/docs/.
+    abstract: true
+    protected: true
     pre-run:
       - playbooks/sphinx/pre.yaml
-      # TODO(mordred) REMOVE THIS HACK
-      - playbooks/sphinx/neutron-horizon-hack.yaml
     run: playbooks/sphinx/run.yaml
     post-run:
-      - playbooks/sphinx/post.yaml
       - playbooks/publish/openstack-afs.yaml
     required-projects:
       - name: openstack/requirements
-      # TODO(mordred) REMOVE THIS HACK ONCE neutron-horizon-hack is removed
-      - name: openstack/neutron
-      - name: openstack/horizon
     roles:
       - zuul: openstack-infra/zuul-jobs
       - zuul: openstack-infra/openstack-zuul-jobs
@@ -236,7 +228,28 @@
         name: afs
 
 - job:
+    name: publish-openstack-sphinx-docs
+    parent: publish-openstack-sphinx-docs-base
+    description: |
+      Publish the results of the build-openstack-sphinx-docs job to
+      /afs/.openstack.org/docs/{{ zuul.project.short_name }}.
+
+      Publishes depending on branch to latest/ (for master), or the
+      basename of the branch like pike (for stable/pike).
+    final: true
+    pre-run:
+      # TODO(mordred) REMOVE THIS HACK
+      - playbooks/sphinx/neutron-horizon-hack.yaml
+    post-run:
+      - playbooks/sphinx/post.yaml
+    required-projects:
+      # TODO(mordred) REMOVE THIS HACK ONCE neutron-horizon-hack is removed
+      - name: openstack/neutron
+      - name: openstack/horizon
+
+- job:
     name: publish-openstack-sphinx-docs-python3
+    parent: publish-openstack-sphinx-docs-base
     description: |
       Publish the results of the build-openstack-sphinx-docs job to
       /afs/.openstack.org/docs/{{ zuul.project.short_name }}.
@@ -246,51 +259,28 @@
       Publishes depending on branch to latest/ (for master), or the
       basename of the branch like pike (for stable/pike).
     final: true
-    pre-run: playbooks/sphinx/pre.yaml
-    run: playbooks/sphinx/run.yaml
     post-run:
       - playbooks/sphinx/post.yaml
-      - playbooks/publish/openstack-afs.yaml
-    required-projects:
-      - name: openstack/requirements
-    roles:
-      - zuul: openstack-infra/zuul-jobs
-      - zuul: openstack-infra/openstack-zuul-jobs
     vars:
-      tox_constraints_file: '{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt'
       sphinx_python: python3
-    secrets:
-      - secret: afsdocs_secret
-        name: afs
 
 - job:
     name: publish-openstack-sphinx-docs-direct
+    parent: publish-openstack-sphinx-docs-base
     description: |
       Publish the results of the build-openstack-sphinx-docs job to
       /afs/.openstack.org/docs/{{ zuul.project.short_name }}
 
       Publishing is done from master branch directly without using /latest.
     final: true
-    pre-run: playbooks/sphinx/pre.yaml
-    run: playbooks/sphinx/run.yaml
     post-run:
       - playbooks/sphinx/post-direct.yaml
-      - playbooks/publish/openstack-afs.yaml
-    required-projects:
-      - name: openstack/requirements
-    roles:
-      - zuul: openstack-infra/zuul-jobs
-      - zuul: openstack-infra/openstack-zuul-jobs
-    vars:
-      tox_constraints_file: "{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt"
     branches:
       - master
-    secrets:
-      - secret: afsdocs_secret
-        name: afs
 
 - job:
     name: publish-openstack-sphinx-docs-direct-python3
+    parent: publish-openstack-sphinx-docs-base
     description: |
       Publish the results of the build-openstack-sphinx-docs job to
       /afs/.openstack.org/docs/{{ zuul.project.short_name }}
@@ -299,45 +289,25 @@
 
       Publishing is done from master branch directly without using /latest.
     final: true
-    pre-run: playbooks/sphinx/pre.yaml
-    run: playbooks/sphinx/run.yaml
     post-run:
       - playbooks/sphinx/post-direct.yaml
-      - playbooks/publish/openstack-afs.yaml
-    required-projects:
-      - name: openstack/requirements
-    roles:
-      - zuul: openstack-infra/zuul-jobs
-      - zuul: openstack-infra/openstack-zuul-jobs
     vars:
-      tox_constraints_file: "{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt"
       sphinx_python: python3
     branches:
       - master
-    secrets:
-      - secret: afsdocs_secret
-        name: afs
 
 - job:
     name: publish-openstack-contributor-guide
+    parent: publish-openstack-sphinx-docs-base
     description: |
       Publish contributor-guide documents to
       https://docs.openstack.org/contributors
     final: true
-    pre-run: playbooks/sphinx/pre.yaml
-    run: playbooks/sphinx/run.yaml
     post-run:
       - playbooks/publish/contributor-guide-afs.yaml
-      - playbooks/publish/openstack-afs.yaml
-    roles:
-      - zuul: openstack-infra/zuul-jobs
-      - zuul: openstack-infra/openstack-zuul-jobs
     branches: master
     vars:
       afs_subpath: "/contributors"
-    secrets:
-      - secret: afsdocs_secret
-        name: afs
 
 - job:
     name: publish-openstack-tox-docs
@@ -435,67 +405,43 @@
 
 - job:
     name: publish-openstack-sphinx-docs-infra
+    parent: publish-openstack-sphinx-docs-base
     description: |
       Publish the results of the openstack-build-sphinx-docs job to
       /afs/.openstack.org/infra/{{ zuul.project.short_name }}
     final: true
-    pre-run: playbooks/sphinx/pre.yaml
-    run: playbooks/sphinx/run.yaml
     post-run:
       - playbooks/sphinx/post-infra.yaml
-      - playbooks/publish/openstack-afs.yaml
-    roles:
-      - zuul: openstack-infra/zuul-jobs
-      - zuul: openstack-infra/openstack-zuul-jobs
     vars:
       afs_subpath: "/infra/{{ zuul.project.short_name }}"
-    secrets:
-      - secret: afsdocs_secret
-        name: afs
 
 - job:
     name: publish-openstack-sphinx-docs-infra-python3
+    parent: publish-openstack-sphinx-docs-base
     description: |
       Publish the results of the openstack-build-sphinx-docs job to
       /afs/.openstack.org/infra/{{ zuul.project.short_name }}
 
       Builds the docs using Sphinx with Python3.
     final: true
-    pre-run: playbooks/sphinx/pre.yaml
-    run: playbooks/sphinx/run.yaml
     post-run:
       - playbooks/sphinx/post-infra.yaml
-      - playbooks/publish/openstack-afs.yaml
     vars:
       afs_subpath: "/infra/{{ zuul.project.short_name }}"
       sphinx_python: python3
-    roles:
-      - zuul: openstack-infra/zuul-jobs
-      - zuul: openstack-infra/openstack-zuul-jobs
-    secrets:
-      - secret: afsdocs_secret
-        name: afs
 
 - job:
     name: publish-infra-manual
+    parent: publish-openstack-sphinx-docs-base
     description: |
       Publish the Infra Manual to /afs/.openstack.org/docs/infra/manual
     final: true
-    pre-run: playbooks/sphinx/pre.yaml
-    run: playbooks/sphinx/run.yaml
     post-run:
       - playbooks/sphinx/post-infra.yaml
-      - playbooks/publish/openstack-afs.yaml
     allowed-projects:
       - openstack-infra/infra-manual
-    roles:
-      - zuul: openstack-infra/zuul-jobs
-      - zuul: openstack-infra/openstack-zuul-jobs
     vars:
       afs_subpath: "/infra/manual"
-    secrets:
-      - secret: afsdocs_secret
-        name: afs
 
 - job:
     name: publish-service-types-authority
@@ -880,24 +826,16 @@
 
 - job:
     name: publish-deploy-guide
+    parent: publish-openstack-sphinx-docs-base
     description: |
       Publish deploy-guide document to
       https://docs.openstack.org/project-deploy-guide/
-    pre-run: playbooks/sphinx/pre.yaml
-    run: playbooks/sphinx/run.yaml
     post-run:
       - playbooks/publish/deploy-guide.yaml
-      - playbooks/publish/openstack-afs.yaml
-    roles:
-      - zuul: openstack-infra/zuul-jobs
-      - zuul: openstack-infra/openstack-zuul-jobs
     vars:
       afs_subpath: "/project-deploy-guide/{{ zuul.project.short_name }}"
       sphinx_build_dir: deploy-guide/build
       sphinx_source_dir: deploy-guide/source
-    secrets:
-      - secret: afsdocs_secret
-        name: afs
 
 - job:
     name: publish-training-labs-scripts
