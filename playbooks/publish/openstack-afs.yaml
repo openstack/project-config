@@ -1,9 +1,23 @@
 - hosts: localhost
+  pre_tasks:
+
+  # Note that "{{ afs.path }}" is a valid afs_target and thus
+  # afs_subpath can be empty, we need this for openstack-manuals
+  # publishing.
+  - name: Set default afs_subpath
+    set_fact:
+      our_afs_subpath: "/{{ zuul.project.short_name }}"
+    when: afs_subpath is not defined
+  - name: Use defined afs_subpath
+    set_fact:
+      our_afs_subpath: "{{ afs_subpath }}"
+    when: afs_subpath is defined
+
   roles:
     - role: create-afs-token
       when: zuul_success | bool
     - role: upload-afs
-      afs_target: "{{ afs.path }}/{{ zuul.project.short_name }}"
+      afs_target: "{{ afs.path }}{{ our_afs_subpath }}"
       when: zuul_success | bool
     - role: destroy-afs-token
       when: zuul_success | bool
