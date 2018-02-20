@@ -1,0 +1,52 @@
+elements-dir: /etc/nodepool/elements
+images-dir: /opt/nodepool_dib
+
+zookeeper-servers:
+  - host: nodepool.openstack.org
+    port: 2181
+
+labels:
+  - name: ubuntu-xenial-arm64
+    max-ready-age: 3600
+
+providers:
+  - name: linaro-cn1
+    region-name: 'RegionOne'
+    cloud: linaro
+    rate: 0.25
+    diskimages:
+      - name: ubuntu-xenial-arm64
+        pause: false
+        config-drive: true
+        meta:
+          hw_firmware_type: uefi
+          os_command_line: "console=ttyAMA0"
+          hw_disk_bus: scsi
+          hw_scsi_model: virtio-scsi
+
+diskimages:
+  - name: ubuntu-xenial-arm64
+    elements:
+      - block-device-efi
+      - ubuntu-minimal
+      - vm
+      - simple-init
+      - openstack-repos
+      - nodepool-base
+      - cache-devstack
+      - initialize-urandom
+      - growroot
+      - infra-package-needs
+    release: xenial
+    env-vars:
+      TMPDIR: /opt/dib_tmp
+      DIB_CHECKSUM: '1'
+      DIB_IMAGE_CACHE: /opt/dib_cache
+      DIB_APT_LOCAL_CACHE: '0'
+      DIB_DISABLE_APT_CLEANUP: '1'
+      # NOTE(ianw): devstack caches a tarball of this during dib
+      # build; upstream devstack uses a 3.1 etcd version which didn't
+      # have arm64 support.  We can look at fixing this once we have
+      # some testing...
+      ETCD_VERSION: v3.3.0
+      ETCD_SHA256_ARM64: d7b26a2df488bff4e0a9d521c90e6a350547f2924c88e52fe11c825dd623e159
