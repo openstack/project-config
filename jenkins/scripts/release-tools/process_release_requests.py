@@ -24,6 +24,25 @@ import subprocess
 import yaml
 
 
+# TODO(dhellmann): Instead of using a fixed list, look for the series
+# name -eol tag to determine that a series is closed.
+CLOSED_SERIES = set([
+    'austin',
+    'bexar',
+    'cactus',
+    'diablo',
+    'essex',
+    'folsom',
+    'grizzly',
+    'havana',
+    'icehouse',
+    'juno',
+    'kilo',
+    'liberty',
+    'mitaka',
+    'newton',
+])
+
 PRE_RELEASE_RE = re.compile('''
     \.(\d+(?:[ab]|rc)+\d*)$
 ''', flags=re.VERBOSE | re.UNICODE)
@@ -102,6 +121,22 @@ def process_release_requests(reporoot, filenames, meta_data):
             # The file must have been deleted, skip it.
             print('  {} was deleted'.format(basename))
             continue
+
+        # The series name is part of the filename, rather than the file
+        # body. That causes release.sh to be called with series="_independent"
+        # for release:independent projects, and release.sh to use master branch
+        # to evaluate fixed bugs.
+        series_name = os.path.basename(
+            os.path.dirname(os.path.abspath(filename))
+        ).lstrip('_')
+
+        # If the series is closed, do not process the file. We're
+        # likely updating old data in the releases repo and we do not
+        # want to reprocess any old branches or tags.
+        if series_name in CLOSED_SERIES:
+            print('  {} skipping closed series'.format(filename))
+            continue
+
         with open(filename, 'r', encoding='utf-8') as f:
             deliverable_data = yaml.load(f.read())
 
@@ -129,14 +164,6 @@ def process_release_requests(reporoot, filenames, meta_data):
             False,
         )
         include_pypi_link = 'yes' if include_pypi_link else 'no'
-
-        # The series name is part of the filename, rather than the file
-        # body. That causes release.sh to be called with series="_independent"
-        # for release:independent projects, and release.sh to use master branch
-        # to evaluate fixed bugs.
-        series_name = os.path.basename(
-            os.path.dirname(os.path.abspath(filename))
-        ).lstrip('_')
 
         if deliverable_releases:
             all_versions = {
