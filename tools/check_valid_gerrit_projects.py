@@ -68,6 +68,19 @@ def check_repo(repo_path):
                 print("    %s" % tag)
         else:
             print("  Found no tags.")
+        # Check that no zuul files are in here
+        for branch in branches:
+            print("Testing branch %s" % branch)
+            if 'origin/HEAD' in branch:
+                continue
+            repo.git.checkout(branch)
+            head = repo.head.commit.tree
+            for z in ['zuul.yaml', 'zuul.yaml', 'zuul.d', '.zuul.d']:
+                if z in head:
+                    found_errors += 1
+                    print("  ERROR: Found %s on branch %s" % (z, branch))
+                    print("    Remove any zuul config files before import.")
+
     # Just an empty line for nicer formatting
     print("")
     return found_errors
