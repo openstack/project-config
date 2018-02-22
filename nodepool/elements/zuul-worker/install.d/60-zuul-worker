@@ -36,8 +36,8 @@ chown -R zuul:zuul /home/zuul
 # We've put the cache stuff into /opt/cache/files, but again, for
 # "historical" reasons, ensure this is available in /home/zuul
 #
-# We do this for zuul as well as jenkins users as relative paths to
-# the current user's homedir are used in places like devstack-gate.
+# We do this for zuul as relative paths to the current user's homedir
+# are used in places like devstack-gate.
 #
 # Check if the cache exists as we don't have a strict dependency on the
 # devstack-cache element. This allows you to build an image without
@@ -46,4 +46,6 @@ if [ -d /opt/cache/files ] ; then
     mkdir -p /home/zuul/cache
     chown zuul:zuul /home/zuul/cache
     ln -sf /opt/cache/files /home/zuul/cache/files
+    # but make sure the cache is readable by everyone
+    chmod -R a+rX /opt/cache/files/*
 fi
