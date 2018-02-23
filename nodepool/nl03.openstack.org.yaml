@@ -25,6 +25,8 @@ labels:
     max-ready-age: 3600
   - name: ubuntu-xenial
     max-ready-age: 3600
+  - name: ubuntu-xenial-arm64
+    max-ready-age: 3600
 
 providers:
   - name: inap-mtl01
@@ -146,6 +148,25 @@ providers:
             diskimage: ubuntu-xenial
             key-name: infra-root-keys
 
+  - name: linaro-cn1
+    region-name: 'RegionOne'
+    cloud: linaro
+    boot-timeout: 600
+    launch-timeout: 800
+    rate: 0.001
+    diskimages:
+      - name: ubuntu-xenial-arm64
+        config-drive: true
+    pools:
+      - name: main
+        max-servers: 8
+        labels:
+          - name: ubuntu-xenial
+            min-ram: 8000
+            flavor-name: 'os.large'
+            diskimage: ubuntu-xenial
+            key-name: infra-root-keys
+
 diskimages:
   - name: centos-7
   - name: debian-jessie
@@ -156,3 +177,4 @@ diskimages:
   - name: opensuse-tumbleweed
   - name: ubuntu-trusty
   - name: ubuntu-xenial
+  - name: ubuntu-xenial-arm64
