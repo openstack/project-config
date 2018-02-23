@@ -559,10 +559,18 @@
 - job:
     name: base-publish-static
     abstract: true
+    protected: true
     description: |
       Base job for jobs that publish content to static.openstack.org.
+
+      Jobs need to set the variable ``static_target`` for site to
+      publish to.
     pre-run: playbooks/sphinx/pre.yaml
     run: playbooks/sphinx/run.yaml
+    post-run: playbooks/publish/static.yaml
+    secrets:
+      - name: fileserver
+        secret: static_ssh_key
 
 - job:
     name: publish-static
@@ -571,12 +579,9 @@
       Publish content to static.openstack.org to
       /srv/static/{{ zuul.project.short_name }}
     final: true
-    post-run: playbooks/publish/static.yaml
     vars:
+      static_target: "{{ zuul.project.short_name }}"
       sphinx_python: python3
-    secrets:
-      - name: fileserver
-        secret: static_ssh_key
 
 - job:
     name: publish-governance-sigs
@@ -584,14 +589,10 @@
     description: |
       Publish content to static.openstack.org to /srv/static/sigs
     final: true
-    post-run: playbooks/publish/static-special.yaml
     allowed-projects:
       - openstack/governance-sigs
     vars:
       static_target: sigs
-    secrets:
-      - name: fileserver
-        secret: static_ssh_key
 
 - job:
     name: publish-governance-tc
@@ -599,15 +600,11 @@
     description: |
       Publish content to static.openstack.org to /srv/static/tc
     final: true
-    post-run: playbooks/publish/static-special.yaml
     allowed-projects:
       - openstack/governance
     vars:
       static_target: tc
       sphinx_python: python3
-    secrets:
-      - name: fileserver
-        secret: static_ssh_key
 
 - job:
     name: publish-governance-uc
@@ -615,14 +612,10 @@
     description: |
       Publish content to static.openstack.org to /srv/static/uc
     final: true
-    post-run: playbooks/publish/static-special.yaml
     allowed-projects:
       - openstack/governance-uc
     vars:
       static_target: uc
-    secrets:
-      - name: fileserver
-        secret: static_ssh_key
 
 - job:
     name: publish-governance-website
@@ -630,14 +623,10 @@
     description: |
       Publish content to static.openstack.org to /srv/static/governance
     final: true
-    post-run: playbooks/publish/static-special.yaml
     allowed-projects:
       - openstack/governance-website
     vars:
       static_target: governance
-    secrets:
-      - name: fileserver
-        secret: static_ssh_key
 
 - job:
     name: publish-security
@@ -645,14 +634,10 @@
     description: |
       Publish content to static.openstack.org to /srv/static/security
     final: true
-    post-run: playbooks/publish/static-special.yaml
     allowed-projects:
       - openstack/ossa
     vars:
       static_target: security
-    secrets:
-      - name: fileserver
-        secret: static_ssh_key
 
 - job:
     name: publish-openstack-manuals-base
