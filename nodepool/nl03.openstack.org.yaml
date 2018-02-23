@@ -8,6 +8,9 @@ zookeeper-servers:
 # NOTE(pabelanger): To avoid a race conditions between multiple launchers, only
 # nl01.o.o will manage min-ready of our labels.  If nl01.o.o is ever disabled,
 # another launcher will need to assume this logic.
+#
+# Note this doesn't apply for labels that are only provided by this launcher;
+# ubuntu-xenial-arm64 being one of them.
 labels:
   - name: centos-7
     max-ready-age: 3600
@@ -27,6 +30,7 @@ labels:
     max-ready-age: 3600
   - name: ubuntu-xenial-arm64
     max-ready-age: 3600
+    min-ready: 1
 
 providers:
   - name: inap-mtl01
