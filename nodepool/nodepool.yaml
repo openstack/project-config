@@ -49,6 +49,8 @@ providers:
         config-drive: true
       - name: opensuse-tumbleweed
         config-drive: true
+      - name: ubuntu-bionic
+        config-drive: true
       - name: ubuntu-trusty
         config-drive: true
       - name: ubuntu-xenial
@@ -218,6 +220,26 @@ diskimages:
       DIB_IMAGE_CACHE: /opt/dib_cache
       QEMU_IMG_OPTIONS: compat=0.10
       DIB_GRUB_TIMEOUT: '0'
+  - name: ubuntu-bionic
+    elements:
+      - ubuntu-minimal
+      - vm
+      - simple-init
+      - openstack-repos
+      - nodepool-base
+      - cache-devstack
+      - growroot
+      - infra-package-needs
+    release: bionic
+    env-vars:
+      TMPDIR: /opt/dib_tmp
+      DIB_CHECKSUM: '1'
+      DIB_IMAGE_CACHE: /opt/dib_cache
+      DIB_APT_LOCAL_CACHE: '0'
+      DIB_DISABLE_APT_CLEANUP: '1'
+      DIB_GRUB_TIMEOUT: '0'
+      # TODO(pabelanger): Add AFS mirrors once bionic-updates is created.
+      DIB_DEBIAN_COMPONENTS: 'main,universe'
   - name: ubuntu-trusty
     elements:
       - ubuntu-minimal
