@@ -48,25 +48,6 @@ only enabled for projects that are in the Big Tent (mentioned in
 governance repository). Similary, translation workflow is also only
 enabled for Big Tent projects.
 
-Proposal jobs
-=============
-
-Proposal jobs run on the long running proposal slave that has access
-to the credentials that the jobs need to access Zanata and gerrit.
-Jobs running there are the exception and need to be carefully reviewed
-before approving them.
-
-Here are some points to look at:
-
-* First response should be: How else can we achieve this?
-
-* Jobs can publish artifacts also to specific places, like
-  static.openstack.org or tarballs.openstack.org, and use these from
-  other jobs.
-
-* Proposal jobs should not run arbitrary scripts from other
-  repositories or install untrusted packages.
-
 Removing check-requirements job
 ===============================
 
