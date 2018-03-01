@@ -13813,26 +13813,11 @@
       - release-notes-jobs
       - openstackclient-plugin-jobs
       - publish-to-pypi
-    check:
-      jobs:
-        - legacy-sahara-cli:
-            voting: false
-        - legacy-sahara-dsvm-scenario-neutron
-        - legacy-tempest-dsvm-neutron-src-python-saharaclient:
-            irrelevant-files:
-              - ^(test-|)requirements.txt$
-              - ^setup.cfg$
     post:
       jobs:
         - openstack-tox-cover
     gate:
       queue: sahara
-      jobs:
-        - legacy-sahara-dsvm-scenario-neutron
-        - legacy-tempest-dsvm-neutron-src-python-saharaclient:
-            irrelevant-files:
-              - ^(test-|)requirements.txt$
-              - ^setup.cfg$
     experimental:
       jobs:
         - openstack-tox-pypy
@@ -14671,10 +14656,6 @@
       jobs:
         - openstack-tox-pylint:
             voting: false
-        - legacy-tempest-dsvm-sahara:
-            irrelevant-files:
-              - ^(test-|)requirements.txt$
-              - ^setup.cfg$
         - openstack-tox-cover:
             voting: false
         - legacy-grenade-dsvm-sahara:
@@ -14682,44 +14663,14 @@
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^setup.cfg$
-        - legacy-sahara-dsvm-scenario-neutron:
-            irrelevant-files:
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^releasenotes/.*$
-        - legacy-sahara-dsvm-scenario-mod-wsgi:
-            voting: false
-            branches: ^(?!stable/ocata).*$
-            irrelevant-files:
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^releasenotes/.*$
     gate:
       queue: sahara
-      jobs:
-        - legacy-sahara-dsvm-scenario-neutron:
-            irrelevant-files:
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^releasenotes/.*$
-        - legacy-tempest-dsvm-sahara:
-            irrelevant-files:
-              - ^(test-|)requirements.txt$
-              - ^setup.cfg$
     post:
       jobs:
         - openstack-tox-cover
     experimental:
       jobs:
         - legacy-sahara-dsvm-scenario-multinode-spark:
-            branches: ^(?!stable/ocata).*$
-            irrelevant-files:
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^releasenotes/.*$
-        - legacy-sahara-buildimages-cloudera-centos-7
-        - legacy-sahara-buildimages-ambari-centos-7
-        - legacy-sahara-dsvm-scenario-py3:
             branches: ^(?!stable/ocata).*$
             irrelevant-files:
               - ^.*\.rst$
@@ -14814,47 +14765,10 @@
       jobs:
         - openstack-tox-pylint:
             voting: false
-        - legacy-tempest-dsvm-sahara:
-            voting: false
-            irrelevant-files:
-              - ^(test-|)requirements.txt$
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^releasenotes/.*$
-              - ^sahara_cli_tests/.*$
-              - ^sahara_tempest_plugin/tests/cli/.*$
-              - ^sahara_tests/.*$
-              - ^setup.cfg$
-              - ^tools/.*$
-              - ^tox.ini$
-        - legacy-sahara-dsvm-scenario-neutron:
-            irrelevant-files:
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^releasenotes/.*$
-              - ^sahara_tempest_plugin/.*$
-        - legacy-sahara-cli:
-            voting: false
-            irrelevant-files:
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^releasenotes/.*$
-              - ^sahara_tempest_plugin/tests/api/.*$
-              - ^sahara_tests/.*$
-              - ^tox.ini$
         - openstack-tox-cover:
             voting: false
     gate:
       queue: sahara
-      jobs:
-        - legacy-sahara-dsvm-scenario-neutron:
-            irrelevant-files:
-              - ^.*\.rst$
-              - ^doc/.*$
-              - ^releasenotes/.*$
-              - ^sahara_tempest_plugin/.*$
     post:
       jobs:
         - openstack-tox-cover
