@@ -53,9 +53,9 @@ cat > $ipv4_rules << EOF
 -A openstack-INPUT -i lo -j ACCEPT
 -A openstack-INPUT -p icmp --icmp-type any -j ACCEPT
 #-A openstack-INPUT -p udp --dport 5353 -d 224.0.0.251 -j ACCEPT
+# SSH from anywhere without -m state to avoid hanging connections on iptables-restore
+-A openstack-INPUT -m tcp -p tcp --dport 22 -j ACCEPT
 -A openstack-INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
-# SSH from anywhere
--A openstack-INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT
 # Public TCP ports
 -A openstack-INPUT -p tcp -m state --state NEW -m tcp --dport 19885 -j ACCEPT
 # Ports 69 and 6385 allow to allow ironic VM nodes to reach tftp and
@@ -82,9 +82,9 @@ cat > $ipv6_rules << EOF
 -A INPUT -j openstack-INPUT
 -A openstack-INPUT -i lo -j ACCEPT
 -A openstack-INPUT -p ipv6-icmp -j ACCEPT
+# SSH from anywhere without -m state to avoid hanging connections on iptables-restore
+-A openstack-INPUT -m tcp -p tcp --dport 22 -j ACCEPT
 -A openstack-INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
-# SSH from anywhere
--A openstack-INPUT -p tcp -m state --state NEW -m tcp --dport 22 -j ACCEPT
 # Public TCP ports
 -A openstack-INPUT -p tcp -m state --state NEW -m tcp --dport 19885 -j ACCEPT
 -A openstack-INPUT -j REJECT --reject-with icmp6-adm-prohibited
