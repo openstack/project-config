@@ -24,11 +24,11 @@ Prepare zanata client use
         The key to login with
 
 .. zuul:rolevar:: zanata_client_version
-   :default: 3.8.1
+   :default: 4.3.3
 
   The version of zanata client to install
 
 .. zuul:rolevar:: zanata_client_checksum
-   :default: cc4ecfa2d530ff314076bd0173bdf829824737d48d4f4a2f4ca18d263e9da7c3
+   :default: 25368516c2c6b94a8ad3397317abf69c723f3ba47a4f0357a31a1e075dd6f810
 
   The expected SHA256 checksum of the zanata client
