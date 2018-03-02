@@ -39,11 +39,11 @@
     url: "https://search.maven.org/remotecontent?filepath=org/zanata/zanata-cli/{{ zanata_client_version }}/zanata-cli-{{ zanata_client_version }}-dist.tar.gz"
     dest: "/tmp/zanata-cli-{{ zanata_client_version }}-dist.tar.gz"
     checksum: "sha256:{{ zanata_client_checksum }}"
-    register: result
-    until: result | success
-    retries: 5
-    delay: 5
   when: not cached_client.stat.exists
+  register: result
+  until: result | success
+  retries: 5
+  delay: 5
 
 - name: Extract Zanata client archive
   unarchive:
