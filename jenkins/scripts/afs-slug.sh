@@ -32,6 +32,12 @@ if [ "$OS_TYPE" != "ubuntu" ]; then
     OS_VERSION=$(echo $OS_VERSION | cut -d'.' -f1)
 fi
 
+# openSUSE Tumblweed is a rolling release model distribution, so it has
+# no version - set it to tumbleweed
+if [ "$OS_TYPE" = "opensuse" ] && [[ "$PRETTY_NAME" =~ "Tumbleweed" ]]; then
+    OS_VERSION="tumbleweed"
+fi
+
 ################################################################################
 # Get the processor architecture.
 #  x86_64, i386, armv7l, armv6l
