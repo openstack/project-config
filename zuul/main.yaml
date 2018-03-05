@@ -1363,10 +1363,10 @@
           - openstack/zun-ui
       github:
         untrusted-projects:
-          - gtest-org/ansible
-          - ansible/ansible:
-              # Only load jobs, not pipelines, projects or other objects.
-              include: job
-          - kubernetes-incubator/kubespray:
-              # Only load jobs, not pipelines, projects or other objects.
-              include: job
+          # Don't load any configuration from these projects because we
+          # don't gate them, so they could wedge our config.
+          - include: []
+            projects:
+              - gtest-org/ansible
+              - ansible/ansible
+              - kubernetes-incubator/kubespray
