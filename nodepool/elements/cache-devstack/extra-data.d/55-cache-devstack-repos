@@ -21,34 +21,9 @@ from __future__ import unicode_literals
 
 import os
 import subprocess
-import sys
 
 TMP_MOUNT_PATH = os.environ['TMP_MOUNT_PATH']
 TMP_HOOKS_PATH = os.environ['TMP_HOOKS_PATH']
-
-# this is a bit weird; we want to get the filter to use on the
-# devstack lib/[apt|rpm] files to pre-install them.  So we have to
-# swizzle things around
-RELEASE = None
-if 'DIB_RELEASE' in os.environ:
-    RELEASE = os.environ['DIB_RELEASE']
-try:
-    if open(os.path.join(
-            TMP_MOUNT_PATH,
-            'etc/redhat-release')).read().startswith('CentOS release 6'):
-        # not actually used in devstack, but for consistency and because this
-        # script will error if run on a platform where RELEASE isn't detected
-        # as something
-        RELEASE = 'rhel6'
-except IOError:
-    pass
-if 'DISTRO_NAME' in os.environ:
-    if os.environ['DISTRO_NAME'] == 'centos7':
-        # centos7 matches as rhel7 in devstack
-        RELEASE = 'rhel7'
-if not RELEASE:
-    print("Can not determine RELEASE")
-    sys.exit(1)
 
 DEVSTACK = os.path.join(TMP_MOUNT_PATH, 'opt/git/openstack-dev/devstack')
 CACHEDIR = os.path.join(TMP_MOUNT_PATH, 'tmp')
@@ -119,7 +94,7 @@ def _find_images(basedir):
     return images
 
 
-def local_prep(distribution):
+def local_prep():
     branches = []
     for branch in git_branches():
         # Ignore branches of the form 'somestring -> someotherstring'
@@ -145,7 +120,7 @@ def local_prep(distribution):
 
 def main():
 
-    branches = local_prep(RELEASE)
+    branches = local_prep()
 
     image_filenames = []
     line_template = "%(name)s file %(location)s %(url)s\n"
