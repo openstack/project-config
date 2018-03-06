@@ -934,6 +934,34 @@
         secret: wheel_keytab
 
 - job:
+    name: build-wheel-mirror-ubuntu-bionic
+    parent: build-wheel-mirror-base
+    description: |
+      Build Ubuntu Bionic wheels for OpenStaci CI mirrors.
+    nodeset:
+      nodes:
+        - name: wheel-mirror-ubuntu-bionic-python2
+          label: ubuntu-bionic
+        - name: wheel-mirror-ubuntu-bionic-python3
+          label: ubuntu-bionic
+    host-vars:
+      wheel-mirror-ubuntu-bionic-python2:
+        wheel_python: python2
+      wheel-mirror-ubuntu-bionic-python3:
+        wheel_python: python3
+
+- job:
+    name: publish-wheel-mirror-ubuntu-bionic
+    parent: build-wheel-mirror-ubuntu-bionic
+    description: |
+      Publish Ubuntu Bionic wheels for OpenStaci CI mirrors.
+    post-run: playbooks/publish/wheel-mirror.yaml
+    final: true
+    secrets:
+      - name: afs
+        secret: wheel_keytab
+
+- job:
     name: build-wheel-mirror-ubuntu-trusty
     parent: build-wheel-mirror-base
     description: |
