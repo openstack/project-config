@@ -1022,6 +1022,34 @@
         secret: wheel_keytab
 
 - job:
+    name: build-wheel-mirror-ubuntu-xenial-arm64
+    parent: build-wheel-mirror-base
+    description: |
+      Build Ubuntu Xenial ARM64 wheels for OpenStack CI mirrors.
+    nodeset:
+      nodes:
+        - name: wheel-mirror-ubuntu-xenial-arm64-python2
+          label: ubuntu-xenial-arm64
+        - name: wheel-mirror-ubuntu-xenial-arm64-python3
+          label: ubuntu-xenial-arm64
+    host-vars:
+      wheel-mirror-ubuntu-xenial-arm64-python2:
+        wheel_python: python2
+      wheel-mirror-ubuntu-xenial-arm64-python3:
+        wheel_python: python3
+
+- job:
+    name: publish-wheel-mirror-ubuntu-xenial-arm64
+    parent: build-wheel-mirror-ubuntu-xenial-arm64
+    description: |
+      Publish Ubuntu Xenial ARM64 wheels for OpenStack CI mirrors.
+    post-run: playbooks/publish/wheel-mirror.yaml
+    final: true
+    secrets:
+      - name: afs
+        secret: wheel_keytab
+
+- job:
     name: release-wheel-mirror
     description: |
       Release published wheels to OpenStack CI mirrors.
