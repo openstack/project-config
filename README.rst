@@ -44,15 +44,6 @@ dashboards or edit the existing ones to enhance the dashboards.
 
 `Grafana Documentation <http://docs.openstack.org/infra/system-config/grafana.html>`_
 
-jenkins
-=======
-
-This dir contains the Jenkins job definitions as supplied to Jenkins Job
-Builder as well as the scripts used in many of the jobs. Edit these files
-if you need to add/delete/modify Jenkins Jobs.
-
-`Jenkins Job Builder Documentation <http://docs.openstack.org/infra/system-config/jjb.html>`_
-
 nodepool
 ========
 
