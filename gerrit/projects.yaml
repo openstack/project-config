@@ -1081,6 +1081,7 @@
     - bareon
 - project: openstack/bifrost
   description: Ansible roles and playbooks to enable a standalone Ironic install
+  use-storyboard: true
   groups:
     - ironic
 - project: openstack/bilean
@@ -1716,8 +1717,9 @@
   acl-config: /home/gerrit2/acls/openstack/openstack-chef.config
 - project: openstack/coreos-image-builder
   description: A framework for building CoreOS Ramdisk
+  use-storyboard: true
   groups:
-    - ironic-python-agent
+    - ironic
   acl-config: /home/gerrit2/acls/openstack/ironic.config
 - project: openstack/coupler
   description: Coupling Storage Service VM for OpenStack
@@ -4072,52 +4074,74 @@
   description: Useful examples of HardwareManager plugins for ironic-python-agent
 - project: openstack/ironic
   description: A service for managing and provisioning Bare Metal servers.
+  use-storyboard: true
   options:
     - translate
+  groups:
+    - ironic
 - project: openstack/ironic-inspector
   description: Hardware introspection daemon for OpenStack Ironic
+  use-storyboard: true
   options:
     - translate
+  groups:
+    - ironic
 - project: openstack/ironic-inspector-specs
   description: Specs for ironic-inspector
+  use-storyboard: true
   acl-config: /home/gerrit2/acls/openstack/ironic-inspector.config
   groups:
-    - ironic-inspector
+    - ironic
 - project: openstack/ironic-inspector-tempest-plugin
   description: RETIRED, Tempest plugin for ironic-inspector
   acl-config: /home/gerrit2/acls/openstack/retired.config
 - project: openstack/ironic-lib
   description: A python library of common ironic utilities.
+  use-storyboard: true
+  groups:
+    - ironic
 - project: openstack/ironic-python-agent
   description: A Python agent for provisioning and deprovisioning Bare Metal servers.
-  acl-config: /home/gerrit2/acls/openstack/ironic.config
-- project: openstack/ironic-python-agent-builder
-  description: Scripts and tools to build ironic-python-agent
+  use-storyboard: true
   acl-config: /home/gerrit2/acls/openstack/ironic.config
   groups:
-    - ironic-python-agent
+    - ironic
+- project: openstack/ironic-python-agent-builder
+  description: Scripts and tools to build ironic-python-agent
+  use-storyboard: true
+  acl-config: /home/gerrit2/acls/openstack/ironic.config
+  groups:
+    - ironic
 - project: openstack/ironic-specs
   groups:
     - ironic
   description: OpenStack Baremetal (Ironic) Specifications
+  use-storyboard: true
 - project: openstack/ironic-staging-drivers
   description: A project used to hold out-of-tree ironic drivers
+  use-storyboard: true
+  groups:
+    - ironic
 - project: openstack/ironic-tempest-plugin
   description: Tempest plugin for ironic
+  use-storyboard: true
   acl-config: /home/gerrit2/acls/openstack/ironic.config
   groups:
     - ironic
 - project: openstack/ironic-ui
   description: Ironic plugin UI for Horizon to allow users to view and manage bare
     metal.
+  use-storyboard: true
   groups:
     - ironic
-    - horizon
   options:
     - translate
 - project: openstack/ironic-webclient
   description: Ironic HTTP(S) Client
+  use-storyboard: true
   acl-config: /home/gerrit2/acls/openstack/retired.config
+  groups:
+    - ironic
 - project: openstack/jacket
   description: Jacket is for managing the heterogeneous cloud via OpenStack (VMware
     private cloud, AWS public cloud and so on).
@@ -4395,6 +4419,9 @@
   acl-config: /home/gerrit2/acls/openstack/mogan.config
 - project: openstack/molteniron
   description: Python client/server for managing a pool of Bare Metal machines.
+  use-storyboard: true
+  groups:
+    - ironic
 - project: openstack/monasca-agent
   description: Agent for Monasca
   groups:
@@ -4580,7 +4607,10 @@
   description: Neutron agent and drivers for BaGPipe-based BGP VPNs
 - project: openstack/networking-baremetal
   description: Neutron plugins for Ironic/Neutron integration
+  use-storyboard: true
   acl-config: /home/gerrit2/acls/openstack/ironic.config
+  groups:
+    - ironic
 - project: openstack/networking-bgpvpn
   description: APIs and framework to attach BGP VPNs to Neutron networks
   groups:
@@ -4610,9 +4640,15 @@
   description: Fujitsu Neutron Plugin
 - project: openstack/networking-generic-switch
   description: Multi-vendor Modular Layer 2 (ML2) driver.
+  use-storyboard: true
+  groups:
+    - ironic
 - project: openstack/networking-generic-switch-tempest-plugin
   description: Tempest plugin for networking-generic-switch
+  use-storyboard: true
   acl-config: /home/gerrit2/acls/openstack/networking-generic-switch.config
+  groups:
+    - ironic
 - project: openstack/networking-gluon
   description: A framework to auto generate APIs for new services in Neutron.
 - project: openstack/networking-h3c
@@ -5737,9 +5773,15 @@
   acl-config: /home/gerrit2/acls/openstack/iotronic.config
 - project: openstack/python-ironic-inspector-client
   description: A python client and OpenStackClient plugin for Ironic Inspector
+  use-storyboard: true
   acl-config: /home/gerrit2/acls/openstack/ironic-inspector.config
+  groups:
+    - ironic
 - project: openstack/python-ironicclient
   description: A python client implementing the Ironic API.
+  use-storyboard: true
+  groups:
+    - ironic
 - project: openstack/python-jenkins
   description: Python API for managing jobs and nodes in a Jenkins CI instance
 - project: openstack/python-k8sclient
@@ -6297,8 +6339,14 @@
   acl-config: /home/gerrit2/acls/openstack/surveil.config
 - project: openstack/sushy
   description: Sushy is a small Python library to communicate with Redfish based systems
+  use-storyboard: true
+  groups:
+    - ironic
 - project: openstack/sushy-tools
   description: A set of tools to support the development and test of the Sushy library
+  use-storyboard: true
+  groups:
+    - ironic
 - project: openstack/swauth
   description: An alternative authentication system for Swift
 - project: openstack/swift
@@ -6568,10 +6616,14 @@
   use-storyboard: true
 - project: openstack/virtualbmc
   description: A virtual BMC for controlling virtual machines using IPMI commands.
+  use-storyboard: true
   groups:
     - ironic
 - project: openstack/virtualpdu
   description: VirtualPDU is a service for simulating power distribution units (PDUs).
+  use-storyboard: true
+  groups:
+    - ironic
 - project: openstack/vitrage
   description: OpenStack RCA (Root Cause Analysis) Engine
 - project: openstack/vitrage-dashboard
