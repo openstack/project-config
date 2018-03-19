@@ -31,7 +31,8 @@
     - skip_ansible_lint
 
 - name: Remove origin from local git repos
-  command: "git remote rm origin"
+  # To be idempotent, remove origin only if it's found in the local list.
+  shell: "git remote -v | grep origin && git remote rm origin || true"
   args:
     chdir: "{{ ansible_user_dir }}/{{ item.src_dir}}"
   with_items: "{{ zuul.projects.values() | list }}"
