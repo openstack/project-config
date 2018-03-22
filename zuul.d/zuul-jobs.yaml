@@ -2,6 +2,8 @@
     name: publish-zuul-website
     description: |
       Publishes content in artifacts/ to the Zuul website.
+    # Set final to avoid override of afs_subpath variable.
+    final: True
     allowed-projects:
       - openstack-infra/zuul-website
     post-run:
@@ -11,3 +13,33 @@
     secrets:
       - secret: afsdocs_secret
         name: afs
+
+- job:
+    name: publish-zuul-docs
+    description: |
+      Publish the results of a sphink build to
+      /afs/.openstack.org/project/zuul-ci.org/www/docs/{{ zuul.project.short_name }}
+
+      Builds the docs using Sphinx with Python3.
+    # Set final to avoid override of afs_subpath variable.
+    final: true
+    allowed-projects:
+      - openstack-infra/nodepool
+      - openstack-infra/zuul
+      - openstack-infra/zuul-jobs
+      - openstack-infra/zuul-base-jobs
+      - openstack-infra/zuul-sphinx
+    pre-run: playbooks/sphinx/pre.yaml
+    run: playbooks/sphinx/run.yaml
+    post-run:
+      - playbooks/sphinx/post-infra.yaml
+      - playbooks/publish/zuul-afs.yaml
+    roles:
+      - zuul: openstack-infra/zuul-jobs
+      - zuul: openstack-infra/openstack-zuul-jobs
+    secrets:
+      - secret: afsdocs_secret
+        name: afs
+    vars:
+      afs_subpath: "/docs/{{ zuul.project.short_name }}"
+      sphinx_python: python3
