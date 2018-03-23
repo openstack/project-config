@@ -108,11 +108,13 @@ def main():
 
     VALID_LABELS = ["acl-config", "description", "docimpact-group",
                     "groups", "homepage", "options", "project",
-                    "upstream", "upstream-prefix", "use-storyboard"]
+                    "upstream", "upstream-prefix", "use-storyboard",
+                    "cgit-alias"]
     VALID_SCHEMES = ['https://', 'http://', 'git://']
     DESCRIPTION_REQUIRED = ['openstack', 'openstack-infra', 'openstack-dev',
                             'stackforge']
     VALID_OPTIONS = ['delay-release', 'track-upstream', 'translate']
+    CGIT_ALIAS_SITES = ['zuul-ci.org']
 
     for p in projects:
         name = p.get('project')
@@ -189,6 +191,29 @@ def main():
                 found_errors += 1
                 print("ERROR: Unknown keyword '%s' in project %s" %
                       (entry, name))
+        # Check for valid cgit aliases
+        cgit_alias = p.get('cgit_alias')
+        if cgit_alias:
+            if not isinstance(cgit_alias, dict):
+                found_errors += 1
+                print("ERROR: cgit alias in project %s must be a dict" %
+                      (name,))
+            else:
+                if 'site' not in cgit_alias or 'path' not in cgit_alias:
+                    found_errors += 1
+                    print("ERROR: cgit alias in project %s must have "
+                          "a site and path" % (name,))
+                else:
+                    site = cgit_alias['site']
+                    path = cgit_alias['path']
+                    if path.startswith('/'):
+                        found_errors += 1
+                        print("ERROR: cgit alias path in project %s must "
+                              "not begin with /" % (name,))
+                    if site not in CGIT_ALIAS_SITES:
+                        found_errors += 1
+                        print("ERROR: cgit alias site in project %s is "
+                              "not valid" % (name,))
         # Check for valid options
         for option in p.get('options', []):
             if option not in VALID_OPTIONS:
