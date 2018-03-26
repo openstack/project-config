@@ -10,9 +10,10 @@ CONFIGS_LIST_BASE=$OLDPWD/$1
 
 function check_team_acl {
     local configs_dir="$1"
-    local configs_list=$(find $configs_dir -name "*.config")
+    local configs_list
     local failure=0
 
+    configs_list=$(find $configs_dir -name "*.config")
     for config in $configs_list; do
 
         $OLDPWD/tools/normalize_acl.py $config all > $TMPDIR/normalized

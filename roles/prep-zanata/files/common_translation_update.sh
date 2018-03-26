@@ -632,7 +632,8 @@ function cleanup_log_files {
     for i in $(find $modulename -name *.po) ; do
         # We do not store the log level files anymore, remove them
         # from git.
-        local bi=$(basename $i)
+        local bi
+        bi=$(basename $i)
 
         for level in $levels ; do
             if [[ "$bi" == "$modulename-log-$level.po" ]] ; then
@@ -724,7 +725,8 @@ function copy_pot {
 
     for m in $all_modules ; do
         for f in `find $m -name "*.pot" ` ; do
-            local fd=$(dirname $f)
+            local fd
+            fd=$(dirname $f)
             mkdir -p $target/$fd
             cp $f $target/$f
         done
