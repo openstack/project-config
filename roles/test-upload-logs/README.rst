@@ -13,6 +13,14 @@ This uploads logs to a static webserver using SSH.
 
    The root path to the logs on the logserver.
 
+.. zuul:rolevar:: zuul_log_verbose
+   :default: false
+
+   The synchronize task in this role outputs a lot of information.  By
+   default, no_log is set to avoid overwhelming a reader of the logs.
+   Set this to true to disable that behavior if it becomes necessary
+   to debug this role.
+
 .. zuul:rolevar:: zuul_site_upload_logs
    :default: true
 
