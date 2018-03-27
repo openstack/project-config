@@ -37,7 +37,9 @@ function setup_commit_message {
     CHANGE_NUM=""
     # See if there is an open change, if so, get the change id for the
     # existing change for use in the commit message.
-    local change_info=$(ssh -p 29418 $USERNAME@review.openstack.org \
+    local change_info
+
+    change_info=$(ssh -p 29418 $USERNAME@review.openstack.org \
         gerrit query --current-patch-set status:open project:$PROJECT \
         owner:$USERNAME branch:$BRANCH topic:$TOPIC)
     CHANGE_NUM=$(echo "$change_info" | grep "^  number:" | awk '{print $2}')

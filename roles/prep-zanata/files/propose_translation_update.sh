@@ -42,7 +42,9 @@ function cleanup_module {
 function git_add_po_files {
     local target_dir=$1
 
-    local po_file_count=`find $1 -name *.po | wc -l`
+    local po_file_count
+
+    po_file_count=`find $1 -name *.po | wc -l`
 
     if [ $po_file_count -ne 0 ]; then
         git add $target_dir/*/*
@@ -53,7 +55,9 @@ function git_add_po_files {
 function git_add_json_files {
     local target_dir=$1
 
-    local json_file_count=`find $1 -name '*.json' | wc -l`
+    local json_file_count
+
+    json_file_count=`find $1 -name '*.json' | wc -l`
 
     if [ $json_file_count -ne 0 ]; then
         git add $target_dir/*
@@ -127,7 +131,9 @@ function propose_python_django {
     local version=$2
 
     # Check for empty directory and exit early
-    local content=$(ls -A $modulename/locale/)
+    local content
+
+    content=$(ls -A $modulename/locale/)
 
     if [[ "$content" == "" ]] ; then
         return
