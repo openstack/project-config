@@ -115,7 +115,6 @@ requirements repository is branched to merge the patch."
 function clone_repo {
     typeset repo="$1"
     typeset branch="$2"
-    typeset zc
 
     set -e
 
@@ -130,7 +129,5 @@ function clone_repo {
 
     # We assume the job uses a git_config task to configure git
     # properly.
-    (cd $repo && git review -s -v)
-
-    return 0
+    git -C $repo review -s -v
 }
