@@ -21,18 +21,7 @@ if [ -z "$OWN_PROJECT" ] ; then
     exit 1
 fi
 
-if [ "$OWN_PROJECT" == "requirements" ] ; then
-    INITIAL_COMMIT_MSG="Updated from global requirements"
-    TOPIC="openstack/requirements"
-    PROJECTS=$(cat projects.txt)
-    VENV=$(mktemp -d)
-    trap "rm -rf $VENV" EXIT
-    virtualenv $VENV
-    $VENV/bin/pip install -e .
-    function update {
-        $VENV/bin/update-requirements $1
-    }
-elif [ "$OWN_PROJECT" == "openstack-manuals" ] ; then
+if [ "$OWN_PROJECT" == "openstack-manuals" ] ; then
     INITIAL_COMMIT_MSG="Updated from openstack-manuals"
     TOPIC="openstack/openstack-manuals"
     PROJECTS=$(cat projects.txt)
