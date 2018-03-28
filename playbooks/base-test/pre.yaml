@@ -4,6 +4,11 @@
       zuul_log_url: "http://logs.openstack.org"
 
 - hosts: all
+  pre_tasks:
+    - name: Gather network facts
+      setup:
+        gather_subset: '!all,network'
+
   roles:
     - add-build-sshkey
     - start-zuul-console
