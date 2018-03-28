@@ -5,6 +5,10 @@
 
 - hosts: all
   pre_tasks:
+    # NOTE(pabelanger): Until we hit the validate-host role, we have a minimal
+    # set of ansible variables collected by zuul-executor. This doesn't include
+    # network variables (ansible_default_ipv4 / ansible_default_ipv6) so gather
+    # these variables as they are important to the configure-unbound role.
     - name: Gather network facts
       setup:
         gather_subset: 'network'
