@@ -56,7 +56,7 @@ else
 fi
 
 setup_temp_space release-tag-$SHORTNAME
-clone_repo $REPO
+clone_repo $REPO stable/$SERIES
 REPODIR="$(cd $REPO && pwd)"
 cd $REPODIR
 TARGETSHA=`git log -1 $SHA --format='%H'`
