@@ -168,6 +168,23 @@ supersede domain-name "";
 EOF
 fi
 
+# On bionic and later, the install of the new systemd-resolved in the
+# chroot will see that there is no /etc/resolv.conf and assume it is a
+# blank system where it will be the nameserver provider.  It thus
+# creates /etc/resolv.conf as a link back to its compatability files.
+# To configure systemd-resolved's resolvers you need to modify
+# /etc/systemd/resolved.conf; which would be possible, but we'd prefer
+# to be consistent across all our platforms.
+#
+# dib will copy whatever is in /etc/resolv.conf.ORIG to
+# /etc/resolv.conf as one of the final steps in image creation.  Thus
+# we are hard-coding resolution to localhost (unbound) here.
+#
+# Note that with /etc/resolv.conf as a regular file, systemd-resolved
+# will also obey it for nameserver info when it starts at boot.
+rm -f /etc/resolv.conf.ORIG
+echo "nameserver 127.0.0.1" > /etc/resolv.conf.ORIG
+
 case "$DIB_INIT_SYSTEM" in
     upstart)
         # nothing to do
