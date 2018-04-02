@@ -32,8 +32,8 @@ def check_system_templates():
     for entry in projects:
         project = entry['project']
         # TODO(mordred) Generalize this, but for now, avoid doing this check
-        # on ansible.
-        if project['name'] == 'ansible/ansible':
+        # on projects we run third part ci for.
+        if project['name'] in ['ansible/ansible', 'sigmavirus24/github3.py']:
             continue
         try:
             correct = False
