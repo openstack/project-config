@@ -173,11 +173,6 @@ case "$DIB_INIT_SYSTEM" in
         # nothing to do
         ;;
     systemd)
-        # If systemd-resolved is installed, stop it from running. We want to use unbound
-        # to manage our DNS requests.
-        if $(systemctl -q is-enabled systemd-resolved.service); then
-            systemctl disable systemd-resolved.service
-        fi
         systemctl enable unbound.service
         ;;
     openrc)
