@@ -9,7 +9,7 @@
         cmd: |
           set -x
           # NAME will either be the branch name or the tag name
-          NAME=`echo $ZUUL_REFNAME | sed 's/refs.tags.//'`
+          NAME=`echo {{ zuul.ref }} | sed 's/refs.tags.//'`
           mkdir -p _out/$NAME
           for FN in * ; do
               if [ "_out" != "$FN" ] ; then
