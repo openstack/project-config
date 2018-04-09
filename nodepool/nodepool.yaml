@@ -41,6 +41,8 @@ providers:
         config-drive: true
       - name: debian-jessie
         config-drive: true
+      - name: debian-stretch
+        config-drive: true
       - name: fedora-27
         config-drive: true
       - name: gentoo-17-0-systemd
@@ -132,6 +134,28 @@ diskimages:
       - growroot
       - infra-package-needs
     release: jessie
+    env-vars:
+      TMPDIR: /opt/dib_tmp
+      DIB_CHECKSUM: '1'
+      DIB_IMAGE_CACHE: /opt/dib_cache
+      DIB_APT_LOCAL_CACHE: '0'
+      DIB_DISABLE_APT_CLEANUP: '1'
+      DIB_DISTRIBUTION_MIRROR: http://ftp.us.debian.org/debian/
+      DIB_GRUB_TIMEOUT: '0'
+      GIT_HTTP_LOW_SPEED_TIME: '300'
+      GIT_HTTP_LOW_SPEED_LIMIT: '1000'
+  - name: debian-stretch
+    pause: false
+    elements:
+      - debian-minimal
+      - vm
+      - simple-init
+      - openstack-repos
+      - nodepool-base
+      - cache-devstack
+      - growroot
+      - infra-package-needs
+    release: stretch
     env-vars:
       TMPDIR: /opt/dib_tmp
       DIB_CHECKSUM: '1'

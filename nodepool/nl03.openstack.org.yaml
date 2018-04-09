@@ -14,6 +14,9 @@ zookeeper-servers:
 labels:
   - name: centos-7
   - name: debian-jessie
+  - name: debian-stretch
+  - name: debian-stretch-arm64
+    min-ready: 1
   - name: fedora-27
   - name: opensuse-423
   - name: opensuse-tumbleweed
@@ -34,6 +37,8 @@ providers:
       - name: centos-7
         config-drive: true
       - name: debian-jessie
+        config-drive: true
+      - name: debian-stretch
         config-drive: true
       - name: fedora-27
         config-drive: true
@@ -60,6 +65,11 @@ providers:
             min-ram: 8000
             flavor-name: 'A1.8'
             diskimage: debian-jessie
+            key-name: infra-root-keys
+          - name: debian-stretch
+            min-ram: 8000
+            flavor-name: 'A1.8'
+            diskimage: debian-stretch
             key-name: infra-root-keys
           - name: fedora-27
             min-ram: 8000
@@ -113,6 +123,13 @@ providers:
             min-ram: 8000
             flavor-name: 'v2-highcpu-8'
             diskimage: debian-jessie
+            key-name: infra-root-keys
+            boot-from-volume: True
+            volume-size: 80
+          - name: debian-stretch
+            min-ram: 8000
+            flavor-name: 'v2-highcpu-8'
+            diskimage: debian-stretch
             key-name: infra-root-keys
             boot-from-volume: True
             volume-size: 80
@@ -177,10 +194,17 @@ providers:
             flavor-name: 'os.large'
             diskimage: ubuntu-xenial-arm64
             key-name: infra-root-keys
+          - name: debian-stretch-arm64
+            min-ram: 8000
+            flavor-name: 'os.large'
+            diskimage: debian-stretch-arm64
+            key-name: infra-root-keys
 
 diskimages:
   - name: centos-7
   - name: debian-jessie
+  - name: debian-stretch
+  - name: debian-stretch-arm64
   - name: fedora-27
   - name: gentoo
   - name: opensuse-423
