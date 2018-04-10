@@ -31,9 +31,12 @@ set -e
 # export DISTRO=${DISTRO:-fedora-minimal}
 export DISTRO=${DISTRO:-ubuntu-minimal}
 
-## Overrite the release
+## Override the release
 # export DIB_RELEASE=${DIB_RELEASE:-trusty}
 # export DIB_RELEASE=${DIB_RELEASE:-25} # fedora
+
+## Override the arch
+# export ARCH=arm64
 
 export ELEMENTS_PATH=${ELEMENTS_PATH:-nodepool/elements}
 export IMAGE_NAME=${IMAGE_NAME:-devstack-gate}
@@ -96,11 +99,23 @@ fi
 # export DIB_DEV_USER_PWDLESS_SUDO=1
 # export DIB_DEV_USER_PASSWORD=devuser
 
+if [[ "${ARCH:-}" == "arm64" ]]; then
+    # ARM64 requires EFI to boot
+    BLOCK_DEVICE=block-device-efi
+
+    # These arguments might be specific to Linaro cloud?
+    EXTRA_UPLOAD_ARGS='--property hw_firmware_type=uefi '  \
+        '--property os_command_line="console=ttyAMA0" '    \
+        '--property hw_disk_bus=scsi '                     \
+        '--property hw_scsi_model=virtio-scsi'
+fi
+
 ## The list of elements below should match those configured
 ## in nodepool/nodepool.yaml
 
 disk-image-create -x --no-tmpfs -o $IMAGE_NAME \
     $DISTRO \
+    ${BLOCK_DEVICE:-block-device-mbr} \
     vm \
     simple-init \
     openstack-repos \
@@ -112,4 +127,4 @@ disk-image-create -x --no-tmpfs -o $IMAGE_NAME \
 
 echo "Created new image: $IMAGE_NAME"
 echo "You can now upload it with:"
-echo "  openstack image create "${DISTRO}" --file $IMAGE_NAME --disk-format=qcow2 --container-format bare"
+echo "  openstack image create "${DISTRO}" --file $IMAGE_NAME --disk-format=qcow2 --container-format=bare ${EXTRA_UPLOAD_ARGS:-}"
