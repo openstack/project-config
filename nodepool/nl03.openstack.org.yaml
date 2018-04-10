@@ -183,21 +183,23 @@ providers:
     launch-timeout: 800
     rate: 0.001
     diskimages:
+      - name: debian-stretch-arm64
+        config-drive: true
       - name: ubuntu-xenial-arm64
         config-drive: true
     pools:
       - name: main
         max-servers: 8
         labels:
-          - name: ubuntu-xenial-arm64
-            min-ram: 8000
-            flavor-name: 'os.large'
-            diskimage: ubuntu-xenial-arm64
-            key-name: infra-root-keys
           - name: debian-stretch-arm64
             min-ram: 8000
             flavor-name: 'os.large'
             diskimage: debian-stretch-arm64
+            key-name: infra-root-keys
+          - name: ubuntu-xenial-arm64
+            min-ram: 8000
+            flavor-name: 'os.large'
+            diskimage: ubuntu-xenial-arm64
             key-name: infra-root-keys
 
 diskimages:
