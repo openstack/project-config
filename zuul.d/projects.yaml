@@ -8550,7 +8550,7 @@
     check:
       jobs:
         - openstack-tox-py35:
-            voting: false
+            branches: ^(?!stable/(ocata|pike|queens)).*$
             required-projects:
               - openstack/horizon
         - openstack-tox-cover:
@@ -8559,6 +8559,10 @@
             branches: master
     gate:
       jobs:
+        - openstack-tox-py35:
+            branches: ^(?!stable/(ocata|pike|queens)).*$
+            required-projects:
+              - openstack/horizon
         - openstack-tox-cover:
             required-projects:
               - openstack/horizon
