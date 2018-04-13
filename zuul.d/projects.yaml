@@ -5181,12 +5181,13 @@
     name: openstack/election
     templates:
       - system-required
-      - check-requirements
       - build-openstack-sphinx-docs
       - openstack-python35-jobs
     check:
       jobs:
         - openstack-tox-py27
+        - openstack-tox-linters:
+           voting: false
     post:
       jobs:
         - publish-static
