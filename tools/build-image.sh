@@ -57,6 +57,10 @@ if [[ ${DISTRO} == "centos-minimal" ]]; then
     export DIB_EPEL_DISABLED=1
 fi
 
+# cache-devstack does not work on gentoo, so exclude it from the element list
+if [[ "${DISTRO}" != "gentoo" ]]; then
+    EXTRA_ELEMENTS+="cache-devstack "
+fi
 
 ## If your firewall won't allow outbound DNS connections, you'll want
 ## to set these to local resolvers
@@ -120,7 +124,6 @@ disk-image-create -x --no-tmpfs -o $IMAGE_NAME \
     simple-init \
     openstack-repos \
     nodepool-base \
-    cache-devstack \
     growroot \
     infra-package-needs \
     $EXTRA_ELEMENTS
