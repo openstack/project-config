@@ -40,6 +40,7 @@ CLOSED_SERIES = set([
     'kilo',
     'liberty',
     'mitaka',
+    'newton',
 ])
 
 PRE_RELEASE_RE = re.compile('''
