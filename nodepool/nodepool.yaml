@@ -39,8 +39,6 @@ providers:
     diskimages: &provider_diskimages
       - name: centos-7
         config-drive: true
-      - name: debian-jessie
-        config-drive: true
       - name: debian-stretch
         config-drive: true
       - name: fedora-27
@@ -120,29 +118,6 @@ diskimages:
       QEMU_IMG_OPTIONS: compat=0.10
       DIB_GRUB_TIMEOUT: '0'
       DIB_EPEL_DISABLED: '1'
-      GIT_HTTP_LOW_SPEED_TIME: '300'
-      GIT_HTTP_LOW_SPEED_LIMIT: '1000'
-  - name: debian-jessie
-    pause: false
-    elements:
-      - debian-minimal
-      - vm
-      - simple-init
-      - openstack-repos
-      - nodepool-base
-      - cache-devstack
-      - growroot
-      - infra-package-needs
-    release: jessie
-    env-vars:
-      TMPDIR: /opt/dib_tmp
-      DIB_CHECKSUM: '1'
-      DIB_IMAGE_CACHE: /opt/dib_cache
-      DIB_APT_LOCAL_CACHE: '0'
-      DIB_DISABLE_APT_CLEANUP: '1'
-      DIB_DISTRIBUTION_MIRROR: 'http://mirror.dfw.rax.openstack.org/debian'
-      DIB_DEBOOTSTRAP_EXTRA_ARGS: '--no-check-gpg'
-      DIB_GRUB_TIMEOUT: '0'
       GIT_HTTP_LOW_SPEED_TIME: '300'
       GIT_HTTP_LOW_SPEED_LIMIT: '1000'
   - name: debian-stretch
