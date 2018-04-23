@@ -370,6 +370,32 @@
         name: afs
 
 - job:
+    name: publish-openstack-releasenotes-python3
+    description: |
+      Publish the results of build-openstack-releasenotes to
+      /afs/.openstack.org/docs/releasenotes/{{ zuul.project.short_name }}
+      Uses python3.
+    final: true
+    pre-run: playbooks/releasenotes/pre.yaml
+    run: playbooks/releasenotes/run.yaml
+    post-run:
+      - playbooks/publish/releasenotes.yaml
+      - playbooks/publish/openstack-afs.yaml
+    override-branch: master
+    required-projects:
+      - name: openstack/requirements
+    roles:
+      - zuul: openstack-infra/zuul-jobs
+    vars:
+      afs_subpath: "/releasenotes/{{ zuul.project.short_name }}"
+      constraints_file: '{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt'
+      sphinx_build_dir: releasenotes/build
+      sphinx_python: python3
+    secrets:
+      - secret: afsdocs_secret
+        name: afs
+
+- job:
     name: publish-openstack-specs
     description: |
       Publish OpenStack specs to static.openstack.org
