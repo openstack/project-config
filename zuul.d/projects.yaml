@@ -2359,6 +2359,21 @@
       - docs-on-readthedocs
 
 - project:
+    name: openstack/ansible-role-container-registry
+    templates:
+      - system-required
+      - release-openstack-server
+    check:
+      jobs:
+        - openstack-tox-linters
+    gate:
+      jobs:
+        - openstack-tox-linters
+    post:
+      jobs:
+        - publish-openstack-python-branch-tarball
+
+- project:
     name: openstack/ansible-role-diskimage-builder
     templates:
       - system-required
