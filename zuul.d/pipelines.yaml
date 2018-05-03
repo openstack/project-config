@@ -118,6 +118,23 @@
       mysql:
 
 - pipeline:
+    name: promote
+    description: |
+      This pipeline runs jobs that operate after each change is merged
+      in order to promote artifacts generated in the gate
+      pipeline.
+    manager: independent
+    precedence: low
+    post-review: True
+    trigger:
+      gerrit:
+        - event: change-merged
+    success:
+      mysql:
+    failure:
+      mysql:
+
+- pipeline:
     name: pre-release
     description: When a commit is tagged with a pre-release tag, this pipeline runs jobs that publish archives and documentation.
     manager: independent
