@@ -28,7 +28,7 @@ New repo creations
 Check the following:
 
 * If publishing to PyPI is set up: Check that
-  https://pypi.python.org/pypi/PROJECT exists and is set up for
+  https://pypi.org/project/PROJECT exists and is set up for
   openstackci.
 
 * Is this a new repository for a team that is part of the Big Tent?
