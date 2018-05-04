@@ -8000,13 +8000,36 @@
       - system-required
       - openstack-python-jobs-horizon
       - openstack-python35-jobs-horizon
-      - nodejs4-jobs
       - check-requirements
       - publish-openstack-sphinx-docs
       - release-notes-jobs
       - translation-jobs
       - translation-jobs-pike
       - publish-to-pypi-horizon
+    check:
+      jobs:
+        - nodejs-npm-run-lint:
+            vars:
+              node_version: 4
+            required-projects:
+              - openstack/horizon
+        - nodejs-npm-run-test:
+            vars:
+              node_version: 4
+            required-projects:
+              - openstack/horizon
+    gate:
+      jobs:
+        - nodejs-npm-run-lint:
+            vars:
+              node_version: 4
+            required-projects:
+              - openstack/horizon
+        - nodejs-npm-run-test:
+            vars:
+              node_version: 4
+            required-projects:
+              - openstack/horizon
 
 - project:
     name: openstack/manila
