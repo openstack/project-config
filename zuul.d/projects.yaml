@@ -8355,6 +8355,11 @@
       - openstack-python-jobs
       - openstack-python35-jobs-nonvoting
       - publish-to-pypi
+    check:
+      jobs:
+        - build-openstack-sphinx-docs:
+            branches: ^master
+            voting: false
 
 - project:
     name: openstack/monasca-analytics
@@ -8548,6 +8553,10 @@
       - check-requirements
       - publish-to-pypi
       - tempest-plugin-jobs
+    check:
+      jobs:
+        - build-openstack-sphinx-docs:
+            voting: false
     gate:
       queue: monasca
 
@@ -8585,6 +8594,9 @@
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^setup.cfg$
+        - build-openstack-sphinx-docs:
+            branches: ^master
+            voting: false
     gate:
       jobs:
         - legacy-tempest-dsvm-monasca-transform-python-functional:
