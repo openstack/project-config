@@ -8,6 +8,8 @@ zookeeper-servers:
 labels:
   - name: ubuntu-xenial-arm64
     max-ready-age: 3600
+  - name: ubuntu-bionic-arm64
+    max-ready-age: 3600
   - name: debian-stretch-arm64
     max-ready-age: 3600
 
@@ -18,6 +20,14 @@ providers:
     rate: 0.25
     diskimages:
       - name: ubuntu-xenial-arm64
+        pause: false
+        config-drive: true
+        meta:
+          hw_firmware_type: uefi
+          os_command_line: "console=ttyAMA0"
+          hw_disk_bus: scsi
+          hw_scsi_model: virtio-scsi
+      - name: ubuntu-bionic-arm64
         pause: false
         config-drive: true
         meta:
@@ -54,6 +64,30 @@ diskimages:
       DIB_IMAGE_CACHE: /opt/dib_cache
       DIB_APT_LOCAL_CACHE: '0'
       DIB_DISABLE_APT_CLEANUP: '1'
+      DIB_DISTRIBUTION_MIRROR: 'http://mirror.regionone.linaro.openstack.org/ubuntu-ports'
+      DIB_DEBOOTSTRAP_EXTRA_ARGS: '--no-check-gpg'
+      DIB_DEBIAN_COMPONENTS: 'main,universe'
+      GIT_HTTP_LOW_SPEED_TIME: '300'
+      GIT_HTTP_LOW_SPEED_LIMIT: '1000'
+  - name: ubuntu-bionic-arm64
+    elements:
+      - block-device-efi
+      - ubuntu-minimal
+      - vm
+      - simple-init
+      - openstack-repos
+      - nodepool-base
+      - cache-devstack
+      - growroot
+      - infra-package-needs
+    release: bionic
+    env-vars:
+      TMPDIR: /opt/dib_tmp
+      DIB_CHECKSUM: '1'
+      DIB_IMAGE_CACHE: /opt/dib_cache
+      DIB_APT_LOCAL_CACHE: '0'
+      DIB_DISABLE_APT_CLEANUP: '1'
+      DIB_GRUB_TIMEOUT: '0'
       DIB_DISTRIBUTION_MIRROR: 'http://mirror.regionone.linaro.openstack.org/ubuntu-ports'
       DIB_DEBOOTSTRAP_EXTRA_ARGS: '--no-check-gpg'
       DIB_DEBIAN_COMPONENTS: 'main,universe'
