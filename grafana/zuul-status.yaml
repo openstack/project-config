@@ -176,7 +176,7 @@ dashboard:
         - title: Running Builds
           span: 6
           targets:
-            - target: aliasByNode(stats.gauges.zuul.executor.*.running_builds, 4)
+            - target: aliasSub(stats.gauges.zuul.executor.*.running_builds, ".*\.(.*)_openstack_org.*", "\1"))
           type: graph
         - title: Executor Queue
           span: 6
@@ -187,17 +187,17 @@ dashboard:
         - title: Load Average
           span: 6
           targets:
-            - target: aliasByNode(scale(stats.gauges.zuul.executor.*.load_average, 0.01), 4)
+            - target: aliasSub(scale(stats.gauges.zuul.executor.*.load_average, ".*\.(.*)_openstack_org.*", 0.01), "\1")
           type: graph
         - title: Starting Builds
           span: 6
           targets:
-            - target: aliasByNode(stats.gauges.zuul.executor.*.starting_builds, 4)
+            - target: aliasSub(stats.gauges.zuul.executor.*.starting_builds, ".*\.(.*)_openstack_org.*", "\1"))
           type: graph
         - title: Used RAM
           span: 6
           targets:
-            - target: aliasByNode(scale(stats.gauges.zuul.executor.*.pct_used_ram, 0.01), 4)
+            - target: aliasSub(stats.gauges.zuul.executor.*.pct_used_ram, ".*\.(.*)_openstack_org.*", "\1"))
           type: graph
     - title: Mergers
       showTitle: true
