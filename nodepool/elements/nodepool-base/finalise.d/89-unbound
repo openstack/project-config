@@ -38,7 +38,7 @@ mv /tmp/forwarding.conf /etc/unbound/
 chown root:root /etc/unbound/forwarding.conf
 chmod a+r /etc/unbound/forwarding.conf
 
-if [[ "$DISTRO_NAME" =~ (centos|fedora) ]] ; then
+if [[ "$DISTRO_NAME" =~ (centos|rhel7|fedora) ]] ; then
     LOG_FILE="/var/lib/unbound/unbound.log"
 else
     LOG_FILE="/var/log/unbound.log"
@@ -51,7 +51,7 @@ server:
   verbosity: 5"
 echo "$UNBOUND_LOGGING_CONF" > /tmp/unbound-logging.conf
 
-if [[ "$DISTRO_NAME" =~ (centos|fedora|opensuse) ]] ; then
+if [[ "$DISTRO_NAME" =~ (centos|rhel7|fedora|opensuse) ]] ; then
     UNBOUND_CONFD=/etc/unbound/conf.d
 elif [[ "$DISTRO_NAME" =~ 'gentoo' ]] ; then
     UNBOUND_CONFD=/etc/unbound/conf.d
