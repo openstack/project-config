@@ -2642,6 +2642,21 @@
         - noop-jobs
 
 - project:
+    name: openstack/ansible-role-tripleo-modify-image
+    templates:
+      - system-required
+      - release-openstack-server
+    check:
+      jobs:
+        - openstack-tox-linters
+    gate:
+      jobs:
+        - openstack-tox-linters
+    post:
+      jobs:
+        - publish-openstack-python-branch-tarball
+
+- project:
     name: openstack/ansible-role-virtualenv
     templates:
       - system-required
