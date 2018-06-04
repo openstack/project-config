@@ -7,7 +7,16 @@
     # gate ansible/ansible and we should not be doing merge-check on it.
     third-party-check:
       jobs:
-        - shade-ansible-devel-functional-devstack:
+        - openstacksdk-ansible-devel-functional-devstack:
+            branches: devel
+            files:
+              - ^lib/ansible/modules/cloud/openstack/.*
+              - ^contrib/inventory/openstack_inventory.py
+              - ^lib/ansible/plugins/inventory/openstack.py
+              - ^lib/ansible/module_utils/openstack.py
+              - ^lib/ansible/utils/module_docs_fragments/openstack.py
+        - shade-ansible-stable-2.5-functional-devstack:
+            branches: stable-2.5
             files:
               - ^lib/ansible/modules/cloud/openstack/.*
               - ^contrib/inventory/openstack.py
