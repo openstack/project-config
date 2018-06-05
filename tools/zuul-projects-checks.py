@@ -31,9 +31,7 @@ def check_system_templates():
     print("=====================================")
     for entry in projects:
         project = entry['project']
-        # TODO(mordred) Generalize this, but for now, avoid doing this check
-        # on projects we run third part ci for.
-        if project['name'] in ['ansible/ansible', 'sigmavirus24/github3.py']:
+        if not project['name'].startswith('openstack'):
             continue
         try:
             correct = False

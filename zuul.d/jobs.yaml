@@ -1239,3 +1239,16 @@
 
       The testing is done for Ubuntu Xenial.
     nodeset: ubuntu-xenial
+
+- job:
+    name: kata-run
+    parent: base
+    description: |
+      Run kata's setup.sh and run.sh CI scripts
+    pre-run: playbooks/kata-run/pre.yaml
+    run: playbooks/kata-run/run.yaml
+    timeout: 3600
+    nodeset:
+      nodes:
+        - name: ubuntu-bionic
+          label: ubuntu-bionic-vexxhost
