@@ -2277,7 +2277,13 @@
     name: openstack/airship-armada
     templates:
       - system-required
-      - noop-jobs
+    check:
+      jobs:
+        - openstack-tox-cover:
+            voting: false
+    gate:
+      jobs:
+        - noop
 
 - project:
     name: openstack/airship-berth
