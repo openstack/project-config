@@ -41,7 +41,6 @@ branch_as_path_entry=$(echo $NEW_BRANCH | sed -s 's|/|-|g')
 setup_temp_space branch-$PROJECT-$branch_as_path_entry
 clone_repo $REPO
 cd $REPO
-LANG=C git review -s
 
 if $(git branch -r | grep $NEW_BRANCH > /dev/null); then
     echo "A $NEW_BRANCH branch already exists !"
@@ -49,6 +48,13 @@ if $(git branch -r | grep $NEW_BRANCH > /dev/null); then
     rm -rf $MYTMPDIR
     exit 0
 fi
+
+# NOTE(dhellmann): We wait to set up git-review until after we have
+# checked for the branch and then check out the tagged point to create
+# the branch in case the master branch has been retired since then and
+# there is no longer a .gitreview file there.
+LANG=C git checkout $START_POINT
+LANG=C git review -s
 
 echo "Creating $NEW_BRANCH from $START_POINT"
 git branch $NEW_BRANCH $START_POINT
