@@ -13,7 +13,8 @@ mkdir -p ${LOGS}
 rm -rf ${LOGS}/*
 
 # Extract and iterate over all the branch names.
-BRANCHES=`git --git-dir=$WORKING_DIR/.git branch -a | grep '^  stable'`
+BRANCHES=`git --git-dir=$WORKING_DIR/.git branch -a | grep '^  stable' | \
+            grep -Ev '(newton)'`
 for BRANCH in master $BRANCHES; do
     git --git-dir=$WORKING_DIR/.git show $BRANCH:upper-constraints.txt \
         2>/dev/null > /tmp/upper-constraints.txt  || true
