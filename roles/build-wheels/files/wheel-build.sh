@@ -40,7 +40,9 @@ for BRANCH in master $BRANCHES; do
     cat /tmp/upper-constraints.txt | \
         parallel --files --progress --joblog ${LOGS}/$SHORT_BRANCH-job.log \
                 --results ${LOGS}/build/$SHORT_BRANCH \
-                build_env/bin/pip --verbose wheel -w $WHEELHOUSE_DIR {}
+                build_env/bin/pip --verbose wheel \
+                -c /tmp/upper-constraints.txt \
+                -w $WHEELHOUSE_DIR {}
     set -e
 
     # Column $7 is the exit status of the job, $14 is the last
