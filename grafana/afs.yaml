@@ -12,57 +12,341 @@ dashboard:
           type: text
 
     - title: Partitions
-      height: 100px
       showTitle: true
-      height: 150px
+      height: 200px
       panels:
         - title: "afs01.dfw /vicepa used"
           span: 3
           sparkline:
             full: true
-            show: true
+            show: false
           thresholds: "0,90,95"
-          format: percentunit
+          format: percent
           targets:
             - target: "stats.gauges.afs.afs01_dfw_openstack_org.part.vicepa.total"
               refId: "A"
-              hide: "true"
-            - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.part.vicepa.used, #A)"
+              hide: true
+            - target: "scale(divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.part.vicepa.used, #A), 100)"
               refId: "B"
-              hide: "false"
+              hide: false
           type: singlestat
           valueName: current
+          gauge:
+            show: true
+            minValue: 0
+            maxValue: 100
+            thresholdMarkers: true
 
         - title: "afs02.dfw /vicepa used"
           span: 3
           sparkline:
             full: true
-            show: true
+            show: false
           thresholds: "0,90,95"
-          format: percentunit
+          format: percent
           targets:
             - target: "stats.gauges.afs.afs02_dfw_openstack_org.part.vicepa.total"
               refId: "A"
-              hide: "true"
-            - target: "divideSeries(stats.gauges.afs.afs02_dfw_openstack_org.part.vicepa.used, #A)"
+              hide: true
+            - target: "scale(divideSeries(stats.gauges.afs.afs02_dfw_openstack_org.part.vicepa.used, #A), 100)"
               refId: "B"
-              hide: "false"
+              hide: false
           type: singlestat
           valueName: current
+          gauge:
+            show: true
+            minValue: 0
+            maxValue: 100
+            thresholdMarkers: true
 
         - title: "afs01.ord /vicepa used"
           span: 3
           sparkline:
             full: true
-            show: true
+            show: false
           thresholds: "0,90,95"
-          format: percentunit
+          format: percent
           targets:
             - target: "stats.gauges.afs.afs01_ord_openstack_org.part.vicepa.total"
               refId: "A"
-              hide: "true"
-            - target: "divideSeries(stats.gauges.afs.afs01_ord_openstack_org.part.vicepa.used, #A)"
+              hide: true
+            - target: "scale(divideSeries(stats.gauges.afs.afs01_ord_openstack_org.part.vicepa.used, #A), 100)"
               refId: "B"
-              hide: "false"
+              hide: false
           type: singlestat
           valueName: current
+          gauge:
+            show: true
+            minValue: 0
+            maxValue: 100
+            thresholdMarkers: true
+
+        - title: Usage history
+          type: graph
+          fill: 0
+          span: 3
+          yaxes:
+            - format: deckbytes
+              min: 0
+            - format: deckbytes
+              min: 0
+          targets:
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.part.vicepa.used, 'afs01.dfw')"
+              refId: A
+            - target: "alias(stats.gauges.afs.afs02_dfw_openstack_org.part.vicepa.used, 'afs02.dfw')"
+              refId: B
+            - target: "alias(stats.gauges.afs.afs01_ord_openstack_org.part.vicepa.used, 'afs01.ord')"
+              refId: C
+
+    - title: Server Health
+      height: 200px
+      showTitle: true
+      panels:
+
+        - title: afs01.dfw
+          type: graph
+          fill: 0
+          span: 4
+          targets:
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.calls_waiting, 'Calls Waiting')"
+              refId: A
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.idle_threads, 'Idle Threads')"
+              refId: B
+
+        - title: afs02.dfw
+          type: graph
+          fill: 0
+          span: 4
+          targets:
+            - target: "alias(stats.gauges.afs.afs02_dfw_openstack_org.calls_waiting, 'Calls Waiting')"
+              refId: A
+            - target: "alias(stats.gauges.afs.afs02_dfw_openstack_org.idle_threads, 'Idle Threads')"
+              refId: B
+
+        - title: afs01.ord
+          type: graph
+          fill: 0
+          span: 4
+          targets:
+            - target: "alias(stats.gauges.afs.afs01_ord_openstack_org.calls_waiting, 'Calls Waiting')"
+              refId: A
+            - target: "alias(stats.gauges.afs.afs01_ord_openstack_org.idle_threads, 'Idle Threads')"
+              refId: B
+
+    - title: Release times
+      height: 100px
+      showTitle: true
+      panels:
+
+        - title: mirror.pypi
+          type: singlestat
+          valueName: current
+          span: 2
+          targets:
+            - target: "scale(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_pypi_readonly.creation, 1000)"
+          format: dateTimeFromNow
+          valueFontSize: "50%"
+
+        - title: mirror.ubuntu
+          type: singlestat
+          valueName: current
+          span: 2
+          targets:
+            - target: "scale(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_ubuntu_readonly.creation, 1000)"
+          format: dateTimeFromNow
+          valueFontSize: "50%"
+
+        - title: mirror.ubuntu-ports
+          type: singlestat
+          valueName: current
+          span: 2
+          targets:
+            - target: "scale(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_ubuntu-ports_readonly.creation, 1000)"
+          format: dateTimeFromNow
+          valueFontSize: "50%"
+
+        - title: mirror.centos
+          type: singlestat
+          valueName: current
+          span: 2
+          targets:
+            - target: "scale(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_centos_readonly.creation, 1000)"
+          format: dateTimeFromNow
+          valueFontSize: "50%"
+
+        - title: mirror.fedora
+          type: singlestat
+          valueName: current
+          span: 2
+          targets:
+            - target: "scale(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_fedora_readonly.creation, 1000)"
+          format: dateTimeFromNow
+          valueFontSize: "50%"
+
+        - title: mirror.epel
+          type: singlestat
+          valueName: current
+          span: 2
+          targets:
+            - target: "scale(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_epel_readonly.creation, 1000)"
+          format: dateTimeFromNow
+          valueFontSize: "50%"
+
+        - title: mirror.debian
+          type: singlestat
+          valueName: current
+          span: 2
+          targets:
+            - target: "scale(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_debian_readonly.creation, 1000)"
+          format: dateTimeFromNow
+          valueFontSize: "50%"
+
+        - title: mirror.opensuse
+          type: singlestat
+          valueName: current
+          span: 2
+          targets:
+            - target: "scale(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_opensuse_readonly.creation, 1000)"
+          format: dateTimeFromNow
+          valueFontSize: "50%"
+
+    - title: Volumes
+      height: 200px
+      showTitle: true
+      panels:
+
+        - title: mirror.pypi
+          type: graph
+          span: 4
+          yaxes:
+            - format: deckbytes
+              min: 0
+            - format: deckbytes
+              min: 0
+          targets:
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_pypi.used, 'Used')"
+              refId: A
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_pypi.quota, 'Quota')"
+              refId: B
+            - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_pypi.used, #B)"
+              refId: C
+              hide: true
+
+        - title: mirror.ubuntu
+          type: graph
+          span: 4
+          yaxes:
+            - format: deckbytes
+              min: 0
+            - format: deckbytes
+              min: 0
+          targets:
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_ubuntu.used, 'Used')"
+              refId: A
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_ubuntu.quota, 'Quota')"
+              refId: B
+            - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_ubuntu.used, #B)"
+              refId: C
+              hide: true
+
+        - title: mirror.ubuntu-ports
+          type: graph
+          span: 4
+          yaxes:
+            - format: deckbytes
+              min: 0
+            - format: deckbytes
+              min: 0
+          targets:
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_ubuntu-ports.used, 'Used')"
+              refId: A
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_ubuntu-ports.quota, 'Quota')"
+              refId: B
+            - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_ubuntu-ports.used, #B)"
+              refId: C
+              hide: true
+
+        - title: mirror.centos
+          type: graph
+          span: 4
+          yaxes:
+            - format: deckbytes
+              min: 0
+            - format: deckbytes
+              min: 0
+          targets:
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_centos.used, 'Used')"
+              refId: A
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_centos.quota, 'Quota')"
+              refId: B
+            - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_centos.used, #B)"
+              refId: C
+              hide: true
+
+        - title: mirror.fedora
+          type: graph
+          span: 4
+          yaxes:
+            - format: deckbytes
+              min: 0
+            - format: deckbytes
+              min: 0
+          targets:
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_fedora.used, 'Used')"
+              refId: A
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_fedora.quota, 'Quota')"
+              refId: B
+            - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_fedora.used, #B)"
+              refId: C
+              hide: true
+
+        - title: mirror.epel
+          type: graph
+          span: 4
+          yaxes:
+            - format: deckbytes
+              min: 0
+            - format: deckbytes
+              min: 0
+          targets:
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_epel.used, 'Used')"
+              refId: A
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_epel.quota, 'Quota')"
+              refId: B
+            - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_epel.used, #B)"
+              refId: C
+              hide: true
+
+        - title: mirror.debian
+          type: graph
+          span: 4
+          yaxes:
+            - format: deckbytes
+              min: 0
+            - format: deckbytes
+              min: 0
+          targets:
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_debian.used, 'Used')"
+              refId: A
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_debian.quota, 'Quota')"
+              refId: B
+            - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_debian.used, #B)"
+              refId: C
+              hide: true
+
+        - title: mirror.opensuse
+          type: graph
+          span: 4
+          yaxes:
+            - format: deckbytes
+              min: 0
+            - format: deckbytes
+              min: 0
+          targets:
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_opensuse.used, 'Used')"
+              refId: A
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_opensuse.quota, 'Quota')"
+              refId: B
+            - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_opensuse.used, #B)"
+              refId: C
+              hide: true
