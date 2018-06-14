@@ -1,0 +1,13 @@
+- name: Install docutils for the README check
+  # NOTE(dhellmann): We install this unconstrained because we expect
+  # setuptools to expect the most recent version anyway. We use a
+  # virtualenv to avoid conflicts with system packages due to pip10
+  # and later.
+  pip:
+    name: docutils
+    virtualenv: "{{ zuul_work_dir }}/venv"
+    virtualenv_python: "{{ release_python }}"
+- name: Check the package metadata and README format
+  command: "{{ zuul_work_dir }}/venv/bin/{{ release_python }} setup.py check --restructuredtext --strict"
+  args:
+    chdir: "{{ zuul_work_dir }}"
