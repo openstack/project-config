@@ -5,9 +5,11 @@
   # and later.
   pip:
     name: docutils
-    virtualenv: "{{ zuul_work_dir }}/venv"
+    virtualenv: "{{ check_python_release_virtualenv }}"
     virtualenv_python: "{{ release_python }}"
+    chdir: "{{ zuul_work_dir }}"
+
 - name: Check the package metadata and README format
-  command: "{{ zuul_work_dir }}/venv/bin/{{ release_python }} setup.py check --restructuredtext --strict"
+  command: "{{ check_python_release_virtualenv }}/bin/{{ release_python }} setup.py check --restructuredtext --strict"
   args:
     chdir: "{{ zuul_work_dir }}"
