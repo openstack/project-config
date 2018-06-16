@@ -14,14 +14,14 @@
         recurse: yes
         mode: 0775
 
+    # Use chmod instead of file because ansible 2.5 file with recurse and
+    # follow can't really handle symlinks to .
     - name: Ensure logs are readable before uploading
       delegate_to: localhost
-      file:
-        path: "{{ zuul.executor.log_root }}/"
-        mode: u=rwX,g=rX,o=rX
-        state: directory
-        follow: false
-        recurse: yes
+      command: "chmod -R u=rwX,g=rX,o=rX {{ zuul.executor.log_root }}/"
+      # ANSIBLE0007 chmod used in place of argument mode to file
+      tags:
+        - skip_ansible_lint
 
     - name: Upload logs to log server
       synchronize:
