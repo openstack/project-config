@@ -114,6 +114,15 @@ case "$PROJECT" in
                 ALL_MODULES="$modulename $ALL_MODULES"
             done
         fi
+        # ---- Documentation ----
+        # Let's test this with some repos :)
+        DOC_TARGETS=('horizon' 'openstack-ansible' 'openstack-helm')
+        if [[ -f doc/source/conf.py ]]; then
+            if [[ ${DOC_TARGETS[*]} =~ "$PROJECT" ]]; then
+                extract_messages_doc
+                ALL_MODULES="doc $ALL_MODULES"
+            fi
+        fi
         ;;
 esac
 
