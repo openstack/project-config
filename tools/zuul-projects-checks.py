@@ -23,33 +23,6 @@ projects_yaml = 'zuul.d/projects.yaml'
 projects = yaml.safe_load(open(projects_yaml))
 
 
-def check_system_templates():
-    """Check that each repo has a system-required template."""
-
-    errors = False
-    print("\nChecking for usage of system-required")
-    print("=====================================")
-    for entry in projects:
-        project = entry['project']
-        if not project['name'].startswith('openstack'):
-            continue
-        try:
-            correct = False
-            for template in project['templates']:
-                if template == 'system-required':
-                    correct = True
-            if not correct:
-                raise
-        except:
-            print("ERROR: Project %s has no system-required template" %
-                  project['name'])
-            errors = True
-
-    if not errors:
-        print("... all fine.")
-    return errors
-
-
 def normalize(s):
     "Normalize string for comparison."
     return s.lower().replace("_", "-")
@@ -163,8 +136,7 @@ def check_voting():
 
 def check_all():
 
-    errors = check_system_templates()
-    errors = check_projects_sorted() or errors
+    errors = check_projects_sorted()
     errors = check_release_jobs() or errors
     errors = check_voting() or errors
 
