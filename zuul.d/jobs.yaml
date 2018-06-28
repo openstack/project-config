@@ -241,10 +241,10 @@
       - README.rst
 
 - job:
-    name: publish-openstack-sphinx-docs-base
+    name: publish-sphinx-docs-base
     description: |
       Base job for publishing sphinx documentation to
-      /afs/.openstack.org/docs/.
+      /afs/.openstack.org/docs/. Does not use constraints.
     abstract: true
     protected: true
     pre-run:
@@ -252,16 +252,25 @@
     run: playbooks/sphinx/run.yaml
     post-run:
       - playbooks/publish/openstack-afs.yaml
-    required-projects:
-      - name: openstack/requirements
     roles:
       - zuul: openstack-infra/zuul-jobs
       - zuul: openstack-infra/openstack-zuul-jobs
-    vars:
-      constraints_file: '{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt'
     secrets:
       - secret: afsdocs_secret
         name: afs
+
+- job:
+    name: publish-openstack-sphinx-docs-base
+    parent: publish-sphinx-docs-base
+    description: |
+      Base job for publishing sphinx documentation to
+      /afs/.openstack.org/docs/.
+    abstract: true
+    protected: true
+    required-projects:
+      - name: openstack/requirements
+    vars:
+      constraints_file: '{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt'
 
 - job:
     name: publish-openstack-sphinx-docs
@@ -473,7 +482,7 @@
 
 - job:
     name: publish-openstack-sphinx-docs-infra
-    parent: publish-openstack-sphinx-docs-base
+    parent: publish-sphinx-docs-base
     description: |
       Publish the results of the openstack-build-sphinx-docs job to
       /afs/.openstack.org/infra/{{ zuul.project.short_name }}
@@ -485,7 +494,7 @@
 
 - job:
     name: publish-openstack-sphinx-docs-infra-python3
-    parent: publish-openstack-sphinx-docs-base
+    parent: publish-sphinx-docs-base
     description: |
       Publish the results of the openstack-build-sphinx-docs job to
       /afs/.openstack.org/infra/{{ zuul.project.short_name }}
@@ -500,7 +509,7 @@
 
 - job:
     name: publish-infra-manual
-    parent: publish-openstack-sphinx-docs-base
+    parent: publish-sphinx-docs-base
     description: |
       Publish the Infra Manual to /afs/.openstack.org/docs/infra/manual
     final: true
