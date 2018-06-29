@@ -83,6 +83,37 @@ def check_release_jobs():
     return errors
 
 
+def blacklist_jobs():
+    """Check that certain jobs and templates are *not* used."""
+
+    # Currently only handles templates
+    blacklist_templates = [
+        'system-required'
+    ]
+
+    errors = False
+    print("\nChecking for obsolete jobs and templates")
+    print("=========================================")
+    for entry in projects:
+        project = entry['project']
+        name = project['name']
+        # The openstack catch all contains system-required, so skip that one.
+        if name == "^openstack.*":
+            continue
+        found = [tmpl for tmpl in project.get('templates', [])
+                 if tmpl in blacklist_templates]
+        if found:
+            errors = True
+            print("  ERROR: Found obsolete template for %s:" % name)
+            for x in found:
+                print("    %s" % x)
+            print("  Remove it.")
+
+    if not errors:
+        print("... all fine.")
+    return errors
+
+
 def check_pipeline(project, job_pipeline, pipeline_name):
 
     errors = False
@@ -137,6 +168,7 @@ def check_voting():
 def check_all():
 
     errors = check_projects_sorted()
+    errors = blacklist_jobs() or errors
     errors = check_release_jobs() or errors
     errors = check_voting() or errors
 
