@@ -20,7 +20,7 @@ set -eu
 OSA_PROJECT=${1}
 
 # Careful of what you put here.
-declare -ra files_to_sync=(run_tests.sh bindep.txt Vagrantfile tests/tests-repo-clone.sh .gitignore)
+declare -ra files_to_sync=(run_tests.sh bindep.txt Vagrantfile tests/tests-repo-clone.sh .gitignore sync/tasks/*)
 
 excluded_projects=
 exclude_project() {
@@ -40,16 +40,23 @@ check_and_ignore() {
     return 1
 }
 
-for x in ${files_to_sync[@]}; do
+for src_path in ${files_to_sync[@]}; do
     # If the source repo does not have the file to copy
     # then skip to the next file. This covers the situation
     # where this script runs against old branches which
-    # do not have the same set of files.
-    [[ ! -e ${x} ]] && continue
+    # do not have the same set of files. If the src_path
+    # is 'sync/tasks/*' because the folder does not exist
+    # then it will fail this test too.
+    [[ ! -e ${src_path} ]] && continue
+
+    # For the sync/* files in the array, the destination
+    # path is different to the source path. To work out
+    # the destination path we remove the 'sync/' prefix.
+    dst_path=${src_path#sync/}
 
     # If the target repo does not have such a file already
     # then it's probably best to leave it alone.
-    [[ ! -e ${OSA_PROJECT}/${x} ]] && continue
+    [[ ! -e ${OSA_PROJECT}/${dst_path} ]] && continue
 
     # Skip the project if it is in the excluded list
     check_and_ignore ${OSA_PROJECT} && continue
@@ -57,7 +64,7 @@ for x in ${files_to_sync[@]}; do
     # We don't preserve anything from the target repo.
     # We simply assume that all OSA projects need the same
     # $files_to_sync
-    cp ${x} ${OSA_PROJECT}/${x}
+    cp ${src_path} ${OSA_PROJECT}/${dst_path}
 done
 
 exit 0
