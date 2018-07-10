@@ -293,23 +293,6 @@
       - name: openstack/horizon
 
 - job:
-    name: publish-openstack-sphinx-docs-python3
-    parent: publish-openstack-sphinx-docs-base
-    description: |
-      Publish the results of the build-openstack-sphinx-docs job to
-      /afs/.openstack.org/docs/{{ zuul.project.short_name }}.
-
-      Builds the docs using Sphinx with Python3.
-
-      Publishes depending on branch to latest/ (for master), or the
-      basename of the branch like pike (for stable/pike).
-    final: true
-    post-run:
-      - playbooks/sphinx/post.yaml
-    vars:
-      sphinx_python: python3
-
-- job:
     name: publish-openstack-sphinx-docs-direct
     parent: publish-openstack-sphinx-docs-base
     description: |
