@@ -1928,25 +1928,23 @@
 
 - project:
     name: openstack-infra/zuul-base-jobs
-    templates:
-      - publish-openstack-sphinx-docs-infra
     check:
       jobs:
+        - build-sphinx-docs
         - openstack-zuul-jobs-linters
     gate:
       jobs:
+        - build-sphinx-docs
         - openstack-zuul-jobs-linters
     post:
       jobs:
         - publish-zuul-docs
-        - publish-openstack-sphinx-docs-infra
 
 - project:
     name: openstack-infra/zuul-jobs
-    templates:
-      - publish-openstack-sphinx-docs-infra
     check:
       jobs:
+        - build-sphinx-docs
         - openstack-infra-base-integration-centos-7
         - openstack-infra-base-integration-debian-stable
         - openstack-infra-base-integration-fedora-27
@@ -1965,6 +1963,7 @@
         - tox-py35-on-zuul
     gate:
       jobs:
+        - build-sphinx-docs
         - openstack-infra-base-integration-centos-7
         - openstack-infra-base-integration-debian-stable
         - openstack-infra-base-integration-fedora-27
@@ -1984,7 +1983,6 @@
     post:
       jobs:
         - publish-zuul-docs
-        - publish-openstack-sphinx-docs-infra
 
 - project:
     name: openstack-infra/zuul-packaging
