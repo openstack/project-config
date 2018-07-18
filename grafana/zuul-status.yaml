@@ -194,15 +194,23 @@ dashboard:
           targets:
             - target: aliasSub(stats.gauges.zuul.executor.*.starting_builds, ".*\.(.*)_openstack_org.*", "\1")
           type: graph
-        - title: Used HDD
+        - title: Used HDD (Percentage)
           span: 6
+          yaxes:
+            - label: Used HDD %
+              format: percent
+            - show: false
           targets:
-            - target: aliasSub(stats.gauges.zuul.executor.*.pct_used_hdd, ".*\.(.*)_openstack_org.*", "\1")
+            - target: aliasSub(scale(stats.gauges.zuul.executor.*.pct_used_hdd, 0.01), ".*\.(.*)_openstack_org.*", "\1")
           type: graph
-        - title: Used RAM
+        - title: Used RAM (Percentage)
           span: 6
+          yaxes:
+            - label: Used HDD %
+              format: percent
+            - show: false
           targets:
-            - target: aliasSub(stats.gauges.zuul.executor.*.pct_used_ram, ".*\.(.*)_openstack_org.*", "\1")
+            - target: aliasSub(scale(stats.gauges.zuul.executor.*.pct_used_ram, 0.01), ".*\.(.*)_openstack_org.*", "\1")
           type: graph
     - title: Mergers
       showTitle: true
