@@ -109,36 +109,27 @@ dashboard:
           type: graph
           span: 4
           nullPointMode: null as zero
-          leftYAxisLabel: "events / min"
+          yaxes:
+            - label: "events / min"
+            - show: false
           targets:
             - target: aliasByNode(summarize(stats_counts.nodepool.launch.provider.*.ready, '1m'), 4)
         - title: Error Node Launch Attempts
           type: graph
           span: 4
           nullPointMode: null as zero
-          leftYAxisLabel: "events / min"
+          yaxes:
+            - label: "events / min"
+            - show: false
           targets:
             - target: aliasByNode(smartSummarize(sumSeries(stats_counts.nodepool.launch.provider.*.error.*), '1m'), 4)
         - title: Time to Ready
           type: graph
           nullPointMode: "connected"
           span: 4
-          leftYAxisLabel: "time"
-          y_formats:
-            - s
-            - none
+          yaxes:
+            - label: "time"
+              format: ms
+            - show: false
           targets:
-            - target: aliasByNode(scale(stats.timers.nodepool.launch.provider.*.ready.mean, '0.001'), 5)
-    - title: Job Runtimes
-      showTitle: true
-      height: 250px
-      panels:
-        - title: gate-tempest-dsvm-neutron-full
-          type: graph
-          span: 6
-          leftYAxisLabel: "time"
-          y_formats:
-            - s
-            - none
-          targets:
-            - target: alias(scale(averageSeries(stats.timers.nodepool.job.gate-tempest-dsvm-neutron-full-ubuntu-xenial.master.ubuntu-xenial.runtime.mean), '0.001'), 'Average')
+            - target: aliasByNode(stats.timers.nodepool.launch.provider.*.ready.mean, 5)
