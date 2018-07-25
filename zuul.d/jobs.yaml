@@ -128,6 +128,32 @@
     secrets:
       - site_logs
 
+# NOTE(corvus): A short-term test job
+- job:
+    name: base-test-swift
+    parent: null
+    description: |
+      A job to test storing logs in swift.  Not for general use.
+    pre-run: playbooks/base/pre.yaml
+    post-run:
+      - playbooks/base/post-ssh.yaml
+      - playbooks/base-test/post-logs-swift.yaml
+    roles:
+      - zuul: openstack-infra/zuul-jobs
+      - zuul: openstack-infra/openstack-zuul-jobs
+    timeout: 1800
+    post-timeout: 1800
+    vars:
+      ara_report_type: html
+      ara_report_path: ara-report
+    nodeset:
+      nodes:
+        - name: ubuntu-xenial
+          label: ubuntu-xenial
+    secrets:
+      - name: log_cloud_config
+        secret: openstackinfra_vexxhost
+
 - job:
     name: publish-openstack-artifacts
     description: |
