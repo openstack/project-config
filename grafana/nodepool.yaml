@@ -1,0 +1,143 @@
+dashboard:
+  title: Nodepool
+  rows:
+    - title: Description
+      height: 100px
+      panels:
+        - title: Description
+          content: |
+            **This dashboard is managed by [Grafyaml](http://docs.openstack.org/infra/system-config/grafyaml.html).**
+
+            If you would like to make changes to this dashboard, please see the grafana directory in [project-config](https://git.openstack.org/cgit/openstack-infra/project-config/tree/grafana/nodepool.yaml).
+          type: text
+    - title: Nodes
+      showTitle: true
+      height: 150px
+      panels:
+        - title: Building
+          span: 2
+          sparkline:
+            full: true
+            show: true
+          targets:
+            - target: sumSeries(stats.gauges.nodepool.provider.*.nodes.building)
+          type: singlestat
+          valueName: current
+        - title: Ready
+          span: 2
+          sparkline:
+            full: true
+            show: true
+          targets:
+            - target: sumSeries(stats.gauges.nodepool.provider.*.nodes.ready)
+          type: singlestat
+          valueName: current
+        - title: In Use
+          span: 1
+          sparkline:
+            full: true
+            show: true
+          targets:
+            - target: sumSeries(stats.gauges.nodepool.provider.*.nodes.in-use)
+          type: singlestat
+          valueName: current
+        - title: Used
+          span: 1
+          sparkline:
+            full: true
+            show: true
+          targets:
+            - target: sumSeries(stats.gauges.nodepool.provider.*.nodes.used)
+          type: singlestat
+          valueName: current
+        - title: Deleting
+          span: 2
+          sparkline:
+            full: true
+            show: true
+          targets:
+              - target: sumSeries(stats.gauges.nodepool.provider.*.nodes.deleting)
+          type: singlestat
+          valueName: current
+        - title: Hold
+          span: 2
+          sparkline:
+            full: true
+            show: true
+          targets:
+              - target: sumSeries(stats.gauges.nodepool.provider.*.nodes.hold)
+          type: singlestat
+          valueName: current
+        - title: Failed
+          span: 2
+          sparkline:
+            full: true
+            show: true
+          targets:
+              - target: sumSeries(stats.gauges.nodepool.provider.*.nodes.failed)
+          type: singlestat
+          valueName: current
+    - title: Nodepool Images
+      showTitle: true
+      height: 320px
+      panels:
+        - title: Building Nodes
+          span: 3
+          targets:
+            - target: aliasByNode(stats.gauges.nodepool.label.*.nodes.building, 4)
+          type: graph
+        - title: Ready Nodes
+          span: 3
+          targets:
+            - target: aliasByNode(stats.gauges.nodepool.label.*.nodes.ready, 4)
+          type: graph
+        - title: In-use Nodes
+          span: 3
+          targets:
+            - target: aliasByNode(stats.gauges.nodepool.label.*.nodes.in-use, 4)
+          type: graph
+        - title: Deleting Nodes
+          span: 3
+          targets:
+            - target: aliasByNode(stats.gauges.nodepool.label.*.nodes.deleting, 4)
+          type: graph
+    - title: Node Launches
+      showTitle: true
+      height: 250px
+      panels:
+        - title: Ready Node Launch Attempts
+          type: graph
+          span: 4
+          nullPointMode: null as zero
+          leftYAxisLabel: "events / min"
+          targets:
+            - target: aliasByNode(summarize(stats_counts.nodepool.launch.provider.*.ready, '1m'), 4)
+        - title: Error Node Launch Attempts
+          type: graph
+          span: 4
+          nullPointMode: null as zero
+          leftYAxisLabel: "events / min"
+          targets:
+            - target: aliasByNode(smartSummarize(sumSeries(stats_counts.nodepool.launch.provider.*.error.*), '1m'), 4)
+        - title: Time to Ready
+          type: graph
+          span: 4
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
+          targets:
+            - target: aliasByNode(scale(stats.timers.nodepool.launch.provider.*.ready.mean, '0.001'), 5)
+    - title: Job Runtimes
+      showTitle: true
+      height: 250px
+      panels:
+        - title: gate-tempest-dsvm-neutron-full
+          type: graph
+          span: 6
+          leftYAxisLabel: "time"
+          y_formats:
+            - s
+            - none
+          targets:
+            - target: alias(scale(averageSeries(stats.timers.nodepool.job.gate-tempest-dsvm-neutron-full-ubuntu-xenial.master.ubuntu-xenial.runtime.mean), '0.001'), 'Average')
