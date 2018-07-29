@@ -18,6 +18,13 @@
     - start-zuul-console
     - log-inventory
     - configure-unbound
+    # NOTE(pabelanger): Do not add any more roles after configure-unbound, this
+    # is because we want unbound to actually restart before doing anything else
+    # to the node. And with handlers in ansible, they are the last thing to run
+    # in a play.
+
+- hosts: all
+  roles:
     - validate-host
     - use-cached-repos
     - mirror-workspace-git-repos
