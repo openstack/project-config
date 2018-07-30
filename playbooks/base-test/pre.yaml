@@ -17,11 +17,13 @@
     - add-build-sshkey
     - start-zuul-console
     - log-inventory
+
+- hosts: all
+  roles:
+    # NOTE(pabelanger): We run this role in its own play to ensure unbound is
+    # restarted before proceeding with any other role.  This is because of
+    # how handlers work in ansible.
     - configure-unbound
-    # NOTE(pabelanger): Do not add any more roles after configure-unbound, this
-    # is because we want unbound to actually restart before doing anything else
-    # to the node. And with handlers in ansible, they are the last thing to run
-    # in a play.
 
 - hosts: all
   roles:
