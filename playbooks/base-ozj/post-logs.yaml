@@ -1,0 +1,10 @@
+- hosts: localhost
+  roles:
+    - role: add-fileserver
+      fileserver: "{{ site_logs }}"
+    - role: ara-report
+
+- hosts: "{{ site_logs.fqdn }}"
+  roles:
+    - role: upload-logs
+      zuul_log_url: "http://logs.openstack.org"
