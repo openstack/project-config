@@ -1171,6 +1171,28 @@
         secret: release_ssh_key
       - gpg_key
 
+
+- job:
+    name: trigger-readthedocs-webhook
+    description: |
+      Trigger readthedocs to rebuild documentation
+
+      Note this job requires some external setup.
+
+      #. add the ``openstackci`` user as an admin to your RTD project
+      #. generate a webhook URL via the "Integrations" dashboard page
+      #. provide the ``id`` from that URL in a ``rtd_webhook_id`` variable
+
+      You probably do not want to use this job directly, but rather
+      include the `docs-on-readthedocs template
+      <https://docs.openstack.org/infra/openstack-zuul-jobs/project-templates.html#project_template-docs-on-readthedocs>`__
+
+    run: playbooks/publish/trigger-rtd.yaml
+    post-review: true
+    final: true
+    secrets:
+      - rtd_credentials
+
 - job:
     name: project-config-check-main-yaml
     description: |

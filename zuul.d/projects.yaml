@@ -5941,12 +5941,30 @@
     name: openstack/gerrit-dash-creator
     templates:
       - publish-to-pypi
+    vars:
+      # for trigger-readthedocs-webhook
+      # NOTE(ianw): For initial testing.
+      #  Revert to docs-on-readthedocs template when
+      #   https://review.openstack.org/583834
+      #  merges.
+      rtd_webhook_id: '43048'
     check:
       jobs:
         - openstack-tox-pep8
+        - build-openstack-sphinx-docs
     gate:
       jobs:
         - openstack-tox-pep8
+        - build-openstack-sphinx-docs
+    post:
+      jobs:
+        - trigger-readthedocs-webhook
+    pre-release:
+      jobs:
+        - trigger-readthedocs-webhook
+    release:
+      jobs:
+        - trigger-readthedocs-webhook
 
 - project:
     name: openstack/gertty
