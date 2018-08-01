@@ -33,8 +33,12 @@ for e in $(cat external_modules.txt); do
     if [ ! -z "$pin" ]; then
         git ls-remote --exit-code https://github.com/$namespace/$module $pin
         if (($? == 2)); then
-            echo "Wrong pin: $pin does not exist in $module module."
-            exit 1
+            if ! git ls-remote --exit-code https://github.com/$namespace/$module | grep -q $pin; then
+                echo "Wrong pin: $pin does not exist in $module module."
+                exit 1
+            else
+                tag=$pin
+            fi
         else
             tag=$pin
         fi
