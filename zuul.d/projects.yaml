@@ -270,12 +270,6 @@
 - project:
     name: openstack-dev/pbr
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - lib-forward-testing
-      - openstack-pypy-jobs-nonvoting
-      - publish-openstack-sphinx-docs
-      - periodic-stable-jobs
       - publish-to-pypi
     periodic:
       jobs:
@@ -283,9 +277,6 @@
             branches: master
         - pbr-installation-upstream-devstack:
             branches: master
-    post:
-      jobs:
-        - openstack-tox-cover
 
 - project:
     name: openstack-dev/sandbox
@@ -2684,13 +2675,6 @@
 - project:
     name: openstack/automaton
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - publish-openstack-docs-pti
-      - check-requirements
-      - lib-forward-testing
-      - release-notes-jobs-python3
-      - periodic-stable-jobs
       - publish-to-pypi
 
 - project:
@@ -2909,12 +2893,6 @@
 - project:
     name: openstack/castellan
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - release-notes-jobs-python3
-      - publish-openstack-docs-pti
-      - check-requirements
-      - periodic-stable-jobs
       - publish-to-pypi
 
 - project:
@@ -4121,13 +4099,6 @@
 - project:
     name: openstack/debtcollector
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - publish-openstack-docs-pti
-      - check-requirements
-      - lib-forward-testing
-      - release-notes-jobs-python3
-      - periodic-stable-jobs
       - publish-to-pypi
 
 - project:
@@ -4220,15 +4191,6 @@
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^setup.cfg$
-    gate:
-      jobs:
-        - openstack-tox-bashate
-
-- project:
-    name: openstack/devstack-plugin-amqp1
-    check:
-      jobs:
-        - openstack-tox-bashate
     gate:
       jobs:
         - openstack-tox-bashate
@@ -4356,15 +4318,6 @@
               - ^setup.cfg$
 
 - project:
-    name: openstack/devstack-plugin-kafka
-    check:
-      jobs:
-        - openstack-tox-bashate
-    gate:
-      jobs:
-        - openstack-tox-bashate
-
-- project:
     name: openstack/devstack-plugin-libvirt-qemu
     check:
       jobs:
@@ -4398,15 +4351,6 @@
         - openstack-tox-bashate
 
 - project:
-    name: openstack/devstack-plugin-pika
-    check:
-      jobs:
-        - openstack-tox-bashate
-    gate:
-      jobs:
-        - openstack-tox-bashate
-
-- project:
     name: openstack/devstack-plugin-sheepdog
     check:
       jobs:
@@ -4435,20 +4379,6 @@
     check:
       jobs:
         - openstack-tox-bashate
-    gate:
-      jobs:
-        - openstack-tox-bashate
-
-- project:
-    name: openstack/devstack-plugin-zmq
-    check:
-      jobs:
-        - openstack-tox-bashate
-        - legacy-tempest-dsvm-full-zmq:
-            voting: false
-            irrelevant-files:
-              - ^(test-|)requirements.txt$
-              - ^setup.cfg$
     gate:
       jobs:
         - openstack-tox-bashate
@@ -5958,13 +5888,6 @@
 - project:
     name: openstack/futurist
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - publish-openstack-docs-pti
-      - check-requirements
-      - lib-forward-testing
-      - release-notes-jobs-python3
-      - periodic-stable-jobs
       - publish-to-pypi
 
 - project:
@@ -7785,11 +7708,6 @@
 - project:
     name: openstack/mox3
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - publish-openstack-docs-pti
-      - check-requirements
-      - periodic-stable-jobs
       - publish-to-pypi
 
 - project:
@@ -10816,217 +10734,94 @@
       - golang-jobs
 
 - project:
-    name: openstack/oslo-specs
-    templates:
-      - openstack-specs-jobs
-
-- project:
     name: openstack/oslo.cache
     templates:
-      - openstack-python-jobs
-      - publish-openstack-docs-pti
-      - check-requirements
       - translation-jobs-master-only
-      - openstack-python35-jobs
-      - lib-forward-testing
-      - release-notes-jobs-python3
-      - periodic-stable-jobs
       - publish-to-pypi
 
 - project:
     name: openstack/oslo.concurrency
     templates:
-      - openstack-python-jobs
-      - publish-openstack-docs-pti
-      - check-requirements
-      - openstack-python35-jobs
       - translation-jobs-master-only
-      - lib-forward-testing
-      - release-notes-jobs-python3
-      - periodic-stable-jobs
       - publish-to-pypi
-    post:
-      jobs:
-        - openstack-tox-cover
 
 - project:
     name: openstack/oslo.config
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - publish-openstack-docs-pti
-      - check-requirements
-      - lib-forward-testing
-      - release-notes-jobs-python3
-      - periodic-stable-jobs
       - publish-to-pypi
 
 - project:
     name: openstack/oslo.context
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - publish-openstack-docs-pti
-      - check-requirements
-      - lib-forward-testing
-      - release-notes-jobs-python3
-      - periodic-stable-jobs
       - publish-to-pypi
 
 - project:
     name: openstack/oslo.db
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - publish-openstack-docs-pti
-      - check-requirements
       - translation-jobs-master-only
-      - lib-forward-testing
-      - release-notes-jobs-python3
-      - periodic-stable-jobs
       - publish-to-pypi
 
 - project:
     name: openstack/oslo.i18n
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - publish-openstack-docs-pti
-      - check-requirements
       - translation-jobs-master-only
-      - lib-forward-testing
-      - release-notes-jobs-python3
-      - periodic-stable-jobs
       - publish-to-pypi
-    post:
-      jobs:
-        - openstack-tox-cover
 
 - project:
     name: openstack/oslo.limit
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - publish-openstack-docs-pti
-      - check-requirements
-      - lib-forward-testing
-      - release-notes-jobs-python3
-      - periodic-stable-jobs
       - publish-to-pypi
 
 - project:
     name: openstack/oslo.log
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - publish-openstack-docs-pti
-      - check-requirements
       - translation-jobs-master-only
-      - lib-forward-testing
-      - release-notes-jobs-python3
-      - periodic-stable-jobs
       - publish-to-pypi
 
 - project:
     name: openstack/oslo.messaging
     templates:
-      - openstack-python-jobs
-      - check-requirements
       - translation-jobs-master-only
-      - lib-forward-testing
-      - release-notes-jobs-python3
-      - periodic-stable-jobs
       - publish-to-pypi
-    post:
-      jobs:
-        - openstack-tox-cover
 
 - project:
     name: openstack/oslo.middleware
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - publish-openstack-docs-pti
-      - check-requirements
       - translation-jobs-master-only
-      - lib-forward-testing
-      - release-notes-jobs-python3
-      - periodic-stable-jobs
       - publish-to-pypi
 
 - project:
     name: openstack/oslo.policy
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - publish-openstack-docs-pti
-      - check-requirements
       - translation-jobs-master-only
-      - lib-forward-testing
-      - release-notes-jobs-python3
-      - periodic-stable-jobs
       - publish-to-pypi
 
 - project:
     name: openstack/oslo.privsep
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - publish-openstack-docs-pti
-      - check-requirements
       - translation-jobs-master-only
-      - lib-forward-testing
-      - release-notes-jobs-python3
-      - periodic-stable-jobs
       - publish-to-pypi
 
 - project:
     name: openstack/oslo.reports
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - publish-openstack-docs-pti
-      - check-requirements
       - translation-jobs-master-only
-      - lib-forward-testing
-      - release-notes-jobs-python3
-      - periodic-stable-jobs
       - publish-to-pypi
 
 - project:
     name: openstack/oslo.rootwrap
     templates:
-      - publish-openstack-docs-pti
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - check-requirements
-      - lib-forward-testing
-      - release-notes-jobs-python3
-      - periodic-stable-jobs
       - publish-to-pypi
 
 - project:
     name: openstack/oslo.serialization
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - publish-openstack-docs-pti
-      - check-requirements
-      - lib-forward-testing
-      - release-notes-jobs-python3
-      - periodic-stable-jobs
       - publish-to-pypi
 
 - project:
     name: openstack/oslo.service
     templates:
-      - openstack-python-jobs
-      - publish-openstack-docs-pti
-      - check-requirements
       - translation-jobs-master-only
-      - lib-forward-testing
-      - release-notes-jobs-python3
-      - periodic-stable-jobs
       - publish-to-pypi
 
 - project:
@@ -11037,72 +10832,30 @@
 - project:
     name: openstack/oslo.utils
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - publish-openstack-docs-pti
-      - check-requirements
       - translation-jobs-master-only
-      - lib-forward-testing
-      - release-notes-jobs-python3
-      - periodic-stable-jobs
       - publish-to-pypi
 
 - project:
     name: openstack/oslo.versionedobjects
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - publish-openstack-docs-pti
-      - check-requirements
       - translation-jobs-master-only
-      - lib-forward-testing
-      - release-notes-jobs-python3
-      - periodic-stable-jobs
       - publish-to-pypi
 
 - project:
     name: openstack/oslo.vmware
     templates:
-      - openstack-python35-jobs
-      - openstack-python-jobs
-      - publish-openstack-docs-pti
-      - check-requirements
       - translation-jobs-master-only
-      - lib-forward-testing
-      - release-notes-jobs-python3
       - publish-to-pypi
 
 - project:
     name: openstack/oslosphinx
     templates:
-      - publish-openstack-docs-pti
-      - check-requirements
-      - release-notes-jobs-python3
-      - periodic-stable-jobs
       - publish-to-pypi
-    check:
-      jobs:
-        - openstack-tox-pep8
-    gate:
-      jobs:
-        - openstack-tox-pep8
-    post:
-      jobs:
-        - publish-openstack-python-branch-tarball
 
 - project:
     name: openstack/oslotest
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - publish-openstack-docs-pti
-      - check-requirements
-      - release-notes-jobs-python3
-      - periodic-stable-jobs
       - publish-to-pypi
-    post:
-      jobs:
-        - openstack-tox-cover
 
 - project:
     name: openstack/osops-coda
@@ -11141,20 +10894,7 @@
 - project:
     name: openstack/osprofiler
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - check-requirements
-      - publish-openstack-docs-pti
-      - release-notes-jobs-python3
-      - lib-forward-testing
-      - periodic-stable-jobs
       - publish-to-pypi
-    check:
-      jobs:
-        - openstack-tox-cover
-    post:
-      jobs:
-        - openstack-tox-cover
 
 - project:
     name: openstack/ospurge
@@ -13346,10 +13086,6 @@
 - project:
     name: openstack/sphinx-feature-classification
     templates:
-      - check-requirements
-      - publish-openstack-sphinx-docs
-      - openstack-python-jobs
-      - openstack-python35-jobs
       - publish-to-pypi
 
 - project:
@@ -13534,13 +13270,6 @@
 - project:
     name: openstack/stevedore
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - check-requirements
-      - lib-forward-testing
-      - publish-openstack-docs-pti
-      - release-notes-jobs-python3
-      - periodic-stable-jobs
       - publish-to-pypi
 
 - project:
@@ -13939,17 +13668,7 @@
 - project:
     name: openstack/taskflow
     templates:
-      - check-requirements
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - publish-openstack-docs-pti
-      - lib-forward-testing
-      - release-notes-jobs-python3
-      - periodic-stable-jobs
       - publish-to-pypi
-    post:
-      jobs:
-        - openstack-tox-cover
 
 - project:
     name: openstack/tatu
@@ -14413,17 +14132,7 @@
 - project:
     name: openstack/tooz
     templates:
-      - check-requirements
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - publish-openstack-docs-pti
-      - lib-forward-testing
-      - release-notes-jobs-python3
-      - periodic-stable-jobs
       - publish-to-pypi
-    post:
-      jobs:
-        - openstack-tox-cover
 
 - project:
     name: openstack/tosca-parser
