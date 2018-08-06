@@ -7696,7 +7696,7 @@
     templates:
       - openstack-python-jobs
       - openstack-python35-jobs
-      - publish-openstack-sphinx-docs
+      - publish-openstack-docs-pti
       - check-requirements
       - periodic-stable-jobs
       - release-notes-jobs
@@ -7711,23 +7711,8 @@
       jobs:
         - openstack-tox-cover:
             voting: false
-        - build-openstack-sphinx-docs:
-            branches: master
-            files:
-              - ^tox.ini$
-              - ^doc/source/first-app/.*
-              - bindep.txt
-              - ^.*requirements.txt$
     gate:
       queue: murano
-      jobs:
-        - build-openstack-sphinx-docs:
-            branches: master
-            files:
-              - ^tox.ini$
-              - ^doc/source/first-app/.*
-              - bindep.txt
-              - ^.*requirements.txt$
     post:
       jobs:
         - openstack-tox-cover
