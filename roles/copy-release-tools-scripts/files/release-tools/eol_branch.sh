@@ -1,20 +1,20 @@
 #!/bin/bash -e
+# This script is manually run at end of release time (at eol) to
+# retire a branch.
 
 function print_help {
     echo ""
     echo "USAGE:"
-    echo " ./eol_branch.sh [options] branch eol_tag project [project [project [...]]]"
+    echo " ./eol_branch.sh [options] branch project [project [project [...]]]"
     echo ""
     echo "A tool for retiring old branches. Performs the following:"
     echo "1) Abandon stale reviews,"
-    echo "2) tag current position of branch"
-    echo "3) delete the branch from the remote"
+    echo "2) delete the branch from the remote"
     echo ""
     echo "Must be ran from a directory containing a recent checkout of the project[s]"
     echo ""
     echo "Options:"
     echo " -d, --dry-run           Do not run any harmful commands"
-    echo " --eol-message <message> Set the message on the end-of-life tag"
     echo " -h, --help              This help message"
     echo " -q, --quiet             Turn off unimportant messages"
     echo " --remote <remote>       Set the remote to delete branches from (default: gerrit)"
@@ -22,7 +22,7 @@ function print_help {
     echo ""
 }
 
-OPTS=`getopt -o dhqw --long eol-message:,dry-run,help,quiet,remote:,warn-exit -n $0 -- "$@"`
+OPTS=`getopt -o dhqw --long dry-run,help,quiet,remote:,warn-exit -n $0 -- "$@"`
 if [ $? != 0 ] ; then
     echo "Failed parsing options." >&2
     print_help
@@ -31,7 +31,6 @@ fi
 eval set -- "$OPTS"
 set -e
 # Defaults:
-EOL_MESSAGE=""
 DEBUG=
 REMOTE=gerrit
 VERBOSE=true
@@ -41,11 +40,6 @@ while true; do
     case "$1" in
         -d|--dry-run)
             DEBUG=echo
-            shift
-            ;;
-        --eol-message)
-            EOL_MESSAGE=$2
-            shift
             shift
             ;;
         -h|--help)
@@ -76,14 +70,7 @@ done
 BRANCH=$1
 shift
 
-# Second argument is the tag to use before deletion
-TAG=$1
-shift
-
-if [$EOL_MESSAGE = ""]; then
-    EOL_MESSAGE="This branch ($BRANCH) is at End Of Life"
-fi
-
+EOL_MESSAGE="This branch ${BRANCH} is at End Of Life"
 
 function abandon_reviews {
     project=$1
@@ -102,26 +89,6 @@ function abandon_reviews {
     done
 }
 
-function tag_eol {
-    project=$1
-    rev=`git rev-parse remotes/$REMOTE/$BRANCH`
-
-    if git rev-parse $TAG >/dev/null 2>&1; then
-        echo "WARN: The tag ($TAG) already exists on $project"
-        tag_rev=`git rev-list -n 1 $TAG`
-        if [ $rev != $tag_rev ]; then
-            echo "ERROR: The tag ($tag_rev) doesn't match the branch ($rev)"
-            exit 1
-        fi
-        return 0
-    fi
-
-    if [ $VERBOSE = true ]; then
-        echo "About to add tag $TAG to $project at branch $BRANCH (rev $rev)"
-    fi
-    $DEBUG git tag -s $TAG -m "$EOL_MESSAGE" remotes/$REMOTE/$BRANCH
-    $DEBUG git push gerrit $TAG
-}
 
 function delete_branch {
     rev=`git rev-parse remotes/$REMOTE/$BRANCH`
@@ -191,7 +158,6 @@ while (( "$#" )); do
     fi
 
     abandon_reviews $project
-    tag_eol $project
     delete_branch $project
 
     popd
