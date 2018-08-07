@@ -14,11 +14,42 @@
 
 # In general, to add a new channel for an official OpenStack project
 # to this file, just add the name to the list in "channels" without
-# anything else.  Stackforge projects can optionally set "mask" to
-# "full_mask" to keep full permissions.
+# anything else.  Projects who wish to maintain full permissions
+# outside the "official" infra list can optionally set "mask" to
+# "full_mask".
 
+# Each channel is a dictionary with a keys as follows
+#
+# name:
+#   (str) unique channel name (no #)
+# alumni:
+#   (list) list of nicks that should be removed from ChanServ access
+# mask:
+#   (str) default mask for users with chanserv access but not
+#   otherwise listed in the channel or global config.  Access is
+#   limited to the mask but otherwise left alone.
+# mode:
+#   (str) mode mask for mlock.  Note that flags here are enforced, but
+#   flags outside the list are left alone.
+# *:
+#   (list) every other key is assumed to be a key in the "access:"
+#   list.  The provided list of nicks will have the flags for that
+#   key applied.
+#
+# NOTE each channel looks up these values in the "global:" list first.
+# Channel specific values override the global values.
+
+#
 # Global definitions
-# First set up the access levels (map names in this file to chanserv flags):
+#
+
+# To forward unregistered users to a channel with +f you need to be an
+# op in that channel.  This pre-joins and ops (via chanserv) in the
+# given channels.
+op_channels:
+  - openstack-unregistered
+
+# Access levels (map names in this file to chanserv flags):
 access:
   masters: +AFRefiorstv
   status: +Vt
@@ -27,11 +58,28 @@ access:
   channel_op_mask: +AOVefortv
   full_mask: +AFORVefiorstv
 
-# Define access that should apply to all channels.  The label 'mask'
-# is special: anyone with perms on a channel that isn't otherwise
-# listed for the channel or in the global list will have their access
-# limited to the mask but otherwise left alone.
+# Define configuration that should apply to all channels.
 global:
+  # These entries can be removed after the next accessbot run should
+  # people desire, but it is also left here as the official OpenStack
+  # IRC Wall of Fame! :)
+  alumni:
+    - SergeyLukjanov
+    - lifeless
+    - lyz
+    - maffulli
+    - nibalizer
+    - yolanda
+    - Sam-I-Am
+  mask:
+    channel_op_mask
+  # This sets the following
+  #  c : no colors
+  #  n : message can not be sent from outside channel
+  #  r : registered users only
+  #  t : op to modify topic
+  #  f : forward unregistered users to #openstack-unregistered
+  mode: '+cnrtf #openstack-unregistered'
   masters:
     - openstackinfra
   operators:
@@ -52,35 +100,6 @@ global:
     - openstackstatus
   meetbots:
     - open_stack
-  mask:
-    channel_op_mask
-
-# Alumni have their access removed from all channels (note you can set
-# alumni: on an individual channel too).  These entries can be removed
-# after the next accessbot run should people desire, but it is also
-# left here as the official OpenStack IRC Wall of Fame! :)
-alumni:
-  - SergeyLukjanov
-  - lifeless
-  - lyz
-  - maffulli
-  - nibalizer
-  - yolanda
-  - Sam-I-Am
-
-# To forward unregistered users to a channel with +f you need to be an
-# op in that channel.  This pre-joins and ops (via chanserv) in the
-# given channels.
-op_channels:
-  - openstack-unregistered
-
-# This sets the following
-#  c : no colors
-#  n : message can not be sent from outside channel
-#  r : registered users only
-#  t : op to modify topic
-#  f : forward unregistered users to #openstack-unregistered
-mode: '+cnrtf #openstack-unregistered'
 
 # Individual channel configuration:
 channels:
