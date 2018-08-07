@@ -165,12 +165,36 @@ def check_voting():
     return errors
 
 
+def check_only_boilerplate():
+    """Check for redundant boilerplate with not jobs."""
+
+    errors = False
+    print("\nChecking that every project has entries")
+    print("======================")
+    for entry in projects:
+        project = entry['project']
+        if len(project.keys()) <= 1:
+            name = project['name']
+            errors = True
+            print("  Found project %s with no jobs configured." % name)
+
+    if errors:
+        print("Errors found!\n")
+        print("Do not add projects with only names entry but no jobs,")
+        print("remove the entry completely - unless you forgot to add jobs.")
+    else:
+        print("... all fine.")
+
+    return errors
+
+
 def check_all():
 
     errors = check_projects_sorted()
     errors = blacklist_jobs() or errors
     errors = check_release_jobs() or errors
     errors = check_voting() or errors
+    errors = check_only_boilerplate() or errors
 
     if errors:
         print("\nFound errors in zuul.d/projects.yaml!\n")
