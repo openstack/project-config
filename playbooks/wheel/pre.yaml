@@ -1,38 +1,26 @@
 - hosts: all
   roles:
     - bindep
-    - legacy-install-afs-with-puppet
 
   pre_tasks:
-    # NOTE(pabelanger): Needed by puppet-openafs package.
-    - name: Add OpenAFS OpenStack CI build
-      become: yes
-      yum_repository:
-        name: openafs
-        description: OpenAFS OpenStack CI build
-        baseurl: https://tarballs.openstack.org/project-config/package-afs-centos7
-        gpgcheck: no
-      when: ansible_distribution == "CentOS"
-
-    # NOTE(pabelanger): Manually install EPEL dependencies as not to keep EPEL
-    # enabled.
+    # NOTE(pabelanger): Manually install EPEL dependencies as not to
+    # keep EPEL enabled.
     - name: Manually install EPEL dependencies
       become: yes
       yum:
         name: "{{ item }}"
         enablerepo: epel
         state: present
-      when: ansible_distribution == "CentOS"
-      with_items:
-        - dkms
-        - kstart
+      loop:
         - parallel
+      when: ansible_distribution == "CentOS"
 
-    # NOTE(pabelanger): We need to install extra liberies, such as:
-    # liberasurecode-devel
-    - name: Add centos-release-openstack-pike support
+    # NOTE(pabelanger): We need to install extra libraries, such as
+    #  liberasurecode-devel
+    # which are only part of the RDO repositories.
+    - name: Add centos-release-openstack-queens support
+      yum:
+        name: centos-release-openstack-queens
+        state: present
       become: yes
       when: ansible_distribution == "CentOS"
-      yum:
-        name: centos-release-openstack-pike
-        state: present
