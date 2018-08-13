@@ -4370,7 +4370,6 @@
 - project:
     name: openstack/django_openstack_auth
     templates:
-      - translation-jobs-pike
       - publish-to-pypi
     check:
       jobs:
@@ -4448,10 +4447,6 @@
               - stable/ocata
     post:
       jobs:
-        - upstream-translation-update:
-            branches:
-              - stable/pike
-              - stable/ocata
         - publish-openstack-sphinx-docs:
             branches:
               - stable/pike
@@ -7016,7 +7011,10 @@
       - check-requirements
       - publish-openstack-sphinx-docs
       - release-notes-jobs
-      - translation-jobs
+      # TODO(jaegerandi): Once queens is not translated anymore,
+      # use translation-jobs-master-stable instead of the two
+      # templates below.
+      - translation-jobs-master-only
       - translation-jobs-rocky
       - publish-to-pypi-horizon
     check:
@@ -7139,7 +7137,10 @@
       - openstack-python-jobs-horizon
       - openstack-python35-jobs-horizon
       - publish-openstack-sphinx-docs
-      - translation-jobs
+      # TODO(jaegerandi): Once queens is not translated anymore,
+      # use translation-jobs-master-stable instead of the two
+      # templates below.
+      - translation-jobs-master-only
       - translation-jobs-rocky
       - release-notes-jobs
       - publish-to-pypi-horizon
