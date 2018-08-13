@@ -4023,31 +4023,6 @@
       queue: congress
 
 - project:
-    name: openstack/constellations
-    templates:
-      - publish-openstack-sphinx-docs
-    check:
-      jobs:
-        - openstack-tox-pep8
-    gate:
-      jobs:
-        - openstack-tox-pep8
-
-- project:
-    name: openstack/contributor-guide
-    templates:
-      - build-openstack-sphinx-docs
-    check:
-      jobs:
-        - openstack-tox-pep8
-    gate:
-      jobs:
-        - openstack-tox-pep8
-    post:
-      jobs:
-        - publish-openstack-contributor-guide
-
-- project:
     name: openstack/conveyor
     templates:
       - openstack-python-jobs
@@ -4623,17 +4598,6 @@
     name: openstack/docker-machine-openstack
     templates:
       - golang-jobs
-
-- project:
-    name: openstack/docs-specs
-    templates:
-      - openstack-specs-jobs
-    check:
-      jobs:
-        - openstack-tox-py27
-    gate:
-      jobs:
-        - openstack-tox-py27
 
 - project:
     name: openstack/downpour
@@ -10442,11 +10406,6 @@
 - project:
     name: openstack/openstack-doc-tools
     templates:
-      - check-requirements
-      - release-notes-jobs
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - publish-openstack-sphinx-docs
       - publish-to-pypi
 
 - project:
@@ -10471,12 +10430,6 @@
     name: openstack/openstack-manuals
     templates:
       - translation-jobs-master-only
-      - release-notes-jobs
-    post:
-      jobs:
-        - propose-updates:
-            vars:
-              update_target: openstack-manuals
 
 - project:
     name: openstack/openstack-mentoring-scripts
@@ -10518,13 +10471,9 @@
 - project:
     name: openstack/openstackdocstheme
     templates:
-      - check-requirements
-      - release-notes-jobs
-      - publish-openstack-sphinx-docs
       - publish-to-pypi
     check:
       jobs:
-        - openstack-tox-pep8
         - build-openstack-api-ref:
             branches: master
             files:
@@ -10536,7 +10485,6 @@
               - ^.*\.rst$
     gate:
       jobs:
-        - openstack-tox-pep8
         - build-openstack-api-ref:
             branches: master
             files:
@@ -10546,9 +10494,6 @@
               - ^openstackdocstheme/.*$
               - ^.*\.txt$
               - ^.*\.rst$
-    post:
-      jobs:
-        - publish-openstack-python-branch-tarball
 
 - project:
     name: openstack/openstacksdk
@@ -10595,8 +10540,6 @@
 - project:
     name: openstack/os-api-ref
     templates:
-      - check-requirements
-      - publish-openstack-sphinx-docs
       - publish-to-pypi
 
 - project:
@@ -12932,18 +12875,6 @@
       - publish-to-pypi
 
 - project:
-    name: openstack/rst2bash
-    templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-    check:
-      jobs:
-        - legacy-labs-ig-cluster-kvm-ubuntu:
-            voting: false
-        - legacy-labs-ig-cluster-vbox-ubuntu:
-            voting: false
-
-- project:
     name: openstack/sahara
     templates:
       - openstack-python-jobs
@@ -14447,14 +14378,6 @@
     name: openstack/training-guides
     templates:
       - translation-jobs-master-only
-
-- project:
-    name: openstack/training-labs
-    templates:
-      - openstack-python-jobs
-    post:
-      jobs:
-        - publish-training-labs-scripts
 
 - project:
     name: openstack/transparency-policy
