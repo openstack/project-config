@@ -26,8 +26,3 @@ set -o pipefail
 # properly login.
 sed -i -e'/PermitRootLogin/d' /etc/ssh/sshd_config \
     && echo "PermitRootLogin Yes" >> /etc/ssh/sshd_config
-
-# NOTE(clarkb): Glean configures ssh keys only and not passwords. Disable
-# unnecessary password auth.
-sed -i -e '/PasswordAuthentication/d' /etc/ssh/sshd_config \
-    && echo "PasswordAuthentication No" >> /etc/ssh/sshd_config
