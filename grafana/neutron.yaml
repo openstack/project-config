@@ -31,12 +31,12 @@ dashboard:
         - title: Number of integrated Tempest jobs runs (Gate queue)
           span: 4
           targets:
-            - target: alias(movingAverage(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron.master.job.tempest-full.{SUCCESS,FAILURE}),'24hours'), 'tempest-full')
-            - target: alias(movingAverage(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron.master.job.neutron-tempest-plugin-api.{SUCCESS,FAILURE}),'24hours'), 'neutron-tempest-plugin-api')
-            - target: alias(movingAverage(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron.master.job.neutron-tempest-dvr.{SUCCESS,FAILURE}),'24hours'), 'neutron-tempest-dvr')
-            - target: alias(movingAverage(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron.master.job.neutron-tempest-linuxbridge.{SUCCESS,FAILURE}),'24hours'), 'neutron-tempest-linuxbridge')
-            - target: alias(movingAverage(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron.master.job.neutron-tempest-iptables_hybrid.{SUCCESS,FAILURE}),'24hours'), 'neutron-tempest-iptables_hybrid')
-            - target: alias(movingAverage(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron.master.job.legacy-tempest-dsvm-py35.{SUCCESS,FAILURE}),'24hours'), 'legacy-tempest-dsvm-py35')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron.master.job.tempest-full.{SUCCESS,FAILURE}),'24hours'), 'tempest-full')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron.master.job.neutron-tempest-plugin-api.{SUCCESS,FAILURE}),'24hours'), 'neutron-tempest-plugin-api')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron.master.job.neutron-tempest-dvr.{SUCCESS,FAILURE}),'24hours'), 'neutron-tempest-dvr')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron.master.job.neutron-tempest-linuxbridge.{SUCCESS,FAILURE}),'24hours'), 'neutron-tempest-linuxbridge')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron.master.job.neutron-tempest-iptables_hybrid.{SUCCESS,FAILURE}),'24hours'), 'neutron-tempest-iptables_hybrid')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron.master.job.legacy-tempest-dsvm-py35.{SUCCESS,FAILURE}),'24hours'), 'legacy-tempest-dsvm-py35')
           type: graph
         - title: Scenario jobs Failure Rates (Gate queue)
           span: 4
@@ -46,7 +46,7 @@ dashboard:
         - title: Number of scenario jobs runs (Gate queue)
           span: 4
           targets:
-            - target: alias(movingAverage(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron.master.job.neutron-tempest-plugin-scenario-linuxbridge.{SUCCESS,FAILURE}),'24hours'), 'neutron-tempest-plugin-scenario-linuxbridge')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron.master.job.neutron-tempest-plugin-scenario-linuxbridge.{SUCCESS,FAILURE}),'24hours'), 'neutron-tempest-plugin-scenario-linuxbridge')
           type: graph
         - title: Integrated Grenade Failure Rates (Gate queue)
           span: 4
@@ -58,9 +58,9 @@ dashboard:
         - title: Number of integrated Grenade jobs runs (Gate queue)
           span: 4
           targets:
-            - target: alias(movingAverage(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron.master.job.neutron-grenade.{SUCCESS,FAILURE}),'24hours'), 'neutron-grenade')
-            - target: alias(movingAverage(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron.master.job.neutron-grenade-multinode.{SUCCESS,FAILURE}),'24hours'), 'neutron-grenade-multinode')
-            - target: alias(movingAverage(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron.master.job.neutron-grenade-dvr-multinode.{SUCCESS,FAILURE}),'24hours'), 'neutron-grenade-dvr-multinode')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron.master.job.neutron-grenade.{SUCCESS,FAILURE}),'24hours'), 'neutron-grenade')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron.master.job.neutron-grenade-multinode.{SUCCESS,FAILURE}),'24hours'), 'neutron-grenade-multinode')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron.master.job.neutron-grenade-dvr-multinode.{SUCCESS,FAILURE}),'24hours'), 'neutron-grenade-dvr-multinode')
           type: graph
         - title: Functional/Fullstack Failure Rates (Gate queue)
           span: 4
@@ -71,8 +71,8 @@ dashboard:
         - title: Number of Functional/Fullstack jobs runs (Gate queue)
           span: 4
           targets:
-            - target: alias(movingAverage(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron.master.job.neutron-functional.{SUCCESS,FAILURE}),'24hours'), 'neutron-functional')
-            - target: alias(movingAverage(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron.master.job.neutron-fullstack.{SUCCESS,FAILURE}),'24hours'), 'neutron-fullstack')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron.master.job.neutron-functional.{SUCCESS,FAILURE}),'24hours'), 'neutron-functional')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron.master.job.neutron-fullstack.{SUCCESS,FAILURE}),'24hours'), 'neutron-fullstack')
           type: graph
         - title: Unit Tests Failure Rates (Gate queue)
           span: 4
@@ -83,8 +83,8 @@ dashboard:
         - title: Number of Unit Tests jobs runs (Gate queue)
           span: 4
           targets:
-            - target: alias(movingAverage(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron.master.job.openstack-tox-py27.{SUCCESS,FAILURE}),'24hours'), 'openstack-tox-py27')
-            - target: alias(movingAverage(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron.master.job.openstack-tox-py35.{SUCCESS,FAILURE}),'24hours'), 'openstack-tox-py35')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron.master.job.openstack-tox-py27.{SUCCESS,FAILURE}),'24hours'), 'openstack-tox-py27')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron.master.job.openstack-tox-py35.{SUCCESS,FAILURE}),'24hours'), 'openstack-tox-py35')
           type: graph
         - title: Coverage Failure Rates (Gate queue)
           span: 4
@@ -94,7 +94,7 @@ dashboard:
         - title: Number of Coverage jobs runs (Gate queue)
           span: 4
           targets:
-            - target: alias(movingAverage(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron.master.job.openstack-tox-cover.{SUCCESS,FAILURE}),'24hours'), 'openstack-tox-cover')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron.master.job.openstack-tox-cover.{SUCCESS,FAILURE}),'24hours'), 'openstack-tox-cover')
           type: graph
         - title: Requirements Failure Rates (Gate queue)
           span: 4
@@ -104,7 +104,7 @@ dashboard:
         - title: Number of Requirements jobs runs (Gate queue)
           span: 4
           targets:
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron.master.job.openstack-tox-lower-constraints.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron.master.job.openstack-tox-lower-constraints.{SUCCESS,FAILURE})),'24hours'), 'openstack-tox-lower-constraints')
+            - target: alias(summarize(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron.master.job.openstack-tox-lower-constraints.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.git_openstack_org.openstack_neutron.master.job.openstack-tox-lower-constraints.{SUCCESS,FAILURE})),'24hours'), 'openstack-tox-lower-constraints')
           type: graph
 
         - title: Integrated Tempest Failure Rates (Check queue)
@@ -119,17 +119,17 @@ dashboard:
             - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.neutron-tempest-multinode-full.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.neutron-tempest-multinode-full.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-multinode-full (non-voting)')
             - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.neutron-tempest-dvr-ha-multinode-full.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.neutron-tempest-dvr-ha-multinode-full.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-dvr-ha-multinode-full (non-voting)')
           type: graph
-        - title: NUmber of Integrated Tempest jobs runs (Check queue)
+        - title: Number of Integrated Tempest jobs runs (Check queue)
           span: 4
           targets:
-            - target: alias(movingAverage(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.tempest-full.{SUCCESS,FAILURE}),'24hours'), 'tempest-full')
-            - target: alias(movingAverage(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.neutron-tempest-plugin-api.{SUCCESS,FAILURE}),'24hours'), 'neutron-tempest-plugin-api')
-            - target: alias(movingAverage(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.neutron-tempest-dvr.{SUCCESS,FAILURE}),'24hours'), 'neutron-tempest-dvr')
-            - target: alias(movingAverage(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.neutron-tempest-linuxbridge.{SUCCESS,FAILURE}),'24hours'), 'neutron-tempest-linuxbridge')
-            - target: alias(movingAverage(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.neutron-tempest-iptables_hybrid.{SUCCESS,FAILURE}),'24hours'), 'neutron-tempest-iptables_hybrid')
-            - target: alias(movingAverage(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.legacy-tempest-dsvm-py35.{SUCCESS,FAILURE}),'24hours'), 'legacy-tempest-dsvm-py35')
-            - target: alias(movingAverage(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.neutron-tempest-multinode-full.{SUCCESS,FAILURE}),'24hours'), 'neutron-tempest-multinode-full (non-voting)')
-            - target: alias(movingAverage(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.neutron-tempest-dvr-ha-multinode-full.{SUCCESS,FAILURE}),'24hours'), 'neutron-tempest-dvr-ha-multinode-full (non-voting)')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.tempest-full.{SUCCESS,FAILURE}),'24hours'), 'tempest-full')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.neutron-tempest-plugin-api.{SUCCESS,FAILURE}),'24hours'), 'neutron-tempest-plugin-api')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.neutron-tempest-dvr.{SUCCESS,FAILURE}),'24hours'), 'neutron-tempest-dvr')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.neutron-tempest-linuxbridge.{SUCCESS,FAILURE}),'24hours'), 'neutron-tempest-linuxbridge')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.neutron-tempest-iptables_hybrid.{SUCCESS,FAILURE}),'24hours'), 'neutron-tempest-iptables_hybrid')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.legacy-tempest-dsvm-py35.{SUCCESS,FAILURE}),'24hours'), 'legacy-tempest-dsvm-py35')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.neutron-tempest-multinode-full.{SUCCESS,FAILURE}),'24hours'), 'neutron-tempest-multinode-full (non-voting)')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.neutron-tempest-dvr-ha-multinode-full.{SUCCESS,FAILURE}),'24hours'), 'neutron-tempest-dvr-ha-multinode-full (non-voting)')
           type: graph
         - title: Scenario jobs Failure Rates (Check queue)
           span: 4
@@ -142,10 +142,10 @@ dashboard:
         - title: Number of Scenario jobs runs (Check queue)
           span: 4
           targets:
-            - target: alias(movingAverage(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.neutron-tempest-plugin-designate-scenario.{SUCCESS,FAILURE}),'24hours'), 'neutron-tempest-plugin-designate-scenario')
-            - target: alias(movingAverage(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.neutron-tempest-plugin-dvr-multinode-scenario.{SUCCESS,FAILURE}),'24hours'), 'neutron-tempest-plugin-dvr-multinode-scenario (non-voting)')
-            - target: alias(movingAverage(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.neutron-tempest-plugin-scenario-linuxbridge.{SUCCESS,FAILURE}),'24hours'), 'neutron-tempest-plugin-scenario-linuxbridge')
-            - target: alias(movingAverage(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.ironic-tempest-dsvm-ipa-wholedisk-bios-agent_ipmitool-tinyipa.{SUCCESS,FAILURE}),'24hours'), 'ironic-tempest-dsvm-ipa-wholedisk-bios-agent_ipmitool-tinyipa (non-voting)')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.neutron-tempest-plugin-designate-scenario.{SUCCESS,FAILURE}),'24hours'), 'neutron-tempest-plugin-designate-scenario')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.neutron-tempest-plugin-dvr-multinode-scenario.{SUCCESS,FAILURE}),'24hours'), 'neutron-tempest-plugin-dvr-multinode-scenario (non-voting)')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.neutron-tempest-plugin-scenario-linuxbridge.{SUCCESS,FAILURE}),'24hours'), 'neutron-tempest-plugin-scenario-linuxbridge')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.ironic-tempest-dsvm-ipa-wholedisk-bios-agent_ipmitool-tinyipa.{SUCCESS,FAILURE}),'24hours'), 'ironic-tempest-dsvm-ipa-wholedisk-bios-agent_ipmitool-tinyipa (non-voting)')
           type: graph
         - title: Integrated Grenade Failure Rates (Check queue)
           span: 4
@@ -157,9 +157,9 @@ dashboard:
         - title: Number of Integrated Grenade jobs runs (Check queue)
           span: 4
           targets:
-            - target: alias(movingAverage(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.neutron-grenade.{SUCCESS,FAILURE}),'24hours'), 'neutron-grenade')
-            - target: alias(movingAverage(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.neutron-grenade-multinode.{SUCCESS,FAILURE}),'24hours'), 'neutron-grenade-multinode')
-            - target: alias(movingAverage(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.neutron-grenade-dvr-multinode.{SUCCESS,FAILURE}),'24hours'), 'neutron-grenade-dvr-multinode')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.neutron-grenade.{SUCCESS,FAILURE}),'24hours'), 'neutron-grenade')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.neutron-grenade-multinode.{SUCCESS,FAILURE}),'24hours'), 'neutron-grenade-multinode')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.neutron-grenade-dvr-multinode.{SUCCESS,FAILURE}),'24hours'), 'neutron-grenade-dvr-multinode')
           type: graph
         - title: Functional/Fullstack Failure Rates (Check queue)
           span: 4
@@ -171,9 +171,9 @@ dashboard:
         - title: Number of Functional/Fullstack jobs runs (Check queue)
           span: 4
           targets:
-            - target: alias(movingAverage(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.neutron-functional.{SUCCESS,FAILURE}),'24hours'), 'neutron-functional')
-            - target: alias(movingAverage(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.neutron-fullstack.{SUCCESS,FAILURE}),'24hours'), 'neutron-fullstack')
-            - target: alias(movingAverage(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.neutron-fullstack-python35.{SUCCESS,FAILURE}),'24hours'), 'neutron-fullstack-python35 (non-voting)')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.neutron-functional.{SUCCESS,FAILURE}),'24hours'), 'neutron-functional')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.neutron-fullstack.{SUCCESS,FAILURE}),'24hours'), 'neutron-fullstack')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.neutron-fullstack-python35.{SUCCESS,FAILURE}),'24hours'), 'neutron-fullstack-python35 (non-voting)')
           type: graph
         - title: Unit Tests Failure Rates (Check queue)
           span: 4
@@ -184,8 +184,8 @@ dashboard:
         - title: Number of Unit Tests jobs runs (Check queue)
           span: 4
           targets:
-            - target: alias(movingAverage(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.openstack-tox-py27.{SUCCESS,FAILURE}),'24hours'), 'openstack-tox-py27')
-            - target: alias(movingAverage(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.openstack-tox-py35.{SUCCESS,FAILURE}),'24hours'), 'openstack-tox-py35')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.openstack-tox-py27.{SUCCESS,FAILURE}),'24hours'), 'openstack-tox-py27')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.openstack-tox-py35.{SUCCESS,FAILURE}),'24hours'), 'openstack-tox-py35')
           type: graph
         - title: Coverage Failure Rates (Check queue)
           span: 4
@@ -195,7 +195,7 @@ dashboard:
         - title: Number of Coverage jobs runs (Check queue)
           span: 4
           targets:
-            - target: alias(movingAverage(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.openstack-tox-cover.{SUCCESS,FAILURE}),'24hours'), 'openstack-tox-cover')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.openstack-tox-cover.{SUCCESS,FAILURE}),'24hours'), 'openstack-tox-cover')
           type: graph
         - title: Requirements Failure Rates (Check queue)
           span: 4
@@ -205,7 +205,7 @@ dashboard:
         - title: Number of Requirements jobs runs (Check queue)
           span: 4
           targets:
-            - target: alias(movingAverage(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.openstack-tox-lower-constraints.{SUCCESS,FAILURE}),'24hours'), 'openstack-tox-lower-constraints')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.openstack-tox-lower-constraints.{SUCCESS,FAILURE}),'24hours'), 'openstack-tox-lower-constraints')
           type: graph
         - title: Rally Failure Rates (Check queue)
           span: 4
@@ -215,7 +215,7 @@ dashboard:
         - title: Number of Rally jobs runs (Check queue)
           span: 4
           targets:
-            - target: alias(movingAverage(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.neutron-rally-task.{SUCCESS,FAILURE}),'24hours'), 'neutron-rally-task')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.neutron-rally-task.{SUCCESS,FAILURE}),'24hours'), 'neutron-rally-task')
           type: graph
         - title: Documentation Failure Rates (Check queue)
           span: 4
@@ -225,7 +225,7 @@ dashboard:
         - title: Number of Documentation jobs runs (Check queue)
           span: 4
           targets:
-            - target: alias(movingAverage(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.build-openstack-sphinx-docs.{SUCCESS,FAILURE}),'24hours'), 'build-openstack-sphinx-docs')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.git_openstack_org.openstack_neutron.master.job.build-openstack-sphinx-docs.{SUCCESS,FAILURE}),'24hours'), 'build-openstack-sphinx-docs')
           type: graph
 
         - title: Periodic jobs
