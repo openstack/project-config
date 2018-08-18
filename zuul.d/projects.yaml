@@ -11569,16 +11569,7 @@
 - project:
     name: openstack/python-watcherclient
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - publish-openstack-sphinx-docs
-      - check-requirements
-      - openstackclient-plugin-jobs
       - publish-to-pypi
-    check:
-      jobs:
-        - openstack-tox-cover:
-            voting: false
 
 - project:
     name: openstack/python-zaqarclient
@@ -13514,12 +13505,7 @@
 - project:
     name: openstack/watcher
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - publish-openstack-sphinx-docs
       - translation-jobs-master-stable
-      - check-requirements
-      - release-notes-jobs
       - publish-to-pypi
       - api-ref-jobs
     gate:
@@ -13528,30 +13514,14 @@
 - project:
     name: openstack/watcher-dashboard
     templates:
-      - openstack-python-jobs-horizon
-      - openstack-python35-jobs-horizon
-      - publish-openstack-sphinx-docs
-      - release-notes-jobs
-      - check-requirements
       - translation-jobs-master-stable
       - publish-to-pypi-horizon
-
-- project:
-    name: openstack/watcher-specs
-    templates:
-      - openstack-specs-jobs
-    check:
-      jobs:
-        - openstack-tox-py27
     gate:
-      jobs:
-        - openstack-tox-py27
+      queue: watcher
 
 - project:
     name: openstack/watcher-tempest-plugin
     templates:
-      - check-requirements
-      - tempest-plugin-jobs
       - publish-to-pypi
     gate:
       queue: watcher
