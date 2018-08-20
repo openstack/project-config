@@ -520,11 +520,12 @@
 
 - job:
     name: publish-infra-manual
-    parent: publish-sphinx-docs-base
+    parent: publish-openstack-tox-docs-base
     description: |
       Publish the Infra Manual to /afs/.openstack.org/docs/infra/manual
     final: true
     post-run:
+      - playbooks/project-config/post-tox.yaml
       - playbooks/sphinx/post-infra.yaml
     allowed-projects:
       - openstack-infra/infra-manual
