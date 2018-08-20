@@ -344,7 +344,7 @@
       - openstack-python-jobs-no-constraints
       - openstack-python35-jobs-no-constraints
       - publish-to-pypi
-      - release-openstack-sphinx-docs-infra
+      - release-tox-docs-infra
     post:
       jobs:
         - tox-cover
@@ -416,7 +416,7 @@
 - project:
     name: openstack-infra/elastic-recheck
     templates:
-      - publish-openstack-sphinx-docs-infra
+      - publish-tox-docs-infra
     check:
       jobs:
         - openstack-tox-pep8
@@ -490,7 +490,7 @@
       - openstack-python-jobs-no-constraints
       - openstack-python35-jobs-no-constraints
       - publish-to-pypi
-      - release-openstack-sphinx-docs-infra
+      - release-tox-docs-infra
 
 - project:
     name: openstack-infra/git-review
@@ -498,14 +498,14 @@
       - openstack-python-jobs-no-constraints
       - openstack-python35-jobs-no-constraints
       - publish-to-pypi
-      - release-openstack-sphinx-docs-infra
+      - release-tox-docs-infra
 
 - project:
     name: openstack-infra/glean
     templates:
       - openstack-python-jobs-no-constraints
       - openstack-python35-jobs-no-constraints
-      - publish-openstack-sphinx-docs-infra
+      - publish-tox-docs-infra
       - publish-to-pypi
     check:
       jobs:
@@ -529,7 +529,7 @@
     templates:
       - openstack-python-jobs-no-constraints
       - openstack-python35-jobs-no-constraints
-      - publish-openstack-sphinx-docs-infra
+      - publish-tox-docs-infra
       - publish-to-pypi
     check:
       jobs:
@@ -599,7 +599,7 @@
     templates:
       - openstack-python-jobs-no-constraints
       - openstack-python35-jobs-no-constraints
-      - publish-openstack-sphinx-docs-infra
+      - publish-tox-docs-infra
       - publish-to-pypi
     check:
       jobs:
@@ -665,7 +665,7 @@
     name: openstack-infra/log_processor
     templates:
       - openstack-python-jobs-no-constraints
-      - publish-openstack-sphinx-docs-infra
+      - publish-tox-docs-infra
       - publish-to-pypi
 
 - project:
@@ -725,7 +725,7 @@
 - project:
     name: openstack-infra/openstackid
     templates:
-      - publish-openstack-sphinx-docs-infra
+      - publish-tox-docs-infra
     check:
       jobs:
         - legacy-laravel-openstackid-unittests
@@ -1348,7 +1348,7 @@
     templates:
       - infra-puppet-check-jobs
       - infra-puppet-apply-jobs
-      - publish-openstack-sphinx-docs-infra
+      - publish-tox-docs-infra
     check:
       jobs:
         - openstackci-beaker-ubuntu-trusty
@@ -1721,15 +1721,11 @@
     templates:
       - openstack-python-jobs-no-constraints
       - openstack-python35-jobs-no-constraints
-      - publish-openstack-sphinx-docs-infra
+      - release-tox-docs-infra
       - publish-to-pypi
     post:
       jobs:
         - tox-cover
-    release:
-      jobs:
-        - publish-openstack-sphinx-docs-infra:
-            branches: ^(?!bug/).*$
 
 - project:
     name: openstack-infra/releasestatus
@@ -1803,18 +1799,10 @@
     name: openstack-infra/storyboard
     templates:
       - publish-to-pypi
-      - publish-openstack-sphinx-docs-infra
+      - publish-tox-docs-infra
     post:
       jobs:
         - tox-cover
-    pre-release:
-      jobs:
-        - publish-openstack-sphinx-docs-infra:
-            branches: ^(?!bug/).*$
-    release:
-      jobs:
-        - publish-openstack-sphinx-docs-infra:
-            branches: ^(?!bug/).*$
     experimental:
       jobs:
         - legacy-storyboard-js-integration-ubuntu-trusty:
@@ -1849,7 +1837,7 @@
     templates:
       - infra-puppet-apply-jobs
       - infra-logstash-filter-jobs
-      - publish-openstack-sphinx-docs-infra
+      - publish-tox-docs-infra
     check:
       jobs:
         - tox-linters
