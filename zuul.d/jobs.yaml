@@ -502,6 +502,26 @@
       afs_subpath: "/infra/{{ zuul.project.short_name }}"
 
 - job:
+    name: publish-tox-docs-infra
+    description: |
+      Publish the results of the tox-docs job to
+      /afs/.openstack.org/infra/{{ zuul.project.short_name }}
+    final: true
+    pre-run: playbooks/project-config/pre-tox.yaml
+    run: playbooks/project-config/run-tox.yaml
+    post-run:
+      - playbooks/sphinx/post-infra.yaml
+    roles:
+      - zuul: openstack-infra/zuul-jobs
+      - zuul: openstack-infra/openstack-zuul-jobs
+    vars:
+      tox_envlist: docs
+      afs_subpath: "/infra/{{ zuul.project.short_name }}"
+    secrets:
+      - secret: afsdocs_secret
+        name: afs
+
+- job:
     name: publish-openstack-sphinx-docs-infra-python3
     parent: publish-sphinx-docs-base
     description: |
