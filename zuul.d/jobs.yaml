@@ -365,22 +365,18 @@
       afs_subpath: "/contributors"
 
 - job:
-    name: publish-openstack-tox-docs
+    name: publish-openstack-tox-docs-base
     description: |
-      Special publication job for projects that need to run tox using
-      the docs environment.
+      Base job for publishing docs tox job.
 
       Publish the results of the docs tox job to
       /afs/.openstack.org/docs/{{ zuul.project.short_name }}.
 
-      Publishes depending on branch to latest/ (for master), or the
-      basename of the branch like pike (for stable/pike).
-    final: true
+    abstract: true
+    protected: true
     pre-run: playbooks/project-config/pre-tox.yaml
     run: playbooks/project-config/run-tox.yaml
     post-run:
-      - playbooks/project-config/post-tox.yaml
-      - playbooks/sphinx/post.yaml
       - playbooks/publish/openstack-afs.yaml
     required-projects:
       - name: openstack/requirements
@@ -388,11 +384,31 @@
       - zuul: openstack-infra/zuul-jobs
       - zuul: openstack-infra/openstack-zuul-jobs
     vars:
-      tox_constraints_file: '{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt'
       tox_envlist: docs
     secrets:
       - secret: afsdocs_secret
         name: afs
+
+- job:
+    name: publish-openstack-tox-docs
+    parent: publish-openstack-tox-docs-base
+    description: |
+      Publication job for projects that run tox using
+      the docs environment following OpenStack PTI.
+
+      Publish the results of the docs tox job to
+      /afs/.openstack.org/docs/{{ zuul.project.short_name }}.
+
+      Publishes depending on branch to latest/ (for master), or the
+      basename of the branch like pike (for stable/pike).
+    final: true
+    post-run:
+      - playbooks/project-config/post-tox.yaml
+      - playbooks/sphinx/post.yaml
+    required-projects:
+      - name: openstack/requirements
+    vars:
+      tox_constraints_file: '{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt'
 
 - job:
     name: publish-openstack-releasenotes-base
@@ -503,23 +519,16 @@
 
 - job:
     name: publish-tox-docs-infra
+    parent: publish-openstack-tox-docs-base
     description: |
-      Publish the results of the tox-docs job to
+      Publish the results of the tox docs job to
       /afs/.openstack.org/infra/{{ zuul.project.short_name }}
     final: true
-    pre-run: playbooks/project-config/pre-tox.yaml
-    run: playbooks/project-config/run-tox.yaml
     post-run:
+      - playbooks/project-config/post-tox.yaml
       - playbooks/sphinx/post-infra.yaml
-    roles:
-      - zuul: openstack-infra/zuul-jobs
-      - zuul: openstack-infra/openstack-zuul-jobs
     vars:
-      tox_envlist: docs
       afs_subpath: "/infra/{{ zuul.project.short_name }}"
-    secrets:
-      - secret: afsdocs_secret
-        name: afs
 
 - job:
     name: publish-openstack-sphinx-docs-infra-python3
