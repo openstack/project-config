@@ -1322,3 +1322,15 @@
 
       The testing is done for Ubuntu Xenial.
     nodeset: ubuntu-xenial
+
+- job:
+    name: openstackzuul-pbrx-push-container-images
+    parent: pbrx-build-container-images
+    description: |
+      Publish images built by pbrx to openstackzuul Docker Hub account.
+      A value must be supplied for the pbrx_prefix variable.
+    protected: true
+    final: true
+    post-run: playbooks/pbrx-push/post.yaml
+    secrets:
+      - openstackzuul_docker_login
