@@ -183,7 +183,7 @@ fi
 
 # Make sure it is up to date compared to the upstream remote.
 (cd $local_dir &&
-        retry git fetch origin --tags
+        retry git fetch origin --tags --prune
 )
 
 if [ ! -z "$REF" ]; then
