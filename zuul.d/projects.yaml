@@ -12553,53 +12553,16 @@
 - project:
     name: openstack/requirements
     templates:
-      - openstack-pypy-jobs-nonvoting
-      - publish-openstack-sphinx-docs
-      - openstack-python-jobs
-      - openstack-python35-jobs
       - publish-to-pypi
     check:
       jobs:
         - build-openstack-sphinx-docs:
             branches: master
-        - openstack-tox-py35:
-            branches: ^(?!stable/newton)$
-        - neutron-grenade-multinode:
-            irrelevant-files:
-              - ^(test-|)requirements.txt$
-              - ^setup.cfg$
-        - legacy-tempest-dsvm-neutron-full:
-            branches: ^(?!driverfixes/).*$
-            irrelevant-files:
-              - ^(test-|)requirements.txt$
-              - ^setup.cfg$
-        - neutron-grenade:
-            irrelevant-files:
-              - ^(test-|)requirements.txt$
-              - ^setup.cfg$
     gate:
       queue: integrated
       jobs:
         - build-openstack-sphinx-docs:
             branches: master
-        - openstack-tox-py35:
-            branches: ^(?!stable/newton)$
-        - neutron-grenade-multinode:
-            irrelevant-files:
-              - ^(test-|)requirements.txt$
-              - ^setup.cfg$
-        - legacy-tempest-dsvm-neutron-full:
-            branches: ^(?!driverfixes/).*$
-            irrelevant-files:
-              - ^(test-|)requirements.txt$
-              - ^setup.cfg$
-        - neutron-grenade:
-            irrelevant-files:
-              - ^(test-|)requirements.txt$
-              - ^setup.cfg$
-    post:
-      jobs:
-        - publish-loci-requirements
     periodic:
       jobs:
         - publish-wheel-mirror-centos-7
@@ -12617,17 +12580,6 @@
             branches: master
             vars:
               update_target: requirements-constraints
-    experimental:
-      jobs:
-        - legacy-tempest-dsvm-neutron-pg-full:
-            irrelevant-files:
-              - ^(test-|)requirements.txt$
-              - ^setup.cfg$
-        - legacy-tempest-dsvm-neutron-full-opensuse-423:
-            branches: ^(?!stable/(newton|ocata)).*$
-            irrelevant-files:
-              - ^(test-|)requirements.txt$
-              - ^setup.cfg$
 
 - project:
     name: openstack/rpm-packaging-tools
