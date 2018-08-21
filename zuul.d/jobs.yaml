@@ -506,18 +506,6 @@
       - site_logs
 
 - job:
-    name: publish-openstack-sphinx-docs-infra
-    parent: publish-sphinx-docs-base
-    description: |
-      Publish the results of the openstack-build-sphinx-docs job to
-      /afs/.openstack.org/infra/{{ zuul.project.short_name }}
-    final: true
-    post-run:
-      - playbooks/sphinx/post-infra.yaml
-    vars:
-      afs_subpath: "/infra/{{ zuul.project.short_name }}"
-
-- job:
     name: publish-tox-docs-infra
     parent: publish-openstack-tox-docs-base
     description: |
@@ -529,21 +517,6 @@
       - playbooks/sphinx/post-infra.yaml
     vars:
       afs_subpath: "/infra/{{ zuul.project.short_name }}"
-
-- job:
-    name: publish-openstack-sphinx-docs-infra-python3
-    parent: publish-sphinx-docs-base
-    description: |
-      Publish the results of the openstack-build-sphinx-docs job to
-      /afs/.openstack.org/infra/{{ zuul.project.short_name }}
-
-      Builds the docs using Sphinx with Python3.
-    final: true
-    post-run:
-      - playbooks/sphinx/post-infra.yaml
-    vars:
-      afs_subpath: "/infra/{{ zuul.project.short_name }}"
-      sphinx_python: python3
 
 - job:
     name: publish-infra-manual
