@@ -12393,21 +12393,9 @@
 - project:
     name: openstack/python-saharaclient
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - publish-openstack-sphinx-docs
-      - check-requirements
-      - release-notes-jobs
-      - openstackclient-plugin-jobs
       - publish-to-pypi
-    post:
-      jobs:
-        - openstack-tox-cover
     gate:
       queue: sahara
-    experimental:
-      jobs:
-        - openstack-tox-pypy
 
 - project:
     name: openstack/python-scciclient
@@ -12865,31 +12853,11 @@
 - project:
     name: openstack/sahara
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - periodic-stable-jobs
-      - publish-openstack-sphinx-docs
-      - check-requirements
       - translation-jobs-master-stable
-      - release-notes-jobs
       - api-ref-jobs
       - release-openstack-server
-    check:
-      jobs:
-        - openstack-tox-pylint:
-            voting: false
-        - openstack-tox-cover:
-            voting: false
-        - legacy-grenade-dsvm-sahara:
-            voting: false
-            irrelevant-files:
-              - ^(test-|)requirements.txt$
-              - ^setup.cfg$
     gate:
       queue: sahara
-    post:
-      jobs:
-        - openstack-tox-cover
 
 - project:
     name: openstack/sahara-ci-config
@@ -12903,77 +12871,25 @@
 - project:
     name: openstack/sahara-dashboard
     templates:
-      - check-requirements
-      - openstack-python-jobs-horizon
-      - openstack-python35-jobs-horizon
       - translation-jobs-master-stable
-      - release-notes-jobs
       - publish-to-pypi-horizon
-    check:
-      jobs:
-        - legacy-sahara-dashboard-dsvm-integration:
-            voting: false
 
 - project:
     name: openstack/sahara-extra
     templates:
-      - check-requirements
       - publish-to-pypi
-    check:
-      jobs:
-        - openstack-tox-pep8
-    gate:
-      jobs:
-        - openstack-tox-pep8
-    post:
-      jobs:
-        - publish-openstack-python-branch-tarball
 
 - project:
     name: openstack/sahara-image-elements
     templates:
-      - check-requirements
       - publish-to-pypi
-    check:
-      jobs:
-        - openstack-tox-pep8
-    gate:
-      jobs:
-        - openstack-tox-pep8
-    post:
-      jobs:
-        - publish-openstack-python-branch-tarball
-
-- project:
-    name: openstack/sahara-specs
-    templates:
-      - openstack-specs-jobs
-    check:
-      jobs:
-        - openstack-tox-py27
-    gate:
-      jobs:
-        - openstack-tox-py27
 
 - project:
     name: openstack/sahara-tests
     templates:
-      - openstack-python-jobs
-      - publish-openstack-sphinx-docs
-      - openstack-python35-jobs
-      - release-notes-jobs
       - publish-to-pypi
-    check:
-      jobs:
-        - openstack-tox-pylint:
-            voting: false
-        - openstack-tox-cover:
-            voting: false
     gate:
       queue: sahara
-    post:
-      jobs:
-        - openstack-tox-cover
 
 - project:
     name: openstack/scalpels
