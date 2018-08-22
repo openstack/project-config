@@ -1914,13 +1914,13 @@
 
 - project:
     name: openstack-infra/zuul-base-jobs
+    templates:
+      - build-tox-docs
     check:
       jobs:
-        - build-sphinx-docs
         - openstack-zuul-jobs-linters
     gate:
       jobs:
-        - build-sphinx-docs
         - openstack-zuul-jobs-linters
     post:
       jobs:
@@ -1928,9 +1928,10 @@
 
 - project:
     name: openstack-infra/zuul-jobs
+    templates:
+      - build-tox-docs
     check:
       jobs:
-        - build-sphinx-docs
         - openstack-infra-base-integration-centos-7
         - openstack-infra-base-integration-debian-stable
         - openstack-infra-base-integration-fedora-latest
@@ -1951,7 +1952,6 @@
         - tox-py35
     gate:
       jobs:
-        - build-sphinx-docs
         - openstack-infra-base-integration-centos-7
         - openstack-infra-base-integration-debian-stable
         - openstack-infra-base-integration-fedora-latest

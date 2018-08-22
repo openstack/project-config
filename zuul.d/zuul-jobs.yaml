@@ -28,9 +28,10 @@
       - openstack-infra/zuul-jobs
       - openstack-infra/zuul-base-jobs
       - openstack-infra/zuul-sphinx
-    pre-run: playbooks/sphinx/pre.yaml
-    run: playbooks/sphinx/run.yaml
+    pre-run: playbooks/project-config/pre-tox.yaml
+    run: playbooks/project-config/run-tox.yaml
     post-run:
+      - playbooks/project-config/post-tox.yaml
       - playbooks/sphinx/post-infra.yaml
       - playbooks/publish/zuul-afs.yaml
     roles:
@@ -41,4 +42,4 @@
         name: afs
     vars:
       afs_subpath: "/docs/{{ zuul.project.short_name }}"
-      sphinx_python: python3
+      tox_envlist: docs
