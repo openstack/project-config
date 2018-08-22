@@ -1226,7 +1226,9 @@
       Push strings for translation to translation server.
     pre-run: playbooks/translation/pre.yaml
     run: playbooks/translation/upstream-translation-update.yaml
-    post-run: playbooks/publish/openstack-artifacts.yaml
+    post-run:
+      - playbooks/translation/post.yaml
+      - playbooks/publish/openstack-artifacts.yaml
     semaphore: translations
     vars:
       fileserver_leading_path: translation-source
@@ -1246,6 +1248,7 @@
       proposed change.
     pre-run: playbooks/translation/pre.yaml
     run: playbooks/translation/propose-translation-update.yaml
+    post-run: playbooks/translation/post.yaml
     vars:
       constraints_file: '{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt'
     semaphore: translations
