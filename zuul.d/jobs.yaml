@@ -327,27 +327,11 @@
       /afs/.openstack.org/docs/{{ zuul.project.short_name }}
 
       Publishing is done from master branch directly without using /latest.
+
+      This job is obsolete, use ``publish-openstack-tox-docs-direct`` instead.
     final: true
     post-run:
       - playbooks/sphinx/post-direct.yaml
-    branches:
-      - master
-
-- job:
-    name: publish-openstack-sphinx-docs-direct-python3
-    parent: publish-openstack-sphinx-docs-base
-    description: |
-      Publish the results of the build-openstack-sphinx-docs job to
-      /afs/.openstack.org/docs/{{ zuul.project.short_name }}
-
-      Builds the docs using Sphinx with Python3.
-
-      Publishing is done from master branch directly without using /latest.
-    final: true
-    post-run:
-      - playbooks/sphinx/post-direct.yaml
-    vars:
-      sphinx_python: python3
     branches:
       - master
 
@@ -409,6 +393,21 @@
       - name: openstack/requirements
     vars:
       tox_constraints_file: '{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt'
+
+- job:
+    name: publish-openstack-tox-docs-direct
+    parent: publish-openstack-sphinx-docs-base
+    description: |
+      Publish the results of the openstack-tox-docs job to
+      /afs/.openstack.org/docs/{{ zuul.project.short_name }}
+
+      Publishing is done from master branch directly without using /latest.
+    final: true
+    post-run:
+      - playbooks/project-config/post-tox.yaml
+      - playbooks/sphinx/post-direct.yaml
+    branches:
+      - master
 
 - job:
     name: publish-openstack-releasenotes-base
