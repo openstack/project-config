@@ -1,0 +1,18 @@
+- hosts: all
+  tasks:
+
+    - name: Docker Hub login
+      command: docker login -u {{ openstackzuul_docker_login.user }} -p {{ openstackzuul_docker_login.password }}
+      no_log: True
+
+    - block:
+
+       - name: Push prefixed container images
+         command: 'pbrx --debug push-images --prefix={{ pbrx_prefix }}'
+         args:
+           chdir: '{{ zuul_work_dir|default(zuul.project.src_dir) }}'
+
+      always:
+
+       - name: Docker Hub logout
+         command: docker logout
