@@ -2405,59 +2405,20 @@
 - project:
     name: openstack/blazar
     templates:
-      - openstack-python-jobs
-      - check-requirements
-      - openstack-python35-jobs
-      - publish-openstack-sphinx-docs
-      - release-notes-jobs
       - release-openstack-server
       - api-ref-jobs
-    check:
-      jobs:
-        - openstack-tox-pylint:
-            voting: false
     gate:
       queue: blazar
 
 - project:
     name: openstack/blazar-dashboard
     templates:
-      - openstack-python-jobs-horizon
-      - check-requirements
-      - openstack-python35-jobs-horizon
-      - release-notes-jobs
       - publish-to-pypi-horizon
-      - publish-openstack-sphinx-docs
 
 - project:
     name: openstack/blazar-nova
     templates:
-      - check-requirements
-      - openstack-python-jobs
-      - openstack-python35-jobs
       - publish-to-pypi
-    check:
-      jobs:
-        - openstack-tox-pep8:
-            required-projects:
-              - openstack/nova
-        - openstack-tox-py27:
-            required-projects:
-              - openstack/nova
-        - openstack-tox-py35:
-            required-projects:
-              - openstack/nova
-    gate:
-      jobs:
-        - openstack-tox-pep8:
-            required-projects:
-              - openstack/nova
-        - openstack-tox-py27:
-            required-projects:
-              - openstack/nova
-        - openstack-tox-py35:
-            required-projects:
-              - openstack/nova
     pre-release:
       jobs:
         - release-openstack-python:
@@ -2472,8 +2433,6 @@
 - project:
     name: openstack/blazar-tempest-plugin
     templates:
-      - tempest-plugin-jobs
-      - check-requirements
       - publish-to-pypi
     gate:
       queue: blazar
@@ -10197,10 +10156,6 @@
 - project:
     name: openstack/python-blazarclient
     templates:
-      - check-requirements
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - release-notes-jobs
       - publish-to-pypi
 
 - project:
