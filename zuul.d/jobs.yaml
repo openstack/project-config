@@ -268,10 +268,12 @@
       - README.rst
 
 - job:
-    name: publish-sphinx-docs-base
+    name: publish-openstack-sphinx-docs-base
     description: |
       Base job for publishing sphinx documentation to
-      /afs/.openstack.org/docs/. Does not use constraints.
+      /afs/.openstack.org/docs/.
+
+      This job is obsolete, use ``publish-openstack-tox-docs-base`` instead.
     abstract: true
     protected: true
     pre-run:
@@ -279,23 +281,14 @@
     run: playbooks/sphinx/run.yaml
     post-run:
       - playbooks/publish/openstack-afs.yaml
+    required-projects:
+      - name: openstack/requirements
     roles:
       - zuul: openstack-infra/zuul-jobs
       - zuul: openstack-infra/openstack-zuul-jobs
     secrets:
       - secret: afsdocs_secret
         name: afs
-
-- job:
-    name: publish-openstack-sphinx-docs-base
-    parent: publish-sphinx-docs-base
-    description: |
-      Base job for publishing sphinx documentation to
-      /afs/.openstack.org/docs/.
-    abstract: true
-    protected: true
-    required-projects:
-      - name: openstack/requirements
     vars:
       constraints_file: '{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt'
 
@@ -336,19 +329,6 @@
       - master
 
 - job:
-    name: publish-openstack-contributor-guide
-    parent: publish-openstack-sphinx-docs-base
-    description: |
-      Publish contributor-guide documents to
-      https://docs.openstack.org/contributors
-    final: true
-    post-run:
-      - playbooks/publish/contributor-guide-afs.yaml
-    branches: master
-    vars:
-      afs_subpath: "/contributors"
-
-- job:
     name: publish-openstack-tox-docs-base
     description: |
       Base job for publishing docs tox job.
@@ -361,6 +341,7 @@
     pre-run: playbooks/project-config/pre-tox.yaml
     run: playbooks/project-config/run-tox.yaml
     post-run:
+      - playbooks/project-config/post-tox.yaml
       - playbooks/publish/openstack-afs.yaml
     required-projects:
       - name: openstack/requirements
@@ -387,7 +368,6 @@
       basename of the branch like pike (for stable/pike).
     final: true
     post-run:
-      - playbooks/project-config/post-tox.yaml
       - playbooks/sphinx/post.yaml
     required-projects:
       - name: openstack/requirements
@@ -396,7 +376,7 @@
 
 - job:
     name: publish-openstack-tox-docs-direct
-    parent: publish-openstack-sphinx-docs-base
+    parent: publish-openstack-tox-docs-base
     description: |
       Publish the results of the openstack-tox-docs job to
       /afs/.openstack.org/docs/{{ zuul.project.short_name }}
@@ -404,10 +384,22 @@
       Publishing is done from master branch directly without using /latest.
     final: true
     post-run:
-      - playbooks/project-config/post-tox.yaml
       - playbooks/sphinx/post-direct.yaml
     branches:
       - master
+
+- job:
+    name: publish-openstack-contributor-guide
+    parent: publish-openstack-tox-docs-base
+    description: |
+      Publish contributor-guide documents to
+      https://docs.openstack.org/contributors
+    final: true
+    post-run:
+      - playbooks/publish/contributor-guide-afs.yaml
+    branches: master
+    vars:
+      afs_subpath: "/contributors"
 
 - job:
     name: publish-openstack-releasenotes-base
@@ -512,7 +504,6 @@
       /afs/.openstack.org/infra/{{ zuul.project.short_name }}
     final: true
     post-run:
-      - playbooks/project-config/post-tox.yaml
       - playbooks/sphinx/post-infra.yaml
     vars:
       afs_subpath: "/infra/{{ zuul.project.short_name }}"
@@ -524,7 +515,6 @@
       Publish the Infra Manual to /afs/.openstack.org/docs/infra/manual
     final: true
     post-run:
-      - playbooks/project-config/post-tox.yaml
       - playbooks/sphinx/post-infra.yaml
     allowed-projects:
       - openstack-infra/infra-manual
