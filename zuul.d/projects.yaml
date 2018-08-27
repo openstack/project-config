@@ -4457,80 +4457,12 @@
         # Otherwise, no verified result is post.
         - noop:
             branches: master
-        - requirements-check:
-            branches:
-              - stable/pike
-              - stable/ocata
-        - openstack-tox-pep8:
-            branches:
-              - stable/pike
-              - stable/ocata
-        - openstack-tox-py27:
-            branches:
-              - stable/pike
-              - stable/ocata
-        - openstack-tox-py35:
-            branches:
-              - stable/pike
-              - stable/ocata
-        - build-openstack-sphinx-docs:
-            branches:
-              - stable/pike
-              - stable/ocata
-        - horizon-openstack-tox-py27dj18:
-            branches:
-              - stable/pike
-        - horizon-openstack-tox-py27dj19:
-            branches:
-              - stable/pike
-              - stable/ocata
-        - horizon-openstack-tox-py27dj110:
-            branches:
-              - stable/pike
-              - stable/ocata
     gate:
       jobs:
-        # It seems at least one job needs to be defined
+        # It seems at least one job needs to be defined.
         # Otherwise, no verified result is post.
         - noop:
             branches: master
-        - requirements-check:
-            branches:
-              - stable/pike
-              - stable/ocata
-        - openstack-tox-pep8:
-            branches:
-              - stable/pike
-              - stable/ocata
-        - openstack-tox-py27:
-            branches:
-              - stable/pike
-              - stable/ocata
-        - openstack-tox-py35:
-            branches:
-              - stable/pike
-              - stable/ocata
-        - build-openstack-sphinx-docs:
-            branches:
-              - stable/pike
-              - stable/ocata
-        - horizon-openstack-tox-py27dj18:
-            branches:
-              - stable/pike
-        - horizon-openstack-tox-py27dj19:
-            branches:
-              - stable/pike
-              - stable/ocata
-        - horizon-openstack-tox-py27dj110:
-            branches:
-              - stable/pike
-              - stable/ocata
-    post:
-      jobs:
-        - publish-openstack-sphinx-docs:
-            branches:
-              - stable/pike
-              - stable/ocata
 
 - project:
     name: openstack/doc8
@@ -6349,14 +6281,7 @@
 - project:
     name: openstack/horizon
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - publish-openstack-sphinx-docs
-      - periodic-stable-jobs
-      - check-requirements
       - translation-jobs-master-stable
-      - release-notes-jobs
-      - nodejs4-jobs
       - publish-to-pypi
     gate:
       queue: horizon
@@ -14107,15 +14032,9 @@
 - project:
     name: openstack/tempest-horizon
     templates:
-      - check-requirements
       - publish-to-pypi
-    check:
-      jobs:
-        - openstack-tox-pep8
     gate:
       queue: horizon
-      jobs:
-        - openstack-tox-pep8
 
 - project:
     name: openstack/tempest-lib
