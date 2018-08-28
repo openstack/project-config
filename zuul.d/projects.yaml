@@ -12556,12 +12556,16 @@
       - publish-to-pypi
     check:
       jobs:
-        - build-openstack-sphinx-docs:
+        - openstack-tox-docs:
             branches: master
     gate:
       queue: integrated
       jobs:
-        - build-openstack-sphinx-docs:
+        - openstack-tox-docs:
+            branches: master
+    post:
+      jobs:
+        - publish-openstack-tox-docs:
             branches: master
     periodic:
       jobs:
