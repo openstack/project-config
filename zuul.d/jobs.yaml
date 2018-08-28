@@ -984,8 +984,10 @@
     name: build-wheel-mirror-base
     abstract: true
     description: |
-      Base job for building of wheel for OpenStack CI mirrors.
-    pre-run: playbooks/wheel/pre.yaml
+      Base job for building wheels published in OpenStack CI mirrors.
+    pre-run:
+      - playbooks/openafs-client/setup.yaml
+      - playbooks/wheel/pre.yaml
     run: playbooks/wheel/build.yaml
     post-run: playbooks/wheel/post-base.yaml
     # 2.5 hours
@@ -993,15 +995,10 @@
     # The job iterates over all branches, so we only need to run it on
     # master.
     branches: master
+    roles:
+      - zuul: openstack-infra/system-config
     allowed-projects:
       - openstack/requirements
-    roles:
-      - zuul: openstack-infra/ansible-puppet
-        name: puppet
-    required-projects:
-      - openstack-infra/system-config
-      - openstack-infra/puppet-kerberos
-      - openstack-infra/puppet-openafs
 
 - job:
     name: build-wheel-mirror-centos-7
