@@ -1759,15 +1759,6 @@
     name: openstack/ansible-role-container-registry
     templates:
       - publish-to-pypi-python3
-    check:
-      jobs:
-        - openstack-tox-linters
-    gate:
-      jobs:
-        - openstack-tox-linters
-    post:
-      jobs:
-        - publish-openstack-python-branch-tarball
 
 - project:
     name: openstack/ansible-role-diskimage-builder
@@ -1886,15 +1877,6 @@
     name: openstack/ansible-role-redhat-subscription
     templates:
       - publish-to-pypi-python3
-    check:
-      jobs:
-        - openstack-tox-linters
-    gate:
-      jobs:
-        - openstack-tox-linters
-    post:
-      jobs:
-        - publish-openstack-python-branch-tarball
 
 - project:
     name: openstack/ansible-role-shade
@@ -2033,15 +2015,6 @@
     name: openstack/ansible-role-tripleo-modify-image
     templates:
       - publish-to-pypi-python3
-    check:
-      jobs:
-        - openstack-tox-linters
-    gate:
-      jobs:
-        - openstack-tox-linters
-    post:
-      jobs:
-        - publish-openstack-python-branch-tarball
 
 - project:
     name: openstack/ansible-role-tripleo-neutron
@@ -3395,17 +3368,7 @@
 - project:
     name: openstack/dib-utils
     templates:
-      - check-requirements
       - publish-to-pypi-python3
-    check:
-      jobs:
-        - openstack-tox-functional
-    gate:
-      jobs:
-        - openstack-tox-functional
-    post:
-      jobs:
-        - publish-openstack-python-branch-tarball
 
 - project:
     name: openstack/diskimage-builder
@@ -5044,26 +5007,12 @@
 - project:
     name: openstack/instack
     templates:
-      - openstack-python-jobs
       - publish-to-pypi-python3
-      - check-requirements
-    check:
-      jobs:
-        - openstack-tox-cover:
-            voting: false
 
 - project:
     name: openstack/instack-undercloud
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
       - publish-to-pypi-python3
-      - check-requirements
-      - release-notes-jobs
-    check:
-      jobs:
-        - openstack-tox-cover:
-            voting: false
 
 - project:
     name: openstack/intel-nfv-ci-tests
@@ -8066,14 +8015,7 @@
 - project:
     name: openstack/os-apply-config
     templates:
-      - check-requirements
       - publish-to-pypi-python3
-      - openstack-python-jobs
-      - openstack-python35-jobs
-    check:
-      jobs:
-        - openstack-tox-cover:
-            voting: false
 
 - project:
     name: openstack/os-brick
@@ -8088,14 +8030,7 @@
 - project:
     name: openstack/os-collect-config
     templates:
-      - check-requirements
       - publish-to-pypi-python3
-      - openstack-python-jobs
-      - openstack-python35-jobs
-    check:
-      jobs:
-        - openstack-tox-cover:
-            voting: false
 
 - project:
     name: openstack/os-dpm
@@ -8124,23 +8059,9 @@
 - project:
     name: openstack/os-net-config
     templates:
-      - check-requirements
       - publish-to-pypi-python3
-      - openstack-python-jobs
-      - release-notes-jobs
-    check:
-      jobs:
-        - openstack-tox-py35:
-            # we don't support python3.5 in os-net-config / newton
-            branches: ^(?!stable/newton).*$
-        - openstack-tox-cover:
-            voting: false
     gate:
       queue: tripleo
-      jobs:
-        - openstack-tox-py35:
-            # we don't support python3.5 in os-net-config / newton
-            branches: ^(?!stable/newton).*$
 
 - project:
     name: openstack/os-performance-tools
@@ -8150,14 +8071,7 @@
 - project:
     name: openstack/os-refresh-config
     templates:
-      - check-requirements
       - publish-to-pypi-python3
-      - openstack-python-jobs
-      - openstack-python35-jobs
-    check:
-      jobs:
-        - openstack-tox-cover:
-            voting: false
 
 - project:
     name: openstack/os-service-types
@@ -8462,10 +8376,6 @@
 - project:
     name: openstack/paunch
     templates:
-      - check-requirements
-      - publish-openstack-sphinx-docs
-      - openstack-python-jobs
-      - release-notes-jobs
       - publish-to-pypi-python3
 
 - project:
@@ -8775,7 +8685,6 @@
 - project:
     name: openstack/puppet-pacemaker
     templates:
-      - release-notes-jobs
       - puppet-release-jobs
 
 - project:
@@ -8836,9 +8745,7 @@
 - project:
     name: openstack/puppet-tripleo
     templates:
-      - puppet-openstack-check-jobs
       - puppet-release-jobs
-      - release-notes-jobs
 
 - project:
     name: openstack/puppet-trove
@@ -9427,13 +9334,7 @@
 - project:
     name: openstack/python-tripleoclient
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - check-requirements
       - publish-to-pypi-python3
-      - openstackclient-plugin-jobs
-      - release-notes-jobs
-      - publish-openstack-sphinx-docs
 
 - project:
     name: openstack/python-troveclient
@@ -10260,12 +10161,6 @@
       - noop-jobs
 
 - project:
-    name: openstack/tempest-tripleo-ui
-    templates:
-      - check-requirements
-      - release-notes-jobs
-
-- project:
     name: openstack/terracotta
     templates:
       - openstack-python-jobs
@@ -10331,36 +10226,7 @@
 - project:
     name: openstack/tripleo-common
     templates:
-      - check-requirements
-      - publish-openstack-sphinx-docs
       - publish-to-pypi-python3
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - release-notes-jobs
-    check:
-      jobs:
-        - openstack-tox-cover:
-            voting: false
-
-- project:
-    name: openstack/tripleo-common-tempest-plugin
-    templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - check-requirements
-    gate:
-      queue: tripleo
-
-- project:
-    name: openstack/tripleo-docs
-    templates:
-      - publish-openstack-sphinx-docs
-    check:
-      jobs:
-        - build-openstack-sphinx-docs
-    gate:
-      jobs:
-        - build-openstack-sphinx-docs
 
 - project:
     name: openstack/tripleo-ha-utils
@@ -10371,122 +10237,58 @@
     name: openstack/tripleo-heat-templates
     templates:
       - publish-to-pypi-python3
-      - check-requirements
-      - release-notes-jobs
-      - openstack-python35-jobs-no-constraints
-    check:
-      jobs:
-        - openstack-tox-pep8
     gate:
       queue: tripleo
-      jobs:
-        - openstack-tox-pep8
 
 - project:
     name: openstack/tripleo-image-elements
     templates:
       - publish-to-pypi-python3
-      - release-notes-jobs
-    post:
-      jobs:
-        - publish-openstack-python-branch-tarball
 
 - project:
     name: openstack/tripleo-ipsec
     templates:
-      - ansible-lint-jobs
       - publish-to-pypi-python3
 
 - project:
     name: openstack/tripleo-puppet-elements
     templates:
-      - openstack-python-jobs
       - publish-to-pypi-python3
-      - release-notes-jobs
 
 - project:
     name: openstack/tripleo-quickstart
     templates:
-      - publish-openstack-sphinx-docs
       - publish-to-pypi-python3
-      - release-notes-jobs
-    check:
-      jobs:
-        - openstack-tox-linters
     gate:
       queue: tripleo
-      jobs:
-        - openstack-tox-linters
 
 - project:
     name: openstack/tripleo-quickstart-extras
     templates:
       - publish-to-pypi-python3
-      - release-notes-jobs
-    check:
-      jobs:
-        - openstack-tox-linters
     gate:
       queue: tripleo
-      jobs:
-        - openstack-tox-linters
 
 - project:
     name: openstack/tripleo-repos
     templates:
       - publish-to-pypi-python3
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - check-requirements
-    check:
-      jobs:
-        - openstack-tox-cover:
-            voting: false
-
-- project:
-    name: openstack/tripleo-specs
-    templates:
-      - openstack-specs-jobs
-    check:
-      jobs:
-        - openstack-tox-py27
-    gate:
-      jobs:
-        - openstack-tox-py27
 
 - project:
     name: openstack/tripleo-ui
     templates:
-      - nodejs8-jobs
-      - nodejs8-publish-to-npm
-      - release-notes-jobs
       - translation-jobs-master-stable
 
 - project:
     name: openstack/tripleo-upgrade
     templates:
-      - check-requirements
-      - release-notes-jobs
       - publish-to-pypi-python3
-    check:
-      jobs:
-        - openstack-tox-linters
     gate:
       queue: tripleo
-      jobs:
-        - openstack-tox-linters
-    post:
-      jobs:
-        - publish-openstack-python-branch-tarball
 
 - project:
     name: openstack/tripleo-validations
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - check-requirements
-      - publish-openstack-sphinx-docs
-      - release-notes-jobs
       - publish-to-pypi-python3
 
 - project:
