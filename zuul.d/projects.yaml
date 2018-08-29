@@ -599,29 +599,17 @@
 - project:
     name: openstack-infra/js-afs-blob-store
     templates:
-      - nodejs4-jobs
-      - nodejs4-publish-to-npm
+      - noop-jobs
 
 - project:
     name: openstack-infra/js-generator-openstack
     templates:
-      - nodejs4-jobs
-      - nodejs4-docs
-      - nodejs4-publish-to-npm
-    pre-release:
-      jobs:
-        - legacy-js-generator-openstack-nodejs6-npm-docs:
-            branches: ^(?!bug/).*$
-    release:
-      jobs:
-        - legacy-js-generator-openstack-nodejs6-npm-docs:
-            branches: ^(?!bug/).*$
+      - noop-jobs
 
 - project:
     name: openstack-infra/js-openstack-registry-hooks
     templates:
-      - nodejs4-jobs
-      - nodejs4-publish-to-npm
+      - noop-jobs
 
 - project:
     name: openstack-infra/lodgeit
@@ -927,12 +915,7 @@
 - project:
     name: openstack-infra/puppet-docker_registry
     templates:
-      - infra-puppet-check-jobs
-      - infra-puppet-apply-jobs
-      - puppet-beaker-jobs-centos-7-infra
-      - puppet-beaker-jobs-xenial-infra
-    gate:
-      queue: system-config
+      - noop-jobs
 
 - project:
     name: openstack-infra/puppet-drupal
@@ -997,12 +980,7 @@
 - project:
     name: openstack-infra/puppet-featuretracker
     templates:
-      - infra-puppet-check-jobs
-      - infra-puppet-apply-jobs
-      - puppet-beaker-jobs-centos-7-infra
-      - puppet-beaker-jobs-xenial-infra
-    gate:
-      queue: system-config
+      - noop-jobs
 
 - project:
     name: openstack-infra/puppet-germqtt
@@ -1464,12 +1442,7 @@
 - project:
     name: openstack-infra/puppet-releasestatus
     templates:
-      - infra-puppet-check-jobs
-      - infra-puppet-apply-jobs
-      - puppet-beaker-jobs-centos-7-infra
-      - puppet-beaker-jobs-xenial-infra
-    gate:
-      queue: system-config
+      - noop-jobs
 
 - project:
     name: openstack-infra/puppet-reviewday
@@ -1644,11 +1617,7 @@
 - project:
     name: openstack-infra/puppet-vinz
     templates:
-      - infra-puppet-check-jobs
-      - puppet-beaker-jobs-centos-7-infra
-      - puppet-beaker-jobs-xenial-infra
-    gate:
-      queue: system-config
+      - noop-jobs
 
 - project:
     name: openstack-infra/puppet-yum
@@ -1691,16 +1660,7 @@
 - project:
     name: openstack-infra/pypi-mirror
     templates:
-      - publish-to-pypi
-    check:
-      jobs:
-        - openstack-tox-pep8
-        - requirements-integration
-    gate:
-      queue: integrated
-      jobs:
-        - openstack-tox-pep8
-        - requirements-integration
+      - noop-jobs
 
 - project:
     name: openstack-infra/python-storyboardclient
@@ -1842,23 +1802,12 @@
 - project:
     name: openstack-infra/vinz
     templates:
-      - nodejs4-jobs
+      - noop-jobs
 
 - project:
     name: openstack-infra/vinz-webclient
-    check:
-      jobs:
-        - build-javascript-content:
-            voting: false
-    gate:
-      jobs:
-        - noop
-    post:
-      jobs:
-        - publish-openstack-javascript-content
-    release:
-      jobs:
-        - publish-openstack-javascript-content
+    templates:
+      - noop-jobs
 
 - project:
     name: openstack-infra/yaml2ical
