@@ -6769,32 +6769,16 @@
 - project:
     name: openstack/magnum
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - check-requirements
-      - publish-openstack-sphinx-docs
-      - release-notes-jobs
       - translation-jobs-master-stable
       - install-guide-jobs
       - api-ref-jobs
       - release-openstack-server
-    check:
-      jobs:
-        - openstack-tox-cover:
-            voting: false
     gate:
       queue: magnum
 
 - project:
-    name: openstack/magnum-specs
-    templates:
-      - openstack-specs-jobs
-
-- project:
     name: openstack/magnum-tempest-plugin
     templates:
-      - check-requirements
-      - tempest-plugin-jobs
       - publish-to-pypi
     gate:
       queue: magnum
@@ -6802,41 +6786,12 @@
 - project:
     name: openstack/magnum-ui
     templates:
-      - openstack-python-jobs-horizon
-      - openstack-python35-jobs-horizon
-      - check-requirements
-      - publish-openstack-sphinx-docs
-      - release-notes-jobs
       # TODO(jaegerandi): Once queens is not translated anymore,
       # use translation-jobs-master-stable instead of the two
       # templates below.
       - translation-jobs-master-only
       - translation-jobs-rocky
       - publish-to-pypi-horizon
-    check:
-      jobs:
-        - nodejs-npm-run-lint:
-            vars:
-              node_version: 4
-            required-projects:
-              - openstack/horizon
-        - nodejs-npm-run-test:
-            vars:
-              node_version: 4
-            required-projects:
-              - openstack/horizon
-    gate:
-      jobs:
-        - nodejs-npm-run-lint:
-            vars:
-              node_version: 4
-            required-projects:
-              - openstack/horizon
-        - nodejs-npm-run-test:
-            vars:
-              node_version: 4
-            required-projects:
-              - openstack/horizon
 
 - project:
     name: openstack/manila
@@ -11595,16 +11550,8 @@
 - project:
     name: openstack/python-magnumclient
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - check-requirements
-      - publish-openstack-sphinx-docs
       - translation-jobs-master-only
       - publish-to-pypi
-    check:
-      jobs:
-        - openstack-tox-cover:
-            voting: false
 
 - project:
     name: openstack/python-manilaclient
