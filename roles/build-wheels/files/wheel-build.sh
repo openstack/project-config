@@ -46,9 +46,9 @@ for BRANCH in master $BRANCHES; do
                 -w $WHEELHOUSE_DIR {}
     set -e
 
-    # Column $7 is the exit status of the job, $16 is the last
+    # Column $7 is the exit status of the job, $NF is the last
     # argument to pip, which is our package.
-    FAILED=$(awk -e '$7!=0 {print $16}' ${LOGS}/$SHORT_BRANCH-job.log)
+    FAILED=$(awk -e '$7!=0 {print $NF}' ${LOGS}/$SHORT_BRANCH-job.log)
     if [ -n "${FAILED}" ]; then
         echo "*** FAILED BUILDS FOR BRANCH ${BRANCH}" >> ${FAIL_LOG}
         echo "${FAILED}" >> ${FAIL_LOG}
