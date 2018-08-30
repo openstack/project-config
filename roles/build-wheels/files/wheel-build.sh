@@ -41,14 +41,14 @@ for BRANCH in master $BRANCHES; do
     cat /tmp/upper-constraints.txt | \
         parallel --files --progress --joblog ${LOGS}/$SHORT_BRANCH-job.log \
                 --results ${LOGS}/build/$SHORT_BRANCH \
-                build_env/bin/pip --verbose wheel \
+                build_env/bin/pip --verbose --exists-action=i wheel \
                 -c /tmp/upper-constraints.txt \
                 -w $WHEELHOUSE_DIR {}
     set -e
 
-    # Column $7 is the exit status of the job, $14 is the last
+    # Column $7 is the exit status of the job, $16 is the last
     # argument to pip, which is our package.
-    FAILED=$(awk -e '$7!=0 {print $14}' ${LOGS}/$SHORT_BRANCH-job.log)
+    FAILED=$(awk -e '$7!=0 {print $16}' ${LOGS}/$SHORT_BRANCH-job.log)
     if [ -n "${FAILED}" ]; then
         echo "*** FAILED BUILDS FOR BRANCH ${BRANCH}" >> ${FAIL_LOG}
         echo "${FAILED}" >> ${FAIL_LOG}
