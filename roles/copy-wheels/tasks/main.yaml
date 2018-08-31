@@ -3,3 +3,7 @@
 
 - name: Rebuild mirror index
   script: wheel-index.sh {{ afs_dir }}
+  # With multiple python2/3 builds, we only need one host to generate
+  # the final index.  All hosts should be finished copying under
+  # linear strategy.
+  run_once: True
