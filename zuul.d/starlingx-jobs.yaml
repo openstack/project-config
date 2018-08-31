@@ -1,0 +1,52 @@
+- job:
+    name: publish-stx-docs
+    description: |
+      Publish the results of a sphinx build to
+      /afs/.openstack.org/project/starlingx.io/www
+
+      Builds the docs using ``tox -e docs``.
+    allowed-projects:
+      - openstack/stx-docs
+    # Set final to avoid override of afs_subpath variable.
+    final: true
+    pre-run: playbooks/project-config/pre-tox.yaml
+    run: playbooks/project-config/run-tox.yaml
+    post-run:
+      - playbooks/project-config/post-tox.yaml
+      - playbooks/sphinx/post-infra.yaml
+      - playbooks/publish/starlingx-afs.yaml
+    roles:
+      - zuul: openstack-infra/zuul-jobs
+      - zuul: openstack-infra/openstack-zuul-jobs
+    secrets:
+      - secret: afsdocs_secret
+        name: afs
+    vars:
+      tox_envlist: docs
+
+- job:
+    name: publish-stx-specs
+    description: |
+      Publish the results of a sphinx build to
+      /afs/.openstack.org/project/starlingx.io/www/specs
+
+      Builds the docs using ``tox -e docs``.
+    allowed-projects:
+      - openstack/stx-specs
+    # Set final to avoid override of afs_subpath variable.
+    final: true
+    pre-run: playbooks/project-config/pre-tox.yaml
+    run: playbooks/project-config/run-tox.yaml
+    post-run:
+      - playbooks/project-config/post-tox.yaml
+      - playbooks/sphinx/post-infra.yaml
+      - playbooks/publish/starlingx-afs.yaml
+    roles:
+      - zuul: openstack-infra/zuul-jobs
+      - zuul: openstack-infra/openstack-zuul-jobs
+    secrets:
+      - secret: afsdocs_secret
+        name: afs
+    vars:
+      afs_subpath: "/specs"
+      tox_envlist: docs
