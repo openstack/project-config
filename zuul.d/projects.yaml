@@ -2194,38 +2194,17 @@
 - project:
     name: openstack/barbican
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
       - translation-jobs-master-only
-      - publish-openstack-sphinx-docs
-      - release-notes-jobs
-      - check-requirements
       - api-guide-jobs
       - install-guide-jobs
       - api-ref-jobs
       - publish-to-pypi-python3
-    check:
-      jobs:
-        - openstack-tox-cover:
-            voting: false
-        - octavia-v1-dsvm-scenario:
-            voting: false
-        - octavia-v1-dsvm-py3x-scenario:
-            voting: false
-            branches: ^(?!stable)
     gate:
       queue: barbican
 
 - project:
-    name: openstack/barbican-specs
-    templates:
-      - openstack-specs-jobs
-
-- project:
     name: openstack/barbican-tempest-plugin
     templates:
-      - tempest-plugin-jobs
-      - check-requirements
       - publish-to-pypi-python3
     gate:
       queue: barbican
@@ -2359,10 +2338,6 @@
 - project:
     name: openstack/castellan-ui
     templates:
-      - openstack-python-jobs-horizon
-      - openstack-python35-jobs-horizon
-      - publish-openstack-sphinx-docs
-      - check-requirements
       - publish-to-pypi-python3
 
 - project:
@@ -7778,24 +7753,7 @@
 - project:
     name: openstack/python-barbicanclient
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - publish-openstack-sphinx-docs
-      - check-requirements
-      - openstackclient-plugin-jobs
       - publish-to-pypi-python3
-    check:
-      jobs:
-        - legacy-python-barbicanclient-dsvm:
-            branches: ^(?!stable/ocata).*$
-        - legacy-python-barbicanclient-devstack:
-            branches: ^(?:stable/ocata).*$
-    gate:
-      jobs:
-        - legacy-python-barbicanclient-dsvm:
-            branches: ^(?!stable/ocata).*$
-        - legacy-python-barbicanclient-devstack:
-            branches: ^(?:stable/ocata).*$
 
 - project:
     name: openstack/python-bileanclient
