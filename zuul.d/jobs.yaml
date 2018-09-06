@@ -459,12 +459,11 @@
 
 - job:
     name: publish-openstack-specs
+    parent: publish-openstack-tox-docs-base
     description: |
       Publish OpenStack specs to static.openstack.org
       specs/{{ zuul.project.short_name }}
     final: true
-    pre-run: playbooks/sphinx/pre.yaml
-    run: playbooks/sphinx/run.yaml
     post-run: playbooks/publish/openstack-specs.yaml
     required-projects:
       - name: openstack/requirements
