@@ -8571,20 +8571,9 @@
 - project:
     name: openstack/python-troveclient
     templates:
-      - check-requirements
-      - publish-openstack-sphinx-docs
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - release-notes-jobs
-      - openstackclient-plugin-jobs
       - publish-to-pypi-python3
-    check:
-      jobs:
-        - trove-functional-mysql
     gate:
       queue: trove
-      jobs:
-        - trove-functional-mysql
 
 - project:
     name: openstack/python-valenceclient
@@ -9513,64 +9502,22 @@
 - project:
     name: openstack/trove
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - publish-openstack-sphinx-docs
-      - periodic-stable-jobs
-      - check-requirements
       - install-guide-jobs
-      - release-notes-jobs
       - periodic-jobs-with-oslo-master
       - api-ref-jobs
       - publish-to-pypi-python3
-    check:
-      jobs:
-        - openstack-tox-pylint
     gate:
       queue: trove
-      jobs:
-        - openstack-tox-pylint
-    post:
-      jobs:
-        - openstack-tox-cover
 
 - project:
     name: openstack/trove-dashboard
     templates:
-      - check-requirements
       - translation-jobs-master-stable
-      - release-notes-jobs
-      - openstack-python-jobs-horizon
       - publish-to-pypi-python3
-    check:
-      jobs:
-        - openstack-tox-py35:
-            branches: ^(?!stable/(ocata|pike)).*$
-            required-projects:
-              - openstack/horizon
-    gate:
-      jobs:
-        - openstack-tox-py35:
-            branches: ^(?!stable/(ocata|pike)).*$
-            required-projects:
-              - openstack/horizon
-
-- project:
-    name: openstack/trove-specs
-    templates:
-      - openstack-specs-jobs
-    check:
-      jobs:
-        - openstack-tox-py27
-    gate:
-      jobs:
-        - openstack-tox-py27
 
 - project:
     name: openstack/trove-tempest-plugin
     templates:
-      - check-requirements
-      - tempest-plugin-jobs
       - publish-to-pypi-python3
     gate:
       queue: trove
