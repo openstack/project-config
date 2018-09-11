@@ -7132,70 +7132,24 @@
 - project:
     name: openstack/murano
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - publish-openstack-docs-pti
-      - check-requirements
-      - periodic-stable-jobs
-      - release-notes-jobs
       - translation-jobs-master-stable
       - periodic-jobs-with-oslo-master
       - install-guide-jobs
       - api-ref-jobs
       - release-openstack-server
-    check:
-      jobs:
-        - openstack-tox-cover:
-            voting: false
     gate:
       queue: murano
-    post:
-      jobs:
-        - openstack-tox-cover
 
 - project:
     name: openstack/murano-agent
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - check-requirements
-      - release-notes-jobs
       - publish-to-pypi
-
-- project:
-    name: openstack/murano-apps
-    check:
-      jobs:
-        - openstack-tox-linters:
-            voting: false
-    gate:
-      jobs:
-        - noop
 
 - project:
     name: openstack/murano-dashboard
     templates:
-      - check-requirements
-      - release-notes-jobs
-      - openstack-python-jobs-horizon
-      - openstack-python35-jobs-horizon
       - translation-jobs-master-stable
-      - nodejs4-jobs
       - publish-to-pypi-horizon
-    check:
-      jobs:
-        - openstack-tox-cover:
-            voting: false
-            required-projects:
-              - openstack/horizon
-    post:
-      jobs:
-        - openstack-tox-cover:
-            required-projects:
-              - openstack/horizon
-    experimental:
-      jobs:
-        - legacy-dashboard-dsvm-selenium-package
 
 - project:
     name: openstack/murano-deployment
@@ -7205,15 +7159,8 @@
 - project:
     name: openstack/murano-pkg-check
     templates:
-      - check-requirements
-      - openstack-python-jobs
-      - openstack-python35-jobs
       - translation-jobs-master-only
       - publish-to-pypi
-    check:
-      jobs:
-        - openstack-tox-cover:
-            voting: false
 
 - project:
     name: openstack/murano-plugin-networking-sfc
@@ -7222,16 +7169,9 @@
       - openstack-python35-jobs
 
 - project:
-    name: openstack/murano-specs
-    templates:
-      - openstack-specs-jobs
-
-- project:
     name: openstack/murano-tempest-plugin
     templates:
-      - check-requirements
       - publish-to-pypi
-      - tempest-plugin-jobs
     gate:
       queue: murano
 
@@ -11194,21 +11134,8 @@
 - project:
     name: openstack/python-muranoclient
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - check-requirements
-      - release-notes-jobs
-      - publish-openstack-sphinx-docs
       - translation-jobs-master-only
-      - openstackclient-plugin-jobs
       - publish-to-pypi
-    check:
-      jobs:
-        - openstack-tox-cover:
-            voting: false
-    post:
-      jobs:
-        - openstack-tox-cover
 
 - project:
     name: openstack/python-namosclient
@@ -13634,8 +13561,6 @@
 - project:
     name: openstack/yaql
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
       # Revert to docs-on-readthedocs when fixed
       - docs-on-readthedocs-failing
       - publish-to-pypi
