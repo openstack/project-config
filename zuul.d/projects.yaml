@@ -6171,166 +6171,35 @@
 - project:
     name: openstack/keystone
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - publish-openstack-sphinx-docs
       - release-openstack-server
-      - periodic-stable-jobs
       - periodic-jobs-with-oslo-master
-      - check-requirements
-      - integrated-gate
-      - integrated-gate-py35
       - translation-jobs-master-stable
-      - release-notes-jobs
       - api-ref-jobs
-    check:
-      jobs:
-        - legacy-keystoneclient-dsvm-functional:
-            voting: false
-            irrelevant-files:
-              - ^.*\.rst$
-              - ^api-ref/.*$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^keystone/tests/unit/.*$
-              - ^releasenotes/.*$
-        - openstack-tox-cover
-        - legacy-tempest-dsvm-ldap-domain-specific-driver:
-            voting: false
-            irrelevant-files:
-              - ^(test-|)requirements.txt$
-              - ^.*\.rst$
-              - ^api-ref/.*$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^keystone/tests/unit/.*$
-              - ^releasenotes/.*$
-              - ^setup.cfg$
-        - tempest-full:
-            irrelevant-files:
-              - ^(test-|)requirements.txt$
-              - ^.*\.rst$
-              - ^api-ref/.*$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^keystone/tests/unit/.*$
-              - ^releasenotes/.*$
-              - ^setup.cfg$
-        - neutron-grenade:
-            irrelevant-files:
-              - ^(test-|)requirements.txt$
-              - ^.*\.rst$
-              - ^api-ref/.*$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^keystone/tests/unit/.*$
-              - ^releasenotes/.*$
-              - ^setup.cfg$
     gate:
       queue: integrated
-      jobs:
-        - tempest-full:
-            irrelevant-files:
-              - ^(test-|)requirements.txt$
-              - ^.*\.rst$
-              - ^api-ref/.*$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^keystone/tests/unit/.*$
-              - ^releasenotes/.*$
-              - ^setup.cfg$
-        - neutron-grenade:
-            irrelevant-files:
-              - ^(test-|)requirements.txt$
-              - ^.*\.rst$
-              - ^api-ref/.*$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^keystone/tests/unit/.*$
-              - ^releasenotes/.*$
-              - ^setup.cfg$
-    experimental:
-      jobs:
-        - legacy-tempest-dsvm-neutron-pg-full:
-            irrelevant-files:
-              - ^(test-|)requirements.txt$
-              - ^.*\.rst$
-              - ^api-ref/.*$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^keystone/tests/unit/.*$
-              - ^releasenotes/.*$
-              - ^setup.cfg$
-        - legacy-tempest-dsvm-neutron-full-opensuse-423:
-            branches: ^(?!stable/ocata).*$
-            irrelevant-files:
-              - ^(test-|)requirements.txt$
-              - ^.*\.rst$
-              - ^api-ref/.*$
-              - ^doc/.*$
-              - ^etc/.*$
-              - ^keystone/tests/unit/.*$
-              - ^releasenotes/.*$
-              - ^setup.cfg$
-    post:
-      jobs:
-        - publish-loci-keystone
-
-- project:
-    name: openstack/keystone-specs
-    templates:
-      - openstack-specs-jobs
-    check:
-      jobs:
-        - openstack-tox-py27
-    gate:
-      jobs:
-        - openstack-tox-py27
 
 - project:
     name: openstack/keystone-tempest-plugin
     templates:
-      - check-requirements
-      - tempest-plugin-jobs
       - publish-to-pypi
     check:
       jobs:
-        - legacy-keystone-dsvm-functional
-        - legacy-keystone-dsvm-functional-v3-only:
-            voting: false
         - legacy-keystone-dsvm-py35-functional-v3-only:
             voting: false
             branches: ^(?!stable)
     gate:
       queue: integrated
-      jobs:
-        - legacy-keystone-dsvm-functional
 
 - project:
     name: openstack/keystoneauth
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - publish-openstack-sphinx-docs
-      - check-requirements
-      - lib-forward-testing
-      - release-notes-jobs
       - publish-to-pypi
 
 - project:
     name: openstack/keystonemiddleware
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - publish-openstack-sphinx-docs
-      - check-requirements
-      - lib-forward-testing
-      - release-notes-jobs
       - translation-jobs-master-only
       - publish-to-pypi
-    post:
-      jobs:
-        - openstack-tox-cover
 
 - project:
     name: openstack/kiloeyes
@@ -6460,9 +6329,6 @@
 - project:
     name: openstack/ldappool
     templates:
-      - check-requirements
-      - openstack-python-jobs
-      - openstack-python35-jobs
       - publish-to-pypi
 
 - project:
@@ -10577,15 +10443,7 @@
 - project:
     name: openstack/pycadf
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - publish-openstack-sphinx-docs
-      - check-requirements
-      - lib-forward-testing
       - publish-to-pypi
-    post:
-      jobs:
-        - openstack-tox-cover
 
 - project:
     name: openstack/pyeclib
@@ -10930,21 +10788,8 @@
 - project:
     name: openstack/python-keystoneclient
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - publish-openstack-sphinx-docs
-      - check-requirements
-      - lib-forward-testing
       - translation-jobs-master-only
-      - release-notes-jobs
       - publish-to-pypi
-    check:
-      jobs:
-        - legacy-keystoneclient-dsvm-functional:
-            voting: false
-    post:
-      jobs:
-        - openstack-tox-cover
 
 - project:
     name: openstack/python-kingbirdclient
