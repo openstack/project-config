@@ -124,7 +124,6 @@ function propose_i18n {
     git_add_po_files doc/source/locale
 }
 
-
 # Propose updates for python and django projects
 function propose_python_django {
     local modulename=$1
@@ -171,7 +170,23 @@ function handle_python_django_project {
     pull_from_zanata "$project"
     handle_python_django $project python
     handle_python_django $project django
+    handle_project_doc $project
+}
 
+# Handle project doc proposals
+function handle_project_doc {
+    local project=$1
+    # doing only things in the test repos for project doc translation
+    if ! [[ "$project" =~ ^(horizon|openstack-ansible|openstack-helm)$ ]]; then
+        return
+    fi
+    # setup_project and pull_from_zanata are already done
+    # we start directly with generating .pot files
+    extract_messages_doc
+    # cleanup po and pot files
+    cleanup_module "doc"
+    # Add all changed files to git
+    git_add_po_files doc/source/locale
 }
 
 # Handle either python or django proposals
