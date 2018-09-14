@@ -335,6 +335,39 @@ providers:
             diskimage: ubuntu-bionic-arm64
             key-name: infra-root-keys-2018-06-15
 
+  - name: linaro-london
+    region-name: 'London'
+    cloud: linaro-london
+    boot-timeout: 600
+    launch-timeout: 800
+    rate: 0.001
+    diskimages:
+      - name: debian-stretch-arm64
+        config-drive: true
+      - name: ubuntu-xenial-arm64
+        config-drive: true
+      - name: ubuntu-bionic-arm64
+        config-drive: true
+    pools:
+      - name: main
+        max-servers: 8
+        labels:
+          - name: debian-stretch-arm64
+            min-ram: 8000
+            flavor-name: 'os.large'
+            diskimage: debian-stretch-arm64
+            key-name: infra-root-keys-2018-06-15
+          - name: ubuntu-xenial-arm64
+            min-ram: 8000
+            flavor-name: 'os.large'
+            diskimage: ubuntu-xenial-arm64
+            key-name: infra-root-keys-2018-06-15
+          - name: ubuntu-bionic-arm64
+            min-ram: 8000
+            flavor-name: 'os.large'
+            diskimage: ubuntu-bionic-arm64
+            key-name: infra-root-keys-2018-06-15
+
 diskimages:
   - name: centos-7
   - name: debian-stretch
