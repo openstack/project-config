@@ -6,5 +6,11 @@
     state: directory
   become: yes
 
+- name: Prevent using existing wheel mirror
+  lineinfile:
+    path: /etc/pip.conf
+    state: absent
+    regexp: '^extra-index-url.*$'
+
 - name: Build the wheel mirror
   script: wheel-build.sh {{ wheel_dir }} {{ wheel_python }}
