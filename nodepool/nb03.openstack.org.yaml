@@ -18,7 +18,7 @@ providers:
     region-name: 'RegionOne'
     cloud: linaro
     rate: 0.25
-    diskimages:
+    diskimages: &provider_diskimages
       - name: ubuntu-xenial-arm64
         pause: false
         config-drive: true
@@ -43,6 +43,12 @@ providers:
           os_command_line: "console=ttyAMA0"
           hw_disk_bus: scsi
           hw_scsi_model: virtio-scsi
+
+  - name: linaro-london
+    region-name: 'London'
+    cloud: linaro-london
+    rate: 0.25
+    diskimages: *provider_diskimages
 
 diskimages:
   - name: ubuntu-xenial-arm64
