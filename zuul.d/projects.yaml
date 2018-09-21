@@ -179,7 +179,7 @@
       - openstack-python35-jobs-no-constraints
       - publish-to-pypi
       - release-tox-docs-infra
-    post:
+    check:
       jobs:
         - tox-cover
 
@@ -358,9 +358,6 @@
     check:
       jobs:
         - tox-cover
-    post:
-      jobs:
-        - tox-cover
 
 - project:
     name: openstack-infra/groups
@@ -429,9 +426,6 @@
     vars:
       rtd_webhook_id: '47271'
     check:
-      jobs:
-        - tox-cover
-    post:
       jobs:
         - tox-cover
 
@@ -1463,7 +1457,7 @@
       - openstack-python35-jobs-no-constraints
       - release-tox-docs-infra
       - publish-to-pypi
-    post:
+    check:
       jobs:
         - tox-cover
 
@@ -1517,7 +1511,7 @@
     templates:
       - publish-to-pypi
       - publish-tox-docs-infra
-    post:
+    check:
       jobs:
         - tox-cover
     experimental:
@@ -1683,11 +1677,10 @@
 - project:
     name: openstack/airship-armada
     templates:
+      - openstack-cover-jobs
       - openstack-python35-jobs
-    check:
-      jobs:
-        - openstack-tox-cover:
-            voting: false
+      # Revert to docs-on-readthedocs when fixed
+      - docs-on-readthedocs-failing
 
 - project:
     name: openstack/airship-berth
@@ -1697,12 +1690,9 @@
 - project:
     name: openstack/airship-deckhand
     templates:
+      - openstack-cover-jobs
       - openstack-python-jobs
       - openstack-python35-jobs
-    check:
-      jobs:
-        - openstack-tox-cover:
-            voting: false
 
 - project:
     name: openstack/alexandria
@@ -2198,6 +2188,7 @@
 - project:
     name: openstack/ara
     templates:
+      - openstack-cover-jobs
       - publish-to-pypi-quietly
       # Revert to docs-on-readthedocs when fixed
       - docs-on-readthedocs-failing
@@ -2213,8 +2204,6 @@
             branches: ^master
     gate:
       jobs:
-        - openstack-tox-cover:
-            branches: ^master
         - openstack-tox-pep8:
             branches: ^master
         - openstack-tox-py27:
@@ -3384,6 +3373,7 @@
 - project:
     name: openstack/cloudbase-init
     templates:
+      - openstack-cover-jobs
       - openstack-python-jobs
       - openstack-python35-jobs
       - publish-to-pypi
@@ -3393,9 +3383,6 @@
     gate:
       jobs:
         - build-openstack-releasenotes
-    post:
-      jobs:
-        - openstack-tox-cover
 
 - project:
     name: openstack/cloudcafe
@@ -3775,6 +3762,7 @@
 - project:
     name: openstack/diskimage-builder
     templates:
+      - openstack-cover-jobs
       - check-requirements
       - publish-openstack-sphinx-docs
       - openstack-python-jobs
@@ -3783,8 +3771,6 @@
       - publish-to-pypi
     check:
       jobs:
-        - openstack-tox-cover:
-            voting: false
         - openstack-tox-pylint
         - nodepool-functional-py35-redhat-src
         - nodepool-functional-py35-ubuntu-src
@@ -4279,20 +4265,17 @@
 - project:
     name: openstack/fuel-devops
     templates:
+      - openstack-cover-jobs
       - openstack-python-jobs
     check:
       jobs:
         - openstack-tox-pylint:
             voting: false
             branches: ^(?!(release/(?:2\.9)|stable)).*$
-        - openstack-tox-cover:
-            branches: ^(?!(release/(?:2\.9)|stable)).*$
         - openstack-tox-py35:
             branches: ^(?!(release/(?:2\.9)|stable)).*$
     gate:
       jobs:
-        - openstack-tox-cover:
-            branches: ^(?!(release/(?:2\.9)|stable)).*$
         - openstack-tox-py35:
             branches: ^(?!(release/(?:2\.9)|stable)).*$
 
@@ -5766,6 +5749,7 @@
 - project:
     name: openstack/kiloeyes
     templates:
+      - openstack-cover-jobs
       - publish-to-pypi
     check:
       jobs:
@@ -5775,9 +5759,6 @@
       jobs:
         - openstack-tox-pep8
         - openstack-tox-py27
-    post:
-      jobs:
-        - openstack-tox-cover
 
 - project:
     name: openstack/kingbird
@@ -6148,13 +6129,10 @@
 - project:
     name: openstack/mogan
     templates:
+      - openstack-cover-jobs
       - openstack-python-jobs
       - check-requirements
       - openstack-python35-jobs
-    check:
-      jobs:
-        - openstack-tox-cover:
-            voting: false
 
 - project:
     name: openstack/mogan-specs
@@ -6530,14 +6508,12 @@
 - project:
     name: openstack/nerd-reviewer
     templates:
+      - openstack-cover-jobs
       - openstack-python-jobs
       - openstack-python35-jobs
       # Revert to docs-on-readthedocs when fixed
       - docs-on-readthedocs-failing
       - publish-to-pypi
-    check:
-      jobs:
-        - openstack-tox-cover
 
 - project:
     name: openstack/network-checker
@@ -6566,6 +6542,7 @@
 - project:
     name: openstack/networking-ansible
     templates:
+      - openstack-cover-jobs
       - openstack-python-jobs-neutron
       - openstack-python35-jobs-neutron
       - periodic-jobs-with-neutron-lib-master
@@ -6574,12 +6551,6 @@
       - docs-on-readthedocs
     vars:
       rtd_webhook_id: '45496'
-    check:
-      jobs:
-        - openstack-tox-cover
-    gate:
-      jobs:
-        - openstack-tox-cover
 
 - project:
     name: openstack/networking-arista
@@ -9524,12 +9495,10 @@
 - project:
     name: openstack/poppy-ui
     templates:
+      - openstack-cover-jobs
       - openstack-python-jobs
       - openstack-python35-jobs
       - publish-to-pypi
-    post:
-      jobs:
-        - openstack-tox-cover
 
 - project:
     name: openstack/powervc-driver
@@ -9539,14 +9508,13 @@
 - project:
     name: openstack/proliantutils
     templates:
+      - openstack-cover-jobs
       - openstack-python35-jobs
       - publish-to-pypi
     check:
       jobs:
         - openstack-tox-pep8
         - openstack-tox-py27
-        - openstack-tox-cover:
-            voting: false
     gate:
       jobs:
         - openstack-tox-pep8
@@ -10197,6 +10165,7 @@
 - project:
     name: openstack/python-jenkins
     templates:
+      - openstack-cover-jobs
       - openstack-python-jobs
       - openstack-python35-jobs
       # Revert to docs-on-readthedocs when fixed
@@ -10204,8 +10173,6 @@
       - publish-to-pypi
     check:
       jobs:
-        - openstack-tox-cover:
-            voting: false
         - openstack-tox-pypy:
             voting: false
             nodeset: ubuntu-bionic
@@ -11206,6 +11173,7 @@
 - project:
     name: openstack/swift3
     templates:
+      - openstack-cover-jobs
       - openstack-python-jobs
     check:
       jobs:
@@ -11213,9 +11181,6 @@
     gate:
       jobs:
         - openstack-tox-pylint
-    post:
-      jobs:
-        - openstack-tox-cover
     release:
       jobs:
         - release-openstack-python-without-pypi
@@ -11286,15 +11251,10 @@
 - project:
     name: openstack/tap-as-a-service
     templates:
+      - openstack-cover-jobs-neutron
       - check-requirements
       - openstack-python-jobs-neutron
       - openstack-python35-jobs-neutron
-    check:
-      jobs:
-        - openstack-tox-cover:
-            voting: false
-            required-projects:
-              - openstack/neutron
 
 - project:
     name: openstack/tap-as-a-service-dashboard
