@@ -76,7 +76,13 @@ logstash_processor_config:
       tags:
         - console
         - console.html
-    - name: screen-(?!(peakmem_tracker|dstat|karaf)).*\.txt
+    # NOTE(mriedem): Logs that are known logstash index OOM killers are
+    # blacklisted here until fixed.
+    # screen-kubelet.txt: https://bugs.launchpad.net/kuryr-kubernetes/+bug/1795067
+    # screen-mistral-engine.txt: https://bugs.launchpad.net/mistral/+bug/1795068
+    # screen-monasca-persister.txt: https://storyboard.openstack.org/#!/story/2003911
+    # screen-ovn-northd.txt: https://bugs.launchpad.net/networking-ovn/+bug/1795069
+    - name: screen-(?!(peakmem_tracker|dstat|karaf|kubelet|mistral-engine|monasca-persister|ovn-northd)).*\.txt
       tags:
         - screen
         - oslofmt
