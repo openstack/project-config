@@ -5409,119 +5409,31 @@
 - project:
     name: openstack/manila
     templates:
-      - publish-openstack-sphinx-docs
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - check-requirements
       - translation-jobs-master-stable
-      - release-notes-jobs
-      - periodic-stable-jobs
       - api-ref-jobs
       - install-guide-jobs
       - publish-to-pypi-python3
-    check:
-      jobs:
-        - openstack-tox-cover:
-            voting: false
-        - openstack-tox-pylint:
-            voting: false
-    gate:
-      queue: manila
-    post:
-      jobs:
-        - openstack-tox-cover
 
 - project:
     name: openstack/manila-image-elements
-    templates:
-      - check-requirements
-      - build-openstack-sphinx-docs
-    check:
-      jobs:
-        - openstack-tox-pep8
-        - legacy-manila-buildimage-generic
-        - legacy-manila-buildimage-docker:
-            voting: false
-        - manila-tempest-dsvm-container-scenario-custom-image:
-            voting: false
-            irrelevant-files:
-              - ^(test-|)requirements.txt$
-              - ^setup.cfg$
-        - manila-tempest-dsvm-generic-scenario-custom-image:
-            voting: false
-            irrelevant-files:
-              - ^(test-|)requirements.txt$
-              - ^setup.cfg$
-    gate:
-      jobs:
-        - openstack-tox-pep8
-        - legacy-manila-buildimage-generic
-    post:
-      jobs:
-        - legacy-manila-publishimage-generic
     release:
       jobs:
         - legacy-manila-publishimage-generic
 
 - project:
-    name: openstack/manila-specs
-    templates:
-      - openstack-specs-jobs
-    check:
-      jobs:
-        - openstack-tox-pep8
-    gate:
-      jobs:
-        - openstack-tox-pep8
-
-- project:
     name: openstack/manila-tempest-plugin
     templates:
-      - check-requirements
-      - tempest-plugin-jobs
       - publish-to-pypi-python3
-    gate:
-      queue: manila
-
-- project:
-    name: openstack/manila-test-image
-    check:
-      jobs:
-        - openstack-tox-bashate
-    gate:
-      jobs:
-        - openstack-tox-bashate
-    experimental:
-      jobs:
-        - legacy-manila-test-image-build
 
 - project:
     name: openstack/manila-ui
     templates:
-      - check-requirements
-      - openstack-python-jobs-horizon
-      - publish-openstack-sphinx-docs
+      - publish-to-pypi-python3
       # TODO(jaegerandi): Once queens is not translated anymore,
       # use translation-jobs-master-stable instead of the two
       # templates below.
       - translation-jobs-master-only
       - translation-jobs-rocky
-      - release-notes-jobs
-      - publish-to-pypi-python3
-    check:
-      jobs:
-        - horizon-openstack-tox-py27dj19:
-            branches: ^(?!driverfixes/).*$
-        - horizon-openstack-tox-py27dj110:
-            branches: ^(?!driverfixes/).*$
-        - openstack-tox-cover:
-            voting: false
-    gate:
-      jobs:
-        - horizon-openstack-tox-py27dj19:
-            branches: ^(?!driverfixes/).*$
-        - horizon-openstack-tox-py27dj110:
-            branches: ^(?!driverfixes/).*$
 
 - project:
     name: openstack/marshal
@@ -9262,15 +9174,7 @@
 - project:
     name: openstack/python-manilaclient
     templates:
-      - publish-openstack-sphinx-docs
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - check-requirements
-      - release-notes-jobs
       - publish-to-pypi-python3
-    post:
-      jobs:
-        - openstack-tox-cover
 
 - project:
     name: openstack/python-masakariclient
