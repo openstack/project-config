@@ -21,11 +21,29 @@ if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
 fi
 set -e
 
-NODEPOOL_STATIC_NAMESERVER_V6=${NODEPOOL_STATIC_NAMESERVER_V6:-2620:0:ccc::2}
+#
+# Note that in OpenStack infra, the configure-unbound role [1] that is
+# part of the base jobs will reconfigure unbound based on the host's
+# ipv6 support very early in the job setup.  Thus the following
+# forwarder setup is only relevant to the initial boot and some parts
+# of the integration-tests before configure-unbound role is used.
+#
+# [1] http://git.openstack.org/cgit/openstack-infra/openstack-zuul-jobs/tree/roles/configure-unbound
+#
+
 NODEPOOL_STATIC_NAMESERVER_V4=${NODEPOOL_STATIC_NAMESERVER_V4:-208.67.222.222}
-NODEPOOL_STATIC_NAMESERVER_V6_FALLBACK=${NODEPOOL_STATIC_NAMESERVER_V6_FALLBACK:-2001:4860:4860::8888}
 NODEPOOL_STATIC_NAMESERVER_V4_FALLBACK=${NODEPOOL_STATIC_NAMESERVER_V4_FALLBACK:-8.8.8.8}
-dd of=/tmp/forwarding.conf <<EOF
+
+# Explicitly setting a v6 nameserver implies you want ipv6
+if [[ -n ${NODEPOOL_STATIC_NAMESERVER_V6:-} || -n ${NODEPOOL_STATIC_NAMESERVER_V6_FALLBACK} ]]; then
+    NODEPOOL_STATIC_NAMESERVER_POPULATE_IPV6=1
+fi
+
+if [[ ${NODEPOOL_STATIC_NAMESERVER_POPULATE_IPV6:-0} == 1 ]]; then
+    NODEPOOL_STATIC_NAMESERVER_V6=${NODEPOOL_STATIC_NAMESERVER_V6:-2620:0:ccc::2}
+    NODEPOOL_STATIC_NAMESERVER_V6_FALLBACK=${NODEPOOL_STATIC_NAMESERVER_V6_FALLBACK:-2001:4860:4860::8888}
+
+    dd of=/tmp/forwarding.conf <<EOF
 forward-zone:
   name: "."
   forward-addr: $NODEPOOL_STATIC_NAMESERVER_V6
@@ -33,6 +51,18 @@ forward-zone:
   forward-addr: $NODEPOOL_STATIC_NAMESERVER_V4
   forward-addr: $NODEPOOL_STATIC_NAMESERVER_V4_FALLBACK
 EOF
+else
+    # Otherwise, only populate ipv4 nameservers here.  We used to just
+    # do both, but we found it unreliable on hosts/platforms without
+    # ipv6 support (see
+    # https://www.nlnetlabs.nl/bugs-script/show_bug.cgi?id=4188).
+    dd of=/tmp/forwarding.conf <<EOF
+forward-zone:
+  name: "."
+  forward-addr: $NODEPOOL_STATIC_NAMESERVER_V4
+  forward-addr: $NODEPOOL_STATIC_NAMESERVER_V4_FALLBACK
+EOF
+fi
 
 mv /tmp/forwarding.conf /etc/unbound/
 chown root:root /etc/unbound/forwarding.conf
