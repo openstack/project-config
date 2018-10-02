@@ -11,6 +11,7 @@
       Build failed (check pipeline).  For information on how to proceed, see
       http://docs.openstack.org/infra/manual/developers.html#automated-testing
     manager: independent
+    precedence: low
     require:
       gerrit:
         open: True
@@ -65,7 +66,7 @@
       Build failed (gate pipeline).  For information on how to proceed, see
       http://docs.openstack.org/infra/manual/developers.html#automated-testing
     manager: dependent
-    precedence: high
+    precedence: normal
     post-review: True
     require:
       gerrit:
@@ -106,7 +107,7 @@
       merged. Queue items are identified by the abbreviated hash (git
       log --format=%h) of the merge commit.
     manager: supercedent
-    precedence: low
+    precedence: high
     post-review: True
     trigger:
       gerrit:
@@ -249,7 +250,7 @@
     success-message: Build succeeded (experimental pipeline).
     failure-message: Build failed (experimental pipeline).
     manager: independent
-    precedence: normal
+    precedence: low
     trigger:
       gerrit:
         - event: comment-added
@@ -284,6 +285,7 @@
       OpenStack. For information on how to proceed, see
       http://docs.openstack.org/infra/manual/developers.html#automated-testing
     manager: independent
+    precedence: low
     trigger:
       github:
         - event: pull_request
