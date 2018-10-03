@@ -5446,75 +5446,31 @@
 - project:
     name: openstack/monasca-api
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs-nonvoting
-      - check-requirements
-      - release-notes-jobs
       - api-ref-jobs
       - publish-to-pypi-python3
-    check:
-      jobs:
-        - legacy-monasca-api-maven-build
-        - openstack-tox-cover
-        - build-openstack-sphinx-docs:
-            branches: ^(?!stable/ocata).*$
     gate:
       queue: monasca
-      jobs:
-        - legacy-monasca-api-maven-build
-        - openstack-tox-cover
-        - build-openstack-sphinx-docs:
-            branches: ^(?!stable/ocata).*$
-    post:
-      jobs:
-        - legacy-monasca-api-localrepo-upload
-        - publish-openstack-sphinx-docs:
-            branches: ^(?!stable/ocata).*$
 
 - project:
     name: openstack/monasca-ceilometer
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
       - publish-to-pypi-python3
 
 - project:
     name: openstack/monasca-common
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - check-requirements
       - publish-to-pypi-python3
-    check:
-      jobs:
-        - legacy-monasca-common-maven-build
     gate:
       queue: monasca
-      jobs:
-        - legacy-monasca-common-maven-build
-    post:
-      jobs:
-        - legacy-monasca-common-localrepo-upload
 
 - project:
     name: openstack/monasca-events-api
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
       - periodic-jobs-with-oslo-master
-      - check-requirements
-      - publish-openstack-sphinx-docs
-      - release-notes-jobs
       - api-ref-jobs
       - publish-to-pypi-python3
-    check:
-      jobs:
-        - openstack-tox-cover
     gate:
       queue: monasca
-    post:
-      jobs:
-        - openstack-tox-cover
 
 - project:
     name: openstack/monasca-grafana-datasource
@@ -5525,29 +5481,17 @@
 - project:
     name: openstack/monasca-kibana-plugin
     templates:
-      - nodejs4-jobs
       - nodejs4-publish-to-npm
 
 - project:
     name: openstack/monasca-log-api
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
       - periodic-jobs-with-oslo-master
-      - check-requirements
-      - publish-openstack-sphinx-docs
-      - release-notes-jobs
       - api-guide-jobs
       - api-ref-jobs
       - publish-to-pypi-python3
-    check:
-      jobs:
-        - openstack-tox-cover
     gate:
       queue: monasca
-    post:
-      jobs:
-        - openstack-tox-cover
 
 - project:
     name: openstack/monasca-notification
@@ -5557,118 +5501,43 @@
 - project:
     name: openstack/monasca-persister
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - check-requirements
       - publish-to-pypi-python3
-    check:
-      jobs:
-        - legacy-monasca-persister-maven-build
-        - openstack-tox-cover
-    gate:
-      jobs:
-        - legacy-monasca-persister-maven-build
-        - openstack-tox-cover
-    post:
-      jobs:
-        - legacy-monasca-persister-localrepo-upload
-
-- project:
-    name: openstack/monasca-specs
-    templates:
-      - openstack-specs-jobs
 
 - project:
     name: openstack/monasca-statsd
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - check-requirements
       - publish-to-pypi-python3
-    check:
-      jobs:
-        - openstack-tox-cover
-    gate:
-      jobs:
-        - openstack-tox-cover
 
 - project:
     name: openstack/monasca-tempest-plugin
     templates:
-      - check-requirements
       - publish-to-pypi-python3
-      - tempest-plugin-jobs
-    check:
-      jobs:
-        - build-openstack-sphinx-docs:
-            voting: false
     gate:
       queue: monasca
 
 - project:
-    name: openstack/monasca-thresh
-    check:
-      jobs:
-        - legacy-monasca-thresh-maven-build
-    gate:
-      jobs:
-        - legacy-monasca-thresh-maven-build
-    post:
-      jobs:
-        - legacy-monasca-thresh-localrepo-upload
-
-- project:
     name: openstack/monasca-transform
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - check-requirements
       - publish-to-pypi-python3
     check:
       jobs:
-        - legacy-tempest-dsvm-monasca-transform-python-functional:
-            irrelevant-files:
-              - ^(test-|)requirements.txt$
-              - ^setup.cfg$
-        - legacy-tempest-dsvm-monasca-transform-python35-functional:
-            voting: false
-            branches: ^(?!stable/ocata).*$
-            irrelevant-files:
-              - ^(test-|)requirements.txt$
-              - ^setup.cfg$
         - build-openstack-sphinx-docs:
             branches: ^master
             voting: false
-    gate:
-      jobs:
-        - legacy-tempest-dsvm-monasca-transform-python-functional:
-            irrelevant-files:
-              - ^(test-|)requirements.txt$
-              - ^setup.cfg$
 
 - project:
     name: openstack/monasca-ui
     templates:
-      - openstack-python-jobs-horizon
       - translation-jobs-master-stable
-      - check-requirements
       - publish-to-pypi-python3
     check:
       jobs:
-        - openstack-tox-py35:
-            branches: ^(?!stable/(ocata|pike|queens)).*$
-            required-projects:
-              - openstack/horizon
         - openstack-tox-cover:
             required-projects:
               - openstack/horizon
             branches: master
     gate:
       jobs:
-        - openstack-tox-py35:
-            branches: ^(?!stable/(ocata|pike|queens)).*$
-            required-projects:
-              - openstack/horizon
         - openstack-tox-cover:
             required-projects:
               - openstack/horizon
@@ -8971,25 +8840,7 @@
 - project:
     name: openstack/python-monascaclient
     templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - check-requirements
       - publish-to-pypi-python3
-      - release-notes-jobs
-    check:
-      jobs:
-        - openstack-tox-cover
-        - build-openstack-sphinx-docs:
-            branches: ^(?!stable/(ocata|pike)).*$
-    gate:
-      jobs:
-        - openstack-tox-cover
-        - build-openstack-sphinx-docs:
-            branches: ^(?!stable/(ocata|pike)).*$
-    post:
-      jobs:
-        - publish-openstack-sphinx-docs:
-            branches: ^(?!stable/(ocata|pike)).*$
 
 - project:
     name: openstack/python-muranoclient
