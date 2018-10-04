@@ -1,14 +1,16 @@
 - job:
-    name: publish-stx-docs
+    name: publish-stx-tox-base
     description: |
-      Publish the results of a sphinx build to
+      Abstract base job to publish the results of a sphinx build to
       /afs/.openstack.org/project/starlingx.io/www
 
       Builds the docs using ``tox -e docs``.
-    allowed-projects:
-      - openstack/stx-docs
-    # Set final to avoid override of afs_subpath variable.
-    final: true
+    # This job is protected-abstract because it sets the afs_subpath
+    # variable; it is not safe to let that be overridden in an
+    # untrusted job because it would allow writing outside of the
+    # project's directory on the production doc site.
+    abstract: true
+    protected: true
     pre-run: playbooks/project-config/pre-tox.yaml
     run: playbooks/project-config/run-tox.yaml
     post-run:
@@ -25,28 +27,60 @@
       tox_envlist: docs
 
 - job:
+    name: publish-stx-tox
+    parent: publish-stx-tox-base
+    description: |
+      Publish the results of a sphinx build to
+      /afs/.openstack.org/project/starlingx.io/www/{{ zuul.project.short_name }}
+
+      Builds the docs using ``tox -e docs``.
+    # Set final to avoid override of afs_subpath variable.
+    final: true
+    vars:
+      afs_subpath: "/{{ zuul.project.short_name }}"
+
+- job:
+    name: publish-stx-docs
+    parent: publish-stx-tox-base
+    description: |
+      Publish the results of a sphinx build to
+      /afs/.openstack.org/project/starlingx.io/www
+
+      Builds the docs using ``tox -e docs``.
+    # Set final to avoid override of afs_subpath variable.
+    final: true
+    allowed-projects:
+      - openstack/stx-docs
+    vars:
+      # Define empty so we publish to the webroot
+      afs_subpath: ""
+
+- job:
+    name: publish-stx-governance
+    parent: publish-stx-tox-base
+    description: |
+      Publish the results of a sphinx build to
+      /afs/.openstack.org/project/starlingx.io/www/governance
+
+      Builds the docs using ``tox -e docs``.
+    # Set final to avoid override of afs_subpath variable.
+    final: true
+    allowed-projects:
+      - openstack/stx-governance
+    vars:
+      afs_subpath: "/governance"
+
+- job:
     name: publish-stx-specs
+    parent: publish-stx-tox-base
     description: |
       Publish the results of a sphinx build to
       /afs/.openstack.org/project/starlingx.io/www/specs
 
       Builds the docs using ``tox -e docs``.
-    allowed-projects:
-      - openstack/stx-specs
     # Set final to avoid override of afs_subpath variable.
     final: true
-    pre-run: playbooks/project-config/pre-tox.yaml
-    run: playbooks/project-config/run-tox.yaml
-    post-run:
-      - playbooks/project-config/post-tox.yaml
-      - playbooks/sphinx/post-infra.yaml
-      - playbooks/publish/starlingx-afs.yaml
-    roles:
-      - zuul: openstack-infra/zuul-jobs
-      - zuul: openstack-infra/openstack-zuul-jobs
-    secrets:
-      - secret: afsdocs_secret
-        name: afs
+    allowed-projects:
+      - openstack/stx-specs
     vars:
       afs_subpath: "/specs"
-      tox_envlist: docs
