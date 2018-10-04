@@ -235,6 +235,21 @@
       tox_constraints_file: '{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt'
 
 - job:
+    name: release-zuul-python
+    parent: publish-openstack-artifacts
+    description: |
+      Release python tarballs / wheels to pypi for zuul projects.
+    pre-run: playbooks/zuul-tarball/pre.yaml
+    run: playbooks/zuul-tarball/run.yaml
+    post-run:
+      - playbooks/zuul-tarball/post.yaml
+      - playbooks/publish/pypi.yaml
+    secrets:
+      - secret: pypi_secret
+        name: pypi_info
+      - gpg_key
+
+- job:
     name: release-openstack-python3
     parent: publish-openstack-artifacts
     description: |
