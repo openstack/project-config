@@ -9,9 +9,10 @@ set -o pipefail
 # needed for unbound
 if [ "${DISTRO_NAME}" == "gentoo" ]; then
     mkdir -p /etc/portage/package.use
+    echo "app-admin/rsyslog openssl" >> /etc/portage/package.use/rsyslog
+    echo "dev-lang/python sqlite" >> /etc/portage/package.use/python
     echo "dev-libs/openssl static-libs -bindist" >> /etc/portage/package.use/openssl
     echo "net-misc/openssh -bindist" >> /etc/portage/package.use/openssh
-    echo "sys-libs/zlib static-libs" >> /etc/portage/package.use/zlib
-    echo "dev-lang/python sqlite" >> /etc/portage/package.use/python
     echo "sys-apps/systemd audit curl gcrypt importd lzma nat" >> /etc/portage/package.use/systemd
+    echo "sys-libs/zlib static-libs" >> /etc/portage/package.use/zlib
 fi
