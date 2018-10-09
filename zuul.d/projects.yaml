@@ -5277,25 +5277,8 @@
               - ^setup.cfg$
     post:
       jobs:
-        - publish-openstack-python-branch-tarball:
-            required-projects:
-              - openstack/neutron
-              - openstack/networking-bgpvpn
-              - openstack/networking-sfc
         - publish-openstack-releasenotes:
             branches: ^(?!stable/ocata).*$
-    pre-release:
-      jobs:
-        - release-openstack-python:
-            required-projects:
-              - openstack/networking-bgpvpn
-              - openstack/networking-sfc
-    release:
-      jobs:
-        - release-openstack-python:
-            required-projects:
-              - openstack/networking-bgpvpn
-              - openstack/networking-sfc
     periodic:
       jobs:
         - openstack-tox-py35-with-neutron-lib-master:
@@ -5401,10 +5384,6 @@
         - legacy-networking-bgpvpn-bagpipe-dsvm-functional
     post:
       jobs:
-        - publish-openstack-python-branch-tarball:
-            required-projects:
-              - openstack/networking-bagpipe
-              - openstack/horizon
         - publish-openstack-sphinx-docs
     periodic:
       jobs:
@@ -5746,36 +5725,6 @@
               - openstack/neutron-dynamic-routing
               - openstack/networking-l2gw
               - openstack/tap-as-a-service
-    post:
-      jobs:
-        - publish-openstack-python-branch-tarball:
-            required-projects:
-              - openstack/neutron-fwaas
-              - openstack/neutron-vpnaas
-              - openstack/neutron-lbaas
-              - openstack/neutron-dynamic-routing
-              - openstack/networking-l2gw
-              - openstack/tap-as-a-service
-    pre-release:
-      jobs:
-        - release-openstack-python:
-            required-projects:
-              - openstack/neutron-fwaas
-              - openstack/neutron-vpnaas
-              - openstack/neutron-lbaas
-              - openstack/neutron-dynamic-routing
-              - openstack/networking-l2gw
-              - openstack/tap-as-a-service
-    release:
-      jobs:
-        - release-openstack-python:
-            required-projects:
-              - openstack/neutron-fwaas
-              - openstack/neutron-vpnaas
-              - openstack/neutron-lbaas
-              - openstack/neutron-dynamic-routing
-              - openstack/networking-l2gw
-              - openstack/tap-as-a-service
 
 - project:
     name: openstack/networking-mlnx
@@ -5886,48 +5835,6 @@
               - openstack/networking-l2gw
               - openstack/networking-sfc
               - openstack/networking-bgpvpn
-    post:
-      jobs:
-        - publish-openstack-python-branch-tarball:
-            required-projects:
-              - openstack/ceilometer
-              - openstack/neutron-fwaas
-              - openstack/neutron-lbaas
-              - openstack/networking-l2gw
-              - openstack/networking-sfc
-              - openstack/networking-bgpvpn
-    pre-release:
-      jobs:
-        - release-openstack-python:
-            required-projects:
-              - openstack/ceilometer
-              - openstack/neutron-fwaas
-              - openstack/neutron-lbaas
-              - openstack/networking-l2gw
-              - openstack/networking-sfc
-              - openstack/networking-bgpvpn
-        - announce-release:
-            dependencies:
-              - release-openstack-python
-        - propose-update-constraints:
-            dependencies:
-              - release-openstack-python
-    release:
-      jobs:
-        - release-openstack-python:
-            required-projects:
-              - openstack/ceilometer
-              - openstack/neutron-fwaas
-              - openstack/neutron-lbaas
-              - openstack/networking-l2gw
-              - openstack/networking-sfc
-              - openstack/networking-bgpvpn
-        - announce-release:
-            dependencies:
-              - release-openstack-python
-        - propose-update-constraints:
-            dependencies:
-              - release-openstack-python
     periodic:
       jobs:
         - openstack-tox-py35-with-neutron-lib-master:
@@ -9402,34 +9309,6 @@
               - openstack/octavia
         - openstack-tox-py35:
             timeout: 5400
-            required-projects:
-              - openstack/neutron
-              - openstack/networking-l2gw
-              - openstack/networking-sfc
-              - openstack/neutron-lbaas
-              - openstack/vmware-nsxlib
-              - openstack/neutron-fwaas
-              - openstack/neutron-dynamic-routing
-              - openstack/neutron-vpnaas
-              - openstack/tap-as-a-service
-              - openstack/octavia
-    post:
-      jobs:
-        - publish-openstack-python-branch-tarball:
-            required-projects:
-              - openstack/neutron
-              - openstack/networking-l2gw
-              - openstack/networking-sfc
-              - openstack/neutron-lbaas
-              - openstack/vmware-nsxlib
-              - openstack/neutron-fwaas
-              - openstack/neutron-dynamic-routing
-              - openstack/neutron-vpnaas
-              - openstack/tap-as-a-service
-              - openstack/octavia
-    release:
-      jobs:
-        - release-openstack-python:
             required-projects:
               - openstack/neutron
               - openstack/networking-l2gw
