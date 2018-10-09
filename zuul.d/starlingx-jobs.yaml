@@ -40,6 +40,21 @@
       afs_subpath: "/{{ zuul.project.short_name }}"
 
 - job:
+    name: publish-stx-api-ref
+    parent: publish-stx-tox-base
+    description: |
+      Publish the results of a sphinx api-ref build to
+      /afs/.openstack.org/project/starlingx.io/www/api-ref{{ zuul.project.short_name }}
+
+      Builds the docs using ``tox -e api-ref``.
+    # Set final to avoid override of afs_subpath variable.
+    final: true
+    branches: master
+    vars:
+      afs_subpath: "/api-ref/{{ zuul.project.short_name }}"
+      tox_envlist: api-ref
+
+- job:
     name: publish-stx-docs
     parent: publish-stx-tox-base
     description: |
@@ -69,6 +84,22 @@
       - openstack/stx-governance
     vars:
       afs_subpath: "/governance"
+
+- job:
+    name: publish-stx-releasenotes
+    parent: publish-stx-tox-base
+    description: |
+      Publish the results of a sphinx api-ref build to
+      /afs/.openstack.org/project/starlingx.io/www/releasenotes/{{ zuul.project.short_name }}
+
+      Builds the docs using ``tox -e releasenotes``.
+    # Set final to avoid override of afs_subpath variable.
+    final: true
+    # reno always works off master
+    override-branch: master
+    vars:
+      afs_subpath: "/releasenotes/{{ zuul.project.short_name }}"
+      tox_envlist: releasenotes
 
 - job:
     name: publish-stx-specs
