@@ -182,57 +182,29 @@
     description: |
       Sign and release python tarballs to tarballs.openstack.org, but
       do not upload to PyPI.
-    pre-run: playbooks/python-tarball/pre.yaml
-    run: playbooks/python-tarball/run.yaml
+    pre-run: playbooks/pti-python-tarball/pre.yaml
+    run: playbooks/pti-python-tarball/run.yaml
     post-run:
-      - playbooks/python-tarball/post.yaml
+      - playbooks/pti-python-tarball/post.yaml
     required-projects:
       - name: openstack/requirements
     secrets:
       - gpg_key
-    vars:
-      # NOTE(dhellmann): Library projects using a custom installation
-      # script need to be told where the constraints file is. We can
-      # remove this when tox is no longer part of the CTI for building
-      # sdists.
-      tox_constraints_file: '{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt'
 
 - job:
     name: release-openstack-python
     parent: publish-openstack-artifacts
     description: |
       Release python tarballs / wheels to pypi.
-    pre-run: playbooks/python-tarball/pre.yaml
-    run: playbooks/python-tarball/run.yaml
+    pre-run: playbooks/pti-python-tarball/pre.yaml
+    run: playbooks/pti-python-tarball/run.yaml
     post-run:
-      - playbooks/python-tarball/post.yaml
+      - playbooks/pti-python-tarball/post.yaml
       - playbooks/publish/pypi.yaml
-    required-projects:
-      # NOTE(dhellmann): Several projects that depend on neutron or
-      # horizon for their testing use a special install script run via
-      # tox that tries to use zuul-cloner to make the dependency
-      # available before installing it from source. All libraries
-      # require openstack/requirements for the custom install scripts
-      # they run via tox. Until we change the PTI for building sdists
-      # and wheels from Python projects so that it does not use tox,
-      # we need to ensure those repos are present for zuul-cloner to
-      # copy. The openstack/neutron, openstack/horizon, and
-      # openstack/requirements repos can be removed from the list of
-      # required-projects for this job when the job is modified to not
-      # use tox.
-      - name: openstack/neutron
-      - name: openstack/horizon
-      - name: openstack/requirements
     secrets:
       - secret: pypi_secret
         name: pypi_info
       - gpg_key
-    vars:
-      # NOTE(dhellmann): Library projects using a custom installation
-      # script need to be told where the constraints file is. We can
-      # remove this when tox is no longer part of the CTI for building
-      # sdists.
-      tox_constraints_file: '{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt'
 
 - job:
     name: release-zuul-python
@@ -627,14 +599,9 @@
     parent: publish-openstack-artifacts
     description: |
       Publish the results of the tox-tarball job to tarballs.openstack.org.
-    pre-run: playbooks/python-tarball/pre.yaml
-    run: playbooks/python-tarball/run.yaml
+    pre-run: playbooks/pti-python-tarball/pre.yaml
+    run: playbooks/pti-python-tarball/run.yaml
     post-run: playbooks/python-branch-tarball/post.yaml
-    required-projects:
-      # See job release-openstack-python for details
-      - name: openstack/neutron
-      - name: openstack/horizon
-      - name: openstack/requirements
 
 - job:
     name: publish-irc-meetings
