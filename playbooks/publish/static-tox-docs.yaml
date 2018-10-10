@@ -1,0 +1,12 @@
+- hosts: localhost
+  roles:
+    - add-fileserver
+
+- hosts: "{{ fileserver.fqdn }}"
+  gather_facts: False
+  tasks:
+    - name: Upload docs to static site
+      synchronize:
+        src: "{{ zuul.executor.work_root }}/artifacts/"
+        dest: "{{ fileserver.path }}/{{ static_target }}/"
+      when: zuul_success | bool

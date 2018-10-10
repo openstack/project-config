@@ -620,6 +620,28 @@
         secret: eavesdrop_ssh_key
 
 - job:
+    name: base-publish-tox-docs-static
+    abstract: true
+    protected: true
+    description: |
+      Base job for jobs that publish content to static.openstack.org.
+
+      Jobs need to set the variable ``static_target`` for site to
+      publish to.
+      This job uses ``tox -e docs`` for building documents.
+    pre-run: playbooks/project-config/pre-tox.yaml
+    run: playbooks/project-config/run-tox.yaml
+    post-run:
+      - playbooks/sphinx/post-direct.yaml
+      - playbooks/project-config/post-tox.yaml
+      - playbooks/publish/static-tox-docs.yaml
+    vars:
+      tox_envlist: docs
+    secrets:
+      - name: fileserver
+        secret: static_ssh_key
+
+- job:
     name: base-publish-static
     abstract: true
     protected: true
@@ -659,7 +681,7 @@
 
 - job:
     name: publish-governance-tc
-    parent: base-publish-static
+    parent: base-publish-tox-docs-static
     description: |
       Publish content to static.openstack.org to /srv/static/tc
     final: true
@@ -667,7 +689,6 @@
       - openstack/governance
     vars:
       static_target: tc
-      sphinx_python: python3
 
 - job:
     name: publish-governance-uc
