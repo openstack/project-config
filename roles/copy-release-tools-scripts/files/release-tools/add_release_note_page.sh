@@ -36,7 +36,17 @@ cd $REPO
 
 NEW_BRANCH="stable/$SERIES"
 
-commit_msg="Update reno for $NEW_BRANCH"
+commit_msg="Update master for $NEW_BRANCH
+
+Add file to the reno documentation build to show release notes for
+$NEW_BRANCH.
+
+Use pbr instruction to increment the minor version number
+automatically so that master versions are higher than the versions on
+$NEW_BRANCH.
+
+Sem-Ver: feature
+"
 titlebranch=$(python -c "print('$SERIES'.title())")
 cat - > releasenotes/source/${SERIES}.rst <<EOF
 ===================================
