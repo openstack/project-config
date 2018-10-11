@@ -1446,7 +1446,7 @@
       - openstack-python35-jobs-no-constraints
       - release-tox-docs-infra
       - publish-to-pypi-python3
-    post:
+    check:
       jobs:
         - tox-cover
 
@@ -2794,7 +2794,6 @@
         - openstack-tox-bashate
         - legacy-tempest-dsvm-full-devstack-plugin-nfs:
             voting: false
-            branches: ^(?!driverfixes/).*
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^setup.cfg$
@@ -2809,7 +2808,6 @@
         - openstack-tox-bashate
         - legacy-tempest-dsvm-full-sheepdog:
             voting: false
-            branches: ^(?!driverfixes/).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^setup.cfg$
@@ -2952,7 +2950,6 @@
       jobs:
         - openstack-tox-bashate
         - legacy-tempest-dsvm-full-drbd-devstack:
-            branches: ^(?!driverfixes/).*$
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^setup.cfg$
@@ -4525,12 +4522,10 @@
         - legacy-js-openstack-lib-dsvm-nodejs4-npm-run-functional-test
     pre-release:
       jobs:
-        - legacy-js-openstack-lib-nodejs6-npm-sdk-docs:
-            branches: ^(?!bug/).*$
+        - legacy-js-openstack-lib-nodejs6-npm-sdk-docs
     release:
       jobs:
-        - legacy-js-openstack-lib-nodejs6-npm-sdk-docs:
-            branches: ^(?!bug/).*$
+        - legacy-js-openstack-lib-nodejs6-npm-sdk-docs
 
 - project:
     name: openstack/k8s-cloud-provider
@@ -5131,18 +5126,9 @@
     name: openstack/networking-arista
     templates:
       - openstack-python-jobs-neutron
+      - openstack-python35-jobs-neutron
       - check-requirements
       - publish-to-pypi
-    check:
-      jobs:
-        - openstack-tox-py35:
-            required-projects:
-              - openstack/neutron
-    gate:
-      jobs:
-        - openstack-tox-py35:
-            required-projects:
-              - openstack/neutron
 
 - project:
     name: openstack/networking-avaya
@@ -7677,13 +7663,11 @@
 - project:
     name: openstack/solum-infra-guestagent
     templates:
+      - openstack-cover-jobs
       - openstack-python-jobs
       - openstack-python35-jobs-nonvoting
       - check-requirements
       - publish-to-pypi
-    post:
-      jobs:
-        - openstack-tox-cover
 
 - project:
     name: openstack/solum-tempest-plugin
