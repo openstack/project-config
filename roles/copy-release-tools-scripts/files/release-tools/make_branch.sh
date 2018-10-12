@@ -72,8 +72,8 @@ if [[ $NEW_BRANCH =~ stable/ ]]; then
     series=$(echo $NEW_BRANCH | cut -f2 -d/)
     if [[ -d releasenotes/source ]]; then
         # Also update the reno settings, in master, to add the new
-        # series page.
-        echo "Updating reno"
+        # series page and bump the SemVer value for feature work.
+        echo "Updating reno and semver"
         git checkout master
         $TOOLSDIR/add_release_note_page.sh $series .
     else
