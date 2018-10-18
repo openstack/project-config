@@ -35,7 +35,7 @@ def access_gerrit_check():
 
     print("Basic check of gerritbot/channels.yaml")
     REQUIRED_ENTRIES = ("branches", "events", "projects")
-    VALID_EVENTS = ("change-merged", "patchset-created", "x-vrif-minus-2")
+    VALID_EVENTS = ("change-merged", "patchset-created")
     for channel in gerrit_config:
         for entry in REQUIRED_ENTRIES:
             if entry not in gerrit_config[channel]:
