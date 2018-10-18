@@ -1,5 +1,10 @@
 - hosts: all
-  strategy: linear
+  # We don't want the python2 & python3 hosts copying to AFS at the
+  # same time.  In some cases for generic wheels they can have
+  # produced a file with the same name and thus we open a window to
+  # corruption on AFS with multiple simultaneous writers to the same
+  # file.
+  serial: 1
 
   pre_tasks:
     - name: Generate AFS slug - CentOS
