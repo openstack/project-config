@@ -4335,6 +4335,18 @@
     name: openstack/instack-undercloud
     templates:
       - publish-to-pypi-python3
+    check:
+      jobs:
+        - noop:
+            branches: master
+        - test-release-openstack-python3:
+            branches: ^(?!master)
+    gate:
+      jobs:
+        - noop:
+            branches: master
+        - test-release-openstack-python3:
+            branches: ^(?!master)
 
 - project:
     name: openstack/intel-nfv-ci-tests
