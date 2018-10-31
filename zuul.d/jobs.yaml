@@ -859,32 +859,6 @@
         name: afs
 
 - job:
-    name: publish-placement-api-ref
-    description: |
-      Publish placement-api-ref document to
-      https://developer.openstack.org/api-ref/placement.
-    allowed-projects:
-      - openstack/nova
-    pre-run: playbooks/sphinx/pre.yaml
-    run: playbooks/sphinx/run.yaml
-    post-run:
-      - playbooks/publish/placement-api-ref.yaml
-      - playbooks/publish/openstack-afs.yaml
-    roles:
-      - zuul: openstack-infra/zuul-jobs
-      - zuul: openstack-infra/openstack-zuul-jobs
-    # We only publish the master branch, so no need to run
-    # for changes on other branches.
-    branches: master
-    vars:
-      afs_subpath: "/api-ref/placement"
-      sphinx_build_dir: placement-api-ref/build
-      sphinx_source_dir: placement-api-ref/source
-    secrets:
-      - secret: afsdeveloper_secret
-        name: afs
-
-- job:
     name: publish-install-guide
     description: |
       Publish install-guide document to
