@@ -4314,8 +4314,8 @@
 
 - project:
     name: openstack/instack
-    templates:
-      - publish-to-pypi-python3
+    # NOTE(aschultz): these have to dupe the publish-to-pypi-python3 jobs
+    # because of the branch designation for the release job
     check:
       jobs:
         - noop:
@@ -4328,12 +4328,23 @@
             branches: master
         - test-release-openstack-python3:
             branches: ^(?!master).*$
-
+    pre-release:
+      jobs:
+        - release-openstack-python3
+    release:
+      jobs:
+        - release-openstack-python3
+        - announce-release:
+            dependencies:
+              - release-openstack-python3
+        - propose-update-constraints:
+            dependencies:
+              - release-openstack-python3
 
 - project:
     name: openstack/instack-undercloud
-    templates:
-      - publish-to-pypi-python3
+    # NOTE(aschultz): these have to dupe the publish-to-pypi-python3 jobs
+    # because of the branch designation for the release job
     check:
       jobs:
         - noop:
@@ -4346,6 +4357,18 @@
             branches: master
         - test-release-openstack-python3:
             branches: ^(?!master).*$
+    pre-release:
+      jobs:
+        - release-openstack-python3
+    release:
+      jobs:
+        - release-openstack-python3
+        - announce-release:
+            dependencies:
+              - release-openstack-python3
+        - propose-update-constraints:
+            dependencies:
+              - release-openstack-python3
 
 - project:
     name: openstack/intel-nfv-ci-tests
