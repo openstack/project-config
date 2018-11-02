@@ -205,6 +205,24 @@
       - secret: pypi_secret
         name: pypi_info
       - gpg_key
+    vars:
+      release_python: python3
+      bdist_wheel_xargs: "--universal"
+
+- job:
+    name: test-release-openstack
+    parent: base
+    description: |
+      Test building python tarballs / wheels and the packaging metadata.
+    pre-run: playbooks/pti-python-tarball/pre.yaml
+    run: playbooks/pti-python-tarball/check.yaml
+    vars:
+      release_python: python3
+      bdist_wheel_xargs: "--universal"
+    files:
+      - setup.cfg
+      - setup.py
+      - README.rst
 
 - job:
     name: release-zuul-python
