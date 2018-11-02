@@ -240,39 +240,6 @@
       - gpg_key
 
 - job:
-    name: release-openstack-python3
-    parent: publish-openstack-artifacts
-    description: |
-      Release python tarballs / wheels to pypi using python3.
-    pre-run: playbooks/pti-python-tarball/pre.yaml
-    run: playbooks/pti-python-tarball/run.yaml
-    post-run:
-      - playbooks/pti-python-tarball/post.yaml
-      - playbooks/publish/pypi.yaml
-    secrets:
-      - secret: pypi_secret
-        name: pypi_info
-      - gpg_key
-    vars:
-      release_python: python3
-      bdist_wheel_xargs: "--universal"
-
-- job:
-    name: test-release-openstack-python3
-    parent: base
-    description: |
-      Test building python tarballs / wheels and the packaging metadata.
-    pre-run: playbooks/pti-python-tarball/pre.yaml
-    run: playbooks/pti-python-tarball/check.yaml
-    vars:
-      release_python: python3
-      bdist_wheel_xargs: "--universal"
-    files:
-      - setup.cfg
-      - setup.py
-      - README.rst
-
-- job:
     name: publish-openstack-sphinx-docs-base
     description: |
       Base job for publishing sphinx documentation to
