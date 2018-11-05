@@ -627,6 +627,16 @@
         secret: static_ssh_key
 
 - job:
+    name: publish-tox-docs-static
+    parent: base-publish-tox-docs-static
+    description: |
+      Publish content to static.openstack.org to
+      /srv/static/{{ zuul.project.short_name }}
+    final: true
+    vars:
+      static_target: "{{ zuul.project.short_name }}"
+
+- job:
     name: base-publish-static
     abstract: true
     protected: true
@@ -655,7 +665,7 @@
 
 - job:
     name: publish-governance-sigs
-    parent: base-publish-static
+    parent: base-publish-tox-docs-static
     description: |
       Publish content to static.openstack.org to /srv/static/sigs
     final: true
@@ -688,7 +698,7 @@
 
 - job:
     name: publish-governance-website
-    parent: base-publish-static
+    parent: base-publish-tox-docs-static
     description: |
       Publish content to static.openstack.org to /srv/static/governance
     final: true
@@ -699,7 +709,7 @@
 
 - job:
     name: publish-security
-    parent: base-publish-static
+    parent: base-publish-tox-docs-static
     description: |
       Publish content to static.openstack.org to /srv/static/security
     final: true
