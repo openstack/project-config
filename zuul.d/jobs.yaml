@@ -637,33 +637,6 @@
       static_target: "{{ zuul.project.short_name }}"
 
 - job:
-    name: base-publish-static
-    abstract: true
-    protected: true
-    description: |
-      Base job for jobs that publish content to static.openstack.org.
-
-      Jobs need to set the variable ``static_target`` for site to
-      publish to.
-    pre-run: playbooks/sphinx/pre.yaml
-    run: playbooks/sphinx/run.yaml
-    post-run: playbooks/publish/static.yaml
-    secrets:
-      - name: fileserver
-        secret: static_ssh_key
-
-- job:
-    name: publish-static
-    parent: base-publish-static
-    description: |
-      Publish content to static.openstack.org to
-      /srv/static/{{ zuul.project.short_name }}
-    final: true
-    vars:
-      static_target: "{{ zuul.project.short_name }}"
-      sphinx_python: python3
-
-- job:
     name: publish-governance-sigs
     parent: base-publish-tox-docs-static
     description: |
