@@ -11,13 +11,15 @@ dashboard:
             If you would like to make changes to this dashboard, please see the grafana directory in [project-config](https://git.openstack.org/cgit/openstack-infra/project-config/tree/grafana/bridge.yaml).
           type: text
 
-    - title: Runtime
+    - title: run_all Runtime
       showTitle: true
       height: 400px
       panels:
         - title: "run_all.sh"
           type: graph
           span: 12
+          tooltip:
+            sort: 1
           yaxes:
             - format: ms
             - show: false
@@ -25,7 +27,6 @@ dashboard:
           targets:
             - target: aliasSub(stats.timers.bridge.ansible.run_all.*.median, "stats.timers.bridge.ansible.run_all.(.*).median", "\1")
               refId: A
-
 
     - title: Individual runtimes
       showTitle: true
@@ -117,4 +118,19 @@ dashboard:
           nullPointMode: connected
           targets:
             - target: aliasSub(stats.timers.bridge.ansible.run_all.update_system_config.median, "stats.timers.bridge.ansible.run_all.(.*).median", "\1")
+              refId: A
+
+    - title: Cloud launcher runtime
+      showTitle: true
+      height: 400px
+      panels:
+        - title: "run_cloud_launcher.sh"
+          type: graph
+          span: 12
+          yaxes:
+            - format: ms
+            - show: false
+          nullPointMode: connected
+          targets:
+            - target: alias(stats.timers.bridge.ansible.run_cloud_launcher.median, "run_cloud_launcher.sh")
               refId: A
