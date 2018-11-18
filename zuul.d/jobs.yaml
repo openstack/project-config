@@ -227,6 +227,15 @@
       - README.rst
 
 - job:
+    name: publish-zuul-python-branch-tarball
+    parent: publish-openstack-artifacts
+    description: |
+      Publish the results of the tox-tarball job to tarballs.openstack.org.
+    pre-run: playbooks/zuul-tarball/pre.yaml
+    run: playbooks/zuul-tarball/run.yaml
+    post-run: playbooks/python-branch-tarball/post.yaml
+
+- job:
     name: release-zuul-python
     parent: publish-openstack-artifacts
     description: |
