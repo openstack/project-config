@@ -172,9 +172,13 @@
       Sign and release puppet tarballs to tarballs.o.o.
     pre-run: playbooks/puppet-tarball/pre.yaml
     run: playbooks/puppet-tarball/run.yaml
-    post-run: playbooks/puppet-tarball/post.yaml
+    post-run:
+      - playbooks/publish/puppetforge.yaml
+      - playbooks/puppet-tarball/post.yaml
     secrets:
       - gpg_key
+      - name: puppetforge
+        secret: openstack_puppetforge_credentials
 
 - job:
     name: release-openstack-python-without-pypi
