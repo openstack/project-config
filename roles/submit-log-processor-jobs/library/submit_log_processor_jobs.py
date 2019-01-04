@@ -142,6 +142,8 @@ class LogMatcher(object):
         # TODO: this is too simplistic for zuul v3 multinode jobs
         node = hosts[0]
         fields["build_node"] = node['nodepool']['label']
+        fields["build_hostids"] = [h['nodepool']['host_id'] for h in hosts
+                                   if 'host_id' in h['nodepool']]
         # TODO: should be build_executor, or removed completely
         fields["build_master"] = zuul['executor']['hostname']
 
