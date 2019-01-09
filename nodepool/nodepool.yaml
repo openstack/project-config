@@ -43,8 +43,6 @@ providers:
     diskimages: &provider_diskimages
       - name: centos-7
         config-drive: true
-      - name: centos-7-nm
-        config-drive: true
       - name: debian-stretch
         config-drive: true
       - name: fedora-28
@@ -122,28 +120,6 @@ providers:
 
 diskimages:
   - name: centos-7
-    pause: false
-    elements:
-      - centos-minimal
-      - vm
-      - simple-init
-      - openstack-repos
-      - nodepool-base
-      - cache-devstack
-      - growroot
-      - infra-package-needs
-      - epel
-    env-vars:
-      TMPDIR: /opt/dib_tmp
-      DIB_CHECKSUM: '1'
-      DIB_IMAGE_CACHE: /opt/dib_cache
-      QEMU_IMG_OPTIONS: compat=0.10
-      DIB_GRUB_TIMEOUT: '0'
-      DIB_EPEL_DISABLED: '1'
-      GIT_HTTP_LOW_SPEED_TIME: '300'
-      GIT_HTTP_LOW_SPEED_LIMIT: '1000'
-  # Temporary node to test NetworkManager based boots
-  - name: centos-7-nm
     pause: false
     elements:
       - centos-minimal
