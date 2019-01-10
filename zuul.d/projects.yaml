@@ -491,20 +491,26 @@
 
 - project:
     name: openstack-infra/openstackid
-    templates:
-      - publish-tox-docs-infra
     check:
       jobs:
         - legacy-laravel-openstackid-unittests
+        - tox-docs:
+            nodeset: ubuntu-bionic
     gate:
       jobs:
         - legacy-laravel-openstackid-unittests
+        - tox-docs:
+            nodeset: ubuntu-bionic
     post:
       jobs:
         - legacy-laravel-openstackid-release-branch
+        - publish-tox-docs-infra:
+            nodeset: ubuntu-bionic
     release:
       jobs:
         - legacy-laravel-openstackid-release-master
+        - publish-tox-docs-infra:
+            nodeset: ubuntu-bionic
 
 - project:
     name: openstack-infra/openstackid-resources
