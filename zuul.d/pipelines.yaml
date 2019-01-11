@@ -125,6 +125,10 @@
       This pipeline runs jobs that operate after each change is merged
       in order to promote artifacts generated in the gate
       pipeline.
+    success-message: Build succeeded (promote pipeline).
+    failure-message: |
+      Build failed (promote pipeline).  For information on how to proceed, see
+      http://docs.openstack.org/infra/manual/developers.html#automated-testing
     manager: supercedent
     precedence: low
     post-review: True
@@ -132,8 +136,10 @@
       gerrit:
         - event: change-merged
     success:
+      gerrit: {}
       mysql:
     failure:
+      gerrit: {}
       mysql:
 
 - pipeline:
