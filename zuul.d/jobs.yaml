@@ -531,6 +531,23 @@
       bindep_profile: compile doc
 
 - job:
+    name: publish-tox-docs-infra-bionic
+    parent: publish-openstack-tox-docs-base
+    description: |
+      Publish the results of the tox docs job to
+      /afs/.openstack.org/infra/{{ zuul.project.short_name }}
+      using an ubuntu-bionic nodeset (openstackid will use this
+      to get around the final: true in publish-tox-docs-infra
+      until the default nodeset is updated in the base job)
+    final: true
+    post-run:
+      - playbooks/sphinx/post-infra.yaml
+    vars:
+      afs_subpath: "/infra/{{ zuul.project.short_name }}"
+      bindep_profile: compile doc
+    nodeset: ubuntu-bionic
+
+- job:
     name: publish-infra-manual
     parent: publish-openstack-tox-docs-base
     description: |
