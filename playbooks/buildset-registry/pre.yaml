@@ -1,0 +1,21 @@
+- hosts: all
+  roles:
+    - install-docker
+    - run-buildset-registry
+    - use-buildset-registry
+  tasks:
+    - name: Open iptables port for registry
+      become: true
+      iptables:
+        chain: openstack-INPUT
+        protocol: tcp
+        match: state
+        ctstate: NEW
+        destination_port: 5000
+        jump: ACCEPT
+        rule_num: 7
+        action: insert
+
+- hosts: localhost
+  roles:
+    - pull-from-intermediate-registry

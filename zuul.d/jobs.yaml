@@ -1198,3 +1198,15 @@
 
       The testing is done for Ubuntu Xenial.
     nodeset: ubuntu-xenial
+
+- job:
+    name: openstack-buildset-registry
+    description: |
+      Inherit from this job to get a buildset registry which interacts
+      with the intermediate CI registry to share speculative container
+      images between projects.
+    pre-run: playbooks/buildset-registry/pre.yaml
+    post-run: playbooks/buildset-registry/post.yaml
+    secrets:
+      - secret: opendev-intermediate-registry
+        name: intermediate_registry
