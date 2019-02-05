@@ -3,7 +3,7 @@
 
 - project:
     # Only include system-required on openstack repos so that we don't
-    # run merge-check on third-party things like kata or ansible
+    # run merge-check on third-party things like ansible
     name: ^openstack.*
     templates:
       - system-required
@@ -44,27 +44,6 @@
               - ^lib/ansible/plugins/inventory/openstack.py
               - ^lib/ansible/module_utils/openstack.py
               - ^lib/ansible/utils/module_docs_fragments/openstack.py
-
-- project:
-    name: kata-containers/proxy
-    third-party-check:
-      jobs:
-        - dco-license
-        - kata-runsh:
-            dependencies:
-              - dco-license
-        - kata-runsh-fedora-28:
-            dependencies:
-              - dco-license
-
-- project:
-    name: kata-containers/runtime
-    third-party-check:
-      jobs:
-        - dco-license
-        - kata-runsh:
-            dependencies:
-              - dco-license
 
 - project:
     name: openstack-dev/bashate
