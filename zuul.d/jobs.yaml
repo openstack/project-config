@@ -3,72 +3,6 @@
 # Overrides jobs from:
 #    https://git.openstack.org/cgit/openstack-infra/zuul-jobs
 
-
-# Changes to this job require a special procedure, because they can
-# not be tested before landing, and if they are faulty, they will
-# break all jobs, meaning subsequent corrections will not be able to
-# land.  To make a change:
-#
-# 1) Ensure that base-test and its playbooks are identical to base.
-# 2) Make the change to base-test and/or its playbooks.
-# 3) Merge the change from step 2.  No jobs normally use base-test, so
-#    this is safe.
-# 4) Propose a change to a job to reparent it to base-test.  Choose a
-#    job which will exercise whatever you are changing.  The
-#    "unittests" job in zuul-jobs is a good choice.  Use [DNM] in the
-#    commit subject so that people know not to merge the change.  Set
-#    it to "Work in progress" so people don't review it.
-# 5) Once test results arrive for the change in step 2, make a change
-#    which copies the job and/or playbooks of base-test to base.  In
-#    the commit message, link to (without using Depends-On:) the
-#    change from step 4 so reviewers can see the test results.
-# 6) Once the change in step 5 merges, abandon the change from step 4.
-- job:
-    name: base
-    parent: null
-    abstract: true
-    description: |
-      The base job for OpenStack's installation of Zuul.
-
-      All jobs ultimately inherit from this.  It runs a pre-playbook
-      which copies all of the job's prepared git repos on to all of
-      the nodes in the nodeset.  It runs a post-playbook which copies
-      all of the files in the logs/ subdirectory of the executor
-      work directory to the logserver.
-
-      It also sets default timeout and nodeset values (which may be
-      overidden).
-
-      Responds to these variables:
-
-      .. zuul:jobvar:: base_serial
-         :default: Omitted
-
-         This sets the serial keyword in the pre and post playbooks
-         which can be an integer or percentage.
-
-         See ansible documentation for more information:
-         http://docs.ansible.com/ansible/latest/playbooks_delegation.html
-
-    pre-run: playbooks/base/pre.yaml
-    post-run:
-      - playbooks/base/post.yaml
-      - playbooks/base/post-logs.yaml
-    roles:
-      - zuul: openstack-infra/zuul-jobs
-      - zuul: openstack-infra/openstack-zuul-jobs
-    vars:
-      ara_report_type: database
-      ara_report_path: ara-report
-    timeout: 1800
-    post-timeout: 1800
-    nodeset:
-      nodes:
-        - name: ubuntu-xenial
-          label: ubuntu-xenial
-    secrets:
-      - site_logs
-
 - job:
     name: base-minimal
     parent: null
@@ -99,36 +33,7 @@
         - name: ubuntu-xenial
           label: ubuntu-xenial
     secrets:
-      - site_logs
-
-# See the procedure described above "base" before making changes to
-# this job.
-- job:
-    name: base-test
-    parent: null
-    description: |
-      A job to test changes to the base job without disturbing the
-      main job in production.  Not for general use.
-    pre-run: playbooks/base-test/pre.yaml
-    post-run:
-      - playbooks/base-test/post.yaml
-      - playbooks/base-test/post-logs.yaml
-    roles:
-      - zuul: openstack-infra/zuul-jobs
-      - zuul: openstack-infra/openstack-zuul-jobs
-    timeout: 1800
-    post-timeout: 1800
-    vars:
-      ara_report_type: database
-      ara_report_path: ara-report
-    nodeset:
-      nodes:
-        - name: ubuntu-xenial
-          label: ubuntu-xenial
-    secrets:
-      - site_logs
-      - secret: site_tarballs
-        name: fileserver
+      - site_logs_project_config
 
 # NOTE(corvus): A short-term test job
 - job:
@@ -136,9 +41,9 @@
     parent: null
     description: |
       A job to test storing logs in swift.  Not for general use.
-    pre-run: playbooks/base/pre.yaml
+    pre-run: playbooks/base-test/pre.yaml
     post-run:
-      - playbooks/base/post-ssh.yaml
+      - playbooks/base-test/post-ssh.yaml
       - playbooks/base-test/post-logs-swift.yaml
     roles:
       - zuul: openstack-infra/zuul-jobs
@@ -189,7 +94,7 @@
         - name: ubuntu-xenial
           label: ubuntu-xenial
     secrets:
-      - site_logs
+      - site_logs_project_config
 
 - job:
     name: publish-openstack-artifacts
@@ -499,7 +404,7 @@
     vars:
       tox_constraints_file: '{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt'
     secrets:
-      - site_logs
+      - site_specs
 
 - job:
     name: publish-openstack-specs-site
@@ -517,7 +422,7 @@
     vars:
       tox_envlist: specs
     secrets:
-      - site_logs
+      - site_specs
 
 - job:
     name: publish-tox-docs-infra
@@ -579,7 +484,7 @@
     vars:
       tox_envlist: publish
     secrets:
-      - site_logs
+      - site_specs
 
 - job:
     name: publish-infra-index
