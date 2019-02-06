@@ -4498,35 +4498,6 @@
         - openstack-tox-pep8
 
 - project:
-    name: openstack/instack
-    # NOTE(aschultz): these have to dupe the publish-to-pypi jobs
-    # because of the branch designation for the release job
-    check:
-      jobs:
-        - noop:
-            branches: master
-        - test-release-openstack:
-            branches: ^(?!master).*$
-    gate:
-      jobs:
-        - noop:
-            branches: master
-        - test-release-openstack:
-            branches: ^(?!master).*$
-    pre-release:
-      jobs:
-        - release-openstack-python
-    release:
-      jobs:
-        - release-openstack-python
-        - announce-release:
-            dependencies:
-              - release-openstack-python
-        - propose-update-constraints:
-            dependencies:
-              - release-openstack-python
-
-- project:
     name: openstack/instack-undercloud
     # NOTE(aschultz): these have to dupe the publish-to-pypi jobs
     # because of the branch designation for the release job
