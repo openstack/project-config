@@ -1,6 +1,18 @@
-- hosts: all
-  roles:
-    - role: upload-puppetforge
-      blacksmith_forge_username: "{{ puppetforge.user }}"
-      blacksmith_forge_password: "{{ puppetforge.password }}"
-      when: zuul_success | bool
+- hosts: localhost
+  tasks:
+    - name: Find all puppet tarballs in artifacts
+      find:
+        paths: "{{ zuul.executor.work_root }}/artifacts/"
+        patterns: '*.tar.gz'
+        recurse: yes
+      register: tarballs
+    - name: Upload tarballs to PuppetForge
+      include_role:
+        name: upload-forge
+      vars:
+        forge_username: "{{ puppetforge.user }}"
+        forge_password: "{{ puppetforge.password }}"
+        forge_tarball: "{{ item.path }}"
+        forge_url: "https://forgeapi.puppet.com"
+      with_items:
+        - "{{ tarballs.files }}"
