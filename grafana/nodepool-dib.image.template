@@ -16,7 +16,15 @@
           thresholds: 0.1,0.9
           span: 2
           targets:
-            - target: "stats.gauges.nodepool.dib_image_build.%KEY%.qcow2.rc"
+            - target: "stats.gauges.nodepool.dib_image_build.%KEY%.status.rc"
+          valueFontSize: "50%"
+
+        - title: Last build
+          type: singlestat
+          span: 2
+          format: dateTimeFromNow
+          targets:
+            - target: "stats.gauges.nodepool.dib_image_build.%KEY%.status.last_build"
           valueFontSize: "50%"
 
         - title: Image size
@@ -40,5 +48,5 @@
             - format: ms
               min: 0
           targets:
-            - target: alias(keepLastValue(stats.timers.nodepool.dib_image_build.%KEY%.qcow2.duration.mean, 'None'), "Time")
+            - target: alias(keepLastValue(stats.timers.nodepool.dib_image_build.%KEY%.status.duration.mean, 'None'), "Time")
               refId: A
