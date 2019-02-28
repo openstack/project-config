@@ -118,6 +118,20 @@ providers:
     rate: 0.01
     diskimages: *provider_diskimages
 
+  - name: rax-dfw-control-plane
+    region-name: DFW
+    cloud: rax-control-plane
+    rate: 0.001
+    diskimages: &control_plane_diskimages
+      - name: ubuntu-bionic-minimal
+        config-drive: true
+
+  - name: vexxhost-sjc1-control-plane
+    region-name: sjc1
+    cloud: vexxhost-control-plane
+    rate: 0.001
+    diskimages: *control_plane_diskimages
+
 diskimages:
   - name: centos-7
     pause: false
@@ -370,6 +384,29 @@ diskimages:
       DIB_DISABLE_APT_CLEANUP: '1'
       DIB_GRUB_TIMEOUT: '0'
       DIB_DISTRIBUTION_MIRROR: 'http://mirror.dfw.rax.openstack.org/ubuntu'
+      DIB_DEBOOTSTRAP_EXTRA_ARGS: '--no-check-gpg'
+      DIB_DEBIAN_COMPONENTS: 'main,universe'
+      GIT_HTTP_LOW_SPEED_TIME: '300'
+      GIT_HTTP_LOW_SPEED_LIMIT: '1000'
+      DIB_SHOW_IMAGE_USAGE: '1'
+  - name: ubuntu-bionic-minimal
+    pause: false
+    elements:
+      - ubuntu-minimal
+      - vm
+      - simple-init
+      - growroot
+      - openssh-server
+      - control-plane-minimal
+    release: bionic
+    env-vars:
+      TMPDIR: /opt/dib_tmp
+      DIB_CHECKSUM: '1'
+      DIB_IMAGE_CACHE: /opt/dib_cache
+      DIB_APT_LOCAL_CACHE: '0'
+      DIB_DISABLE_APT_CLEANUP: '1'
+      DIB_GRUB_TIMEOUT: '0'
+      # DIB_DISTRIBUTION_MIRROR excluded on purpose
       DIB_DEBOOTSTRAP_EXTRA_ARGS: '--no-check-gpg'
       DIB_DEBIAN_COMPONENTS: 'main,universe'
       GIT_HTTP_LOW_SPEED_TIME: '300'
