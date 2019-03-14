@@ -77,9 +77,8 @@ defaultbranch=$branch"
 
 function update_upper_constraints {
     typeset branch="$1"
-    typeset uc_server='git.openstack.org'
-    typeset uc_path='cgit/openstack/requirements/plain/upper-constraints.txt'
-    typeset uc_url="https://${uc_server}/${uc_path}?h=${branch}"
+    typeset redirect_branch=$(basename $branch)
+    typeset uc_url="https://releases.openstack.org/constraints/upper/${redirect_branch}"
 
     echo "Updating tox.ini for upper-constraints"
     git checkout $branch
@@ -91,19 +90,13 @@ function update_upper_constraints {
     if ! git diff --exit-code >/dev/null 2>&1 ; then
         git add tox.ini
         msg="Update UPPER_CONSTRAINTS_FILE for $branch"
-        body="The new stable upper-constraints file is only available
-after the openstack/requirements repository is branched.
-This will happen around the RC1 timeframe.
+        body="Update the URL to the upper-constraints file to point to the redirect
+rule on releases.openstack.org so that anyone working on this branch
+will switch to the correct upper-constraints list automatically when
+the requirements repository branches.
 
-Recheck and merge this change once the requirements
-repository has been branched.
-
-The CI system will work with this patch before the requirements
-repository is branched because zuul configues the job to run
-with a local copy of the file and defaults to the master branch.
-However, accepting the patch will break the test configuration
-on developers' local systems, so please wait until after the
-requirements repository is branched to merge the patch."
+Until the requirements repository has as $branch branch, tests will
+continue to use the upper-constraints list on master."
         git commit -m "$msg" -m "$body"
         git show
         local shortbranch=$(basename $branch)
