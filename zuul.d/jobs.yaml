@@ -170,6 +170,7 @@
 
 - job:
     name: publish-openstack-sphinx-docs-base
+    nodeset: ubuntu-xenial
     description: |
       Base job for publishing sphinx documentation to
       /afs/.openstack.org/docs/.
@@ -237,6 +238,44 @@
       Publish the results of the docs tox job to
       /afs/.openstack.org/docs/{{ zuul.project.short_name }}.
 
+    branches: ^(?!stable/(ocata|pike|queens|rocky)).*$
+    abstract: true
+    protected: true
+    pre-run: playbooks/project-config/pre-tox.yaml
+    run: playbooks/project-config/run-tox.yaml
+    post-run:
+      - playbooks/project-config/post-tox.yaml
+      - playbooks/publish/openstack-afs.yaml
+    required-projects:
+      - name: openstack/requirements
+    roles:
+      - zuul: openstack-infra/zuul-jobs
+      - zuul: openstack-infra/openstack-zuul-jobs
+    vars:
+      tox_envlist: docs
+      bindep_profile: compile doc
+    secrets:
+      - secret: afsdocs_secret
+        name: afs
+
+- job:
+    name: publish-openstack-tox-docs-base
+    nodeset: ubuntu-xenial
+    description: |
+      Base job for publishing docs tox job.
+
+      Publish the results of the docs tox job to
+      /afs/.openstack.org/docs/{{ zuul.project.short_name }}.
+
+      This job runs on Xenial for stable/ocata, pike, queens and rocky. This
+      job is prepared to make sure all stable branches before stable/stein will
+      keep running on xenial.
+
+    branches:
+      - stable/ocata
+      - stable/pike
+      - stable/queens
+      - stable/rocky
     abstract: true
     protected: true
     pre-run: playbooks/project-config/pre-tox.yaml
