@@ -1163,6 +1163,9 @@
       constraints_file: '{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt'
     required-projects:
       - openstack/requirements
+    # Zanata-cli needs Java 8 and will fail with newer Java, Bionic uses Java 11
+    # This fails Zanata up to version 4.6.2 (current release in March 2019).
+    nodeset: ubuntu-xenial
     secrets:
       - secret: site_tarballs
         name: fileserver
@@ -1184,6 +1187,9 @@
     semaphore: translations
     required-projects:
       - openstack/requirements
+    # Zanata-cli needs Java 8 and will fail with newer Java, Bionic uses Java 11
+    # This fails Zanata up to version 4.6.2 (current release in March 2019).
+    nodeset: ubuntu-xenial
     secrets:
       - zanata_api_credentials
 
