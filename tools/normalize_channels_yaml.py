@@ -43,6 +43,7 @@ def main():
         first = False
         sys.stdout.write(yaml.dump({k: chandata[k]}, default_flow_style=False,
                                    Dumper=pcy.IndentedDumper, width=80,
+                                   sort_keys=False,
                                    indent=2))
 
 if __name__ == '__main__':

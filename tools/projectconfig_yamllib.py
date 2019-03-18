@@ -62,7 +62,7 @@ class IndentedDumper(IndentedEmitter, yaml.serializer.Serializer,
                  canonical=None, indent=None, width=None,
                  allow_unicode=None, line_break=None,
                  encoding=None, explicit_start=None, explicit_end=None,
-                 version=None, tags=None):
+                 version=None, tags=None, sort_keys=True):
         IndentedEmitter.__init__(
             self, stream, canonical=canonical,
             indent=indent, width=width,
@@ -75,5 +75,6 @@ class IndentedDumper(IndentedEmitter, yaml.serializer.Serializer,
             version=version, tags=tags)
         yaml.representer.Representer.__init__(
             self, default_style=default_style,
-            default_flow_style=default_flow_style)
+            default_flow_style=default_flow_style,
+            sort_keys=sort_keys)
         yaml.resolver.Resolver.__init__(self)
