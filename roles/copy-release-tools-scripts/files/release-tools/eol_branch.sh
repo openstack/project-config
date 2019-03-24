@@ -112,7 +112,7 @@ while (( "$#" )); do
     if ! [ -d $project/.git ]; then
         if ! [ -d $project ]; then
             echo "$project not found on filesystem. Will attempt to clone"
-            $DEBUG git clone git://git.openstack.org/$project $project
+            $DEBUG git clone https://git.openstack.org/$project $project
         else
             warning_message "$project is not a git repo"
             echo "skipping..."
