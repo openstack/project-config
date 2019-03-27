@@ -1581,3 +1581,17 @@
               - plugins/reviewnotes
               - plugins/singleusergroup
               - plugins/verify-status
+
+- tenant:
+    name: zuul
+    max-nodes-per-job: 10
+    source:
+      gerrit:
+        config-projects:
+          - zuul/project-config
+          # Only use jobs and secrets from this repo, we do not want
+          # the project definition.
+          - opendev/base-jobs:
+              include:
+                - job
+                - secret
