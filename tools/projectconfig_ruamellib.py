@@ -21,11 +21,18 @@ def none_representer(dumper, data):
 
 
 class YAML(object):
-    def __init__(self):
+    def __init__(self, strip=True):
+        """Wrap construction of ruamel yaml object.
+
+        :param bool strip:
+            Whether or not to strip additional leading spaces at the beginning
+            of the line. This is only needed when the root object is a list.
+        """
         self.yaml = ruamel.yaml.YAML()
         self.yaml.allow_duplicate_keys = True
         self.yaml.representer.add_representer(type(None), none_representer)
         self.yaml.indent(mapping=2, sequence=4, offset=2)
+        self.strip = strip
 
     def load(self, stream):
         return self.yaml.load(stream)
@@ -41,4 +48,6 @@ class YAML(object):
         return '\n'.join(newlines)
 
     def dump(self, data, *args, **kwargs):
-        self.yaml.dump(data, *args, transform=self.tr, **kwargs)
+        if self.strip:
+            kwargs['transform'] = self.tr
+        self.yaml.dump(data, *args, **kwargs)

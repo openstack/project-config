@@ -17,34 +17,19 @@
 
 import locale
 import sys
-import yaml
-from collections import OrderedDict
-import projectconfig_yamllib as pcy
+import projectconfig_ruamellib
 
 
 def main():
+    yaml = projectconfig_ruamellib.YAML(strip=False)
     locale.setlocale(locale.LC_COLLATE, 'C')
 
-    yaml.add_constructor(yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG,
-                         pcy.construct_yaml_map)
-
-    yaml.add_representer(OrderedDict, pcy.project_representer,
-                         Dumper=pcy.IndentedDumper)
-
     chandata = yaml.load(open('gerritbot/channels.yaml'))
+
     for k, v in chandata.items():
         v['projects'] = sorted(v['projects'])
 
-    sys.stdout.write('# This file is sorted alphabetically by channel name.\n')
-    first = True
-    for k in sorted(chandata.keys()):
-        if not first:
-            sys.stdout.write('\n')
-        first = False
-        sys.stdout.write(yaml.dump({k: chandata[k]}, default_flow_style=False,
-                                   Dumper=pcy.IndentedDumper, width=80,
-                                   sort_keys=False,
-                                   indent=2))
+    yaml.dump(chandata, stream=sys.stdout)
 
 if __name__ == '__main__':
     main()

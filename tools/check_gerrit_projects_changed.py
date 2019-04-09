@@ -64,8 +64,8 @@ def main():
     )
     args = parser.parse_args()
 
-    projects_old = yaml.load(open(args.oldfile, 'r'))
-    projects_new = yaml.load(open(args.newfile, 'r'))
+    projects_old = yaml.safe_load(open(args.oldfile, 'r'))
+    projects_new = yaml.safe_load(open(args.newfile, 'r'))
 
     ps_old = {}
     for p in projects_old:

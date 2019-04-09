@@ -15,18 +15,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import yaml
-from collections import OrderedDict
-import projectconfig_yamllib as pcy
+import projectconfig_ruamellib
 
 
 def main():
-    yaml.add_constructor(yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG,
-                         pcy.construct_yaml_map)
 
-    yaml.add_representer(OrderedDict, pcy.project_representer,
-                         Dumper=pcy.IndentedDumper)
-
+    yaml = projectconfig_ruamellib.YAML()
     data = yaml.load(open('gerrit/projects.yaml'))
 
     for project in data:
@@ -35,8 +29,7 @@ def main():
             del project['upstream']
 
     with open('gerrit/projects.yaml', 'w') as out:
-        out.write(yaml.dump(data, default_flow_style=False,
-                            Dumper=pcy.IndentedDumper, width=80))
+        yaml.dump(data, stream=out)
 
 if __name__ == '__main__':
     main()

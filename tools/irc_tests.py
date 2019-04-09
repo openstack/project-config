@@ -23,7 +23,7 @@ def access_gerrit_check():
 
     errors = False
 
-    access_config = yaml.load(open('accessbot/channels.yaml', 'r'))
+    access_config = yaml.safe_load(open('accessbot/channels.yaml', 'r'))
 
     access_channels = []
     for channel in access_config['channels']:
@@ -31,7 +31,7 @@ def access_gerrit_check():
 
     access_channel_set = set(access_channels)
 
-    gerrit_config = yaml.load(open('gerritbot/channels.yaml'))
+    gerrit_config = yaml.safe_load(open('gerritbot/channels.yaml'))
 
     print("Basic check of gerritbot/channels.yaml")
     REQUIRED_ENTRIES = ("branches", "events", "projects")

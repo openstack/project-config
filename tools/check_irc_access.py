@@ -142,7 +142,7 @@ def main():
                         help='the nick for which access should be validated')
     args = parser.parse_args()
 
-    config = yaml.load(open(args.config))
+    config = yaml.safe_load(open(args.config))
     channels = []
     for channel in config['channels']:
         channels.append('#' + channel['name'])
