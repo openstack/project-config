@@ -55,8 +55,13 @@
       gerrit:
         config-projects:
           - openstack-infra/project-config
+          # Only use jobs and secrets from this repo, we do not want
+          # the project definition.
           - opendev/base-jobs:
               shadow: openstack-infra/project-config
+              include:
+                - job
+                - secret
           - openstack-infra/zuul-base-jobs:
               shadow:
                 - opendev/base-jobs
