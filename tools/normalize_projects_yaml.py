@@ -15,12 +15,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import projectconfig_ruamellib
+import projectconfig_ruamellib as yaml
 
 
 def main():
 
-    yaml = projectconfig_ruamellib.YAML()
     data = yaml.load(open('gerrit/projects.yaml'))
 
     for project in data:
