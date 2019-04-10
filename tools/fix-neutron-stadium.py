@@ -108,7 +108,7 @@ def ordered_load(stream, *args, **kwargs):
     yaml.add_constructor(yaml.resolver.BaseResolver.DEFAULT_MAPPING_TAG,
                          construct_yaml_map)
 
-    return yaml.load(stream=stream, *args, **kwargs)
+    return yaml.safe_load(stream=stream, *args, **kwargs)
 
 
 def ordered_dump(data, stream=None, *args, **kwargs):
