@@ -17,11 +17,10 @@
 
 import locale
 import sys
-import projectconfig_ruamellib
+import projectconfig_ruamellib as yaml
 
 
 def main():
-    yaml = projectconfig_ruamellib.YAML(strip=False)
     locale.setlocale(locale.LC_COLLATE, 'C')
 
     chandata = yaml.load(open('gerritbot/channels.yaml'))
