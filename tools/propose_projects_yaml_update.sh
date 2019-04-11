@@ -52,7 +52,7 @@ else
 fi
 
 git review -s
-python tools/normalize_projects_yaml.py
+tox -e normalize-projects-yaml
 
 if ! git diff --stat --exit-code HEAD ; then
     # Commit and review
