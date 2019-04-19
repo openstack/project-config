@@ -1,7 +1,7 @@
 # Shared zuul config specific to the OpenStack Project
 # Contains definitions of trusted jobs
 # Overrides jobs from:
-#    https://git.openstack.org/cgit/openstack-infra/zuul-jobs
+#    https://opendev.org/cgit/zuul/zuul-jobs
 
 - job:
     name: base-minimal
@@ -22,7 +22,7 @@
       - playbooks/base-minimal/post.yaml
       - playbooks/base-minimal/post-logs.yaml
     roles:
-      - zuul: openstack-infra/zuul-jobs
+      - zuul: zuul/zuul-jobs
     vars:
       ara_report_type: database
       ara_report_path: ara-report
@@ -56,7 +56,7 @@
       - playbooks/base-ozj/post.yaml
       - playbooks/base-ozj/post-logs.yaml
     roles:
-      - zuul: openstack-infra/zuul-jobs
+      - zuul: zuul/zuul-jobs
     vars:
       ara_report_type: database
       ara_report_path: ara-report
@@ -186,13 +186,13 @@
     required-projects:
       - name: openstack/requirements
     roles:
-      - zuul: openstack-infra/zuul-jobs
-      - zuul: openstack-infra/openstack-zuul-jobs
+      - zuul: zuul/zuul-jobs
+      - zuul: openstack/openstack-zuul-jobs
     secrets:
       - secret: afsdocs_secret
         name: afs
     vars:
-      constraints_file: '{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt'
+      constraints_file: '{{ ansible_user_dir }}/src/opendev.org/openstack/requirements/upper-constraints.txt'
 
 - job:
     name: publish-openstack-sphinx-docs
@@ -249,8 +249,8 @@
     required-projects:
       - name: openstack/requirements
     roles:
-      - zuul: openstack-infra/zuul-jobs
-      - zuul: openstack-infra/openstack-zuul-jobs
+      - zuul: zuul/zuul-jobs
+      - zuul: openstack/openstack-zuul-jobs
     vars:
       tox_envlist: docs
       bindep_profile: compile doc
@@ -286,8 +286,8 @@
     required-projects:
       - name: openstack/requirements
     roles:
-      - zuul: openstack-infra/zuul-jobs
-      - zuul: openstack-infra/openstack-zuul-jobs
+      - zuul: zuul/zuul-jobs
+      - zuul: openstack/openstack-zuul-jobs
     vars:
       tox_envlist: docs
       bindep_profile: compile doc
@@ -313,7 +313,7 @@
     required-projects:
       - name: openstack/requirements
     vars:
-      tox_constraints_file: '{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt'
+      tox_constraints_file: '{{ ansible_user_dir }}/src/opendev.org/openstack/requirements/upper-constraints.txt'
 
 - job:
     name: publish-openstack-tox-docs-direct
@@ -364,11 +364,11 @@
     required-projects:
       - name: openstack/requirements
     roles:
-      - zuul: openstack-infra/openstack-zuul-jobs
-      - zuul: openstack-infra/zuul-jobs
+      - zuul: openstack/openstack-zuul-jobs
+      - zuul: zuul/zuul-jobs
     vars:
       afs_subpath: "/releasenotes/{{ zuul.project.short_name }}"
-      constraints_file: '{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt'
+      constraints_file: '{{ ansible_user_dir }}/src/opendev.org/openstack/requirements/upper-constraints.txt'
       sphinx_build_dir: releasenotes/build
     secrets:
       - secret: afsdocs_secret
@@ -412,10 +412,10 @@
     required-projects:
       - name: openstack/requirements
     roles:
-      - zuul: openstack-infra/zuul-jobs
-      - zuul: openstack-infra/openstack-zuul-jobs
+      - zuul: zuul/zuul-jobs
+      - zuul: openstack/openstack-zuul-jobs
     vars:
-      tox_constraints_file: '{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt'
+      tox_constraints_file: '{{ ansible_user_dir }}/src/opendev.org/openstack/requirements/upper-constraints.txt'
     secrets:
       - site_specs
 
@@ -428,10 +428,10 @@
     run: playbooks/project-config/run-tox.yaml
     post-run: playbooks/publish/openstack-specs-site.yaml
     allowed-projects:
-      - openstack-infra/project-config
+      - openstack/project-config
     roles:
-      - zuul: openstack-infra/zuul-jobs
-      - zuul: openstack-infra/openstack-zuul-jobs
+      - zuul: zuul/zuul-jobs
+      - zuul: openstack/openstack-zuul-jobs
     vars:
       tox_envlist: specs
     secrets:
@@ -476,7 +476,7 @@
     post-run:
       - playbooks/sphinx/post-infra.yaml
     allowed-projects:
-      - openstack-infra/infra-manual
+      - openstack/infra-manual
     vars:
       afs_subpath: "/infra/manual"
 
@@ -492,8 +492,8 @@
     allowed-projects:
       - openstack/service-types-authority
     roles:
-      - zuul: openstack-infra/zuul-jobs
-      - zuul: openstack-infra/openstack-zuul-jobs
+      - zuul: zuul/zuul-jobs
+      - zuul: openstack/openstack-zuul-jobs
     vars:
       tox_envlist: publish
     secrets:
@@ -510,10 +510,10 @@
       - playbooks/publish/infra-index.yaml
       - playbooks/publish/openstack-afs.yaml
     allowed-projects:
-      - openstack-infra/project-config
+      - openstack/project-config
     roles:
-      - zuul: openstack-infra/zuul-jobs
-      - zuul: openstack-infra/openstack-zuul-jobs
+      - zuul: zuul/zuul-jobs
+      - zuul: openstack/openstack-zuul-jobs
     vars:
       tox_envlist: infra-docs
       afs_path: "/infra"
@@ -533,10 +533,10 @@
     # Index is always published from master
     override-branch: master
     allowed-projects:
-      - openstack-infra/publications
+      - opendev/publications
     roles:
-      - zuul: openstack-infra/zuul-jobs
-      - zuul: openstack-infra/openstack-zuul-jobs
+      - zuul: zuul/zuul-jobs
+      - zuul: openstack/openstack-zuul-jobs
     vars:
       afs_subpath: "/infra/publications/"
       tox_envlist: infra-docs
@@ -547,17 +547,17 @@
 - job:
     name: publish-infra-publications
     description: |
-      Publish one publication from openstack-infra/publications
+      Publish one publication from opendev/publications
     final: true
     run: playbooks/publications/run.yaml
     post-run:
       - playbooks/publish/publications.yaml
       - playbooks/publish/openstack-afs.yaml
     allowed-projects:
-      - openstack-infra/publications
+      - opendev/publications
     roles:
-      - zuul: openstack-infra/zuul-jobs
-      - zuul: openstack-infra/openstack-zuul-jobs
+      - zuul: zuul/zuul-jobs
+      - zuul: openstack/openstack-zuul-jobs
     vars:
       afs_subpath: "/infra/publications/"
       tox_envlist: infra-docs
@@ -583,7 +583,7 @@
     run: playbooks/project-config/run-tox.yaml
     post-run: playbooks/yaml2ical/post.yaml
     allowed-projects:
-      - openstack-infra/irc-meetings
+      - opendev/irc-meetings
     vars:
       tox_envlist: ical
     secrets:
@@ -601,7 +601,7 @@
       publish to.
       This job uses ``tox -e docs`` for building documents.
     roles:
-      - zuul: openstack-infra/openstack-zuul-jobs
+      - zuul: openstack/openstack-zuul-jobs
     pre-run: playbooks/project-config/pre-tox.yaml
     run: playbooks/project-config/run-tox.yaml
     post-run:
@@ -693,8 +693,8 @@
     pre-run: playbooks/project-config/pre-tox.yaml
     run: playbooks/project-config/run-tox.yaml
     roles:
-      - zuul: openstack-infra/zuul-jobs
-      - zuul: openstack-infra/openstack-zuul-jobs
+      - zuul: zuul/zuul-jobs
+      - zuul: openstack/openstack-zuul-jobs
     # Syncing to AFS can take longer than default 30 mins
     post-timeout: 3600
     vars:
@@ -781,8 +781,8 @@
     run: playbooks/sphinx/run.yaml
     post-run: playbooks/publish/api-guide.yaml
     roles:
-      - zuul: openstack-infra/zuul-jobs
-      - zuul: openstack-infra/openstack-zuul-jobs
+      - zuul: zuul/zuul-jobs
+      - zuul: openstack/openstack-zuul-jobs
     # We only publish the master branch, so no need to run
     # for changes on other branches.
     branches: master
@@ -802,8 +802,8 @@
     run: playbooks/sphinx/run.yaml
     post-run: playbooks/publish/api-ref.yaml
     roles:
-      - zuul: openstack-infra/zuul-jobs
-      - zuul: openstack-infra/openstack-zuul-jobs
+      - zuul: zuul/zuul-jobs
+      - zuul: openstack/openstack-zuul-jobs
     # We only publish the master branch, so no need to run
     # for changes on other branches.
     branches: master
@@ -823,8 +823,8 @@
     run: playbooks/sphinx/run.yaml
     post-run: playbooks/publish/install-guide.yaml
     roles:
-      - zuul: openstack-infra/zuul-jobs
-      - zuul: openstack-infra/openstack-zuul-jobs
+      - zuul: zuul/zuul-jobs
+      - zuul: openstack/openstack-zuul-jobs
     # This job runs only pre-pike, with pike the documents have been
     # integrated into normal builds.
     branches:
@@ -930,7 +930,7 @@
     # master.
     branches: master
     roles:
-      - zuul: openstack-infra/system-config
+      - zuul: opendev/system-config
     allowed-projects:
       - openstack/requirements
 
@@ -1131,7 +1131,7 @@
     run: playbooks/project-config/run-tox.yaml
     post-run: playbooks/check-main-yaml/post.yaml
     allowed-projects:
-      - openstack-infra/project-config
+      - openstack/project-config
     final: true
     vars:
       tox_envlist: add-projects-to-main
@@ -1151,7 +1151,7 @@
     description: |
       Push strings for translation to translation server.
     roles:
-      - zuul: openstack-infra/openstack-zuul-jobs
+      - zuul: openstack/openstack-zuul-jobs
     pre-run: playbooks/translation/pre.yaml
     run: playbooks/translation/upstream-translation-update.yaml
     post-run:
@@ -1160,7 +1160,7 @@
     semaphore: translations
     vars:
       fileserver_leading_path: translation-source
-      constraints_file: '{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt'
+      constraints_file: '{{ ansible_user_dir }}/src/opendev.org/openstack/requirements/upper-constraints.txt'
     required-projects:
       - openstack/requirements
     # Zanata-cli needs Java 8 and will fail with newer Java, Bionic uses Java 11
@@ -1178,12 +1178,12 @@
       Import translations from translation server to projects as
       proposed change.
     roles:
-      - zuul: openstack-infra/openstack-zuul-jobs
+      - zuul: openstack/openstack-zuul-jobs
     pre-run: playbooks/translation/pre.yaml
     run: playbooks/translation/propose-translation-update.yaml
     post-run: playbooks/translation/post.yaml
     vars:
-      constraints_file: '{{ ansible_user_dir }}/src/git.openstack.org/openstack/requirements/upper-constraints.txt'
+      constraints_file: '{{ ansible_user_dir }}/src/opendev.org/openstack/requirements/upper-constraints.txt'
     semaphore: translations
     required-projects:
       - openstack/requirements

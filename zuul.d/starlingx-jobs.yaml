@@ -18,8 +18,8 @@
       - playbooks/sphinx/post-infra.yaml
       - playbooks/publish/starlingx-afs.yaml
     roles:
-      - zuul: openstack-infra/zuul-jobs
-      - zuul: openstack-infra/openstack-zuul-jobs
+      - zuul: zuul/zuul-jobs
+      - zuul: openstack/openstack-zuul-jobs
     secrets:
       - secret: afsdocs_secret
         name: afs
@@ -66,7 +66,7 @@
     # Set final to avoid override of afs_subpath variable.
     final: true
     allowed-projects:
-      - openstack/stx-docs
+      - starlingx/docs
     vars:
       # Define empty so we publish to the webroot
       afs_subpath: ""
@@ -82,7 +82,7 @@
     # Set final to avoid override of afs_subpath variable.
     final: true
     allowed-projects:
-      - openstack/stx-governance
+      - starlingx/governance
     vars:
       afs_subpath: "/governance"
 
@@ -114,6 +114,6 @@
     # Set final to avoid override of afs_subpath variable.
     final: true
     allowed-projects:
-      - openstack/stx-specs
+      - starlingx/specs
     vars:
       afs_subpath: "/specs"
