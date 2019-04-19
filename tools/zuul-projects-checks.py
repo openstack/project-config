@@ -100,6 +100,8 @@ def blacklist_jobs():
         # The openstack catch all contains system-required, so skip that one.
         if name == "^openstack.*":
             continue
+        if name.startswith("^(airship|"):
+            continue
         found = [tmpl for tmpl in project.get('templates', [])
                  if tmpl in blacklist_templates]
         if found:
