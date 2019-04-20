@@ -12,7 +12,7 @@ DIB_CUSTOM_PROJECTS_LIST_URL
   :Default: None
   :Description: Url to a yaml file contains custom list of repos.
     The custom yaml file has the same structure as the default file:
-    'https://git.openstack.org/cgit/openstack-infra/project-config/plain/gerrit/projects.yaml'
+    'https://opendev.org/openstack/project-config/raw/gerrit/projects.yaml'
     Download only the repos that appear in the custom file rather than
     downloading all openstack repos that appear in the default file.
   :Example:
