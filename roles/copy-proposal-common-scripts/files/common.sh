@@ -39,7 +39,7 @@ function setup_commit_message {
     # existing change for use in the commit message.
     local change_info
 
-    change_info=$(ssh -p 29418 $USERNAME@review.openstack.org \
+    change_info=$(ssh -p 29418 $USERNAME@review.opendev.org \
         gerrit query --current-patch-set status:open project:$PROJECT \
         owner:$USERNAME branch:$BRANCH topic:$TOPIC)
     CHANGE_NUM=$(echo "$change_info" | grep "^  number:" | awk '{print $2}')
@@ -77,7 +77,7 @@ function check_already_approved {
     # run.
     if [ -n "$CHANGE_ID" ]; then
         # Use the JSON format since it is very compact and easy to grep
-        change_info=$(ssh -p 29418 proposal-bot@review.openstack.org gerrit query --current-patch-set --format=JSON $CHANGE_ID)
+        change_info=$(ssh -p 29418 proposal-bot@review.opendev.org gerrit query --current-patch-set --format=JSON $CHANGE_ID)
         # Check for:
         # 1) Workflow approval (+1)
         # 2) no -1/-2 by Zuul
