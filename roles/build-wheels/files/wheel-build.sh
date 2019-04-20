@@ -2,7 +2,7 @@
 
 # Working variables
 WHEELHOUSE_DIR=$1
-WORKING_DIR=$(pwd)/src/git.openstack.org/openstack/requirements
+WORKING_DIR=$(pwd)/src/opendev.org/openstack/requirements
 PYTHON_VERSION=$2
 LOGS=$(pwd)/logs
 

@@ -56,7 +56,7 @@ Options:
   --ref -- The git reference to check out. Defaults to HEAD.
 
   --upstream -- The upstream server URL, without the git repo
-                part. Defaults to https://git.openstack.org
+                part. Defaults to https://opendev.org
 
 EOF
 }
@@ -66,7 +66,7 @@ WORKSPACE="."
 CACHE_DIR="${ZUUL_CACHE_DIR:-/opt/git}"
 BRANCH="master"
 REF=""
-UPSTREAM="https://git.openstack.org"
+UPSTREAM="https://opendev.org"
 RETRY_LIMIT=3
 export GIT_HTTP_LOW_SPEED_TIME=300
 export GIT_HTTP_LOW_SPEED_LIMIT=1000
