@@ -12,7 +12,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-PROJECT="openstack-infra/project-config"
+PROJECT="openstack/project-config"
 INITIAL_COMMIT_MSG="Normalize projects.yaml"
 TOPIC="project-yaml-normalization"
 USERNAME="proposal-bot"
@@ -30,7 +30,7 @@ change_id=""
 # See if there is an open change in the openstack/requirements topic
 # If so, get the change id for the existing change for use in the
 # commit msg.
-change_info=$(ssh -p 29418 $USERNAME@review.openstack.org gerrit query --current-patch-set status:open project:$PROJECT topic:$TOPIC owner:$USERNAME)
+change_info=$(ssh -p 29418 $USERNAME@review.opendev.org gerrit query --current-patch-set status:open project:$PROJECT topic:$TOPIC owner:$USERNAME)
 previous=$(echo "$change_info" | grep "^  number:" | awk '{print $2}')
 if [ -n "$previous" ]; then
     change_id=$(echo "$change_info" | grep "^change" | awk '{print $2}')

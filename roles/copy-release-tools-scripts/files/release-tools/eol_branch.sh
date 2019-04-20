@@ -79,13 +79,13 @@ function abandon_reviews {
     fi
 
     gerrit_query="--current-patch-set status:open project:$project branch:$BRANCH"
-    revisions=($(ssh -p 29418 review.openstack.org gerrit query $gerrit_query |
+    revisions=($(ssh -p 29418 review.opendev.org gerrit query $gerrit_query |
         grep '^    revision: [a-f0-9]\{40\}$' | cut -b 15-))
     for rev in "${revisions[@]}"; do
         if [ $VERBOSE = true ]; then
             echo "Found commit $rev to abandon"
         fi
-        $DEBUG ssh -p 29418 review.openstack.org gerrit review --project $project --abandon --message \"$EOL_MESSAGE\" $rev
+        $DEBUG ssh -p 29418 review.opendev.org gerrit review --project $project --abandon --message \"$EOL_MESSAGE\" $rev
     done
 }
 
@@ -112,7 +112,7 @@ while (( "$#" )); do
     if ! [ -d $project/.git ]; then
         if ! [ -d $project ]; then
             echo "$project not found on filesystem. Will attempt to clone"
-            $DEBUG git clone https://git.openstack.org/$project $project
+            $DEBUG git clone https://opendev.org/$project $project
         else
             warning_message "$project is not a git repo"
             echo "skipping..."
@@ -128,7 +128,7 @@ while (( "$#" )); do
             # happens when a probject is no longer maintained.
             user=`git config --global gitreview.username`
             warning_message "Guessing remote manually"
-            git remote add $REMOTE ssh://$user@review.openstack.org:29418/$project.git
+            git remote add $REMOTE ssh://$user@review.opendev.org:29418/$project.git
         else
             git review -s
         fi

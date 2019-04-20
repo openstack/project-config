@@ -17,7 +17,7 @@ for p in $(cat openstack_modules.txt); do
     # TODO(emilien) we need to add support for stable branches
     cat >> $DIR/Puppetfile <<EOF
 mod '$title',
-  :git => 'https://git.openstack.org/openstack/puppet-$p',
+  :git => 'https://opendev.org/openstack/puppet-$p',
   :ref => 'master'
 
 EOF
