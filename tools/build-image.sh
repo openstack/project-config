@@ -83,7 +83,7 @@ fi
 ## add to /tmp/custom_projects.yaml:
 ##
 ## - project: openstack/project-config
-## - project: openstack/system-config
+## - project: opendev/system-config
 ## - project: openstack/devstack
 ## - project: openstack/tempest
 
