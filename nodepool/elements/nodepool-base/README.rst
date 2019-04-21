@@ -9,7 +9,7 @@ Environment variables:
 ``NODEPOOL_SCRIPTDIR`` path to copy Nodepool scripts from. It is set
 automatically by Nodepool.  For local hacking override it to where your scripts
 are. Default:
-``$TMP_MOUNT_PATH/opt/git/openstack-infra/project-config/nodepool/scripts``.
+``$TMP_MOUNT_PATH/opt/git/openstack/project-config/nodepool/scripts``.
 
 Name resolution
 ---------------

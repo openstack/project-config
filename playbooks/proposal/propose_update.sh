@@ -45,7 +45,7 @@ elif [ "$OWN_PROJECT" == "requirements-constraints" ] ; then
 elif [ "$OWN_PROJECT" == "devstack-plugins-list" ] ; then
     INITIAL_COMMIT_MSG="Updated from generate-devstack-plugins-list"
     TOPIC="openstack/devstack/plugins"
-    PROJECTS=openstack-dev/devstack
+    PROJECTS=openstack/devstack
     function update {
         bash -ex tools/generate-devstack-plugins-list.sh $1
     }

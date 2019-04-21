@@ -82,9 +82,9 @@ fi
 
 ## add to /tmp/custom_projects.yaml:
 ##
-## - project: openstack-infra/project-config
-## - project: openstack-infra/system-config
-## - project: openstack-dev/devstack
+## - project: openstack/project-config
+## - project: openstack/system-config
+## - project: openstack/devstack
 ## - project: openstack/tempest
 
 # export DIB_CUSTOM_PROJECTS_LIST_URL='file:///tmp/custom_projects.yaml'
