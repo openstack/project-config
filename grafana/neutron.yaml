@@ -138,6 +138,7 @@ dashboard:
             - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron.master.job.legacy-tempest-dsvm-py35.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron.master.job.legacy-tempest-dsvm-py35.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'legacy-tempest-dsvm-py35')
             - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron.master.job.tempest-multinode-full-py3.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron.master.job.tempest-multinode-full-py3.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'tempest-multinode-full-py3 (non-voting)')
             - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron.master.job.neutron-tempest-dvr-ha-multinode-full.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron.master.job.neutron-tempest-dvr-ha-multinode-full.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'neutron-tempest-dvr-ha-multinode-full (non-voting)')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron.master.job.neutron-tempest-with-uwsgi.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron.master.job.neutron-tempest-with-uwsgi.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'neutron-tempest-with-uwsgi (non-voting)')
           type: graph
         - title: Number of Integrated Tempest jobs runs (Check queue)
           span: 6
@@ -153,6 +154,7 @@ dashboard:
             - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron.master.job.legacy-tempest-dsvm-py35.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'legacy-tempest-dsvm-py35')
             - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron.master.job.tempest-multinode-full-py3.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'tempest-multinode-full-py3 (non-voting)')
             - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron.master.job.neutron-tempest-dvr-ha-multinode-full.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-tempest-dvr-ha-multinode-full (non-voting)')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron.master.job.neutron-tempest-with-uwsgi.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-tempest-with-uwsgi (non-voting)')
           type: graph
         - title: Scenario jobs Failure Rates (Check queue)
           span: 6
@@ -189,14 +191,18 @@ dashboard:
           targets:
             - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron.master.job.neutron-functional.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron.master.job.neutron-functional.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'neutron-functional')
             - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron.master.job.neutron-functional-python27.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron.master.job.neutron-functional-python27.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'neutron-functional-python27')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron.master.job.neutron-functional-with-uwsgi.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron.master.job.neutron-functional-with-uwsgi.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'neutron-functional-with-uwsgi (non-voting)')
             - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron.master.job.neutron-fullstack.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron.master.job.neutron-fullstack.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'neutron-fullstack')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron.master.job.neutron-fullstack-with-uwsgi.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron.master.job.neutron-fullstack-with-uwsgi.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'neutron-fullstack-with-uwsgi (non-voting)')
           type: graph
         - title: Number of Functional/Fullstack jobs runs (Check queue)
           span: 6
           targets:
             - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron.master.job.neutron-functional.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-functional')
             - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron.master.job.neutron-functional-python27.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-functional-python27')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron.master.job.neutron-functional-with-uwsgi.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-functional-with-uwsgi (non-voting)')
             - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron.master.job.neutron-fullstack.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-fullstack')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron.master.job.neutron-fullstack-with-uwsgi.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-fullstack-with-uwsgi (non-voting)')
           type: graph
         - title: Unit Tests Failure Rates (Check queue)
           span: 6
