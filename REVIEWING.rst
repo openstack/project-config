@@ -51,7 +51,7 @@ enabled for Big Tent projects.
 Removing check-requirements job
 ===============================
 
-* The http://git.openstack.org/cgit/openstack/requirements repository holds
+* The https://opendev.org/openstack/requirements repository holds
   list of projects that have check-requirements job in <root>/projects.txt.
 
 * Whenever a review is submitted for removing check-requirements job,

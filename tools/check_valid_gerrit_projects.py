@@ -164,7 +164,7 @@ def main():
         # but not git@
         upstream = p.get('upstream')
         if upstream and 'track-upstream' not in p.get('options', []):
-            openstack_repo = 'https://git.openstack.org/%s' % name
+            openstack_repo = 'https://opendev.org/%s' % name
             try:
                 # Check to see if we have already imported the project into
                 # OpenStack, if so skip checking upstream.
