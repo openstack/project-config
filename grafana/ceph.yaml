@@ -1,5 +1,8 @@
 dashboard:
   title: Ceph Failure Rate
+  time:
+      from: "now-7d"
+      to: "now"
   rows:
     - title: Description
       height: 100px
@@ -13,15 +16,45 @@ dashboard:
     - title: Graphs
       height: 320px
       panels:
-        - title: Nova Tempest Full Failure Rates (Check queue)
-          span: 4
+        - title: Nova Tempest Full Failure Rates (Check queue) master
+          span: 6
           targets:
             - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_nova.master.job.tempest-full-py3.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_nova.master.job.tempest-full-py3.{SUCCESS,FAILURE})),'24hours'), 'tempest-full-py3')
             - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_nova.master.job.devstack-plugin-ceph-tempest.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_nova.master.job.devstack-plugin-ceph-tempest.{SUCCESS,FAILURE})),'24hours'), 'devstack-plugin-ceph-tempest')
           type: graph
-        - title: Cinder Tempest Full Failure Rates (Check queue)
-          span: 4
+        - title: Cinder Tempest Full Failure Rates (Check queue) master
+          span: 6
           targets:
             - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_cinder.master.job.tempest-full.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_cinder.master.job.tempest-full.{SUCCESS,FAILURE})),'24hours'), 'tempest-full')
             - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_cinder.master.job.devstack-plugin-ceph-tempest.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_cinder.master.job.devstack-plugin-ceph-tempest.{SUCCESS,FAILURE})),'24hours'), 'devstack-plugin-ceph-tempest')
+          type: graph
+        - title: Glance Tempest Full Failure Rates (Check queue) master
+          span: 6
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_glance.master.job.tempest-full.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_glance.master.job.tempest-full.{SUCCESS,FAILURE})),'24hours'), 'tempest-full')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_glance.master.job.devstack-plugin-ceph-tempest.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_glance.master.job.devstack-plugin-ceph-tempest.{SUCCESS,FAILURE})),'24hours'), 'devstack-plugin-ceph-tempest')
+          type: graph
+        - title: Tempest Tempest Full Failure Rates (Check queue) master
+          span: 6
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_tempest.master.job.tempest-full.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_tempest.master.job.tempest-full.{SUCCESS,FAILURE})),'24hours'), 'tempest-full')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_tempest.master.job.devstack-plugin-ceph-tempest.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_tempest.master.job.devstack-plugin-ceph-tempest.{SUCCESS,FAILURE})),'24hours'), 'devstack-plugin-ceph-tempest')
+          type: graph
+        - title: Nova Tempest Full Failure Rates (Check queue) stable/stein
+          span: 6
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_nova.stable_stein.job.tempest-full-py3.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_nova.stable_stein.job.tempest-full-py3.{SUCCESS,FAILURE})),'24hours'), 'tempest-full-py3')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_nova.stable_stein.job.devstack-plugin-ceph-tempest.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_nova.stable_stein.job.devstack-plugin-ceph-tempest.{SUCCESS,FAILURE})),'24hours'), 'devstack-plugin-ceph-tempest')
+          type: graph
+        - title: Nova Tempest Full Failure Rates (Check queue) stable/rocky
+          span: 6
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_nova.stable_rocky.job.tempest-full.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_nova.stable_rocky.job.tempest-full.{SUCCESS,FAILURE})),'24hours'), 'tempest-full')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_nova.stable_rocky.job.devstack-plugin-ceph-tempest.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_nova.stable_rocky.job.devstack-plugin-ceph-tempest.{SUCCESS,FAILURE})),'24hours'), 'devstack-plugin-ceph-tempest')
+          type: graph
+        - title: Nova Tempest Full Failure Rates (Check queue) stable/queens
+          span: 6
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_nova.stable_queens.job.tempest-full.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_nova.stable_queens.job.tempest-full.{SUCCESS,FAILURE})),'24hours'), 'tempest-full')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_nova.stable_queens.job.devstack-plugin-ceph-tempest.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_nova.stable_queens.job.devstack-plugin-ceph-tempest.{SUCCESS,FAILURE})),'24hours'), 'devstack-plugin-ceph-tempest')
           type: graph
