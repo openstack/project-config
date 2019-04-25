@@ -18,7 +18,7 @@ The image should have the unbound DNS resolver package installed, the
 ``nodepool-base`` element then configures it to forward DNS queries
 to:
 
-  ``NODEPOOL_STATIC_NAMESERVER_V4``, default: ``1.1.1.1``
+  ``NODEPOOL_STATIC_NAMESERVER_V4``, default: ``1.0.0.1``
   ``NODEPOOL_STATIC_NAMESERVER_V4_FALLBACK``, default: ``8.8.8.8``.
 
 If ``NODEPOOL_STATIC_NAMESERVER_POPULATE_IPV6`` is set to ``1`` then
