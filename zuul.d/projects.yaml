@@ -5143,8 +5143,20 @@
 
 - project:
     name: openstack/tripleo-ui
-    templates:
-      - translation-jobs-master-stable
+    post:
+      jobs:
+        # The project is deprecated and will be removed in train,
+        # so no master translations needed.
+        - upstream-translation-update:
+            branches:
+              - stable/rocky
+              - stable/stein
+    periodic:
+      jobs:
+        - propose-translation-update:
+            branches:
+              - stable/rocky
+              - stable/stein
 
 - project:
     name: openstack/tripleo-upgrade
