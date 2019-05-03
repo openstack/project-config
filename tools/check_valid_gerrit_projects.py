@@ -253,6 +253,11 @@ def main():
             found_errors += 1
             print("ERROR: Non-StoryBoard project %s has default groups entry, "
                   "remove it" % name)
+        # Check that groups is a list
+        groups = p.get('groups')
+        if (groups and not isinstance(groups, list)):
+            found_errors += 1
+            print("Error: groups entry for project %s is not a list." % name)
 
     if found_errors:
         print("Found %d error(s) in %s" % (found_errors, args.infile))
