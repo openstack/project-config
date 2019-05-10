@@ -3216,7 +3216,6 @@
             required-projects:
               - openstack/neutron-fwaas
               - openstack/neutron-vpnaas
-              - openstack/neutron-lbaas
               - openstack/neutron-dynamic-routing
               - openstack/networking-l2gw
               - x/tap-as-a-service
@@ -3233,7 +3232,6 @@
             required-projects:
               - openstack/ceilometer
               - openstack/neutron-fwaas
-              - openstack/neutron-lbaas
               - openstack/networking-l2gw
               - openstack/networking-sfc
               - openstack/networking-bgpvpn
@@ -3364,14 +3362,28 @@
 - project:
     name: openstack/neutron-lbaas
     templates:
-      - translation-jobs-master-only
       - publish-to-pypi
+    check:
+      jobs:
+        - noop:
+            branches: master
+    gate:
+      jobs:
+        - noop:
+            branches: master
 
 - project:
     name: openstack/neutron-lbaas-dashboard
     templates:
-      - translation-jobs-master-stable
       - publish-to-pypi
+    check:
+      jobs:
+        - noop:
+            branches: master
+    gate:
+      jobs:
+        - noop:
+            branches: master
 
 - project:
     name: openstack/neutron-lib
@@ -8902,7 +8914,6 @@
               - openstack/neutron
               - openstack/networking-l2gw
               - openstack/networking-sfc
-              - openstack/neutron-lbaas
               - x/vmware-nsxlib
               - openstack/neutron-fwaas
               - openstack/neutron-dynamic-routing
