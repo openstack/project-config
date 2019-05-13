@@ -72,6 +72,21 @@
       afs_subpath: ""
 
 - job:
+    name: publish-stx-election
+    parent: publish-stx-tox-base
+    description: |
+      Publish the results of a sphinx build to
+      /afs/.openstack.org/project/starlingx.io/www/election
+
+      Builds the docs using ``tox -e docs``.
+    # Set final to avoid override of afs_subpath variable.
+    final: true
+    allowed-projects:
+      - starlingx/election
+    vars:
+      afs_subpath: "/election"
+
+- job:
     name: publish-stx-governance
     parent: publish-stx-tox-base
     description: |
