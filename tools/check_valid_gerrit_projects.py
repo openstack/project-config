@@ -86,6 +86,47 @@ def check_repo(repo_path):
     return found_errors
 
 
+# Check that name exists in set project_names
+def check_project_exists(name, project_names):
+
+    if name not in project_names:
+        print("  Error: project %s does not exist in gerrit" % name)
+        return 1
+    return 0
+
+
+def check_zuul_main(zuul_main, projects):
+    found_errors = 0
+
+    main_content = yaml.safe_load(open(zuul_main, 'r'))
+
+    print("Checking %s" % zuul_main)
+
+    project_names = set()
+    for p in projects:
+        name = p.get('project')
+        project_names.add(name)
+
+    # Check that for each gerrit source, we have a project defined in gerrit.
+    for tenant in main_content:
+        t = tenant.get('tenant')
+        sources = t.get('source')
+        if sources and sources.get('gerrit'):
+            for project_types in sources['gerrit']:
+                for entry in sources['gerrit'][project_types]:
+                    if isinstance(entry, dict):
+                        for x in entry.keys():
+                            found_errors += check_project_exists(
+                                x, project_names)
+                    else:
+                        found_errors += check_project_exists(
+                            entry, project_names)
+
+    # Just an empty line for nicer formatting
+    print("")
+    return found_errors
+
+
 def main():
     found_errors = 0
 
@@ -102,9 +143,13 @@ def main():
         'acldir',
         help='Path to gerrit/acl',
     )
+    parser.add_argument(
+        'zuul_main_file',
+        help='Path to zuul/main.yaml',
+    )
     args = parser.parse_args()
 
-    projects = yaml.load(open(args.infile, 'r'))
+    projects = yaml.safe_load(open(args.infile, 'r'))
 
     VALID_LABELS = ["acl-config", "description", "docimpact-group",
                     "groups", "homepage", "options", "project",
@@ -259,6 +304,7 @@ def main():
             found_errors += 1
             print("Error: groups entry for project %s is not a list." % name)
 
+    found_errors += check_zuul_main(args.zuul_main_file, projects)
     if found_errors:
         print("Found %d error(s) in %s" % (found_errors, args.infile))
         sys.exit(1)
