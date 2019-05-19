@@ -777,46 +777,53 @@
         name: afs
 
 - job:
-    name: publish-api-guide
+    name: publish-api-tox-docs-base
     description: |
-      Publish api-guide document to
-      https://developer.openstack.org/api-guide.
-    pre-run: playbooks/sphinx/pre.yaml
-    run: playbooks/sphinx/run.yaml
-    post-run: playbooks/publish/api-guide.yaml
-    roles:
-      - zuul: zuul/zuul-jobs
-      - zuul: openstack/openstack-zuul-jobs
+      Base job for publishing api-guide and api-ref jobs to developer site.
     # We only publish the master branch, so no need to run
     # for changes on other branches.
     branches: master
+    abstract: true
+    protected: true
+    pre-run: playbooks/project-config/pre-tox.yaml
+    run: playbooks/project-config/run-tox.yaml
+    post-run:
+      - playbooks/project-config/post-tox.yaml
+      - playbooks/publish/api-docs.yaml
+    required-projects:
+      - name: openstack/requirements
+    roles:
+      - zuul: zuul/zuul-jobs
+      - zuul: openstack/openstack-zuul-jobs
     vars:
-      sphinx_source_dir: api-guide/source
-      sphinx_build_dir: api-guide/build
+      bindep_profile: compile doc
     secrets:
       - secret: afsdeveloper_secret
         name: afs
 
 - job:
+    name: publish-api-guide
+    parent: publish-api-tox-docs-base
+    description: |
+      Publish api-guide document to
+      https://developer.openstack.org/api-guide.
+    final: true
+    vars:
+      sphinx_build_dir: api-guide/build
+      tox_envlist: api-guide
+      api_path: api-guide
+
+- job:
     name: publish-api-ref
+    parent: publish-api-tox-docs-base
     description: |
       Publish api-ref document to
       https://developer.openstack.org/api-ref.
-    pre-run: playbooks/sphinx/pre.yaml
-    run: playbooks/sphinx/run.yaml
-    post-run: playbooks/publish/api-ref.yaml
-    roles:
-      - zuul: zuul/zuul-jobs
-      - zuul: openstack/openstack-zuul-jobs
-    # We only publish the master branch, so no need to run
-    # for changes on other branches.
-    branches: master
+    final: true
     vars:
       sphinx_build_dir: api-ref/build
-      sphinx_source_dir: api-ref/source
-    secrets:
-      - secret: afsdeveloper_secret
-        name: afs
+      tox_envlist: api-ref
+      api_path: api-ref
 
 - job:
     name: publish-install-guide
