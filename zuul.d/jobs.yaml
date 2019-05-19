@@ -219,22 +219,6 @@
       - name: openstack/horizon
 
 - job:
-    name: publish-openstack-sphinx-docs-direct
-    parent: publish-openstack-sphinx-docs-base
-    description: |
-      Publish the results of the build-openstack-sphinx-docs job to
-      /afs/.openstack.org/docs/{{ zuul.project.short_name }}
-
-      Publishing is done from master branch directly without using /latest.
-
-      This job is obsolete, use ``publish-openstack-tox-docs-direct`` instead.
-    final: true
-    post-run:
-      - playbooks/sphinx/post-direct.yaml
-    branches:
-      - master
-
-- job:
     name: publish-openstack-tox-docs-base
     description: |
       Base job for publishing docs tox job.
