@@ -51,6 +51,8 @@ providers:
         config-drive: true
       - name: opensuse-150
         config-drive: true
+      - name: opensuse-15
+        config-drive: true
       - name: opensuse-tumbleweed
         config-drive: true
       - name: ubuntu-bionic
@@ -307,6 +309,29 @@ diskimages:
       - growroot
       - infra-package-needs
     release: '15.0'
+    env-vars:
+      TMPDIR: /opt/dib_tmp
+      DIB_CHECKSUM: '1'
+      DIB_IMAGE_CACHE: /opt/dib_cache
+      DIB_JOURNAL_SIZE: '512'
+      QEMU_IMG_OPTIONS: compat=0.10
+      DIB_GRUB_TIMEOUT: '0'
+      DIB_DISTRIBUTION_MIRROR: 'http://mirror.dfw.rax.openstack.org/opensuse'
+      GIT_HTTP_LOW_SPEED_TIME: '300'
+      GIT_HTTP_LOW_SPEED_LIMIT: '1000'
+      DIB_SHOW_IMAGE_USAGE: '1'
+  - name: opensuse-15
+    pause: false
+    elements:
+      - opensuse-minimal
+      - vm
+      - simple-init
+      - openstack-repos
+      - nodepool-base
+      - cache-devstack
+      - growroot
+      - infra-package-needs
+    release: '15.1'
     env-vars:
       TMPDIR: /opt/dib_tmp
       DIB_CHECKSUM: '1'
