@@ -87,9 +87,10 @@ function update_upper_constraints {
         return 0
     fi
     sed -i~ -e "s,{\(env:UPPER_CONSTRAINTS_FILE\)[^ ]*},{\1:$uc_url}," tox.ini
+    sed -i~ -e "s,{\(env:TOX_CONSTRAINTS_FILE\)[^ ]*},{\1:$uc_url}," tox.ini
     if ! git diff --exit-code >/dev/null 2>&1 ; then
         git add tox.ini
-        msg="Update UPPER_CONSTRAINTS_FILE for $branch"
+        msg="Update TOX/UPPER_CONSTRAINTS_FILE for $branch"
         body="Update the URL to the upper-constraints file to point to the redirect
 rule on releases.openstack.org so that anyone working on this branch
 will switch to the correct upper-constraints list automatically when
