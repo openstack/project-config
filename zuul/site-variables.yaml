@@ -1,6 +1,14 @@
 # This file contains ansible variables that are used by our zuul-executors.
 ---
-zuul_site_mirror_fqdn: "mirror.{{ nodepool.region | lower }}.{{ nodepool.cloud | lower }}.openstack.org"
+# NOTE(ianw): 2019-05 this list of clouds will grow as we provision
+# new opendev.org based mirrors, but then eventually be removed once
+# all are updated.
+zuul_site_mirror_fqdn: >-
+  {%- if nodepool.region + "." + nodepool.cloud in [ "dfw.rax" ] -%}
+  {{ nodepool.region }}.{{ nodepool.cloud }}.opendev.org
+  {%- else -%}
+  {{ nodepool.region }}.{{ nodepool.cloud }}.openstack.org
+  {%- endif -%}
 zuul_site_traceroute_host: opendev.org
 zuul_site_image_manifest_files:
   - /etc/dib-builddate.txt
