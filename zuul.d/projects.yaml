@@ -1633,7 +1633,7 @@
 - project:
     name: openstack/ansible-role-tripleo-ui
     templates:
-      - publish-to-pypi
+      - noop-jobs
 
 - project:
     name: openstack/ansible-role-tripleo-zaqar
@@ -5093,20 +5093,14 @@
 
 - project:
     name: openstack/tripleo-ui
-    post:
+    check:
       jobs:
-        # The project is deprecated and will be removed in train,
-        # so no master translations needed.
-        - upstream-translation-update:
-            branches:
-              - stable/rocky
-              - stable/stein
-    periodic:
+        - noop:
+            branches: master
+    gate:
       jobs:
-        - propose-translation-update:
-            branches:
-              - stable/rocky
-              - stable/stein
+        - noop:
+            branches: master
 
 - project:
     name: openstack/tripleo-upgrade
