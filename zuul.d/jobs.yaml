@@ -833,16 +833,16 @@
 
 - job:
     name: publish-deploy-guide
-    parent: publish-openstack-sphinx-docs-base
+    parent: publish-openstack-tox-docs-base
     description: |
       Publish deploy-guide document to
       https://docs.openstack.org/project-deploy-guide/
     post-run:
-      - playbooks/publish/deploy-guide.yaml
+      - playbooks/sphinx/post.yaml
     vars:
       afs_subpath: "/project-deploy-guide/{{ zuul.project.short_name }}"
       sphinx_build_dir: deploy-guide/build
-      sphinx_source_dir: deploy-guide/source
+      tox_envlist: deploy-guide
 
 - job:
     name: publish-training-labs-scripts
