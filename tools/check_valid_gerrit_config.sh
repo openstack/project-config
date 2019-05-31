@@ -6,16 +6,18 @@ export TMPDIR=$(/bin/mktemp -d)
 trap "rm -rf $TMPDIR" EXIT
 
 pushd $TMPDIR
-CONFIGS_LIST_BASE=$OLDPWD/$1
+CONFIGS_LIST_BASE=$OLDPWD/gerrit/acls
+
+declare -i NUM_TESTS=0
 
 function check_team_acl {
     local configs_dir="$1"
     local configs_list
-    local failure=0
 
+    echo "Checking" $(basename $configs_dir)
     configs_list=$(find $configs_dir -name "*.config")
     for config in $configs_list; do
-
+        let "NUM_TESTS+=1"
         $OLDPWD/tools/normalize_acl.py $config all > $TMPDIR/normalized
         if ! diff -u $config $TMPDIR/normalized >>config_failures;
         then
@@ -25,8 +27,10 @@ function check_team_acl {
 }
 
 # Add more namespaces here, if necessary
-for namespace in openstack openstack-infra stackforge; do
-    check_team_acl "${CONFIGS_LIST_BASE}${namespace}"
+for namespace in $CONFIGS_LIST_BASE/*; do
+    if [ -d $namespace ] ; then
+        check_team_acl "${namespace}"
+    fi
 done
 
 num_errors=$(cat config_failures | grep "is not normalized" | wc -l)
@@ -37,5 +41,6 @@ if [ $num_errors -ne 0 ]; then
 fi
 
 echo "Gerrit ACL configs are valid!"
+echo "Checked $NUM_TESTS ACL files"
 
 popd
