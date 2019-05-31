@@ -106,6 +106,11 @@
         - tox-cover
 
 - project:
+    name: opendev/ci-sandbox
+    templates:
+      - noop-jobs
+
+- project:
     name: opendev/gear
     templates:
       - openstack-python-jobs-no-constraints
@@ -1280,6 +1285,18 @@
         - tox-cover
 
 - project:
+    name: opendev/sandbox
+    release:
+      jobs:
+        - release-openstack-python
+        - legacy-sandbox-tag
+    templates:
+      - noop-jobs
+    pre-release:
+      jobs:
+        - legacy-sandbox-tag
+
+- project:
     name: opendev/statusbot
     templates:
       - publish-to-pypi
@@ -1346,23 +1363,6 @@
     gate:
       jobs:
         - tox-pep8
-
-- project:
-    name: opendev/ci-sandbox
-    templates:
-      - noop-jobs
-
-- project:
-    name: opendev/sandbox
-    release:
-      jobs:
-        - release-openstack-python
-        - legacy-sandbox-tag
-    templates:
-      - noop-jobs
-    pre-release:
-      jobs:
-        - legacy-sandbox-tag
 
 - project:
     name: openstack-infra/opendev-website
