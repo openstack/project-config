@@ -160,27 +160,12 @@
 - project:
     name: opendev/glean
     templates:
-      - openstack-python-jobs-no-constraints
-      - openstack-python35-jobs-no-constraints
       - publish-tox-docs-infra
       - publish-to-pypi
     check:
       queue: glean
-      jobs:
-        - nodepool-functional-py35-gentoo-src:
-            voting: false
-        - nodepool-functional-py35-redhat-src
-        - nodepool-functional-py35-ubuntu-src
-        - nodepool-functional-py35-suse-src:
-            voting: false
     gate:
       queue: glean
-      jobs:
-        - nodepool-functional-py35-redhat-src
-        - nodepool-functional-py35-ubuntu-src
-    experimental:
-      jobs:
-        - nodepool-functional-py35-debian-src
 
 - project:
     name: opendev/grafyaml
@@ -1966,33 +1951,12 @@
 - project:
     name: openstack/diskimage-builder
     templates:
-      - openstack-cover-jobs
-      - check-requirements
       - publish-openstack-docs-pti
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - release-notes-jobs
       - publish-to-pypi
     check:
       queue: glean
-      jobs:
-        - openstack-tox-pylint
-        - nodepool-functional-py35-redhat-src
-        - nodepool-functional-py35-ubuntu-src
     gate:
       queue: glean
-      jobs:
-        - openstack-tox-pylint
-        - nodepool-functional-py35-redhat-src
-        - nodepool-functional-py35-ubuntu-src
-    experimental:
-      jobs:
-        - nodepool-functional-py35-gentoo-src
-        - nodepool-functional-py35-debian-src
-        - nodepool-functional-py35-suse-src
-        - octavia-v1-dsvm-scenario
-        - octavia-v1-dsvm-py3x-scenario
-
 
 - project:
     name: openstack/django_openstack_auth
@@ -8707,16 +8671,6 @@
             dependencies:
               - legacy-zmq-event-publisher-hpi-artifact
         - legacy-zmq-event-publisher-hpi-artifact
-
-- project:
-    name: zuul/nodepool
-    experimental:
-      jobs:
-        - nodepool-functional-py35-redhat-src
-        - nodepool-functional-py35-ubuntu-src
-        - nodepool-functional-py35-suse-src
-        - nodepool-functional-py35-debian-src
-        - nodepool-functional-py35-gentoo-src
 
 - project:
     name: zuul/zuul
