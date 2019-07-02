@@ -71,6 +71,8 @@
           # Order matters, load common job repos first
           - zuul/zuul-jobs:
               shadow: openstack/project-config
+              extra-config-paths:
+                - zuul-tests.d/
           - openstack/openstack-zuul-jobs
           - openstack/openstack-zuul-roles
           # devstack-gate, devstack and tempest all define things expected
@@ -1585,7 +1587,5 @@
                 - job
                 - secret
         untrusted-projects:
-          - zuul/zuul-jobs:
-              extra-config-paths:
-                - zuul-tests.d/
+          - zuul/zuul-jobs
           - zuul/zuul-sphinx
