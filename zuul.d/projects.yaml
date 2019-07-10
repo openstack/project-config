@@ -7302,29 +7302,31 @@
 
 - project:
     name: x/nova-lxd
-    templates:
-      - openstack-python-jobs
-      - openstack-python35-jobs
-      - check-requirements
-      - publish-to-pypi
     check:
       jobs:
+        - noop:
+            branches: master
         - legacy-tempest-dsvm-lxd-ovs:
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^setup.cfg$
+            branches: ^stable/.*$
     gate:
       jobs:
+        - noop:
+            branches: master
         - legacy-tempest-dsvm-lxd-ovs:
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^setup.cfg$
+            branches: ^stable/.*$
     experimental:
       jobs:
         - legacy-tempest-dsvm-lxd-linuxbridge:
             irrelevant-files:
               - ^(test-|)requirements.txt$
               - ^setup.cfg$
+            branches: ^stable/.*$
 
 - project:
     name: x/nova-mksproxy
