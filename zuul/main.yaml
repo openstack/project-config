@@ -71,8 +71,6 @@
           # Order matters, load common job repos first
           - zuul/zuul-jobs:
               shadow: openstack/project-config
-              extra-config-paths:
-                - zuul-tests.d/
           - openstack/openstack-zuul-jobs
           - openstack/openstack-zuul-roles
           # devstack-gate, devstack and tempest all define things expected
@@ -1528,12 +1526,10 @@
           - x/xstatic-jquery.bootstrap.wizard
           - x/xstatic-qunit
           - x/zmq-event-publisher
-          - zuul/nodepool
-          - zuul/zuul
-          - zuul/zuul-operator
-          - zuul/zuul-preview
-          - zuul/zuul-website
-          - zuul/zuul-website-media
+          - zuul/nodepool:
+              include: ['jobs', 'secrets']
+          - zuul/zuul:
+              include: ['jobs', 'secrets']
       github:
         untrusted-projects:
           # Don't load any configuration from these projects because we
@@ -1585,5 +1581,19 @@
                 - job
                 - secret
         untrusted-projects:
-          - zuul/zuul-jobs
+          - zuul/zuul-jobs:
+              extra-config-paths:
+                - zuul-tests.d/
+          - zuul/zuul-base-jobs:
+              extra-config-paths:
+                - zuul-tests.d/
+              shadow:
+                - opendev/base-jobs
+                - zuul/project-config
+          - zuul/nodepool
+          - zuul/zuul
+          - zuul/zuul-operator
+          - zuul/zuul-preview
           - zuul/zuul-sphinx
+          - zuul/zuul-website
+          - zuul/zuul-website-media
