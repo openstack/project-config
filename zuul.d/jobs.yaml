@@ -757,7 +757,7 @@
 - job:
     name: publish-api-tox-docs-base
     description: |
-      Base job for publishing api-guide and api-ref jobs to developer site.
+      Base job for publishing api-guide and api-ref jobs to docs site.
     # We only publish the master branch, so no need to run
     # for changes on other branches.
     branches: master
@@ -777,7 +777,7 @@
       bindep_profile: compile doc
       tox_constraints_file: '{{ ansible_user_dir }}/src/opendev.org/openstack/requirements/upper-constraints.txt'
     secrets:
-      - secret: afsdeveloper_secret
+      - secret: afsdocs_secret
         name: afs
 
 - job:
@@ -785,7 +785,7 @@
     parent: publish-api-tox-docs-base
     description: |
       Publish api-guide document to
-      https://developer.openstack.org/api-guide.
+      https://docs.openstack.org/api-guide.
     final: true
     vars:
       sphinx_build_dir: api-guide/build
@@ -797,7 +797,7 @@
     parent: publish-api-tox-docs-base
     description: |
       Publish api-ref document to
-      https://developer.openstack.org/api-ref.
+      https://docs.openstack.org/api-ref.
     final: true
     vars:
       sphinx_build_dir: api-ref/build
