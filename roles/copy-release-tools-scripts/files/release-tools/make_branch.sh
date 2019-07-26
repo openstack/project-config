@@ -32,6 +32,7 @@ source $TOOLSDIR/functions
 REPO=$1
 NEW_BRANCH=$2
 START_POINT=$3
+MASTER_BRANCH_NAME=${4:-}
 LPROJECT="$PROJECT"
 
 PROJECT=$(basename $REPO)
@@ -78,5 +79,10 @@ if [[ $NEW_BRANCH =~ stable/ ]]; then
         $TOOLSDIR/add_release_note_page.sh $series .
     else
         echo "$REPO does not use reno, no update needed"
+    fi
+    # Now propose master branch changes with the new branchname
+    # according to PTI.
+    if [[ ! -z "${MASTER_BRANCH_NAME}" ]]; then
+        $TOOLSDIR/add_master_python3_jobs.sh ${NEW_BRANCH} ${MASTER_BRANCH_NAME} .
     fi
 fi
