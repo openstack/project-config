@@ -26,6 +26,10 @@ labels:
   - name: ubuntu-bionic
   - name: ubuntu-trusty
   - name: ubuntu-xenial
+  - name: centos-7-expanded
+    min-ready: 0
+  - name: ubuntu-bionic-expanded
+    min-ready: 0
 
 providers:
   - name: citycloud-kna1
@@ -348,6 +352,23 @@ providers:
             boot-from-volume: true
             volume-size: 80
             diskimage: ubuntu-xenial
+            key-name: infra-root-keys-2018-06-15
+      - name: expanded-memory-test
+        max-servers: 10
+        labels:
+          - name: centos-7-expanded
+            min-ram: 16000
+            flavor-name: '8cpu-16GBram-80GBdisk'
+            boot-from-volume: true
+            volume-size: 80
+            diskimage: centos-7
+            key-name: infra-root-keys-2018-06-15
+          - name: ubuntu-bionic-expanded
+            min-ram: 16000
+            flavor-name: '8cpu-16GBram-80GBdisk'
+            boot-from-volume: true
+            volume-size: 80
+            diskimage: ubuntu-bionic
             key-name: infra-root-keys-2018-06-15
 
   - name: packethost-us-west-1
