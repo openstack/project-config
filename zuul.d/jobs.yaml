@@ -707,6 +707,61 @@
         name: afs
 
 - job:
+    name: promote-openstack-manuals
+    description: |
+      Promote content fron build-openstack-manuals job and
+      publishes it on docs.openstack.org website.
+    parent: opendev-promote-docs-base
+    final: true
+    allowed-projects:
+      - openstack/openstack-manuals
+      - openstack/security-doc
+      - openstack/training-guides
+    vars:
+      write_root_marker: false
+      download_artifact_job: build-openstack-manuals
+    secrets:
+      - secret: afsdocs_secret-openstack-manuals
+        name: afs
+        pass-to-parent: true
+
+- job:
+    name: promote-openstack-manuals-lang
+    description: |
+      Promote content fron build-openstack-manuals-lang job and
+      publishes it on docs.openstack.org website.
+    parent: opendev-promote-docs-base
+    final: true
+    allowed-projects:
+      - openstack/openstack-manuals
+      - openstack/security-doc
+      - openstack/training-guides
+    vars:
+      write_root_marker: false
+      download_artifact_job: build-openstack-manuals-lang
+    secrets:
+      - secret: afsdocs_secret-openstack-manuals
+        name: afs
+        pass-to-parent: true
+
+- job:
+    name: promote-openstack-manuals-developer
+    description: |
+      Promote content fron build-openstack-manuals job and
+      publishes it on developer.openstack.org website.
+    parent: opendev-promote-docs-base
+    final: true
+    allowed-projects:
+      - openstack/api-site
+    vars:
+      write_root_marker: false
+      download_artifact_job: build-openstack-manuals
+    secrets:
+      - secret: afsdeveloper_secret-openstack-manuals
+        name: afs
+        pass-to-parent: true
+
+- job:
     name: publish-openstack-manuals-developer
     parent: publish-openstack-manuals-base
     post-run:
