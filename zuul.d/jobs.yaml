@@ -844,6 +844,48 @@
       api_path: api-ref
 
 - job:
+    name: promote-api-guide
+    parent: opendev-promote-docs-base
+    description: |
+      Publish api-guide document to
+      https://docs.openstack.org/api-guide.
+
+      This job is run in a promote pipeline to publish documents built
+      in the gate pipeline.
+    # We only publish the master branch, so no need to run
+    # for changes on other branches.
+    branches: master
+    final: true
+    run: playbooks/api-jobs/promote.yaml
+    vars:
+      api_path: api-guide
+      download_artifact_job: build-openstack-api-guide
+    secrets:
+      - secret: afsdocs_secret
+        name: afs
+
+- job:
+    name: promote-api-ref
+    parent: opendev-promote-docs-base
+    description: |
+      Publish api-ref document to
+      https://docs.openstack.org/api-ref.
+
+      This job is run in a promote pipeline to publish documents built
+      in the gate pipeline.
+    # We only publish the master branch, so no need to run
+    # for changes on other branches.
+    branches: master
+    final: true
+    run: playbooks/api-jobs/promote.yaml
+    vars:
+      api_path: api-ref
+      download_artifact_job: build-openstack-api-ref
+    secrets:
+      - secret: afsdocs_secret
+        name: afs
+
+- job:
     name: publish-install-guide
     description: |
       Publish install-guide document to
