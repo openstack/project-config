@@ -289,6 +289,8 @@
       basename of the branch like pike (for stable/pike).
 
       This is the publication job for ``openstack-tox-docs``.
+
+      This is deprecated, use ``promote-openstack-tox-docs`` instead.
     final: true
     post-run:
       - playbooks/sphinx/post.yaml
@@ -684,51 +686,6 @@
       static_target: security
 
 - job:
-    name: publish-openstack-manuals-base
-    description: |
-      Base job to publish manual related documents. These build jobs
-      invoke a tox command and expect the published content to be in
-      publish-docs directory. This content is published on the root of
-      the website.
-
-      Note that this build job does not create a root-marker file,
-      this has to be done by scripts called from tox.
-    nodeset: ubuntu-bionic
-    pre-run: playbooks/project-config/pre-tox.yaml
-    run: playbooks/project-config/run-tox.yaml
-    roles:
-      - zuul: zuul/zuul-jobs
-      - zuul: openstack/openstack-zuul-jobs
-    # Syncing to AFS can take longer than default 30 mins
-    post-timeout: 3600
-    vars:
-      tox_envlist: publishdocs
-      tox_environment:
-        # The tox job writes the root-marker file directly and thus
-        # needs the following variables set:
-        ZUUL_PROJECT: '{{ zuul.project.name }}'
-        ZUUL_BRANCH: '{{ zuul.branch }}'
-        ZUUL_UUID: '{{ zuul.build }}'
-        ZUUL_NEWREF: '{{ zuul.ref }}'
-
-- job:
-    name: publish-openstack-manuals
-    parent: publish-openstack-manuals-base
-    final: true
-    post-run:
-      - playbooks/publish/manuals.yaml
-      - playbooks/publish/openstack-afs.yaml
-    allowed-projects:
-      - openstack/openstack-manuals
-      - openstack/security-doc
-      - openstack/training-guides
-    vars:
-      afs_subpath: ""
-    secrets:
-      - secret: afsdocs_secret
-        name: afs
-
-- job:
     name: promote-openstack-manuals
     description: |
       Promote content fron build-openstack-manuals job and
@@ -782,88 +739,6 @@
       - secret: afsdeveloper_secret-openstack-manuals
         name: afs
         pass-to-parent: true
-
-- job:
-    name: publish-openstack-manuals-developer
-    parent: publish-openstack-manuals-base
-    post-run:
-      - playbooks/publish/manuals.yaml
-      - playbooks/publish/openstack-afs.yaml
-    final: true
-    allowed-projects:
-      - openstack/api-site
-    vars:
-      afs_subpath: ""
-    secrets:
-      - secret: afsdeveloper_secret
-        name: afs
-
-- job:
-    name: publish-openstack-manuals-lang
-    parent: publish-openstack-manuals-base
-    post-run:
-      - playbooks/publish/manuals.yaml
-      - playbooks/publish/openstack-afs.yaml
-    final: true
-    allowed-projects:
-      - openstack/openstack-manuals
-      - openstack/security-doc
-    vars:
-      tox_envlist: publishlang
-      afs_subpath: ""
-    secrets:
-      - secret: afsdocs_secret
-        name: afs
-
-- job:
-    name: publish-api-tox-docs-base
-    description: |
-      Base job for publishing api-guide and api-ref jobs to docs site.
-    # We only publish the master branch, so no need to run
-    # for changes on other branches.
-    branches: master
-    abstract: true
-    protected: true
-    pre-run: playbooks/project-config/pre-tox.yaml
-    run: playbooks/project-config/run-tox.yaml
-    post-run:
-      - playbooks/project-config/post-tox.yaml
-      - playbooks/publish/api-docs.yaml
-    required-projects:
-      - name: openstack/requirements
-    roles:
-      - zuul: zuul/zuul-jobs
-      - zuul: openstack/openstack-zuul-jobs
-    vars:
-      bindep_profile: compile doc
-      tox_constraints_file: '{{ ansible_user_dir }}/src/opendev.org/openstack/requirements/upper-constraints.txt'
-    secrets:
-      - secret: afsdocs_secret
-        name: afs
-
-- job:
-    name: publish-api-guide
-    parent: publish-api-tox-docs-base
-    description: |
-      Publish api-guide document to
-      https://docs.openstack.org/api-guide.
-    final: true
-    vars:
-      sphinx_build_dir: api-guide/build
-      tox_envlist: api-guide
-      api_path: api-guide
-
-- job:
-    name: publish-api-ref
-    parent: publish-api-tox-docs-base
-    description: |
-      Publish api-ref document to
-      https://docs.openstack.org/api-ref.
-    final: true
-    vars:
-      sphinx_build_dir: api-ref/build
-      tox_envlist: api-ref
-      api_path: api-ref
 
 - job:
     name: promote-api-guide
