@@ -322,20 +322,6 @@
         pass-to-parent: true
 
 - job:
-    name: publish-openstack-tox-docs-direct
-    parent: publish-openstack-tox-docs-base
-    description: |
-      Publish the results of the openstack-tox-docs job to
-      /afs/.openstack.org/docs/{{ zuul.project.short_name }}
-
-      Publishing is done from master branch directly without using /latest.
-    final: true
-    post-run:
-      - playbooks/sphinx/post-direct.yaml
-    branches:
-      - master
-
-- job:
     name: promote-openstack-tox-docs-direct
     parent: opendev-promote-docs-base
     description: |
