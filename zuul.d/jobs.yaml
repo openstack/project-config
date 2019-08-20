@@ -1056,6 +1056,11 @@
     run: playbooks/wheel/release.yaml
     nodeset:
       nodes: []
+    # Build and publish jobs for the wheel mirror only run against
+    # master. Restrict the release job to master as well to avoid zuul
+    # config errors due to stable branches not being able to run their
+    # job depenendencies.
+    branches: master
     secrets:
       - name: afs
         secret: afsadmin_keytab
