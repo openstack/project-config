@@ -40,6 +40,47 @@
       afs_subpath: "/{{ zuul.project.short_name }}"
 
 - job:
+    name: promote-stx-api-ref
+    parent: opendev-promote-docs-base
+    description: |
+      Publish api-ref document to
+      /afs/.openstack.org/project/starlingx.io/www/api-ref{{ zuul.project.short_name }}
+
+      This job is run in a promote pipeline to publish documents built
+      in the gate pipeline.
+    # We only publish the master branch, so no need to run
+    # for changes on other branches.
+    branches: master
+    final: true
+    vars:
+      download_artifact_job: build-openstack-api-ref
+    roles:
+      - zuul: zuul/zuul-jobs
+      - zuul: openstack/openstack-zuul-jobs
+    secrets:
+      - secret: afsdocs_secret-stx-apiref
+        name: afs
+
+- job:
+    name: promote-stx-tox-docs
+    parent: opendev-promote-docs-base
+    description: |
+      Promote content from openstack-tox-docs job for starlingx.
+
+      Publish the results of a sphinx build to
+      /afs/.openstack.org/project/starlingx.io/www
+
+      Publishes depending on branch to / (for master), or the
+      name of the branch.
+    final: true
+    vars:
+      download_artifact_job: openstack-tox-docs
+    secrets:
+      - secret: afsdocs_secret-stx-tox-docs
+        name: afs
+        pass-to-parent: true
+
+- job:
     name: publish-stx-api-ref
     parent: publish-stx-tox-base
     description: |
