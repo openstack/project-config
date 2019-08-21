@@ -366,19 +366,6 @@
         pass-to-parent: true
 
 - job:
-    name: publish-openstack-contributor-guide
-    parent: publish-openstack-tox-docs-base
-    description: |
-      Publish contributor-guide documents to
-      https://docs.openstack.org/contributors
-    final: true
-    post-run:
-      - playbooks/publish/contributor-guide-afs.yaml
-    branches: master
-    vars:
-      afs_subpath: "/contributors"
-
-- job:
     name: promote-openstack-contributor-guide
     parent: promote-tox-docs-special-base
     description: |
@@ -871,19 +858,6 @@
     secrets:
       - secret: afsdocs_secret
         name: afs
-
-- job:
-    name: publish-deploy-guide
-    parent: publish-openstack-tox-docs-base
-    description: |
-      Publish deploy-guide document to
-      https://docs.openstack.org/project-deploy-guide/
-    post-run:
-      - playbooks/sphinx/post.yaml
-    vars:
-      afs_subpath: "/project-deploy-guide/{{ zuul.project.short_name }}"
-      sphinx_build_dir: deploy-guide/build
-      tox_envlist: deploy-guide
 
 - job:
     name: promote-deploy-guide

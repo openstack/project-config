@@ -22,18 +22,19 @@
       unarchive:
         src: "{{ zuul.executor.work_root }}/docs-html.tar.bz2"
         dest: "{{ zuul.executor.work_root }}/docs"
-    - include_role:
+    - name: Write root_marker file
+      include_role:
         name: write-root-marker
       vars:
         root_marker_dir: "{{ zuul.executor.work_root }}/docs"
     - name: Get service type
       include_role:
         name: set-service-type-data-fact
-    - name: Set target directory
+    - name: Set target directory if master
       when: "zuul.branch == 'master'"
       set_fact:
         target_dir: "/afs/.openstack.org/docs/{{ api_path }}/{{ service_type_data.service_type }}/"
-    - name: Set target directory
+    - name: Set target directory if not master
       when: "zuul.branch != 'master'"
       fail:
         msg: "This jobs should be only run on master branch."
