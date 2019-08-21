@@ -201,6 +201,15 @@ dashboard:
           format: dateTimeFromNow
           valueFontSize: "50%"
 
+        - title: mirror.yum-puppetlabs
+          type: singlestat
+          valueName: current
+          span: 2
+          targets:
+            - target: "scale(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_yum-puppetlabs_readonly.creation, 1000)"
+          format: dateTimeFromNow
+          valueFontSize: "50%"
+
     - title: Volumes
       height: 200px
       showTitle: true
@@ -322,5 +331,22 @@ dashboard:
             - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_opensuse.quota, 'Quota')"
               refId: B
             - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_opensuse.used, #B)"
+              refId: C
+              hide: true
+
+        - title: mirror.yum-puppetlabs
+          type: graph
+          span: 4
+          yaxes:
+            - format: deckbytes
+              min: 0
+            - format: deckbytes
+              min: 0
+          targets:
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_yum-puppetlabs.used, 'Used')"
+              refId: A
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_yum-puppetlabs.quota, 'Quota')"
+              refId: B
+            - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_yum-puppetlabs.used, #B)"
               refId: C
               hide: true
