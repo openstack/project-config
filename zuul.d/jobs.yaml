@@ -344,6 +344,28 @@
         pass-to-parent: true
 
 - job:
+    name: promote-tox-docs-special-base
+    parent: opendev-promote-docs-base
+    description: |
+      Promote content from openstack-tox-docs job for some projects
+      that need a special location.
+
+      Publish the results of the tox-docs job to
+      /afs/.openstack.org/docs/{{ special_publish_directory }}.
+
+      This is a promote job for ``openstack-tox-docs``.
+
+      A job needs to set the variable `special_publish_directory`.
+    abstract: true
+    protected: true
+    vars:
+      download_artifact_job: openstack-tox-docs
+    secrets:
+      - secret: afsdocs_secret-tox-docs-special
+        name: afs
+        pass-to-parent: true
+
+- job:
     name: publish-openstack-contributor-guide
     parent: publish-openstack-tox-docs-base
     description: |
@@ -355,6 +377,19 @@
     branches: master
     vars:
       afs_subpath: "/contributors"
+
+- job:
+    name: promote-openstack-contributor-guide
+    parent: promote-tox-docs-special-base
+    description: |
+      Publish contributor-guide documents to
+      https://docs.openstack.org/contributors
+    final: true
+    allowed-projects:
+      - openstack/contributor-guide
+    branches: master
+    vars:
+      special_publish_directory: "contributors"
 
 - job:
     name: publish-openstack-releasenotes-base
@@ -468,14 +503,10 @@
     name: promote-tox-docs-infra
     parent: opendev-promote-docs-base
     description: |
-      Promote content from openstack-tox-docs job for Infra projects
-      that run tox-docs using the docs environment.
+      Promote content from tox-docs job for Infra projects.
 
       Publish the results of the tox-docs job to
       /afs/.openstack.org/docs/infra/{{ zuul.project.short_name }}.
-
-      Publishes depending on branch to latest/ (for master), or the
-      basename of the branch like pike (for stable/pike).
 
       This is a promote job for ``tox-docs``.
     final: true
@@ -504,17 +535,18 @@
     nodeset: ubuntu-bionic
 
 - job:
-    name: publish-infra-manual
-    parent: publish-openstack-tox-docs-base
+    name: promote-infra-manual
+    parent: promote-tox-docs-special-base
     description: |
-      Publish the Infra Manual to /afs/.openstack.org/docs/infra/manual
-    final: true
-    post-run:
-      - playbooks/sphinx/post-infra.yaml
+      Promote infra-manual documents to
+      https://docs.openstack.org/infra/manual
     allowed-projects:
       - openstack/infra-manual
+    final: true
+    branches: master
     vars:
-      afs_subpath: "/infra/manual"
+      download_artifact_job: tox-docs
+      special_publish_directory: "infra/manual"
 
 - job:
     name: publish-service-types-authority
@@ -852,6 +884,25 @@
       afs_subpath: "/project-deploy-guide/{{ zuul.project.short_name }}"
       sphinx_build_dir: deploy-guide/build
       tox_envlist: deploy-guide
+
+- job:
+    name: promote-deploy-guide
+    parent: opendev-promote-docs-base
+    description: |
+      Promote content from build-openstack-deploy-guide.
+
+      Publish the results of the build-openstack-deploy-guide job to
+      /afs/.openstack.org/docs/deploy-guide/{{ zuul.project.short_name }}.
+
+      Publishes depending on branch to latest/ (for master), or the
+      basename of the branch like pike (for stable/pike).
+    final: true
+    vars:
+      download_artifact_job: build-openstack-deploy-guide
+    secrets:
+      - secret: afsdocs_secret-deploy-guide
+        name: afs
+        pass-to-parent: true
 
 - job:
     name: publish-training-labs-scripts
