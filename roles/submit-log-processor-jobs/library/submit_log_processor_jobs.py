@@ -38,16 +38,7 @@ class FileMatcher(object):
 
 class File(object):
     def __init__(self, name, tags):
-        # Note that even if we upload a .gz we want to use the logical
-        # non compressed name for handling (it is easier on humans).
-        # The reason we can get away with this is that this name is used
-        # to construct the log_url below. The server serving that
-        # log_url treats foo.txt and foo.txt.gz as being the same content
-        # and serves both paths from the same backend content.
-        if name.endswith('.gz'):
-            self._name = name[:-3]
-        else:
-            self._name = name
+        self._name = name
         self._tags = tags
 
     @property
@@ -128,8 +119,12 @@ class LogMatcher(object):
     def makeEvent(self, file_object):
         out_event = {}
         out_event["fields"] = self.makeFields(file_object.name)
-        out_event["tags"] = [os.path.basename(file_object.name)] + \
-            file_object.tags
+        basename = os.path.basename(file_object.name)
+        out_event["tags"] = [basename] + file_object.tags
+        if basename.endswith(".gz"):
+            # Backward compat for e-r which relies on tag values
+            # without the .gx suffix
+            out_event["tags"].append(basename[:-3])
         return out_event
 
     def makeFields(self, filename):
