@@ -3375,6 +3375,14 @@
         - announce-release
 
 - project:
+    name: openstack/openstack-ansible-tests
+    post:
+      jobs:
+        - propose-updates:
+            vars:
+              update_target: openstack-ansible-tests
+
+- project:
     name: openstack/openstack-chef-repo
     templates:
       - noop-jobs
@@ -3393,6 +3401,11 @@
     name: openstack/openstack-manuals
     templates:
       - translation-jobs-master-only
+    post:
+      jobs:
+        - propose-updates:
+            vars:
+              update_taget: openstack-manuals
 
 - project:
     name: openstack/openstack-nose
@@ -4538,6 +4551,16 @@
       queue: senlin
     gate:
       queue: senlin
+
+- project:
+    name: openstack/service-types-authority
+    post:
+      jobs:
+        - propose-updates:
+            vars:
+              target: os-service-types
+            dependencies:
+              - publish-service-types-authority
 
 - project:
     name: openstack/shade
