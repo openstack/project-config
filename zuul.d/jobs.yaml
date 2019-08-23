@@ -949,6 +949,7 @@
     description: |
       Sync content to other projects as a proposed change.
     run: playbooks/proposal/propose-updates.yaml
+    protected: true
     secrets:
       - secret: proposal_ssh_key
         name: ssh_key
@@ -960,6 +961,7 @@
       Update constraint files for requirements project with a
       proposed change.
     run: playbooks/proposal/propose-update-constraints.yaml
+    protected: true
     dependencies:
       - release-openstack-python
 
@@ -969,6 +971,7 @@
     description: |
       Update project-config files with a proposed change.
     run: playbooks/proposal/propose-project-config-update.yaml
+    protected: true
 
 - job:
     name: build-wheel-mirror-base
@@ -1218,6 +1221,7 @@
       - playbooks/translation/post.yaml
       - playbooks/publish/openstack-artifacts.yaml
     semaphore: translations
+    protected: true
     vars:
       fileserver_leading_path: translation-source
       constraints_file: '{{ ansible_user_dir }}/src/opendev.org/openstack/requirements/upper-constraints.txt'
@@ -1245,6 +1249,7 @@
     vars:
       constraints_file: '{{ ansible_user_dir }}/src/opendev.org/openstack/requirements/upper-constraints.txt'
     semaphore: translations
+    protected: true
     required-projects:
       - openstack/requirements
     # Zanata-cli needs Java 8 and will fail with newer Java, Bionic uses Java 11
