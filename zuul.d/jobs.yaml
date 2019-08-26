@@ -411,6 +411,20 @@
         name: afs
 
 - job:
+    name: promote-openstack-releasenotes
+    parent: opendev-promote-docs-base
+    description: |
+      Promote the results of build-openstack-releasenotes to
+      /afs/.openstack.org/docs/releasenotes/{{ zuul.project.short_name }}
+    final: true
+    vars:
+      download_artifact_job: build-openstack-releasenotes
+    secrets:
+      - secret: afsdocs_secret-releasenotes
+        name: afs
+        pass-to-parent: true
+
+- job:
     name: publish-openstack-releasenotes
     parent: publish-openstack-releasenotes-base
     description: |
@@ -670,6 +684,28 @@
         secret: static_ssh_key
 
 - job:
+    name: base-promote-tox-docs-static
+    parent: opendev-promote-docs-base
+    abstract: true
+    protected: true
+    description: |
+      Base job for jobs that promote content to static.openstack.org.
+
+      Jobs need to set the variable ``static_target`` for site to
+      publish to.
+      This is a promote job for ``openstack-tox-docs``.
+    run: playbooks/project-config/promote.yaml
+    vars:
+      download_artifact_job: openstack-tox-docs
+    roles:
+      - zuul: zuul/zuul-jobs
+      - zuul: openstack/openstack-zuul-jobs
+    secrets:
+      - name: fileserver
+        secret: static_ssh_key
+        pass-to-parent: true
+
+- job:
     name: publish-tox-docs-static
     parent: base-publish-tox-docs-static
     description: |
@@ -680,10 +716,31 @@
       static_target: "{{ zuul.project.short_name }}"
 
 - job:
+    name: promote-tox-docs-static
+    parent: base-promote-tox-docs-static
+    description: |
+      Promote content to static.openstack.org to
+      /srv/static/{{ zuul.project.short_name }}
+    final: true
+    vars:
+      static_target: "{{ zuul.project.short_name }}"
+
+- job:
     name: publish-governance-sigs
     parent: base-publish-tox-docs-static
     description: |
       Publish content to static.openstack.org to /srv/static/sigs
+    final: true
+    allowed-projects:
+      - openstack/governance-sigs
+    vars:
+      static_target: sigs
+
+- job:
+    name: promote-governance-sigs
+    parent: base-promote-tox-docs-static
+    description: |
+      Promote content to static.openstack.org to /srv/static/sigs
     final: true
     allowed-projects:
       - openstack/governance-sigs
@@ -702,10 +759,21 @@
       static_target: tc
 
 - job:
-    name: publish-governance-uc
-    parent: base-publish-tox-docs-static
+    name: promote-governance-tc
+    parent: base-promote-tox-docs-static
     description: |
-      Publish content to static.openstack.org to /srv/static/uc
+      Promote content to static.openstack.org to /srv/static/tc
+    final: true
+    allowed-projects:
+      - openstack/governance
+    vars:
+      static_target: tc
+
+- job:
+    name: promote-governance-uc
+    parent: base-promote-tox-docs-static
+    description: |
+      Promote content to static.openstack.org to /srv/static/uc
     final: true
     allowed-projects:
       - openstack/governance-uc
@@ -713,10 +781,10 @@
       static_target: uc
 
 - job:
-    name: publish-governance-website
-    parent: base-publish-tox-docs-static
+    name: promote-governance-website
+    parent: base-promote-tox-docs-static
     description: |
-      Publish content to static.openstack.org to /srv/static/governance
+      Promote content to static.openstack.org to /srv/static/governance
     final: true
     allowed-projects:
       - openstack/governance-website
@@ -728,6 +796,17 @@
     parent: base-publish-tox-docs-static
     description: |
       Publish content to static.openstack.org to /srv/static/security
+    final: true
+    allowed-projects:
+      - openstack/ossa
+    vars:
+      static_target: security
+
+- job:
+    name: promote-security
+    parent: base-promote-tox-docs-static
+    description: |
+      Promote content to static.openstack.org to /srv/static/security
     final: true
     allowed-projects:
       - openstack/ossa
