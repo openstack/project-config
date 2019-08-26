@@ -12,7 +12,9 @@
       vars:
         # download_artifact_job: provided by zuul job
         download_artifact_api: "https://zuul.opendev.org/api/tenant/{{ zuul.tenant }}"
-        download_artifact_type: docs_archive
+        download_artifact_type:
+          - docs_archive
+          - docs_pdf
         download_artifact_pipeline: gate
     - name: Create working directory
       file:
@@ -27,6 +29,16 @@
         name: write-root-marker
       vars:
         root_marker_dir: "{{ zuul.executor.work_root }}/docs"
+    - name: Find PDF files
+      find:
+        paths: "{{ zuul.executor.work_root }}/"
+        file_type: file
+        patterns: "*.pdf"
+      register: pdf_files
+    - name: Move found PDF file into doc dir
+      command: "mv {{ item.path }} {{ zuul.executor.work_root }}/docs"
+      with_items: "{{ pdf_files.files }}"
+      when: pdf_files.matched > 0
     - name: Get service type
       include_role:
         name: set-service-type-data-fact
