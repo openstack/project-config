@@ -30,6 +30,14 @@ labels:
     min-ready: 0
   - name: ubuntu-bionic-expanded
     min-ready: 0
+  - name: multi-numa-ubuntu-bionic
+    min-ready: 0
+  - name: multi-numa-ubuntu-bionic-expanded
+    min-ready: 0
+  - name: multi-numa-centos-7
+    min-ready: 0
+  - name: multi-numa-centos-7-expanded
+    min-ready: 0
 
 providers:
   - name: citycloud-kna1
@@ -260,7 +268,7 @@ providers:
     diskimages: *provider_diskimages
     pools:
       - name: main
-        max-servers: 60
+        max-servers: 70
         labels:
           - name: centos-7
             min-ram: 8000
@@ -327,9 +335,6 @@ providers:
             flavor-name: '8cpu-8GBram-80GBdisk'
             diskimage: ubuntu-xenial
             key-name: infra-root-keys-2018-06-15
-      - name: expanded-memory-test
-        max-servers: 10
-        labels:
           - name: centos-7-expanded
             min-ram: 16000
             flavor-name: '8cpu-16GBram-80GBdisk'
@@ -339,6 +344,26 @@ providers:
             min-ram: 16000
             flavor-name: '8cpu-16GBram-80GBdisk'
             diskimage: ubuntu-bionic
+            key-name: infra-root-keys-2018-06-15
+          - name: multi-numa-ubuntu-bionic
+            min-ram: 8000
+            flavor-name: 'multi-numa'
+            diskimage: ubuntu-bionic
+            key-name: infra-root-keys-2018-06-15
+          - name: multi-numa-ubuntu-bionic-expanded
+            min-ram: 16000
+            flavor-name: 'multi-numa-expanded'
+            diskimage: ubuntu-bionic
+            key-name: infra-root-keys-2018-06-15
+          - name: multi-numa-centos-7
+            min-ram: 8000
+            flavor-name: 'multi-numa'
+            diskimage: centos-7
+            key-name: infra-root-keys-2018-06-15
+          - name: multi-numa-centos-7-expanded
+            min-ram: 16000
+            flavor-name: 'multi-numa-expanded'
+            diskimage: centos-7
             key-name: infra-root-keys-2018-06-15
 
   - name: packethost-us-west-1
