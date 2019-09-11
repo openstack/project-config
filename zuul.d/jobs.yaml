@@ -762,10 +762,13 @@
         pass-to-parent: true
 
 - job:
-    name: promote-governance-sigs
+    name: promote-governance-sigs-static
     parent: base-promote-tox-docs-static
     description: |
       Promote content to static.openstack.org to /srv/static/sigs
+
+      This job is added for transition of sites, it will be
+      removed soon.
     final: true
     allowed-projects:
       - openstack/governance-sigs
@@ -773,15 +776,40 @@
       static_target: sigs
 
 - job:
-    name: promote-governance-tc
+    name: promote-governance-sigs
+    parent: promote-tox-docs-site-base
+    description: |
+      Promote content to governance.openstack.org/sigs.
+    final: true
+    allowed-projects:
+      - openstack/governance-sigs
+    vars:
+      publish_site: "governance.openstack.org/sigs"
+
+- job:
+    name: promote-governance-tc-static
     parent: base-promote-tox-docs-static
     description: |
       Promote content to static.openstack.org to /srv/static/tc
+
+      This job is added for transition of sites, it will be
+      removed soon.
     final: true
     allowed-projects:
       - openstack/governance
     vars:
       static_target: tc
+
+- job:
+    name: promote-governance-tc
+    parent: promote-tox-docs-site-base
+    description: |
+      Promote content to governance.openstack.org/sigs.
+    final: true
+    allowed-projects:
+      - openstack/governance
+    vars:
+      publish_site: "governance.openstack.org/tc"
 
 - job:
     name: promote-governance-uc
@@ -795,15 +823,43 @@
       static_target: uc
 
 - job:
-    name: promote-governance-website
+    name: promote-governance-uc-static
+    parent: promote-tox-docs-site-base
+    description: |
+      Promote content to governance.openstack.org/uc.
+
+      This job is added for transition of sites, it will be
+      removed soon.
+    final: true
+    allowed-projects:
+      - openstack/governance-uc
+    vars:
+      publish_site: "governance.openstack.org/uc"
+
+- job:
+    name: promote-governance-website-static
     parent: base-promote-tox-docs-static
     description: |
       Promote content to static.openstack.org to /srv/static/governance
+
+      This job is added for transition of sites, it will be
+      removed soon.
     final: true
     allowed-projects:
       - openstack/governance-website
     vars:
       static_target: governance
+
+- job:
+    name: promote-governance-website
+    parent: promote-tox-docs-site-base
+    description: |
+      Promote content to governance.openstack.org.
+    final: true
+    allowed-projects:
+      - openstack/governance-website
+    vars:
+      publish_site: "governance.openstack.org"
 
 - job:
     name: promote-security
