@@ -47,11 +47,15 @@ $NEW_BRANCH.
 
 Sem-Ver: feature
 "
+
 titlebranch=$(python -c "print('$SERIES'.title())")
+pagetitle="$titlebranch Series Release Notes"
+titlebar=`printf '%*s' "$(echo -n $pagetitle | wc -c)" | tr ' ' "="`
+
 cat - > releasenotes/source/${SERIES}.rst <<EOF
-===================================
- $titlebranch Series Release Notes
-===================================
+$titlebar
+$pagetitle
+$titlebar
 
 .. release-notes::
    :branch: $NEW_BRANCH
