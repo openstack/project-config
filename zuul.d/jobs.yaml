@@ -497,19 +497,6 @@
       - site_specs
 
 - job:
-    name: publish-tox-docs-infra
-    parent: publish-openstack-tox-docs-base
-    description: |
-      Publish the results of the tox docs job to
-      /afs/.openstack.org/docs/infra/{{ zuul.project.short_name }}
-    final: true
-    post-run:
-      - playbooks/sphinx/post-infra.yaml
-    vars:
-      afs_subpath: "/infra/{{ zuul.project.short_name }}"
-      bindep_profile: compile doc
-
-- job:
     name: promote-tox-docs-infra
     parent: opendev-promote-docs-base
     description: |
