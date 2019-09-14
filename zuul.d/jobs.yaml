@@ -479,22 +479,52 @@
       - site_specs
 
 - job:
-    name: publish-openstack-specs-site
+    name: promote-openstack-specs-base
+    parent: opendev-promote-docs-base
+    abstract: true
+    protected: true
     description: |
-      Publish OpenStack specs site to static.openstack.org specs/
-    final: true
-    pre-run: playbooks/project-config/pre-tox.yaml
-    run: playbooks/project-config/run-tox.yaml
-    post-run: playbooks/publish/openstack-specs-site.yaml
-    allowed-projects:
-      - openstack/project-config
+      Base job to promote content to specs.openstack.org.
+
+      Jobs need to set the variable ``static_target`` for site to
+      publish to.
+    run: playbooks/static-docs/promote.yaml
+    vars:
+      download_artifact_job: build-openstack-specs-site
+      static_target: ""
     roles:
       - zuul: zuul/zuul-jobs
       - zuul: openstack/openstack-zuul-jobs
-    vars:
-      tox_envlist: specs
     secrets:
-      - site_specs
+      - name: fileserver
+        secret: site_specs_promote
+
+- job:
+    name: promote-openstack-specs-site
+    parent: promote-openstack-specs-base
+    final: true
+    description: |
+      Publish OpenStack specs site to static.openstack.org specs/
+
+      This is a promote job for ``build-openstack-specs-site``.
+    allowed-projects:
+      - openstack/project-config
+    vars:
+      download_artifact_job: build-openstack-specs-site
+      static_target: ""
+
+- job:
+    name: promote-openstack-specs
+    parent: promote-openstack-specs-base
+    final: true
+    description: |
+      Publish OpenStack specs project to static.openstack.org
+      specs/{{ zuul.project.name }}.
+
+      This is a promote job for ``openstack-tox-docs``.
+    vars:
+      download_artifact_job: openstack-tox-docs
+      static_target: "{{ zuul.project.name }}"
 
 - job:
     name: publish-tox-docs-infra
@@ -578,26 +608,18 @@
       - site_specs
 
 - job:
-    name: publish-infra-index
+    name: promote-infra-index
+    parent: promote-tox-docs-special-base
     description: |
-      Publish the infrastructure documentation index
-    final: true
-    pre-run: playbooks/project-config/pre-tox.yaml
-    run: playbooks/project-config/run-tox.yaml
-    post-run:
-      - playbooks/publish/infra-index.yaml
-      - playbooks/publish/openstack-afs.yaml
+      Promote infra index.html to
+      https://docs.openstack.org/infra/
     allowed-projects:
       - openstack/project-config
-    roles:
-      - zuul: zuul/zuul-jobs
-      - zuul: openstack/openstack-zuul-jobs
+    final: true
+    branches: master
     vars:
-      tox_envlist: infra-docs
-      afs_subpath: "/infra"
-    secrets:
-      - secret: afsdocs_secret
-        name: afs
+      download_artifact_job: project-config-infra-docs-index
+      special_publish_directory: "infra"
 
 - job:
     name: publish-infra-publications-index
