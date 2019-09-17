@@ -3755,12 +3755,22 @@
     check:
       queue: project-config
       jobs:
-        - build-openstack-specs-site
+        - build-openstack-specs-site:
+            files: &specs-site
+              - bindep.txt
+              - specs/.*
+              - other-requirements.txt
+              - tox.ini
         - openstack-zuul-jobs-linters
         - project-config-dib
         - project-config-gerrit
         - project-config-grafyaml
-        - project-config-infra-docs-index
+        - project-config-infra-docs-index:
+            files: &infra-docs-index
+              - bindep.txt
+              - docs-site/.*
+              - other-requirements.txt
+              - tox.ini
         - project-config-irc-access
         - project-config-nodepool
         - project-config-bindep-fallback-centos-7
@@ -3770,24 +3780,26 @@
     gate:
       queue: project-config
       jobs:
-        - build-openstack-specs-site
+        - build-openstack-specs-site:
+            files: *specs-site
         - openstack-zuul-jobs-linters
         - project-config-dib
         - project-config-gerrit
         - project-config-grafyaml
-        - project-config-infra-docs-index
+        - project-config-infra-docs-index:
+            files: *infra-docs-index
         - project-config-irc-access
         - project-config-nodepool
         - project-config-bindep-fallback-centos-7
         - project-config-bindep-fallback-opensuse-15
         - project-config-bindep-fallback-ubuntu-trusty
         - project-config-bindep-fallback-ubuntu-xenial
-    # Temporarily disabled to allow us to update them.
-    # TODO(jaegerandi): Enable in promote pipeline.
-    # post:
-    #  jobs:
-    #    - publish-infra-index
-    #    - publish-openstack-specs-site
+    promote:
+      jobs:
+        - promote-infra-index:
+            files: *infra-docs-index
+        - promote-openstack-specs-site:
+            files: *specs-site
     periodic:
       jobs:
         - propose-project-config-update
