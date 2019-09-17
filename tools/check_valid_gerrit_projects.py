@@ -115,9 +115,14 @@ def check_zuul_main(zuul_main, projects):
             for project_types in sources['gerrit']:
                 for entry in sources['gerrit'][project_types]:
                     if isinstance(entry, dict):
-                        for x in entry.keys():
-                            found_errors += check_project_exists(
-                                x, project_names)
+                        if 'projects' in entry:
+                            for x in entry['projects']:
+                                found_errors += check_project_exists(
+                                    x, project_names)
+                        else:
+                            for x in entry.keys():
+                                found_errors += check_project_exists(
+                                    x, project_names)
                     else:
                         found_errors += check_project_exists(
                             entry, project_names)
