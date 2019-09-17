@@ -44,7 +44,7 @@ parser.add_argument(
 args = parser.parse_args()
 
 print('Reading documents data from %r' % args.infile)
-infile = yaml.load(open(args.infile, 'r'))
+infile = yaml.safe_load(open(args.infile, 'r'))
 template_path = os.path.dirname(args.infile)
 
 template_context = {
@@ -52,7 +52,7 @@ template_context = {
     'all': infile['documents']
 }
 
-outdir = os.path.join(template_path, 'output')
+outdir = os.path.join(template_path, 'html')
 if not os.path.exists(outdir):
     os.makedirs(outdir)
 
