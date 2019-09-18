@@ -195,7 +195,7 @@
 
       This is the publication job for ``build-openstack-sphinx-docs``.
       This job is obsolete and should not be used anymore since rocky,
-      use ``publish-openstack-docs`` instead.
+      use ``promote-openstack-docs`` instead.
 
     final: true
     pre-run:
@@ -207,97 +207,6 @@
       # TODO(mordred) REMOVE THIS HACK ONCE neutron-horizon-hack is removed
       - name: openstack/neutron
       - name: openstack/horizon
-
-- job:
-    name: publish-openstack-tox-docs-base
-    description: |
-      Base job for publishing docs tox job.
-
-      Publish the results of the docs tox job to
-      /afs/.openstack.org/docs/{{ zuul.project.short_name }}.
-
-    branches: ^(?!stable/(ocata|pike|queens|rocky)).*$
-    abstract: true
-    protected: true
-    pre-run: playbooks/project-config/pre-tox.yaml
-    run: playbooks/project-config/run-tox.yaml
-    post-run:
-      - playbooks/project-config/post-tox.yaml
-      - playbooks/publish/openstack-afs.yaml
-    required-projects:
-      - name: openstack/requirements
-    roles:
-      - zuul: zuul/zuul-jobs
-      - zuul: openstack/openstack-zuul-jobs
-    vars:
-      tox_envlist: docs
-      bindep_profile: compile doc
-      tox_constraints_file: '{{ ansible_user_dir }}/src/opendev.org/openstack/requirements/upper-constraints.txt'
-    secrets:
-      - secret: afsdocs_secret
-        name: afs
-
-- job:
-    name: publish-openstack-tox-docs-base
-    nodeset: ubuntu-xenial
-    description: |
-      Base job for publishing docs tox job.
-
-      Publish the results of the docs tox job to
-      /afs/.openstack.org/docs/{{ zuul.project.short_name }}.
-
-      This job runs on Xenial for stable/ocata, pike, queens and rocky. This
-      job is prepared to make sure all stable branches before stable/stein will
-      keep running on xenial.
-
-    branches:
-      - stable/ocata
-      - stable/pike
-      - stable/queens
-      - stable/rocky
-    abstract: true
-    protected: true
-    pre-run: playbooks/project-config/pre-tox.yaml
-    run: playbooks/project-config/run-tox.yaml
-    post-run:
-      - playbooks/project-config/post-tox.yaml
-      - playbooks/publish/openstack-afs.yaml
-    required-projects:
-      - name: openstack/requirements
-    roles:
-      - zuul: zuul/zuul-jobs
-      - zuul: openstack/openstack-zuul-jobs
-    vars:
-      tox_envlist: docs
-      bindep_profile: compile doc
-      tox_constraints_file: '{{ ansible_user_dir }}/src/opendev.org/openstack/requirements/upper-constraints.txt'
-    secrets:
-      - secret: afsdocs_secret
-        name: afs
-
-- job:
-    name: publish-openstack-tox-docs
-    parent: publish-openstack-tox-docs-base
-    description: |
-      Publication job for projects that run tox using
-      the docs environment following OpenStack PTI.
-
-      Publish the results of the docs tox job to
-      /afs/.openstack.org/docs/{{ zuul.project.short_name }}.
-
-      Publishes depending on branch to latest/ (for master), or the
-      basename of the branch like pike (for stable/pike).
-
-      This is the publication job for ``openstack-tox-docs``.
-
-      This is deprecated, use ``promote-openstack-tox-docs`` instead.
-    final: true
-    post-run:
-      - playbooks/sphinx/post.yaml
-    required-projects:
-      - name: openstack/requirements
-    vars:
-      tox_constraints_file: '{{ ansible_user_dir }}/src/opendev.org/openstack/requirements/upper-constraints.txt'
 
 - job:
     name: promote-openstack-tox-docs
@@ -525,23 +434,6 @@
       - secret: afsdocs_secret-tox-docs-infra
         name: afs
         pass-to-parent: true
-
-- job:
-    name: publish-tox-docs-infra-bionic
-    parent: publish-openstack-tox-docs-base
-    description: |
-      Publish the results of the tox docs job to
-      /afs/.openstack.org/infra/{{ zuul.project.short_name }}
-      using an ubuntu-bionic nodeset (openstackid will use this
-      to get around the final: true in publish-tox-docs-infra
-      until the default nodeset is updated in the base job)
-    final: true
-    post-run:
-      - playbooks/sphinx/post-infra.yaml
-    vars:
-      afs_subpath: "/infra/{{ zuul.project.short_name }}"
-      bindep_profile: compile doc
-    nodeset: ubuntu-bionic
 
 - job:
     name: promote-infra-manual
