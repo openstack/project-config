@@ -461,24 +461,6 @@
       sphinx_python: python3
 
 - job:
-    name: publish-openstack-specs
-    parent: publish-openstack-tox-docs-base
-    description: |
-      Publish OpenStack specs to static.openstack.org
-      specs/{{ zuul.project.short_name }}
-    final: true
-    post-run: playbooks/publish/openstack-specs.yaml
-    required-projects:
-      - name: openstack/requirements
-    roles:
-      - zuul: zuul/zuul-jobs
-      - zuul: openstack/openstack-zuul-jobs
-    vars:
-      tox_constraints_file: '{{ ansible_user_dir }}/src/opendev.org/openstack/requirements/upper-constraints.txt'
-    secrets:
-      - site_specs
-
-- job:
     name: promote-openstack-specs-base
     parent: opendev-promote-docs-base
     abstract: true
