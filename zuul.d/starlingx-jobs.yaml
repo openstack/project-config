@@ -82,6 +82,30 @@
         pass-to-parent: true
 
 - job:
+    name: promote-stx-tox-docs-site
+    parent: opendev-promote-docs-base
+    description: |
+      Promote content from openstack-tox-docs job for
+      starlingx/doc repository only.
+
+      Publish the results of a sphinx build to
+      /afs/.openstack.org/project/starlingx.io/www
+
+      Publishes depending to / for master only.
+    final: true
+    vars:
+      download_artifact_job: openstack-tox-docs
+    # starlingx/doc has only master branch, anything else
+    # does not make sense for website top-level
+    branches: master
+    allowed-projects:
+      - starlingx/docs
+    secrets:
+      - secret: afsdocs_secret-stx-tox-docs-site
+        name: afs
+        pass-to-parent: true
+
+- job:
     name: publish-stx-api-ref
     parent: publish-stx-tox-base
     description: |
