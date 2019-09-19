@@ -29,7 +29,8 @@ if [[ "$DISTRO_NAME" =~ (debian|ubuntu) ]] ; then
 elif [[ "$DISTRO_NAME" =~ (centos|rhel7|fedora) ]] ; then
     service_name=iptables
 elif [[ "$DISTRO_NAME" == 'opensuse' ]] ; then
-    service_name=SuSEfirewall2
+    # handle iptables through init.d instead of a service
+    exit 0
 elif [[ "$DISTRO_NAME" == 'gentoo' ]] ; then
     # for use in loops in both openrc and systemd
     service_name='iptables ip6tables'
