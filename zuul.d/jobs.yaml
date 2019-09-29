@@ -288,16 +288,16 @@
       special_publish_directory: "contributors"
 
 - job:
-    name: publish-openstack-releasenotes-base
+    name: publish-openstack-releasenotes-python3
     description: |
-      Abstract base job to publish the results of build-openstack-releasenotes to
+      Publish the results of build-openstack-releasenotes to
       /afs/.openstack.org/docs/releasenotes/{{ zuul.project.short_name }}
-    # This job is protected-abstract because it sets the afs_subpath
+      Uses python3.
+    # This job is final because its sets the afs_subpath
     # variable; it is not safe to let that be overridden in an
     # untrusted job because it would allow writing outside of the
     # project's directory on the production doc site.
-    protected: true
-    abstract: true
+    final: true
     pre-run: playbooks/releasenotes/pre.yaml
     run: playbooks/releasenotes/run.yaml
     post-run:
@@ -312,6 +312,7 @@
       - zuul: openstack/openstack-zuul-jobs
       - zuul: zuul/zuul-jobs
     vars:
+      sphinx_python: python3
       afs_subpath: "/releasenotes/{{ zuul.project.short_name }}"
       constraints_file: '{{ ansible_user_dir }}/src/opendev.org/openstack/requirements/upper-constraints.txt'
       sphinx_build_dir: releasenotes/build
@@ -341,33 +342,6 @@
       - doc/requirements.txt
       - test-requirements.txt
       - tox.ini
-
-- job:
-    name: publish-openstack-releasenotes
-    parent: publish-openstack-releasenotes-base
-    description: |
-      Publish the results of build-openstack-releasenotes to
-      /afs/.openstack.org/docs/releasenotes/{{ zuul.project.short_name }}
-    # This job is final because its parent sets the afs_subpath
-    # variable; it is not safe to let that be overridden in an
-    # untrusted job because it would allow writing outside of the
-    # project's directory on the production doc site.
-    final: true
-
-- job:
-    name: publish-openstack-releasenotes-python3
-    parent: publish-openstack-releasenotes-base
-    description: |
-      Publish the results of build-openstack-releasenotes to
-      /afs/.openstack.org/docs/releasenotes/{{ zuul.project.short_name }}
-      Uses python3.
-    # This job is final because its parent sets the afs_subpath
-    # variable; it is not safe to let that be overridden in an
-    # untrusted job because it would allow writing outside of the
-    # project's directory on the production doc site.
-    final: true
-    vars:
-      sphinx_python: python3
 
 - job:
     name: promote-openstack-specs-base
