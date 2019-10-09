@@ -14,6 +14,7 @@ zookeeper-servers:
 # another launcher will need to assume this logic.
 labels:
   - name: centos-7
+  - name: centos-8
   - name: debian-buster
   - name: debian-stretch
   - name: fedora-28
@@ -37,6 +38,8 @@ providers:
     rate: 0.1
     diskimages: &provider_diskimages
       - name: centos-7
+        config-drive: true
+      - name: centos-8
         config-drive: true
       - name: debian-buster
         config-drive: true
@@ -72,6 +75,11 @@ providers:
             min-ram: 8000
             flavor-name: ssd-osFoundation-3
             diskimage: centos-7
+            key-name: infra-root-keys-2018-06-15
+          - name: centos-8
+            min-ram: 8000
+            flavor-name: ssd-osFoundation-3
+            diskimage: centos-8
             key-name: infra-root-keys-2018-06-15
           - name: debian-buster
             min-ram: 8000
@@ -153,6 +161,7 @@ providers:
 
 diskimages:
   - name: centos-7
+  - name: centos-8
   - name: debian-buster
   - name: debian-stretch
   - name: fedora-28
