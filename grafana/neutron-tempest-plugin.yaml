@@ -1,5 +1,8 @@
 dashboard:
   title: Neutron Tempest Plugin Failure Rate
+  time:
+      from: "now-7d"
+      to: "now"
   rows:
     - title: Description
       height: 100px
@@ -15,16 +18,170 @@ dashboard:
     - title: Graphs
       height: 320px
       panels:
-        - title: Failure Rates (Gate queue)
-          span: 4
+        - title: Scenario Failure Rates (Gate queue)
+          span: 6
           targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-linuxbridge.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-linuxbridge.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-scenario-linuxbridge')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-openvswitch.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-openvswitch.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-scenario-openvswitch')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-openvswitch-iptables_hybrid.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-openvswitch-iptables_hybrid.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-scenario-openvswitch-iptables_hybrid')
+          type: graph
+        - title: Number of Scenario Failures (Gate queue)
+          span: 6
+          targets:
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-linuxbridge.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-tempest-plugin-scenario-linuxbridge')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-openvswitch.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-tempest-plugin-scenario-openvswitch')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-openvswitch-iptables_hybrid.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-tempest-plugin-scenario-openvswitch-iptables_hybrid')
+          type: graph
+        - title: Stable Release Failure Rates (Gate queue)
+          span: 6
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-api-queens.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-api-queens.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-api-queens')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-api-rocky.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-api-rocky.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-api-rocky')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-api-stein.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-api-stein.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-api-stein')
+          type: graph
+        - title: Number of Stable Release Failures (Gate queue)
+          span: 6
+          targets:
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-api-queens.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-tempest-plugin-api-queens')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-api-rocky.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-tempest-plugin-api-rocky')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-api-stein.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-tempest-plugin-api-stein')
+          type: graph
+        - title: Stadium Failure Rates (Gate queue)
+          span: 6
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-bgpvpn-bagpipe.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-bgpvpn-bagpipe.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-bgpvpn-bagpipe')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-dynamic-routing.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-dynamic-routing.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-dynamic-routing')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-fwaas.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-fwaas.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-fwaas')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-sfc.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-sfc.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-sfc')
+          type: graph
+        - title: Number of Stadium Failures (Gate queue)
+          span: 6
+          targets:
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-bgpvpn-bagpipe.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-tempest-plugin-bgpvpn-bagpipe')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-dynamic-routing.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-tempest-plugin-dynamic-routing')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-fwaas.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-tempest-plugin-fwaas')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-sfc.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-tempest-plugin-sfc')
+          type: graph
+        - title: Basic Failure Rates (Gate queue)
+          span: 6
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_neutron-tempest-plugin.master.job.openstack-tox-docs.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_neutron-tempest-plugin.master.job.openstack-tox-docs.{SUCCESS,FAILURE})),'24hours'), 'openstack-tox-docs')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_neutron-tempest-plugin.master.job.openstack-tox-pep8.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_neutron-tempest-plugin.master.job.openstack-tox-pep8.{SUCCESS,FAILURE})),'24hours'), 'openstack-tox-pep8')
             - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-api.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-api.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-api')
           type: graph
-        - title: Failure Rates (Check queue)
-          span: 4
+        - title: Number of Basic Failures (Gate queue)
+          span: 6
           targets:
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_neutron-tempest-plugin.master.job.openstack-tox-docs.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'openstack-tox-docs')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_neutron-tempest-plugin.master.job.openstack-tox-pep8.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'openstack-tox-pep8')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-api.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-tempest-plugin-api')
+          type: graph
+
+
+
+        - title: Scenario Failure Rates (Check queue)
+          span: 6
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-designate-scenario.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-designate-scenario.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-designate-scenario')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-dvr-multinode-scenario.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-dvr-multinode-scenario.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-scenario-dvr-multinode-scenario (non-voting)')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-linuxbridge.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-linuxbridge.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-scenario-linuxbridge')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-openvswitch.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-openvswitch.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-scenario-openvswitch')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-openvswitch-iptables_hybrid.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-openvswitch-iptables_hybrid.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-scenario-openvswitch-iptables_hybrid')
+          type: graph
+        - title: Number of Scenario Failures (Check queue)
+          span: 6
+          targets:
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-designate-scenario.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-tempest-plugin-designate-scenario')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-dvr-multinode-scenario.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-tempest-plugin-scenario-dvr-multinode-scenario (non-voting)')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-linuxbridge.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-tempest-plugin-scenario-linuxbridge')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-openvswitch.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-tempest-plugin-scenario-openvswitch')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-openvswitch-iptables_hybrid.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-tempest-plugin-scenario-openvswitch-iptables_hybrid')
+          type: graph
+        - title: Stein Release Failure Rates (Check queue)
+          span: 6
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-api-stein.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-api-stein.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-api-stein')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-designate-scenario-stein.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-designate-scenario-stein.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-designate-scenario-stein')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-dvr-multinode-scenario-stein.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-dvr-multinode-scenario-stein.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-scenario-dvr-multinode-scenario-stein (non-voting)')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-linuxbridge-stein.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-linuxbridge-stein.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-scenario-linuxbridge-stein')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-openvswitch-stein.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-openvswitch-stein.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-scenario-openvswitch-stein')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-openvswitch-iptables_hybrid-stein.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-openvswitch-iptables_hybrid-stein.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-scenario-openvswitch-iptables_hybrid-stein')
+          type: graph
+        - title: Number of Stein Release Failures (Check queue)
+          span: 6
+          targets:
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-api-stein.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-tempest-plugin-api-stein')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-designate-scenario-stein.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-tempest-plugin-designate-scenario-stein')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-dvr-multinode-scenario-stein.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-tempest-plugin-scenario-dvr-multinode-scenario-stein (non-voting)')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-linuxbridge-stein.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-tempest-plugin-scenario-linuxbridge-stein')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-openvswitch-stein.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-tempest-plugin-scenario-openvswitch-stein')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-openvswitch-iptables_hybrid-stein.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-tempest-plugin-scenario-openvswitch-iptables_hybrid-stein')
+          type: graph
+        - title: Rocky Release Failure Rates (Check queue)
+          span: 6
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-api-rocky.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-api-rocky.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-api-rocky')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-designate-scenario-rocky.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-designate-scenario-rocky.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-designate-scenario-rocky')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-dvr-multinode-scenario-rocky.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-dvr-multinode-scenario-rocky.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-scenario-dvr-multinode-scenario-rocky (non-voting)')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-linuxbridge-rocky.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-linuxbridge-rocky.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-scenario-linuxbridge-rocky')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-openvswitch-rocky.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-openvswitch-rocky.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-scenario-openvswitch-rocky')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-openvswitch-iptables_hybrid-rocky.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-openvswitch-iptables_hybrid-rocky.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-scenario-openvswitch-iptables_hybrid-rocky')
+          type: graph
+        - title: Number of Rocky Release Failures (Check queue)
+          span: 6
+          targets:
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-api-rocky.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-tempest-plugin-api-rocky')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-designate-scenario-rocky.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-tempest-plugin-designate-scenario-rocky')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-dvr-multinode-scenario-rocky.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-tempest-plugin-scenario-dvr-multinode-scenario-rocky (non-voting)')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-linuxbridge-rocky.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-tempest-plugin-scenario-linuxbridge-rocky')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-openvswitch-rocky.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-tempest-plugin-scenario-openvswitch-rocky')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-openvswitch-iptables_hybrid-rocky.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-tempest-plugin-scenario-openvswitch-iptables_hybrid-rocky')
+          type: graph
+        - title: Queens Release Failure Rates (Check queue)
+          span: 6
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-api-queens.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-api-queens.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-api-queens')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-designate-scenario-queens.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-designate-scenario-queens.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-designate-scenario-queens')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-dvr-multinode-scenario-queens.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-dvr-multinode-scenario-queens.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-scenario-dvr-multinode-scenario-queens (non-voting)')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-linuxbridge-queens.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-linuxbridge-queens.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-scenario-linuxbridge-queens')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-openvswitch-queens.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-openvswitch-queens.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-scenario-openvswitch-queens')
+          type: graph
+        - title: Number of Queens Release Failures (Check queue)
+          span: 6
+          targets:
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-api-queens.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-tempest-plugin-api-queens')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-designate-scenario-queens.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-tempest-plugin-designate-scenario-queens')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-dvr-multinode-scenario-queens.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-tempest-plugin-scenario-dvr-multinode-scenario-queens (non-voting)')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-linuxbridge-queens.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-tempest-plugin-scenario-linuxbridge-queens')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-openvswitch-queens.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-tempest-plugin-scenario-openvswitch-queens')
+          type: graph
+        - title: Stadium Failure Rates (Check queue)
+          span: 6
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-bgpvpn-bagpipe.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-bgpvpn-bagpipe.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-bgpvpn-bagpipe')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-dynamic-routing.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-dynamic-routing.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-dynamic-routing')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-fwaas.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-fwaas.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-fwaas')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-sfc.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-sfc.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-sfc')
+          type: graph
+        - title: Number of Stadium Failures (Check queue)
+          span: 6
+          targets:
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-bgpvpn-bagpipe.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-tempest-plugin-bgpvpn-bagpipe')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-dynamic-routing.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-tempest-plugin-dynamic-routing')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-fwaas.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-tempest-plugin-fwaas')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-sfc.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-tempest-plugin-sfc')
+          type: graph
+        - title: Basic Failure Rates (Check queue)
+          span: 6
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.openstack-tox-docs.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.openstack-tox-docs.{SUCCESS,FAILURE})),'24hours'), 'openstack-tox-docs')
+            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.openstack-tox-pep8.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.openstack-tox-pep8.{SUCCESS,FAILURE})),'24hours'), 'openstack-tox-pep8')
             - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-api.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-api.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-api')
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-designate-scenario.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-designate-scenario.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-designate-scenario (non-voting)')
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-dvr-multinode-scenario.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-dvr-multinode-scenario.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-dvr-multinode-scenario (non-voting)')
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-linuxbridge.FAILURE),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-scenario-linuxbridge.{SUCCESS,FAILURE})),'24hours'), 'neutron-tempest-plugin-scenario-linuxbridge (non-voting)')
+          type: graph
+        - title: Number of Basic Failures (Check queue)
+          span: 6
+          targets:
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.openstack-tox-docs.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'openstack-tox-docs')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.openstack-tox-pep8.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'openstack-tox-pep8')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_neutron-tempest-plugin.master.job.neutron-tempest-plugin-api.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'neutron-tempest-plugin-api')
           type: graph
