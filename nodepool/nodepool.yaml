@@ -37,6 +37,8 @@ providers:
     diskimages: &provider_diskimages
       - name: centos-7
         config-drive: true
+      - name: centos-8
+        config-drive: true
       - name: debian-buster
         config-drive: true
       - name: debian-stretch
@@ -148,6 +150,31 @@ diskimages:
       GIT_HTTP_LOW_SPEED_TIME: '300'
       GIT_HTTP_LOW_SPEED_LIMIT: '1000'
       DIB_SHOW_IMAGE_USAGE: '1'
+  - name: centos-8
+    pause: false
+    python-path: /usr/bin/python3
+    elements:
+      - centos-minimal
+      - vm
+      - simple-init
+      - openstack-repos
+      - nodepool-base
+      - cache-devstack
+      - growroot
+      - infra-package-needs
+      - epel
+    env-vars:
+      TMPDIR: /opt/dib_tmp
+      DIB_CHECKSUM: '1'
+      DIB_IMAGE_CACHE: /opt/dib_cache
+      DIB_JOURNAL_SIZE: '512'
+      QEMU_IMG_OPTIONS: compat=0.10
+      DIB_GRUB_TIMEOUT: '0'
+      DIB_EPEL_DISABLED: '1'
+      GIT_HTTP_LOW_SPEED_TIME: '300'
+      GIT_HTTP_LOW_SPEED_LIMIT: '1000'
+      DIB_SHOW_IMAGE_USAGE: '1'
+      DIB_RELEASE: '8'
   - name: debian-stretch
     pause: false
     elements:

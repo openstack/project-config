@@ -17,6 +17,7 @@ zookeeper-servers:
 # ubuntu-xenial-arm64 being one of them.
 labels:
   - name: centos-7
+  - name: centos-8
   - name: debian-buster
   - name: debian-buster-arm64
     min-ready: 1
@@ -69,6 +70,8 @@ providers:
     diskimages: &provider_diskimages
       - name: centos-7
         config-drive: true
+      - name: centos-8
+        config-drive: true
       - name: debian-buster
         config-drive: true
       - name: debian-stretch
@@ -103,6 +106,11 @@ providers:
             min-ram: 8000
             flavor-name: 'A1.8'
             diskimage: centos-7
+            key-name: infra-root-keys-2018-06-15
+          - name: centos-8
+            min-ram: 8000
+            flavor-name: 'A1.8'
+            diskimage: centos-8
             key-name: infra-root-keys-2018-06-15
           - name: debian-buster
             min-ram: 8000
@@ -184,6 +192,11 @@ providers:
             min-ram: 8000
             flavor-name: 'osf-highcpu-8'
             diskimage: centos-7
+            key-name: infra-root-keys-2018-06-15
+          - name: centos-8
+            min-ram: 8000
+            flavor-name: 'osf-highcpu-8'
+            diskimage: centos-8
             key-name: infra-root-keys-2018-06-15
           - name: debian-buster
             min-ram: 8000
@@ -295,6 +308,13 @@ providers:
             boot-from-volume: true
             volume-size: 80
             diskimage: centos-7
+            key-name: infra-root-keys-2018-06-15
+          - name: centos-8
+            min-ram: 8000
+            flavor-name: v2-highcpu-8
+            boot-from-volume: true
+            volume-size: 80
+            diskimage: centos-8
             key-name: infra-root-keys-2018-06-15
           - name: debian-buster
             min-ram: 8000
@@ -482,6 +502,7 @@ providers:
 
 diskimages:
   - name: centos-7
+  - name: centos-8
   - name: debian-buster
   - name: debian-buster-arm64
   - name: debian-stretch
