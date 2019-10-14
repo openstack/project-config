@@ -1666,12 +1666,16 @@
           - zuul/zuul-website-media
           # Include some projects without config for use in
           # required-projects
-          - opendev/glean:
-              include: []
-          - openstack/diskimage-builder:
-              include: []
-          - openstack/openstacksdk:
-              include: []
+          - include: []
+            projects:
+              - opendev/glean
+              - openstack/diskimage-builder
+              - openstack/openstacksdk
+          # Include some projects with job config for cross-tenant
+          # jobs
+          - include: [job, secret, nodeset]
+            projects:
+              - opendev/system-config
       github:
         untrusted-projects:
           # Don't load any configuration from these projects because we
@@ -1686,3 +1690,7 @@
               - sigmavirus24/github3.py
               - sphinx-contrib/openapi
               - sqlalchemy/dogpile.cache
+      googlesource:
+        untrusted-projects:
+          - include: []
+            projects: *googlesource_projects
