@@ -27,7 +27,6 @@ create "Gentoo" "gentoo-17-0-systemd"
 create "openSUSE 15.0" "opensuse-150"
 create "openSUSE 15.1" "opensuse-15"
 create "openSUSE Tumbleweed" "opensuse-tumbleweed"
-create "openSUSE 42.3" "opensuse-423"
 create "Ubuntu Bionic arm64" "ubuntu-bionic-arm64"
 create "Ubuntu Xenial arm64" "ubuntu-xenial-arm64"
 
