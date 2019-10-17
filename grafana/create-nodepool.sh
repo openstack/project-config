@@ -24,7 +24,6 @@ create Inap 'inap-*' nodepool-inap.yaml
 create Limestone 'limestone-*' nodepool-limestone.yaml
 create Linaro 'linaro-*' nodepool-linaro.yaml
 create OVH 'ovh-*' nodepool-ovh.yaml
-create Packethost 'packethost-*' nodepool-packethost.yaml
 create Vexxhost 'vexxhost-*' nodepool-vexxhost.yaml
 create Citycloud 'citycloud-*' nodepool-citycloud.yaml
 create FortNebula 'fortnebula-*' nodepool-fortnebula.yaml
