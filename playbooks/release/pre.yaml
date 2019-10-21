@@ -1,12 +1,12 @@
 - hosts: all
   pre_tasks:
     # This is tempoarary until v2 is gone and we can rework things
-    - name: Add origin remote to enable notes fetching
-      command: "git remote add origin https://{{ item.canonical_name }}"
+    - name: Update origin remote to enable notes fetching
+      command: "git remote set-url origin https://{{ item.canonical_name }}"
       args:
         chdir: "{{ ansible_user_dir }}/src/{{ item.canonical_name }}"
       with_items: "{{ zuul.projects.values() | list }}"
-      # ANSIBLE0006: git remote add is not supported by ansible module
+      # ANSIBLE0006: git remote is not supported by ansible module
       tags:
         - skip_ansible_lint
   roles:
