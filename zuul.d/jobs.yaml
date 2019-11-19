@@ -597,6 +597,28 @@
       static_target: "{{ zuul.project.short_name }}"
 
 - job:
+    name: promote-tox-docs-site-base
+    parent: opendev-promote-docs-base
+    description: |
+      Promote content from openstack-tox-docs job for some projects
+      that need a special location.
+
+      Publish the results of the tox-docs job to
+      /afs/.openstack.org/{{publish_site }}.
+
+      This is a promote job for ``openstack-tox-docs``.
+
+      A job needs to set the variables `publish_site`.
+    abstract: true
+    protected: true
+    vars:
+      download_artifact_job: openstack-tox-docs
+    secrets:
+      - secret: afsdocs_secret-tox-docs-site
+        name: afs
+        pass-to-parent: true
+
+- job:
     name: promote-governance-sigs
     parent: base-promote-tox-docs-static
     description: |
