@@ -719,15 +719,29 @@
       publish_site: "governance.openstack.org"
 
 - job:
-    name: promote-security
+    name: promote-security-static
     parent: base-promote-tox-docs-static
     description: |
       Promote content to static.openstack.org to /srv/static/security
+
+      This job is added for transition of sites, it will be
+      removed soon.
     final: true
     allowed-projects:
       - openstack/ossa
     vars:
       static_target: security
+
+- job:
+    name: promote-security
+    parent: promote-tox-docs-site-base
+    description: |
+      Promote content to security.openstack.org.
+    final: true
+    allowed-projects:
+      - openstack/ossa
+    vars:
+      publish_site: "security.openstack.org"
 
 - job:
     name: promote-openstack-manuals
