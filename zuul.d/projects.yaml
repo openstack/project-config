@@ -1799,31 +1799,7 @@
 - project:
     name: openstack/fuel-agent
     templates:
-      - openstack-python35-jobs
-    check:
-      jobs:
-        - openstack-tox-pep8:
-            nodeset: ubuntu-trusty
-            branches: ^stable/8\.0$
-        - openstack-tox-py27:
-            nodeset: ubuntu-trusty
-            branches: ^stable/8\.0$
-        - openstack-tox-pep8:
-            branches: ^(?!stable/8\.0).*$
-        - openstack-tox-py27:
-            branches: ^(?!stable/8\.0).*$
-    gate:
-      jobs:
-        - openstack-tox-pep8:
-            nodeset: ubuntu-trusty
-            branches: ^stable/8\.0$
-        - openstack-tox-py27:
-            nodeset: ubuntu-trusty
-            branches: ^stable/8\.0$
-        - openstack-tox-pep8:
-            branches: ^(?!stable/8\.0).*$
-        - openstack-tox-py27:
-            branches: ^(?!stable/8\.0).*$
+      - noop-jobs
 
 - project:
     name: openstack/fuel-astute
@@ -1832,49 +1808,23 @@
 
 - project:
     name: openstack/fuel-dev-tools
-    check:
-      jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
-    gate:
-      jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
+    templates:
+      - noop-jobs
 
 - project:
     name: openstack/fuel-devops
     templates:
-      - openstack-cover-jobs
-      - openstack-python-jobs
-    check:
-      jobs:
-        - openstack-tox-pylint:
-            voting: false
-            branches: ^(?!(release/(?:2\.9)|stable)).*$
-        - openstack-tox-py35:
-            branches: ^(?!(release/(?:2\.9)|stable)).*$
-    gate:
-      jobs:
-        - openstack-tox-py35:
-            branches: ^(?!(release/(?:2\.9)|stable)).*$
+      - noop-jobs
 
 - project:
     name: openstack/fuel-docs
     templates:
-      - build-openstack-sphinx-docs
+      - noop-jobs
 
 - project:
     name: openstack/fuel-library
-    check:
-      jobs:
-        - legacy-fuel-library-puppet-lint
-        - legacy-fuel-library-puppet-unit-4.5-centos-7:
-            branches: ^(?!stable/8\.0).*$
-    gate:
-      jobs:
-        - legacy-fuel-library-puppet-lint
-        - legacy-fuel-library-puppet-unit-4.5-centos-7:
-            branches: ^(?!stable/8\.0).*$
+    templates:
+      - noop-jobs
 
 - project:
     name: openstack/fuel-main
@@ -1883,59 +1833,13 @@
 
 - project:
     name: openstack/fuel-menu
-    check:
-      jobs:
-        - openstack-tox-pep8:
-            nodeset: ubuntu-trusty
-            branches: ^stable/8\.0$
-        - openstack-tox-py27:
-            nodeset: ubuntu-trusty
-            branches: ^stable/8\.0$
-        - openstack-tox-pep8:
-            branches: ^(?!stable/8\.0).*$
-        - openstack-tox-py27:
-            branches: ^(?!stable/8\.0).*$
-    gate:
-      jobs:
-        - openstack-tox-pep8:
-            nodeset: ubuntu-trusty
-            branches: ^stable/8\.0$
-        - openstack-tox-py27:
-            nodeset: ubuntu-trusty
-            branches: ^stable/8\.0$
-        - openstack-tox-pep8:
-            branches: ^(?!stable/8\.0).*$
-        - openstack-tox-py27:
-            branches: ^(?!stable/8\.0).*$
+    templates:
+      - noop-jobs
 
 - project:
     name: openstack/fuel-mirror
     templates:
-      - openstack-python35-jobs
-    check:
-      jobs:
-        - openstack-tox-pep8:
-            nodeset: ubuntu-trusty
-            branches: ^stable/8\.0$
-        - openstack-tox-py27:
-            nodeset: ubuntu-trusty
-            branches: ^stable/8\.0.*$
-        - openstack-tox-pep8:
-            branches: ^(?!stable/8\.0).*$
-        - openstack-tox-py27:
-            branches: ^(?!stable/8\.0).*$
-    gate:
-      jobs:
-        - openstack-tox-pep8:
-            nodeset: ubuntu-trusty
-            branches: ^stable/8\.0$
-        - openstack-tox-py27:
-            nodeset: ubuntu-trusty
-            branches: ^stable/8\.0.*$
-        - openstack-tox-pep8:
-            branches: ^(?!stable/8\.0).*$
-        - openstack-tox-py27:
-            branches: ^(?!stable/8\.0).*$
+      - noop-jobs
 
 - project:
     name: openstack/fuel-nailgun-agent
@@ -1944,95 +1848,28 @@
 
 - project:
     name: openstack/fuel-nailgun-extension-cluster-upgrade
-    check:
-      jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
-    gate:
-      jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
+    templates:
+      - noop-jobs
 
 - project:
     name: openstack/fuel-nailgun-extension-converted-serializers
-    check:
-      jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
-    gate:
-      jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
+    templates:
+      - noop-jobs
 
 - project:
     name: openstack/fuel-nailgun-extension-iac
-    check:
-      jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
-    gate:
-      jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
+    templates:
+      - noop-jobs
 
 - project:
     name: openstack/fuel-octane
-    check:
-      jobs:
-        - openstack-tox-pep8:
-            nodeset: ubuntu-trusty
-            branches: ^stable/8\.0.*$
-        - openstack-tox-py27:
-            nodeset: ubuntu-trusty
-            branches: ^stable/8\.0.*$
-        - openstack-tox-pep8:
-            branches: ^(?!stable/8\.0).*$
-        - openstack-tox-py27:
-            branches: ^(?!stable/8\.0).*$
-        - openstack-tox-cover:
-            nodeset: ubuntu-trusty
-            voting: false
-            branches: ^stable/8\.0$
-        - openstack-tox-cover:
-            voting: false
-            branches: ^(?!stable/8\.0).*$
-        - legacy-fuel-octane-puppet-lint:
-            branches: ^(?!stable/8\.0).*$
-    gate:
-      jobs:
-        - openstack-tox-pep8:
-            nodeset: ubuntu-trusty
-            branches: ^stable/8\.0.*$
-        - openstack-tox-py27:
-            nodeset: ubuntu-trusty
-            branches: ^stable/8\.0.*$
-        - openstack-tox-pep8:
-            branches: ^(?!stable/8\.0).*$
-        - openstack-tox-py27:
-            branches: ^(?!stable/8\.0).*$
-        - legacy-fuel-octane-puppet-lint:
-            branches: ^(?!stable/8\.0).*$
+    templates:
+      - noop-jobs
 
 - project:
     name: openstack/fuel-ostf
-    check:
-      jobs:
-        - openstack-tox-pep8:
-            nodeset: ubuntu-trusty
-            branches: ^stable/8\.0.*$
-        - openstack-tox-pep8:
-            branches: ^(?!stable/8\.0).*$
-        - openstack-tox-py27:
-            branches: ^(?!stable/8\.0).*$
-    gate:
-      jobs:
-        - openstack-tox-pep8:
-            nodeset: ubuntu-trusty
-            branches: ^stable/8\.0.*$
-        - openstack-tox-pep8:
-            branches: ^(?!stable/8\.0).*$
-        - openstack-tox-py27:
-            branches: ^(?!stable/8\.0).*$
+    templates:
+      - noop-jobs
 
 - project:
     name: openstack/fuel-plugin-murano
@@ -2047,83 +1884,27 @@
 - project:
     name: openstack/fuel-plugins
     templates:
-      - publish-to-pypi
-    check:
-      jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
-    gate:
-      jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
+      - noop-jobs
 
 - project:
     name: openstack/fuel-qa
-    check:
-      jobs:
-        - openstack-tox-py27:
-            nodeset: ubuntu-trusty
-            branches: ^(stable(-mu)?/(?:6\.1|7\.0|8\.0)).*$
-        - openstack-tox-pep8:
-            nodeset: ubuntu-trusty
-            branches: ^(stable(-mu)?/(?:6\.1|7\.0|8\.0)).*$
-        - openstack-tox-py27:
-            branches: ^(?!stable(-mu)?/(?:6\.1|7\.0|8\.0)).*$
-        - openstack-tox-pep8:
-            branches: ^(?!stable(-mu)?/(?:6\.1|7\.0|8\.0)).*$
-        - openstack-tox-pylint:
-            branches: ^(?!stable(-mu)?/(?:6\.1|7\.0|8\.0)).*$
-    gate:
-      jobs:
-        - openstack-tox-py27:
-            nodeset: ubuntu-trusty
-            branches: ^(stable(-mu)?/(?:6\.1|7\.0|8\.0)).*$
-        - openstack-tox-pep8:
-            nodeset: ubuntu-trusty
-            branches: ^(stable(-mu)?/(?:6\.1|7\.0|8\.0)).*$
-        - openstack-tox-py27:
-            branches: ^(?!stable(-mu)?/(?:6\.1|7\.0|8\.0)).*$
-        - openstack-tox-pep8:
-            branches: ^(?!stable(-mu)?/(?:6\.1|7\.0|8\.0)).*$
-        - openstack-tox-pylint:
-            branches: ^(?!stable(-mu)?/(?:6\.1|7\.0|8\.0)).*$
+    templates:
+      - noop-jobs
 
 - project:
     name: openstack/fuel-specs
     templates:
-      - openstack-specs-jobs
-    check:
-      jobs:
-        - openstack-tox-py27
-    gate:
-      jobs:
-        - openstack-tox-py27
+      - noop-jobs
 
 - project:
     name: openstack/fuel-stats
-    check:
-      jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
-    gate:
-      jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
+    templates:
+      - noop-jobs
 
 - project:
     name: openstack/fuel-ui
-    check:
-      jobs:
-        - nodejs-npm-run-lint:
-            vars:
-              node_version: 4
-            nodeset: ubuntu-xenial
-    gate:
-      jobs:
-        - nodejs-npm-run-lint:
-            vars:
-              node_version: 4
-            nodeset: ubuntu-xenial
+    templates:
+      - noop-jobs
 
 - project:
     name: openstack/fuel-virtualbox
@@ -2132,36 +1913,8 @@
 
 - project:
     name: openstack/fuel-web
-    check:
-      jobs:
-        - openstack-tox-pep8:
-            nodeset: ubuntu-trusty
-            branches: ^stable/8\.0$
-        - openstack-tox-py27:
-            nodeset: ubuntu-trusty
-            branches: ^stable/8\.0$
-        - build-openstack-sphinx-docs:
-            branches: ^(?!stable/8\.0).*$
-            voting: false
-        - openstack-tox-pep8:
-            branches: ^(?!stable/8\.0).*$
-        - openstack-tox-py27:
-            branches: ^(?!stable/8\.0).*$
-    gate:
-      jobs:
-        - openstack-tox-pep8:
-            nodeset: ubuntu-trusty
-            branches: ^stable/8\.0$
-        - openstack-tox-py27:
-            nodeset: ubuntu-trusty
-            branches: ^stable/8\.0$
-        - openstack-tox-pep8:
-            branches: ^(?!stable/8\.0).*$
-        - openstack-tox-py27:
-            branches: ^(?!stable/8\.0).*$
-    post:
-      jobs:
-        - publish-openstack-python-branch-tarball
+    templates:
+      - noop-jobs
 
 - project:
     name: openstack/futurist
@@ -4047,16 +3800,7 @@
 - project:
     name: openstack/python-fuelclient
     templates:
-      - openstack-python35-jobs
-      - publish-to-pypi
-    check:
-      jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
-    gate:
-      jobs:
-        - openstack-tox-pep8
-        - openstack-tox-py27
+      - noop-jobs
 
 - project:
     name: openstack/python-glanceclient
@@ -4836,8 +4580,7 @@
 - project:
     name: openstack/tuning-box
     templates:
-      - openstack-python-jobs
-      - publish-to-pypi
+      - noop-jobs
 
 - project:
     name: openstack/uc-recognition
@@ -5791,167 +5534,162 @@
 - project:
     name: x/fuel-ccp
     templates:
-      - openstack-python-jobs
-      - build-openstack-docs-pti
-      - fuel-ccp-cross-repo-gate
-      - openstack-python35-jobs
+      - noop-jobs
 
 - project:
     name: x/fuel-ccp-ceph
     templates:
-      - fuel-ccp-component
+      - noop-jobs
 
 - project:
     name: x/fuel-ccp-ci-config
     templates:
-      - fuel-ccp-component
+      - noop-jobs
 
 - project:
     name: x/fuel-ccp-cinder
     templates:
-      - fuel-ccp-component
+      - noop-jobs
 
 - project:
     name: x/fuel-ccp-debian-base
     templates:
-      - fuel-ccp-component
+      - noop-jobs
 
 - project:
     name: x/fuel-ccp-designate
     templates:
-      - fuel-ccp-component
+      - noop-jobs
 
 - project:
     name: x/fuel-ccp-elasticsearch
     templates:
-      - fuel-ccp-component
+      - noop-jobs
 
 - project:
     name: x/fuel-ccp-entrypoint
     templates:
-      - openstack-python-jobs
-      - fuel-ccp-cross-repo-gate
-      - openstack-python35-jobs
+      - noop-jobs
 
 - project:
     name: x/fuel-ccp-etcd
     templates:
-      - fuel-ccp-component
+      - noop-jobs
 
 - project:
     name: x/fuel-ccp-galera
     templates:
-      - fuel-ccp-component
+      - noop-jobs
 
 - project:
     name: x/fuel-ccp-glance
     templates:
-      - fuel-ccp-component
+      - noop-jobs
 
 - project:
     name: x/fuel-ccp-grafana
     templates:
-      - fuel-ccp-component
+      - noop-jobs
 
 - project:
     name: x/fuel-ccp-heat
     templates:
-      - fuel-ccp-component
+      - noop-jobs
 
 - project:
     name: x/fuel-ccp-horizon
     templates:
-      - fuel-ccp-component
+      - noop-jobs
 
 - project:
     name: x/fuel-ccp-installer
     templates:
-      - build-openstack-docs-pti
+      - noop-jobs
 
 - project:
     name: x/fuel-ccp-ironic
     templates:
-      - fuel-ccp-component
+      - noop-jobs
 
 - project:
     name: x/fuel-ccp-keystone
     templates:
-      - fuel-ccp-component
+      - noop-jobs
 
 - project:
     name: x/fuel-ccp-mariadb
     templates:
-      - fuel-ccp-component
+      - noop-jobs
 
 - project:
     name: x/fuel-ccp-memcached
     templates:
-      - fuel-ccp-component
+      - noop-jobs
 
 - project:
     name: x/fuel-ccp-murano
     templates:
-      - fuel-ccp-component
+      - noop-jobs
 
 - project:
     name: x/fuel-ccp-neutron
     templates:
-      - fuel-ccp-component
+      - noop-jobs
 
 - project:
     name: x/fuel-ccp-nginx
     templates:
-      - fuel-ccp-component
+      - noop-jobs
 
 - project:
     name: x/fuel-ccp-nova
     templates:
-      - fuel-ccp-component
+      - noop-jobs
 
 - project:
     name: x/fuel-ccp-openstack-base
     templates:
-      - fuel-ccp-component
+      - noop-jobs
 
 - project:
     name: x/fuel-ccp-rabbitmq
     templates:
-      - fuel-ccp-component
+      - noop-jobs
 
 - project:
     name: x/fuel-ccp-rally
     templates:
-      - fuel-ccp-component
+      - noop-jobs
 
 - project:
     name: x/fuel-ccp-sahara
     templates:
-      - fuel-ccp-component
+      - noop-jobs
 
 - project:
     name: x/fuel-ccp-searchlight
     templates:
-      - fuel-ccp-component
+      - noop-jobs
 
 - project:
     name: x/fuel-ccp-specs
     templates:
-      - fuel-ccp-component
+      - noop-jobs
 
 - project:
     name: x/fuel-ccp-stacklight
     templates:
-      - fuel-ccp-component
+      - noop-jobs
 
 - project:
     name: x/fuel-ccp-tests
     templates:
-      - openstack-python-jobs
+      - noop-jobs
 
 - project:
     name: x/fuel-ccp-zmq
     templates:
-      - fuel-ccp-component
+      - noop-jobs
 
 - project:
     name: x/fuel-noop-fixtures
