@@ -1134,6 +1134,20 @@
         secret: afsadmin_keytab
 
 - job:
+    name: check-release-approval
+    description: |
+      Checks that release was approved by PTL or release liaison.
+    files:
+      - ^deliverables/.*$
+    required-projects:
+      - name: openstack/governance
+    run: playbooks/check-release-approval/run.yaml
+    final: true
+    timeout: 120
+    nodeset:
+      nodes: []
+
+- job:
     name: tag-releases
     description: |
       Tag projects for a release.
