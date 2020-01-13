@@ -1,9 +1,20 @@
 - name: Copy the wheels to AFS
   script: wheel-copy.sh {{ wheel_dir }} {{ afs_dir }}
 
-- name: Rebuild mirror index
+- name: Rebuild top-level mirror index
   script: wheel-index.sh {{ afs_dir }}
   # With multiple python2/3 builds, we only need one host to generate
   # the final index.  All hosts should be finished copying under
   # linear strategy.
   run_once: True
+
+- name: Create individual project indexes
+  # NOTE(ianw) .test to be removed after testing
+  script: wheel-indexer.py --debug index.html.test
+  args:
+    chdir: '{{ afs_dir }}/{{ item.path }}'
+    executable: 'python3'
+  with_filetree: '{{ afs_dir }}/'
+  when: item.state == 'directory'
+  # NOTE(ianw) remove after testing
+  ignore_errors: true
