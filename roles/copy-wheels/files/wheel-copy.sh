@@ -4,6 +4,13 @@
 WHEELHOUSE_DIR=$1
 MIRROR_ROOT=$2
 
+# Pre-filter any blacklisted package name patterns
+find "$WHEELHOUSE_DIR/" '(' \
+    -name "pip-*-none-any.whl" -o \
+    -name "setuptools-*-none-any.whl" -o \
+    -name "virtualenv-*-none-any.whl" \
+    ')' -exec rm "{}" \;
+
 # Build our mirror folder structure.
 for f in $WHEELHOUSE_DIR/*; do
     BASENAME=$(basename $f)
