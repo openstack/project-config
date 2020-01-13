@@ -168,5 +168,6 @@ def main():
         a.connect(args.server, int(args.port), mynick)
     a.start()
 
+
 if __name__ == "__main__":
     main()

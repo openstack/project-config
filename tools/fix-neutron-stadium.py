@@ -22,7 +22,7 @@ import yaml
 
 
 # from :
-# http://stackoverflow.com/questions/8640959/how-can-i-control-what-scalar-form-pyyaml-uses-for-my-data  # flake8: noqa
+# http://stackoverflow.com/questions/8640959/how-can-i-control-what-scalar-form-pyyaml-uses-for-my-data  # noqa: E501
 def should_use_block(value):
     for c in u"\u000a\u000d\u001c\u001d\u001e\u0085\u2028\u2029":
         if c in value:
@@ -41,6 +41,7 @@ def my_represent_scalar(self, tag, value, style=None):
     if self.alias_key is not None:
         self.represented_objects[self.alias_key] = node
     return node
+
 
 def project_representer(dumper, data):
     return dumper.represent_mapping('tag:yaml.org,2002:map',
@@ -150,7 +151,6 @@ def has_single_key(var):
     return True
 
 
-
 def main():
     subprocess.run(['git', 'checkout', '--', 'zuul.d/projects.yaml'])
     yaml = ruamel.yaml.YAML()
@@ -184,6 +184,7 @@ def main():
                 if line.startswith('  - project'):
                     main_out.write('\n')
                 main_out.write(line[2:])
+
 
 if __name__ == '__main__':
     main()

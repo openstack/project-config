@@ -71,5 +71,6 @@ def main():
         print("No errors found in channel setup!")
     return errors
 
+
 if __name__ == "__main__":
     sys.exit(main())

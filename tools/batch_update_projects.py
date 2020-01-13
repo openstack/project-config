@@ -92,8 +92,8 @@ def handle_repo(path):
         repo.git.checkout(branch)
         repo.git.reset('--hard', 'remotes/origin/' + branch)
         for files in os.listdir(path):
-            if not ('zuul.yaml' in files or '.zuul.yaml' in files or
-                    'zuul.d' in files or '.zuul.d' in files):
+            if not ('zuul.yaml' in files or '.zuul.yaml' in files
+                    or 'zuul.d' in files or '.zuul.d' in files):
                 continue
         files = handle_branch(path)
         if files:

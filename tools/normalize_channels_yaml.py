@@ -30,5 +30,6 @@ def main():
 
     yaml.dump(chandata, stream=sys.stdout)
 
+
 if __name__ == '__main__':
     main()

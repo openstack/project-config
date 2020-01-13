@@ -72,7 +72,7 @@ def main():
             bug = launchpad.bugs[bugid]
             bug.newMessage(subject=args.subject, content=args.content)
             print(" done.")
-        except lazr.restfulclient.errors.ServerError as e:
+        except lazr.restfulclient.errors.ServerError:
             print(" TIMEOUT during save !")
         except Exception as e:
             print(" ERROR during save ! (%s)" % e)

@@ -61,8 +61,8 @@ while not done:
     r = requests.get(url, params=params)
     changes = json.loads(r.text[4:])
     for change in changes:
-        if (not change.get('labels') or
-                not change.get('labels').get('Verified')):
+        if (not change.get('labels') or not
+            change.get('labels').get('Verified')):
             continue
         for key, value in change['labels']['Verified'].items():
             if key == 'value':

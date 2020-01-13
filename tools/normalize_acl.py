@@ -91,7 +91,7 @@ else:
 aclfd = open(aclfile)
 for line in aclfd:
     # condense whitespace to single spaces and get rid of leading/trailing
-    line = re.sub('\s+', ' ', line).strip()
+    line = re.sub(r'\s+', ' ', line).strip()
     # skip empty lines
     if not line:
         continue
@@ -128,8 +128,8 @@ if '3' in transformations:
 
 if '4' in transformations:
     for section in acl.keys():
-        acl[section] = [x for x in acl[section] if x !=
-                        'owner = group Administrators']
+        acl[section] = [x for x in acl[section]
+                        if x != 'owner = group Administrators']
 
 if '5' in transformations:
     for section in acl.keys():

@@ -43,7 +43,7 @@ CLOSED_SERIES = set([
     'newton',
 ])
 
-PRE_RELEASE_RE = re.compile('''
+PRE_RELEASE_RE = re.compile(r'''
     \.(\d+(?:[ab]|rc)+\d*)$
 ''', flags=re.VERBOSE | re.UNICODE)
 
@@ -61,8 +61,8 @@ def find_modified_deliverable_files(reporoot):
     filenames = [
         l.strip()
         for l in results.splitlines()
-        if (l.startswith('deliverables/') and
-            not l.endswith('series_status.yaml'))
+        if (l.startswith('deliverables/')
+            and not l.endswith('series_status.yaml'))
     ]
     return filenames
 
@@ -178,8 +178,8 @@ def process_release_requests(reporoot, filenames, meta_data):
                 if not PRE_RELEASE_RE.search(r['version'])
             ]
             first_full_release = 'yes' if (
-                final_versions and
-                this_version['version'] == final_versions[0]
+                final_versions
+                and this_version['version'] == final_versions[0]
             ) else 'no'
             diff_start = this_version.get('diff-start', '-')
 

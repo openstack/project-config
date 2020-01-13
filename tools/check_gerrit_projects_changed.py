@@ -80,8 +80,8 @@ def main():
             upstream_old = p_old.get('upstream')
         else:
             upstream_old = ""
-        if (upstream != upstream_old and
-                'track-upstream' in p.get('options', [])):
+        if (upstream != upstream_old
+            and 'track-upstream' in p.get('options', [])):
             print("%s has changed" % name)
             found_errors += check_repo(upstream)
 
