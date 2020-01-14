@@ -8,13 +8,19 @@
   # linear strategy.
   run_once: True
 
+- name: Get project directories
+  # the directories are laid out a/ b/ c/ ... z/ with projects
+  # underneath (ergo */* match).  We actually use mod_rewrite to paper
+  # over this in the mirror apache config for external users.
+  shell: 'ls -d {{ afs_dir }}/*/*'
+  register: directories
+
 - name: Create individual project indexes
   # NOTE(ianw) .test to be removed after testing
   script: wheel-indexer.py --debug index.html.test
   args:
-    chdir: '{{ afs_dir }}/{{ item.path }}'
+    chdir: '{{ item }}'
     executable: 'python3'
-  with_filetree: '{{ afs_dir }}/'
-  when: item.state == 'directory'
+  loop: '{{ directories.stdout.split("\n") }}'
   # NOTE(ianw) remove after testing
   ignore_errors: true
