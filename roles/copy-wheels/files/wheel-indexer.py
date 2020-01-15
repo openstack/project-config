@@ -16,22 +16,24 @@
 # under the License.
 #
 
-# glob all .whl files in a directory, and make a index.html page
+# Final all .whl files in a directory, and make a index.html page
 # in PEP503 (https://www.python.org/dev/peps/pep-0503/) format
 
 import argparse
 import datetime
 import email
-import glob
 import hashlib
 import html
 import logging
+import os
 import sys
 import zipfile
 
 parser = argparse.ArgumentParser()
-parser.add_argument('outfile', nargs='?', default='-', help="output filename")
+parser.add_argument('toplevel', help="directory to index")
 parser.add_argument('-d', '--debug', dest="debug", action='store_true')
+parser.add_argument('-o', '--output', dest="output",
+                    default='index.html', help="Output filename, - for stdout")
 args = parser.parse_args()
 
 level = logging.DEBUG if args.debug else logging.INFO
@@ -92,56 +94,74 @@ def get_sha256(filename):
     return(sha256.hexdigest())
 
 
-output = '''<html>
+def create_index(path, files):
+
+    project = os.path.basename(path)
+
+    output = f'''<html>
   <head>
-    <title>Links</title>
+    <title>{project}</title>
   </head>
   <body>
+   <ul>
 '''
 
-files = glob.glob('*.whl')
-for f in files:
+    for f in files:
+        f_full = os.path.join(path, f)
+        requirements = ''
+        try:
+            logging.debug("Checking for requirements of : %s" % f_full)
+            requirements = get_requirements(f_full)
+            logging.debug("requirements are: %s" % requirements)
+        # NOTE(ianw): i'm not really sure if any of these should be
+        # terminal, as it would mean pip can't read the file anyway.  Just
+        # log for now.
+        except NoMetadataException:
+            logging.debug("no metadata")
+            pass
+        except NoRequirementsException:
+            logging.debug("no python requirements")
+            pass
+        except BadFormatException:
+            logging.debug("Could not open")
+            pass
 
-    requirements = ''
-    try:
-        logging.debug("Checking for requirements of : %s" % f)
-        requirements = get_requirements(f)
-        logging.debug("requirements are: %s" % requirements)
-    # NOTE(ianw): i'm not really sure if any of these should be
-    # terminal, as it would mean pip can't read the file anyway.  Just
-    # log for now.
-    except NoMetadataException:
-        logging.debug("no metadata")
-        pass
-    except NoRequirementsException:
-        logging.debug("no python requirements")
-        pass
-    except BadFormatException:
-        logging.debug("Could not open")
-        pass
+        sha256 = get_sha256(f_full)
+        logging.debug("sha256 for %s: %s" % (f_full, sha256))
 
-    sha256 = get_sha256(f)
-    logging.debug("sha256 for %s: %s" % (f, sha256))
+        output += f'      <li><a href="{f}#sha256={sha256}"'
+        if requirements:
+            output += f' data-requires-python="{requirements}" '
+        output += f'>{f}</a></li>\n'
 
-    output += f'    <a href="{f}#sha256={sha256}"'
-    if requirements:
-        output += f' data-requires-python="{requirements}" '
-    output += f'>{f}</a>\n'
-
-output += '''  </body>
+    output += '''   </ul>
+   </body>
 </html>
 '''
-now = datetime.datetime.now()
-output += '<!-- last update: %s -->\n' % now.isoformat()
+    now = datetime.datetime.now()
+    output += '<!-- last update: %s -->\n' % now.isoformat()
 
-logging.debug("Final output write")
+    return output
 
-if args.outfile == '-':
-    outfile = sys.stdout
-else:
-    outfile = open(args.outfile, "w")
-    logging.debug("Output going to: %s" % args.outfile)
 
-outfile.write(output)
+for root, dirs, files in os.walk(args.toplevel):
+    # sanity check we are only called from leaf directories by the
+    # driver script
+    if dirs:
+        print("This should only be called from leaf directories")
+        sys.exit(1)
 
-logging.debug("Done!")
+    logging.debug("Processing %s" % root)
+
+    output = create_index(root, files)
+
+    logging.debug("Final output write")
+    if args.output == '-':
+        out_file = sys.stdout
+    else:
+        out_path = os.path.join(root, args.output)
+        logging.debug("Writing index file: %s" % out_path)
+        out_file = open(out_path, "w")
+
+    out_file.write(output)
+    logging.debug("Done!")

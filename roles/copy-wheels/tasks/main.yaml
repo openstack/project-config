@@ -1,5 +1,24 @@
+- name: Ensure we have python3 for indexer
+  include_tasks: "{{ lookup('first_found', params) }}"
+  vars:
+    params:
+      files:
+        - "py3.{{ ansible_distribution }}.{{ ansible_distribution_major_version }}.yaml"
+        - "default.yaml"
+
+- name: Put copy scripts on host
+  copy:
+    src: '{{ item }}'
+    dest: '/usr/local/bin/{{ item }}'
+    owner: root
+    group: root
+    mode: '0755'
+  loop:
+    - wheel-copy.sh
+    - wheel-indexer.py
+
 - name: Copy the wheels to AFS
-  script: wheel-copy.sh {{ wheel_dir }} {{ afs_dir }}
+  command: '/usr/local/bin/wheel-copy.sh {{ wheel_dir }} {{ afs_dir }}'
 
 - name: Rebuild top-level mirror index
   script: wheel-index.sh {{ afs_dir }}
@@ -7,20 +26,3 @@
   # the final index.  All hosts should be finished copying under
   # linear strategy.
   run_once: True
-
-- name: Get project directories
-  # the directories are laid out a/ b/ c/ ... z/ with projects
-  # underneath (ergo */* match).  We actually use mod_rewrite to paper
-  # over this in the mirror apache config for external users.
-  shell: 'ls -d {{ afs_dir }}/*/*'
-  register: directories
-
-- name: Create individual project indexes
-  # NOTE(ianw) .test to be removed after testing
-  script: wheel-indexer.py --debug index.html.test
-  args:
-    chdir: '{{ item }}'
-    executable: 'python3'
-  loop: "{{ directories.stdout.split('\n') }}"
-  # NOTE(ianw) remove after testing
-  ignore_errors: true
