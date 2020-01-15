@@ -98,13 +98,13 @@ def create_index(path, files):
 
     project = os.path.basename(path)
 
-    output = f'''<html>
+    output = '''<html>
   <head>
-    <title>{project}</title>
+    <title>%s</title>
   </head>
   <body>
    <ul>
-'''
+''' % (project)
 
     for f in files:
         f_full = os.path.join(path, f)
@@ -129,10 +129,10 @@ def create_index(path, files):
         sha256 = get_sha256(f_full)
         logging.debug("sha256 for %s: %s" % (f_full, sha256))
 
-        output += f'      <li><a href="{f}#sha256={sha256}"'
+        output += '      <li><a href="%s#sha256=%s"' % (f, sha256)
         if requirements:
-            output += f' data-requires-python="{requirements}" '
-        output += f'>{f}</a></li>\n'
+            output += ' data-requires-python="%s" ' % (requirements)
+        output += '>%s</a></li>\n' % (f)
 
     output += '''   </ul>
    </body>
@@ -144,6 +144,7 @@ def create_index(path, files):
     return output
 
 
+logging.debug("Building indexes from: %s" % args.toplevel)
 for root, dirs, files in os.walk(args.toplevel):
     # sanity check we are only called from leaf directories by the
     # driver script

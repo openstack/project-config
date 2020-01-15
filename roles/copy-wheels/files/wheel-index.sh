@@ -23,7 +23,7 @@ for f in $FILES; do
 
         # Run the indexer over this directory
         # NOTE(ianw) : remove temporary "--output" when working
-        /usr/local/bin/wheel-indexer.py --debug --output "index.html.tmp" $MIRROR_ROOT/$f
+        /usr/local/bin/wheel-indexer.py --debug --output "index.html.tmp" $f
 
     fi
 done
