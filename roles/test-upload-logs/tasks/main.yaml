@@ -9,7 +9,7 @@
 
     - name: Create log directories
       file:
-        path: "{{zuul_logserver_root}}/{{ zuul_log_path }}"
+        path: "{{ zuul_logserver_root }}/{{ zuul_log_path }}"
         state: directory
         recurse: yes
         mode: 0775
@@ -26,7 +26,7 @@
     - name: Upload logs to log server
       synchronize:
         src: "{{ zuul.executor.log_root }}/"
-        dest: "{{zuul_logserver_root}}/{{ zuul_log_path }}/"
+        dest: "{{ zuul_logserver_root }}/{{ zuul_log_path }}/"
         rsync_opts:
           - "--exclude=job-output.txt"
           - "--exclude=job-output.json"
@@ -44,7 +44,7 @@
     - name: Upload console log and json output
       synchronize:
         src: "{{ zuul.executor.log_root }}/{{ item }}.gz"
-        dest: "{{zuul_logserver_root}}/{{ zuul_log_path }}/{{ item }}.gz"
+        dest: "{{ zuul_logserver_root }}/{{ zuul_log_path }}/{{ item }}.gz"
         verify_host: true
       with_items:
         - job-output.txt

@@ -5,9 +5,9 @@
   register: cached_repos
 
 - name: Clone cached repo to workspace
-  command: "git clone /opt/git/{{ item.0.name }} {{ ansible_user_dir }}/{{ item.0.src_dir}}"
+  command: "git clone /opt/git/{{ item.0.name }} {{ ansible_user_dir }}/{{ item.0.src_dir }}"
   args:
-    creates: "{{ ansible_user_dir }}/{{ item.0.src_dir}}"
+    creates: "{{ ansible_user_dir }}/{{ item.0.src_dir }}"
   when: item.1.stat.exists
   with_together:
     - "{{ zuul.projects.values() | list }}"
@@ -18,9 +18,9 @@
     - skip_ansible_lint
 
 - name: Clone upstream repo to workspace
-  command: "git clone https://{{ item.0.canonical_hostname }}/{{ item.0.name}} {{ ansible_user_dir }}/{{ item.0.src_dir}}"
+  command: "git clone https://{{ item.0.canonical_hostname }}/{{ item.0.name }} {{ ansible_user_dir }}/{{ item.0.src_dir }}"
   args:
-    creates: "{{ ansible_user_dir }}/{{ item.0.src_dir}}"
+    creates: "{{ ansible_user_dir }}/{{ item.0.src_dir }}"
   when: not item.1.stat.exists
   with_together:
     - "{{ zuul.projects.values() | list }}"
@@ -34,7 +34,7 @@
   # To be idempotent, remove origin only if it's found in the local list.
   shell: "git remote -v | grep origin && git remote rm origin || true"
   args:
-    chdir: "{{ ansible_user_dir }}/{{ item.src_dir}}"
+    chdir: "{{ ansible_user_dir }}/{{ item.src_dir }}"
   with_items: "{{ zuul.projects.values() | list }}"
   # ANSIBLE0006: git remote is not supported by ansible module
   tags:
