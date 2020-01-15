@@ -20,6 +20,11 @@ REGEX="([^/])\/(\1[^/]+)$"
 for f in $FILES; do
     if [[ $f =~ $REGEX ]]; then
         echo "      <li><a href=\"./${BASH_REMATCH[2]}/\">${BASH_REMATCH[2]}</a></li>" >> $TMP_INDEX_FILE
+
+        # Run the indexer over this directory
+        # NOTE(ianw) : remove temporary "--output" when working
+        /usr/local/bin/wheel-indexer.py --debug --output "index.html.tmp" $MIRROR_ROOT/$f
+
     fi
 done
 

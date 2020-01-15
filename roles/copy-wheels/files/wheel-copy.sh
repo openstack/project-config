@@ -22,10 +22,6 @@ for f in $WHEELHOUSE_DIR/*; do
 
     DEST_DIR="${PACKAGENAME:0:1}/$PACKAGENAME"
 
-    # Create the index file
-    # NOTE(ianw) : remove temporary "--output" when working
-    /usr/local/bin/wheel-indexer.py --debug --output "index.html.tmp" $f
-
     # Create the mirror directories in AFS /s/split style. This
     # depends on the existence of a mod_rewrite script which unmunges
     # the path, and is required because AFS has a practical folder size
