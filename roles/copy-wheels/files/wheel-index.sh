@@ -21,10 +21,11 @@ for f in $FILES; do
     if [[ $f =~ $REGEX ]]; then
         echo "      <li><a href=\"./${BASH_REMATCH[2]}/\">${BASH_REMATCH[2]}</a></li>" >> $TMP_INDEX_FILE
 
-        # Run the indexer over this directory
-        # NOTE(ianw) : remove temporary "--output" when working
-        /usr/local/bin/wheel-indexer.py --debug --output "index.html.tmp" $f
-
+        # Create PEP503 style index for this directory
+        # NOTE(ianw) : 2020-01 - this is disabled because it makes the
+        # job very, very slow as it checksums all the files over AFS.
+        # We are currently investigating solutions to this problem.
+        # /usr/local/bin/wheel-indexer.py --debug --output "index.html" $f
     fi
 done
 
