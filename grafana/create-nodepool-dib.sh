@@ -17,7 +17,6 @@ function create {
 cp nodepool-dib.base.template nodepool-dib.yaml
 create "Ubuntu Bionic" "ubuntu-bionic"
 create "Ubuntu Xenial" "ubuntu-xenial"
-create "Ubuntu Trusty" "ubuntu-trusty"
 create "Centos 7" "centos-7"
 create "Fedora 29" "fedora-29"
 create "Fedora 30" "fedora-30"

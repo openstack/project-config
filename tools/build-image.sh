@@ -32,7 +32,7 @@ set -e
 export DISTRO=${DISTRO:-ubuntu-minimal}
 
 ## Override the release
-# export DIB_RELEASE=${DIB_RELEASE:-trusty}
+# export DIB_RELEASE=${DIB_RELEASE:-bionic}
 # export DIB_RELEASE=${DIB_RELEASE:-25} # fedora
 
 ## Override the arch

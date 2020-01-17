@@ -178,19 +178,6 @@ echo 'include: /etc/unbound/forwarding.conf' >> /etc/unbound/unbound.conf
 # problems.
 sed -i -e 's/dlv-anchor-file:/#dlv-anchor-file:/g' /etc/unbound/unbound.conf
 
-# This defaults file must be in place to work around this bug:
-# https://bugs.launchpad.net/ubuntu/+source/unbound/+bug/988513
-# The issue is fixed for Xenial so this is only required for Trusty.
-if [ "$DIB_RELEASE" == "trusty" ] ; then
-    cat > /etc/default/unbound <<EOF
-UNBOUND_ENABLE=true
-ROOT_TRUST_ANCHOR_UPDATE=true
-ROOT_TRUST_ANCHOR_FILE=/var/lib/unbound/root.key
-RESOLVCONF=true
-RESOLVCONF_FORWARDERS=false
-EOF
-fi
-
 # Tripleo uses dhcp
 dhcp_file=''
 if [[ "$DISTRO_NAME" =~ (centos|rhel7|fedora) ]] ; then
