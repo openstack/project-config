@@ -1056,35 +1056,6 @@
         secret: wheel_keytab
 
 - job:
-    name: build-wheel-mirror-ubuntu-trusty
-    parent: build-wheel-mirror-base
-    description: |
-      Build Ubuntu Trusty wheels for OpenStack CI mirrors.
-    nodeset:
-      nodes:
-        - name: wheel-mirror-ubuntu-trusty-python2
-          label: ubuntu-trusty
-        - name: wheel-mirror-ubuntu-trusty-python3
-          label: ubuntu-trusty
-    host-vars:
-      wheel-mirror-ubuntu-trusty-python2:
-        wheel_python: python2
-      wheel-mirror-ubuntu-trusty-python3:
-        wheel_python: python3
-
-- job:
-    name: publish-wheel-mirror-ubuntu-trusty
-    parent: build-wheel-mirror-ubuntu-trusty
-    description: |
-      Publish Ubuntu Trusty wheels for OpenStack CI mirrors.
-    pre-run: playbooks/openafs-client/setup.yaml
-    post-run: playbooks/publish/wheel-mirror.yaml
-    final: true
-    secrets:
-      - name: afs
-        secret: wheel_keytab
-
-- job:
     name: build-wheel-mirror-ubuntu-xenial
     parent: build-wheel-mirror-base
     description: |
