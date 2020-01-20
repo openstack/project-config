@@ -63,6 +63,16 @@ for BRANCH in master $BRANCHES; do
     fi
 done
 
+# Parse stdout from all the build logs to build up a unique list of all
+# wheels downloaded from PyPI and delete them from the wheelhouse, since
+# this is only meant to provide built wheels which are absent from PyPI.
+find ${LOGS}/build/ -name stdout -exec grep 'Downloading from URL' {} \; \
+    | sed -n 's,.*Downloading from URL .*/\([^/]*\.whl\)#.*,\1,p' \
+    | sort -u > ${LOGS}/remove-wheels.txt
+pushd ${WHEELHOUSE_DIR}
+cat ../${LOGS}/remove-wheels.txt | xargs rm
+popd
+
 if [ -f ${FAIL_LOG} ]; then
     cat ${FAIL_LOG}
 fi
@@ -76,3 +86,10 @@ pushd ${LOGS}
 tar zcvf build-logs.tar.gz ./build
 rm -rf ./build
 popd
+
+# Set the final exit status to 1 if remove-wheels.txt is empty so the
+# job will fail.
+if [ ! -s ${LOGS}/remove-wheels.txt ]; then
+    echo "*** EMPTY WHEEL REMOVAL LIST: THIS SHOULD NOT HAPPEN ***"
+    exit 1
+fi
