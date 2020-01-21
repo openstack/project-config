@@ -35,7 +35,7 @@ def access_gerrit_check():
 
     print("Basic check of gerritbot/channels.yaml")
     REQUIRED_ENTRIES = ("branches", "events", "projects")
-    VALID_EVENTS = ("change-merged", "comments-added",
+    VALID_EVENTS = ("change-merged", "comment-added",
                     "patchset-created", "x-vrif-minus-2")
     for channel in gerrit_config:
         for entry in REQUIRED_ENTRIES:
