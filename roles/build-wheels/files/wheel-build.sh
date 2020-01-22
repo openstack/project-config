@@ -70,7 +70,7 @@ find ${LOGS}/build/ -name stdout -exec grep 'Downloading from URL' {} \; \
     | sed -n 's,.*Downloading from URL .*/\([^/]*\.whl\)#.*,\1,p' \
     | sort -u > ${LOGS}/remove-wheels.txt
 pushd ${WHEELHOUSE_DIR}
-cat ../${LOGS}/remove-wheels.txt | xargs rm
+cat ${LOGS}/remove-wheels.txt | xargs rm
 popd
 
 if [ -f ${FAIL_LOG} ]; then
