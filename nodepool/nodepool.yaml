@@ -214,6 +214,25 @@ diskimages:
       GIT_HTTP_LOW_SPEED_TIME: '300'
       GIT_HTTP_LOW_SPEED_LIMIT: '1000'
       DIB_SHOW_IMAGE_USAGE: '1'
+      DIB_BLOCK_DEVICE_CONFIG: |
+        # Default single partition loopback
+
+        - local_loop:
+            name: image0
+
+        - partitioning:
+          base: image0
+          label: mbr
+          partitions:
+            - name: root
+              flags: [ boot, primary ]
+              size: 100%
+              mkfs:
+                mount:
+                  mount_point: /
+                  fstab:
+                    options: "defaults,nobarrier,noatime"
+                    fsck-passno: 1
   - name: fedora-29
     pause: false
     elements:
