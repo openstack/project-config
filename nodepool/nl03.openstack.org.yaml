@@ -377,7 +377,7 @@ providers:
     boot-timeout: 600
     launch-timeout: 800
     rate: 0.001
-    diskimages:
+    diskimages: &linaro_provider_diskimages
       - name: debian-buster-arm64
         config-drive: true
       - name: debian-stretch-arm64
@@ -389,7 +389,7 @@ providers:
     pools:
       - name: main
         max-servers: 8
-        labels:
+        labels: &linaro_provider_labels
           - name: debian-buster-arm64
             min-ram: 8000
             flavor-name: 'os.large'
@@ -410,6 +410,18 @@ providers:
             flavor-name: 'os.large'
             diskimage: ubuntu-bionic-arm64
             key-name: infra-root-keys-2018-06-15
+
+  - name: linaro-us
+    region-name: 'RegionOne'
+    cloud: linaro-us
+    boot-timeout: 600
+    launch-timeout: 800
+    rate: 0.001
+    diskimages: *linaro_provider_diskimages
+    pools:
+      - name: main
+        max-servers: 40
+        labels: *linaro_provider_labels
 
 diskimages:
   - name: centos-7
