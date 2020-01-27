@@ -1130,9 +1130,13 @@
 - job:
     name: check-release-approval
     description: |
-      Checks that release was approved by PTL or release liaison.
+      Checks that release requests were approved by PTL or release liaison.
+
+      This job is specific to the openstack/releases repository.
     files:
       - ^deliverables/.*$
+    allowed-projects:
+      - openstack/releases
     required-projects:
       - name: openstack/governance
     run: playbooks/check-release-approval/run.yaml

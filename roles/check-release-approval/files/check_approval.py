@@ -90,7 +90,10 @@ class GerritChange(object):
                           if i['value'] > 0]
         self.approvers.append(decoded['owner']['email'])
         currev = decoded['current_revision']
-        self.deliv_files = list(decoded['revisions'][currev]['files'].keys())
+        self.deliv_files = [
+            x for x in decoded['revisions'][currev]['files'].keys()
+            if x.startswith('deliverables/')
+        ]
         self.workspace = args.releases
 
     def is_approved(self):
