@@ -548,28 +548,6 @@
         secret: static_ssh_key
 
 - job:
-    name: base-promote-tox-docs-static
-    parent: opendev-promote-docs-base
-    abstract: true
-    protected: true
-    description: |
-      Base job for jobs that promote content to static.openstack.org.
-
-      Jobs need to set the variable ``static_target`` for site to
-      publish to.
-      This is a promote job for ``openstack-tox-docs``.
-    run: playbooks/static-docs/promote.yaml
-    vars:
-      download_artifact_job: openstack-tox-docs
-    roles:
-      - zuul: zuul/zuul-jobs
-      - zuul: openstack/openstack-zuul-jobs
-    secrets:
-      - name: fileserver
-        secret: static_ssh_key
-        pass-to-parent: true
-
-- job:
     name: publish-tox-docs-static
     parent: base-publish-tox-docs-static
     description: |
@@ -578,18 +556,6 @@
     final: true
     allowed-projects:
       - openstack/releases
-    vars:
-      static_target: "{{ zuul.project.short_name }}"
-
-- job:
-    name: promote-tox-docs-static
-    parent: base-promote-tox-docs-static
-    description: |
-      Promote content to static.openstack.org to
-      /srv/static/{{ zuul.project.short_name }}
-    allowed-projects:
-      - openstack/election
-    final: true
     vars:
       static_target: "{{ zuul.project.short_name }}"
 
