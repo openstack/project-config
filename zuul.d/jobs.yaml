@@ -79,6 +79,22 @@
       - secret: site_tarballs
         name: fileserver
 
+# NOTE(ianw) 2020-01-30 : we are moving tarballs to publish to an AFS
+# volume.  This job is intended to replace publish-openstack-artifacts
+# when it is debugged and ready.
+- job:
+    name: publish-openstack-artifacts-with-afs
+    description: |
+      Publish job to upload artifacts to /afs/.openstack.org/project/tarballs.opendev.org
+    post-review: true
+    post-run: playbooks/publish/openstack-artifacts-with-afs.yaml
+    vars:
+      afs_source: "{{ zuul.executor.work_root }}/artifacts"
+      afs_target: "/afs/.openstack.org/project/tarballs.opendev.org/{{ zuul.project.name }}"
+    secrets:
+      - secret: afs_tarballs_opendev_org
+        name: afs
+
 - job:
     name: release-openstack-puppet
     parent: publish-openstack-artifacts
@@ -1293,3 +1309,11 @@
 
       The testing is done for Ubuntu Xenial.
     nodeset: ubuntu-xenial
+
+# NOTE(ianw) : 2020-01-31 temporary job for testing
+- job:
+    name: project-config-test-artifacts-to-afs
+    parent: publish-openstack-artifacts-with-afs
+    description: |
+      Temporary job to test uploading artifacts to AFS
+    pre-run: playbooks/publish/openstack-artifacts-with-afs-test.yaml

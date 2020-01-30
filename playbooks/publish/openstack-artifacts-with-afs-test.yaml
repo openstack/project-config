@@ -1,0 +1,14 @@
+- hosts: all
+
+  tasks:
+
+    - name: Ensure artifacts directory exists
+      file:
+        path: '{{ zuul.executor.work_root }}/artifacts/afs-copy-test/'
+        state: directory
+      delegate_to: localhost
+
+    - name: Write a dummy artifact file
+      copy:
+        content: 'This is an artifact created by {{ zuul.change }}/{{ zuul.patchset }}'
+        dest: '{{ zuul.executor.work_root }}/artifacts/afs-copy-test/{{ zuul.newrev }}'

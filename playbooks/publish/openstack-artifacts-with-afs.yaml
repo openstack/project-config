@@ -1,0 +1,13 @@
+- hosts: localhost
+  tasks:
+    - block:
+        - name: Create AFS token
+          include_role:
+            name: create-afs-token
+        - name: Upload to AFS
+          include_role:
+            name: upload-afs
+        - name: Destroy AFS token
+          include_role:
+            name: destory-afs-token
+      when: zuul_success | bool
