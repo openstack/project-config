@@ -12,6 +12,14 @@
           synchronize:
             src: "{{ zuul.executor.work_root }}/artifacts/"
             dest: "/afs/.openstack.org/project/tarballs.opendev.org/{{ zuul.project.name}}/"
+            # can't set group permissions on AFS; see upload-afs role
+            archive: false
+            perms: true
+            times: true
+            recursive: true
+            rsync_opts:
+              - '--safe-links'
+              - '--delete-after'
         - name: Destroy AFS token
           include_role:
             name: destroy-afs-token
