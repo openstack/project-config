@@ -4,9 +4,14 @@
         - name: Create AFS token
           include_role:
             name: create-afs-token
-        - name: Upload to AFS
-          include_role:
-            name: upload-afs
+        # NOTE(ianw): the upload-afs role is somewhat structured
+        # around uploading docs, and requires a .root-marker file,
+        # etc.  In this case, we just want the whole directory
+        # verbatim.
+        - name: Upload contents of the artifacts folder
+          synchronize:
+            src: "{{ zuul.executor.work_root }}/artifacts/"
+            dest: "/afs/.openstack.org/project/tarballs.opendev.org/{{ zuul.project.name}}/"
         - name: Destroy AFS token
           include_role:
             name: destroy-afs-token
