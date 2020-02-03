@@ -141,34 +141,6 @@
       - README.rst
 
 - job:
-    name: publish-zuul-python-branch-tarball
-    parent: publish-openstack-artifacts
-    description: |
-      Publish the results of the tox-tarball job to tarballs.openstack.org.
-    pre-run: playbooks/zuul-tarball/pre.yaml
-    run: playbooks/zuul-tarball/run.yaml
-    post-run: playbooks/python-branch-tarball/post.yaml
-    vars:
-      node_version: 10
-
-- job:
-    name: release-zuul-python
-    parent: publish-openstack-artifacts
-    description: |
-      Release python tarballs / wheels to pypi for zuul projects.
-    pre-run: playbooks/zuul-tarball/pre.yaml
-    run: playbooks/zuul-tarball/run.yaml
-    post-run:
-      - playbooks/zuul-tarball/post.yaml
-      - playbooks/publish/pypi.yaml
-    secrets:
-      - secret: pypi_secret
-        name: pypi_info
-      - gpg_key
-    vars:
-      node_version: 10
-
-- job:
     name: publish-openstack-sphinx-docs-base
     nodeset: ubuntu-xenial
     description: |
