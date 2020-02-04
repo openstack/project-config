@@ -363,6 +363,85 @@ providers:
             diskimage: centos-7
             key-name: infra-root-keys-2018-06-15
 
+  - name: airship-kna1
+    region-name: 'Kna1'
+    cloud: airship-citycloud
+    boot-timeout: 120
+    launch-timeout: 600
+    clean-floating-ips: true
+    rate: 0.25
+    diskimages: *provider_diskimages
+    pools:
+      - name: main
+        max-servers: 0
+        labels:
+          - name: centos-7
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: centos-7
+            key-name: infra-root-keys-2018-06-15
+          - name: centos-8
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: centos-8
+            key-name: infra-root-keys-2018-06-15
+          - name: debian-buster
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: debian-buster
+            key-name: infra-root-keys-2018-06-15
+          - name: debian-stretch
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: debian-stretch
+            key-name: infra-root-keys-2018-06-15
+          - name: fedora-29
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: fedora-29
+            key-name: infra-root-keys-2018-06-15
+          - name: fedora-30
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: fedora-30
+            key-name: infra-root-keys-2018-06-15
+          - name: gentoo-17-0-systemd
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: gentoo-17-0-systemd
+            key-name: infra-root-keys-2018-06-15
+          - name: opensuse-15
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: opensuse-15
+            key-name: infra-root-keys-2018-06-15
+          - name: opensuse-tumbleweed
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: opensuse-tumbleweed
+            key-name: infra-root-keys-2018-06-15
+          - name: ubuntu-bionic
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: ubuntu-bionic
+            key-name: infra-root-keys-2018-06-15
+          - name: ubuntu-xenial
+            min-ram: 8000
+            flavor-name: '8C-8GB-100GB'
+            diskimage: ubuntu-xenial
+            key-name: infra-root-keys-2018-06-15
+          # TODO add nested virt labels once confirmed nested virt works
+          # to some degree.
+      - name: airship
+        max-servers: 0
+        labels:
+          # TODO figure out what flavors are needed here
+          - name: ubuntu-bionic-expanded
+            min-ram: 16000
+            flavor-name: '8C-16GB-100GB'
+            diskimage: ubuntu-bionic
+            key-name: infra-root-keys-2018-06-15
+
 diskimages:
   - name: centos-7
   - name: centos-8
