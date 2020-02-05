@@ -195,6 +195,29 @@
       mysql:
 
 - pipeline:
+    name: release-approval
+    description: |
+      Newly-reviewed release requests enter this pipeline to check if the
+      current state can represent PTL or release liaison approval.
+    manager: independent
+    precedence: low
+    require:
+      gerrit:
+        open: True
+        current-patchset: True
+    trigger:
+      gerrit:
+        - event: comment-added
+    success:
+      gerrit:
+        PTL-Approved: 1
+      mysql:
+    failure:
+      gerrit:
+        PTL-Approved: 0
+      mysql:
+
+- pipeline:
     name: release-post
     # NOTE(mordred): release-post needs access to credentials (eg: pypi).
     post-review: true
