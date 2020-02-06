@@ -29,6 +29,8 @@ labels:
     min-ready: 0
   - name: ubuntu-bionic-expanded
     min-ready: 0
+  - name: ubuntu-bionic-32GB
+    min-ready: 0
   - name: multi-numa-ubuntu-bionic
     min-ready: 0
   - name: multi-numa-ubuntu-bionic-expanded
@@ -373,7 +375,8 @@ providers:
     diskimages: *provider_diskimages
     pools:
       - name: main
-        max-servers: 0
+        # Canary capacity (by memory less than half capacity of airship pool).
+        max-servers: 10
         labels:
           - name: centos-7
             min-ram: 8000
@@ -433,12 +436,18 @@ providers:
           # TODO add nested virt labels once confirmed nested virt works
           # to some degree.
       - name: airship
-        max-servers: 0
+        # Jobs expected to run 1x 32GB instance + 3x 16GB instances with
+        # goal of running 4 jobs concurrently.
+        max-servers: 16
         labels:
-          # TODO figure out what flavors are needed here
           - name: ubuntu-bionic-expanded
             min-ram: 16000
             flavor-name: '8C-16GB-100GB'
+            diskimage: ubuntu-bionic
+            key-name: infra-root-keys-2018-06-15
+          - name: ubuntu-bionic-32GB
+            min-ram: 32000
+            flavor-name: '8C-32GB-100GB'
             diskimage: ubuntu-bionic
             key-name: infra-root-keys-2018-06-15
 
