@@ -8,3 +8,23 @@
   roles:
     - role: publish-artifacts-to-fileserver
       when: zuul_success | bool
+
+# NOTE(ianw) 2020-02-10 : upload to AFS in parallel until we switch
+# DNS for the static.<openstack|opendev>.org servers.  After that
+# remove above section to stop static server publishing.
+- hosts: localhost
+  tasks:
+    - block:
+        - name: Create AFS token
+          include_role:
+            name: create-afs-token
+        - name: Upload to afs
+          include_role:
+            name: upload-afs-synchronize
+          vars:
+            afs_source: "{{ zuul.executor.work_root }}/artifacts/"
+            afs_target: "/afs/.openstack.org/project/tarballs.opendev.org/{{ zuul.project.name}}/"
+        - name: Destroy AFS token
+          include_role:
+            name: destroy-afs-token
+      when: zuul_success | bool
