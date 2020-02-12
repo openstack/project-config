@@ -85,15 +85,22 @@ class GerritChange(object):
 
         # Instantiate object with retrieved data
         self.raw_data = decoded
-        self.approvers = [i['email']
-                          for i in decoded['labels']['Code-Review']['all']
-                          if i['value'] > 0]
-        self.approvers.append(decoded['owner']['email'])
-        currev = decoded['current_revision']
-        self.deliv_files = [
-            x for x in decoded['revisions'][currev]['files'].keys()
-            if x.startswith('deliverables/')
-        ]
+        try:
+            self.approvers = [i['email']
+                              for i in decoded['labels']['Code-Review']['all']
+                              if i['value'] > 0]
+            self.approvers.append(decoded['owner']['email'])
+            currev = decoded['current_revision']
+            self.deliv_files = [
+                x for x in decoded['revisions'][currev]['files'].keys()
+                if x.startswith('deliverables/')
+            ]
+        except KeyError:
+            LOG.error(
+                '\ndata from gerrit is missing required keys:\n\n%s\n',
+                json.dumps(decoded, indent=2))
+            raise
+
         self.workspace = args.releases
 
     def is_approved(self):
