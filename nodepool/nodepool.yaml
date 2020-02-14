@@ -72,19 +72,43 @@ providers:
     region-name: 'DFW'
     cloud: rax
     rate: 0.001
-    diskimages: *provider_diskimages
+    diskimages: &rax_provider_diskimages
+      # NOTE(ianw) 2020-02-17 : duplicated to add ubuntu-bionic-plain
+      # while we work to remove pip-and-virtualenv
+      - name: centos-7
+        config-drive: true
+      - name: centos-8
+        config-drive: true
+      - name: debian-buster
+        config-drive: true
+      - name: debian-stretch
+        config-drive: true
+      - name: fedora-30
+        config-drive: true
+      - name: gentoo-17-0-systemd
+        config-drive: true
+      - name: opensuse-15
+        config-drive: true
+      - name: opensuse-tumbleweed
+        config-drive: true
+      - name: ubuntu-bionic
+        config-drive: true
+      - name: ubuntu-bionic-plain
+        config-drive: true
+      - name: ubuntu-xenial
+        config-drive: true
 
   - name: rax-iad
     region-name: 'IAD'
     cloud: rax
     rate: 0.001
-    diskimages: *provider_diskimages
+    diskimages: *rax_provider_diskimages
 
   - name: rax-ord
     region-name: 'ORD'
     cloud: rax
     rate: 0.001
-    diskimages: *provider_diskimages
+    diskimages: *rax_provider_diskimages
 
   - name: vexxhost-ca-ymq-1
     region-name: 'ca-ymq-1'
@@ -129,6 +153,9 @@ diskimages:
       - growroot
       - infra-package-needs
       - epel
+      # NOTE(ianw) 2020-02-17 : we are working to move this into job
+      # configuration
+      - pip-and-virtualenv
     env-vars:
       TMPDIR: /opt/dib_tmp
       DIB_CHECKSUM: '1'
@@ -152,6 +179,9 @@ diskimages:
       - growroot
       - infra-package-needs
       - epel
+      # NOTE(ianw) 2020-02-17 : we are working to move this into job
+      # configuration
+      - pip-and-virtualenv
     env-vars:
       TMPDIR: /opt/dib_tmp
       DIB_CHECKSUM: '1'
@@ -174,6 +204,9 @@ diskimages:
       - cache-devstack
       - growroot
       - infra-package-needs
+      # NOTE(ianw) 2020-02-17 : we are working to move this into job
+      # configuration
+      - pip-and-virtualenv
     release: stretch
     env-vars:
       TMPDIR: /opt/dib_tmp
@@ -202,6 +235,9 @@ diskimages:
       - cache-devstack
       - growroot
       - infra-package-needs
+      # NOTE(ianw) 2020-02-17 : we are working to move this into job
+      # configuration
+      - pip-and-virtualenv
     release: buster
     env-vars:
       TMPDIR: /opt/dib_tmp
@@ -237,6 +273,7 @@ diskimages:
                     fstab:
                       options: "defaults,nobarrier,noatime"
                       fsck-passno: 1
+
   - name: fedora-30
     pause: true
     python-path: /usr/bin/python3
@@ -250,6 +287,9 @@ diskimages:
       - initialize-urandom
       - growroot
       - infra-package-needs
+      # NOTE(ianw) 2020-02-17 : we are working to move this into job
+      # configuration
+      - pip-and-virtualenv
     release: 30
     env-vars:
       TMPDIR: /opt/dib_tmp
@@ -270,6 +310,9 @@ diskimages:
       - nodepool-base
       - growroot
       - infra-package-needs
+      # NOTE(ianw) 2020-02-17 : we are working to move this into job
+      # configuration
+      - pip-and-virtualenv
     env-vars:
       TMPDIR: /opt/dib_tmp
       DIB_CHECKSUM: '1'
@@ -293,6 +336,9 @@ diskimages:
       - cache-devstack
       - growroot
       - infra-package-needs
+      # NOTE(ianw) 2020-02-17 : we are working to move this into job
+      # configuration
+      - pip-and-virtualenv
     release: '15.1'
     env-vars:
       TMPDIR: /opt/dib_tmp
@@ -315,6 +361,9 @@ diskimages:
       - cache-devstack
       - growroot
       - infra-package-needs
+      # NOTE(ianw) 2020-02-17 : we are working to move this into job
+      # configuration
+      - pip-and-virtualenv
     release: 'tumbleweed'
     env-vars:
       TMPDIR: /opt/dib_tmp
@@ -337,6 +386,9 @@ diskimages:
       - cache-devstack
       - growroot
       - infra-package-needs
+      # NOTE(ianw) 2020-02-17 : we are working to move this into job
+      # configuration
+      - pip-and-virtualenv
     release: bionic
     env-vars:
       TMPDIR: /opt/dib_tmp
@@ -364,7 +416,39 @@ diskimages:
       - initialize-urandom
       - growroot
       - infra-package-needs
+      # NOTE(ianw) 2020-02-17 : we are working to move this into job
+      # configuration
+      - pip-and-virtualenv
     release: xenial
+    env-vars:
+      TMPDIR: /opt/dib_tmp
+      DIB_CHECKSUM: '1'
+      DIB_IMAGE_CACHE: /opt/dib_cache
+      DIB_JOURNAL_SIZE: '512'
+      DIB_APT_LOCAL_CACHE: '0'
+      DIB_DISABLE_APT_CLEANUP: '1'
+      DIB_GRUB_TIMEOUT: '0'
+      DIB_DISTRIBUTION_MIRROR: 'http://mirror.dfw.rax.openstack.org/ubuntu'
+      DIB_DEBOOTSTRAP_EXTRA_ARGS: '--no-check-gpg'
+      DIB_DEBIAN_COMPONENTS: 'main,universe'
+      GIT_HTTP_LOW_SPEED_TIME: '300'
+      GIT_HTTP_LOW_SPEED_LIMIT: '1000'
+      DIB_SHOW_IMAGE_USAGE: '1'
+  # NOTE(ianw) 2020-02-17 : this is an alternative image without the
+  # pip-and-virtualenv element we can test ansible roles to achieve
+  # full backwards-compatability with.
+  - name: ubuntu-bionic-plain
+    pause: false
+    elements:
+      - ubuntu-minimal
+      - vm
+      - simple-init
+      - openstack-repos
+      - nodepool-base
+      - cache-devstack
+      - growroot
+      - infra-package-needs
+    release: bionic
     env-vars:
       TMPDIR: /opt/dib_tmp
       DIB_CHECKSUM: '1'
