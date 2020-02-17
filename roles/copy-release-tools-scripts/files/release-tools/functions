@@ -88,6 +88,11 @@ function update_upper_constraints {
     fi
     sed -i~ -e "s,{\(env:UPPER_CONSTRAINTS_FILE\)[^ ]*},{\1:$uc_url}," tox.ini
     sed -i~ -e "s,{\(env:TOX_CONSTRAINTS_FILE\)[^ ]*},{\1:$uc_url}," tox.ini
+    # Octavia project specific
+    if [[ -f  elements/amphora-agent/source-repository-amphora-agent ]]; then
+        sed -i~ -e "s,\(https://opendev.org/openstack/octavia\).*,\1 ${branch}," elements/amphora-agent/source-repository-amphora-agent
+        sed -i~ -e "s,\(file /opt/upper-constraints.txt\) \(.*\),\1 ${uc_url}," elements/amphora-agent/source-repository-amphora-agent
+    fi
     if ! git diff --exit-code >/dev/null 2>&1 ; then
         git add tox.ini
         msg="Update TOX/UPPER_CONSTRAINTS_FILE for $branch"
