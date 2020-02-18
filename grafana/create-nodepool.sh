@@ -27,4 +27,4 @@ create OVH 'ovh-*' nodepool-ovh.yaml
 create Vexxhost 'vexxhost-*' nodepool-vexxhost.yaml
 create Citycloud 'citycloud-*' nodepool-citycloud.yaml
 create FortNebula 'fortnebula-*' nodepool-fortnebula.yaml
-create Airship-Citycloud 'airship-citycloud-*' nodepool-airship-citycloud.yaml
+create Airship-Citycloud 'airship-*' nodepool-airship-citycloud.yaml
