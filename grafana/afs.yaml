@@ -133,7 +133,7 @@ dashboard:
             - target: "alias(stats.gauges.afs.afs01_ord_openstack_org.idle_threads, 'Idle Threads')"
               refId: B
 
-    - title: Release times
+    - title: Mirror release times
       height: 100px
       showTitle: true
       panels:
@@ -210,7 +210,7 @@ dashboard:
           format: dateTimeFromNow
           valueFontSize: "50%"
 
-    - title: Volumes
+    - title: Mirror volumes
       height: 200px
       showTitle: true
       panels:
@@ -348,5 +348,269 @@ dashboard:
             - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_yum-puppetlabs.quota, 'Quota')"
               refId: B
             - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_yum-puppetlabs.used, #B)"
+              refId: C
+              hide: true
+
+    - title: mirror-update.opendev.org vos release timers
+      height: 200px
+      showTitle: true
+      panels:
+
+        - title: Volume release timer
+          type: graph
+          span: 12
+          lines: true
+          points: true
+          nullPointMode: connected
+          pointradius: 2
+          yaxes:
+            - format: ms
+              min: 0
+            - format: ms
+              min: 0
+          targets:
+            - target: "aliasByNode(stats.timers.afs.release.*.mean, 4)"
+
+    - title: Project volume release times
+      height: 100px
+      showTitle: true
+      panels:
+
+        - title: project.airship
+          type: singlestat
+          valueName: current
+          span: 2
+          targets:
+            - target: "scale(stats.gauges.afs.afs01_dfw_openstack_org.vol.project_airship_readonly.creation, 1000)"
+          format: dateTimeFromNow
+          valueFontSize: "50%"
+
+        - title: project.governance
+          type: singlestat
+          valueName: current
+          span: 2
+          targets:
+            - target: "scale(stats.gauges.afs.afs01_dfw_openstack_org.vol.project_governance_readonly.creation, 1000)"
+          format: dateTimeFromNow
+          valueFontSize: "50%"
+
+        - title: project.opendev
+          type: singlestat
+          valueName: current
+          span: 2
+          targets:
+            - target: "scale(stats.gauges.afs.afs01_dfw_openstack_org.vol.project_opendev_readonly.creation, 1000)"
+          format: dateTimeFromNow
+          valueFontSize: "50%"
+
+        - title: project.security
+          type: singlestat
+          valueName: current
+          span: 2
+          targets:
+            - target: "scale(stats.gauges.afs.afs01_dfw_openstack_org.vol.project_security_readonly.creation, 1000)"
+          format: dateTimeFromNow
+          valueFontSize: "50%"
+
+        - title: project.service-types
+          type: singlestat
+          valueName: current
+          span: 2
+          targets:
+            - target: "scale(stats.gauges.afs.afs01_dfw_openstack_org.vol.project_service-types_readonly.creation, 1000)"
+          format: dateTimeFromNow
+          valueFontSize: "50%"
+
+        - title: project.specs
+          type: singlestat
+          valueName: current
+          span: 2
+          targets:
+            - target: "scale(stats.gauges.afs.afs01_dfw_openstack_org.vol.project_specs_readonly.creation, 1000)"
+          format: dateTimeFromNow
+          valueFontSize: "50%"
+
+        - title: project.starlingx
+          type: singlestat
+          valueName: current
+          span: 2
+          targets:
+            - target: "scale(stats.gauges.afs.afs01_dfw_openstack_org.vol.project_starlingx_readonly.creation, 1000)"
+          format: dateTimeFromNow
+          valueFontSize: "50%"
+
+        - title: project.tarballs
+          type: singlestat
+          valueName: current
+          span: 2
+          targets:
+            - target: "scale(stats.gauges.afs.afs01_dfw_openstack_org.vol.project_tarballs_readonly.creation, 1000)"
+          format: dateTimeFromNow
+          valueFontSize: "50%"
+
+        - title: project.zuul
+          type: singlestat
+          valueName: current
+          span: 2
+          targets:
+            - target: "scale(stats.gauges.afs.afs01_dfw_openstack_org.vol.project_zuul_readonly.creation, 1000)"
+          format: dateTimeFromNow
+          valueFontSize: "50%"
+
+    - title: Project volumes
+      height: 200px
+      showTitle: true
+      panels:
+
+        - title: project.airship
+          type: graph
+          span: 4
+          yaxes:
+            - format: deckbytes
+              min: 0
+            - format: deckbytes
+              min: 0
+          targets:
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.project_airship.used, 'Used')"
+              refId: A
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.project_airship.quota, 'Quota')"
+              refId: B
+            - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.project_airship.used, #B)"
+              refId: C
+              hide: true
+
+        - title: project.governance
+          type: graph
+          span: 4
+          yaxes:
+            - format: deckbytes
+              min: 0
+            - format: deckbytes
+              min: 0
+          targets:
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.project_governance.used, 'Used')"
+              refId: A
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.project_governance.quota, 'Quota')"
+              refId: B
+            - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.project_governance.used, #B)"
+              refId: C
+              hide: true
+
+        - title: project.opendev
+          type: graph
+          span: 4
+          yaxes:
+            - format: deckbytes
+              min: 0
+            - format: deckbytes
+              min: 0
+          targets:
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.project_opendev.used, 'Used')"
+              refId: A
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.project_opendev.quota, 'Quota')"
+              refId: B
+            - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.project_opendev.used, #B)"
+              refId: C
+              hide: true
+
+        - title: project.security
+          type: graph
+          span: 4
+          yaxes:
+            - format: deckbytes
+              min: 0
+            - format: deckbytes
+              min: 0
+          targets:
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.project_security.used, 'Used')"
+              refId: A
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.project_security.quota, 'Quota')"
+              refId: B
+            - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.project_security.used, #B)"
+              refId: C
+              hide: true
+
+        - title: project.service-types
+          type: graph
+          span: 4
+          yaxes:
+            - format: deckbytes
+              min: 0
+            - format: deckbytes
+              min: 0
+          targets:
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.project_service-types.used, 'Used')"
+              refId: A
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.project_service-types.quota, 'Quota')"
+              refId: B
+            - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.project_service-types.used, #B)"
+              refId: C
+              hide: true
+
+        - title: project.specs
+          type: graph
+          span: 4
+          yaxes:
+            - format: deckbytes
+              min: 0
+            - format: deckbytes
+              min: 0
+          targets:
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.project_specs.used, 'Used')"
+              refId: A
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.project_specs.quota, 'Quota')"
+              refId: B
+            - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.project_specs.used, #B)"
+              refId: C
+              hide: true
+
+        - title: project.starlingx
+          type: graph
+          span: 4
+          yaxes:
+            - format: deckbytes
+              min: 0
+            - format: deckbytes
+              min: 0
+          targets:
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.project_starlingx.used, 'Used')"
+              refId: A
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.project_starlingx.quota, 'Quota')"
+              refId: B
+            - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.project_starlingx.used, #B)"
+              refId: C
+              hide: true
+
+        - title: project.tarballs
+          type: graph
+          span: 4
+          yaxes:
+            - format: deckbytes
+              min: 0
+            - format: deckbytes
+              min: 0
+          targets:
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.project_tarballs.used, 'Used')"
+              refId: A
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.project_tarballs.quota, 'Quota')"
+              refId: B
+            - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.project_tarballs.used, #B)"
+              refId: C
+              hide: true
+
+        - title: project.zuul
+          type: graph
+          span: 4
+          yaxes:
+            - format: deckbytes
+              min: 0
+            - format: deckbytes
+              min: 0
+          targets:
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.project_zuul.used, 'Used')"
+              refId: A
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.project_zuul.quota, 'Quota')"
+              refId: B
+            - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.project_zuul.used, #B)"
               refId: C
               hide: true
