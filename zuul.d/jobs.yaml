@@ -396,25 +396,6 @@
       special_publish_directory: "infra/manual"
 
 - job:
-    name: publish-service-types-authority
-    description: |
-      Publish OpenStack Service Types Authority to
-      https://service-types.openstack.org
-    final: true
-    pre-run: playbooks/project-config/pre-tox.yaml
-    run: playbooks/project-config/run-tox.yaml
-    post-run: playbooks/publish/service-types.yaml
-    allowed-projects:
-      - openstack/service-types-authority
-    roles:
-      - zuul: zuul/zuul-jobs
-      - zuul: openstack/openstack-zuul-jobs
-    vars:
-      tox_envlist: publish
-    secrets:
-      - site_specs
-
-- job:
     name: promote-service-types-authority
     parent: promote-tox-docs-site-base
     description: |
