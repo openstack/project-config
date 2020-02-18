@@ -61,8 +61,21 @@ class GerritChange(object):
         with open(os.path.join(args.governance, PROJECTS_YAML), 'r') as dfile:
             self.gov_data = yaml.safe_load(dfile)
 
+        try:
+            self.load_from_gerrit(args.changeid)
+        except KeyError:
+            LOG.warning(
+                '\ndata from gerrit is missing required keys:\n\n%s\n',
+                json.dumps(self.raw_data, indent=2))
+            LOG.warning("Retrying once...")
+            self.load_from_gerrit(args.changeid)
+            LOG.warning("Second try was successful.")
+
+        self.workspace = args.releases
+
+    def load_from_gerrit(self, changeid):
         # Grab changeid details from Gerrit
-        call = 'changes/%s' % args.changeid + \
+        call = 'changes/%s' % changeid + \
                '?o=CURRENT_REVISION&o=CURRENT_FILES&o=DETAILED_LABELS' + \
                '&o=DETAILED_ACCOUNTS'
         raw = requests.get(GERRIT_URL + call)
@@ -85,23 +98,15 @@ class GerritChange(object):
 
         # Instantiate object with retrieved data
         self.raw_data = decoded
-        try:
-            self.approvers = [i['email']
-                              for i in decoded['labels']['Code-Review']['all']
-                              if i['value'] > 0]
-            self.approvers.append(decoded['owner']['email'])
-            currev = decoded['current_revision']
-            self.deliv_files = [
-                x for x in decoded['revisions'][currev]['files'].keys()
-                if x.startswith('deliverables/')
-            ]
-        except KeyError:
-            LOG.error(
-                '\ndata from gerrit is missing required keys:\n\n%s\n',
-                json.dumps(decoded, indent=2))
-            raise
-
-        self.workspace = args.releases
+        self.approvers = [i['email']
+                          for i in decoded['labels']['Code-Review']['all']
+                          if i['value'] > 0]
+        self.approvers.append(decoded['owner']['email'])
+        currev = decoded['current_revision']
+        self.deliv_files = [
+            x for x in decoded['revisions'][currev]['files'].keys()
+            if x.startswith('deliverables/')
+        ]
 
     def is_approved(self):
         LOG.debug('Approvals: %s' % self.approvers)
