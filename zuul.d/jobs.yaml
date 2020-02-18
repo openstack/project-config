@@ -415,6 +415,21 @@
       - site_specs
 
 - job:
+    name: promote-service-types-authority
+    parent: promote-tox-docs-site-base
+    description: |
+      Publish OpenStack Service Types Authority to
+      /afs/.openstack.org/project/service-typs.openstack.org/.
+
+      This is a promote job for ``service-types-authority-tox-publish``.
+    final: true
+    allowed-projects:
+      - openstack/service-types-authority
+    vars:
+      download_artifact_job: service-types-authority-tox-publish
+      publish_site: "service-types.openstack.org"
+
+- job:
     name: promote-infra-index
     parent: promote-tox-docs-special-base
     description: |
@@ -541,7 +556,7 @@
       that need a special location.
 
       Publish the results of the tox-docs job to
-      /afs/.openstack.org/{{publish_site }}.
+      /afs/.openstack.org/project/{{publish_site }}.
 
       This is a promote job for ``openstack-tox-docs``.
 
