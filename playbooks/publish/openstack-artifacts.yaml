@@ -1,18 +1,4 @@
 - hosts: localhost
-  roles:
-    - role: add-fileserver
-      when: zuul_success | bool
-
-- hosts: "{{ fileserver.fqdn }}"
-  gather_facts: False
-  roles:
-    - role: publish-artifacts-to-fileserver
-      when: zuul_success | bool
-
-# NOTE(ianw) 2020-02-10 : upload to AFS in parallel until we switch
-# DNS for the static.<openstack|opendev>.org servers.  After that
-# remove above section to stop static server publishing.
-- hosts: localhost
   tasks:
     - block:
         - name: Create AFS token
