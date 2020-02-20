@@ -512,6 +512,31 @@
       static_target: "{{ zuul.project.short_name }}"
 
 - job:
+    name: publish-tox-docs-releases
+    description: |
+      Publish content of openstack/releases to
+      /afs/.openstack.org/project/releases.openstack.org/.
+
+      Builds the docs using ``tox -e docs``.
+    final: true
+    roles:
+      - zuul: openstack/openstack-zuul-jobs
+    pre-run: playbooks/project-config/pre-tox.yaml
+    run: playbooks/project-config/run-tox.yaml
+    post-run:
+      - playbooks/project-config/post-tox.yaml
+      - playbooks/sphinx/post-infra.yaml
+      - playbooks/publish/releases-afs.yaml
+    allowed-projects:
+      - openstack/releases
+    secrets:
+      - secret: afsdocs_secret
+        name: afs
+    vars:
+      tox_envlist: docs
+      afs_subpath: "/{{ zuul.project.short_name }}"
+
+- job:
     name: promote-tox-docs-site-base
     parent: opendev-promote-docs-base
     description: |
