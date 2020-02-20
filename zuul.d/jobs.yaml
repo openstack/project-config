@@ -316,52 +316,36 @@
       - tox.ini
 
 - job:
-    name: promote-openstack-specs-base
-    parent: opendev-promote-docs-base
-    abstract: true
-    protected: true
-    description: |
-      Base job to promote content to specs.openstack.org.
-
-      Jobs need to set the variable ``static_target`` for site to
-      publish to.
-    run: playbooks/static-docs/promote.yaml
-    vars:
-      download_artifact_job: build-openstack-specs-site
-      static_target: ""
-    roles:
-      - zuul: zuul/zuul-jobs
-      - zuul: openstack/openstack-zuul-jobs
-    secrets:
-      - name: fileserver
-        secret: site_specs_promote
-
-- job:
     name: promote-openstack-specs-site
-    parent: promote-openstack-specs-base
+    parent: promote-tox-docs-site-base
     final: true
     description: |
-      Publish OpenStack specs site to static.openstack.org specs/
+      Publish OpenStack specs index.
+
+      Publish specs index to
+      /afs/.openstack.org/project/specs.openstack.org/
 
       This is a promote job for ``build-openstack-specs-site``.
     allowed-projects:
       - openstack/project-config
     vars:
       download_artifact_job: build-openstack-specs-site
-      static_target: ""
+      publish_site: "specs.openstack.org"
 
 - job:
     name: promote-openstack-specs
-    parent: promote-openstack-specs-base
+    parent: promote-tox-docs-site-base
     final: true
     description: |
-      Publish OpenStack specs project to static.openstack.org
-      specs/{{ zuul.project.name }}.
+      Publish OpenStack specs project.
+
+      Publish specs index to
+      /afs/.openstack.org/project/specs.openstack.org/{{ zuul.project.name }}.
 
       This is a promote job for ``openstack-tox-docs``.
     vars:
       download_artifact_job: openstack-tox-docs
-      static_target: "{{ zuul.project.name }}"
+      publish_site: "specs.openstack.org/{{ zuul.project.name }}"
 
 - job:
     name: promote-tox-docs-infra
