@@ -481,42 +481,6 @@
         secret: eavesdrop_ssh_key
 
 - job:
-    name: base-publish-tox-docs-static
-    abstract: true
-    protected: true
-    description: |
-      Base job for jobs that publish content to static.openstack.org.
-
-      Jobs need to set the variable ``static_target`` for site to
-      publish to.
-      This job uses ``tox -e docs`` for building documents.
-    roles:
-      - zuul: openstack/openstack-zuul-jobs
-    pre-run: playbooks/project-config/pre-tox.yaml
-    run: playbooks/project-config/run-tox.yaml
-    post-run:
-      - playbooks/sphinx/post-direct.yaml
-      - playbooks/project-config/post-tox.yaml
-      - playbooks/publish/static-tox-docs.yaml
-    vars:
-      tox_envlist: docs
-    secrets:
-      - name: fileserver
-        secret: static_ssh_key
-
-- job:
-    name: publish-tox-docs-static
-    parent: base-publish-tox-docs-static
-    description: |
-      Publish content to static.openstack.org to
-      /srv/static/{{ zuul.project.short_name }}
-    final: true
-    allowed-projects:
-      - openstack/releases
-    vars:
-      static_target: "{{ zuul.project.short_name }}"
-
-- job:
     name: publish-tox-docs-releases
     description: |
       Publish content of openstack/releases to
