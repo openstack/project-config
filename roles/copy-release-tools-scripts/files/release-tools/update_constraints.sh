@@ -74,6 +74,10 @@ SERIES=$(get_tag_meta series)
 # Pick up the repository name from the git URL.
 SHORTNAME=$(basename $(git config --local remote.origin.url))
 
+# Extract python_version information from the package metadata.
+declare -a PYTHON_3_VERSIONS
+PYTHON_3_VERSIONS=`sed -n -e 's/^.*Programming.Language.*:://p' < setup.cfg  | grep "3..$"`
+
 # Apply the PEP 503 rules to turn the dist name into a canonical form,
 # in case that's the version that appears in upper-constraints.txt. We
 # have to try substituting both versions because we have a mix in that
@@ -104,8 +108,15 @@ else
     clone_repo openstack/requirements stable/$SERIES
     cd openstack/requirements
     git checkout -b "$dist_name-$VERSION"
-    sed -e "s/^${dist_name}=.*/$dist_name===$VERSION/" --in-place upper-constraints.txt
-    sed -e "s/^${canonical_name}=.*/$canonical_name===$VERSION/" --in-place upper-constraints.txt
+    # First try to update specific python_version entries
+    for PYTHON_VERSION in $PYTHON_3_VERSIONS; do
+        sed -e "s/^${dist_name}=.*;python_version=='$PYTHON_VERSION'/$dist_name===$VERSION;python_version=='$PYTHON_VERSION'/" --in-place upper-constraints.txt
+        sed -e "s/^${canonical_name}=.*;python_version=='$PYTHON_VERSION'/$canonical_name===$VERSION;python_version=='$PYTHON_VERSION'/" --in-place upper-constraints.txt
+    done
+    # Then only update lines that do not have specific python_versions
+    # specified.
+    sed -e "s/^${dist_name}=.*[0-9]$/$dist_name===$VERSION/" --in-place upper-constraints.txt
+    sed -e "s/^${canonical_name}=.*[0-9]$/$canonical_name===$VERSION/" --in-place upper-constraints.txt
     if git commit -a -m "update constraint for $dist_name to new release $VERSION
 
 $TAG_META
