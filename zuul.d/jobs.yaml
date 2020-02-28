@@ -789,8 +789,8 @@
       npm_command: build
 
 - job:
-    name: publish-openstack-javascript-latest-content
-    parent: publish-openstack-javascript-content
+    name: publish-openstack-stackviz-element
+    parent: publish-openstack-artifacts
     description: |
       Publish javascript content tarballs to tarballs.opendev.org.
 
@@ -800,7 +800,15 @@
 
       This job publishes the tar ball as
       https://tarballs.opendev.org/{{ zuul.project.name }}/dist/{{ zuul.project.short_name }}-latest.tar.gz.
-    post-run: playbooks/javascript/rename-latest.yaml
+      This is specific to openstack/stackviz.
+    allowed-projects:
+      - openstack/stackviz
+    pre-run: playbooks/javascript/pre.yaml
+    run: playbooks/javascript/content.yaml
+    post-run: playbooks/javascript/post-stackviz.yaml
+    vars:
+      node_version: 8
+      npm_command: prod
 
 - job:
     name: release-openstack-javascript
