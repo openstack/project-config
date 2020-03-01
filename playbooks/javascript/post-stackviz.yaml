@@ -1,5 +1,6 @@
 - hosts: all
-  pre_tasks:
+  tasks:
+
     - name: Rename tarball and move it to a subdir named dist as well
       # TODO(AJaeger): "-new" is for testing
       shell: |
@@ -12,5 +13,33 @@
       tags:
         - skip_ansible_lint
 
-  roles:
-    - fetch-javascript-output
+    - name: Ensure artifacts directory exists
+      file:
+        path: "{{ zuul.executor.work_root }}/artifacts"
+        state: directory
+      delegate_to: localhost
+
+    - name: Collect artifacts
+      synchronize:
+        dest: "{{ zuul.executor.work_root }}/artifacts/"
+        mode: pull
+        src: "{{ zuul_work_dir }}/dist/"
+        verify_host: true
+
+    - name: Find tarball tarball
+      find:
+        file_type: file
+        paths: "{{ zuul_work_dir }}/dist/"
+        patterns: "*.tar.gz"
+      register: result
+
+    - name: Return artifacts to Zuul
+      loop: "{{ result.files }}"
+      zuul_return:
+        data:
+          zuul:
+            artifacts:
+              - name: Javascript content archive
+                url: "artifacts/{{ item.path | basename }}"
+                metadata:
+                  type: javascript_content
