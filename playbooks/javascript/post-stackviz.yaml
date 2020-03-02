@@ -23,13 +23,13 @@
       synchronize:
         dest: "{{ zuul.executor.work_root }}/artifacts/"
         mode: pull
-        src: "{{ zuul_work_dir }}/dist/"
+        src: "{{ zuul.project.src_dir }}/dist/"
         verify_host: true
 
     - name: Find tarball tarball
       find:
         file_type: file
-        paths: "{{ zuul_work_dir }}/dist/"
+        paths: "{{ zuul.project.src_dir }}/dist/"
         patterns: "*.tar.gz"
       register: result
 
