@@ -4,38 +4,6 @@
 #    https://opendev.org/zuul/zuul-jobs
 
 - job:
-    name: base-ozj
-    parent: null
-    abstract: true
-    description: |
-      A subset of what the 'base' job provides: the absolute minimum considered
-      required to run for any one job.
-      It doesn't set up cached git repositories, will not set up mirrors,
-      doesn't validate the node, etc.
-      It is meant to be used, amongst other things, to test roles and
-      playbooks that would otherwise be included by default as part of the
-      'base' job.
-      These tasks, if required, can be included by the dependant jobs
-      themselves on a need basis.
-    pre-run: playbooks/base-ozj/pre.yaml
-    post-run:
-      - playbooks/base-ozj/post.yaml
-      - playbooks/base-ozj/post-logs.yaml
-    roles:
-      - zuul: zuul/zuul-jobs
-    vars:
-      ara_report_type: database
-      ara_report_path: ara-report
-    timeout: 1800
-    post-timeout: 1800
-    nodeset:
-      nodes:
-        - name: ubuntu-xenial
-          label: ubuntu-xenial
-    secrets:
-      - site_logs_project_config
-
-- job:
     name: publish-openstack-artifacts
     description: |
       Publish job to upload artifacts to tarballs.openstack.org
