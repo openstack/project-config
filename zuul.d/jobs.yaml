@@ -1049,11 +1049,10 @@
     run: playbooks/translation/upstream-translation-update.yaml
     post-run:
       - playbooks/translation/post.yaml
-      - playbooks/publish/openstack-artifacts.yaml
+      - playbooks/translation/openstack-translation-artifacts.yaml
     semaphore: translations
     protected: true
     vars:
-      fileserver_leading_path: translation-source
       constraints_file: '{{ ansible_user_dir }}/src/opendev.org/openstack/requirements/upper-constraints.txt'
     required-projects:
       - openstack/horizon
@@ -1063,6 +1062,8 @@
     nodeset: ubuntu-bionic
     secrets:
       - zanata_api_credentials
+      - secret: afs_tarballs_opendev_org
+        name: afs
 
 - job:
     name: propose-translation-update
