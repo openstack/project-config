@@ -26,5 +26,5 @@ create Linaro 'linaro-*' nodepool-linaro.yaml
 create OVH 'ovh-*' nodepool-ovh.yaml
 create Vexxhost 'vexxhost-*' nodepool-vexxhost.yaml
 create Citycloud 'citycloud-*' nodepool-citycloud.yaml
-create FortNebula 'fortnebula-*' nodepool-fortnebula.yaml
+create OpenEdge 'openedge-*' nodepool-openedge.yaml
 create Airship-Citycloud 'airship-*' nodepool-airship-citycloud.yaml
