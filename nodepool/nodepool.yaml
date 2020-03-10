@@ -43,8 +43,6 @@ providers:
         config-drive: true
       - name: debian-stretch
         config-drive: true
-      - name: fedora-29
-        config-drive: true
       - name: fedora-30
         config-drive: true
       - name: gentoo-17-0-systemd
@@ -239,28 +237,6 @@ diskimages:
                     fstab:
                       options: "defaults,nobarrier,noatime"
                       fsck-passno: 1
-  - name: fedora-29
-    pause: false
-    elements:
-      - fedora-minimal
-      - vm
-      - simple-init
-      - openstack-repos
-      - nodepool-base
-      - cache-devstack
-      - initialize-urandom
-      - growroot
-      - infra-package-needs
-    release: 29
-    env-vars:
-      TMPDIR: /opt/dib_tmp
-      DIB_CHECKSUM: '1'
-      DIB_IMAGE_CACHE: /opt/dib_cache
-      DIB_JOURNAL_SIZE: '512'
-      DIB_GRUB_TIMEOUT: '0'
-      GIT_HTTP_LOW_SPEED_TIME: '300'
-      GIT_HTTP_LOW_SPEED_LIMIT: '1000'
-      DIB_SHOW_IMAGE_USAGE: '1'
   - name: fedora-30
     pause: true
     python-path: /usr/bin/python3
