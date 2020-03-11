@@ -183,12 +183,28 @@
 - pipeline:
     name: periodic
     post-review: true
-    description: Jobs in this queue are triggered on a timer.
+    description: Jobs in this queue are triggered on a daily timer.
     manager: independent
     precedence: low
     trigger:
       timer:
         - time: '0 6 * * *'
+    success:
+      mysql:
+    failure:
+      mysql:
+
+- pipeline:
+    name: periodic-weekly
+    post-review: true
+    description: Jobs in this queue are triggered on a weekly timer.
+    manager: independent
+    precedence: low
+    trigger:
+      timer:
+        # Saturday 8am UTC is a better time to start weekend jobs, as Sunday
+        # is a working day in some geographies.
+        - time: '0 8 * * 6'
     success:
       mysql:
     failure:
