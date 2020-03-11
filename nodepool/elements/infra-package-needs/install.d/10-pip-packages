@@ -20,6 +20,13 @@ if [ ${DIB_DEBUG_TRACE:-0} -gt 0 ]; then
 fi
 set -e
 
+# NOTE(ianw) 2020-03-11 : for testing images without the
+# pip-and-virtualenv element or any global installs of tools using
+# these, skip this.
+if [ -z ${DIB_PYTHON_PIP+x} ]; then
+    exit 0
+fi
+
 packages='tox'
 
 # non-system root installed packages can interfere with things
