@@ -43,6 +43,8 @@ providers:
         config-drive: true
       - name: debian-stretch
         config-drive: true
+      - name: fedora-30
+        config-drive: true
       - name: gentoo-17-0-systemd
         config-drive: true
       - name: opensuse-15
@@ -80,6 +82,8 @@ providers:
       - name: debian-buster
         config-drive: true
       - name: debian-stretch
+        config-drive: true
+      - name: fedora-30
         config-drive: true
       - name: gentoo-17-0-systemd
         config-drive: true
@@ -270,6 +274,34 @@ diskimages:
                       options: "defaults,nobarrier,noatime"
                       fsck-passno: 1
 
+# NOTE(ianw) : currently only building on nb01.opendev.org; see that
+# config file.
+  - name: fedora-30
+    pause: true
+    python-path: /usr/bin/python3
+    elements:
+      - fedora-minimal
+      - vm
+      - simple-init
+      - openstack-repos
+      - nodepool-base
+      - cache-devstack
+      - initialize-urandom
+      - growroot
+      - infra-package-needs
+      # NOTE(ianw) 2020-02-17 : we are working to move this into job
+      # configuration
+      - pip-and-virtualenv
+    release: 30
+    env-vars:
+      TMPDIR: /opt/dib_tmp
+      DIB_CHECKSUM: '1'
+      DIB_IMAGE_CACHE: /opt/dib_cache
+      DIB_JOURNAL_SIZE: '512'
+      DIB_GRUB_TIMEOUT: '0'
+      GIT_HTTP_LOW_SPEED_TIME: '300'
+      GIT_HTTP_LOW_SPEED_LIMIT: '1000'
+      DIB_SHOW_IMAGE_USAGE: '1'
   - name: gentoo-17-0-systemd
     pause: false
     elements:
