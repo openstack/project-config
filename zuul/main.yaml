@@ -15,13 +15,6 @@
           - opendev/gear
           - opendev/lodgeit
           - openinfralabs/contrib
-          - vexxhost/ansible-role-docker-distribution
-          - vexxhost/ansible-role-openmanage
-          - vexxhost/ansible-role-wireguard
-          - vexxhost/kue
-          - vexxhost/lodgeit-helm
-          - vexxhost/openstack-monitoring
-          - vexxhost/openstack-operator
           # Include some projects with job config for cross-tenant
           # jobs
           - include: [job, secret, nodeset]
@@ -1506,6 +1499,30 @@
         untrusted-projects:
           - include: []
             projects: *googlesource_projects
+
+- tenant:
+    name: vexxhost
+    max-nodes-per-job: 10
+    report-build-page: true
+    source:
+      gerrit:
+        config-projects:
+          - opendev/project-config
+          - opendev/base-jobs
+        untrusted-projects:
+          - zuul/zuul-jobs
+          - vexxhost/ansible-role-docker-distribution
+          - vexxhost/ansible-role-openmanage
+          - vexxhost/ansible-role-wireguard
+          - vexxhost/kue
+          - vexxhost/lodgeit-helm
+          - vexxhost/openstack-monitoring
+          - vexxhost/openstack-operator
+          # Include some projects with job config for cross-tenant
+          # jobs
+          - include: [job, secret, nodeset]
+            projects:
+              - openstack/devstack
 
 - tenant:
     name: zuul
