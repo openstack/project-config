@@ -67,17 +67,14 @@ class GerritChange(object):
             LOG.warning(
                 '\ndata from gerrit is missing required keys:\n\n%s\n',
                 json.dumps(self.raw_data, indent=2))
-            LOG.warning("Retrying once...")
-            self.load_from_gerrit(args.changeid)
-            LOG.warning("Second try was successful.")
+            raise
 
         self.workspace = args.releases
 
     def load_from_gerrit(self, changeid):
         # Grab changeid details from Gerrit
-        call = 'changes/%s' % changeid + \
-               '?o=CURRENT_REVISION&o=CURRENT_FILES&o=DETAILED_LABELS' + \
-               '&o=DETAILED_ACCOUNTS'
+        call = 'changes/%s/detail' % changeid + \
+               '?o=CURRENT_REVISION&o=CURRENT_FILES'
         raw = requests.get(GERRIT_URL + call)
 
         # Gerrit's REST API prepends a JSON-breaker to avoid XSS
