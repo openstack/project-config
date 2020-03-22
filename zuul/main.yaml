@@ -1513,7 +1513,13 @@
       gerrit:
         config-projects:
           - opendev/project-config
-          - opendev/base-jobs
+          # Only use jobs and secrets from this repo, we do not want
+          # the project definition.
+          - opendev/base-jobs:
+              include:
+                - job
+                - secret
+                - nodeset
         untrusted-projects:
           - zuul/zuul-jobs
           - vexxhost/ansible-role-docker-distribution
