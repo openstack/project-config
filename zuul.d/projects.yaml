@@ -202,13 +202,79 @@
     name: opendev/jeepyb
     templates:
       - publish-to-pypi
-      - system-config-gerrit-images
     check:
       jobs:
         - opendev-buildset-registry
+        - system-config-build-image-gerrit-base:
+            dependencies:
+              - name: opendev-buildset-registry
+              - name: system-config-build-image-python-builder
+                soft: true
+        - system-config-build-image-gerrit-2.13:
+            dependencies:
+              - name: opendev-buildset-registry
+              - name: system-config-build-image-python-builder
+                soft: true
+              - name: system-config-build-image-gerrit-base
+                soft: true
+        - system-config-build-image-gerrit-2.15:
+            dependencies:
+              - name: opendev-buildset-registry
+              - name: system-config-build-image-gerrit-base
+                soft: true
+        - system-config-build-image-gerrit-2.16:
+            dependencies:
+              - name: opendev-buildset-registry
+              - name: system-config-build-image-gerrit-base
+                soft: true
+        - system-config-build-image-gerrit-3.0:
+            dependencies:
+              - name: opendev-buildset-registry
+              - name: system-config-build-image-gerrit-base
+                soft: true
+        - system-config-build-image-gerrit-master:
+            voting: false
+            dependencies:
+              - name: opendev-buildset-registry
+              - name: system-config-build-image-gerrit-base
+                soft: true
     gate:
       jobs:
         - opendev-buildset-registry
+        - system-config-upload-image-gerrit-base:
+            dependencies:
+              - name: opendev-buildset-registry
+              - name: system-config-upload-image-python-builder
+                soft: true
+        - system-config-upload-image-gerrit-2.13:
+            dependencies:
+              - name: opendev-buildset-registry
+              - name: system-config-upload-image-python-builder
+                soft: true
+              - name: system-config-upload-image-gerrit-base
+                soft: true
+        - system-config-upload-image-gerrit-2.15:
+            dependencies:
+              - name: opendev-buildset-registry
+              - name: system-config-upload-image-gerrit-base
+                soft: true
+        - system-config-upload-image-gerrit-2.16:
+            dependencies:
+              - name: opendev-buildset-registry
+              - name: system-config-upload-image-gerrit-base
+                soft: true
+        - system-config-upload-image-gerrit-3.0:
+            dependencies:
+              - name: opendev-buildset-registry
+              - name: system-config-upload-image-gerrit-base
+                soft: true
+    promote:
+      jobs:
+        - system-config-promote-image-gerrit-base
+        - system-config-promote-image-gerrit-2.13
+        - system-config-promote-image-gerrit-2.15
+        - system-config-promote-image-gerrit-2.16
+        - system-config-promote-image-gerrit-3.0
 
 - project:
     name: opendev/log-classify
