@@ -61,20 +61,14 @@ class GerritChange(object):
         with open(os.path.join(args.governance, PROJECTS_YAML), 'r') as dfile:
             self.gov_data = yaml.safe_load(dfile)
 
-        try:
-            self.load_from_gerrit(args.changeid)
-        except KeyError:
-            LOG.warning(
-                '\ndata from gerrit is missing required keys:\n\n%s\n',
-                json.dumps(self.raw_data, indent=2))
-            raise
-
+        self.load_from_gerrit(args.changeid)
         self.workspace = args.releases
 
     def load_from_gerrit(self, changeid):
         # Grab changeid details from Gerrit
-        call = 'changes/%s/detail' % changeid + \
-               '?o=CURRENT_REVISION&o=CURRENT_FILES'
+        call = 'changes/%s' % changeid + \
+               '?o=CURRENT_REVISION&o=CURRENT_FILES&o=DETAILED_LABELS' + \
+               '&o=DETAILED_ACCOUNTS'
         raw = requests.get(GERRIT_URL + call)
 
         # Gerrit's REST API prepends a JSON-breaker to avoid XSS
@@ -93,12 +87,18 @@ class GerritChange(object):
                 raw, raw.url, trimmed)
             raise
 
-        # Instantiate object with retrieved data
-        self.raw_data = decoded
-        self.approvers = [i['email']
-                          for i in decoded['labels']['Code-Review']['all']
-                          if i['value'] > 0]
-        self.approvers.append(decoded['owner']['email'])
+        # Extract approvers from JSON data. Approvers include change owner
+        # and anyone who voted Code-Review+1. NB: Gerrit does not fill
+        # labels.CodeReview.all unless there is a vote already
+        self.approvers = [decoded['owner']['email']]
+        if 'all' in decoded['labels']['Code-Review']:
+            self.approvers.extend([
+                i['email']
+                for i in decoded['labels']['Code-Review']['all']
+                if i['value'] > 0
+            ])
+
+        # Extract list of modified deliverables files from JSON data
         currev = decoded['current_revision']
         self.deliv_files = [
             x for x in decoded['revisions'][currev]['files'].keys()
