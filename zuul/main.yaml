@@ -1522,13 +1522,12 @@
     source:
       gerrit:
         config-projects:
-          # Only use jobs and secrets from this repo, we do not want
-          # the project definition.
-          - include: [job, secret, nodeset]
+          # We don't want to load the project to report on those repos
+          - exclude: [project]
             projects:
               - opendev/base-jobs
-              - vexxhost/base-jobs
               - opendev/project-config
+          - vexxhost/base-jobs
         untrusted-projects:
           - zuul/zuul-jobs
           - vexxhost/ansible-role-docker-distribution
