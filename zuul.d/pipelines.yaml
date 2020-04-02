@@ -195,6 +195,24 @@
       mysql:
 
 - pipeline:
+    name: opendev-prod-hourly
+    post-review: true
+    description: |
+      Temporary home for some OpenDev prod jobs that need to be
+      triggered frequently. Should not be used by anyone other than
+      OpenDev admins.
+    manager: independent
+    precedence: low
+    trigger:
+      timer:
+       # Run with a 2 minute jitter
+        - time: '0 * * * * * 120'
+    success:
+      mysql:
+    failure:
+      mysql:
+
+- pipeline:
     name: periodic-weekly
     post-review: true
     description: Jobs in this queue are triggered on a weekly timer.
