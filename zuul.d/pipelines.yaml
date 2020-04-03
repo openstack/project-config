@@ -195,6 +195,28 @@
       mysql:
 
 - pipeline:
+    name: deploy
+    description: |
+      This pipeline runs jobs that operate after each change is merged
+      in order to run production deployment playbooks.
+    success-message: Build succeeded (deploy pipeline).
+    failure-message: |
+      Build failed (deploy pipeline).  For information on how to proceed, see
+      https://docs.opendev.org/opendev/infra-manual/latest/developers.html#automated-testing
+    manager: independent
+    precedence: high
+    post-review: True
+    trigger:
+      gerrit:
+        - event: change-merged
+    success:
+      gerrit: {}
+      mysql:
+    failure:
+      gerrit: {}
+      mysql:
+
+- pipeline:
     name: opendev-prod-hourly
     post-review: true
     description: |
