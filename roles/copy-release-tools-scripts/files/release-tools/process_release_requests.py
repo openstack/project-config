@@ -12,8 +12,7 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-"""Process all of the release requests in changed files in the commit.
-"""
+"""Process all of the release requests in changed files in the commit."""
 
 import argparse
 import os.path
@@ -52,6 +51,17 @@ RELEASE_SCRIPT = os.path.join(BINDIR, 'release.sh')
 BRANCH_SCRIPT = os.path.join(BINDIR, 'make_branch.sh')
 
 
+def nextbranchname(branchname, reporoot):
+    """Returns a string containing the next development branchname."""
+    datafile = 'data/series_status.yaml'
+    with open(os.path.join(reporoot, datafile), 'r') as seriesstatusf:
+        series = yaml.safe_load(seriesstatusf)
+    for nextseries, currentseries in zip(series, series[1:]):
+        if currentseries['name'] == branchname:
+            return nextseries['name']
+    return None
+
+
 def find_modified_deliverable_files(reporoot):
     "Return a list of files modified by the most recent commit."
     results = subprocess.check_output(
@@ -83,10 +93,21 @@ def tag_release(repo, series_name, version, diff_start, hash,
     return 0
 
 
-def make_branch(repo, name, ref):
+def make_branch(repo, name, ref, nextbranchname=None):
+    """Create a branch if needed.
+
+    :param repo: The repo in which to create the branch.
+    :param name: The name of the branch to create.
+    :param ref: The point at which to branch.
+    :param nextbranchname: The name of the expected next series, if known.
+    """
     print('Branching {} in {}'.format(name, repo))
+    makebranchargs = [BRANCH_SCRIPT, repo, name, ref]
+    # nextbranchname can be null if branch not found (feature branch)
+    if nextbranchname:
+        makebranchargs.append(nextbranchname)
     try:
-        subprocess.check_call([BRANCH_SCRIPT, repo, name, ref])
+        subprocess.check_call(makebranchargs)
     except subprocess.CalledProcessError:
         # The error output from the script will be
         # printed to stderr, so we don't need to do
@@ -191,13 +212,16 @@ def process_release_requests(reporoot, filenames, meta_data):
                     first_full_release, meta_data,
                 )
 
-        # Create branches.
+        # Create branches and adapt master
         for branch in deliverable_data.get('branches', []):
+            masterbranchname = nextbranchname(branch['name'], reporoot)
             location = branch['location']
 
             if isinstance(location, dict):
                 for repo, sha in sorted(location.items()):
-                    error_count += make_branch(repo, branch['name'], sha)
+                    error_count += make_branch(
+                        repo, branch['name'], sha, masterbranchname
+                    )
 
             else:
                 # Assume a single location string that is a valid
@@ -205,6 +229,7 @@ def process_release_requests(reporoot, filenames, meta_data):
                 for proj in releases_by_version[location]['projects']:
                     error_count += make_branch(
                         proj['repo'], branch['name'], branch['location'],
+                        masterbranchname
                     )
 
     return error_count
