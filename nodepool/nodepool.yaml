@@ -369,7 +369,7 @@ diskimages:
       ZUUL_USER_SSH_PUBLIC_KEY: |
         ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDh5u0DWNi0d3uqI82izAxVTUTrGl36L3szEqV9WrilGmxaTtp9X7HrktJ5J+rvxQqz39llTf1v7iYA4CNKto/48RBAB0mKEEI4x4iw+fu/BLU7nu7ewSfXLUxHahxaTgIk2KcbegknD5NzMjalyfNfgTPDGv8BjwHeeNdZmJMBvPFGu6fO48M4yK1tiQn0kAkaH4oII/M4pyF8vy9tPTODAD7RvnMvQAb08LZZvE/IPzJAHNXFRb1v+DBa38fOvdyaz/nibrsxiOWZxQVLgjYciUeDy1xvXADaWlqvxmLy+90LHbJFbGxK4AN0mWfwBiUMVyxZjkun39pjTNl2k09OhOq+R52UqnehMc4eBdZCddnCUq4/efbFCJkqe5wY+SE8fYybJjauUL64zyrwf6yfWkXvPVHWa9Y+NCmvH8PCBUcsQnwO7l/Yb4N+8+u6zkODyuc9wLAY+DpnptE3plXtvUs5negC4fvJSnOHpWXuoi9yzp7IlPf6fSjMMDQo0JjCYJwazdzqrIH2VSCcfHAqWF0ECR8IgwZV1bp0xFe0UN0Gjsgkozqf8rvs1AYyTSeD19Wg9j+crTke8E1sfoI/qFzHwzBQFKJ+2l0cs7pZWJBARlhbt1j1IouS2aH+74xwsavRhBz4IsFTPqWiP6JTrgk5cgKRnTqInzNfdaLeUw== zuul-worker@openstack.org
   - name: opensuse-15
-    pause: false
+    pause: true
     elements:
       - opensuse-minimal
       - vm
@@ -379,9 +379,6 @@ diskimages:
       - cache-devstack
       - growroot
       - infra-package-needs
-      # NOTE(ianw) 2020-02-17 : we are working to move this into job
-      # configuration
-      - pip-and-virtualenv
     release: '15.1'
     env-vars:
       TMPDIR: /opt/dib_tmp
@@ -394,7 +391,7 @@ diskimages:
       GIT_HTTP_LOW_SPEED_LIMIT: '1000'
       DIB_SHOW_IMAGE_USAGE: '1'
   - name: opensuse-tumbleweed
-    pause: false
+    pause: true
     elements:
       - opensuse-minimal
       - vm
@@ -404,9 +401,6 @@ diskimages:
       - cache-devstack
       - growroot
       - infra-package-needs
-      # NOTE(ianw) 2020-02-17 : we are working to move this into job
-      # configuration
-      - pip-and-virtualenv
     release: 'tumbleweed'
     env-vars:
       TMPDIR: /opt/dib_tmp
