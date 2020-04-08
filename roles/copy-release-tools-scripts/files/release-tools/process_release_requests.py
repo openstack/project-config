@@ -54,10 +54,11 @@ BRANCH_SCRIPT = os.path.join(BINDIR, 'make_branch.sh')
 def nextbranchname(branchname, reporoot):
     """Returns a string containing the next development branchname."""
     datafile = 'data/series_status.yaml'
+    branch_name = branchname.replace('stable/', '')
     with open(os.path.join(reporoot, datafile), 'r') as seriesstatusf:
         series = yaml.safe_load(seriesstatusf)
     for nextseries, currentseries in zip(series, series[1:]):
-        if currentseries['name'] == branchname:
+        if currentseries['name'] == branch_name:
             return nextseries['name']
     return None
 
