@@ -48,7 +48,7 @@ git checkout master
 fnames=$(find . -type f -path '*zuul.d/*'; find . -type f -name '*zuul.yaml')
 for fname in $fnames; do
     echo "Checking ${fname}"
-    sed -i \
+    sed -i -e \
         "s/openstack-python3-${OLDSERIES}-jobs/openstack-python3-${SERIES}-jobs/g" \
         $fname
 done
