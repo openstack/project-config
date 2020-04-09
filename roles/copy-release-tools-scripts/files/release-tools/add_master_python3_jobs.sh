@@ -61,7 +61,13 @@ done
 changes=$(git diff-index --name-only HEAD --)
 if [ -n "$changes" ]; then
     git checkout -b add-${SERIES}-python-jobtemplates
-    git add .
+
+    # Add only the files we modified
+    for file in $changes; do
+        git add $file
+    done
+    git clean -f
+
     git diff --cached
     git commit -m "$commit_msg"
     git show
