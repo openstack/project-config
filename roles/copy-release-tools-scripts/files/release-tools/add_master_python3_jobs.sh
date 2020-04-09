@@ -31,6 +31,10 @@ SERIES=$2
 REPO=$3
 TOOLSDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
+# We only want the series name, make sure if a branch name is passed in that we
+# strip out the part we don't want
+OLDSERIES=${OLDSERIES/stable\//}
+
 cd $REPO
 
 commit_msg="Add Python3 ${SERIES} unit tests
