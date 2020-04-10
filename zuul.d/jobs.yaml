@@ -745,6 +745,17 @@
       - gpg_key
 
 - job:
+    name: openstack-upload-github-mirror
+    parent: opendev-upload-git-mirror
+    description: Mirrors official projects to github's openstack org
+    final: true
+    protected: true
+    secrets:
+      - name: git_mirror_credentials
+        secret: openstack-github-mirroring
+        pass-to-parent: true
+
+- job:
     name: propose-updates
     pre-run: playbooks/proposal/pre.yaml
     description: |
