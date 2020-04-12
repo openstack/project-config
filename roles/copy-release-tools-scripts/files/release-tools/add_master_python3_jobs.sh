@@ -58,7 +58,7 @@ for fname in $fnames; do
 done
 
 # Only submit patch if files were changed
-changes=$(git diff-index --name-only HEAD --)
+changes=$(git diff-index --name-only HEAD -- | grep zuul)
 if [ -n "$changes" ]; then
     git checkout -b add-${SERIES}-python-jobtemplates
 
@@ -69,7 +69,7 @@ if [ -n "$changes" ]; then
     git clean -f
 
     git diff --cached
-    git commit -m "$commit_msg"
+    git commit -m "$commit_msg" || true
     git show
-    git review --yes -f
+    git review --yes -f || true
 fi
