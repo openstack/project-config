@@ -87,10 +87,11 @@ class GerritChange(object):
                 raw, raw.url, trimmed)
             raise
 
-        # Extract approvers from JSON data. Approvers include change owner
+        # Extract approvers from JSON data. Approvers include last committer
         # and anyone who voted Code-Review+1. NB: Gerrit does not fill
         # labels.CodeReview.all unless there is a vote already
-        self.approvers = [decoded['owner']['email']]
+        last_revision = decoded['revisions'][decoded['current_revision']]
+        self.approvers = [last_revision['uploader']['email']]
         if 'all' in decoded['labels']['Code-Review']:
             self.approvers.extend([
                 i['email']
