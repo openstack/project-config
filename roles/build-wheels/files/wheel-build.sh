@@ -24,12 +24,7 @@ for BRANCH in master $BRANCHES; do
     rm -rf build_env
     virtualenv -p $PYTHON_VERSION build_env
 
-    # NOTE(ianw) 2018-10-22 This is a temporary hack to get some more
-    # info into the logs to debug corrupt wheels.  We should see pip
-    # stamping sha256 hashes into the logs for each wheel, so we can
-    # see if the bad output is coming from pip, or somewhere else.
-    build_env/bin/pip install --upgrade --force-reinstall \
-                      'git+https://github.com/ianw/pip.git@path-and-hash#egg=pip'
+    build_env/bin/pip install --upgrade pip
 
     # SHORT_BRANCH is just "master","newton","kilo" etc. because this
     # keeps the output log hierarchy much simpler.
