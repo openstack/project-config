@@ -133,6 +133,25 @@ dashboard:
             - target: "alias(stats.gauges.afs.afs01_ord_openstack_org.idle_threads, 'Idle Threads')"
               refId: B
 
+    - title: mirror-update.opendev.org mirror vos release timers
+      height: 200px
+      showTitle: true
+      panels:
+        - title: Volume release timer
+          type: graph
+          span: 12
+          lines: true
+          points: true
+          nullPointMode: connected
+          pointradius: 2
+          yaxes:
+            - format: ms
+              min: 0
+            - format: ms
+              min: 0
+          targets:
+            - target: "aliasByNode(stats.timers.afs.release.mirror*.mean, 4)"
+
     - title: Mirror release times
       height: 100px
       showTitle: true
@@ -351,7 +370,7 @@ dashboard:
               refId: C
               hide: true
 
-    - title: mirror-update.opendev.org vos release timers
+    - title: mirror-update.opendev.org project vos release timers
       height: 200px
       showTitle: true
       panels:
@@ -369,12 +388,31 @@ dashboard:
             - format: ms
               min: 0
           targets:
-            - target: "aliasByNode(stats.timers.afs.release.*.mean, 4)"
+            - target: "aliasByNode(stats.timers.afs.release.project*.mean, 4)"
+            - target: "aliasByNode(stats.timers.afs.release.docs*.mean, 4)"
 
     - title: Project volume release times
       height: 100px
       showTitle: true
       panels:
+
+        - title: docs
+          type: singlestat
+          valueName: current
+          span: 2
+          targets:
+            - target: "scale(stats.gauges.afs.afs01_dfw_openstack_org.vol.docs_readonly.creation, 1000)"
+          format: dateTimeFromNow
+          valueFontSize: "50%"
+
+        - title: docs.dev
+          type: singlestat
+          valueName: current
+          span: 2
+          targets:
+            - target: "scale(stats.gauges.afs.afs01_dfw_openstack_org.vol.docs_dev_readonly.creation, 1000)"
+          format: dateTimeFromNow
+          valueFontSize: "50%"
 
         - title: project.airship
           type: singlestat
@@ -461,6 +499,40 @@ dashboard:
       height: 200px
       showTitle: true
       panels:
+
+        - title: project.docs
+          type: graph
+          span: 4
+          yaxes:
+            - format: deckbytes
+              min: 0
+            - format: deckbytes
+              min: 0
+          targets:
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.docs.used, 'Used')"
+              refId: A
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.docs.quota, 'Quota')"
+              refId: B
+            - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.docs.used, #B)"
+              refId: C
+              hide: true
+
+        - title: project.docs_dev
+          type: graph
+          span: 4
+          yaxes:
+            - format: deckbytes
+              min: 0
+            - format: deckbytes
+              min: 0
+          targets:
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.docs_dev.used, 'Used')"
+              refId: A
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.docs_dev.quota, 'Quota')"
+              refId: B
+            - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.docs_dev.used, #B)"
+              refId: C
+              hide: true
 
         - title: project.airship
           type: graph
