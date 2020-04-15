@@ -18,6 +18,8 @@ zookeeper-servers:
 labels:
   - name: centos-7
   - name: centos-8
+  - name: centos-8-arm64
+    min-ready: 1
   - name: debian-buster
   - name: debian-buster-arm64
     min-ready: 1
@@ -371,6 +373,8 @@ providers:
     launch-timeout: 800
     rate: 0.001
     diskimages: &linaro_provider_diskimages
+      - name: centos-8-arm64
+        config-drive: true
       - name: debian-buster-arm64
         config-drive: true
       - name: debian-stretch-arm64
@@ -383,6 +387,11 @@ providers:
       - name: main
         max-servers: 0
         labels: &linaro_provider_labels
+          - name: centos-8-arm64
+            min-ram: 8000
+            flavor-name: 'os.large'
+            diskimage: centos-8-arm64
+            key-name: infra-root-keys-2018-06-15
           - name: debian-buster-arm64
             min-ram: 8000
             flavor-name: 'os.large'
@@ -424,6 +433,7 @@ providers:
 diskimages:
   - name: centos-7
   - name: centos-8
+  - name: centos-8-arm64
   - name: debian-buster
   - name: debian-buster-arm64
   - name: debian-stretch
