@@ -113,6 +113,12 @@ else
         sed -e "s/^${dist_name}=.*;python_version=='$PYTHON_VERSION'/$dist_name===$VERSION;python_version=='$PYTHON_VERSION'/" --in-place upper-constraints.txt
         sed -e "s/^${canonical_name}=.*;python_version=='$PYTHON_VERSION'/$canonical_name===$VERSION;python_version=='$PYTHON_VERSION'/" --in-place upper-constraints.txt
     done
+    # Most projects don't declare Python 3.8 support yet, so update if the
+    # package declares Python 3.6 support. This follows the logic that
+    # generate-constraints does
+    if [[ $PYTHON_3_VERSIONS =~ '3.6' ]] ; then
+        sed -e "s/^${dist_name}=.*;python_version=='3.8'/$dist_name===$VERSION;python_version=='3.8'/" --in-place upper-constraints.txt
+    fi
     # Then only update lines that do not have specific python_versions
     # specified.
     sed -e "s/^${dist_name}=.*[0-9]$/$dist_name===$VERSION/" --in-place upper-constraints.txt
