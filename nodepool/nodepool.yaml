@@ -145,127 +145,123 @@ providers:
     diskimages: *provider_diskimages
 
 diskimages:
-  - name: centos-7
-    pause: false
+  - name: base
+    abstract: True
     elements:
-      - centos-minimal
       - vm
       - simple-init
       - openstack-repos
       - nodepool-base
-      - cache-devstack
       - growroot
       - infra-package-needs
-      - epel
-      # NOTE(ianw) 2020-02-17 : we are working to move this into job
-      # configuration
-      - pip-and-virtualenv
     env-vars:
       TMPDIR: /opt/dib_tmp
       DIB_CHECKSUM: '1'
       DIB_IMAGE_CACHE: /opt/dib_cache
       DIB_JOURNAL_SIZE: '512'
       DIB_GRUB_TIMEOUT: '0'
-      DIB_EPEL_DISABLED: '1'
       GIT_HTTP_LOW_SPEED_TIME: '300'
       GIT_HTTP_LOW_SPEED_LIMIT: '1000'
       DIB_SHOW_IMAGE_USAGE: '1'
       ZUUL_USER_SSH_PUBLIC_KEY: |
         ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDh5u0DWNi0d3uqI82izAxVTUTrGl36L3szEqV9WrilGmxaTtp9X7HrktJ5J+rvxQqz39llTf1v7iYA4CNKto/48RBAB0mKEEI4x4iw+fu/BLU7nu7ewSfXLUxHahxaTgIk2KcbegknD5NzMjalyfNfgTPDGv8BjwHeeNdZmJMBvPFGu6fO48M4yK1tiQn0kAkaH4oII/M4pyF8vy9tPTODAD7RvnMvQAb08LZZvE/IPzJAHNXFRb1v+DBa38fOvdyaz/nibrsxiOWZxQVLgjYciUeDy1xvXADaWlqvxmLy+90LHbJFbGxK4AN0mWfwBiUMVyxZjkun39pjTNl2k09OhOq+R52UqnehMc4eBdZCddnCUq4/efbFCJkqe5wY+SE8fYybJjauUL64zyrwf6yfWkXvPVHWa9Y+NCmvH8PCBUcsQnwO7l/Yb4N+8+u6zkODyuc9wLAY+DpnptE3plXtvUs5negC4fvJSnOHpWXuoi9yzp7IlPf6fSjMMDQo0JjCYJwazdzqrIH2VSCcfHAqWF0ECR8IgwZV1bp0xFe0UN0Gjsgkozqf8rvs1AYyTSeD19Wg9j+crTke8E1sfoI/qFzHwzBQFKJ+2l0cs7pZWJBARlhbt1j1IouS2aH+74xwsavRhBz4IsFTPqWiP6JTrgk5cgKRnTqInzNfdaLeUw== zuul-worker@openstack.org
+
+  - name: base-debuntu
+    abstract: True
+    parent: base
+    env-vars:
+      DIB_APT_LOCAL_CACHE: '0'
+      DIB_DISABLE_APT_CLEANUP: '1'
+      DIB_DEBOOTSTRAP_EXTRA_ARGS: '--no-check-gpg'
+
+  # NOTE(ianw) 2020-02-17: we are working to remove pip-and-virtualenv
+  # as a requirement; as we cut images over we can remove these.
+  - name: base-with-pip
+    abstract: True
+    parent: base
+    elements:
+      - pip-and-virtualenv
+
+  - name: base-debuntu-with-pip
+    abstract: True
+    parent: base-debuntu
+    elements:
+      - pip-and-virtualenv
+
+
+  ############ CentOS and Fedora #############
+
+  - name: centos-7
+    parent: base-with-pip
+    pause: false
+    elements:
+      - centos-minimal
+      - epel
+      - cache-devstack
+    env-vars:
+      DIB_EPEL_DISABLED: '1'
+
   - name: centos-8
+    parent: base-with-pip
     pause: false
     python-path: /usr/bin/python3
+    release: '8'
     elements:
-      - centos-minimal
-      - vm
-      - simple-init
-      - openstack-repos
-      - nodepool-base
       - cache-devstack
-      - growroot
-      - infra-package-needs
+      - centos-minimal
       - epel
-      # NOTE(ianw) 2020-02-17 : we are working to move this into job
-      # configuration
-      - pip-and-virtualenv
     env-vars:
-      TMPDIR: /opt/dib_tmp
-      DIB_CHECKSUM: '1'
-      DIB_IMAGE_CACHE: /opt/dib_cache
-      DIB_JOURNAL_SIZE: '512'
-      DIB_GRUB_TIMEOUT: '0'
       DIB_EPEL_DISABLED: '1'
-      GIT_HTTP_LOW_SPEED_TIME: '300'
-      GIT_HTTP_LOW_SPEED_LIMIT: '1000'
-      DIB_SHOW_IMAGE_USAGE: '1'
-      DIB_RELEASE: '8'
-      ZUUL_USER_SSH_PUBLIC_KEY: |
-        ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDh5u0DWNi0d3uqI82izAxVTUTrGl36L3szEqV9WrilGmxaTtp9X7HrktJ5J+rvxQqz39llTf1v7iYA4CNKto/48RBAB0mKEEI4x4iw+fu/BLU7nu7ewSfXLUxHahxaTgIk2KcbegknD5NzMjalyfNfgTPDGv8BjwHeeNdZmJMBvPFGu6fO48M4yK1tiQn0kAkaH4oII/M4pyF8vy9tPTODAD7RvnMvQAb08LZZvE/IPzJAHNXFRb1v+DBa38fOvdyaz/nibrsxiOWZxQVLgjYciUeDy1xvXADaWlqvxmLy+90LHbJFbGxK4AN0mWfwBiUMVyxZjkun39pjTNl2k09OhOq+R52UqnehMc4eBdZCddnCUq4/efbFCJkqe5wY+SE8fYybJjauUL64zyrwf6yfWkXvPVHWa9Y+NCmvH8PCBUcsQnwO7l/Yb4N+8+u6zkODyuc9wLAY+DpnptE3plXtvUs5negC4fvJSnOHpWXuoi9yzp7IlPf6fSjMMDQo0JjCYJwazdzqrIH2VSCcfHAqWF0ECR8IgwZV1bp0xFe0UN0Gjsgkozqf8rvs1AYyTSeD19Wg9j+crTke8E1sfoI/qFzHwzBQFKJ+2l0cs7pZWJBARlhbt1j1IouS2aH+74xwsavRhBz4IsFTPqWiP6JTrgk5cgKRnTqInzNfdaLeUw== zuul-worker@openstack.org
+
+  # NOTE(ianw) : currently only building on nb04.opendev.org; see that
+  # config file.
+  - name: fedora-30
+    parent: base-with-pip
+    pause: true
+    python-path: /usr/bin/python3
+    elements:
+      - fedora-minimal
+      - cache-devstack
+    release: 30
+
+  # NOTE(ianw) : currently only building on nb04.opendev.org; see that
+  # config file.
+  - name: fedora-31
+    parent: base
+    pause: true
+    python-path: /usr/bin/python3
+    elements:
+      - fedora-minimal
+      - cache-devstack
+    release: 31
+
+  ############ Debian #############
+
   - name: debian-stretch
+    parent: base-debuntu-with-pip
     pause: false
     elements:
       - debian-minimal
-      - vm
-      - simple-init
-      - openstack-repos
-      - nodepool-base
       - cache-devstack
-      - growroot
-      - infra-package-needs
-      # NOTE(ianw) 2020-02-17 : we are working to move this into job
-      # configuration
-      - pip-and-virtualenv
     release: stretch
     env-vars:
-      TMPDIR: /opt/dib_tmp
-      DIB_CHECKSUM: '1'
-      DIB_IMAGE_CACHE: /opt/dib_cache
-      DIB_JOURNAL_SIZE: '512'
-      DIB_APT_LOCAL_CACHE: '0'
-      DIB_DISABLE_APT_CLEANUP: '1'
       DIB_DISTRIBUTION_MIRROR: 'http://mirror.dfw.rax.openstack.org/debian'
       DIB_DEBIAN_SECURITY_MIRROR:
         'http://mirror.dfw.rax.openstack.org/debian-security'
       DIB_DEBIAN_SECURITY_SUBPATH: ''
-      DIB_DEBOOTSTRAP_EXTRA_ARGS: '--no-check-gpg'
-      DIB_GRUB_TIMEOUT: '0'
-      GIT_HTTP_LOW_SPEED_TIME: '300'
-      GIT_HTTP_LOW_SPEED_LIMIT: '1000'
-      DIB_SHOW_IMAGE_USAGE: '1'
-      ZUUL_USER_SSH_PUBLIC_KEY: |
-        ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDh5u0DWNi0d3uqI82izAxVTUTrGl36L3szEqV9WrilGmxaTtp9X7HrktJ5J+rvxQqz39llTf1v7iYA4CNKto/48RBAB0mKEEI4x4iw+fu/BLU7nu7ewSfXLUxHahxaTgIk2KcbegknD5NzMjalyfNfgTPDGv8BjwHeeNdZmJMBvPFGu6fO48M4yK1tiQn0kAkaH4oII/M4pyF8vy9tPTODAD7RvnMvQAb08LZZvE/IPzJAHNXFRb1v+DBa38fOvdyaz/nibrsxiOWZxQVLgjYciUeDy1xvXADaWlqvxmLy+90LHbJFbGxK4AN0mWfwBiUMVyxZjkun39pjTNl2k09OhOq+R52UqnehMc4eBdZCddnCUq4/efbFCJkqe5wY+SE8fYybJjauUL64zyrwf6yfWkXvPVHWa9Y+NCmvH8PCBUcsQnwO7l/Yb4N+8+u6zkODyuc9wLAY+DpnptE3plXtvUs5negC4fvJSnOHpWXuoi9yzp7IlPf6fSjMMDQo0JjCYJwazdzqrIH2VSCcfHAqWF0ECR8IgwZV1bp0xFe0UN0Gjsgkozqf8rvs1AYyTSeD19Wg9j+crTke8E1sfoI/qFzHwzBQFKJ+2l0cs7pZWJBARlhbt1j1IouS2aH+74xwsavRhBz4IsFTPqWiP6JTrgk5cgKRnTqInzNfdaLeUw== zuul-worker@openstack.org
+
   - name: debian-buster
+    parent: base-debuntu-with-pip
     pause: false
     elements:
       - debian-minimal
-      - vm
-      - simple-init
-      - openstack-repos
-      - nodepool-base
       - cache-devstack
-      - growroot
-      - infra-package-needs
-      # NOTE(ianw) 2020-02-17 : we are working to move this into job
-      # configuration
-      - pip-and-virtualenv
     release: buster
     env-vars:
-      TMPDIR: /opt/dib_tmp
-      DIB_CHECKSUM: '1'
-      DIB_IMAGE_CACHE: /opt/dib_cache
-      DIB_APT_LOCAL_CACHE: '0'
-      DIB_DISABLE_APT_CLEANUP: '1'
       DIB_DISTRIBUTION_MIRROR: 'http://mirror.dfw.rax.openstack.org/debian'
       DIB_DEBIAN_SECURITY_MIRROR:
         'http://mirror.dfw.rax.openstack.org/debian-security'
       DIB_DEBIAN_SECURITY_SUBPATH: ''
-      DIB_DEBOOTSTRAP_EXTRA_ARGS: '--no-check-gpg'
-      DIB_GRUB_TIMEOUT: '0'
-      GIT_HTTP_LOW_SPEED_TIME: '300'
-      GIT_HTTP_LOW_SPEED_LIMIT: '1000'
-      DIB_SHOW_IMAGE_USAGE: '1'
-      ZUUL_USER_SSH_PUBLIC_KEY: |
-        ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDh5u0DWNi0d3uqI82izAxVTUTrGl36L3szEqV9WrilGmxaTtp9X7HrktJ5J+rvxQqz39llTf1v7iYA4CNKto/48RBAB0mKEEI4x4iw+fu/BLU7nu7ewSfXLUxHahxaTgIk2KcbegknD5NzMjalyfNfgTPDGv8BjwHeeNdZmJMBvPFGu6fO48M4yK1tiQn0kAkaH4oII/M4pyF8vy9tPTODAD7RvnMvQAb08LZZvE/IPzJAHNXFRb1v+DBa38fOvdyaz/nibrsxiOWZxQVLgjYciUeDy1xvXADaWlqvxmLy+90LHbJFbGxK4AN0mWfwBiUMVyxZjkun39pjTNl2k09OhOq+R52UqnehMc4eBdZCddnCUq4/efbFCJkqe5wY+SE8fYybJjauUL64zyrwf6yfWkXvPVHWa9Y+NCmvH8PCBUcsQnwO7l/Yb4N+8+u6zkODyuc9wLAY+DpnptE3plXtvUs5negC4fvJSnOHpWXuoi9yzp7IlPf6fSjMMDQo0JjCYJwazdzqrIH2VSCcfHAqWF0ECR8IgwZV1bp0xFe0UN0Gjsgkozqf8rvs1AYyTSeD19Wg9j+crTke8E1sfoI/qFzHwzBQFKJ+2l0cs7pZWJBARlhbt1j1IouS2aH+74xwsavRhBz4IsFTPqWiP6JTrgk5cgKRnTqInzNfdaLeUw== zuul-worker@openstack.org
       DIB_BLOCK_DEVICE_CONFIG: |
         # Default single partition loopback
 
@@ -286,231 +282,77 @@ diskimages:
                       options: "defaults,nobarrier,noatime"
                       fsck-passno: 1
 
-# NOTE(ianw) : fedora-30|31 currently only building on
-# nb04.opendev.org; see that config file.
-  - name: fedora-30
-    pause: true
-    python-path: /usr/bin/python3
-    elements:
-      - fedora-minimal
-      - vm
-      - simple-init
-      - openstack-repos
-      - nodepool-base
-      - cache-devstack
-      - initialize-urandom
-      - growroot
-      - infra-package-needs
-      # NOTE(ianw) 2020-02-17 : we are working to move this into job
-      # configuration
-      - pip-and-virtualenv
-    release: 30
-    env-vars:
-      TMPDIR: /opt/dib_tmp
-      DIB_CHECKSUM: '1'
-      DIB_IMAGE_CACHE: /opt/dib_cache
-      DIB_JOURNAL_SIZE: '512'
-      DIB_GRUB_TIMEOUT: '0'
-      GIT_HTTP_LOW_SPEED_TIME: '300'
-      GIT_HTTP_LOW_SPEED_LIMIT: '1000'
-      DIB_SHOW_IMAGE_USAGE: '1'
-      ZUUL_USER_SSH_PUBLIC_KEY: |
-        ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDh5u0DWNi0d3uqI82izAxVTUTrGl36L3szEqV9WrilGmxaTtp9X7HrktJ5J+rvxQqz39llTf1v7iYA4CNKto/48RBAB0mKEEI4x4iw+fu/BLU7nu7ewSfXLUxHahxaTgIk2KcbegknD5NzMjalyfNfgTPDGv8BjwHeeNdZmJMBvPFGu6fO48M4yK1tiQn0kAkaH4oII/M4pyF8vy9tPTODAD7RvnMvQAb08LZZvE/IPzJAHNXFRb1v+DBa38fOvdyaz/nibrsxiOWZxQVLgjYciUeDy1xvXADaWlqvxmLy+90LHbJFbGxK4AN0mWfwBiUMVyxZjkun39pjTNl2k09OhOq+R52UqnehMc4eBdZCddnCUq4/efbFCJkqe5wY+SE8fYybJjauUL64zyrwf6yfWkXvPVHWa9Y+NCmvH8PCBUcsQnwO7l/Yb4N+8+u6zkODyuc9wLAY+DpnptE3plXtvUs5negC4fvJSnOHpWXuoi9yzp7IlPf6fSjMMDQo0JjCYJwazdzqrIH2VSCcfHAqWF0ECR8IgwZV1bp0xFe0UN0Gjsgkozqf8rvs1AYyTSeD19Wg9j+crTke8E1sfoI/qFzHwzBQFKJ+2l0cs7pZWJBARlhbt1j1IouS2aH+74xwsavRhBz4IsFTPqWiP6JTrgk5cgKRnTqInzNfdaLeUw== zuul-worker@openstack.org
-  - name: fedora-31
-    pause: true
-    python-path: /usr/bin/python3
-    elements:
-      - fedora-minimal
-      - vm
-      - simple-init
-      - openstack-repos
-      - nodepool-base
-      - cache-devstack
-      - initialize-urandom
-      - growroot
-      - infra-package-needs
-    release: 31
-    env-vars:
-      TMPDIR: /opt/dib_tmp
-      DIB_CHECKSUM: '1'
-      DIB_IMAGE_CACHE: /opt/dib_cache
-      DIB_JOURNAL_SIZE: '512'
-      DIB_GRUB_TIMEOUT: '0'
-      GIT_HTTP_LOW_SPEED_TIME: '300'
-      GIT_HTTP_LOW_SPEED_LIMIT: '1000'
-      DIB_SHOW_IMAGE_USAGE: '1'
-      ZUUL_USER_SSH_PUBLIC_KEY: |
-        ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDh5u0DWNi0d3uqI82izAxVTUTrGl36L3szEqV9WrilGmxaTtp9X7HrktJ5J+rvxQqz39llTf1v7iYA4CNKto/48RBAB0mKEEI4x4iw+fu/BLU7nu7ewSfXLUxHahxaTgIk2KcbegknD5NzMjalyfNfgTPDGv8BjwHeeNdZmJMBvPFGu6fO48M4yK1tiQn0kAkaH4oII/M4pyF8vy9tPTODAD7RvnMvQAb08LZZvE/IPzJAHNXFRb1v+DBa38fOvdyaz/nibrsxiOWZxQVLgjYciUeDy1xvXADaWlqvxmLy+90LHbJFbGxK4AN0mWfwBiUMVyxZjkun39pjTNl2k09OhOq+R52UqnehMc4eBdZCddnCUq4/efbFCJkqe5wY+SE8fYybJjauUL64zyrwf6yfWkXvPVHWa9Y+NCmvH8PCBUcsQnwO7l/Yb4N+8+u6zkODyuc9wLAY+DpnptE3plXtvUs5negC4fvJSnOHpWXuoi9yzp7IlPf6fSjMMDQo0JjCYJwazdzqrIH2VSCcfHAqWF0ECR8IgwZV1bp0xFe0UN0Gjsgkozqf8rvs1AYyTSeD19Wg9j+crTke8E1sfoI/qFzHwzBQFKJ+2l0cs7pZWJBARlhbt1j1IouS2aH+74xwsavRhBz4IsFTPqWiP6JTrgk5cgKRnTqInzNfdaLeUw== zuul-worker@openstack.org
+
+  ############ Gentoo #############
+
   - name: gentoo-17-0-systemd
+    parent: base-with-pip
     pause: false
     elements:
       - gentoo
-      - vm
-      - simple-init
-      - openstack-repos
-      - nodepool-base
-      - growroot
-      - infra-package-needs
-      # NOTE(ianw) 2020-02-17 : we are working to move this into job
-      # configuration
-      - pip-and-virtualenv
     env-vars:
-      TMPDIR: /opt/dib_tmp
-      DIB_CHECKSUM: '1'
-      DIB_IMAGE_CACHE: /opt/dib_cache
-      DIB_JOURNAL_SIZE: '512'
-      DIB_GRUB_TIMEOUT: '0'
       GENTOO_PYTHON_TARGETS: 'python2_7 python3_6'
       GENTOO_PYTHON_ACTIVE_VERSION: python3.6
       GENTOO_PROFILE: 'default/linux/amd64/17.1/systemd'
-      GIT_HTTP_LOW_SPEED_TIME: '300'
-      GIT_HTTP_LOW_SPEED_LIMIT: '1000'
-      DIB_SHOW_IMAGE_USAGE: '1'
-      ZUUL_USER_SSH_PUBLIC_KEY: |
-        ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDh5u0DWNi0d3uqI82izAxVTUTrGl36L3szEqV9WrilGmxaTtp9X7HrktJ5J+rvxQqz39llTf1v7iYA4CNKto/48RBAB0mKEEI4x4iw+fu/BLU7nu7ewSfXLUxHahxaTgIk2KcbegknD5NzMjalyfNfgTPDGv8BjwHeeNdZmJMBvPFGu6fO48M4yK1tiQn0kAkaH4oII/M4pyF8vy9tPTODAD7RvnMvQAb08LZZvE/IPzJAHNXFRb1v+DBa38fOvdyaz/nibrsxiOWZxQVLgjYciUeDy1xvXADaWlqvxmLy+90LHbJFbGxK4AN0mWfwBiUMVyxZjkun39pjTNl2k09OhOq+R52UqnehMc4eBdZCddnCUq4/efbFCJkqe5wY+SE8fYybJjauUL64zyrwf6yfWkXvPVHWa9Y+NCmvH8PCBUcsQnwO7l/Yb4N+8+u6zkODyuc9wLAY+DpnptE3plXtvUs5negC4fvJSnOHpWXuoi9yzp7IlPf6fSjMMDQo0JjCYJwazdzqrIH2VSCcfHAqWF0ECR8IgwZV1bp0xFe0UN0Gjsgkozqf8rvs1AYyTSeD19Wg9j+crTke8E1sfoI/qFzHwzBQFKJ+2l0cs7pZWJBARlhbt1j1IouS2aH+74xwsavRhBz4IsFTPqWiP6JTrgk5cgKRnTqInzNfdaLeUw== zuul-worker@openstack.org
+
+
+  ############ openSUSE #############
+
   - name: opensuse-15
+    parent: base-with-pip
     pause: false
     elements:
       - opensuse-minimal
-      - vm
-      - simple-init
-      - openstack-repos
-      - nodepool-base
       - cache-devstack
-      - growroot
-      - infra-package-needs
-      # NOTE(ianw) 2020-02-17 : we are working to move this into job
-      # configuration
-      - pip-and-virtualenv
     release: '15.1'
     env-vars:
-      TMPDIR: /opt/dib_tmp
-      DIB_CHECKSUM: '1'
-      DIB_IMAGE_CACHE: /opt/dib_cache
-      DIB_JOURNAL_SIZE: '512'
-      DIB_GRUB_TIMEOUT: '0'
       DIB_DISTRIBUTION_MIRROR: 'http://mirror.dfw.rax.openstack.org/opensuse'
-      GIT_HTTP_LOW_SPEED_TIME: '300'
-      GIT_HTTP_LOW_SPEED_LIMIT: '1000'
-      DIB_SHOW_IMAGE_USAGE: '1'
+
   - name: opensuse-tumbleweed
+    parent: base-with-pip
     pause: false
     elements:
       - opensuse-minimal
-      - vm
-      - simple-init
-      - openstack-repos
-      - nodepool-base
       - cache-devstack
-      - growroot
-      - infra-package-needs
-      # NOTE(ianw) 2020-02-17 : we are working to move this into job
-      # configuration
-      - pip-and-virtualenv
     release: 'tumbleweed'
     env-vars:
-      TMPDIR: /opt/dib_tmp
-      DIB_CHECKSUM: '1'
-      DIB_IMAGE_CACHE: /opt/dib_cache
-      DIB_JOURNAL_SIZE: '512'
-      DIB_GRUB_TIMEOUT: '0'
       DIB_DISTRIBUTION_MIRROR: 'http://mirror.dfw.rax.openstack.org/opensuse'
-      GIT_HTTP_LOW_SPEED_TIME: '300'
-      GIT_HTTP_LOW_SPEED_LIMIT: '1000'
-      DIB_SHOW_IMAGE_USAGE: '1'
-      ZUUL_USER_SSH_PUBLIC_KEY: |
-        ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDh5u0DWNi0d3uqI82izAxVTUTrGl36L3szEqV9WrilGmxaTtp9X7HrktJ5J+rvxQqz39llTf1v7iYA4CNKto/48RBAB0mKEEI4x4iw+fu/BLU7nu7ewSfXLUxHahxaTgIk2KcbegknD5NzMjalyfNfgTPDGv8BjwHeeNdZmJMBvPFGu6fO48M4yK1tiQn0kAkaH4oII/M4pyF8vy9tPTODAD7RvnMvQAb08LZZvE/IPzJAHNXFRb1v+DBa38fOvdyaz/nibrsxiOWZxQVLgjYciUeDy1xvXADaWlqvxmLy+90LHbJFbGxK4AN0mWfwBiUMVyxZjkun39pjTNl2k09OhOq+R52UqnehMc4eBdZCddnCUq4/efbFCJkqe5wY+SE8fYybJjauUL64zyrwf6yfWkXvPVHWa9Y+NCmvH8PCBUcsQnwO7l/Yb4N+8+u6zkODyuc9wLAY+DpnptE3plXtvUs5negC4fvJSnOHpWXuoi9yzp7IlPf6fSjMMDQo0JjCYJwazdzqrIH2VSCcfHAqWF0ECR8IgwZV1bp0xFe0UN0Gjsgkozqf8rvs1AYyTSeD19Wg9j+crTke8E1sfoI/qFzHwzBQFKJ+2l0cs7pZWJBARlhbt1j1IouS2aH+74xwsavRhBz4IsFTPqWiP6JTrgk5cgKRnTqInzNfdaLeUw== zuul-worker@openstack.org
+
+
+  ############ Ubuntu #############
+
   - name: ubuntu-bionic
+    parent: base-debuntu-with-pip
     pause: false
     elements:
       - ubuntu-minimal
-      - vm
-      - simple-init
-      - openstack-repos
-      - nodepool-base
       - cache-devstack
-      - growroot
-      - infra-package-needs
-      # NOTE(ianw) 2020-02-17 : we are working to move this into job
-      # configuration
-      - pip-and-virtualenv
     release: bionic
     env-vars:
-      TMPDIR: /opt/dib_tmp
-      DIB_CHECKSUM: '1'
-      DIB_IMAGE_CACHE: /opt/dib_cache
-      DIB_JOURNAL_SIZE: '512'
-      DIB_APT_LOCAL_CACHE: '0'
-      DIB_DISABLE_APT_CLEANUP: '1'
-      DIB_GRUB_TIMEOUT: '0'
       DIB_DISTRIBUTION_MIRROR: 'http://mirror.dfw.rax.openstack.org/ubuntu'
-      DIB_DEBOOTSTRAP_EXTRA_ARGS: '--no-check-gpg'
       DIB_DEBIAN_COMPONENTS: 'main,universe'
-      GIT_HTTP_LOW_SPEED_TIME: '300'
-      GIT_HTTP_LOW_SPEED_LIMIT: '1000'
-      DIB_SHOW_IMAGE_USAGE: '1'
-      ZUUL_USER_SSH_PUBLIC_KEY: |
-        ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDh5u0DWNi0d3uqI82izAxVTUTrGl36L3szEqV9WrilGmxaTtp9X7HrktJ5J+rvxQqz39llTf1v7iYA4CNKto/48RBAB0mKEEI4x4iw+fu/BLU7nu7ewSfXLUxHahxaTgIk2KcbegknD5NzMjalyfNfgTPDGv8BjwHeeNdZmJMBvPFGu6fO48M4yK1tiQn0kAkaH4oII/M4pyF8vy9tPTODAD7RvnMvQAb08LZZvE/IPzJAHNXFRb1v+DBa38fOvdyaz/nibrsxiOWZxQVLgjYciUeDy1xvXADaWlqvxmLy+90LHbJFbGxK4AN0mWfwBiUMVyxZjkun39pjTNl2k09OhOq+R52UqnehMc4eBdZCddnCUq4/efbFCJkqe5wY+SE8fYybJjauUL64zyrwf6yfWkXvPVHWa9Y+NCmvH8PCBUcsQnwO7l/Yb4N+8+u6zkODyuc9wLAY+DpnptE3plXtvUs5negC4fvJSnOHpWXuoi9yzp7IlPf6fSjMMDQo0JjCYJwazdzqrIH2VSCcfHAqWF0ECR8IgwZV1bp0xFe0UN0Gjsgkozqf8rvs1AYyTSeD19Wg9j+crTke8E1sfoI/qFzHwzBQFKJ+2l0cs7pZWJBARlhbt1j1IouS2aH+74xwsavRhBz4IsFTPqWiP6JTrgk5cgKRnTqInzNfdaLeUw== zuul-worker@openstack.org
+
   - name: ubuntu-xenial
+    parent: base-debuntu-with-pip
     pause: false
     elements:
       - ubuntu-minimal
-      - vm
-      - simple-init
-      - openstack-repos
-      - nodepool-base
       - cache-devstack
-      - initialize-urandom
-      - growroot
-      - infra-package-needs
-      # NOTE(ianw) 2020-02-17 : we are working to move this into job
-      # configuration
-      - pip-and-virtualenv
     release: xenial
     env-vars:
-      TMPDIR: /opt/dib_tmp
-      DIB_CHECKSUM: '1'
-      DIB_IMAGE_CACHE: /opt/dib_cache
-      DIB_JOURNAL_SIZE: '512'
-      DIB_APT_LOCAL_CACHE: '0'
-      DIB_DISABLE_APT_CLEANUP: '1'
-      DIB_GRUB_TIMEOUT: '0'
       DIB_DISTRIBUTION_MIRROR: 'http://mirror.dfw.rax.openstack.org/ubuntu'
-      DIB_DEBOOTSTRAP_EXTRA_ARGS: '--no-check-gpg'
       DIB_DEBIAN_COMPONENTS: 'main,universe'
-      GIT_HTTP_LOW_SPEED_TIME: '300'
-      GIT_HTTP_LOW_SPEED_LIMIT: '1000'
-      DIB_SHOW_IMAGE_USAGE: '1'
-      ZUUL_USER_SSH_PUBLIC_KEY: |
-        ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDh5u0DWNi0d3uqI82izAxVTUTrGl36L3szEqV9WrilGmxaTtp9X7HrktJ5J+rvxQqz39llTf1v7iYA4CNKto/48RBAB0mKEEI4x4iw+fu/BLU7nu7ewSfXLUxHahxaTgIk2KcbegknD5NzMjalyfNfgTPDGv8BjwHeeNdZmJMBvPFGu6fO48M4yK1tiQn0kAkaH4oII/M4pyF8vy9tPTODAD7RvnMvQAb08LZZvE/IPzJAHNXFRb1v+DBa38fOvdyaz/nibrsxiOWZxQVLgjYciUeDy1xvXADaWlqvxmLy+90LHbJFbGxK4AN0mWfwBiUMVyxZjkun39pjTNl2k09OhOq+R52UqnehMc4eBdZCddnCUq4/efbFCJkqe5wY+SE8fYybJjauUL64zyrwf6yfWkXvPVHWa9Y+NCmvH8PCBUcsQnwO7l/Yb4N+8+u6zkODyuc9wLAY+DpnptE3plXtvUs5negC4fvJSnOHpWXuoi9yzp7IlPf6fSjMMDQo0JjCYJwazdzqrIH2VSCcfHAqWF0ECR8IgwZV1bp0xFe0UN0Gjsgkozqf8rvs1AYyTSeD19Wg9j+crTke8E1sfoI/qFzHwzBQFKJ+2l0cs7pZWJBARlhbt1j1IouS2aH+74xwsavRhBz4IsFTPqWiP6JTrgk5cgKRnTqInzNfdaLeUw== zuul-worker@openstack.org
+
   # NOTE(ianw) 2020-02-17 : this is an alternative image without the
   # pip-and-virtualenv element we can test ansible roles to achieve
   # full backwards-compatability with.
   - name: ubuntu-bionic-plain
+    parent: base-debuntu
     pause: false
     elements:
       - ubuntu-minimal
-      - vm
-      - simple-init
-      - openstack-repos
-      - nodepool-base
       - cache-devstack
-      - growroot
-      - infra-package-needs
     release: bionic
     env-vars:
-      TMPDIR: /opt/dib_tmp
-      DIB_CHECKSUM: '1'
-      DIB_IMAGE_CACHE: /opt/dib_cache
-      DIB_JOURNAL_SIZE: '512'
-      DIB_APT_LOCAL_CACHE: '0'
-      DIB_DISABLE_APT_CLEANUP: '1'
-      DIB_GRUB_TIMEOUT: '0'
       DIB_DISTRIBUTION_MIRROR: 'http://mirror.dfw.rax.openstack.org/ubuntu'
-      DIB_DEBOOTSTRAP_EXTRA_ARGS: '--no-check-gpg'
       DIB_DEBIAN_COMPONENTS: 'main,universe'
-      GIT_HTTP_LOW_SPEED_TIME: '300'
-      GIT_HTTP_LOW_SPEED_LIMIT: '1000'
-      DIB_SHOW_IMAGE_USAGE: '1'
-      ZUUL_USER_SSH_PUBLIC_KEY: |
-        ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDh5u0DWNi0d3uqI82izAxVTUTrGl36L3szEqV9WrilGmxaTtp9X7HrktJ5J+rvxQqz39llTf1v7iYA4CNKto/48RBAB0mKEEI4x4iw+fu/BLU7nu7ewSfXLUxHahxaTgIk2KcbegknD5NzMjalyfNfgTPDGv8BjwHeeNdZmJMBvPFGu6fO48M4yK1tiQn0kAkaH4oII/M4pyF8vy9tPTODAD7RvnMvQAb08LZZvE/IPzJAHNXFRb1v+DBa38fOvdyaz/nibrsxiOWZxQVLgjYciUeDy1xvXADaWlqvxmLy+90LHbJFbGxK4AN0mWfwBiUMVyxZjkun39pjTNl2k09OhOq+R52UqnehMc4eBdZCddnCUq4/efbFCJkqe5wY+SE8fYybJjauUL64zyrwf6yfWkXvPVHWa9Y+NCmvH8PCBUcsQnwO7l/Yb4N+8+u6zkODyuc9wLAY+DpnptE3plXtvUs5negC4fvJSnOHpWXuoi9yzp7IlPf6fSjMMDQo0JjCYJwazdzqrIH2VSCcfHAqWF0ECR8IgwZV1bp0xFe0UN0Gjsgkozqf8rvs1AYyTSeD19Wg9j+crTke8E1sfoI/qFzHwzBQFKJ+2l0cs7pZWJBARlhbt1j1IouS2aH+74xwsavRhBz4IsFTPqWiP6JTrgk5cgKRnTqInzNfdaLeUw== zuul-worker@openstack.org
