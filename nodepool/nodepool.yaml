@@ -55,6 +55,8 @@ providers:
         config-drive: true
       - name: ubuntu-bionic
         config-drive: true
+      - name: ubuntu-bionic-plain
+        config-drive: true
       - name: ubuntu-xenial
         config-drive: true
 
@@ -74,45 +76,19 @@ providers:
     region-name: 'DFW'
     cloud: rax
     rate: 0.001
-    diskimages: &rax_provider_diskimages
-      # NOTE(ianw) 2020-02-17 : duplicated to add ubuntu-bionic-plain
-      # while we work to remove pip-and-virtualenv
-      - name: centos-7
-        config-drive: true
-      - name: centos-8
-        config-drive: true
-      - name: debian-buster
-        config-drive: true
-      - name: debian-stretch
-        config-drive: true
-      - name: fedora-30
-        config-drive: true
-      - name: fedora-31
-        config-drive: true
-      - name: gentoo-17-0-systemd
-        config-drive: true
-      - name: opensuse-15
-        config-drive: true
-      - name: opensuse-tumbleweed
-        config-drive: true
-      - name: ubuntu-bionic
-        config-drive: true
-      - name: ubuntu-bionic-plain
-        config-drive: true
-      - name: ubuntu-xenial
-        config-drive: true
+    diskimages: *provider_diskimages
 
   - name: rax-iad
     region-name: 'IAD'
     cloud: rax
     rate: 0.001
-    diskimages: *rax_provider_diskimages
+    diskimages: *provider_diskimages
 
   - name: rax-ord
     region-name: 'ORD'
     cloud: rax
     rate: 0.001
-    diskimages: *rax_provider_diskimages
+    diskimages: *provider_diskimages
 
   - name: vexxhost-ca-ymq-1
     region-name: 'ca-ymq-1'
