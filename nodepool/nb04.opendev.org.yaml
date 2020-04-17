@@ -39,6 +39,8 @@ providers:
         config-drive: true
       - name: centos-8
         config-drive: true
+      - name: centos-8-plain
+        config-drive: true
       - name: debian-buster
         config-drive: true
       - name: debian-stretch
@@ -51,13 +53,19 @@ providers:
         config-drive: true
       - name: opensuse-15
         config-drive: true
+      - name: opensuse-15-plain
+        config-drive: true
       - name: opensuse-tumbleweed
+        config-drive: true
+      - name: opensuse-tumbleweed-plain
         config-drive: true
       - name: ubuntu-bionic
         config-drive: true
       - name: ubuntu-bionic-plain
         config-drive: true
       - name: ubuntu-xenial
+        config-drive: true
+      - name: ubuntu-xenial-plain
         config-drive: true
 
   - name: ovh-gra1
@@ -315,12 +323,16 @@ diskimages:
       DIB_DISTRIBUTION_MIRROR: 'http://mirror.dfw.rax.openstack.org/ubuntu'
       DIB_DEBIAN_COMPONENTS: 'main,universe'
 
-  # NOTE(ianw) 2020-02-17 : this is an alternative image without the
+
+  ############ Plain images #############
+
+  # NOTE(ianw) 2020-03-16 : these are alternative images without the
   # pip-and-virtualenv element we can test ansible roles to achieve
   # full backwards-compatability with.
+
   - name: ubuntu-bionic-plain
     parent: base-debuntu
-    pause: true
+    pause: false
     elements:
       - ubuntu-minimal
       - cache-devstack
@@ -328,3 +340,46 @@ diskimages:
     env-vars:
       DIB_DISTRIBUTION_MIRROR: 'http://mirror.dfw.rax.openstack.org/ubuntu'
       DIB_DEBIAN_COMPONENTS: 'main,universe'
+
+  - name: ubuntu-xenial-plain
+    parent: base-debuntu
+    pause: false
+    elements:
+      - ubuntu-minimal
+      - cache-devstack
+    release: xenial
+    env-vars:
+      DIB_DISTRIBUTION_MIRROR: 'http://mirror.dfw.rax.openstack.org/ubuntu'
+      DIB_DEBIAN_COMPONENTS: 'main,universe'
+
+  - name: opensuse-15-plain
+    parent: base
+    pause: false
+    elements:
+      - opensuse-minimal
+      - cache-devstack
+    release: '15.1'
+    env-vars:
+      DIB_DISTRIBUTION_MIRROR: 'http://mirror.dfw.rax.openstack.org/opensuse'
+
+  - name: opensuse-tumbleweed-plain
+    parent: base
+    pause: false
+    elements:
+      - opensuse-minimal
+      - cache-devstack
+    release: 'tumbleweed'
+    env-vars:
+      DIB_DISTRIBUTION_MIRROR: 'http://mirror.dfw.rax.openstack.org/opensuse'
+
+  - name: centos-8-plain
+    parent: base
+    pause: false
+    python-path: /usr/bin/python3
+    release: '8'
+    elements:
+      - cache-devstack
+      - centos-minimal
+      - epel
+    env-vars:
+      DIB_EPEL_DISABLED: '1'

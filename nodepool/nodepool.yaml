@@ -39,6 +39,8 @@ providers:
         config-drive: true
       - name: centos-8
         config-drive: true
+      - name: centos-8-plain
+        config-drive: true
       - name: debian-buster
         config-drive: true
       - name: debian-stretch
@@ -51,13 +53,19 @@ providers:
         config-drive: true
       - name: opensuse-15
         config-drive: true
+      - name: opensuse-15-plain
+        config-drive: true
       - name: opensuse-tumbleweed
+        config-drive: true
+      - name: opensuse-tumbleweed-plain
         config-drive: true
       - name: ubuntu-bionic
         config-drive: true
       - name: ubuntu-bionic-plain
         config-drive: true
       - name: ubuntu-xenial
+        config-drive: true
+      - name: ubuntu-xenial-plain
         config-drive: true
 
   - name: ovh-gra1
@@ -319,16 +327,21 @@ diskimages:
       DIB_DISTRIBUTION_MIRROR: 'http://mirror.dfw.rax.openstack.org/ubuntu'
       DIB_DEBIAN_COMPONENTS: 'main,universe'
 
-  # NOTE(ianw) 2020-02-17 : this is an alternative image without the
-  # pip-and-virtualenv element we can test ansible roles to achieve
-  # full backwards-compatability with.
+  ############ Plain images #############
+
+  # NOTE : these only build on nb04; see that configuration file
+
   - name: ubuntu-bionic-plain
-    parent: base-debuntu
-    pause: false
-    elements:
-      - ubuntu-minimal
-      - cache-devstack
-    release: bionic
-    env-vars:
-      DIB_DISTRIBUTION_MIRROR: 'http://mirror.dfw.rax.openstack.org/ubuntu'
-      DIB_DEBIAN_COMPONENTS: 'main,universe'
+    pause: true
+
+  - name: ubuntu-xenial-plain
+    pause: true
+
+  - name: opensuse-15-plain
+    pause: true
+
+  - name: opensuse-tumbleweed-plain
+    pause: true
+
+  - name: centos-8-plain
+    pause: true
