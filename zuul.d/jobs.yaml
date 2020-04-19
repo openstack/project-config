@@ -392,13 +392,11 @@
     pre-run: playbooks/yaml2ical/pre.yaml
     run: playbooks/project-config/run-tox.yaml
     post-run: playbooks/yaml2ical/post.yaml
-    allowed-projects:
+    required-projects:
       - opendev/irc-meetings
     vars:
       tox_envlist: ical
-    secrets:
-      - name: fileserver
-        secret: eavesdrop_ssh_key
+      zuul_work_dir: src/opendev.org/opendev/irc-meetings
 
 - job:
     name: publish-tox-docs-releases
