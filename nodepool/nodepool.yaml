@@ -329,13 +329,29 @@ diskimages:
 
   ############ Plain images #############
 
-  # NOTE : these only build on nb04; see that configuration file
-
   - name: ubuntu-bionic-plain
-    pause: true
+    parent: base-debuntu
+    pause: false
+    elements:
+      - ubuntu-minimal
+      - cache-devstack
+    release: bionic
+    env-vars:
+      DIB_DISTRIBUTION_MIRROR: 'http://mirror.dfw.rax.openstack.org/ubuntu'
+      DIB_DEBIAN_COMPONENTS: 'main,universe'
 
   - name: ubuntu-xenial-plain
-    pause: true
+    parent: base-debuntu
+    pause: false
+    elements:
+      - ubuntu-minimal
+      - cache-devstack
+    release: xenial
+    env-vars:
+      DIB_DISTRIBUTION_MIRROR: 'http://mirror.dfw.rax.openstack.org/ubuntu'
+      DIB_DEBIAN_COMPONENTS: 'main,universe'
+
+  # NOTE : these only build on nb04; see that configuration file
 
   - name: opensuse-15-plain
     pause: true
