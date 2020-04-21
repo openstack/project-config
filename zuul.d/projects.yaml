@@ -2519,15 +2519,15 @@
 - project:
     name: openstack/networking-ovn
     templates:
-      - translation-jobs-master-stable
-      - periodic-jobs-with-neutron-lib-master
-      - periodic-jobs-with-ovsdbapp-master
       - publish-to-pypi
-    periodic:
+    check:
       jobs:
-        - openstack-tox-py36-with-ovsdbapp-master:
-            required-projects:
-              - openstack/neutron
+        - noop:
+            branches: master
+    gate:
+      jobs:
+        - noop:
+            branches: master
 
 - project:
     name: openstack/networking-powervm
