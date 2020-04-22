@@ -21,8 +21,12 @@
         path: "{{ zuul.executor.work_root }}/docs"
         state: directory
     - name: Extract docs archive
+      vars:
+        findme:
+          - "{{ zuul.executor.work_root }}/docs-html.tar.bz2"
+          - "{{ zuul.executor.work_root }}/docs-html.tar.gz"
       unarchive:
-        src: "{{ zuul.executor.work_root }}/docs-html.tar.bz2"
+        src: "{{ lookup('first_found', findme) }}"
         dest: "{{ zuul.executor.work_root }}/docs"
     - name: Write root_marker file
       include_role:
