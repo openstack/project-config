@@ -95,6 +95,9 @@ function update_upper_constraints {
     fi
     if ! git diff --exit-code >/dev/null 2>&1 ; then
         git add tox.ini
+        if [[ -f  elements/amphora-agent/source-repository-amphora-agent ]]; then
+            git add elements/amphora-agent/source-repository-amphora-agent
+        fi
         msg="Update TOX_CONSTRAINTS_FILE for $branch"
         body="Update the URL to the upper-constraints file to point to the redirect
 rule on releases.openstack.org so that anyone working on this branch
