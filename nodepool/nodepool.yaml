@@ -63,6 +63,8 @@ providers:
         config-drive: true
       - name: ubuntu-bionic-plain
         config-drive: true
+      - name: ubuntu-focal
+        config-drive: true
       - name: ubuntu-xenial
         config-drive: true
       - name: ubuntu-xenial-plain
@@ -312,6 +314,17 @@ diskimages:
       - ubuntu-minimal
       - cache-devstack
     release: bionic
+    env-vars:
+      DIB_DISTRIBUTION_MIRROR: 'http://mirror.dfw.rax.openstack.org/ubuntu'
+      DIB_DEBIAN_COMPONENTS: 'main,universe'
+
+  - name: ubuntu-focal
+    parent: base-debuntu
+    pause: false
+    elements:
+      - ubuntu-minimal
+      - cache-devstack
+    release: focal
     env-vars:
       DIB_DISTRIBUTION_MIRROR: 'http://mirror.dfw.rax.openstack.org/ubuntu'
       DIB_DEBIAN_COMPONENTS: 'main,universe'
