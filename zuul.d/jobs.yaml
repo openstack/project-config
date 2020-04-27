@@ -454,9 +454,33 @@
       Promote root site content for docs.airshipit.org to airshipit.org/docs.
     final: true
     allowed-projects:
-      - airship/treasuremap
+      - airship/docs
     vars:
       publish_site: "airshipit.org/docs"
+
+- job:
+    name: promote-airship-project-docs
+    parent: promote-tox-docs-site-base
+    description: |
+      Promote subproject doc content for docs.airshipit.org site.
+    final: true
+    allowed-projects:
+      - airship/airshipctl
+      - airship/airshipui
+      - airship/armada
+      - airship/deckhand
+      - airship/divingbell
+      - airship/drydock
+      - airship/pegleg
+      - airship/porthole
+      - airship/promenade
+      - airship/shipyard
+      - airship/specs
+      - airship/spyglass
+      - airship/spyglass-plugin-xls
+      - airship/treasuremap
+    vars:
+      publish_site: "airshipit.org/docs/{{ zuul.project.short_name }}"
 
 - job:
     name: promote-governance-election
