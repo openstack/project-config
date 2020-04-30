@@ -13,7 +13,10 @@ case "$DIB_INIT_SYSTEM" in
         ;;
     systemd)
         if [[ $DISTRO_NAME = "ubuntu" || $DISTRO_NAME = "debian" ]]; then
-            systemctl enable ntp.service
+            # stick with default systemd timesyncd on focal
+            if [[ ${DIB_RELEASE} != 'focal' ]]; then
+                systemctl enable ntp.service
+            fi
         elif [[ $DISTRO_NAME == "centos" && $DIB_RELEASE -ge 8 ]]; then
             systemctl enable chronyd
         else
