@@ -398,6 +398,12 @@
       tox_envlist: ical
       zuul_work_dir: src/opendev.org/opendev/irc-meetings
 
+# AFS sync issues happen when multiple publish jobs run at the same time
+# so we make it synchronous to avoid job failures
+- semaphore:
+    name: publish-release-docs
+    max: 1
+
 - job:
     name: publish-tox-docs-releases
     description: |
@@ -414,6 +420,7 @@
       - playbooks/project-config/post-tox.yaml
       - playbooks/sphinx/post-infra.yaml
       - playbooks/publish/releases-afs.yaml
+    semaphore: publish-release-docs
     allowed-projects:
       - openstack/releases
     required-projects:
