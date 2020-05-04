@@ -38,6 +38,17 @@ dashboard:
             - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_octavia.master.job.octavia-v2-act-stdby-dsvm-scenario.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'octavia-v2-act-stdby-dsvm-scenario')
           type: graph
 
+        - title: Grenade Failure Rates (Gate queue)
+          span: 6
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_octavia.master.job.octavia-grenade.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_octavia.master.job.octavia-grenade.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'octavia-grenade')
+          type: graph
+        - title: Number of Grenade jobs runs (Gate queue)
+          span: 6
+          targets:
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_octavia.master.job.octavia-grenade.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'octavia-grenade')
+          type: graph
+
         - title: Functional Failure Rates (Gate queue)
           span: 6
           targets:
@@ -53,14 +64,14 @@ dashboard:
           span: 6
           targets:
             - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_octavia.master.job.openstack-tox-py36.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_octavia.master.job.openstack-tox-py36.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'openstack-tox-py36')
-            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_octavia.master.job.openstack-tox-py37.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_octavia.master.job.openstack-tox-py37.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'openstack-tox-py37')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_octavia.master.job.openstack-tox-py38.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_octavia.master.job.openstack-tox-py38.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'openstack-tox-py38')
             - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_octavia.master.job.openstack-tox-lower-constraints.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_octavia.master.job.openstack-tox-lower-constraints.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'openstack-tox-lower-constraints')
           type: graph
         - title: Number of Unit Tests jobs runs (Gate queue)
           span: 6
           targets:
             - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_octavia.master.job.openstack-tox-py36.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'openstack-tox-py36')
-            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_octavia.master.job.openstack-tox-py37.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'openstack-tox-py37')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_octavia.master.job.openstack-tox-py38.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'openstack-tox-py38')
             - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_octavia.master.job.openstack-tox-lower-constraints.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'openstack-tox-lower-constraints')
           type: graph
 
@@ -116,12 +127,12 @@ dashboard:
         - title: Grenade Failure Rates (Check queue)
           span: 6
           targets:
-            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_octavia.master.job.octavia-grenade.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_octavia.master.job.octavia-grenade.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'octavia-grenade (non-voting)')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_octavia.master.job.octavia-grenade.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_octavia.master.job.octavia-grenade.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'octavia-grenade')
           type: graph
         - title: Number of Grenade jobs runs (Check queue)
           span: 6
           targets:
-            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_octavia.master.job.octavia-grenade.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'octavia-grenade (non-voting)')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_octavia.master.job.octavia-grenade.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'octavia-grenade')
           type: graph
 
         - title: Functional Failure Rates (Check queue)
@@ -141,7 +152,7 @@ dashboard:
           span: 6
           targets:
             - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_octavia.master.job.openstack-tox-py36.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_octavia.master.job.openstack-tox-py36.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'openstack-tox-py36')
-            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_octavia.master.job.openstack-tox-py37.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_octavia.master.job.openstack-tox-py37.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'openstack-tox-py37')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_octavia.master.job.openstack-tox-py38.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_octavia.master.job.openstack-tox-py38.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'openstack-tox-py38')
             - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_octavia.master.job.octavia-tox-py37-tips.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_octavia.master.job.octavia-tox-py37-tips.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'octavia-tox-py37-tips')
             - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_octavia.master.job.openstack-tox-lower-constraints.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_octavia.master.job.openstack-tox-lower-constraints.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'openstack-tox-lower-constraints')
           type: graph
@@ -149,7 +160,7 @@ dashboard:
           span: 6
           targets:
             - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_octavia.master.job.openstack-tox-py36.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'openstack-tox-py36')
-            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_octavia.master.job.openstack-tox-py37.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'openstack-tox-py37')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_octavia.master.job.openstack-tox-py38.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'openstack-tox-py38')
             - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_octavia.master.job.octavia-tox-py37-tips.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'octavia-tox-py37-tips')
             - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_octavia.master.job.openstack-tox-lower-constraints.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'openstack-tox-lower-constraints')
           type: graph
