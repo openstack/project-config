@@ -70,10 +70,10 @@ def find_modified_deliverable_files(reporoot):
         cwd=reporoot,
     ).decode('utf-8')
     filenames = [
-        l.strip()
-        for l in results.splitlines()
-        if (l.startswith('deliverables/')
-            and not l.endswith('series_status.yaml'))
+        f.strip()
+        for f in results.splitlines()
+        if (f.startswith('deliverables/')
+            and not f.endswith('series_status.yaml'))
     ]
     return filenames
 
