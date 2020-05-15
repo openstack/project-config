@@ -386,13 +386,13 @@ providers:
             diskimage: ubuntu-xenial
             key-name: infra-root-keys-2018-06-15
 
-  - name: linaro-london
-    region-name: 'London'
-    cloud: linaro-london
+  - name: linaro-us
+    region-name: 'RegionOne'
+    cloud: linaro-us
     boot-timeout: 600
     launch-timeout: 800
     rate: 0.001
-    diskimages: &linaro_provider_diskimages
+    diskimages:
       - name: centos-8-arm64
         config-drive: true
       - name: debian-buster-arm64
@@ -405,8 +405,8 @@ providers:
         config-drive: true
     pools:
       - name: main
-        max-servers: 0
-        labels: &linaro_provider_labels
+        max-servers: 40
+        labels:
           - name: centos-8-arm64
             min-ram: 8000
             flavor-name: 'os.large'
@@ -437,18 +437,6 @@ providers:
             flavor-name: 'm1.xxlarge'
             diskimage: ubuntu-bionic-arm64
             key-name: infra-root-keys-2018-06-15
-
-  - name: linaro-us
-    region-name: 'RegionOne'
-    cloud: linaro-us
-    boot-timeout: 600
-    launch-timeout: 800
-    rate: 0.001
-    diskimages: *linaro_provider_diskimages
-    pools:
-      - name: main
-        max-servers: 40
-        labels: *linaro_provider_labels
 
 diskimages:
   - name: centos-7
