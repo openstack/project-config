@@ -36,6 +36,8 @@ labels:
   - name: ubuntu-xenial
   - name: ubuntu-xenial-arm64
     min-ready: 1
+  - name: ubuntu-focal-arm64
+    min-ready: 0
   - name: ubuntu-bionic-arm64
     min-ready: 1
   - name: ubuntu-bionic-arm64-large
@@ -403,6 +405,8 @@ providers:
         config-drive: true
       - name: ubuntu-bionic-arm64
         config-drive: true
+      - name: ubuntu-focal-arm64
+        config-drive: true
     pools:
       - name: main
         max-servers: 40
@@ -437,6 +441,11 @@ providers:
             flavor-name: 'm1.xxlarge'
             diskimage: ubuntu-bionic-arm64
             key-name: infra-root-keys-2020-05-13
+          - name: ubuntu-focal-arm64
+            min-ram: 8000
+            flavor-name: 'os.large'
+            diskimage: ubuntu-focal-arm64
+            key-name: infra-root-keys-2020-05-13
 
 diskimages:
   - name: centos-7
@@ -454,5 +463,6 @@ diskimages:
   - name: ubuntu-bionic
   - name: ubuntu-bionic-arm64
   - name: ubuntu-focal
+  - name: ubuntu-focal-arm64
   - name: ubuntu-xenial
   - name: ubuntu-xenial-arm64
