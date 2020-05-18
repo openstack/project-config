@@ -24,6 +24,7 @@ create "Debian Stretch" "debian-stretch"
 create "Gentoo" "gentoo-17-0-systemd"
 create "openSUSE 15.1" "opensuse-15"
 create "openSUSE Tumbleweed" "opensuse-tumbleweed"
+create "Ubuntu Focal arm64" "ubuntu-focal-arm64"
 create "Ubuntu Bionic arm64" "ubuntu-bionic-arm64"
 create "Ubuntu Xenial arm64" "ubuntu-xenial-arm64"
 
