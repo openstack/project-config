@@ -861,6 +861,31 @@
         secret: wheel_keytab
 
 - job:
+    name: build-wheel-mirror-centos-7-arm64
+    parent: build-wheel-mirror-base
+    description: |
+      Build CentOS 7 wheels for OpenStack CI mirrors.
+    nodeset:
+      nodes:
+        - name: wheel-mirror-centos-7-arm64-python2
+          label: centos-7-arm64
+    host-vars:
+      wheel-mirror-centos-7-arm64-python2:
+        wheel_python: python2
+
+- job:
+    name: publish-wheel-mirror-centos-7-arm64
+    description: |
+      Publish CentOS 7 wheels for OpenStack CI mirrors.
+    parent: build-wheel-mirror-centos-7-arm64
+    pre-run: playbooks/openafs-client/setup.yaml
+    post-run: playbooks/publish/wheel-mirror.yaml
+    final: true
+    secrets:
+      - name: afs
+        secret: wheel_keytab
+
+- job:
     name: build-wheel-mirror-centos-8
     parent: build-wheel-mirror-base
     description: |
@@ -878,6 +903,31 @@
     description: |
       Publish CentOS 8 wheels for OpenStack CI mirrors.
     parent: build-wheel-mirror-centos-8
+    pre-run: playbooks/openafs-client/setup.yaml
+    post-run: playbooks/publish/wheel-mirror.yaml
+    final: true
+    secrets:
+      - name: afs
+        secret: wheel_keytab
+
+- job:
+    name: build-wheel-mirror-centos-8-arm64
+    parent: build-wheel-mirror-base
+    description: |
+      Build CentOS 8 wheels for OpenStack CI mirrors.
+    nodeset:
+      nodes:
+        - name: wheel-mirror-centos-8-arm64-python3
+          label: centos-8-arm64
+    host-vars:
+      wheel-mirror-centos-8-arm64-python3:
+        wheel_python: python3
+
+- job:
+    name: publish-wheel-mirror-centos-8-arm64
+    description: |
+      Publish CentOS 8 wheels for OpenStack CI mirrors.
+    parent: build-wheel-mirror-centos-8-arm64
     pre-run: playbooks/openafs-client/setup.yaml
     post-run: playbooks/publish/wheel-mirror.yaml
     final: true
@@ -915,6 +965,35 @@
         secret: wheel_keytab
 
 - job:
+    name: build-wheel-mirror-debian-buster-arm64
+    parent: build-wheel-mirror-base
+    description: |
+      Build Debian buster wheels for OpenStack CI mirrors.
+    nodeset:
+      nodes:
+        - name: wheel-mirror-debian-buster-arm64-python2
+          label: debian-buster-arm64
+        - name: wheel-mirror-debian-buster-arm64-python3
+          label: debian-buster-arm64
+    host-vars:
+      wheel-mirror-debian-buster-arm64-python2:
+        wheel_python: python2
+      wheel-mirror-debian-buster-arm64-python3:
+        wheel_python: python3
+
+- job:
+    name: publish-wheel-mirror-debian-buster-arm64
+    description: |
+      Publish Debian buster wheels for OpenStack CI mirrors.
+    parent: build-wheel-mirror-debian-buster-arm64
+    pre-run: playbooks/openafs-client/setup.yaml
+    post-run: playbooks/publish/wheel-mirror.yaml
+    final: true
+    secrets:
+      - name: afs
+        secret: wheel_keytab
+
+- job:
     name: build-wheel-mirror-ubuntu-focal
     parent: build-wheel-mirror-base
     description: |
@@ -930,6 +1009,31 @@
 - job:
     name: publish-wheel-mirror-ubuntu-focal
     parent: build-wheel-mirror-ubuntu-focal
+    description: |
+      Publish Ubuntu Focal wheels for OpenStack CI mirrors.
+    pre-run: playbooks/openafs-client/setup.yaml
+    post-run: playbooks/publish/wheel-mirror.yaml
+    final: true
+    secrets:
+      - name: afs
+        secret: wheel_keytab
+
+- job:
+    name: build-wheel-mirror-ubuntu-focal-arm64
+    parent: build-wheel-mirror-base
+    description: |
+      Build Ubuntu Focal wheels for OpenStack CI mirrors.
+    nodeset:
+      nodes:
+        - name: wheel-mirror-ubuntu-focal-arm64-python3
+          label: ubuntu-focal-arm64
+    host-vars:
+      wheel-mirror-ubuntu-focal-arm64-python3:
+        wheel_python: python3
+
+- job:
+    name: publish-wheel-mirror-ubuntu-focal-arm64
+    parent: build-wheel-mirror-ubuntu-focal-arm64
     description: |
       Publish Ubuntu Focal wheels for OpenStack CI mirrors.
     pre-run: playbooks/openafs-client/setup.yaml
@@ -959,6 +1063,35 @@
 - job:
     name: publish-wheel-mirror-ubuntu-bionic
     parent: build-wheel-mirror-ubuntu-bionic
+    description: |
+      Publish Ubuntu Bionic wheels for OpenStack CI mirrors.
+    pre-run: playbooks/openafs-client/setup.yaml
+    post-run: playbooks/publish/wheel-mirror.yaml
+    final: true
+    secrets:
+      - name: afs
+        secret: wheel_keytab
+
+- job:
+    name: build-wheel-mirror-ubuntu-bionic-arm64
+    parent: build-wheel-mirror-base
+    description: |
+      Build Ubuntu Bionic wheels for OpenStack CI mirrors.
+    nodeset:
+      nodes:
+        - name: wheel-mirror-ubuntu-bionic-arm64-python2
+          label: ubuntu-bionic-arm64
+        - name: wheel-mirror-ubuntu-bionic-arm64-python3
+          label: ubuntu-bionic-arm64
+    host-vars:
+      wheel-mirror-ubuntu-bionic-arm64-python2:
+        wheel_python: python2
+      wheel-mirror-ubuntu-bionic-arm64-python3:
+        wheel_python: python3
+
+- job:
+    name: publish-wheel-mirror-ubuntu-bionic-arm64
+    parent: build-wheel-mirror-ubuntu-bionic-arm64
     description: |
       Publish Ubuntu Bionic wheels for OpenStack CI mirrors.
     pre-run: playbooks/openafs-client/setup.yaml
