@@ -886,6 +886,60 @@
         secret: wheel_keytab
 
 - job:
+    name: build-wheel-mirror-debian-buster
+    parent: build-wheel-mirror-base
+    description: |
+      Build Debian buster wheels for OpenStack CI mirrors.
+    nodeset:
+      nodes:
+        - name: wheel-mirror-debian-buster-python2
+          label: debian-buster
+        - name: wheel-mirror-debian-buster-python3
+          label: debian-buster
+    host-vars:
+      wheel-mirror-debian-buster-python2:
+        wheel_python: python2
+      wheel-mirror-debian-buster-python3:
+        wheel_python: python3
+
+- job:
+    name: publish-wheel-mirror-debian-buster
+    description: |
+      Publish Debian buster wheels for OpenStack CI mirrors.
+    parent: build-wheel-mirror-debian-buster
+    pre-run: playbooks/openafs-client/setup.yaml
+    post-run: playbooks/publish/wheel-mirror.yaml
+    final: true
+    secrets:
+      - name: afs
+        secret: wheel_keytab
+
+- job:
+    name: build-wheel-mirror-ubuntu-focal
+    parent: build-wheel-mirror-base
+    description: |
+      Build Ubuntu Focal wheels for OpenStack CI mirrors.
+    nodeset:
+      nodes:
+        - name: wheel-mirror-ubuntu-focal-python3
+          label: ubuntu-focal
+    host-vars:
+      wheel-mirror-ubuntu-focal-python3:
+        wheel_python: python3
+
+- job:
+    name: publish-wheel-mirror-ubuntu-focal
+    parent: build-wheel-mirror-ubuntu-focal
+    description: |
+      Publish Ubuntu Focal wheels for OpenStack CI mirrors.
+    pre-run: playbooks/openafs-client/setup.yaml
+    post-run: playbooks/publish/wheel-mirror.yaml
+    final: true
+    secrets:
+      - name: afs
+        secret: wheel_keytab
+
+- job:
     name: build-wheel-mirror-ubuntu-bionic
     parent: build-wheel-mirror-base
     description: |
