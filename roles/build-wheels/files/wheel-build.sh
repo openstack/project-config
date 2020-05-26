@@ -61,8 +61,8 @@ done
 # Parse stdout from all the build logs to build up a unique list of all
 # wheels downloaded from PyPI and delete them from the wheelhouse, since
 # this is only meant to provide built wheels which are absent from PyPI.
-find ${LOGS}/build/ -name stdout -exec grep 'Downloading from URL' {} \; \
-    | sed -n 's,.*Downloading from URL .*/\([^/]*\.whl\)#.*,\1,p' \
+find ${LOGS}/build/ -name stdout -exec grep 'Downloading' {} \; \
+    | sed -n 's,.*Downloading.*[ /]\([^ /]*\.whl\)\([ #].*\|$\),\1,p' \
     | sort -u > ${LOGS}/remove-wheels.txt
 pushd ${WHEELHOUSE_DIR}
 cat ${LOGS}/remove-wheels.txt | xargs rm
