@@ -15,6 +15,8 @@ providers:
     cloud: ovh
     rate: 0.1
     diskimages: &provider_diskimages
+      - name: centos-7-plain
+        config-drive: true
       - name: centos-7
         config-drive: true
       - name: centos-8
@@ -342,6 +344,17 @@ diskimages:
     env-vars:
       DIB_DISTRIBUTION_MIRROR: 'http://mirror.dfw.rax.opendev.org/ubuntu'
       DIB_DEBIAN_COMPONENTS: 'main,universe'
+
+  - name: centos-7-plain
+    parent: base
+    pause: false
+    release: '7'
+    elements:
+      - cache-devstack
+      - centos-minimal
+      - epel
+    env-vars:
+      DIB_EPEL_DISABLED: '1'
 
   - name: centos-8-plain
     parent: base
