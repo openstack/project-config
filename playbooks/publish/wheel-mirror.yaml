@@ -12,10 +12,11 @@
         afs_slug: "{{ ansible_distribution|lower }}-{{ ansible_distribution_major_version }}-{{ ansible_architecture }}"
       when: ansible_distribution == "CentOS"
 
-    - name: Generate AFS slug - Ubuntu
+    - name: Generate AFS slug - Debuntu
       set_fact:
         afs_slug: "{{ ansible_distribution|lower }}-{{ ansible_distribution_version }}-{{ ansible_architecture }}"
-      when: ansible_distribution == "Ubuntu"
+      when: ansible_distribution == "Ubuntu" or
+            ansible_distribution == "Debian"
 
     - name: Set fact for AFS dir
       set_fact:
