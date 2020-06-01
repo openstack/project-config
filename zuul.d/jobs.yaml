@@ -817,23 +817,12 @@
     protected: true
 
 - job:
+    # NOTE(ianw) : We are in the process of removing the
+    # "wheel-mirror" jobs in project-config as we have moved them into
+    # openstack-zuul-jobs.  This is just until requirements removes
+    # all references to the old jobs.
     name: build-wheel-mirror-base
-    abstract: true
-    description: |
-      Base job for building wheels published in OpenStack CI mirrors.
-    pre-run:
-      - playbooks/wheel/pre.yaml
-    run: playbooks/wheel/build.yaml
-    post-run: playbooks/wheel/post-base.yaml
-    # 2.5 hours
-    timeout: 9000
-    # The job iterates over all branches, so we only need to run it on
-    # master.
-    branches: master
-    roles:
-      - zuul: opendev/system-config
-    allowed-projects:
-      - openstack/requirements
+    parent: build-wheel-cache-base
 
 - job:
     name: build-wheel-mirror-centos-7
