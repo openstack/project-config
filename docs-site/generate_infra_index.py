@@ -14,8 +14,6 @@
 """Read the infra-documents.yaml file and generate the index.html file.
 """
 
-from __future__ import print_function
-
 import argparse
 import os
 
