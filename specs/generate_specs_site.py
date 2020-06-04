@@ -14,8 +14,6 @@
 """Read the specs.yaml file and generate the index.html and specs.opml files.
 """
 
-from __future__ import print_function
-
 import argparse
 import os
 
