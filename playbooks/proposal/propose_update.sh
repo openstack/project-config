@@ -34,7 +34,7 @@ elif [ "$OWN_PROJECT" == "requirements-constraints" ] ; then
     PROJECTS=openstack/requirements
     VENV=$(mktemp -d)
     trap "rm -rf $VENV" EXIT
-    virtualenv $VENV
+    virtualenv -p python3 $VENV
     $VENV/bin/pip install -e .
     function update {
         $VENV/bin/generate-constraints -b blacklist.txt -p /usr/bin/python3.6 \
