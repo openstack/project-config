@@ -19,6 +19,8 @@ providers:
         config-drive: true
       - name: centos-8
         config-drive: true
+      - name: centos-8-stream
+        config-drive: true
       - name: debian-buster
         config-drive: true
       - name: debian-stretch
@@ -148,6 +150,18 @@ diskimages:
     pause: false
     python-path: /usr/bin/python3
     release: '8'
+    elements:
+      - cache-devstack
+      - centos-minimal
+      - epel
+    env-vars:
+      DIB_EPEL_DISABLED: '1'
+
+  - name: centos-8-stream
+    parent: base
+    pause: false
+    python-path: /usr/bin/python3
+    release: '8-stream'
     elements:
       - cache-devstack
       - centos-minimal
