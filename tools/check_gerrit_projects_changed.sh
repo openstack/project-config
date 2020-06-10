@@ -13,7 +13,7 @@ cp gerrit/projects.yaml gerrit/projects-old.yaml
 # check_gerrit_projects_changed.py invocation might be an old version.
 git checkout $GITHEAD
 
-python tools/check_gerrit_projects_changed.py gerrit/projects-old.yaml \
+python3 tools/check_gerrit_projects_changed.py gerrit/projects-old.yaml \
     gerrit/projects.yaml
 
 rm gerrit/projects-old.yaml

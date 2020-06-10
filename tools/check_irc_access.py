@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 # Copyright 2011, 2013-2014 OpenStack Foundation
 # Copyright 2012 Hewlett-Packard Development Company, L.P.
