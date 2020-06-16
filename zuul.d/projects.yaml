@@ -7109,14 +7109,14 @@
 
 - project:
     name: x/group-based-policy-specs
+    templates:
+      - build-only-specs-jobs
     check:
       jobs:
         - openstack-tox-py27
-        - build-openstack-sphinx-docs
     gate:
       jobs:
         - openstack-tox-py27
-        - build-openstack-sphinx-docs
 
 - project:
     name: x/group-based-policy-ui
@@ -7456,16 +7456,6 @@
       - check-requirements
       - build-openstack-docs-pti
       - publish-to-pypi
-    check:
-      jobs:
-        - build-openstack-sphinx-docs:
-            required-projects:
-              - openstack/neutron
-    gate:
-      jobs:
-        - build-openstack-sphinx-docs:
-            required-projects:
-              - openstack/neutron
 
 - project:
     name: x/networking-edge-vpn
@@ -8613,13 +8603,8 @@
       - openstack-python-jobs
       - check-requirements
       - openstack-python35-jobs
-      - build-openstack-sphinx-docs
-    check:
-      jobs:
-        - build-openstack-releasenotes
-    gate:
-      jobs:
-        - build-openstack-releasenotes
+      - build-openstack-docs-pti
+      - build-release-notes-jobs-python3
 
 - project:
     name: x/valence-specs
