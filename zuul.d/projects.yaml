@@ -3481,16 +3481,27 @@
     name: openstack/neutron-fwaas
     templates:
       - official-openstack-repo-jobs
-      - translation-jobs-master-only
-      - periodic-jobs-with-neutron-lib-master
-      - publish-to-pypi
+    check:
+      jobs:
+        - noop:
+            branches: master
+    gate:
+      jobs:
+        - noop:
+            branches: master
 
 - project:
     name: openstack/neutron-fwaas-dashboard
     templates:
       - official-openstack-repo-jobs
-      - translation-jobs-master-stable
-      - publish-to-pypi
+    check:
+      jobs:
+        - noop:
+            branches: master
+    gate:
+      jobs:
+        - noop:
+            branches: master
 
 - project:
     name: openstack/neutron-lbaas
