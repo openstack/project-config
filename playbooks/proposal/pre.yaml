@@ -1,7 +1,23 @@
 - hosts: all
   pre_tasks:
+    - name: Ensure pip
+      include_role:
+        name: ensure-pip
+
     - name: Install git-review
-      command: pip3 install git-review
+      pip:
+        name: git-review
+        virtualenv: /opt/git-review
+        virtualenv_command: '{{ ensure_pip_virtualenv_command }}'
+      become: yes
+
+    - name: Link git-review
+      file:
+        src: /opt/git-review/bin/git-review
+        dest: /usr/local/bin/git-review
+        owner: root
+        group: root
+        state: link
       become: yes
 
     - name: Copy scripts to the script dir on the node
