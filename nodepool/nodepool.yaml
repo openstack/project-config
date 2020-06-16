@@ -15,13 +15,9 @@ providers:
     cloud: ovh
     rate: 0.1
     diskimages: &provider_diskimages
-      - name: centos-7-plain
-        config-drive: true
       - name: centos-7
         config-drive: true
       - name: centos-8
-        config-drive: true
-      - name: centos-8-plain
         config-drive: true
       - name: debian-buster
         config-drive: true
@@ -39,13 +35,9 @@ providers:
         config-drive: true
       - name: ubuntu-bionic
         config-drive: true
-      - name: ubuntu-bionic-plain
-        config-drive: true
       - name: ubuntu-focal
         config-drive: true
       - name: ubuntu-xenial
-        config-drive: true
-      - name: ubuntu-xenial-plain
         config-drive: true
 
   - name: ovh-gra1
@@ -138,22 +130,8 @@ diskimages:
       DIB_DISABLE_APT_CLEANUP: '1'
       DIB_DEBOOTSTRAP_EXTRA_ARGS: '--no-check-gpg'
 
-  # NOTE(ianw) 2020-02-17: we are working to remove pip-and-virtualenv
-  # as a requirement; as we cut images over we can remove these.
-  - name: base-with-pip
-    abstract: True
-    parent: base
-    elements:
-      - pip-and-virtualenv
 
-  - name: base-debuntu-with-pip
-    abstract: True
-    parent: base-debuntu
-    elements:
-      - pip-and-virtualenv
-
-
-  ############ CentOS and Fedora #############
+############ CentOS and Fedora #############
 
   - name: centos-7
     parent: base
@@ -315,55 +293,3 @@ diskimages:
     env-vars:
       DIB_DISTRIBUTION_MIRROR: 'http://mirror.dfw.rax.opendev.org/ubuntu'
       DIB_DEBIAN_COMPONENTS: 'main,universe'
-
-
-  ############ Plain images #############
-
-  # NOTE(ianw) 2020-03-16 : these are alternative images without the
-  # pip-and-virtualenv element we can test ansible roles to achieve
-  # full backwards-compatability with.
-
-  - name: ubuntu-bionic-plain
-    parent: base-debuntu
-    pause: false
-    elements:
-      - ubuntu-minimal
-      - cache-devstack
-    release: bionic
-    env-vars:
-      DIB_DISTRIBUTION_MIRROR: 'https://mirror.dfw.rax.opendev.org/ubuntu'
-      DIB_DEBIAN_COMPONENTS: 'main,universe'
-
-  - name: ubuntu-xenial-plain
-    parent: base-debuntu
-    pause: false
-    elements:
-      - ubuntu-minimal
-      - cache-devstack
-    release: xenial
-    env-vars:
-      DIB_DISTRIBUTION_MIRROR: 'https://mirror.dfw.rax.opendev.org/ubuntu'
-      DIB_DEBIAN_COMPONENTS: 'main,universe'
-
-  - name: centos-7-plain
-    parent: base
-    pause: false
-    release: '7'
-    elements:
-      - cache-devstack
-      - centos-minimal
-      - epel
-    env-vars:
-      DIB_EPEL_DISABLED: '1'
-
-  - name: centos-8-plain
-    parent: base
-    pause: false
-    python-path: /usr/bin/python3
-    release: '8'
-    elements:
-      - cache-devstack
-      - centos-minimal
-      - epel
-    env-vars:
-      DIB_EPEL_DISABLED: '1'
