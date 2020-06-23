@@ -82,6 +82,7 @@ valid_keys = {'abandon',
               'requireChangeId',
               'requireContributorAgreement',
               'state',
+              'submit',
               'value'}
 
 if '0' in transformations or not transformations:
