@@ -32,9 +32,8 @@ elif [ "$OWN_PROJECT" == "requirements-constraints" ] ; then
     INITIAL_COMMIT_MSG="Updated from generate-constraints"
     TOPIC="openstack/requirements/constraints"
     PROJECTS=openstack/requirements
-    VENV=$(mktemp -d)
-    trap "rm -rf $VENV" EXIT
-    virtualenv -p python3 $VENV
+    tox -re venv --notest
+    VENV=$(readlink -f .tox/venv)
     $VENV/bin/pip install -e .
     function update {
         $VENV/bin/generate-constraints -b blacklist.txt -p /usr/bin/python3.6 \
