@@ -1,0 +1,29 @@
+- hosts: all
+  tasks:
+    - name: Ensure pip
+      include_role:
+        name: ensure-pip
+
+    - name: Copy manager script
+      copy:
+        src: github_manager.py
+        dest: "{{ ansible_user_dir }}"
+
+    - name: Install dependencies
+      pip:
+        name: github
+        virtualenv: "{{ ansible_user_dir }}/.venv"
+        virtualenv_command: "{{ ensure_pip_virtualenv_command }}"
+
+    - name: Run manager script
+      command: "{{ ansible_user_dir }}/.venv/bin/python {{ ansible_user_dir }}/github_manager.py {{ conf }} {{ gov }}"
+      environment:
+        GITHUB_TOKEN: "{{ github_credentials.api_token }}"
+
+    - name: Clean up after ourselves
+      file:
+        path: "{{ item }}"
+        state: absent
+      with_items:
+        - github_manager.py
+        - .venv
