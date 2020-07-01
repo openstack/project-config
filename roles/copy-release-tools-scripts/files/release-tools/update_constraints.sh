@@ -96,8 +96,8 @@ function pep503 {
 # we first ask for the name without saving the output and then we
 # ask for it again and save the output to get a clean
 # version. This is why we can't have nice things.
-python setup.py --name
-dist_name=$(python setup.py --name)
+python3 setup.py --name
+dist_name=$(python3 setup.py --name)
 canonical_name=$(pep503 $dist_name)
 if [[ -z "$dist_name" ]]; then
     echo "Could not determine the name of the constraint to update"
