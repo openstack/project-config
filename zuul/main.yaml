@@ -1642,3 +1642,26 @@
         untrusted-projects:
           - include: []
             projects: *googlesource_projects
+
+# 3rd party CI for Python Cryptographic Authority
+# https://github.com/pyca
+- tenant:
+    name: pyca
+    max-nodes-per-job: 1
+    report-build-page: true
+    source:
+      gerrit:
+        config-projects:
+          - pyca/project-config
+          # Only use jobs and secrets from this repo, we do not want
+          # the project definition.
+          - opendev/base-jobs:
+              include:
+                - job
+                - secret
+                - nodeset
+        untrusted-projects:
+          - zuul/zuul-jobs
+      github:
+        untrusted-projects:
+          - pyca/cryptography
