@@ -64,43 +64,6 @@
               - zuul/jobs
 
 - tenant:
-    name: kata-containers
-    max-nodes-per-job: 1
-    report-build-page: true
-    source:
-      gerrit:
-        config-projects:
-          - kata-containers/zuul-config
-          # Only use jobs and secrets from this repo, we do not want
-          # the project definition.
-          - opendev/base-jobs:
-              include:
-                - job
-                - secret
-                - nodeset
-        untrusted-projects:
-          - zuul/zuul-jobs
-      github:
-        untrusted-projects:
-          # Don't load any configuration from these projects because we
-          # don't gate them, so they could wedge our config.
-          - include: []
-            projects:
-              - kata-containers/agent
-              - kata-containers/ci
-              - kata-containers/community
-              - kata-containers/documentation
-              - kata-containers/kata-containers
-              - kata-containers/ksm-throttler
-              - kata-containers/osbuilder
-              - kata-containers/packaging
-              - kata-containers/proxy
-              - kata-containers/runtime
-              - kata-containers/shim
-              - kata-containers/tests
-              - kata-containers/www.katacontainers.io
-
-- tenant:
     name: openstack
     max-nodes-per-job: 10
     report-build-page: true
