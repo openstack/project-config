@@ -109,11 +109,13 @@ def list_repos_in_governance(governance, org='openstack'):
                         repos.add(r)
 
     extrafiles = ['sigs-repos.yaml',
-                  'foundation-board-repos.yaml',
                   'technical-committee-repos.yaml',
                   'user-committee-repos.yaml']
     for extrafile in extrafiles:
         yaml_filename = os.path.join(governance, 'reference', extrafile)
+        if not os.path.exists(yaml_filename):
+            print(f'Skipping {extrafile} as it no longer exists')
+            continue
         with open(yaml_filename, 'r') as extra_yaml:
             for pname, project in yaml.safe_load(extra_yaml).items():
                 for r in project:
