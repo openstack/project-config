@@ -64,8 +64,8 @@ git push gerrit $NEW_BRANCH
 
 update_gitreview "$NEW_BRANCH"
 
-# Do not update upper constraints on driverfixes branches
-if [[ ! $NEW_BRANCH =~ driverfixes/ ]]; then
+# Do not update upper constraints on driverfixes or intermediate branches
+if [[ ! $NEW_BRANCH =~ driverfixes/|bugfix/ ]]; then
     update_upper_constraints "$NEW_BRANCH"
 fi
 
