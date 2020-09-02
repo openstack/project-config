@@ -42,10 +42,13 @@ PR_CLOSING_TEXT = (
     "that OpenStack development uses Gerrit for change proposal and code "
     "review.\n\n"
     "If you have never contributed to OpenStack before, please see:\n"
-    "https://docs.opendev.org/opendev/infra-manual/latest/gettingstarted.html"
-    "\n\nFeel free to reach out on the #openstack-upstream-institute channel "
-    "on Freenode IRC in case you need help. You can access it through:\n"
-    "https://webchat.freenode.net/#openstack-upstream-institute\n"
+    "https://docs.openstack.org/contributors/code-and-documentation/"
+    "quick-start.html"
+    "\n\nFeel free to reach out to the First Contact SIG by sending an "
+    "email to the openstack-discuss list with the tag '[First Contact]' "
+    "in the subject line. To email the mailing list, you must first "
+    "subscribe which can be done here:\n"
+    "http://lists.openstack.org/cgi-bin/mailman/listinfo/openstack-discuss"
 )
 
 
