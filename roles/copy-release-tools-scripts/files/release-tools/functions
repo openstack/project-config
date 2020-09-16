@@ -93,10 +93,16 @@ function update_upper_constraints {
         sed -i~ -e "s,\(https://opendev.org/openstack/octavia\).*,\1 ${branch}," elements/amphora-agent/source-repository-amphora-agent
         sed -i~ -e "s,\(file /opt/upper-constraints.txt\) \(.*\),\1 ${uc_url}," elements/amphora-agent/source-repository-amphora-agent
     fi
+    if [[ -f  elements/octavia-lib/source-repository-octavia-lib ]]; then
+        sed -i~ -e "s,\(https://opendev.org/openstack/octavia-lib\).*,\1 ${branch}," elements/octavia-lib/source-repository-octavia-lib
+    fi
     if ! git diff --exit-code >/dev/null 2>&1 ; then
         git add tox.ini
         if [[ -f  elements/amphora-agent/source-repository-amphora-agent ]]; then
             git add elements/amphora-agent/source-repository-amphora-agent
+        fi
+        if [[ -f  elements/octavia-lib/source-repository-octavia-lib ]]; then
+            git add elements/octavia-lib/source-repository-octavia-lib
         fi
         msg="Update TOX_CONSTRAINTS_FILE for $branch"
         body="Update the URL to the upper-constraints file to point to the redirect
