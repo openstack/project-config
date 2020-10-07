@@ -191,6 +191,12 @@
     vars:
       special_publish_directory: "contributors"
 
+# AFS sync issues happen when multiple publish jobs run at the same time
+# so we make it synchronous to avoid job failures
+- semaphore:
+    name: publish-releasenotes
+    max: 1
+
 - job:
     name: publish-openstack-releasenotes-python3
     description: |
@@ -207,6 +213,7 @@
     post-run:
       - playbooks/publish/releasenotes.yaml
       - playbooks/publish/openstack-afs.yaml
+    semaphore: publish-releasenotes
     override-branch: master
     # Building translated releasenotes can take long for large repositories
     timeout: 3600
