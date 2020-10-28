@@ -1,6 +1,12 @@
 # This file contains ansible variables that are used by our zuul-executors.
 ---
-zuul_site_mirror_fqdn: mirror.{{ nodepool.region | lower }}.{{ nodepool.cloud | lower }}.opendev.org
+# Rackspace sets up internal addresses for hosts, which we preference here
+zuul_site_mirror_fqdn: >-
+  {%- if nodepool.region + "." + nodepool.cloud in [ "ORD.rax", ] -%}
+  mirror.{{ nodepool.region | lower }}-int.{{ nodepool.cloud | lower }}.opendev.org
+  {%- else -%}
+  mirror.{{ nodepool.region | lower }}.{{ nodepool.cloud | lower }}.opendev.org
+  {%- endif -%}
 zuul_site_traceroute_host: opendev.org
 zuul_site_image_manifest_files:
   - /etc/dib-builddate.txt
