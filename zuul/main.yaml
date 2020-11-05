@@ -1665,3 +1665,26 @@
       github:
         untrusted-projects:
           - pyca/cryptography
+
+# 3rd party CI for Python Packaging Authority
+# https://github.com/pypa
+- tenant:
+    name: pypa
+    max-nodes-per-job: 1
+    report-build-page: true
+    source:
+      gerrit:
+        config-projects:
+          - pypa/project-config
+          # Only use jobs and secrets from this repo, we do not want
+          # the project definition.
+          - opendev/base-jobs:
+              include:
+                - job
+                - secret
+                - nodeset
+        untrusted-projects:
+          - zuul/zuul-jobs
+      github:
+        untrusted-projects:
+          - pypa/pip
