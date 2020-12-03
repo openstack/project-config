@@ -127,7 +127,8 @@ class GerritChange(object):
 
             # Fetch PTL and release liaisons
             liaisons = get_liaisons(self.workspace, team)
-            if 'email' in govteam['ptl']:
+            # Some teams may be PTL-less, so don't assume we have PTL info
+            if 'email' in govteam.get('ptl', {}):
                 liaisons.append(govteam['ptl']['email'])
             LOG.debug('%s needs %s' % (deliv_file, liaisons))
 
