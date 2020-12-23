@@ -17,17 +17,30 @@ dashboard:
     - title: Graphs
       height: 320px
       panels:
-        - title: Source Build Failure Rates (Check queue)
-          span: 4
+        - title: Kolla Build Source Failure Rates (Check queue)
+          span: 6
           targets:
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_kolla.master.job.kolla-build-centos-source.{FAILURE,TIMED_OUT}),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_kolla.master.job.kolla-build-centos-source.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'kolla-build-centos-source')
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_kolla.master.job.kolla-build-ubuntu-source.{FAILURE,TIMED_OUT}),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_kolla.master.job.kolla-build-ubuntu-source.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'kolla-build-ubuntu-source')
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_kolla.master.job.kolla-build-oraclelinux-source.{FAILURE,TIMED_OUT}),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.openstack_kolla.master.job.kolla-build-oraclelinux-source.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'gate-kolla-build-source-oraclelinux')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_kolla.master.job.kolla-build-centos8-source.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_kolla.master.job.kolla-build-centos8-source.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'kolla-build-centos8-source')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_kolla.master.job.kolla-build-ubuntu-source.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_kolla.master.job.kolla-build-ubuntu-source.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'kolla-build-ubuntu-source')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_kolla.master.job.kolla-build-debian-source.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_kolla.master.job.kolla-build-debian-source.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'kolla-build-debian-source')
           type: graph
-        - title: Binary Build Failure Rates (Check queue)
-          span: 4
+        - title: Kolla Build Binary Failure Rates (Check queue)
+          span: 6
           targets:
-            - target: alias(movingAverage(asPercent(transformNull(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_kolla.master.job.kolla-build-centos-binary.{FAILURE,TIMED_OUT),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_kolla.master.job.kolla-build-centos-binary.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'kolla-build-centos-binary')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_kolla.master.job.kolla-build-centos8-binary.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_kolla.master.job.kolla-build-centos8-binary.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'kolla-build-centos8-binary')
             - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_kolla.master.job.kolla-build-ubuntu-binary.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_kolla.master.job.kolla-build-ubuntu-binary.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'kolla-build-ubuntu-binary')
-            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_kolla.master.job.kolla-build-oraclelinux-binary{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_kolla.master.job.kolla-build-oraclelinux-binary.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'kolla-build-oraclelinux-binary')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_kolla.master.job.kolla-build-debian-binary.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_kolla.master.job.kolla-build-debian-binary.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'kolla-build-debian-binary')
+          type: graph
+        - title: Kolla-Ansible Binary Failure Rates (Check queue)
+          span: 6
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_kolla.master.job.kolla-ansible-centos8-binary.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_kolla.master.job.kolla-ansible-centos8-binary.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'kolla-ansible-centos8-binary')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_kolla.master.job.kolla-ansible-ubuntu-binary.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_kolla.master.job.kolla-ansible-ubuntu-binary.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'kolla-ansible-ubuntu-binary')
+          type: graph
+        - title: Kolla-Ansible Source Failure Rates (Check queue)
+          span: 6
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_kolla.master.job.kolla-ansible-centos8-source.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_kolla.master.job.kolla-ansible-centos8-source.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'kolla-ansible-centos8-source')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_kolla.master.job.kolla-ansible-ubuntu-source.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_kolla.master.job.kolla-ansible-ubuntu-source.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'kolla-ansible-ubuntu-source')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_kolla.master.job.kolla-ansible-debian-source.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.openstack_kolla.master.job.kolla-ansible-debian-source.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'kolla-ansible-debian-source')
           type: graph
