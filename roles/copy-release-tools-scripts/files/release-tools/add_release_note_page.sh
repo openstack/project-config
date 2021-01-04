@@ -48,7 +48,7 @@ $NEW_BRANCH.
 Sem-Ver: feature
 "
 
-titlebranch=$(python -c "print('$SERIES'.title())")
+titlebranch=$(python3 -c "print('$SERIES'.title())")
 pagetitle="$titlebranch Series Release Notes"
 titlebar=`printf '%*s' "$(echo -n $pagetitle | wc -c)" | tr ' ' "="`
 
