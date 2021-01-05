@@ -194,6 +194,7 @@ else
     # directory already existed we might have checked out something else
     # before so just do it again).
     (cd $local_dir &&
-            (git checkout $BRANCH || git checkout master) &&
-            retry git pull --ff-only)
+        (git checkout $BRANCH 2>/dev/null ||
+            (echo "No $BRANCH, checking out master"; git checkout master)) &&
+        retry git pull --ff-only)
 fi
