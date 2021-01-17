@@ -19,8 +19,14 @@
 import os
 import yaml
 
-from six.moves.urllib.request import urlopen
-from six.moves.urllib.error import URLError
+try:
+    from six.moves.urllib.request import urlopen
+except ImportError:
+    from urllib.request import urlopen
+try:
+    from six.moves.urllib.error import URLError
+except ImportError:
+    from urllib.request import URLError
 
 URL = ('https://opendev.org/openstack/project-config/'
        'raw/gerrit/projects.yaml')
