@@ -49,14 +49,12 @@
       github:
         check: 'success'
         comment: false
-      mysql:
     failure:
       gerrit:
         Verified: -1
       github:
         check: 'failure'
         comment: false
-      mysql:
 
 - pipeline:
     name: gate
@@ -96,11 +94,9 @@
       gerrit:
         Verified: 2
         submit: true
-      mysql:
     failure:
       gerrit:
         Verified: -2
-      mysql:
     window-floor: 20
     window-increase-factor: 2
 
@@ -117,10 +113,6 @@
       gerrit:
         - event: ref-updated
           ref: ^refs/heads/.*$
-    success:
-      mysql:
-    failure:
-      mysql:
 
 - pipeline:
     name: promote
@@ -140,10 +132,8 @@
         - event: change-merged
     success:
       gerrit: {}
-      mysql:
     failure:
       gerrit: {}
-      mysql:
 
 - pipeline:
     name: pre-release
@@ -155,14 +145,11 @@
       gerrit:
         - event: ref-updated
           ref: ^refs/tags/[0-9]+(\.[0-9]+)*(a|b|rc)[0-9]+$
-    success:
-      mysql:
     failure:
       smtp:
         from: zuul@openstack.org
         to: release-job-failures@lists.openstack.org
         subject: 'Pre-release of {change.project} for ref {change.ref} failed'
-      mysql:
 
 - pipeline:
     name: release
@@ -174,14 +161,11 @@
       gerrit:
         - event: ref-updated
           ref: ^refs/tags/[0-9]+(\.[0-9]+)*$
-    success:
-      mysql:
     failure:
       smtp:
         from: zuul@openstack.org
         to: release-job-failures@lists.openstack.org
         subject: 'Release of {change.project} for ref {change.ref} failed'
-      mysql:
 
 - pipeline:
     name: periodic
@@ -192,10 +176,6 @@
     trigger:
       timer:
         - time: '0 6 * * *'
-    success:
-      mysql:
-    failure:
-      mysql:
 
 - pipeline:
     name: deploy
@@ -214,10 +194,8 @@
         - event: change-merged
     success:
       gerrit: {}
-      mysql:
     failure:
       gerrit: {}
-      mysql:
 
 - pipeline:
     name: opendev-prod-hourly
@@ -232,10 +210,6 @@
       timer:
        # Run with a 2 minute jitter
         - time: '0 * * * * * 120'
-    success:
-      mysql:
-    failure:
-      mysql:
 
 - pipeline:
     name: periodic-weekly
@@ -248,10 +222,6 @@
         # Saturday 8am UTC is a better time to start weekend jobs, as Sunday
         # is a working day in some geographies.
         - time: '0 8 * * 6'
-    success:
-      mysql:
-    failure:
-      mysql:
 
 - pipeline:
     name: release-approval
@@ -273,12 +243,10 @@
       gerrit:
         PTL-Approved: 1
         comment: false
-      mysql:
     failure:
       gerrit:
         PTL-Approved: 0
         comment: false
-      mysql:
 
 - pipeline:
     name: release-post
@@ -291,10 +259,7 @@
       gerrit:
         - event: ref-updated
           ref: ^refs/heads/.*$
-    success:
-      mysql:
     failure:
-      mysql:
       smtp:
         from: zuul@openstack.org
         to: release-job-failures@lists.openstack.org
@@ -310,10 +275,7 @@
       gerrit:
         - event: ref-updated
           ref: ^refs/tags/.*$
-    success:
-      mysql:
     failure:
-      mysql:
       smtp:
         from: zuul@openstack.org
         to: release-job-failures@lists.openstack.org
@@ -328,10 +290,7 @@
     trigger:
       timer:
         - time: '1 6 * * *'
-    success:
-      mysql:
     failure:
-      mysql:
       smtp:
         from: zuul@openstack.org
         to: openstack-stable-maint@lists.openstack.org
@@ -350,10 +309,8 @@
           comment: (?i)^(Patch Set [0-9]+:)?( [\w\\+-]*)*(\n\n)?\s*check experimental\s*$
     success:
       gerrit: {}
-      mysql:
     failure:
       gerrit: {}
-      mysql:
 
 - pipeline:
     name: merge-check
@@ -398,15 +355,12 @@
       github:
         check: 'success'
         comment: false
-      mysql:
     failure:
       github:
         check: 'failure'
         comment: false
-      mysql:
     # Don't report merge-failures to github
-    merge-failure:
-      mysql:
+    merge-failure: {}
 
 # NOTE(ianw) 2019-12 : since we have very limited ARM64 resources, we
 # have a separate pipeline so ARM64 jobs can start and queue gerrit
@@ -433,7 +387,5 @@
 
     success:
       gerrit: {}
-      mysql:
     failure:
       gerrit: {}
-      mysql:
