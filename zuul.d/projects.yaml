@@ -3084,7 +3084,14 @@
     name: openstack/monasca-ceilometer
     templates:
       - official-openstack-repo-jobs
-      - publish-to-pypi
+    check:
+      jobs:
+        - noop:
+            branches: master
+    gate:
+      jobs:
+        - noop:
+            branches: master
 
 - project:
     name: openstack/monasca-common
