@@ -1,0 +1,189 @@
+elements-dir: /etc/nodepool/elements
+images-dir: /opt/nodepool_dib
+
+zookeeper-servers:
+  - host: zk01.openstack.org
+    port: 2181
+  - host: zk02.openstack.org
+    port: 2181
+  - host: zk03.openstack.org
+    port: 2181
+
+# NOTE(pabelanger): To avoid a race conditions between multiple launchers, only
+# nl01.o.o will manage min-ready of our labels.  If nl01.o.o is ever disabled,
+# another launcher will need to assume this logic.
+labels:
+  - name: centos-7
+  - name: centos-8
+  - name: centos-8-stream
+  - name: debian-buster
+  - name: debian-stretch
+  - name: fedora-31
+  - name: fedora-32
+  - name: gentoo-17-0-systemd
+  - name: opensuse-15
+  - name: opensuse-tumbleweed
+  - name: ubuntu-bionic
+  - name: ubuntu-focal
+  - name: ubuntu-xenial
+  - name: nested-virt-ubuntu-bionic
+  - name: nested-virt-ubuntu-focal
+  - name: nested-virt-centos-7
+  - name: nested-virt-centos-8
+  - name: nested-virt-centos-8-stream
+
+providers:
+  - name: ovh-bhs1
+    region-name: 'BHS1'
+    cloud: ovh
+    boot-timeout: 120
+    launch-timeout: 600
+    rate: 0.1
+    diskimages: &provider_diskimages
+      - name: centos-7
+        config-drive: true
+      - name: centos-8
+        config-drive: true
+      - name: centos-8-stream
+        config-drive: true
+      - name: debian-buster
+        config-drive: true
+      - name: debian-stretch
+        config-drive: true
+      - name: fedora-31
+        config-drive: true
+      - name: fedora-32
+        config-drive: true
+      - name: gentoo-17-0-systemd
+        config-drive: true
+      - name: opensuse-15
+        config-drive: true
+      - name: opensuse-tumbleweed
+        config-drive: true
+      - name: ubuntu-bionic
+        config-drive: true
+      - name: ubuntu-focal
+        config-drive: true
+      - name: ubuntu-xenial
+        config-drive: true
+    pools:
+      - name: main
+        max-servers: 0
+        labels: &provider_pools_labels
+          - name: centos-7
+            min-ram: 8000
+            flavor-name: ssd-osFoundation-3
+            diskimage: centos-7
+            key-name: infra-root-keys-2020-05-13
+          - name: centos-8
+            min-ram: 8000
+            flavor-name: ssd-osFoundation-3
+            diskimage: centos-8
+            key-name: infra-root-keys-2020-05-13
+          - name: centos-8-stream
+            min-ram: 8000
+            flavor-name: ssd-osFoundation-3
+            diskimage: centos-8-stream
+            key-name: infra-root-keys-2020-05-13
+          - name: debian-buster
+            min-ram: 8000
+            flavor-name: ssd-osFoundation-3
+            diskimage: debian-buster
+            key-name: infra-root-keys-2020-05-13
+          - name: debian-stretch
+            min-ram: 8000
+            flavor-name: ssd-osFoundation-3
+            diskimage: debian-stretch
+            key-name: infra-root-keys-2020-05-13
+          - name: fedora-31
+            min-ram: 8000
+            flavor-name: ssd-osFoundation-3
+            diskimage: fedora-31
+            key-name: infra-root-keys-2020-05-13
+          - name: fedora-32
+            min-ram: 8000
+            flavor-name: ssd-osFoundation-3
+            diskimage: fedora-32
+            key-name: infra-root-keys-2020-05-13
+          - name: gentoo-17-0-systemd
+            min-ram: 8000
+            flavor-name: ssd-osFoundation-3
+            diskimage: gentoo-17-0-systemd
+            key-name: infra-root-keys-2020-05-13
+          - name: opensuse-15
+            min-ram: 8000
+            flavor-name: ssd-osFoundation-3
+            diskimage: opensuse-15
+            key-name: infra-root-keys-2020-05-13
+          - name: opensuse-tumbleweed
+            min-ram: 8000
+            flavor-name: ssd-osFoundation-3
+            diskimage: opensuse-tumbleweed
+            key-name: infra-root-keys-2020-05-13
+          - name: ubuntu-bionic
+            min-ram: 8000
+            flavor-name: ssd-osFoundation-3
+            diskimage: ubuntu-bionic
+            key-name: infra-root-keys-2020-05-13
+          - name: ubuntu-focal
+            min-ram: 8000
+            flavor-name: ssd-osFoundation-3
+            diskimage: ubuntu-focal
+            key-name: infra-root-keys-2020-05-13
+          - name: ubuntu-xenial
+            min-ram: 8000
+            flavor-name: ssd-osFoundation-3
+            diskimage: ubuntu-xenial
+            key-name: infra-root-keys-2020-05-13
+          - name: nested-virt-ubuntu-bionic
+            min-ram: 8000
+            flavor-name: ssd-osFoundation-3
+            diskimage: ubuntu-bionic
+            key-name: infra-root-keys-2020-05-13
+          - name: nested-virt-ubuntu-focal
+            min-ram: 8000
+            flavor-name: ssd-osFoundation-3
+            diskimage: ubuntu-focal
+            key-name: infra-root-keys-2020-05-13
+          - name: nested-virt-centos-7
+            min-ram: 8000
+            flavor-name: ssd-osFoundation-3
+            diskimage: centos-7
+            key-name: infra-root-keys-2020-05-13
+          - name: nested-virt-centos-8
+            min-ram: 8000
+            flavor-name: ssd-osFoundation-3
+            diskimage: centos-8
+            key-name: infra-root-keys-2020-05-13
+          - name: nested-virt-centos-8-stream
+            min-ram: 8000
+            flavor-name: ssd-osFoundation-3
+            diskimage: centos-8-stream
+            key-name: infra-root-keys-2020-05-13
+
+  - name: ovh-gra1
+    region-name: 'GRA1'
+    cloud: ovh
+    boot-timeout: 120
+    launch-timeout: 600
+    rate: 0.1
+    diskimages: *provider_diskimages
+    pools:
+      - name: main
+        max-servers: 0
+        labels: *provider_pools_labels
+
+diskimages:
+  - name: centos-7
+  - name: centos-8
+  - name: centos-8-stream
+  - name: debian-buster
+  - name: debian-stretch
+  - name: fedora-31
+  - name: fedora-32
+  - name: gentoo-17-0-systemd
+  - name: opensuse-15
+  - name: opensuse-tumbleweed
+  - name: ubuntu-bionic
+  - name: ubuntu-focal
+  - name: ubuntu-xenial
