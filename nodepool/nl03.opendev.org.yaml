@@ -19,13 +19,17 @@ labels:
   - name: centos-7
   - name: centos-8
   - name: centos-8-arm64
+    min-ready: 1
   - name: centos-8-arm64-large
+    min-ready: 1
   - name: centos-8-stream
   - name: centos-8-stream-arm64
   - name: debian-buster
   - name: debian-buster-arm64
+    min-ready: 1
   - name: debian-stretch
   - name: debian-stretch-arm64
+    min-ready: 1
   - name: fedora-31
   - name: fedora-32
   - name: gentoo-17-0-systemd
@@ -35,21 +39,37 @@ labels:
   - name: ubuntu-focal
   - name: ubuntu-xenial
   - name: ubuntu-xenial-arm64
+    min-ready: 1
   - name: ubuntu-focal-arm64
+    min-ready: 0
   - name: ubuntu-focal-arm64-xxxlarge
+    min-ready: 1
   - name: ubuntu-bionic-arm64
+    min-ready: 1
   - name: ubuntu-bionic-arm64-large
+    min-ready: 1
   - name: ubuntu-bionic-arm64-xxxlarge
+    min-ready: 1
   - name: ubuntu-bionic-vexxhost
+    min-ready: 0
   - name: ubuntu-bionic-expanded-vexxhost
+    min-ready: 0
   - name: centos-7-gpu
+    min-ready: 0
   - name: ubuntu-xenial-gpu
+    min-ready: 0
   - name: ubuntu-bionic-gpu
+    min-ready: 0
   - name: nested-virt-ubuntu-bionic
+    min-ready: 0
   - name: nested-virt-ubuntu-focal
+    min-ready: 0
   - name: nested-virt-centos-7
+    min-ready: 0
   - name: nested-virt-centos-8
+    min-ready: 0
   - name: nested-virt-centos-8-stream
+    min-ready: 0
 
 providers:
   - name: inap-mtl01
@@ -87,7 +107,7 @@ providers:
         config-drive: true
     pools:
       - name: main
-        max-servers: 0
+        max-servers: 200
         labels:
           - name: centos-7
             min-ram: 8000
@@ -163,7 +183,7 @@ providers:
     diskimages: *provider_diskimages
     pools:
       - name: main
-        max-servers: 0
+        max-servers: 50
         labels:
           - name: centos-7
             min-ram: 8000
@@ -246,7 +266,7 @@ providers:
             diskimage: centos-7
             key-name: infra-root-keys-2020-05-13
       - name: vexxhost-specific
-        max-servers: 0
+        max-servers: 20
         labels:
           - name: ubuntu-bionic-expanded-vexxhost
             flavor-name: 'v3-standard-16'
@@ -257,7 +277,7 @@ providers:
             diskimage: ubuntu-bionic
             key-name: infra-root-keys-2020-05-13
       - name: gpu
-        max-servers: 0
+        max-servers: 2
         labels:
           - name: centos-7-gpu
             min-ram: 8000
@@ -435,7 +455,7 @@ providers:
         config-drive: true
     pools:
       - name: main
-        max-servers: 0
+        max-servers: 40
         labels:
           - name: centos-8-arm64
             min-ram: 8000

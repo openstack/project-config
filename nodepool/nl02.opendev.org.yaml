@@ -28,17 +28,29 @@ labels:
   - name: ubuntu-focal
   - name: ubuntu-xenial
   - name: centos-7-expanded
+    min-ready: 0
   - name: ubuntu-bionic-expanded
+    min-ready: 0
   - name: ubuntu-bionic-32GB
+    min-ready: 0
   - name: multi-numa-ubuntu-bionic
+    min-ready: 0
   - name: multi-numa-ubuntu-bionic-expanded
+    min-ready: 0
   - name: multi-numa-centos-7
+    min-ready: 0
   - name: multi-numa-centos-7-expanded
+    min-ready: 0
   - name: nested-virt-ubuntu-bionic
+    min-ready: 0
   - name: nested-virt-ubuntu-focal
+    min-ready: 0
   - name: nested-virt-centos-7
+    min-ready: 0
   - name: nested-virt-centos-8
+    min-ready: 0
   - name: nested-virt-centos-8-stream
+    min-ready: 0
 
 providers:
   - name: limestone-regionone
@@ -76,7 +88,7 @@ providers:
         config-drive: true
     pools:
       - name: main
-        max-servers: 0
+        max-servers: 50
         labels:
           - name: centos-7
             min-ram: 8000
@@ -185,7 +197,7 @@ providers:
     pools:
       - name: main
         # Canary capacity (by memory less than half capacity of airship pool).
-        max-servers: 0
+        max-servers: 10
         labels:
           - name: centos-7
             min-ram: 8000
@@ -257,7 +269,7 @@ providers:
       - name: airship
         # Jobs expected to run 1x 32GB instance + 3x 16GB instances with
         # goal of running 4 jobs concurrently.
-        max-servers: 0
+        max-servers: 16
         labels:
           - name: ubuntu-bionic-expanded
             min-ram: 16000
