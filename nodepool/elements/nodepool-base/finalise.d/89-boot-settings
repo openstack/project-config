@@ -101,6 +101,11 @@ chown unbound /var/log/unbound.log
 chmod 0644 /var/log/unbound.log
 
 if [[ "$DISTRO_NAME" =~ (opensuse) ]] ; then
+    # NOTE(ianw) 2021-03-17 : something about building the suse chroot
+    # has changed and /etc/init.d/ is no longer available.  However,
+    # it rc-local.service (part of systemd) still runs.  We should
+    # probably convert this all to a systemd job; but for now...
+    mkdir -p /etc/init.d
     rclocal=/etc/init.d/boot.local
 elif [[ "${DISTRO_NAME}" =~ "gentoo" ]]; then
     rclocal=/etc/local.d/unbound.start
