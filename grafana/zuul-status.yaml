@@ -238,3 +238,60 @@ dashboard:
             - target: alias(stats.gauges.zuul.mergers.jobs_queued, 'Queued Jobs')
             - target: alias(stats.gauges.zuul.mergers.jobs_running, 'Running Jobs')
           type: graph
+    - title: ZooKeeper
+      showTitle: true
+      height: 250px
+      panels:
+        - title: Zuul Event Processing Time
+          nullPointMode: "connected"
+          span: 4
+          yaxes:
+            - label: "time"
+              format: ms
+            - show: false
+          targets:
+            - target: alias(averageSeries(stats.timers.zuul.tenant.*.event_enqueue_processing_time.mean), 'Trigger Events')
+          type: graph
+        - title: ZooKeeper Average Latency
+          span: 4
+          targets:
+            - target: aliasByNode(stats.gauges.zk.*.zk_avg_latency, 3)
+          yaxes:
+            - label: time
+              format: ms
+            - show: false
+          type: graph
+        - title: ZooKeeper Approximate Data Size
+          span: 4
+          targets:
+            - target: aliasByNode(stats.gauges.zk.*.zk_approximate_data_size, 3)
+          yaxes:
+            - label: size
+              format: bytes
+            - show: false
+          type: graph
+        - title: ZooKeeper ZNodes
+          span: 4
+          targets:
+            - target: aliasByNode(stats.gauges.zk.*.zk_znode_count, 3)
+          type: graph
+        - title: ZooKeeper Watches
+          span: 4
+          targets:
+            - target: aliasByNode(stats.gauges.zk.*.zk_watch_count, 3)
+          type: graph
+        - title: ZooKeeper Ephemeral Nodes
+          span: 4
+          targets:
+            - target: aliasByNode(stats.gauges.zk.*.zk_ephemerals_count, 3)
+          type: graph
+        - title: ZooKeeper Outstanding Requests
+          span: 4
+          targets:
+            - target: aliasByNode(stats.gauges.zk.*.zk_outstanding_requests, 3)
+          type: graph
+        - title: ZooKeeper Followers
+          span: 4
+          targets:
+            - target: aliasByNode(stats.gauges.zk.*.zk_followers, 3)
+          type: graph
