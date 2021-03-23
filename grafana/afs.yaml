@@ -175,6 +175,15 @@ dashboard:
           format: dateTimeFromNow
           valueFontSize: "50%"
 
+        - title: mirror.ubuntu-cloud
+          type: singlestat
+          valueName: current
+          span: 2
+          targets:
+            - target: "scale(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_ubuntu-cloud_readonly.creation, 1000)"
+          format: dateTimeFromNow
+          valueFontSize: "50%"
+
         - title: mirror.centos
           type: singlestat
           valueName: current
@@ -265,6 +274,23 @@ dashboard:
             - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_ubuntu-ports.quota, 'Quota')"
               refId: B
             - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_ubuntu-ports.used, #B)"
+              refId: C
+              hide: true
+
+        - title: mirror.ubuntu-cloud
+          type: graph
+          span: 4
+          yaxes:
+            - format: deckbytes
+              min: 0
+            - format: deckbytes
+              min: 0
+          targets:
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_ubuntu-cloud.used, 'Used')"
+              refId: A
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_ubuntu-cloud.quota, 'Quota')"
+              refId: B
+            - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_ubuntu-cloud.used, #B)"
               refId: C
               hide: true
 
