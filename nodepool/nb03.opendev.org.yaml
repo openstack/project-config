@@ -41,6 +41,14 @@ providers:
           os_command_line: "console=ttyAMA0"
           hw_disk_bus: scsi
           hw_scsi_model: virtio-scsi
+      - name: debian-bullseye-arm64
+        pause: false
+        config-drive: true
+        meta:
+          hw_firmware_type: uefi
+          os_command_line: "console=ttyAMA0"
+          hw_disk_bus: scsi
+          hw_scsi_model: virtio-scsi
       - name: debian-buster-arm64
         pause: false
         config-drive: true
@@ -140,6 +148,14 @@ diskimages:
     env-vars:
       DIB_DISTRIBUTION_MIRROR: 'https://mirror.regionone.linaro-us.opendev.org/ubuntu-ports'
       DIB_DEBIAN_COMPONENTS: 'main,universe'
+
+  - name: debian-bullseye-arm64
+    parent: base-debuntu
+    elements:
+      - debian-minimal
+    release: bullseye
+    env-vars:
+      DIB_DISTRIBUTION_MIRROR: 'https://mirror.regionone.linaro-us.opendev.org/debian'
 
   - name: debian-buster-arm64
     parent: base-debuntu
