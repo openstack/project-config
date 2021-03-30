@@ -3315,18 +3315,14 @@
     name: openstack/networking-midonet
     templates:
       - official-openstack-repo-jobs
-      - periodic-jobs-with-neutron-lib-master
-      - translation-jobs-master-only
-      - publish-to-pypi
-    periodic:
+    check:
       jobs:
-        - openstack-tox-py36-with-neutron-lib-master:
-            required-projects:
-              - openstack/neutron-fwaas
-              - openstack/neutron-vpnaas
-              - openstack/neutron-dynamic-routing
-              - x/networking-l2gw
-              - x/tap-as-a-service
+        - noop:
+            branches: master
+    gate:
+      jobs:
+        - noop:
+            branches: master
 
 - project:
     name: openstack/networking-odl
