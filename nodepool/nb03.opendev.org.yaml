@@ -16,7 +16,7 @@ providers:
     region-name: 'RegionOne'
     cloud: linaro-us
     rate: 0.25
-    diskimages:
+    diskimages: &arm64_diskimages
       - name: ubuntu-xenial-arm64
         pause: false
         config-drive: true
@@ -73,6 +73,12 @@ providers:
           os_command_line: "console=ttyAMA0"
           hw_disk_bus: scsi
           hw_scsi_model: virtio-scsi
+
+  - name: osuosl
+    region-name: 'RegionOne'
+    cloud: osuosl
+    rate: 0.25
+    diskimages: *arm64_diskimages
 
 diskimages:
   - name: base
