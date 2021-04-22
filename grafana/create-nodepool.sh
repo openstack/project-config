@@ -27,3 +27,4 @@ create OVH 'ovh-*' nodepool-ovh.yaml
 create Vexxhost 'vexxhost-*' nodepool-vexxhost.yaml
 create Airship-Citycloud 'airship-*' nodepool-airship-citycloud.yaml
 create OSUOSL 'osuosl-*' nodepool-osuosl.yaml
+create InMotion 'inmotion-*' nodepool-inmotion.yaml
