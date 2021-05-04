@@ -991,20 +991,6 @@
         secret: wheel_keytab
 
 - job:
-    name: publish-wheel-cache-ubuntu-xenial-arm64
-    parent: build-wheel-cache-ubuntu-xenial-arm64
-    description: |
-      Publish Ubuntu Xenial ARM64 wheels for OpenStack CI mirrors.
-    pre-run: playbooks/openafs-client/setup.yaml
-    post-run: playbooks/publish/wheel-mirror.yaml
-    allowed-projects:
-      - openstack/requirements
-    final: true
-    secrets:
-      - name: afs
-        secret: wheel_keytab
-
-- job:
     name: release-wheel-cache
     description: |
       Release published wheels to OpenStack CI mirrors.
