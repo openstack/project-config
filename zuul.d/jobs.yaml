@@ -893,6 +893,34 @@
         secret: wheel_keytab
 
 - job:
+    name: publish-wheel-cache-debian-bullseye
+    description: |
+      Publish Debian bullseye wheels for OpenStack CI mirrors.
+    parent: build-wheel-cache-debian-bullseye
+    pre-run: playbooks/openafs-client/setup.yaml
+    post-run: playbooks/publish/wheel-mirror.yaml
+    allowed-projects:
+      - openstack/requirements
+    final: true
+    secrets:
+      - name: afs
+        secret: wheel_keytab
+
+- job:
+    name: publish-wheel-cache-debian-bullseye-arm64
+    description: |
+      Publish Debian bullseye wheels for OpenStack CI mirrors.
+    parent: build-wheel-cache-debian-bullseye-arm64
+    pre-run: playbooks/openafs-client/setup.yaml
+    post-run: playbooks/publish/wheel-mirror.yaml
+    allowed-projects:
+      - openstack/requirements
+    final: true
+    secrets:
+      - name: afs
+        secret: wheel_keytab
+
+- job:
     name: publish-wheel-cache-debian-buster
     description: |
       Publish Debian buster wheels for OpenStack CI mirrors.
