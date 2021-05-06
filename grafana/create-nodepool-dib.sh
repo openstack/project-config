@@ -32,5 +32,4 @@ create "Debian Buster arm64" "debian-buster-arm64"
 create "Debian Stretch arm64" "debian-stretch-arm64"
 create "Ubuntu Focal arm64" "ubuntu-focal-arm64"
 create "Ubuntu Bionic arm64" "ubuntu-bionic-arm64"
-create "Ubuntu Xenial arm64" "ubuntu-xenial-arm64"
 
