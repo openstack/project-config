@@ -64,6 +64,22 @@
       - README.rst
 
 - job:
+    name: publish-openstack-python-tarball
+    parent: publish-openstack-artifacts
+    description: |
+      Release and sign OpenStack python tarballs to tarballs.o.o.
+      It is similar to release-openstack-python but
+      omits PyPI publication.
+    pre-run: playbooks/pti-python-tarball/pre.yaml
+    run: playbooks/pti-python-tarball/run.yaml
+    post-run:
+      - playbooks/pti-python-tarball/post.yaml
+    secrets:
+      - gpg_key
+    vars:
+      release_python: python3
+
+- job:
     name: publish-openstack-sphinx-docs-base
     nodeset: ubuntu-xenial
     description: |
