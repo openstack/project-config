@@ -34,7 +34,6 @@ class CheckAccess(irc.client.SimpleIRCClient):
 
     def __init__(self, channels, nick, flags):
         irc.client.SimpleIRCClient.__init__(self)
-        self.identify_msg_cap = False
         self.channels = channels
         self.nick = nick
         self.flags = flags
@@ -49,30 +48,10 @@ class CheckAccess(irc.client.SimpleIRCClient):
             sys.exit(0)
 
     def on_welcome(self, c, e):
-        self.identify_msg_cap = False
-        self.log.debug("Requesting identify-msg capability")
-        c.cap('REQ', 'identify-msg')
-        c.cap('END')
-
-    def on_cap(self, c, e):
-        self.log.debug("Received cap response %s" % repr(e.arguments))
-        if e.arguments[0] == 'ACK' and 'identify-msg' in e.arguments[1]:
-            self.log.debug("identify-msg cap acked")
-            self.identify_msg_cap = True
-            self.advance()
+        self.advance()
 
     def on_privnotice(self, c, e):
-        if not self.identify_msg_cap:
-            self.log.debug("Ignoring message because identify-msg "
-                           "cap not enabled")
-            return
-        nick = e.source.split('!')[0]
-        auth = e.arguments[0][0]
-        msg = e.arguments[0][1:]
-        if auth != '+' or nick != 'ChanServ':
-            self.log.debug("Ignoring message from unauthenticated "
-                           "user %s" % nick)
-            return
+        msg = e.arguments[0]
         self.advance(msg)
 
     def advance(self, msg=None):
@@ -82,11 +61,13 @@ class CheckAccess(irc.client.SimpleIRCClient):
                 return
             self.current_channel = self.channels.pop()
             self.current_list = []
-            self.connection.privmsg('chanserv', 'access list %s' %
+            self.connection.privmsg('chanserv', 'access %s list' %
                                     self.current_channel)
             time.sleep(1)
             return
-        if msg.endswith('is not registered.'):
+        if not msg:
+            return
+        if msg.endswith('is not registered with channel services.'):
             self.failed = True
             print("%s is not registered with ChanServ." %
                   self.current_channel)
@@ -133,7 +114,7 @@ def main():
                         default='/etc/accessbot/channels.yaml',
                         help='path to the config file')
     parser.add_argument('-s', dest='server',
-                        default='chat.freenode.net',
+                        default='irc.oftc.net',
                         help='IRC server')
     parser.add_argument('-p', dest='port',
                         default=6697,
