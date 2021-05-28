@@ -14,9 +14,8 @@
 
 # In general, to add a new channel for an official OpenStack project
 # to this file, just add the name to the list in "channels" without
-# anything else.  Projects who wish to maintain full permissions
-# outside the "official" infra list can optionally set "mask" to
-# "full_mask".
+# anything else.  Additional admins or ops can be added as keys under the
+# channel name.
 
 # Each channel is a dictionary with a keys as follows
 #
@@ -24,16 +23,12 @@
 #   (str) unique channel name (no #)
 # alumni:
 #   (list) list of nicks that should be removed from ChanServ access
-# mask:
-#   (str) default mask for users with chanserv access but not
-#   otherwise listed in the channel or global config.  Access is
-#   limited to the mask but otherwise left alone.
 # mode:
 #   (str) mode mask for mlock.  Note that flags here are enforced, but
 #   flags outside the list are left alone.
 # *:
 #   (list) every other key is assumed to be a key in the "access:"
-#   list.  The provided list of nicks will have the flags for that
+#   list.  The provided list of nicks will have the levels for that
 #   key applied.
 #
 # NOTE each channel looks up these values in the "global:" list first.
@@ -43,20 +38,10 @@
 # Global definitions
 #
 
-# To forward unregistered users to a channel with +f you need to be an
-# op in that channel.  This pre-joins and ops (via chanserv) in the
-# given channels.
-op_channels:
-  - openstack-unregistered
-
-# Access levels (map names in this file to chanserv flags):
+# Access levels (map names in this file to chanserv access levels):
 access:
-  masters: +AFRefiorstv
-  status: +Vt
-  meetbots: +O
-  operators: +Aeforstv
-  channel_op_mask: +AOVefortv
-  full_mask: +AFORVefiorstv
+  admins: MASTER
+  ops: CHANOP
 
 # Define configuration that should apply to all channels.
 global:
@@ -74,51 +59,38 @@ global:
     - Shrews
     - dmsimard
     - pabelanger
-  mask:
-    channel_op_mask
-  # This sets the following
-  #  c : no colors
-  #  n : message can not be sent from outside channel
-  #  r : registered users only
-  #  t : op to modify topic
-  #  f : forward unregistered users to #openstack-unregistered
-  mode: '+cnrtf #openstack-unregistered'
-  masters:
-    - openstackinfra
-  operators:
-    - AJaeger
+  # https://www.oftc.net/ChannelModes/
+  # c - no color messages allowed
+  # n - no external messages (from clients that are not on the channels)
+  # t - only chanops may change Topic
+  # z - messages that would otherwise be blocked go to channel operators
+  # M - client may speak only when registered and identified to NickServ
+  # R - client may join only when registered and identified to NickServ
+  # S - client may join only when using SSL Connection
+  mode: '+cnt'
+  admins:
     - clarkb
-    - diablo_rojo
     - frickler
     - fungi
     - ianw
     - jeblair
-    - jhesketh
-    - mnaser
-    - mtaylor
-    - ttx
-  status:
-    - openstackstatus
-  meetbots:
-    - open_stack
+    - mordred
+    - opendevaccess
+  ops:
+    - opendevmeet
+    - opendevstatus
 
 # Individual channel configuration:
 channels:
   - name: airshipit
-    mask: full_mask
   - name: airshipit-gerritbot
-    mask: full_mask
   - name: cloudkitty
   - name: edge-computing-group
   - name: git-upstream
-    mask: full_mask
   - name: heat
   - name: kata-dev
-    mask: full_mask
   - name: kata-general
-    mask: full_mask
   - name: midonet
-    mask: full_mask
   - name: oooq
   - name: opendev
   - name: opendev-meeting
@@ -163,7 +135,6 @@ channels:
   - name: openstack-golang
   - name: openstack-ha
   - name: openstack-helm
-    mask: full_mask
   - name: openstack-horizon
   - name: openstack-hyper-v
   - name: openstack-i18n
@@ -177,7 +148,6 @@ channels:
   - name: openstack-kolla
   - name: openstack-kuryr
   - name: openstack-lbaas
-    mask: full_mask
   - name: openstack-loci
   - name: openstack-manila
   - name: openstack-masakari
@@ -203,7 +173,6 @@ channels:
   - name: openstack-oslo
   - name: openstack-pandaman
   - name: openstack-placement
-    mask: full_mask
   - name: openstack-poppy
   - name: openstack-qa
   - name: openstack-quota
@@ -219,7 +188,6 @@ channels:
   - name: openstack-snaps
   - name: openstack-solar
   - name: openstack-spaceport
-    mask: full_mask
   - name: openstack-stable
   - name: openstack-state-management
   - name: openstack-steth
@@ -228,7 +196,6 @@ channels:
   - name: openstack-tc
   - name: openstack-telemetry
   - name: openstack-third-party-ci
-    mask: full_mask
   - name: openstack-trove
   - name: openstack-upstream-institute
   - name: openstack-vahana
@@ -240,7 +207,6 @@ channels:
   - name: openstack-zaqar
   - name: openstack-zun
   - name: osism
-    mask: full_mask
   - name: refstack
   - name: senlin
   - name: solum
@@ -251,9 +217,7 @@ channels:
   - name: swiftonhpss
   - name: swift3
   - name: syscompass
-    mask: full_mask
   - name: tacker
-    mask: full_mask
   - name: tripleo
   - name: wsme
   - name: zuul
