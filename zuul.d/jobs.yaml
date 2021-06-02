@@ -327,6 +327,26 @@
         pass-to-parent: true
 
 - job:
+    name: promote-irc-meetings-ical
+    parent: promote-tox-docs-site-base
+    description: |
+      Publish OpenDev Meetings site/ical to
+      /afs/.openstack.org/project/meetings.opendev.org/.
+
+      This is a promote job for ``irc-meetings-ical-tox-publish``.
+    final: true
+    run: playbooks/service-types/promote.yaml
+    allowed-projects:
+      - opendev/irc-meetings
+    vars:
+      download_artifact_job: irc-meetings-ical-tox-publish
+      publish_site: "meetings.opendev.org"
+    secrets:
+      - secret: afsdocs_secret-tox-docs-site
+        name: afs
+        pass-to-parent: true
+
+- job:
     name: promote-infra-index
     parent: promote-tox-docs-special-base
     description: |
