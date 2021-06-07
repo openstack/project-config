@@ -415,20 +415,6 @@
     vars:
       release_python: python3
 
-- job:
-    name: publish-irc-meetings
-    description: |
-      Publish the IRC meeting calendars to eavesdrop.openstack.org.
-    final: true
-    pre-run: playbooks/yaml2ical/pre.yaml
-    run: playbooks/project-config/run-tox.yaml
-    post-run: playbooks/yaml2ical/post.yaml
-    required-projects:
-      - opendev/irc-meetings
-    vars:
-      tox_envlist: ical
-      zuul_work_dir: src/opendev.org/opendev/irc-meetings
-
 # AFS sync issues happen when multiple publish jobs run at the same time
 # so we make it synchronous to avoid job failures
 - semaphore:
