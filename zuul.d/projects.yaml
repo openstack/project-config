@@ -2326,38 +2326,6 @@
       - official-openstack-repo-jobs
 
 - project:
-    name: openstack/devstack-gate
-    templates:
-      - integrated-gate-py3
-      - official-openstack-repo-jobs
-      - openstack-python35-jobs
-    check:
-      queue: integrated
-      jobs:
-        - openstack-tox-bashate
-        - openstack-tox-py27
-        - neutron-grenade
-        - neutron-grenade-multinode
-        - neutron-grenade-dvr-multinode:
-            voting: false
-        - legacy-tempest-dsvm-neutron-full-ocata:
-            voting: false
-        - legacy-tempest-dsvm-neutron-full-centos-7:
-            voting: false
-        - legacy-tempest-dsvm-multinode-full:
-            voting: false
-    gate:
-      queue: integrated
-      jobs:
-        - openstack-tox-py27
-        - neutron-grenade
-        - neutron-grenade-multinode
-    experimental:
-      jobs:
-        - legacy-tempest-dsvm-neutron-dvr-multinode-full
-        - neutron-tempest-dvr-ha-multinode-full
-
-- project:
     name: openstack/devstack-plugin-amqp1
     templates:
       - official-openstack-repo-jobs
