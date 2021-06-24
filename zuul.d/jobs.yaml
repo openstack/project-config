@@ -182,7 +182,7 @@
       that need a special location.
 
       Publish the results of the tox-docs job to
-      /afs/.openstack.org/docs/{{ special_publish_directory }}.
+      /afs/.openstack.org/docs/{special_publish_directory}.
 
       This is a promote job for ``openstack-tox-docs``.
 
@@ -297,12 +297,12 @@
       Publish OpenStack specs project.
 
       Publish specs index to
-      /afs/.openstack.org/project/specs.openstack.org/{{ zuul.project.name }}.
+      /afs/.openstack.org/project/specs.openstack.org/{zuul[project][name]}.
 
       This is a promote job for ``openstack-tox-docs``.
     vars:
       download_artifact_job: openstack-tox-docs
-      publish_site: "specs.openstack.org/{{ zuul.project.name }}"
+      publish_site: "specs.openstack.org/{zuul[project][name]}"
 
 - job:
     name: promote-tox-docs-infra
@@ -473,7 +473,7 @@
       that need a special location.
 
       Publish the results of the tox-docs job to
-      /afs/.openstack.org/project/{{publish_site }}.
+      /afs/.openstack.org/project/{publish_site}.
 
       This is a promote job for ``openstack-tox-docs``.
 
@@ -523,7 +523,7 @@
       - airship/spyglass-plugin-xls
       - airship/treasuremap
     vars:
-      publish_site: "airshipit.org/docs/{{ zuul.project.short_name }}"
+      publish_site: "airshipit.org/docs/{zuul[project][short_name]}"
 
 - job:
     name: promote-governance-election
