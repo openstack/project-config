@@ -231,7 +231,7 @@
     post-run:
       - playbooks/publish/releasenotes.yaml
       - playbooks/publish/openstack-afs.yaml
-    semaphore: publish-releasenotes
+    semaphores: publish-releasenotes
     override-branch: master
     # Building translated releasenotes can take long for large repositories
     timeout: 3600
@@ -453,7 +453,7 @@
       - playbooks/project-config/post-tox.yaml
       - playbooks/sphinx/post-infra.yaml
       - playbooks/publish/releases-afs.yaml
-    semaphore: publish-release-docs
+    semaphores: publish-release-docs
     allowed-projects:
       - openstack/releases
     required-projects:
@@ -1136,7 +1136,7 @@
     post-run:
       - playbooks/translation/post.yaml
       - playbooks/translation/openstack-translation-artifacts.yaml
-    semaphore: translations
+    semaphores: translations
     protected: true
     vars:
       constraints_file: '{{ ansible_user_dir }}/src/opendev.org/openstack/requirements/upper-constraints.txt'
@@ -1164,7 +1164,7 @@
     post-run: playbooks/translation/post.yaml
     vars:
       constraints_file: '{{ ansible_user_dir }}/src/opendev.org/openstack/requirements/upper-constraints.txt'
-    semaphore: translations
+    semaphores: translations
     protected: true
     required-projects:
       - openstack/horizon
