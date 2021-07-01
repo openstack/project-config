@@ -158,12 +158,11 @@ def main():
 
     VALID_LABELS = ["acl-config", "description", "docimpact-group",
                     "groups", "homepage", "options", "project",
-                    "upstream", "upstream-prefix", "use-storyboard",
-                    "cgit-alias"]
+                    "upstream", "use-storyboard", "cgit-alias"]
     VALID_SCHEMES = ['https://', 'http://', 'git://']
     DESCRIPTION_REQUIRED = ['openstack', 'openstack-infra', 'openstack-dev',
                             'stackforge']
-    VALID_OPTIONS = ['delay-release', 'track-upstream', 'translate']
+    VALID_OPTIONS = ['delay-release', 'translate']
     CGIT_ALIAS_SITES = ['zuul-ci.org']
 
     for p in projects:
@@ -213,7 +212,7 @@ def main():
         # Allow git:// and https:// URLs for importing upstream repositories,
         # but not git@
         upstream = p.get('upstream')
-        if upstream and 'track-upstream' not in p.get('options', []):
+        if upstream:
             openstack_repo = 'https://opendev.org/%s' % name
             try:
                 # Check to see if we have already imported the project into
@@ -223,7 +222,6 @@ def main():
                 # We haven't imported the repo yet, make sure upstream is
                 # valid.
                 found_errors += check_repo(upstream)
-        if upstream:
             for prefix in VALID_SCHEMES:
                 if upstream.startswith(prefix):
                     break

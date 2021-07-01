@@ -23,8 +23,7 @@ def main():
     data = yaml.load(open('gerrit/projects.yaml'))
 
     for project in data:
-        if ('upstream' in project
-            and 'track-upstream' not in project.get('options', [])):
+        if 'upstream' in project:
             del project['upstream']
 
     with open('gerrit/projects.yaml', 'w') as out:
