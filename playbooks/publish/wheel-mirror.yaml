@@ -7,10 +7,20 @@
   serial: 1
 
   pre_tasks:
+
+    # NOTE(ianw) 2021-08-04 : ansible_distribution currently reports
+    # both stream and non-stream as "CentOS" so we need to check lsb
+    # here.
+    - name: Generate AFS slug - CentOS Stream
+      set_fact:
+        afs_slug: 'centos-{{ ansible_distribution_major_version }}-stream-{{ ansible_architecture }}'
+      when: ansible_lsb.id == 'CentOSStream'
+
     - name: Generate AFS slug - CentOS
       set_fact:
         afs_slug: "{{ ansible_distribution|lower }}-{{ ansible_distribution_major_version }}-{{ ansible_architecture }}"
-      when: ansible_distribution == "CentOS"
+      when: ansible_distribution == "CentOS" and
+            ansible_lsb.id != 'CentOSStream'
 
     - name: Generate AFS slug - Debuntu
       set_fact:
