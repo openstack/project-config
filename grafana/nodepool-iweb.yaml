@@ -1,0 +1,197 @@
+#
+# NOTE: EDIT THE TEMPLATE FILE AND RUN create-nodepool.sh
+#
+
+dashboard:
+  title: 'Nodepool: iWeb'
+  templating:
+    - name: region
+      includeAll: true
+      multi: true
+      query: stats.gauges.nodepool.provider.iweb-*
+      refresh: 1
+      type: query
+  rows:
+    - title: Description
+      height: 150px
+      panels:
+        - title: Description
+          content: |
+            iWeb Nodepool Status
+            ==========================
+
+            This dashboard monitors the status of the nodepool environment for iWeb.
+
+            **This dashboard is managed by [Grafyaml](https://docs.openstack.org/infra/system-config/grafyaml.html).**
+            If you would like to make changes to this dashboard, please see the template in the `grafana` directory in
+            [project-config](https://opendev.org/openstack/project-config/src/branch/master/grafana/nodepool.template).
+
+          type: text
+
+    - title: Nodes
+      showTitle: true
+      height: 150px
+      panels:
+        - title: Building
+          span: 3
+          sparkline:
+            full: true
+            show: true
+          targets:
+            - target: sumSeries(stats.gauges.nodepool.provider.$region.nodes.building)
+          type: singlestat
+          valueName: current
+        - title: Ready
+          span: 3
+          sparkline:
+            full: true
+            show: true
+          targets:
+            - target: sumSeries(stats.gauges.nodepool.provider.$region.nodes.ready)
+          type: singlestat
+          valueName: current
+        - title: In Use
+          span: 3
+          sparkline:
+            full: true
+            show: true
+          targets:
+            - target: sumSeries(stats.gauges.nodepool.provider.$region.nodes.in-use)
+          type: singlestat
+          valueName: current
+        - title: Deleting
+          span: 3
+          sparkline:
+            full: true
+            show: true
+          targets:
+              - target: sumSeries(stats.gauges.nodepool.provider.$region.nodes.deleting)
+          type: singlestat
+          valueName: current
+
+    - title: Test Nodes
+      height: 400px
+      panels:
+        - title: Test Node History - $region
+          type: graph
+          span: 12
+          stack: true
+          repeat: region
+          minSpan: 4
+          tooltip:
+            value_type: individual
+          yaxes:
+            - label: "nodes"
+            - show: false
+          targets:
+            - target: alias(sumSeries(stats.gauges.nodepool.provider.$region.nodes.building), 'Building')
+            - target: alias(sumSeries(stats.gauges.nodepool.provider.$region.nodes.ready), 'Available')
+            - target: alias(sumSeries(stats.gauges.nodepool.provider.$region.nodes.in-use), 'In Use')
+            - target: alias(sumSeries(stats.gauges.nodepool.provider.$region.nodes.used), 'Used')
+            - target: alias(sumSeries(stats.gauges.nodepool.provider.$region.nodes.deleting), 'Deleting')
+            - target: alias(sumSeries(stats.gauges.nodepool.provider.$region.max_servers), 'Max')
+          seriesOverrides:
+            - alias: Max
+              stack: False
+
+
+    - title: Node Launches
+      showTitle: true
+      height: 250px
+      panels:
+        - title: Ready Node Launch Attempts
+          type: graph
+          span: 4
+          lines: false
+          bars: true
+          nullPointMode: null as zero
+          yaxes:
+            - label: "events / min"
+            - show: false
+          targets:
+            - target: aliasSub(summarize(stats_counts.nodepool.launch.provider.$region.ready, '1m'), '.*stats_counts.nodepool.launch.provider.(.*).ready.*', '\1')
+        - title: Time to Ready
+          type: graph
+          span: 4
+          lines: false
+          bars: true
+          nullPointMode: null as zero
+          yaxes:
+            - label: "time"
+              format: ms
+            - show: false
+          targets:
+            - target: aliasByNode(stats.timers.nodepool.launch.provider.$region.ready.mean, 5)
+        - title: Error Node Launch Attempts
+          type: graph
+          span: 4
+          lines: false
+          bars: true
+          nullPointMode: null as zero
+          yaxes:
+            - label: "events / min"
+            - show: false
+          targets:
+            - target: alias(smartSummarize(sumSeries(stats_counts.nodepool.launch.provider.$region.error.*), '1m'), "All Errors")
+
+    - title: API Operations
+      showTitle: true
+      height: 250px
+      panels:
+        - title: Create Server
+          type: graph
+          lines: true
+          nullPointMode: connected
+          span: 4
+          yaxes:
+            - format: ms
+              label: Time
+            - show: false
+          targets:
+            - target: aliasByNode(stats.timers.nodepool.task.$region.ComputePostServers.mean, 4)
+        - title: Get Server
+          type: graph
+          span: 4
+          lines: true
+          nullPointMode: connected
+          span: 4
+          yaxes:
+            - format: ms
+              label: Time
+            - show: false
+          targets:
+            - target: aliasByNode(stats.timers.nodepool.task.$region.ComputePostServers.mean, 4)
+        - title: Delete Server
+          type: graph
+          span: 4
+          lines: true
+          nullPointMode: connected
+          span: 4
+          yaxes:
+            - format: ms
+              label: Time
+            - show: false
+          targets:
+            - target: aliasByNode(stats.timers.nodepool.task.$region.ComputePostServers.mean, 4)
+        - title: List Servers
+          type: graph
+          lines: true
+          nullPointMode: connected
+          span: 4
+          yaxes:
+            - format: ms
+              label: Time
+            - show: false
+          targets:
+            - target: aliasByNode(stats.timers.nodepool.task.$region.ComputePostServers.mean, 4)
+        - title: Get Limits
+          type: graph
+          lines: true
+          nullPointMode: connected
+          span: 4
+          yaxes:
+            - format: ms
+              label: Time
+            - show: false
+          targets:
+            - target: aliasByNode(stats.timers.nodepool.task.$region.ComputePostServers.mean, 4)
