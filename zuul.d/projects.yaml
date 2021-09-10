@@ -6,7 +6,7 @@
     # run merge-check on third-party things like ansible
     # Add for former OpenStack repos that got renamed as part of
     # OpenDev change the system-required template as well:
-    name: ^(airship|jjb|starlingx|opendev|osf|performa|starlingx|ttygroup|windmill|x|zuul)/.*
+    name: ^(airship|jjb|starlingx|opendev|openinfra|performa|starlingx|ttygroup|windmill|x|zuul)/.*
     templates:
       - system-required
 
@@ -1068,6 +1068,62 @@
         - infra-prod-service-nameserver:
             files: zones/.*
             dependencies: []
+
+- project:
+    name: openinfra/groups
+    check:
+      jobs:
+        - legacy-groups-unittests
+    gate:
+      jobs:
+        - legacy-groups-unittests
+    post:
+      jobs:
+        - legacy-groups-release-branch
+    release:
+      jobs:
+        - legacy-groups-release-master
+
+- project:
+    name: openinfra/groups-static-pages
+    templates:
+      - noop-jobs
+
+- project:
+    name: openinfra/odsreg
+    templates:
+      - noop-jobs
+
+- project:
+    name: openinfra/openstackid
+    release:
+      jobs:
+        - openstackid-release-master
+
+- project:
+    name: openinfra/openstackid-resources
+    templates:
+      - noop-jobs
+
+- project:
+    name: openinfra/openstackweb
+    templates:
+      - noop-jobs
+
+- project:
+    name: openinfra/python-tempestconf
+    templates:
+      - publish-to-pypi
+
+- project:
+    name: openinfra/refstack
+    templates:
+      - publish-to-pypi
+
+- project:
+    name: openinfra/transparency-policy
+    templates:
+      - build-openstack-docs-pti
 
 - project:
     name: openstack/adjutant
@@ -6173,62 +6229,6 @@
       - official-openstack-repo-jobs
       - translation-jobs-master-stable
       - publish-to-pypi
-
-- project:
-    name: osf/groups
-    check:
-      jobs:
-        - legacy-groups-unittests
-    gate:
-      jobs:
-        - legacy-groups-unittests
-    post:
-      jobs:
-        - legacy-groups-release-branch
-    release:
-      jobs:
-        - legacy-groups-release-master
-
-- project:
-    name: osf/groups-static-pages
-    templates:
-      - noop-jobs
-
-- project:
-    name: osf/odsreg
-    templates:
-      - noop-jobs
-
-- project:
-    name: osf/openstackid
-    release:
-      jobs:
-        - openstackid-release-master
-
-- project:
-    name: osf/openstackid-resources
-    templates:
-      - noop-jobs
-
-- project:
-    name: osf/openstackweb
-    templates:
-      - noop-jobs
-
-- project:
-    name: osf/python-tempestconf
-    templates:
-      - publish-to-pypi
-
-- project:
-    name: osf/refstack
-    templates:
-      - publish-to-pypi
-
-- project:
-    name: osf/transparency-policy
-    templates:
-      - build-openstack-docs-pti
 
 - project:
     name: performa/os-faults
