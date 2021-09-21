@@ -138,7 +138,7 @@ dashboard:
       showTitle: true
       height: 250px
       panels:
-        - title: Create Server
+        - title: POST Server
           type: graph
           lines: true
           nullPointMode: connected
@@ -148,20 +148,8 @@ dashboard:
               label: Time
             - show: false
           targets:
-            - target: aliasByNode(stats.timers.nodepool.task.$region.ComputePostServers.mean, 4)
-        - title: Get Server
-          type: graph
-          span: 4
-          lines: true
-          nullPointMode: connected
-          span: 4
-          yaxes:
-            - format: ms
-              label: Time
-            - show: false
-          targets:
-            - target: aliasByNode(stats.timers.nodepool.task.$region.ComputePostServers.mean, 4)
-        - title: Delete Server
+            - target: aliasByNode(stats.timers.nodepool.task.$region.compute.POST.servers.mean, 4)
+        - title: GET Server
           type: graph
           span: 4
           lines: true
@@ -172,8 +160,20 @@ dashboard:
               label: Time
             - show: false
           targets:
-            - target: aliasByNode(stats.timers.nodepool.task.$region.ComputePostServers.mean, 4)
-        - title: List Servers
+            - target: aliasByNode(stats.timers.nodepool.task.$region.compute.GET.servers.mean, 4)
+        - title: DELETE Server
+          type: graph
+          span: 4
+          lines: true
+          nullPointMode: connected
+          span: 4
+          yaxes:
+            - format: ms
+              label: Time
+            - show: false
+          targets:
+            - target: aliasByNode(stats.timers.nodepool.task.$region.compute.DELETE.servers.mean, 4)
+        - title: GET Servers Details
           type: graph
           lines: true
           nullPointMode: connected
@@ -183,8 +183,8 @@ dashboard:
               label: Time
             - show: false
           targets:
-            - target: aliasByNode(stats.timers.nodepool.task.$region.ComputePostServers.mean, 4)
-        - title: Get Limits
+            - target: aliasByNode(stats.timers.nodepool.task.$region.compute.GET.servers.detail.mean, 4)
+        - title: GET Limits
           type: graph
           lines: true
           nullPointMode: connected
@@ -194,4 +194,59 @@ dashboard:
               label: Time
             - show: false
           targets:
-            - target: aliasByNode(stats.timers.nodepool.task.$region.ComputePostServers.mean, 4)
+            - target: aliasByNode(stats.timers.nodepool.task.$region.compute.GET.limits.mean, 4)
+        - title: GET Flavors
+          type: graph
+          lines: true
+          nullPointMode: connected
+          span: 4
+          yaxes:
+            - format: ms
+              label: Time
+            - show: false
+          targets:
+            - target: aliasByNode(stats.timers.nodepool.task.$region.compute.GET.flavors.mean, 4)
+        - title: GET network floatingips
+          type: graph
+          lines: true
+          nullPointMode: connected
+          span: 4
+          yaxes:
+            - format: ms
+              label: Time
+            - show: false
+          targets:
+            - target: aliasByNode(stats.timers.nodepool.task.$region.network.GET.floatingips.mean, 4)
+        - title: GET networks
+          type: graph
+          lines: true
+          nullPointMode: connected
+          span: 4
+          yaxes:
+            - format: ms
+              label: Time
+            - show: false
+          targets:
+            - target: aliasByNode(stats.timers.nodepool.task.$region.network.GET.networks.mean, 4)
+        - title: GET network ports
+          type: graph
+          lines: true
+          nullPointMode: connected
+          span: 4
+          yaxes:
+            - format: ms
+              label: Time
+            - show: false
+          targets:
+            - target: aliasByNode(stats.timers.nodepool.task.$region.network.GET.ports.mean, 4)
+        - title: GET network subnets
+          type: graph
+          lines: true
+          nullPointMode: connected
+          span: 4
+          yaxes:
+            - format: ms
+              label: Time
+            - show: false
+          targets:
+            - target: aliasByNode(stats.timers.nodepool.task.$region.network.GET.subnets.mean, 4)
