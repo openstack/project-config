@@ -94,9 +94,12 @@ BUGS=$(git log $PREVIOUS..$VERSION | egrep -i "Closes(.| )Bug:" | egrep -o "[0-9
 if [[ -z "$BUGS" ]]; then
     echo "No bugs found $PREVIOUS .. $VERSION"
 else
-    python3 -u $TOOLSDIR/launchpad_add_comment.py \
+    # Capitalize the series name for the comment message. Requires >= bash 4.0.
+    $NAME=$(echo ${SERIES^})
+    python3 -u $TOOLSDIR/launchpad_add_comment_set_status.py \
         --subject="Fix included in $REPO $VERSION" \
-        --content="This issue was fixed in the $REPO $VERSION $RELEASETYPE." \
+        --content="This issue was fixed in the $REPO $VERSION $NAME $RELEASETYPE." \
+        --series="$SERIES" \
         $BUGS
 fi
 

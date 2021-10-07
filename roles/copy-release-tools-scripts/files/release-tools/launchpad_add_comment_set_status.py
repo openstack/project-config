@@ -19,6 +19,7 @@
 
 import argparse
 import os
+import re
 
 import launchpadlib.launchpad
 import lazr.restfulclient.errors
@@ -31,6 +32,8 @@ def main():
                         default='Comment added by add_comment')
     parser.add_argument('--content', help='The comment content',
                         default='Comment added by add_comment')
+    parser.add_argument('--series', help='The series being released. Will set '
+                        'the bug status to Fix Released when specified')
     lp_grp = parser.add_argument_group('launchpad')
     lp_grp.add_argument(
         "--test",
@@ -63,13 +66,33 @@ def main():
         credentials_file=args.lp_creds_file,
     )
 
-    # Add comment
+    # Add comment and optionally set status to "Fix Released"
     for bugid in args.bugs:
         print("Adding comment to #%d..." % bugid, end='')
         try:
             bug = launchpad.bugs[bugid]
             bug.newMessage(subject=args.subject, content=args.content)
             print(" done.")
+        except lazr.restfulclient.errors.ServerError:
+            print(" TIMEOUT during save !")
+        except Exception as e:
+            print(" ERROR during save ! (%s)" % e)
+
+        # Skip setting the bug status if --series was not specified
+        if not args.series:
+            continue
+
+        print("Setting #%d to 'Fix Released' on %s..." % (bugid, args.series),
+              end='')
+        try:
+            bug = launchpad.bugs[bugid]
+            for task in bug.bug_tasks:
+                # Find '\bSERIES$' in the bug_target_name
+                if re.findall(r'\b%s$' % args.series, task.bug_target_name):
+                    task.status = "Fix Released"
+                    task.lp_save()
+                    print(" done.")
+                    break
         except lazr.restfulclient.errors.ServerError:
             print(" TIMEOUT during save !")
         except Exception as e:
