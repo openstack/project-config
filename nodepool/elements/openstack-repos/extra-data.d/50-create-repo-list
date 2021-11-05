@@ -42,7 +42,7 @@ CUSTOM_PROJECTS_LIST_URL = os.environ.get('DIB_CUSTOM_PROJECTS_LIST_URL')
 def get_project_list(url):
     try:
         projects = []
-        for f in yaml.load(urlopen(url)):
+        for f in yaml.safe_load(urlopen(url)):
             # Skip repos that are inactive
             project = f['project']
             dirname = os.path.dirname(project)
