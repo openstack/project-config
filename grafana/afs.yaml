@@ -193,6 +193,15 @@ dashboard:
           format: dateTimeFromNow
           valueFontSize: "50%"
 
+        - title: mirror.centos-stream
+          type: singlestat
+          valueName: current
+          span: 2
+          targets:
+            - target: "scale(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_centos-stream_readonly.creation, 1000)"
+          format: dateTimeFromNow
+          valueFontSize: "50%"
+
         - title: mirror.fedora
           type: singlestat
           valueName: current
@@ -317,6 +326,23 @@ dashboard:
             - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_centos.quota, 'Quota')"
               refId: B
             - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_centos.used, #B)"
+              refId: C
+              hide: true
+
+        - title: mirror.centos-stream
+          type: graph
+          span: 4
+          yaxes:
+            - format: deckbytes
+              min: 0
+            - format: deckbytes
+              min: 0
+          targets:
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_centos-stream.used, 'Used')"
+              refId: A
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_centos-stream.quota, 'Quota')"
+              refId: B
+            - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_centos-stream.used, #B)"
               refId: C
               hide: true
 
