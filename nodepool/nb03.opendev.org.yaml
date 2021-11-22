@@ -65,6 +65,14 @@ providers:
           os_command_line: "console=ttyAMA0"
           hw_disk_bus: scsi
           hw_scsi_model: virtio-scsi
+      - name: openEuler-20.03-LTS-SP2-arm64
+        pause: false
+        config-drive: true
+        meta:
+          hw_firmware_type: uefi
+          os_command_line: "console=ttyAMA0"
+          hw_disk_bus: scsi
+          hw_scsi_model: virtio-scsi
 
   - name: osuosl-regionone
     region-name: 'RegionOne'
@@ -160,3 +168,12 @@ diskimages:
     release: 8-stream
     env-vars:
       DIB_EPEL_DISABLED: '1'
+
+  - name: openEuler-20.03-LTS-SP2-arm64
+    parent: base
+    python-path: /usr/bin/python3
+    elements:
+      - openeuler-minimal
+    release: 20.03-LTS-SP2
+    env-vars:
+      DIB_DISTRIBUTION_MIRROR: 'http://mirror.regionone.linaro-us.opendev.org/openeuler/openEuler-20.03-LTS-SP2'
