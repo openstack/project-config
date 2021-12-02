@@ -110,6 +110,8 @@ def check_zuul_main(zuul_main, projects):
     # Check that for each gerrit source, we have a project defined in gerrit.
     for tenant in main_content:
         t = tenant.get('tenant')
+        if not t:
+            continue
         sources = t.get('source')
         if sources and sources.get('gerrit'):
             for project_types in sources['gerrit']:
