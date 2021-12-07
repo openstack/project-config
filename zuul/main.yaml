@@ -2,11 +2,21 @@
     name: local-admin
     conditions:
       - iss: zuul.opendev.org
+- admin-rule:
+    name: tenant-group
+    conditions:
+      - groups: "{tenant.name}"
+- admin-rule:
+    name: infra-root
+    conditions:
+      - groups: "infra-root"
 
 - tenant:
     name: opendev
-    admin-rules:
+    admin-rules: &admin_rules
       - local-admin
+      - infra-root
+      - tenant-group
     max-nodes-per-job: 10
     source:
       gerrit:
@@ -73,8 +83,7 @@
 
 - tenant:
     name: openstack
-    admin-rules:
-      - local-admin
+    admin-rules: *admin_rules
     max-nodes-per-job: 10
     source:
       gerrit:
@@ -1489,8 +1498,7 @@
 
 - tenant:
     name: vexxhost
-    admin-rules:
-      - local-admin
+    admin-rules: *admin_rules
     max-nodes-per-job: 10
     source:
       gerrit:
@@ -1589,8 +1597,7 @@
 
 - tenant:
     name: zuul
-    admin-rules:
-      - local-admin
+    admin-rules: *admin_rules
     default-ansible-version: 2.9
     max-nodes-per-job: 10
     source:
@@ -1667,8 +1674,7 @@
 # https://github.com/pyca
 - tenant:
     name: pyca
-    admin-rules:
-      - local-admin
+    admin-rules: *admin_rules
     max-nodes-per-job: 1
     source:
       gerrit:
@@ -1694,8 +1700,7 @@
 # https://github.com/pypa
 - tenant:
     name: pypa
-    admin-rules:
-      - local-admin
+    admin-rules: *admin_rules
     max-nodes-per-job: 1
     source:
       gerrit:
