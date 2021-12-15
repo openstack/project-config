@@ -22,7 +22,7 @@ set -e
 
 if [[ "$DISTRO_NAME" =~ (debian|ubuntu) ]] ; then
     service_name=netfilter-persistent
-elif [[ "$DISTRO_NAME" =~ (centos|rhel7|fedora) ]] ; then
+elif [[ "$DISTRO_NAME" =~ (centos|rhel7|fedora|openeuler) ]] ; then
     service_name=iptables
 elif [[ "$DISTRO_NAME" == 'opensuse' ]] ; then
     # handle iptables through init.d instead of a service
@@ -48,7 +48,7 @@ case "$DIB_INIT_SYSTEM" in
         else
             systemctl enable ${service_name}.service
         fi
-        if [[ "$DISTRO_NAME" =~ (centos|rhel7|fedora) ]] ; then
+        if [[ "$DISTRO_NAME" =~ (centos|rhel7|fedora|openeuler) ]] ; then
             systemctl enable ip6tables.service
         fi
         ;;
