@@ -11,7 +11,7 @@ trap "rm -f -- '$TMP_INDEX_FILE'" EXIT
 INDEX_FILE=${MIRROR_ROOT}/index.html
 
 # Start building our file
-echo -e "<html>\n  <head>\n    <title>Wheel Index</title>\n  </head>" > $TMP_INDEX_FILE
+echo -e "<!DOCTYPE html>\n<html>\n  <head>\n    <title>Wheel Index</title>\n  </head>" > $TMP_INDEX_FILE
 echo -e "  <body>\n    <ul>" >> $TMP_INDEX_FILE
 
 # Get a list of files
