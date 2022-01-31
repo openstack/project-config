@@ -19,11 +19,6 @@ zookeeper-servers:
 # e.g. *-arm64
 labels:
   - name: centos-7
-  - name: centos-8
-  - name: centos-8-arm64
-    min-ready: 0
-  - name: centos-8-arm64-large
-    min-ready: 0
   - name: centos-8-stream
   - name: centos-9-stream
   - name: centos-8-stream-arm64
@@ -69,8 +64,6 @@ labels:
     min-ready: 0
   - name: nested-virt-centos-7
     min-ready: 0
-  - name: nested-virt-centos-8
-    min-ready: 0
   - name: nested-virt-centos-8-stream
     min-ready: 0
   - name: nested-virt-centos-9-stream
@@ -87,8 +80,6 @@ providers:
     rate: 0.001
     diskimages: &provider_diskimages
       - name: centos-7
-        config-drive: true
-      - name: centos-8
         config-drive: true
       - name: centos-8-stream
         config-drive: true
@@ -120,11 +111,6 @@ providers:
             min-ram: 8000
             flavor-name: 'A1.8'
             diskimage: centos-7
-            key-name: infra-root-keys-2020-05-13
-          - name: centos-8
-            min-ram: 8000
-            flavor-name: 'A1.8'
-            diskimage: centos-8
             key-name: infra-root-keys-2020-05-13
           - name: centos-8-stream
             min-ram: 8000
@@ -258,13 +244,6 @@ providers:
             volume-size: 80
             diskimage: centos-7
             key-name: infra-root-keys-2020-05-13
-          - name: centos-8
-            min-ram: 8000
-            flavor-name: v2-highcpu-8
-            boot-from-volume: true
-            volume-size: 80
-            diskimage: centos-8
-            key-name: infra-root-keys-2020-05-13
           - name: centos-8-stream
             min-ram: 8000
             flavor-name: v2-highcpu-8
@@ -363,13 +342,6 @@ providers:
             volume-size: 80
             diskimage: centos-7
             key-name: infra-root-keys-2020-05-13
-          - name: nested-virt-centos-8
-            min-ram: 8000
-            flavor-name: v2-highcpu-8
-            boot-from-volume: true
-            volume-size: 80
-            diskimage: centos-8
-            key-name: infra-root-keys-2020-05-13
           - name: nested-virt-centos-8-stream
             min-ram: 8000
             flavor-name: v2-highcpu-8
@@ -392,8 +364,6 @@ providers:
     launch-timeout: 800
     rate: 0.001
     diskimages:
-      - name: centos-8-arm64
-        config-drive: true
       - name: centos-8-stream-arm64
         config-drive: true
       - name: debian-bullseye-arm64
@@ -410,20 +380,10 @@ providers:
       - name: main
         max-servers: 40
         labels:
-          - name: centos-8-arm64
-            min-ram: 8000
-            flavor-name: 'os.large'
-            diskimage: centos-8-arm64
-            key-name: infra-root-keys-2020-05-13
           - name: centos-8-stream-arm64
             min-ram: 8000
             flavor-name: 'os.large'
             diskimage: centos-8-stream-arm64
-            key-name: infra-root-keys-2020-05-13
-          - name: centos-8-arm64-large
-            min-ram: 16000
-            flavor-name: 'm1.xxlarge'
-            diskimage: centos-8-arm64
             key-name: infra-root-keys-2020-05-13
           - name: debian-bullseye-arm64
             min-ram: 8000
@@ -473,8 +433,6 @@ providers:
     launch-timeout: 800
     rate: 0.001
     diskimages:
-      - name: centos-8-arm64
-        config-drive: true
       - name: centos-8-stream-arm64
         config-drive: true
       - name: debian-bullseye-arm64
@@ -489,11 +447,6 @@ providers:
       - name: main
         max-servers: 15
         labels:
-          - name: centos-8-arm64
-            min-ram: 8000
-            flavor-name: 'opendev.large'
-            diskimage: centos-8-arm64
-            key-name: infra-root-keys-2020-05-13
           - name: centos-8-stream-arm64
             min-ram: 8000
             flavor-name: 'opendev.large'
@@ -522,8 +475,6 @@ providers:
 
 diskimages:
   - name: centos-7
-  - name: centos-8
-  - name: centos-8-arm64
   - name: centos-8-stream
   - name: centos-9-stream
   - name: centos-8-stream-arm64
