@@ -34,7 +34,7 @@ def tempdir():
         shutil.rmtree(reqroot, ignore_errors=True)
 
 
-def check_repo(repo_path):
+def check_repo(repo_path, default_branch):
     found_errors = 0
 
     print("Checking git repo '%s':" % repo_path)
@@ -45,11 +45,11 @@ def check_repo(repo_path):
         print("  Remote branches:")
         for r in branches:
             print("    %s" % r)
-        if 'origin/master' in branches:
-            print("  Master branch exists.")
+        if 'origin/%s' % default_branch in branches:
+            print("  %s branch exists." % default_branch)
         else:
             found_errors += 1
-            print("  ERROR: No master branch exists")
+            print("  ERROR: No %s branch exists" % default_branch)
         if 'origin/stable' in branches:
             found_errors += 1
             print("  ERROR: A branch named 'stable' exists, this will"
@@ -160,7 +160,8 @@ def main():
 
     VALID_LABELS = ["acl-config", "description", "docimpact-group",
                     "groups", "homepage", "options", "project",
-                    "upstream", "use-storyboard", "cgit-alias"]
+                    "upstream", "use-storyboard", "cgit-alias",
+                    "default-branch"]
     VALID_SCHEMES = ['https://', 'http://', 'git://']
     DESCRIPTION_REQUIRED = ['openstack', 'openstack-infra', 'openstack-dev',
                             'stackforge']
@@ -215,15 +216,16 @@ def main():
         # but not git@
         upstream = p.get('upstream')
         if upstream:
+            default_branch = p.get('default-branch', 'master')
             openstack_repo = 'https://opendev.org/%s' % name
             try:
                 # Check to see if we have already imported the project into
                 # OpenStack, if so skip checking upstream.
-                check_repo(openstack_repo)
+                check_repo(openstack_repo, default_branch)
             except git.exc.GitCommandError:
                 # We haven't imported the repo yet, make sure upstream is
                 # valid.
-                found_errors += check_repo(upstream)
+                found_errors += check_repo(upstream, default_branch)
             for prefix in VALID_SCHEMES:
                 if upstream.startswith(prefix):
                     break
