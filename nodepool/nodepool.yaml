@@ -33,6 +33,8 @@ providers:
         config-drive: true
       - name: opensuse-15
         config-drive: true
+      - name: rockylinux-8
+        config-drive: true
       - name: ubuntu-bionic
         config-drive: true
       - name: ubuntu-focal
@@ -133,7 +135,7 @@ diskimages:
       DIB_DEBOOTSTRAP_EXTRA_ARGS: '--no-check-gpg'
 
 
-############ CentOS and Fedora #############
+############ CentOS and Fedora (and derivatives) #############
 
   - name: centos-7
     parent: base
@@ -165,6 +167,18 @@ diskimages:
     elements:
       - cache-devstack
       - centos-minimal
+    env-vars:
+      DIB_EPEL_DISABLED: '1'
+
+  - name: rockylinux-8
+    parent: base
+    pause: false
+    python-path: /usr/bin/python3
+    release: '8'
+    elements:
+      - cache-devstack
+      - rocky-container
+      - epel
     env-vars:
       DIB_EPEL_DISABLED: '1'
 
