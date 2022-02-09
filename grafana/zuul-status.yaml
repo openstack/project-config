@@ -238,6 +238,25 @@ dashboard:
             - target: alias(stats.gauges.zuul.mergers.jobs_queued, 'Queued Jobs')
             - target: alias(stats.gauges.zuul.mergers.jobs_running, 'Running Jobs')
           type: graph
+    - title: Web
+      showTitle: true
+      height: 250px
+      panels:
+        - title: Streams
+          span: 6
+          targets:
+            - target: aliasSub(stats.gauges.zuul.web.server.*_opendev_org.streamers, ".*\.(.*)_opendev_org.*", "\1")
+          type: graph
+        - title: Threadpool Queue
+          span: 6
+          targets:
+            - target: aliasSub(stats.gauges.zuul.web.server.*_opendev_org.threadpool.queue, ".*\.(.*)_opendev_org.*", "\1")
+          type: graph
+        - title: Threadpool Idle
+          span: 6
+          targets:
+            - target: aliasSub(stats.gauges.zuul.web.server.*_opendev_org.threadpool.idle, ".*\.(.*)_opendev_org.*", "\1")
+          type: graph
     - title: ZooKeeper
       showTitle: true
       height: 250px
