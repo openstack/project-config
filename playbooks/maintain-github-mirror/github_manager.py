@@ -85,7 +85,7 @@ def list_repos_in_zuul(project_config, tenant='openstack', org='openstack'):
     main_yaml_filename = os.path.join(project_config, 'zuul/main.yaml')
     with open(main_yaml_filename, 'r') as main_yaml:
         for t in yaml.safe_load(main_yaml):
-            if t['tenant']['name'] == tenant:
+            if 'tenant' in t and t['tenant']['name'] == tenant:
                 for ps, pt in t['tenant']['source']['gerrit'].items():
                     for elem in pt:
                         if type(elem) is dict:
