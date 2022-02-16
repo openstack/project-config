@@ -68,7 +68,7 @@ mv /tmp/forwarding.conf /etc/unbound/
 chown root:root /etc/unbound/forwarding.conf
 chmod a+r /etc/unbound/forwarding.conf
 
-if [[ "$DISTRO_NAME" =~ (centos|rhel7|fedora|openeuler) ]] ; then
+if [[ "$DISTRO_NAME" =~ (centos|rhel7|fedora|openeuler|rocky) ]] ; then
     LOG_FILE="/var/lib/unbound/unbound.log"
 else
     LOG_FILE="/var/log/unbound.log"
@@ -82,7 +82,7 @@ server:
   verbosity: 5"
 echo "$UNBOUND_LOGGING_CONF" > /tmp/unbound-logging.conf
 
-if [[ "$DISTRO_NAME" =~ (centos|rhel7|fedora|opensuse|openeuler) ]] ; then
+if [[ "$DISTRO_NAME" =~ (centos|rhel7|fedora|opensuse|openeuler|rocky) ]] ; then
     UNBOUND_CONFD=/etc/unbound/conf.d
 elif [[ "$DISTRO_NAME" =~ 'gentoo' ]] ; then
     UNBOUND_CONFD=/etc/unbound/conf.d
@@ -185,7 +185,7 @@ sed -i -e 's/dlv-anchor-file:/#dlv-anchor-file:/g' /etc/unbound/unbound.conf
 
 # Tripleo uses dhcp
 dhcp_file=''
-if [[ "$DISTRO_NAME" =~ (centos|rhel7|fedora|openeuler) ]] ; then
+if [[ "$DISTRO_NAME" =~ (centos|rhel7|fedora|openeuler|rocky) ]] ; then
     dhcp_file=/etc/dhcp/dhclient-eth0.conf
 elif [[ "$DISTRO_NAME" =~ (debian|ubuntu|gentoo) ]] ; then
     dhcp_file=/etc/dhcp/dhclient.conf
