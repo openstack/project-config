@@ -1,0 +1,72 @@
+dashboard:
+  title: Resource Usage by Tenants and Projects
+  time:
+      from: "now-20d"
+      to: "now"
+  rows:
+    - title: Description
+      height: 100px
+      panels:
+        - title: Description
+          content: |
+            **This dashboard is managed by [Grafyaml](https://docs.openstack.org/infra/system-config/grafyaml.html).**
+
+            If you would like to make changes to this dashboard, please see the grafana directory in [project-config](https://opendev.org/openstack/project-config/src/grafana/neutron-usage.yaml).
+
+            NOTE - 'No datapoints' in a graph means there have been no job failures reported yet.
+          type: text
+    - title: Graphs
+      height: 320px
+      panels:
+        - title: Instance Usage by Tenants (24h)
+          span: 6
+          type: graph
+          yaxes:
+            - label: Used %
+              format: percent
+            - show: false
+          targets:
+             - target: alias(asPercent(transformNull(summarize(stats_counts.zuul.nodepool.resources.tenant.opendev.instances, '24h')),summarize(sum(stats_counts.zuul.nodepool.resources.tenant.*.instances), '24h')), 'opendev')
+             - target: alias(asPercent(transformNull(summarize(stats_counts.zuul.nodepool.resources.tenant.openstack.instances, '24h')),summarize(sum(stats_counts.zuul.nodepool.resources.tenant.*.instances), '24h')), 'openstack')
+             - target: alias(asPercent(transformNull(summarize(stats_counts.zuul.nodepool.resources.tenant.pyca.instances, '24h')),summarize(sum(stats_counts.zuul.nodepool.resources.tenant.*.instances), '24h')), 'pyca')
+             - target: alias(asPercent(transformNull(summarize(stats_counts.zuul.nodepool.resources.tenant.vexxhost.instances, '24h')),summarize(sum(stats_counts.zuul.nodepool.resources.tenant.*.instances), '24h')), 'vexxhost')
+             - target: alias(asPercent(transformNull(summarize(stats_counts.zuul.nodepool.resources.tenant.zuul.instances, '24h')),summarize(sum(stats_counts.zuul.nodepool.resources.tenant.*.instances), '24h')), 'zuul')
+        - title: Instance Usage by Tenants (5d)
+          span: 6
+          type: graph
+          yaxes:
+            - label: Used %
+              format: percent
+            - show: false
+          targets:
+             - target: alias(asPercent(transformNull(summarize(stats_counts.zuul.nodepool.resources.tenant.opendev.instances, '5d')),summarize(sum(stats_counts.zuul.nodepool.resources.tenant.*.instances), '5d')), 'opendev')
+             - target: alias(asPercent(transformNull(summarize(stats_counts.zuul.nodepool.resources.tenant.openstack.instances, '5d')),summarize(sum(stats_counts.zuul.nodepool.resources.tenant.*.instances), '5d')), 'openstack')
+             - target: alias(asPercent(transformNull(summarize(stats_counts.zuul.nodepool.resources.tenant.pyca.instances, '5d')),summarize(sum(stats_counts.zuul.nodepool.resources.tenant.*.instances), '5d')), 'pyca')
+             - target: alias(asPercent(transformNull(summarize(stats_counts.zuul.nodepool.resources.tenant.vexxhost.instances, '5d')),summarize(sum(stats_counts.zuul.nodepool.resources.tenant.*.instances), '5d')), 'vexxhost')
+             - target: alias(asPercent(transformNull(summarize(stats_counts.zuul.nodepool.resources.tenant.zuul.instances, '5d')),summarize(sum(stats_counts.zuul.nodepool.resources.tenant.*.instances), '5d')), 'zuul')
+        - title: Instance Usage by Projects (24h)
+          span: 6
+          type: graph
+          yaxes:
+            - label: Used %
+              format: percent
+            - show: false
+          targets:
+             - target: alias(asPercent(transformNull(summarize(sum(stats_counts.zuul.nodepool.resources.project.opendev_org-openstack-neutron.instances), '24h')),summarize(stats_counts.zuul.nodepool.resources.tenant.openstack.instances, '24h')), 'neutron')
+             - target: alias(asPercent(transformNull(summarize(sum(stats_counts.zuul.nodepool.resources.project.opendev_org-openstack-neutron*.instances), '24h')),summarize(stats_counts.zuul.nodepool.resources.tenant.openstack.instances, '24h')), 'neutron-all')
+             - target: alias(asPercent(transformNull(summarize(sum(stats_counts.zuul.nodepool.resources.project.opendev_org-openstack-networking*.instances), '24h')),summarize(stats_counts.zuul.nodepool.resources.tenant.openstack.instances, '24h')), 'networking-all')
+             - target: alias(asPercent(transformNull(summarize(sum(stats_counts.zuul.nodepool.resources.project.opendev_org-openstack-nova.instances), '24h')),summarize(stats_counts.zuul.nodepool.resources.tenant.openstack.instances, '24h')), 'nova')
+             - target: alias(asPercent(transformNull(summarize(sum(stats_counts.zuul.nodepool.resources.project.opendev_org-openstack-tripleo*.instances), '24h')),summarize(stats_counts.zuul.nodepool.resources.tenant.openstack.instances, '24h')), 'tripleo-all')
+        - title: Instance Usage by Projects (5d)
+          span: 6
+          type: graph
+          yaxes:
+            - label: Used %
+              format: percent
+            - show: false
+          targets:
+             - target: alias(asPercent(transformNull(summarize(sum(stats_counts.zuul.nodepool.resources.project.opendev_org-openstack-neutron.instances), '5d')),summarize(stats_counts.zuul.nodepool.resources.tenant.openstack.instances, '5d')), 'neutron')
+             - target: alias(asPercent(transformNull(summarize(sum(stats_counts.zuul.nodepool.resources.project.opendev_org-openstack-neutron*.instances), '5d')),summarize(stats_counts.zuul.nodepool.resources.tenant.openstack.instances, '5d')), 'neutron-all')
+             - target: alias(asPercent(transformNull(summarize(sum(stats_counts.zuul.nodepool.resources.project.opendev_org-openstack-networking*.instances), '5d')),summarize(stats_counts.zuul.nodepool.resources.tenant.openstack.instances, '5d')), 'networking-all')
+             - target: alias(asPercent(transformNull(summarize(sum(stats_counts.zuul.nodepool.resources.project.opendev_org-openstack-nova.instances), '5d')),summarize(stats_counts.zuul.nodepool.resources.tenant.openstack.instances, '5d')), 'nova')
+             - target: alias(asPercent(transformNull(summarize(sum(stats_counts.zuul.nodepool.resources.project.opendev_org-openstack-tripleo*.instances), '5d')),summarize(stats_counts.zuul.nodepool.resources.tenant.openstack.instances, '5d')), 'tripleo-all')
