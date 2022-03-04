@@ -41,12 +41,35 @@ dashboard:
             - label: size
               format: bytes
             - show: false
-        - title: Event Job Time
+        - title: Pipeline Handling Time
+          span: 6
+          targets:
+            - target: aliasByNode(stats.timers.zuul.tenant.$tenant.pipeline.*.handling.mean, 6)
+          type: graph
+          nullPointMode: "connected"
+          points: true
+          yaxes:
+            - label: time
+              format: ms
+            - show: false
+        - title: Pipeline Processing Time
+          span: 6
+          targets:
+            - target: aliasByNode(stats.timers.zuul.tenant.$tenant.pipeline.*.process.mean, 6)
+          type: graph
+          nullPointMode: "connected"
+          points: true
+          yaxes:
+            - label: time
+              format: ms
+            - show: false
+        - title: Event to First Job Time
           span: 6
           targets:
             - target: aliasByNode(stats.timers.zuul.tenant.$tenant.pipeline.*.event_job_time.mean, 6)
           type: graph
           nullPointMode: "connected"
+          points: true
           yaxes:
             - label: time
               format: ms
@@ -57,6 +80,7 @@ dashboard:
             - target: aliasByNode(stats.timers.zuul.tenant.$tenant.pipeline.*.refresh.mean, 6)
           type: graph
           nullPointMode: "connected"
+          points: true
           yaxes:
             - label: time
               format: ms
@@ -67,6 +91,7 @@ dashboard:
             - target: aliasByNode(stats.timers.zuul.tenant.$tenant.pipeline.*.read_time.mean, 6)
           type: graph
           nullPointMode: "connected"
+          points: true
           yaxes:
             - label: time
               format: ms
@@ -77,16 +102,62 @@ dashboard:
             - target: aliasByNode(stats.timers.zuul.tenant.$tenant.pipeline.*.write_time.mean, 6)
           type: graph
           nullPointMode: "connected"
+          points: true
           yaxes:
             - label: time
               format: ms
             - show: false
-        - title: Event Enqueue Time
+        - title: ZooKeeper Read Object Count
+          span: 6
+          targets:
+            - target: aliasByNode(stats.gauges.zuul.tenant.$tenant.pipeline.*.read_objects, 6)
+          type: graph
+          nullPointMode: "connected"
+          points: true
+          yaxes:
+            - label: count
+              format: short
+            - show: false
+        - title: ZooKeeper Write Object Count
+          span: 6
+          targets:
+            - target: aliasByNode(stats.gauges.zuul.tenant.$tenant.pipeline.*.write_objects, 6)
+          type: graph
+          nullPointMode: "connected"
+          points: true
+          yaxes:
+            - label: count
+              format: short
+            - show: false
+        - title: ZooKeeper Read Znode Count
+          span: 6
+          targets:
+            - target: aliasByNode(stats.gauges.zuul.tenant.$tenant.pipeline.*.read_znodes, 6)
+          type: graph
+          nullPointMode: "connected"
+          points: true
+          yaxes:
+            - label: count
+              format: short
+            - show: false
+        - title: ZooKeeper Write Znode Count
+          span: 6
+          targets:
+            - target: aliasByNode(stats.gauges.zuul.tenant.$tenant.pipeline.*.write_znodes, 6)
+          type: graph
+          nullPointMode: "connected"
+          points: true
+          yaxes:
+            - label: count
+              format: short
+            - show: false
+        - title: Event to Item Enqueue Time
           span: 6
           targets:
             - target: aliasByNode(stats.timers.zuul.tenant.$tenant.pipeline.*.event_enqueue_time.mean, 6)
           type: graph
           nullPointMode: "connected"
+          points: true
           yaxes:
             - label: time
               format: ms
@@ -97,6 +168,7 @@ dashboard:
             - target: aliasByNode(stats.timers.zuul.tenant.$tenant.pipeline.*.merge_request_time.mean, 6)
           type: graph
           nullPointMode: "connected"
+          points: true
           yaxes:
             - label: time
               format: ms
@@ -107,6 +179,7 @@ dashboard:
             - target: aliasByNode(stats.timers.zuul.tenant.$tenant.pipeline.*.layout_generation_time.mean, 6)
           type: graph
           nullPointMode: "connected"
+          points: true
           yaxes:
             - label: time
               format: ms
@@ -117,6 +190,7 @@ dashboard:
             - target: aliasByNode(stats.timers.zuul.tenant.$tenant.pipeline.*.job_freeze_time.mean, 6)
           type: graph
           nullPointMode: "connected"
+          points: true
           yaxes:
             - label: time
               format: ms
@@ -127,6 +201,7 @@ dashboard:
             - target: aliasByNode(stats.timers.zuul.tenant.$tenant.pipeline.*.repo_state_time.mean, 6)
           type: graph
           nullPointMode: "connected"
+          points: true
           yaxes:
             - label: time
               format: ms
@@ -137,6 +212,7 @@ dashboard:
             - target: aliasByNode(stats.timers.zuul.tenant.$tenant.pipeline.*.node_request_time.mean, 6)
           type: graph
           nullPointMode: "connected"
+          points: true
           yaxes:
             - label: time
               format: ms
@@ -147,6 +223,18 @@ dashboard:
             - target: aliasByNode(stats.timers.zuul.tenant.$tenant.pipeline.*.job_wait_time.mean, 6)
           type: graph
           nullPointMode: "connected"
+          points: true
+          yaxes:
+            - label: time
+              format: ms
+            - show: false
+        - title: Reconfiguration Time
+          span: 6
+          targets:
+            - target: aliasByNode(stats.timers.zuul.tenant.$tenant.pipeline.*.reconfiguration_time.mean, 6)
+          type: graph
+          nullPointMode: "connected"
+          points: true
           yaxes:
             - label: time
               format: ms
