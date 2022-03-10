@@ -21,10 +21,11 @@
 
         - title: Last build
           type: singlestat
+          valueName: current
           span: 2
           format: dateTimeFromNow
           targets:
-            - target: "stats.gauges.nodepool.dib_image_build.%KEY%.status.last_build"
+            - target: "scale(stats.gauges.nodepool.dib_image_build.%KEY%.status.last_build, 1000)"
           valueFontSize: "50%"
 
         - title: Image size
@@ -48,5 +49,5 @@
             - format: ms
               min: 0
           targets:
-            - target: alias(keepLastValue(stats.timers.nodepool.dib_image_build.%KEY%.status.duration.mean, 'None'), "Time")
+            - target: alias(keepLastValue(stats.timers.nodepool.dib_image_build.%KEY%.status.duration.mean), "Time")
               refId: A
