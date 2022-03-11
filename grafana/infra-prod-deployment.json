@@ -1,0 +1,305 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 40,
+  "iteration": 1656560548340,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "panels": [],
+      "title": "Description",
+      "type": "row"
+    },
+    {
+      "editable": true,
+      "error": false,
+      "gridPos": {
+        "h": 4,
+        "w": 10,
+        "x": 7,
+        "y": 1
+      },
+      "id": 1,
+      "options": {
+        "content": "# OpenDev Production Deployment Overview\n\nIf you would like to make changes to this dashboard, please see the grafana directory in [project-config](https://opendev.org/openstack/project-config/src/grafana/bridge.yaml).\n",
+        "mode": "markdown"
+      },
+      "pluginVersion": "8.3.4",
+      "title": "Description",
+      "type": "text"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 5
+      },
+      "id": 63,
+      "panels": [],
+      "title": "Runtime",
+      "type": "row"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "always",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "ms"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 24,
+        "x": 0,
+        "y": 6
+      },
+      "id": 6,
+      "links": [
+        {
+          "targetBlank": true,
+          "title": "Build Results",
+          "url": "https://zuul.opendev.org/t/openstack/builds?job_name=${bridge_job_runtimes}"
+        }
+      ],
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "table",
+          "placement": "right"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "graphite",
+            "uid": "d9c17c45a8"
+          },
+          "refId": "A",
+          "target": "aliasByNode(stats.timers.bridge.ansible.*.runtime.mean, 4)"
+        }
+      ],
+      "title": "Job Runtime",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 19
+      },
+      "id": 28,
+      "panels": [],
+      "title": "Job Status Overview",
+      "type": "row"
+    },
+    {
+      "description": "Job Status",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "0": {
+                  "color": "green",
+                  "index": 0,
+                  "text": "OK"
+                }
+              },
+              "type": "value"
+            },
+            {
+              "options": {
+                "from": 1,
+                "result": {
+                  "color": "red",
+                  "index": 1,
+                  "text": "FAILED"
+                },
+                "to": 255
+              },
+              "type": "range"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 0,
+        "y": 20
+      },
+      "id": 8,
+      "links": [
+        {
+          "targetBlank": true,
+          "title": "Zuul Build Status",
+          "url": "https://zuul.opendev.org/t/openstack/builds?job_name=${bridge_job_runtimes}"
+        }
+      ],
+      "maxPerRow": 6,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto"
+      },
+      "pluginVersion": "8.3.4",
+      "repeat": "bridge_job_runtimes",
+      "repeatDirection": "h",
+      "targets": [
+        {
+          "datasource": {
+            "type": "graphite",
+            "uid": "d9c17c45a8"
+          },
+          "refId": "A",
+          "target": "stats.gauges.bridge.ansible.$bridge_job_runtimes.rc"
+        }
+      ],
+      "title": "$bridge_job_runtimes",
+      "type": "stat"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 34,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": false,
+          "text": "All",
+          "value": "$__all"
+        },
+        "definition": "stats.timers.bridge.ansible.*",
+        "description": "Production Deployment Job",
+        "hide": 0,
+        "includeAll": true,
+        "multi": false,
+        "name": "bridge_job_runtimes",
+        "options": [],
+        "query": "stats.timers.bridge.ansible.*",
+        "refresh": 1,
+        "regex": "(?<value>.*)",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-12h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "utc",
+  "title": "OpenDev Infra Deployment overview",
+  "uid": "a0241a42c4",
+  "version": 3,
+  "weekStart": ""
+}
