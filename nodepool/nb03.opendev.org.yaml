@@ -57,6 +57,14 @@ providers:
           os_command_line: "console=ttyAMA0"
           hw_disk_bus: scsi
           hw_scsi_model: virtio-scsi
+      - name: centos-9-stream-arm64
+        pause: false
+        config-drive: true
+        meta:
+          hw_firmware_type: uefi
+          os_command_line: "console=ttyAMA0"
+          hw_disk_bus: scsi
+          hw_scsi_model: virtio-scsi
       - name: openEuler-20-03-LTS-SP2-arm64
         pause: false
         config-drive: true
@@ -148,6 +156,16 @@ diskimages:
       - centos-minimal
       - epel
     release: 8-stream
+    env-vars:
+      DIB_EPEL_DISABLED: '1'
+
+  - name: centos-9-stream-arm64
+    parent: base
+    python-path: /usr/bin/python3
+    elements:
+      - centos-minimal
+      - epel
+    release: 9-stream
     env-vars:
       DIB_EPEL_DISABLED: '1'
 

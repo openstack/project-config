@@ -22,6 +22,7 @@ labels:
   - name: centos-8-stream
   - name: centos-9-stream
   - name: centos-8-stream-arm64
+  - name: centos-9-stream-arm64
     min-ready: 0
   - name: debian-bullseye
   - name: debian-bullseye-arm64
@@ -357,6 +358,8 @@ providers:
     launch-timeout: 800
     rate: 0.001
     diskimages:
+      - name: centos-9-stream-arm64
+        config-drive: true
       - name: centos-8-stream-arm64
         config-drive: true
       - name: debian-bullseye-arm64
@@ -373,6 +376,11 @@ providers:
       - name: main
         max-servers: 40
         labels:
+          - name: centos-9-stream-arm64
+            min-ram: 8000
+            flavor-name: 'os.large'
+            diskimage: centos-9-stream-arm64
+            key-name: infra-root-keys-2020-05-13
           - name: centos-8-stream-arm64
             min-ram: 8000
             flavor-name: 'os.large'
@@ -426,6 +434,8 @@ providers:
     launch-timeout: 800
     rate: 0.001
     diskimages:
+      - name: centos-9-stream-arm64
+        config-drive: true
       - name: centos-8-stream-arm64
         config-drive: true
       - name: debian-bullseye-arm64
@@ -440,6 +450,11 @@ providers:
       - name: main
         max-servers: 15
         labels:
+          - name: centos-9-stream-arm64
+            min-ram: 8000
+            flavor-name: 'opendev.large'
+            diskimage: centos-9-stream-arm64
+            key-name: infra-root-keys-2020-05-13
           - name: centos-8-stream-arm64
             min-ram: 8000
             flavor-name: 'opendev.large'
@@ -471,6 +486,7 @@ diskimages:
   - name: centos-8-stream
   - name: centos-9-stream
   - name: centos-8-stream-arm64
+  - name: centos-9-stream-arm64
   - name: debian-bullseye
   - name: debian-bullseye-arm64
   - name: debian-buster
