@@ -786,7 +786,6 @@ dashboard:
       height: 200px
       showTitle: true
       panels:
-
         - title: Bionic ARM64
           type: graph
           span: 4
@@ -803,7 +802,6 @@ dashboard:
             - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_wheel_bionica64.used, #B)"
               refId: C
               hide: true
-
 
         - title: Focal ARM64
           type: graph
@@ -836,6 +834,23 @@ dashboard:
             - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_wheel_cent8sa64.quota, 'Quota')"
               refId: B
             - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_wheel_cent8sa64.used, #B)"
+              refId: C
+              hide: true
+
+        - title: Centos 9 Stream ARM64
+          type: graph
+          span: 4
+          yaxes:
+            - format: deckbytes
+              min: 0
+            - format: deckbytes
+              min: 0
+          targets:
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_wheel_cent9sa64.used, 'Used')"
+              refId: A
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_wheel_cent9sa64.quota, 'Quota')"
+              refId: B
+            - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_wheel_cent9sa64.used, #B)"
               refId: C
               hide: true
 
@@ -873,7 +888,6 @@ dashboard:
               refId: C
               hide: true
 
-
         - title: Xenial x86_64
           type: graph
           span: 4
@@ -890,7 +904,6 @@ dashboard:
             - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_wheel_xenialx64.used, #B)"
               refId: C
               hide: true
-
 
         - title: Bionic x86_64
           type: graph
@@ -909,7 +922,6 @@ dashboard:
               refId: C
               hide: true
 
-
         - title: Focal x86_64
           type: graph
           span: 4
@@ -926,7 +938,6 @@ dashboard:
             - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_wheel_focalx64.used, #B)"
               refId: C
               hide: true
-
 
         - title: Centos 7 x86_64
           type: graph
@@ -959,6 +970,23 @@ dashboard:
             - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_wheel_cent8sx64.quota, 'Quota')"
               refId: B
             - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_wheel_cent8sx64.used, #B)"
+              refId: C
+              hide: true
+
+        - title: Centos 9 Stream x86_64
+          type: graph
+          span: 4
+          yaxes:
+            - format: deckbytes
+              min: 0
+            - format: deckbytes
+              min: 0
+          targets:
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_wheel_cent9sx64.used, 'Used')"
+              refId: A
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_wheel_cent9sx64.quota, 'Quota')"
+              refId: B
+            - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_wheel_cent9sx64.used, #B)"
               refId: C
               hide: true
 
@@ -1010,7 +1038,6 @@ dashboard:
           format: dateTimeFromNow
           valueFontSize: "50%"
 
-
         - title: Focal ARM64
           type: singlestat
           valueName: current
@@ -1026,6 +1053,15 @@ dashboard:
           span: 2
           targets:
             - target: "scale(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_wheel_cent8sa64_readonly.creation, 1000)"
+          format: dateTimeFromNow
+          valueFontSize: "50%"
+
+        - title: Centos 9 Stream ARM64
+          type: singlestat
+          valueName: current
+          span: 2
+          targets:
+            - target: "scale(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_wheel_cent9sa64_readonly.creation, 1000)"
           format: dateTimeFromNow
           valueFontSize: "50%"
 
@@ -1047,7 +1083,6 @@ dashboard:
           format: dateTimeFromNow
           valueFontSize: "50%"
 
-
         - title: Xenial x86_64
           type: singlestat
           valueName: current
@@ -1056,7 +1091,6 @@ dashboard:
             - target: "scale(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_wheel_xenialx64_readonly.creation, 1000)"
           format: dateTimeFromNow
           valueFontSize: "50%"
-
 
         - title: Bionic x86_64
           type: singlestat
@@ -1067,7 +1101,6 @@ dashboard:
           format: dateTimeFromNow
           valueFontSize: "50%"
 
-
         - title: Focal x86_64
           type: singlestat
           valueName: current
@@ -1076,7 +1109,6 @@ dashboard:
             - target: "scale(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_wheel_focalx64_readonly.creation, 1000)"
           format: dateTimeFromNow
           valueFontSize: "50%"
-
 
         - title: Centos 7 x86_64
           type: singlestat
@@ -1087,13 +1119,21 @@ dashboard:
           format: dateTimeFromNow
           valueFontSize: "50%"
 
-
         - title: Centos 8 Stream x86_64
           type: singlestat
           valueName: current
           span: 2
           targets:
             - target: "scale(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_wheel_cent8sx64_readonly.creation, 1000)"
+          format: dateTimeFromNow
+          valueFontSize: "50%"
+
+        - title: Centos 9 Stream x86_64
+          type: singlestat
+          valueName: current
+          span: 2
+          targets:
+            - target: "scale(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_wheel_cent9sx64_readonly.creation, 1000)"
           format: dateTimeFromNow
           valueFontSize: "50%"
 
