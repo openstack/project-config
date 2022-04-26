@@ -15,6 +15,7 @@ function create {
 }
 
 cp nodepool-dib.base.template nodepool-dib.yaml
+create "Ubuntu Jammy" "ubuntu-jammy"
 create "Ubuntu Focal" "ubuntu-focal"
 create "Ubuntu Bionic" "ubuntu-bionic"
 create "Ubuntu Xenial" "ubuntu-xenial"
