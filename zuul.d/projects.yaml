@@ -178,6 +178,25 @@
         - opendev-promote-docs
 
 - project:
+    name: opendev/infra-vhd-util-deb
+    check:
+      jobs:
+        - noop:
+            branches: master
+        - vhd-util-deb-package-build:
+            branches: ^(?!master).*$
+    gate:
+      jobs:
+        - noop:
+            branches: master
+        - vhd-util-deb-package-build:
+            branches: ^(?!master).*$
+    promote:
+      jobs:
+        - vhd-util-deb-package-build-promote:
+            branches: ^(?!master).*$
+
+- project:
     name: opendev/irc-meetings
     check:
       jobs:
