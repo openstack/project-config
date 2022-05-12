@@ -98,8 +98,9 @@ chmod 0644 /var/log/unbound.log
 # distros, but for consistency it's much easier if we just have one
 # log file in the same place across distros.  Thus set the context to
 # allow it.
-if [[ -e /usr/bin/chcon ]]; then
-    chcon -t named_log_t /var/log/unbound.log
+if [[ -e /usr/sbin/semanage ]]; then
+    semanage fcontext -a -t named_log_t /var/log/unbound.log
+    restorecon -v /var/log/unbound.log
 fi
 
 if [[ "$DISTRO_NAME" =~ (opensuse) ]] ; then
