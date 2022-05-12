@@ -68,16 +68,10 @@ mv /tmp/forwarding.conf /etc/unbound/
 chown root:root /etc/unbound/forwarding.conf
 chmod a+r /etc/unbound/forwarding.conf
 
-if [[ "$DISTRO_NAME" =~ (centos|rhel7|fedora|openeuler|rocky) ]] ; then
-    LOG_FILE="/var/lib/unbound/unbound.log"
-else
-    LOG_FILE="/var/log/unbound.log"
-fi
-
 UNBOUND_LOGGING_CONF="\
 server:
   chroot: \"\"
-  logfile: \"$LOG_FILE\"
+  logfile: \"/var/log/unbound.log\"
   # Log debug messages
   verbosity: 5"
 echo "$UNBOUND_LOGGING_CONF" > /tmp/unbound-logging.conf
@@ -99,6 +93,14 @@ chmod a+r $UNBOUND_CONFD/unbound-logging.conf
 touch /var/log/unbound.log
 chown unbound /var/log/unbound.log
 chmod 0644 /var/log/unbound.log
+# NOTE(ianw) 2022-05-22 : not 100% sure why but emperically unbound
+# runs under named context.  Generally it doesn't log here on rhel-ish
+# distros, but for consistency it's much easier if we just have one
+# log file in the same place across distros.  Thus set the context to
+# allow it.
+if [[ -e /usr/bin/chcon ]]; then
+    chcon -t named_log_t /var/log/unbound.log
+fi
 
 if [[ "$DISTRO_NAME" =~ (opensuse) ]] ; then
     # NOTE(ianw) 2021-03-17 : something about building the suse chroot
