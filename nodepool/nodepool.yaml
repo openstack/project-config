@@ -319,6 +319,25 @@ diskimages:
     env-vars:
       DIB_DISTRIBUTION_MIRROR: 'https://mirror.dfw.rax.opendev.org/ubuntu'
       DIB_DEBIAN_COMPONENTS: 'main,universe'
+      # NOTE(ianw) 2022-05-20 : we have found a problem on some cloud
+      # providers (OVH at least) where setting SSBD mitigation flags
+      # seems to be disabled and this causes endless kernel tracebacks
+      # from writing invalid flags into MSR registers, flooding the
+      # logs.  By default spec_store_bypass_disable is set to
+      # "seccomp" which means the kernel forces every seccomp() call
+      # into this.  Setting it to prctl means userspace has to opt-in
+      # with an explicit call.  This is actually the default on more
+      # recent kernels; the reasons are many but the bug [1] goes
+      # through it with links to relevant changes.
+      #
+      # While we try and sort out either backporting this to upstream
+      # kernels or some other upstream workaround, we set
+      # spec_store_bypass_disable=prctl here to avoid this problem in
+      # our providers.  The other bits are just the dib defaults which
+      # need to be replicated when overriding this.
+      #
+      # [1] https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1973839
+      DIB_BOOTLOADER_DEFAULT_CMDLINE: 'nofb nomodeset gfxpayload=text spec_store_bypass_disable=prctl'
 
   - name: ubuntu-xenial
     parent: base-debuntu
