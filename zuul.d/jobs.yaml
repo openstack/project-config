@@ -978,6 +978,34 @@
         secret: wheel_keytab
 
 - job:
+    name: publish-wheel-cache-ubuntu-jammy
+    parent: build-wheel-cache-ubuntu-jammy
+    description: |
+      Publish Ubuntu Jammy wheels for OpenStack CI mirrors.
+    pre-run: playbooks/openafs-client/setup.yaml
+    post-run: playbooks/publish/wheel-mirror.yaml
+    allowed-projects:
+      - openstack/requirements
+    final: true
+    secrets:
+      - name: afs
+        secret: wheel_keytab
+
+- job:
+    name: publish-wheel-cache-ubuntu-jammy-arm64
+    parent: build-wheel-cache-ubuntu-jammy-arm64
+    description: |
+      Publish Ubuntu Jammy wheels for OpenStack CI mirrors.
+    pre-run: playbooks/openafs-client/setup.yaml
+    post-run: playbooks/publish/wheel-mirror.yaml
+    allowed-projects:
+      - openstack/requirements
+    final: true
+    secrets:
+      - name: afs
+        secret: wheel_keytab
+
+- job:
     name: publish-wheel-cache-ubuntu-focal
     parent: build-wheel-cache-ubuntu-focal
     description: |
