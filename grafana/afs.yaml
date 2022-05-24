@@ -229,12 +229,30 @@ dashboard:
           format: dateTimeFromNow
           valueFontSize: "50%"
 
+        - title: mirror.debian-security
+          type: singlestat
+          valueName: current
+          span: 2
+          targets:
+            - target: "scale(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_debian-security_readonly.creation, 1000)"
+          format: dateTimeFromNow
+          valueFontSize: "50%"
+
         - title: mirror.opensuse
           type: singlestat
           valueName: current
           span: 2
           targets:
             - target: "scale(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_opensuse_readonly.creation, 1000)"
+          format: dateTimeFromNow
+          valueFontSize: "50%"
+
+        - title: mirror.apt-puppetlabs
+          type: singlestat
+          valueName: current
+          span: 2
+          targets:
+            - target: "scale(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_apt-puppetlabs_readonly.creation, 1000)"
           format: dateTimeFromNow
           valueFontSize: "50%"
 
@@ -253,6 +271,42 @@ dashboard:
           span: 2
           targets:
             - target: "scale(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_openeuler_readonly.creation, 1000)"
+          format: dateTimeFromNow
+          valueFontSize: "50%"
+
+        - title: mirror.deb-docker
+          type: singlestat
+          valueName: current
+          span: 2
+          targets:
+            - target: "scale(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_deb-docker_readonly.creation, 1000)"
+          format: dateTimeFromNow
+          valueFontSize: "50%"
+
+        - title: mirror.deb-openstack
+          type: singlestat
+          valueName: current
+          span: 2
+          targets:
+            - target: "scale(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_deb-openstack_readonly.creation, 1000)"
+          format: dateTimeFromNow
+          valueFontSize: "50%"
+
+        - title: mirror.deb-nautilus
+          type: singlestat
+          valueName: current
+          span: 2
+          targets:
+            - target: "scale(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_deb-nautilus_readonly.creation, 1000)"
+          format: dateTimeFromNow
+          valueFontSize: "50%"
+
+        - title: mirror.deb-octopus
+          type: singlestat
+          valueName: current
+          span: 2
+          targets:
+            - target: "scale(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_deb-octopus_readonly.creation, 1000)"
           format: dateTimeFromNow
           valueFontSize: "50%"
 
@@ -397,6 +451,23 @@ dashboard:
               refId: C
               hide: true
 
+        - title: mirror.debian-security
+          type: graph
+          span: 4
+          yaxes:
+            - format: deckbytes
+              min: 0
+            - format: deckbytes
+              min: 0
+          targets:
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_debian-security.used, 'Used')"
+              refId: A
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_debian-security.quota, 'Quota')"
+              refId: B
+            - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_debian-security.used, #B)"
+              refId: C
+              hide: true
+
         - title: mirror.opensuse
           type: graph
           span: 4
@@ -411,6 +482,23 @@ dashboard:
             - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_opensuse.quota, 'Quota')"
               refId: B
             - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_opensuse.used, #B)"
+              refId: C
+              hide: true
+
+        - title: mirror.apt-puppetlabs
+          type: graph
+          span: 4
+          yaxes:
+            - format: deckbytes
+              min: 0
+            - format: deckbytes
+              min: 0
+          targets:
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_apt-puppetlabs.used, 'Used')"
+              refId: A
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_apt-puppetlabs.quota, 'Quota')"
+              refId: B
+            - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_apt-puppetlabs.used, #B)"
               refId: C
               hide: true
 
@@ -445,6 +533,74 @@ dashboard:
             - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_openeuler.quota, 'Quota')"
               refId: B
             - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_openeuler.used, #B)"
+              refId: C
+              hide: true
+
+        - title: mirror.deb-docker
+          type: graph
+          span: 4
+          yaxes:
+            - format: deckbytes
+              min: 0
+            - format: deckbytes
+              min: 0
+          targets:
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_deb-docker.used, 'Used')"
+              refId: A
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_deb-docker.quota, 'Quota')"
+              refId: B
+            - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_deb-docker.used, #B)"
+              refId: C
+              hide: true
+
+        - title: mirror.deb-openstack
+          type: graph
+          span: 4
+          yaxes:
+            - format: deckbytes
+              min: 0
+            - format: deckbytes
+              min: 0
+          targets:
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_deb-openstack.used, 'Used')"
+              refId: A
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_deb-openstack.quota, 'Quota')"
+              refId: B
+            - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_deb-openstack.used, #B)"
+              refId: C
+              hide: true
+
+        - title: mirror.deb-nautilus
+          type: graph
+          span: 4
+          yaxes:
+            - format: deckbytes
+              min: 0
+            - format: deckbytes
+              min: 0
+          targets:
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_deb-nautilus.used, 'Used')"
+              refId: A
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_deb-nautilus.quota, 'Quota')"
+              refId: B
+            - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_deb-nautilus.used, #B)"
+              refId: C
+              hide: true
+
+        - title: mirror.deb-octopus
+          type: graph
+          span: 4
+          yaxes:
+            - format: deckbytes
+              min: 0
+            - format: deckbytes
+              min: 0
+          targets:
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_deb-octopus.used, 'Used')"
+              refId: A
+            - target: "alias(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_deb-octopus.quota, 'Quota')"
+              refId: B
+            - target: "divideSeries(stats.gauges.afs.afs01_dfw_openstack_org.vol.mirror_deb-octopus.used, #B)"
               refId: C
               hide: true
 
