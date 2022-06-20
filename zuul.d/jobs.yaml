@@ -834,6 +834,10 @@
         name: ssh_key
     vars:
       python_version: 3.9
+      ensure_pip_from_packages: True
+      ensure_pip_from_upstream_interpreters:
+        - python3.8
+        - python3.9
 
 - job:
     name: propose-update-constraints
@@ -1191,7 +1195,10 @@
       # ubuntu-bionic don't have python 3.9
       python_version: 3.8
       # ubuntu-bionic default python is 3.6 and master upper-constraints are not compatible with it
-      ensure_pip_virtualenv_command: "virtualenv -p python3.8"
+      ensure_pip_virtualenv_command: "/usr/bin/python3.8 -m venv"
+      # Only install python3.8 in ubuntu-bionic
+      ensure_pip_from_upstream_interpreters:
+        - python3.8
       constraints_file: '{{ ansible_user_dir }}/src/opendev.org/openstack/requirements/upper-constraints.txt'
     required-projects:
       - openstack/horizon
@@ -1219,7 +1226,10 @@
       # ubuntu-bionic don't have python 3.9
       python_version: 3.8
       # ubuntu-bionic default python is 3.6 and master upper-constraints are not compatible with it
-      ensure_pip_virtualenv_command: "virtualenv -p python3.8"
+      ensure_pip_virtualenv_command: "/usr/bin/python3.8 -m venv"
+      # Only install python3.8 in ubuntu-bionic
+      ensure_pip_from_upstream_interpreters:
+        - python3.8
       constraints_file: '{{ ansible_user_dir }}/src/opendev.org/openstack/requirements/upper-constraints.txt'
     semaphores: translations
     protected: true
