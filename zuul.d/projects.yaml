@@ -3872,7 +3872,11 @@
     queue: project-config
     check:
       jobs:
-        - opendev-buildset-registry
+        # NOTE(ianw) 2023-05-01 : currently, this only needs to run for the
+        # project-config-grafana job, hence the shared filter here.
+        - opendev-buildset-registry:
+            files: &project-config-grafana-files
+              - ^grafana/.*$
         - build-openstack-specs-site:
             files: &specs-site
               - bindep.txt
@@ -3883,8 +3887,7 @@
         - project-config-dib
         - project-config-gerrit
         - project-config-grafana:
-            files: &grafana-files
-              - ^grafana/.*$
+            files: *project-config-grafana-files
         - project-config-infra-docs-index:
             files: &infra-docs-index
               - bindep.txt
@@ -3902,14 +3905,14 @@
         # grafana is currently the only test that wants the
         # intermediate registry.
         - opendev-buildset-registry:
-            files: *grafana-files
+            files: *project-config-grafana-files
         - build-openstack-specs-site:
             files: *specs-site
         - openstack-zuul-jobs-linters
         - project-config-dib
         - project-config-gerrit
         - project-config-grafana:
-            files: *grafana-files
+            files: *project-config-grafana-files
         - project-config-infra-docs-index:
             files: *infra-docs-index
         - project-config-irc-access
@@ -3947,8 +3950,7 @@
               - gerritbot/channels.yaml
         - infra-prod-service-grafana:
             dependencies: []
-            files:
-              - grafana/
+            files: *project-config-grafana-files
     periodic:
       jobs:
         - propose-project-config-update
