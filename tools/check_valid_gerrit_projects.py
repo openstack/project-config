@@ -22,6 +22,8 @@ import re
 import shutil
 import sys
 import tempfile
+import urllib.error
+import urllib.request
 import yaml
 
 
@@ -221,8 +223,8 @@ def main():
             try:
                 # Check to see if we have already imported the project into
                 # OpenStack, if so skip checking upstream.
-                check_repo(openstack_repo, default_branch)
-            except git.exc.GitCommandError:
+                urllib.request.urlopen(openstack_repo)
+            except urllib.error.HTTPError:
                 # We haven't imported the repo yet, make sure upstream is
                 # valid.
                 found_errors += check_repo(upstream, default_branch)
