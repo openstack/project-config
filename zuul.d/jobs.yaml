@@ -824,18 +824,15 @@
       Sync content to other projects as a proposed change.
     run: playbooks/proposal/propose-updates.yaml
     protected: true
-    # Note(frickler): The nodeset is pinned because we require py3[89] to be
-    # available. Needs to be adapted in the pre-run playbook when changing.
+    # Note(frickler): The nodeset is pinned to Focal because we
+    # require both python 3.8 and 3.9 to be available.  This is setup
+    # in the pre.yaml playbook above; so if this nodeset changes we
+    # need to carefully consider the python versions any change
+    # distribution provides and modify the playbook/job accordingly.
     nodeset: ubuntu-focal
     secrets:
       - secret: proposal_ssh_key
         name: ssh_key
-    vars:
-      python_version: 3.9
-      ensure_pip_from_packages: True
-      ensure_pip_from_upstream_interpreters:
-        - python3.8
-        - python3.9
 
 - job:
     name: propose-update-constraints
@@ -1190,13 +1187,6 @@
     semaphores: translations
     protected: true
     vars:
-      # ubuntu-bionic don't have python 3.9
-      python_version: 3.8
-      # ubuntu-bionic default python is 3.6 and master upper-constraints are not compatible with it
-      ensure_pip_virtualenv_command: "/usr/bin/python3.8 -m venv"
-      # Only install python3.8 in ubuntu-bionic
-      ensure_pip_from_upstream_interpreters:
-        - python3.8
       constraints_file: '{{ ansible_user_dir }}/src/opendev.org/openstack/requirements/upper-constraints.txt'
     required-projects:
       - openstack/horizon
@@ -1221,13 +1211,6 @@
     run: playbooks/translation/propose-translation-update.yaml
     post-run: playbooks/translation/post.yaml
     vars:
-      # ubuntu-bionic don't have python 3.9
-      python_version: 3.8
-      # ubuntu-bionic default python is 3.6 and master upper-constraints are not compatible with it
-      ensure_pip_virtualenv_command: "/usr/bin/python3.8 -m venv"
-      # Only install python3.8 in ubuntu-bionic
-      ensure_pip_from_upstream_interpreters:
-        - python3.8
       constraints_file: '{{ ansible_user_dir }}/src/opendev.org/openstack/requirements/upper-constraints.txt'
     semaphores: translations
     protected: true
