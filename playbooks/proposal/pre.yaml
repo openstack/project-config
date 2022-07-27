@@ -76,9 +76,17 @@
           vars:
             python_version: 3.9
 
-    - name: Install tox
+    - name: Install tox with venv command override
       include_role:
         name: ensure-tox
       vars:
         ensure_global_symlinks: true
-        ensure_pip_virtualenv_command: '{{ _venv_command | default(omit) }}'
+        ensure_pip_virtualenv_command: '{{ _venv_command }}'
+      when: _venv_command is defined
+
+    - name: Install tox without venv command override
+      include_role:
+        name: ensure-tox
+      vars:
+        ensure_global_symlinks: true
+      when: _venv_command is not defined
