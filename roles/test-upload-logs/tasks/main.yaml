@@ -3,7 +3,8 @@
     name: set-zuul-log-path-fact
 
 # Always upload (true), never upload (false) or only on failure ('failure')
-- when: zuul_site_upload_logs | default(true) | bool or
+- name: Upload logs
+  when: zuul_site_upload_logs | default(true) | bool or
         (zuul_site_upload_logs == 'failure' and not zuul_success | bool)
   block:
 
