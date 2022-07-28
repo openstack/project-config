@@ -1,18 +1,30 @@
 exclude_paths:
-    - zuul.d/
-    - grafana/
-    - nodepool/
-    - ../../opendev
-    - ../../zuul
+  # don't lint external projects here
+  - ../../opendev
+  - ../../zuul
+  - ../openstack-zuul-jobs
+  - .cache/
+  - zuul.d/
+  - grafana/
+  - nodepool/
 parseable: true
 quiet: false
 skip_list:
-    - '106'  # Role name does not match ``^[a-z][a-z0-9_]+$`` pattern
-    - '204'  # [E204] Lines should be no longer than 120 chars
-             # TODO(AJaeger): E208 gives false positives currently, we
-             # should enable it once all issues in zuul-jobs and
-             # ansible-lint are fixed.
-    - '208'  # File permissions not mentioned
-    - '301'  # [E301] Commands should not change things if nothing needs doing
-    - '306'  # [E306] Shells that use pipes should set the pipefail option
+  - '106'  # Role name does not match ``^[a-z][a-z0-9_]+$`` pattern
+  - '204'  # [E204] Lines should be no longer than 120 chars
+           # TODO(AJaeger): E208 gives false positives currently, we
+           # should enable it once all issues in zuul-jobs and
+           # ansible-lint are fixed.
+  - '208'  # File permissions not mentioned
+  - '301'  # [E301] Commands should not change things if nothing needs doing
+  - '306'  # [E306] Shells that use pipes should set the pipefail option
+  - 'fqcn-builtins'  # for now ignore using fully-qualified names
+  - 'yaml[truthy]'   # doesn't like "yes"?
+  - 'yaml[line-length]'
 verbosity: 1
+mock_modules:
+  - zuul_return
+
+# Local variables:
+# mode: yaml
+# End:
