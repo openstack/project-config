@@ -1,8 +1,9 @@
 #!/bin/bash
 
 DOCKER=docker
-GRAFYAML_DIR=$(pwd)
-SECRETS_DIR=$(pwd)/grafana-secrets
+SCRIPT_PATH=$(readlink -f $0)
+GRAFYAML_DIR=$(dirname $SCRIPT_PATH)
+SECRETS_DIR=${GRAFYAML_DIR}/grafana-secrets
 
 if [ ! -d ${SECRETS_DIR} ]; then
     mkdir -p ${SECRETS_DIR}
@@ -29,11 +30,14 @@ if [[ $(${DOCKER} ps -f "name=grafana-opendev_test" --format '{{.Names}}') \
             docker.io/grafana/grafana-oss
 
     echo "Grafana listening on :3000"
+    echo "Waiting for startup ..."
+    sleep 5
+    echo " ... done"
 fi
 
 echo "Reloading dashboards"
 
-${DOCKER} run --rm -t --network=host \
+${DOCKER} run --rm --network=host \
           -e 'GRAFANA_URL=http://admin:password@localhost:3000' \
           -v ${GRAFYAML_DIR}:/grafana:ro \
           opendevorg/grafyaml
