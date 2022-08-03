@@ -4061,9 +4061,8 @@
         - openstack-zuul-jobs-linters
         - project-config-dib
         - project-config-gerrit
-        - project-config-grafyaml
         - project-config-grafana:
-            files:
+            files: &grafana-files
               - ^grafana/.*$
         - project-config-infra-docs-index:
             files: &infra-docs-index
@@ -4079,12 +4078,18 @@
     gate:
       queue: project-config
       jobs:
+        # NOTE(ianw) 2022-08-03 : this files filter is just because
+        # grafana is currently the only test that wants the
+        # intermediate registry.
+        - opendev-buildset-registry:
+            files: *grafana-files
         - build-openstack-specs-site:
             files: *specs-site
         - openstack-zuul-jobs-linters
         - project-config-dib
         - project-config-gerrit
-        - project-config-grafyaml
+        - project-config-grafana:
+            files: *grafana-files
         - project-config-infra-docs-index:
             files: *infra-docs-index
         - project-config-irc-access
