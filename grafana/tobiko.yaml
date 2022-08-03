@@ -1,0 +1,198 @@
+dashboard:
+  title: Tobiko jobs failure rate
+  time:
+      from: "now-7d"
+      to: "now"
+  rows:
+    - title: Description
+      height: 100px
+      panels:
+        - title: Description
+          content: |
+            **This dashboard is managed by [Grafyaml](https://docs.openstack.org/infra/system-config/grafyaml.html).**
+
+            If you would like to make changes to this dashboard, please see the grafana directory in [project-config](https://opendev.org/openstack/project-config/src/grafana/tobiko.yaml).
+
+            NOTE - 'No datapoints' in a graph means there have been no job failures reported yet.
+          type: text
+    - title: Graphs
+      height: 320px
+      panels:
+        - title: Devstack Tobiko jobs (Gate queue)
+          span: 6
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.devstack-tobiko-functional.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.devstack-tobiko-functional.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'devstack-tobiko-functional')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.devstack-tobiko-minimal.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.devstack-tobiko-minimal.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'devstack-tobiko-minimal')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.devstack-tobiko-octavia.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.devstack-tobiko-octavia.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'devstack-tobiko-octavia (non-voting)')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.devstack-tobiko-neutron.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.devstack-tobiko-neutron.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'devstack-tobiko-neutron')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.devstack-tobiko-ovs-neutron.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.devstack-tobiko-ovs-neutron.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'devstack-tobiko-ovs-neutron')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.devstack-tobiko-nova.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.devstack-tobiko-nova.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'devstack-tobiko-nova')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.devstack-tobiko-ovs.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.devstack-tobiko-ovs.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'devstack-tobiko-ovs')
+          type: graph
+        - title: Number of Devstack Tobiko jobs runs (Gate queue)
+          span: 6
+          targets:
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.devstack-tobiko-functional.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'devstack-tobiko-functional')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.devstack-tobiko-minimal.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'devstack-tobiko-minimal')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.devstack-tobiko-octavia.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'devstack-tobiko-octavia (non-voting)')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.devstack-tobiko-neutron.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'devstack-tobiko-neutron')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.devstack-tobiko-ovs-neutron.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'devstack-tobiko-ovs-neutron')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.devstack-tobiko-nova.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'devstack-tobiko-nova')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.devstack-tobiko-ovs.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'devstack-tobiko-ovs')
+          type: graph
+        - title: Docker Tobiko jobs (Gate queue)
+          span: 6
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.tobiko-docker-py3.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.tobiko-docker-py3.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'tobiko-docker-py3')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.tobiko-docker-functional.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.tobiko-docker-functional.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'tobiko-docker-functional')
+          type: graph
+        - title: Number of Docker Tobiko jobs runs (Gate queue)
+          span: 6
+          targets:
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.tobiko-docker-py3.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'docker-tobiko-py3')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.tobiko-docker-functional.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'docker-tobiko-functional')
+          type: graph
+        - title: Infrared Tobiko jobs (Gate queue)
+          span: 6
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.tobiko-infrared.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.tobiko-infrared.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'tobiko-infrared')
+          type: graph
+        - title: Number of Infrared Tobiko jobs runs (Gate queue)
+          span: 6
+          targets:
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.tobiko-infrared.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'tobiko-infrared')
+          type: graph
+        - title: Linters and Docs Tobiko jobs (Gate queue)
+          span: 6
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.openstack-tox-docs.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.openstack-tox-docs.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'openstack-tox-docs')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.openstack-tox-linters.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.openstack-tox-linters.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'openstack-tox-linters')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.openstack-tox-pep8.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.openstack-tox-pep8.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'openstack-tox-pep8')
+          type: graph
+        - title: Number of Linters and Docs Tobiko jobs runs (Gate queue)
+          span: 6
+          targets:
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.openstack-tox-docs.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'openstack-tox-docs')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.openstack-tox-linters.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'openstack-tox-linters')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.openstack-tox-pep8.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'openstack-tox-pep8')
+          type: graph
+        - title: Unit Tests Tobiko jobs (Gate queue)
+          span: 6
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.openstack-tox-py36.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.openstack-tox-py36.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'openstack-tox-py36')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.openstack-tox-py38.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.openstack-tox-py38.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'openstack-tox-py38')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.openstack-tox-py39.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.openstack-tox-py39.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'openstack-tox-py39')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.requirements-check.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.requirements-check.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'requirements-check')
+          type: graph
+        - title: Number of Unit Tests Tobiko jobs runs (Gate queue)
+          span: 6
+          targets:
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.openstack-tox-py36.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'openstack-tox-py36')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.openstack-tox-py38.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'openstack-tox-py38')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.openstack-tox-py39.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'openstack-tox-py39')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.gate.project.opendev_org.x_tobiko.master.job.requirements-check.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'requirements-check')
+          type: graph
+
+    - title: Graphs
+      height: 320px
+      panels:
+        - title: Devstack Tobiko jobs (Check queue)
+          span: 6
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-functional.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-functional.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'devstack-tobiko-functional')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-minimal.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-minimal.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'devstack-tobiko-minimal')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-octavia.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-octavia.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'devstack-tobiko-octavia (non-voting)')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-ovs-octavia.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-ovs-octavia.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'devstack-tobiko-ovs-octavia (non-voting)')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-neutron.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-neutron.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'devstack-tobiko-neutron')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-ovs-neutron.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-ovs-neutron.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'devstack-tobiko-ovs-neutron')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-nova.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-nova.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'devstack-tobiko-nova')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-multinode-nova.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-multinode-nova.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'devstack-tobiko-multinode-nova')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-ovs.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-ovs.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'devstack-tobiko-ovs')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-multinode.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-multinode.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'devstack-tobiko-multinode (non-voting)')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-heat.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-heat.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'devstack-tobiko-heat')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-sanity.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-sanity.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'devstack-tobiko-sanity')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-storage.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-storage.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'devstack-tobiko-storage')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-storage-ceph.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-storage-ceph.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'devstack-tobiko-storage-ceph')
+          type: graph
+        - title: Number of Devstack Tobiko jobs runs (Check queue)
+          span: 6
+          targets:
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-functional.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'devstack-tobiko-functional')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-minimal.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'devstack-tobiko-minimal')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-octavia.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'devstack-tobiko-octavia (non-voting)')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-ovs-octavia.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'devstack-tobiko-ovs-octavia (non-voting)')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-neutron.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'devstack-tobiko-neutron')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-ovs-neutron.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'devstack-tobiko-ovs-neutron')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-nova.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'devstack-tobiko-nova')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-multinode.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'devstack-tobiko-multinode (non-voting)')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-ovs.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'devstack-tobiko-ovs')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-heat.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'devstack-tobiko-heat')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-multinode-nova.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'devstack-tobiko-multinode-nova')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-sanity.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'devstack-tobiko-sanity')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-storage.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'devstack-tobiko-storage')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.devstack-tobiko-storage-ceph.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'devstack-tobiko-storage-ceph')
+          type: graph
+        - title: Docker Tobiko jobs (Check queue)
+          span: 6
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.tobiko-docker-py39.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.tobiko-docker-py39.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'tobiko-docker-py39')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.tobiko-docker-py310.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.tobiko-docker-py310.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'tobiko-docker-py310 (non-voting)')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.tobiko-docker-functional.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.tobiko-docker-functional.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'tobiko-docker-functional')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.tobiko-docker-linters.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.tobiko-docker-linters.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'tobiko-docker-linters')
+          type: graph
+        - title: Number of Docker Tobiko jobs runs (Check queue)
+          span: 6
+          targets:
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.tobiko-docker-py39.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'docker-tobiko-py39')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.tobiko-docker-py310.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'docker-tobiko-py310 (non-voting)')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.tobiko-docker-functional.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'docker-tobiko-functional')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.tobiko-docker-linters.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'docker-tobiko-linters')
+          type: graph
+        - title: Infrared Tobiko jobs (Check queue)
+          span: 6
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.tobiko-infrared-centos-7.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.tobiko-infrared-centos-7.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'tobiko-infrared-centos-7')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.tobiko-infrared-centos-8.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.tobiko-infrared-centos-8.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'tobiko-infrared-centos-8')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.tobiko-infrared-centos-9.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.tobiko-infrared-centos-9.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'tobiko-infrared-centos-9')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.tobiko-infrared-fedora.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.tobiko-infrared-fedora.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'tobiko-infrared-fedora')
+          type: graph
+        - title: Number of Infrared Tobiko jobs runs (Check queue)
+          span: 6
+          targets:
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.tobiko-infrared-centos-7.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'tobiko-infrared-centos-7')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.tobiko-infrared-centos-8.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'tobiko-infrared-centos-8')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.tobiko-infrared-centos-9.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'tobiko-infrared-centos-9')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.tobiko-infrared-fedora.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'tobiko-infrared-fedora')
+          type: graph
+        - title: Linters and Docs Tobiko jobs (Check queue)
+          span: 6
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.openstack-tox-docs.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.openstack-tox-docs.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'openstack-tox-docs')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.openstack-tox-linters.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.openstack-tox-linters.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'openstack-tox-linters')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.openstack-tox-pep8.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.openstack-tox-pep8.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'openstack-tox-pep8')
+          type: graph
+        - title: Number of Linters and Docs Tobiko jobs runs (Check queue)
+          span: 6
+          targets:
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.openstack-tox-docs.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'openstack-tox-docs')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.openstack-tox-linters.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'openstack-tox-linters')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.openstack-tox-pep8.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'openstack-tox-pep8')
+          type: graph
+        - title: Unit Tests Tobiko jobs (Check queue)
+          span: 6
+          targets:
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.openstack-tox-py36.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.openstack-tox-py36.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'openstack-tox-py36')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.openstack-tox-py38.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.openstack-tox-py38.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'openstack-tox-py38')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.openstack-tox-py39.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.openstack-tox-py39.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'openstack-tox-py39')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.openstack-tox-py310.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.openstack-tox-py310.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'openstack-tox-py310 (non-voting)')
+            - target: alias(movingAverage(asPercent(transformNull(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.requirements-check.{FAILURE,TIMED_OUT})),sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.requirements-check.{SUCCESS,FAILURE,TIMED_OUT})),'24hours'), 'requirements-check')
+          type: graph
+        - title: Number of Unit Tests Tobiko jobs runs (Check queue)
+          span: 6
+          targets:
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.openstack-tox-py36.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'openstack-tox-py36')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.openstack-tox-py38.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'openstack-tox-py38')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.openstack-tox-py39.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'openstack-tox-py39')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.openstack-tox-py310.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'openstack-tox-py310')
+            - target: alias(summarize(sum(stats_counts.zuul.tenant.openstack.pipeline.check.project.opendev_org.x_tobiko.master.job.requirements-check.{SUCCESS,FAILURE,TIMED_OUT}),'24hours'), 'requirements-check')
+          type: graph
