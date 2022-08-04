@@ -30,9 +30,12 @@ if [[ $(${DOCKER} ps -f "name=grafana-opendev_test" --format '{{.Names}}') \
             docker.io/grafana/grafana-oss
 
     echo "Grafana listening on :3000"
-    echo "Waiting for startup ..."
-    sleep 5
-    echo " ... done"
+    echo -n "Waiting for startup ."
+    until $(curl --output /dev/null --silent --head --fail http://localhost:3000); do
+        echo -n '.'
+        sleep 2
+    done
+    echo ". done"
 fi
 
 echo "Reloading dashboards"
