@@ -38,6 +38,9 @@ if [[ $(${DOCKER} ps -f "name=grafana-opendev_test" --format '{{.Names}}') \
     echo ". done"
 fi
 
+echo "Pulling grafyaml"
+${DOCKER} pull opendevorg/grafyaml
+
 echo "Reloading dashboards"
 
 ${DOCKER} run --rm --network=host \
