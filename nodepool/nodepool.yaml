@@ -35,6 +35,8 @@ providers:
         config-drive: true
       - name: rockylinux-8
         config-drive: true
+      - name: rockylinux-9
+        config-drive: true
       - name: ubuntu-bionic
         config-drive: true
       - name: ubuntu-focal
@@ -176,6 +178,17 @@ diskimages:
       - cache-devstack
       - rocky-container
       - epel
+    env-vars:
+      DIB_EPEL_DISABLED: '1'
+
+  - name: rockylinux-9
+    parent: base
+    pause: false
+    python-path: /usr/bin/python3
+    release: '9'
+    elements:
+      - cache-devstack
+      - rocky-container
     env-vars:
       DIB_EPEL_DISABLED: '1'
 
