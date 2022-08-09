@@ -6,8 +6,8 @@ fi
 set -eu
 set -o pipefail
 
-if [[ ${DISTRO_NAME} == 'centos' && ${DIB_RELEASE} = '9-stream' ]]; then
-    # 9-stream we are just using the default rngd
+if [[ "$DISTRO_NAME" =~ ^(centos|rocky)$ && ${DIB_RELEASE} =~ '9' ]]; then
+    # 9/9-stream we are just using the default rngd
     exit 0
 fi
 
