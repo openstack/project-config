@@ -6,5 +6,5 @@
 
 ROOT=$(readlink -fn $(dirname $0)/.. )
 find $ROOT -not -path '*playbooks/legacy/*' -and -not -wholename \*.tox/\* \
-    -and -not -wholename \*.test/\* \
+    -and -not -wholename \*.test/\* -and -not -wholename \*.cache/\* \
     -and -name \*.sh -print0 | xargs -0 bashate --ignore E006,E011
