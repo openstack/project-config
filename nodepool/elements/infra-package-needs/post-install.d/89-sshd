@@ -31,3 +31,16 @@ sed -i -e'/PermitRootLogin/d' /etc/ssh/sshd_config \
 # unnecessary password auth.
 sed -i -e '/PasswordAuthentication/d' /etc/ssh/sshd_config \
     && echo "PasswordAuthentication no" >> /etc/ssh/sshd_config
+
+# NOTE(clarkb): SSH scanners may be affecting Zuul ssh connectivity
+# Default LoginGraceTime is 120. Reduce that to 30 to cycle connections more
+# quickly.
+sed -i -e '/LoginGraceTime/d' /etc/ssh/sshd_config \
+    && echo "LoginGraceTime 30" >> /etc/ssh/sshd_config
+
+# NOTE(clarkb): SSH scanners may be affecting Zuul ssh connectivity
+# Default MaxStartups is 10:30:100 which means after 10 unauthenticated
+# connections randomly drop 30% of connections with an increasing
+# percentage until 100 connections is reached.
+sed -i -e '/MaxStartups/d' /etc/ssh/sshd_config \
+    && echo "MaxStartups 30:10:100" >> /etc/ssh/sshd_config
