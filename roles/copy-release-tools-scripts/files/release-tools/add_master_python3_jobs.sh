@@ -17,6 +17,8 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
+# As in 2023.1 cycle, we switch to using the generic template name to update
+# the unit testing, we do not need this script after Zed release.
 set -ex
 
 if [[ $# -lt 3 ]]; then
@@ -37,10 +39,11 @@ OLDSERIES=${OLDSERIES/stable\//}
 
 cd $REPO
 
-commit_msg="Add Python3 ${SERIES} unit tests
+commit_msg="Switch to 2023.1 Python3 unit tests and generic template name
 
 This is an automatically generated patch to ensure unit testing
-is in place for all the of the tested runtimes for ${SERIES}.
+is in place for all the of the tested runtimes for ${SERIES}. Also,
+updating the template name to generic one.
 
 See also the PTI in governance [1].
 
@@ -53,7 +56,7 @@ fnames=$(find . -type f -path '*zuul.d/*'; find . -type f -name '*zuul.yaml')
 for fname in $fnames; do
     echo "Checking ${fname}"
     sed -i -e \
-        "s/openstack-python3-${OLDSERIES}-jobs/openstack-python3-${SERIES}-jobs/g" \
+        "s/openstack-python3-${OLDSERIES}-jobs/openstack-python3-jobs/g" \
         $fname
 done
 
