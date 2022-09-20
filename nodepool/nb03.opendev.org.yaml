@@ -81,6 +81,14 @@ providers:
           os_command_line: "console=ttyAMA0"
           hw_disk_bus: scsi
           hw_scsi_model: virtio-scsi
+      - name: rockylinux-9-arm64
+        pause: false
+        config-drive: true
+        meta:
+          hw_firmware_type: uefi
+          os_command_line: "console=ttyAMA0"
+          hw_disk_bus: scsi
+          hw_scsi_model: virtio-scsi
 
   - name: osuosl-regionone
     region-name: 'RegionOne'
@@ -256,3 +264,11 @@ diskimages:
     release: 22.03-LTS
     env-vars:
       DIB_DISTRIBUTION_MIRROR: 'http://mirror.regionone.linaro-us.opendev.org/openeuler'
+
+  - name: rockylinux-9-arm64
+    parent: base
+    python-path: /usr/bin/python3
+    elements:
+      - rocky-container
+      - epel
+    release: 9
