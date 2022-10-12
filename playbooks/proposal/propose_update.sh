@@ -36,8 +36,8 @@ elif [ "$OWN_PROJECT" == "requirements-constraints" ] ; then
     VENV=$(readlink -f .tox/venv)
     $VENV/bin/pip install -e .
     function update {
-        $VENV/bin/generate-constraints -b blacklist.txt -p /usr/bin/python3.8 \
-            -p /usr/bin/python3.9 \
+        $VENV/bin/generate-constraints -b blacklist.txt -p /usr/bin/python3.10 \
+            --version-map 3.10:3.9 \
             -r global-requirements.txt > $1/upper-constraints.txt
     }
 elif [ "$OWN_PROJECT" == "devstack-plugins-list" ] ; then
