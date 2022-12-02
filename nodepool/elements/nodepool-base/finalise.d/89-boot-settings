@@ -159,18 +159,6 @@ set -e
 echo 'nameserver 127.0.0.1' > /etc/resolv.conf
 
 EOF
-
-# Configure NetworkManager to not manage /etc/resolv.conf
-if [ -d /etc/NetworkManager/conf.d ]; then
-  cat <<EOF |python3
-  import configparser
-  p = configparser.SafeConfigParser()
-  p.set('main', 'rc-manager', 'unmanaged')
-  with open('/etc/NetworkManager/conf.d/rc-manager.conf', 'w') as fh:
-    p.write(fh)
-EOF
-fi
-
 # openSUSE doesn't have an iptables service, so apply the iptables rules at boot
 if [[ "${DISTRO_NAME}" =~ (opensuse) ]] ; then
     cat >>$rclocal <<EOF
