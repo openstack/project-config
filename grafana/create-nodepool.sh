@@ -20,12 +20,10 @@ function create {
 }
 
 create Rackspace 'rax-*' nodepool-rax.yaml
-create Inap 'inap-*' nodepool-inap.yaml
 create iWeb 'iweb-*' nodepool-iweb.yaml
 create Limestone 'limestone-*' nodepool-limestone.yaml
 create Linaro 'linaro-*' nodepool-linaro.yaml
 create OVH 'ovh-*' nodepool-ovh.yaml
 create Vexxhost 'vexxhost-*' nodepool-vexxhost.yaml
-create Airship-Citycloud 'airship-*' nodepool-airship-citycloud.yaml
 create OSUOSL 'osuosl-*' nodepool-osuosl.yaml
 create InMotion 'inmotion-*' nodepool-inmotion.yaml
