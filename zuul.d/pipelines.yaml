@@ -57,31 +57,6 @@
         comment: false
 
 - pipeline:
-    name: post-review
-    description: |
-      Patches received initial review by project trusted members enter this
-      pipeline to execute additional jobs. This pipeline can be used to access
-      secrets before gating.
-    success-message: Build succeeded (post-review pipeline).
-    failure-message: |
-      Build failed (post-review pipeline). For information on how to proceed, see
-      https://docs.opendev.org/opendev/infra-manual/latest/developers.html#automated-testing
-    manager: independent
-    post-review: True
-    precedence: low
-    require:
-      gerrit:
-        open: True
-        current-patchset: True
-        approval:
-          - Allow-Post-Review: [1]
-    trigger:
-      gerrit:
-        - event: comment-added
-          require-approval:
-            - Allow-Post-Review: [1]
-
-- pipeline:
     name: gate
     description: |
       Changes that have been approved by core reviewers are enqueued
@@ -124,6 +99,31 @@
         Verified: -2
     window-floor: 20
     window-increase-factor: 2
+
+- pipeline:
+    name: post-review
+    description: |
+      Patches received initial review by project trusted members enter this
+      pipeline to execute additional jobs. This pipeline can be used to access
+      secrets before gating.
+    success-message: Build succeeded (post-review pipeline).
+    failure-message: |
+      Build failed (post-review pipeline). For information on how to proceed, see
+      https://docs.opendev.org/opendev/infra-manual/latest/developers.html#automated-testing
+    manager: independent
+    post-review: True
+    precedence: low
+    require:
+      gerrit:
+        open: True
+        current-patchset: True
+        approval:
+          - Allow-Post-Review: [1]
+    trigger:
+      gerrit:
+        - event: comment-added
+          approval:
+            - Allow-Post-Review: [1]
 
 - pipeline:
     name: post
