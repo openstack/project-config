@@ -58,13 +58,9 @@ out = ''
 
 valid_keys = {'abandon',
               'access',
-              'copyAllScoresIfNoCodeChange',
-              'copyAllScoresOnTrivialRebase',
-              'copyAnyScore',
-              'copyMaxScore',
-              'copyMinScore',
               'create',
               'createSignedTag',
+              'copyCondition',
               'defaultValue',
               'delete',
               'editHashtags',
@@ -114,7 +110,8 @@ for line in aclfd:
         # Check for valid keys
         key = line.split('=')[0].strip()
         if key not in valid_keys:
-            raise Exception('Unrecognized key in line: "%s"' % line)
+            raise Exception('(%s) Unrecognized key "%s" in line: "%s"'
+                            % (aclfile, key, line))
     # WTF
     else:
         raise Exception('Unrecognized line: "%s"' % line)
