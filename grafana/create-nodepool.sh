@@ -20,7 +20,6 @@ function create {
 }
 
 create Rackspace 'rax-*' nodepool-rax.yaml
-create iWeb 'iweb-*' nodepool-iweb.yaml
 create Limestone 'limestone-*' nodepool-limestone.yaml
 create Linaro 'linaro-*' nodepool-linaro.yaml
 create OVH 'ovh-*' nodepool-ovh.yaml
