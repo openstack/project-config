@@ -12,9 +12,9 @@ zookeeper-servers:
     port: 2281
 
 providers:
-  - name: linaro-us-regionone
+  - name: linaro
     region-name: 'RegionOne'
-    cloud: linaro-us
+    cloud: linaro
     rate: 0.25
     diskimages: &arm64_diskimages
       - name: ubuntu-bionic-arm64
@@ -96,11 +96,12 @@ providers:
     rate: 0.25
     diskimages: *arm64_diskimages
 
-  - name: linaro
+  # NOTE(ianw) 2023-01-20 : set to empty to clear out ZK nodes.
+  - name: linaro-us-regionone
     region-name: 'RegionOne'
-    cloud: linaro
+    cloud: linaro-us
     rate: 0.25
-    diskimages: *arm64_diskimages
+    diskimages: []
 
 diskimages:
   - name: base
