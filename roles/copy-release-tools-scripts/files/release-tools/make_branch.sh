@@ -80,9 +80,4 @@ if [[ $NEW_BRANCH =~ stable/ ]]; then
     else
         echo "$REPO does not use reno, no update needed"
     fi
-    # Now propose master branch changes with the new branchname
-    # according to PTI.
-    if [[ ! -z "${MASTER_BRANCH_NAME}" ]]; then
-        $TOOLSDIR/add_master_python3_jobs.sh ${NEW_BRANCH} ${MASTER_BRANCH_NAME} .
-    fi
 fi
