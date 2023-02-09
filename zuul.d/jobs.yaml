@@ -1265,12 +1265,12 @@
     nodeset: ubuntu-xenial
 
 - job:
-    name: openstack-multinode-fips
-    parent: multinode-fips
+    name: openstack-fips
+    abstract: true
     description: |
-      Multinode job with fips enabled and passing
-      the ubuntu_fips_token needed for UA subscription.
+      Base job for OpenStack jobs that enables an
+      Ubuntu Advantage subscription if FIPS is enabled.
     secrets:
       - secret: openstack_ubuntu_fips
-        name: ubuntu_fips_token
-        pass-to-parent: true
+        name: ubuntu_ua_token
+    pre-run: playbooks/openstack-fips/pre.yaml
