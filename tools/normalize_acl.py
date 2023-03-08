@@ -58,11 +58,13 @@ out = ''
 
 valid_keys = {'abandon',
               'access',
+              'applicableIf',
               'create',
               'createSignedTag',
               'copyCondition',
               'defaultValue',
               'delete',
+              'description',
               'editHashtags',
               'exclusiveGroupPermissions',
               'forgeAuthor',
@@ -84,6 +86,7 @@ valid_keys = {'abandon',
               'requireContributorAgreement',
               'state',
               'submit',
+              'submittableIf',
               'toggleWipState',
               'value'}
 
