@@ -189,6 +189,13 @@ providers:
     region-name: 'ORD'
     cloud: rax
     boot-timeout: 120
+    # Under load, this region can take a very long time to launch instances,
+    # but we have a lot of capacity here so it's worthwhile to increase the
+    # timeout but mitigate node request delays by not retrying failures. Also
+    # try to substantially reduce the number of instances we launch in
+    # parallel.
+    max-concurrency: 10
+    launch-retries: 1
     launch-timeout: 900
     rate: 0.01
     diskimages: *provider_diskimages
