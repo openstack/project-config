@@ -57,3 +57,40 @@ done
 
 # for debug
 cat $DIR/Puppetfile
+
+# header
+echo -e "# Auto-generated Puppetfile for Puppet OpenStack project\n" > $DIR/Puppetfile_unit
+
+# Unit test Modules
+for e in $(cat unit_modules.txt); do
+    namespace=$(echo $e | awk -F'/' '{print $1}' | cut -d "," -f 1)
+    module=$(echo $e | awk -F'/' '{print $2}' | cut -d "," -f 1)
+    title=$(echo $module | awk -F'/' '{print $1}' | cut -d "-" -f 2)
+    pin=$(echo $e | grep "," | cut -d "," -f 2)
+    if [ ! -z "$pin" ]; then
+        git ls-remote --exit-code https://github.com/$namespace/$module $pin
+        if (($? == 2)); then
+            if ! git ls-remote --exit-code https://github.com/$namespace/$module | grep -q $pin; then
+                echo "Wrong pin: $pin does not exist in $module module."
+                exit 1
+            else
+                tag=$pin
+            fi
+        else
+            tag=$pin
+        fi
+    else
+        git clone https://github.com/$namespace/$module modules/$module
+        tag=$(cd modules/$module; git describe --tags $(git rev-list --tags --max-count=1))
+        rm -rf modules/$module
+    fi
+    cat >> $DIR/Puppetfile_unit <<EOF
+mod '$title',
+  :git => 'https://github.com/$namespace/$module',
+  :ref => '$tag'
+
+EOF
+done
+
+# for debug
+cat $DIR/Puppetfile_unit
