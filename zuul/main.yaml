@@ -84,6 +84,26 @@
               - zuul/jobs
 
 - tenant:
+    name: nebulous
+    admin-rules: *admin_rules
+    default-ansible-version: '6'
+    max-nodes-per-job: 10
+    source:
+      gerrit:
+        config-projects:
+          - nebulous/project-config
+          - opendev/base-jobs:
+              include:
+                - job
+                - secret
+                - nodeset
+        untrusted-projects:
+          # Order matters. Thus, list common job repos first.
+          - zuul/zuul-jobs:
+              shadow: openstack/project-config
+          - nebulous/nebulous
+
+- tenant:
     name: openstack
     admin-rules: *admin_rules
     default-ansible-version: '6'
