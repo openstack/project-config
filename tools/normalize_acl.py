@@ -143,7 +143,7 @@ if '5' in transformations:
     for section in acl.keys():
         newsection = []
         for option in acl[section]:
-            key, value = [x.strip() for x in option.split('=')]
+            key, value = [x.strip() for x in option.split('=', 1)]
             if key == 'exclusiveGroupPermissions':
                 newsection.append('%s = %s' % (
                     key, ' '.join(sorted(value.split()))))
@@ -193,7 +193,7 @@ if '8' in transformations:
         newsection = []
         for option in acl[section]:
             newsection.append(option)
-            key, value = [x.strip() for x in option.split('=')]
+            key, value = [x.strip() for x in option.split('=', 1)]
             if key == 'exclusiveGroupPermissions':
                 exclusives = value.split()
                 # It's safe for these to be duplicates since we de-dup later
