@@ -247,6 +247,17 @@ if '9' in transformations:
                 if value != 'NoBlock':
                     newsection.append(
                         '# XXX: The only supported function type is NoBlock')
+
+            # Gerrit 3.6 takes lower-case "and/or" literally -- as in
+            # you literally need to have and/or in the commit string.
+            # Gerrit 3.7 fixes this, but let's standarise on capital
+            # booleans
+            if key in ('copyCondition', 'submittableIf', 'applicableIf'):
+                value = value.replace(' and ', ' AND ')
+                value = value.replace(' or ', ' OR ')
+                newsection.append("%s = %s" % (key, value))
+                continue
+
             newsection.append(option)
         acl[section] = newsection
     acl.update(missing_sr)
