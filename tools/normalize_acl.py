@@ -25,6 +25,9 @@
 # 7 - add at least one core team, if no team is defined with special suffixes
 #     like core, admins, milestone or Users
 # 8 - fix All-Projects inheritance shadowed by exclusiveGroupPermissions
+# 9 - Ensure submit requirements
+#      * functions only noblock
+#      * each label has a s-r block
 
 import re
 import sys
@@ -34,7 +37,7 @@ aclfile = sys.argv[1]
 try:
     transformations = sys.argv[2:]
     if transformations and transformations[0] == 'all':
-        transformations = [str(x) for x in range(0, 9)]
+        transformations = [str(x) for x in range(0, 10)]
 except KeyError:
     transformations = []
 
@@ -211,6 +214,42 @@ if '8' in transformations:
                     newsection.append('label-Workflow = -1..+0 '
                                       'group Change Owner')
         acl[section] = newsection
+
+# submit-requirements have taken over the role of "function" in labels
+# since Gerrit 3.6.  We ensure that the only function in a label
+# section now is the noop "NoBlock" function -- all labels now need to
+# explicitly write their own submit-requirement.  e.g. for any
+#  [label "Foo"]
+# there should be a matching submit requirement section
+#  [submit-requirement "Foo"]
+# We can't really decide what the rules will be, so we just add the
+# section with a dummy comment.
+if '9' in transformations:
+    missing_sr = {}
+    for section in acl.keys():
+        if section.startswith("label "):
+            label_name = section.split(' ')[1]
+            sr_found = False
+            for sr in acl.keys():
+                if sr == 'submit-requirement %s' % (label_name):
+                    sr_found = True
+                    break
+            if not sr_found:
+                msg = ('# You must have a submit-requirement section for %s'
+                       % label_name)
+                missing_sr['submit-requirement %s' % label_name] = [msg]
+
+        # Insert an inline comment if the ACL uses an invalid function
+        newsection = []
+        for option in acl[section]:
+            key, value = [x.strip() for x in option.split('=', 1)]
+            if key == 'function':
+                if value != 'NoBlock':
+                    newsection.append(
+                        '# XXX: The only supported function type is NoBlock')
+            newsection.append(option)
+        acl[section] = newsection
+    acl.update(missing_sr)
 
 for section in sorted(acl.keys()):
     if acl[section]:
