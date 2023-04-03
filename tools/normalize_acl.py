@@ -56,6 +56,17 @@ def tokens(data):
     return data
 
 
+def normalize_boolean_ops(key, value):
+    # Gerrit 3.6 takes lower-case "and/or" literally -- as in
+    # you literally need to have and/or in the commit string.
+    # Gerrit 3.7 fixes this, but let's standarise on capital
+    # booleans
+    if key in ('copyCondition', 'submittableIf', 'applicableIf'):
+        value = value.replace(' and ', ' AND ')
+        value = value.replace(' or ', ' OR ')
+    return "%s = %s" % (key, value)
+
+
 acl = {}
 out = ''
 
@@ -227,6 +238,7 @@ if '8' in transformations:
 if '9' in transformations:
     missing_sr = {}
     for section in acl.keys():
+        newsection = []
         if section.startswith("label "):
             label_name = section.split(' ')[1]
             sr_found = False
@@ -239,26 +251,27 @@ if '9' in transformations:
                        % label_name)
                 missing_sr['submit-requirement %s' % label_name] = [msg]
 
-        # Insert an inline comment if the ACL uses an invalid function
-        newsection = []
-        for option in acl[section]:
-            key, value = [x.strip() for x in option.split('=', 1)]
-            if key == 'function':
-                if value != 'NoBlock':
-                    newsection.append(
-                        '# XXX: The only supported function type is NoBlock')
+            keys = []
+            for option in acl[section]:
+                key, value = [x.strip() for x in option.split('=', 1)]
+                keys.append(key)
+                # Insert an inline comment if the ACL uses an invalid function
+                if key == 'function':
+                    if value != 'NoBlock':
+                        newsection.append(
+                            '# XXX: The only supported function type is '
+                            'NoBlock')
+                newsection.append(normalize_boolean_ops(key, value))
+            # Add function = NoBlock to label sections if not set as the
+            # default is MaxWithBlock which will interfere with submit
+            # requirements.
+            if 'function' not in keys:
+                newsection.append('function = NoBlock')
+        else:
+            for option in acl[section]:
+                key, value = [x.strip() for x in option.split('=', 1)]
+                newsection.append(normalize_boolean_ops(key, value))
 
-            # Gerrit 3.6 takes lower-case "and/or" literally -- as in
-            # you literally need to have and/or in the commit string.
-            # Gerrit 3.7 fixes this, but let's standarise on capital
-            # booleans
-            if key in ('copyCondition', 'submittableIf', 'applicableIf'):
-                value = value.replace(' and ', ' AND ')
-                value = value.replace(' or ', ' OR ')
-                newsection.append("%s = %s" % (key, value))
-                continue
-
-            newsection.append(option)
         acl[section] = newsection
     acl.update(missing_sr)
 
