@@ -281,7 +281,10 @@ for section in sorted(acl.keys()):
         lastoption = ''
         for option in sorted(acl[section], key=tokens):
             if option != lastoption:
-                out += '%s\n' % option
+                # Gerrit prefers all option lines indented by a single
+                # hard tab; this minimises diffs if things like
+                # upgrades need to modify the acls
+                out += '\t%s\n' % option
             lastoption = option
 
 if dry_run:
