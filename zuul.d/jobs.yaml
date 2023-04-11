@@ -853,6 +853,27 @@
     run: playbooks/proposal/propose-project-config-update.yaml
     protected: true
 
+# The wheel builds can finish at similar times, so to avoid many
+# overlapping "vos release" processes we restrict it with a semaphore.
+- semaphore:
+    name: wheel-release
+    max: 1
+
+- job:
+    name: release-wheel-cache
+    abstract: true
+    protected: true
+    description: |
+        Release a wheel cache volume
+    run:
+      - name: playbooks/release/wheel.yaml
+        semaphores: wheel-release
+    nodeset:
+      nodes: []
+    secrets:
+      - name: afs
+        secret: afsadmin_keytab
+
 - job:
     name: publish-wheel-cache-centos-7
     description: |
@@ -866,6 +887,13 @@
     secrets:
       - name: afs
         secret: wheel_keytab
+
+- job:
+    name: release-wheel-cache-centos-7
+    parent: release-wheel-cache
+    final: true
+    vars:
+      wheel_volume: 'mirror.wheel.cent7x64'
 
 - job:
     name: publish-wheel-cache-centos-8-stream
@@ -882,6 +910,13 @@
         secret: wheel_keytab
 
 - job:
+    name: release-wheel-cache-centos-8-stream
+    parent: release-wheel-cache
+    final: true
+    vars:
+      wheel_volume: 'mirror.wheel.cent8x64'
+
+- job:
     name: publish-wheel-cache-centos-8-stream-arm64
     description: |
       Publish CentOS Stream 8 wheels for OpenStack CI mirrors.
@@ -894,6 +929,13 @@
     secrets:
       - name: afs
         secret: wheel_keytab
+
+- job:
+    name: release-wheel-cache-centos-8-stream-arm64
+    parent: release-wheel-cache
+    final: true
+    vars:
+      wheel_volume: 'mirror.wheel.cent8a64'
 
 - job:
     name: publish-wheel-cache-centos-9-stream
@@ -910,6 +952,13 @@
         secret: wheel_keytab
 
 - job:
+    name: release-wheel-cache-centos-9-stream
+    parent: release-wheel-cache
+    final: true
+    vars:
+      wheel_volume: 'mirror.wheel.cent9sx64'
+
+- job:
     name: publish-wheel-cache-centos-9-stream-arm64
     description: |
       Publish CentOS Stream 9 wheels for OpenStack CI mirrors.
@@ -922,6 +971,13 @@
     secrets:
       - name: afs
         secret: wheel_keytab
+
+- job:
+    name: release-wheel-cache-centos-9-stream-arm64
+    parent: release-wheel-cache
+    final: true
+    vars:
+      wheel_volume: 'mirror.wheel.cent9sx64'
 
 - job:
     name: publish-wheel-cache-debian-bullseye
@@ -938,6 +994,13 @@
         secret: wheel_keytab
 
 - job:
+    name: release-wheel-cache-debian-bullseye
+    parent: release-wheel-cache
+    final: true
+    vars:
+      wheel_volume: 'mirror.wheel.deb11x64'
+
+- job:
     name: publish-wheel-cache-debian-bullseye-arm64
     description: |
       Publish Debian bullseye wheels for OpenStack CI mirrors.
@@ -950,6 +1013,13 @@
     secrets:
       - name: afs
         secret: wheel_keytab
+
+- job:
+    name: release-wheel-cache-debian-bullseye-arm64
+    parent: release-wheel-cache
+    final: true
+    vars:
+      wheel_volume: 'mirror.wheel.deb11a64'
 
 - job:
     name: publish-wheel-cache-debian-buster
@@ -966,6 +1036,13 @@
         secret: wheel_keytab
 
 - job:
+    name: release-wheel-cache-debian-buster
+    parent: release-wheel-cache
+    final: true
+    vars:
+      wheel_volume: 'mirror.wheel.busterx64'
+
+- job:
     name: publish-wheel-cache-debian-buster-arm64
     description: |
       Publish Debian buster wheels for OpenStack CI mirrors.
@@ -978,6 +1055,13 @@
     secrets:
       - name: afs
         secret: wheel_keytab
+
+- job:
+    name: release-wheel-cache-debian-buster-arm64
+    parent: release-wheel-cache
+    final: true
+    vars:
+      wheel_volume: 'mirror.wheel.bustera64'
 
 - job:
     name: publish-wheel-cache-ubuntu-jammy
@@ -994,6 +1078,13 @@
         secret: wheel_keytab
 
 - job:
+    name: release-wheel-cache-ubuntu-jammy
+    parent: release-wheel-cache
+    final: true
+    vars:
+      wheel_volume: 'mirror.wheel.jammyx64'
+
+- job:
     name: publish-wheel-cache-ubuntu-jammy-arm64
     parent: build-wheel-cache-ubuntu-jammy-arm64
     description: |
@@ -1006,6 +1097,13 @@
     secrets:
       - name: afs
         secret: wheel_keytab
+
+- job:
+    name: release-wheel-cache-ubuntu-jammy-arm64
+    parent: release-wheel-cache
+    final: true
+    vars:
+      wheel_volume: 'mirror.wheel.jammya64'
 
 - job:
     name: publish-wheel-cache-ubuntu-focal
@@ -1022,6 +1120,13 @@
         secret: wheel_keytab
 
 - job:
+    name: release-wheel-cache-ubuntu-focal
+    parent: release-wheel-cache
+    final: true
+    vars:
+      wheel_volume: 'mirror.wheel.focalx64'
+
+- job:
     name: publish-wheel-cache-ubuntu-focal-arm64
     parent: build-wheel-cache-ubuntu-focal-arm64
     description: |
@@ -1034,6 +1139,13 @@
     secrets:
       - name: afs
         secret: wheel_keytab
+
+- job:
+    name: release-wheel-cache-ubuntu-focal-arm64
+    parent: release-wheel-cache
+    final: true
+    vars:
+      wheel_volume: 'mirror.wheel.focala64'
 
 - job:
     name: publish-wheel-cache-ubuntu-bionic
@@ -1050,6 +1162,13 @@
         secret: wheel_keytab
 
 - job:
+    name: release-wheel-cache-ubuntu-bionic
+    parent: release-wheel-cache
+    final: true
+    vars:
+      wheel_volume: 'mirror.wheel.bionicx64'
+
+- job:
     name: publish-wheel-cache-ubuntu-bionic-arm64
     parent: build-wheel-cache-ubuntu-bionic-arm64
     description: |
@@ -1062,6 +1181,13 @@
     secrets:
       - name: afs
         secret: wheel_keytab
+
+- job:
+    name: release-wheel-cache-ubuntu-bionic-arm64
+    parent: release-wheel-cache
+    final: true
+    vars:
+      wheel_volume: 'mirror.wheel.bionica64'
 
 - job:
     name: publish-wheel-cache-ubuntu-xenial
@@ -1078,20 +1204,11 @@
         secret: wheel_keytab
 
 - job:
-    name: release-wheel-cache
-    description: |
-      Release published wheels to OpenStack CI mirrors.
-    run: playbooks/wheel/release.yaml
-    nodeset:
-      nodes: []
-    # Build and publish jobs for the wheel mirror only run against
-    # master. Restrict the release job to master as well to avoid zuul
-    # config errors due to stable branches not being able to run their
-    # job depenendencies.
-    branches: master
-    secrets:
-      - name: afs
-        secret: afsadmin_keytab
+    name: release-wheel-cache-ubuntu-xenial
+    parent: release-wheel-cache
+    final: true
+    vars:
+      wheel_volume: 'mirror.wheel.xenialx64'
 
 - job:
     name: check-release-approval
