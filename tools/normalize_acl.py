@@ -13,6 +13,8 @@
 
 # Usage: normalize_acl.py acl.config [transformation [transformation [...]]]
 #
+# Transformations are described in user-facing detail below
+#
 # Transformations:
 # all Apply all transformations.
 # 0 - dry run (default, print to stdout rather than modifying file in place)
@@ -28,11 +30,67 @@
 # 9 - Ensure submit requirements
 #      * functions only noblock
 #      * each label has a s-r block
+#
+# There is a final pass to use tab indents that always applies.
+#
 
 import re
 import sys
 
+# If adding a normalization step, add human-parsable description of it
+# here.
+NORMALIZATION_HELP = '''
+One or more files have failed the Gerrit ACL normalization checks.  A
+diff of the expected output is presented above.  You can reference this
+with the following transformations to correct any problems.
+
+The current transformations
+
+1.  Whitespace should be stripped/condensed and keys should be
+    alphabetically sorted.
+
+2.  [access "refs/tags/*"] should not have create permissions
+
+3.  No "project.stat{e,us} = active" since it's a default or a typo
+
+4.  Remove default "*.owner = group" Administrators permissions
+
+5.  The exclusiveGroupPermissions group lists should be sorted
+
+6.  Old references to openstack-ci-admins and openstack-ci-core should
+    now be infra-core
+
+7.  There should be at least one core team, if no team is defined with
+    special suffixes like core, admins, milestone or Users
+
+8.  Whenever a project-specific ACL declares exclusiveGroupPermissions
+    on some permission, it overrides standard permissions that would
+    otherwise be inherited from All-Projects ACL.  These conditions
+    must be duplicated into the project-specific rule to maintain
+    standard behaviour.
+
+9.  Labels must have submit-requirements
+     - must have "function = NoBlock"
+     - each label must have a corresponding submit-requirement block
+
+10. Values should be indented with a hard tab, as that is the gerrit
+    default; e.g.
+
+    [section]
+    	key1 = value
+    	key2 = value
+'''  # noqa: W191, E101
+
 aclfile = sys.argv[1]
+
+# NOTE(ianw) : 2023-04-20 obviously we would not write any of this
+# like this if we were starting fresh.  But this has grown from a
+# simple thing into something difficult for people to deal with.  If
+# we have any errors during the tox job, we use this to print out a
+# help message.
+if (aclfile == '-help'):
+    print(NORMALIZATION_HELP)
+    sys.exit(1)
 
 try:
     transformations = sys.argv[2:]

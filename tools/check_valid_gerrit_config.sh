@@ -38,6 +38,10 @@ num_errors=$(cat config_failures | grep "is not normalized" | wc -l)
 if [ $num_errors -ne 0 ]; then
     echo -e; cat config_failures
     echo -e "There are $num_errors projects not normalized."
+    echo
+    echo -e "******************************************************"
+    $OLDPWD/tools/normalize_acl.py -help
+    echo -e "******************************************************"
     exit 1
 fi
 
