@@ -26,6 +26,12 @@ if [[ $# -lt 3 ]]; then
     exit 2
 fi
 
+function cleanup_and_exit {
+    cd ../..
+    rm -rf $MYTMPDIR
+    exit 0
+}
+
 TOOLSDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $TOOLSDIR/functions
 
@@ -43,11 +49,21 @@ setup_temp_space branch-$PROJECT-$branch_as_path_entry
 clone_repo $REPO
 cd $REPO
 
+# Skip branch creation in case bugfix-<version>-eol tag exists
+if $(git tag | grep ${NEW_BRANCH/\//-}-eol > /dev/null); then
+    echo "A ${NEW_BRANCH/\//-}-eol tag already exists !"
+    cleanup_and_exit
+fi
+
+# Skip branch creation in case <series>-eol tag exists
+if $(git tag | grep ${NEW_BRANCH#stable/}-eol >/dev/null); then
+    echo "A ${NEW_BRANCH#stable/}-eol tag already exists !"
+    cleanup_and_exit
+fi
+
 if $(git branch -r | grep $NEW_BRANCH > /dev/null); then
     echo "A $NEW_BRANCH branch already exists !"
-    cd ../..
-    rm -rf $MYTMPDIR
-    exit 0
+    cleanup_and_exit
 fi
 
 # NOTE(dhellmann): We wait to set up git-review until after we have
