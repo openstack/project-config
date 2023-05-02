@@ -16,7 +16,8 @@
 # Transformations are described in user-facing detail below
 #
 # Transformations:
-# all Apply all transformations.
+# all Report all transformations as a dry run.
+# apply Apply all transformations to the file directly.
 # 0 - dry run (default, print to stdout rather than modifying file in place)
 # 1 - strip/condense whitespace and sort (implied by any other transformation)
 # 2 - get rid of unneeded create on refs/tags
@@ -81,6 +82,8 @@ The current transformations
     	key2 = value
 '''  # noqa: W191, E101
 
+LAST_TRANSFORMATION = 9
+
 aclfile = sys.argv[1]
 
 # NOTE(ianw) : 2023-04-20 obviously we would not write any of this
@@ -94,8 +97,12 @@ if (aclfile == '-help'):
 
 try:
     transformations = sys.argv[2:]
-    if transformations and transformations[0] == 'all':
-        transformations = [str(x) for x in range(0, 10)]
+    if transformations:
+        RANGE_END = LAST_TRANSFORMATION + 1
+        if transformations[0] == 'all':
+            transformations = [str(x) for x in range(0, RANGE_END)]
+        elif transformations[0] == 'apply':
+            transformations = [str(x) for x in range(1, RANGE_END)]
 except KeyError:
     transformations = []
 
