@@ -31,8 +31,7 @@
 # 9 - Ensure submit requirements
 #      * functions only noblock
 #      * each label has a s-r block
-#
-# There is a final pass to use tab indents that always applies.
+# 10- Values should be indented with a hard tab, as that is the gerrit default
 #
 
 import re
@@ -82,7 +81,7 @@ The current transformations
     	key2 = value
 '''  # noqa: W191, E101
 
-LAST_TRANSFORMATION = 9
+LAST_TRANSFORMATION = 10
 
 aclfile = sys.argv[1]
 
@@ -346,10 +345,12 @@ for section in sorted(acl.keys()):
         lastoption = ''
         for option in sorted(acl[section], key=tokens):
             if option != lastoption:
-                # Gerrit prefers all option lines indented by a single
-                # hard tab; this minimises diffs if things like
-                # upgrades need to modify the acls
-                out += '\t%s\n' % option
+                if '10' in transformations:
+                    # Gerrit prefers all option lines indented by a single
+                    # hard tab; this minimises diffs if things like
+                    # upgrades need to modify the acls
+                    out += '\t'
+                out += '%s\n' % option
             lastoption = option
 
 if dry_run:
