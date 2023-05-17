@@ -23,11 +23,12 @@
         - event: comment-added
           comment: (?i)^(Patch Set [0-9]+:)?( [\w\\+-]*)*(\n\n)?\s*recheck
         - event: comment-added
-          require-approval:
-            - Verified: [-1, -2]
-              username: zuul
           approval:
             - Workflow: 1
+          require:
+            approval:
+              - Verified: [-1, -2]
+                username: zuul
       github:
         - event: pull_request
           action:
