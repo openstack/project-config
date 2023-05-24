@@ -39,11 +39,11 @@ if [[ $(${DOCKER} ps -f "name=grafana-opendev_test" --format '{{.Names}}') \
 fi
 
 echo "Pulling grafyaml"
-${DOCKER} pull quay.io/opendevorg/grafyaml
+${DOCKER} pull docker.io/opendevorg/grafyaml
 
 echo "Reloading dashboards"
 
 ${DOCKER} run --rm --network=host \
           -e 'GRAFANA_URL=http://admin:password@localhost:3000' \
           -v ${GRAFYAML_DIR}:/grafana:ro \
-          quay.io/opendevorg/grafyaml
+          docker.io/opendevorg/grafyaml
