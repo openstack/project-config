@@ -61,13 +61,13 @@ def find_modified_deliverable_files(reporoot):
 
 
 def tag_release(repo, series_name, version, diff_start, hash,
-                include_pypi_link, first_full_release, meta_data):
+                include_pypi_link, first_full_release, meta_data, branch_name):
     print('Tagging {} in {}'.format(version, repo))
     try:
         subprocess.check_call(
             [RELEASE_SCRIPT, repo, series_name, version,
              diff_start, hash, include_pypi_link,
-             first_full_release, meta_data]
+             first_full_release, meta_data, branch_name]
         )
     except subprocess.CalledProcessError:
         # The error output from the script will be printed to
@@ -104,6 +104,17 @@ def load_series_status(reporoot):
     with open(status_path) as f:
         series_status = yaml.safe_load(f)
     return series_status
+
+
+def get_branch(series_status, series_name):
+    branch = None
+    for series in series_status:
+        if series.get("status") == "development":
+            branch = "master"
+        elif series.get("name") == series_name:
+            # Grab the release-id; then fall back to the supplied name
+            branch = "stable/" + series.get("release-id", series_name)
+    return branch
 
 
 def process_release_requests(reporoot, filenames, meta_data):
@@ -146,6 +157,8 @@ def process_release_requests(reporoot, filenames, meta_data):
         series_name = os.path.basename(
             os.path.dirname(os.path.abspath(filename))
         ).lstrip('_')
+
+        branch_name = get_branch(series_status, series_name)
 
         # If the series is closed, do not process the file. We're
         # likely updating old data in the releases repo and we do not
@@ -204,7 +217,7 @@ def process_release_requests(reporoot, filenames, meta_data):
                 error_count += tag_release(
                     project['repo'], series_name, version,
                     diff_start, project['hash'], include_pypi_link,
-                    first_full_release, meta_data,
+                    first_full_release, meta_data, branch_name,
                 )
 
         # Create branches and adapt master

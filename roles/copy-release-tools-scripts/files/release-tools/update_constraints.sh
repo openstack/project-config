@@ -68,8 +68,8 @@ function get_tag_meta {
     echo "$TAG_META" | grep "^meta:$fieldname:" | cut -f2 -d' '
 }
 
-# Find the series information from the tag metadata in the comment.
-SERIES=$(get_tag_meta series)
+# Find the branch information from the tag metadata in the comment.
+BRANCH=$(get_tag_meta branch)
 
 # Pick up the repository name from the git URL.
 SHORTNAME=$(basename $(git config --local remote.origin.url))
@@ -105,7 +105,7 @@ else
     setup_temp_space update-constraints-$SHORTNAME
     # NOTE(dhellmann): clone_repo defaults to checking out master if
     # the named branch doesn't exist.
-    clone_repo openstack/requirements stable/$SERIES
+    clone_repo openstack/requirements $BRANCH
     cd openstack/requirements
     git checkout -b "$dist_name-$VERSION"
     # First try to update specific python_version entries
