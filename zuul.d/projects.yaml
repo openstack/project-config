@@ -2796,21 +2796,16 @@
 
 - project:
     name: openstack/networking-odl
-    # Disable temporarily to remove master branch
-    # templates:
-    #  - official-openstack-repo-jobs
-    #  - periodic-jobs-with-neutron-lib-master
-    #  - translation-jobs-master-only
-    #  - publish-to-pypi
-    periodic:
+    templates:
+     - official-openstack-repo-jobs
+    gate:
       jobs:
-        - openstack-tox-py39-with-neutron-lib-master:
-            required-projects:
-              - openstack/ceilometer
-              - openstack/neutron-fwaas
-              - x/networking-l2gw
-              - openstack/networking-sfc
-              - openstack/networking-bgpvpn
+        - noop:
+            branches: master
+    check:
+      jobs:
+        - noop:
+            branches: master
 
 - project:
     name: openstack/networking-ovn
