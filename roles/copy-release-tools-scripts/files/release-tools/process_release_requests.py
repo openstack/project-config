@@ -23,25 +23,7 @@ import subprocess
 import yaml
 
 
-# TODO(dhellmann): Instead of using a fixed list, look for the series
-# name -eol tag to determine that a series is closed.
-CLOSED_SERIES = set([
-    'austin',
-    'bexar',
-    'cactus',
-    'diablo',
-    'essex',
-    'folsom',
-    'grizzly',
-    'havana',
-    'icehouse',
-    'juno',
-    'kilo',
-    'liberty',
-    'mitaka',
-    'newton',
-])
-
+CLOSED_SERIES = set()
 PRE_RELEASE_RE = re.compile(r'''
     \.(\d+(?:[ab]|rc)+\d*)$
 ''', flags=re.VERBOSE | re.UNICODE)
@@ -117,6 +99,13 @@ def make_branch(repo, name, ref, nextbranchname=None):
     return 0
 
 
+def load_series_status(reporoot):
+    status_path = os.path.join(reporoot, "data", "series_status.yaml")
+    with open(status_path) as f:
+        series_status = yaml.safe_load(f)
+    return series_status
+
+
 def process_release_requests(reporoot, filenames, meta_data):
     """Return a sequence of tuples containing the new versions.
 
@@ -134,6 +123,11 @@ def process_release_requests(reporoot, filenames, meta_data):
         deliverable_files = find_modified_deliverable_files(
             reporoot
         )
+
+    series_status = load_series_status(reporoot)
+    for series in series_status:
+        if series.get("status") == "end of life":
+            CLOSED_SERIES.add(series.get("name"))
 
     error_count = 0
 
