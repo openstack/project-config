@@ -42,6 +42,7 @@ SHA=$5
 INCLUDE_PYPI=${6:-no}
 FIRST_FULL=${7:-no}
 EXTRA_METADATA="$8"
+BRANCH="${9:-master}"
 
 SHORTNAME=`basename $REPO`
 
@@ -77,6 +78,7 @@ else
 meta:version: $VERSION
 meta:diff-start: $DIFF_START
 meta:series: $SERIES
+meta:branch: $BRANCH
 meta:release-type: $RELEASETYPE
 meta:pypi: $INCLUDE_PYPI
 meta:first: $FIRST_FULL
