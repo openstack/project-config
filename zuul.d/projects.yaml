@@ -4556,39 +4556,69 @@
     periodic:
       jobs:
         - publish-wheel-cache-centos-7
-        - publish-wheel-cache-centos-8-stream
-        - publish-wheel-cache-centos-9-stream
-        - publish-wheel-cache-debian-bullseye
-        - publish-wheel-cache-debian-buster
-        - publish-wheel-cache-ubuntu-jammy
-        - publish-wheel-cache-ubuntu-focal
-        - publish-wheel-cache-ubuntu-bionic
-        - publish-wheel-cache-ubuntu-xenial
-        - publish-wheel-cache-centos-8-stream-arm64
-        - publish-wheel-cache-centos-9-stream-arm64
-        - publish-wheel-cache-debian-bullseye-arm64
-        - publish-wheel-cache-debian-buster-arm64
-        - publish-wheel-cache-ubuntu-jammy-arm64
-        - publish-wheel-cache-ubuntu-focal-arm64
-        - publish-wheel-cache-ubuntu-bionic-arm64
-        - release-wheel-cache:
+        - release-wheel-cache-centos-7:
             dependencies:
-              - publish-wheel-cache-centos-7
-              - publish-wheel-cache-centos-8-stream
-              - publish-wheel-cache-centos-9-stream
-              - publish-wheel-cache-debian-bullseye
-              - publish-wheel-cache-debian-buster
-              - publish-wheel-cache-ubuntu-jammy
-              - publish-wheel-cache-ubuntu-focal
-              - publish-wheel-cache-ubuntu-bionic
-              - publish-wheel-cache-ubuntu-xenial
-              - publish-wheel-cache-centos-8-stream-arm64
-              - publish-wheel-cache-centos-9-stream-arm64
-              - publish-wheel-cache-debian-bullseye-arm64
-              - publish-wheel-cache-debian-buster-arm64
-              - publish-wheel-cache-ubuntu-jammy-arm64
-              - publish-wheel-cache-ubuntu-focal-arm64
-              - publish-wheel-cache-ubuntu-bionic-arm64
+              - name: publish-wheel-cache-centos-7
+        - publish-wheel-cache-centos-8-stream
+        - release-wheel-cache-centos-8-stream:
+            dependencies:
+              - name: publish-wheel-cache-centos-8-stream
+        - publish-wheel-cache-centos-9-stream
+        - release-wheel-cache-centos-9-stream:
+            dependencies:
+              - name: publish-wheel-cache-centos-9-stream
+        - publish-wheel-cache-debian-bullseye
+        - release-wheel-cache-debian-bullseye:
+            dependencies:
+              - name: publish-wheel-cache-debian-bullseye
+        - publish-wheel-cache-debian-buster
+        - release-wheel-cache-debian-buster:
+            dependencies:
+              - name: publish-wheel-cache-debian-buster
+        - publish-wheel-cache-ubuntu-jammy
+        - release-wheel-cache-ubuntu-jammy:
+            dependencies:
+              - name: publish-wheel-cache-ubuntu-jammy
+        - publish-wheel-cache-ubuntu-focal
+        - release-wheel-cache-ubuntu-focal:
+            dependencies:
+              - name: publish-wheel-cache-ubuntu-focal
+        - publish-wheel-cache-ubuntu-bionic
+        - release-wheel-cache-ubuntu-bionic:
+            dependencies:
+              - name: publish-wheel-cache-ubuntu-bionic
+        - publish-wheel-cache-ubuntu-xenial
+        - release-wheel-cache-ubuntu-xenial:
+            dependencies:
+              - name: publish-wheel-cache-ubuntu-xenial
+        - publish-wheel-cache-centos-8-stream-arm64
+        - release-wheel-cache-centos-8-stream-arm64:
+            dependencies:
+              - name: publish-wheel-cache-centos-8-stream-arm64
+        - publish-wheel-cache-centos-9-stream-arm64
+        - release-wheel-cache-centos-9-stream-arm64:
+            dependencies:
+              - name: publish-wheel-cache-centos-9-stream-arm64
+        - publish-wheel-cache-debian-bullseye-arm64
+        - release-wheel-cache-debian-bullseye-arm64:
+            dependencies:
+              - name: publish-wheel-cache-debian-bullseye-arm64
+        - publish-wheel-cache-debian-buster-arm64
+        - release-wheel-cache-debian-buster-arm64:
+            dependencies:
+              - name: publish-wheel-cache-debian-buster-arm64
+        - publish-wheel-cache-ubuntu-jammy-arm64
+        - release-wheel-cache-ubuntu-jammy-arm64:
+            dependencies:
+              - name: publish-wheel-cache-ubuntu-jammy-arm64
+        - publish-wheel-cache-ubuntu-focal-arm64
+        - release-wheel-cache-ubuntu-focal-arm64:
+            dependencies:
+              - name: publish-wheel-cache-ubuntu-focal-arm64
+        - publish-wheel-cache-ubuntu-bionic-arm64
+        - release-wheel-cache-ubuntu-bionic-arm64:
+            dependencies:
+              - name: publish-wheel-cache-ubuntu-bionic-arm64
     periodic-weekly:
       jobs:
         - propose-updates:
