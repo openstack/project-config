@@ -113,7 +113,7 @@ def get_branch(series_status, series_name):
             branch = "master"
         elif series.get("name") == series_name:
             # Grab the release-id; then fall back to the supplied name
-            branch = "stable/" + series.get("release-id", series_name)
+            branch = "stable/" + str(series.get("release-id", series_name))
     return branch
 
 
