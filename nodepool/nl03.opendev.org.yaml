@@ -22,6 +22,7 @@ labels:
   - name: centos-7
   - name: centos-8-stream
   - name: centos-9-stream
+  - name: debian-bookworm
   - name: debian-bullseye
   - name: debian-buster
   - name: fedora-35
@@ -42,6 +43,8 @@ labels:
   - name: centos-9-stream-arm64
     min-ready: 0
   - name: rockylinux-9-arm64
+    min-ready: 0
+  - name: debian-bookworm-arm64
     min-ready: 0
   - name: debian-bullseye-arm64
     min-ready: 0
@@ -108,6 +111,8 @@ providers:
       - name: centos-8-stream
         config-drive: true
       - name: centos-9-stream
+        config-drive: true
+      - name: debian-bookworm
         config-drive: true
       - name: debian-bullseye
         config-drive: true
@@ -228,6 +233,13 @@ providers:
             boot-from-volume: true
             volume-size: 80
             diskimage: centos-9-stream
+            key-name: infra-root-keys-2020-05-13
+          - name: debian-bookworm
+            min-ram: 8000
+            flavor-name: v2-highcpu-8
+            boot-from-volume: true
+            volume-size: 80
+            diskimage: debian-bookworm
             key-name: infra-root-keys-2020-05-13
           - name: debian-bullseye
             min-ram: 8000
@@ -374,6 +386,8 @@ providers:
         config-drive: true
       - name: centos-8-stream-arm64
         config-drive: true
+      - name: debian-bookworm-arm64
+        config-drive: true
       - name: debian-bullseye-arm64
         config-drive: true
       - name: debian-buster-arm64
@@ -401,6 +415,10 @@ providers:
           - name: centos-8-stream-arm64
             flavor-name: 'opendev'
             diskimage: centos-8-stream-arm64
+            key-name: infra-root-keys-2020-05-13
+          - name: debian-bookworm-arm64
+            flavor-name: 'opendev'
+            diskimage: debian-bookworm-arm64
             key-name: infra-root-keys-2020-05-13
           - name: debian-bullseye-arm64
             flavor-name: 'opendev'
@@ -458,6 +476,8 @@ providers:
         config-drive: true
       - name: centos-8-stream-arm64
         config-drive: true
+      - name: debian-bookworm-arm64
+        config-drive: true
       - name: debian-bullseye-arm64
         config-drive: true
       - name: debian-buster-arm64
@@ -481,6 +501,10 @@ providers:
           - name: centos-8-stream-arm64
             flavor-name: 'opendev.large'
             diskimage: centos-8-stream-arm64
+            key-name: infra-root-keys-2020-05-13
+          - name: debian-bookworm-arm64
+            flavor-name: 'opendev.large'
+            diskimage: debian-bookworm-arm64
             key-name: infra-root-keys-2020-05-13
           - name: debian-bullseye-arm64
             flavor-name: 'opendev.large'
@@ -513,6 +537,8 @@ diskimages:
   - name: centos-9-stream
   - name: centos-8-stream-arm64
   - name: centos-9-stream-arm64
+  - name: debian-bookworm
+  - name: debian-bookworm-arm64
   - name: debian-bullseye
   - name: debian-bullseye-arm64
   - name: debian-buster
