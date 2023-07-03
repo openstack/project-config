@@ -12,8 +12,8 @@ case "$DIB_INIT_SYSTEM" in
         exit 0
         ;;
     systemd)
-        # stick with default systemd timesyncd on focal and beyond
-        if [[ ":focal: :jammy:" =~ :${DIB_RELEASE}: ]]; then
+        # stick with default systemd timesyncd on bookworm, focal and beyond
+        if [[ ":bookworm: :focal: :jammy:" =~ :${DIB_RELEASE}: ]]; then
             exit 0
         elif [[ $DISTRO_NAME = "ubuntu" || $DISTRO_NAME = "debian" ]]; then
             systemctl enable ntp.service
