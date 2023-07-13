@@ -134,39 +134,54 @@ def normalize_boolean_ops(key, value):
 acl = {}
 out = ''
 
-valid_keys = {'abandon',
-              'access',
-              'applicableIf',
-              'create',
-              'createSignedTag',
-              'copyCondition',
-              'defaultValue',
-              'delete',
-              'description',
-              'editHashtags',
-              'exclusiveGroupPermissions',
-              'forgeAuthor',
-              'forgeCommitter',
-              'function',
-              'inheritFrom',
-              'label-Allow-Post-Review',
-              'label-Backport-Candidate',
-              'label-Code-Review',
-              'label-PTL-Approved',
-              'label-Review-Priority',
-              'label-Rollcall-Vote',
-              'label-Workflow',
-              'label-Verified',
-              'mergeContent',
-              'push',
-              'pushMerge',
-              'requireChangeId',
-              'requireContributorAgreement',
-              'state',
-              'submit',
-              'submittableIf',
-              'toggleWipState',
-              'value'}
+valid_keys = {
+    'abandon',
+    'access',
+    'applicableIf',
+    'create',
+    'createSignedTag',
+    'copyCondition',
+    'defaultValue',
+    'delete',
+    'description',
+    'editHashtags',
+    'exclusiveGroupPermissions',
+    'forgeAuthor',
+    'forgeCommitter',
+    'function',
+    'inheritFrom',
+    'label-Allow-Post-Review',
+    'label-Backport-Candidate',
+    'label-Code-Review',
+    'label-PTL-Approved',
+    'label-Review-Priority',
+    'label-Rollcall-Vote',
+    'label-Workflow',
+    'label-Verified',
+    'mergeContent',
+    'push',
+    'pushMerge',
+    'requireChangeId',
+    'requireContributorAgreement',
+    'state',
+    'submit',
+    'submittableIf',
+    'toggleWipState',
+    'value',
+}
+
+# push and label-* are handled specially and should not be in this list
+group_keys = {
+    'abandon',
+    'create',
+    'createSignedTag',
+    'delete',
+    'editHashtags',
+    'forgeCommitter',
+    'pushMerge',
+    'submit',
+    'toggleWipState',
+}
 
 if '0' in transformations or not transformations:
     dry_run = True
@@ -189,10 +204,23 @@ for line in aclfd:
     elif '=' in line:
         acl[section].append(line)
         # Check for valid keys
-        key = line.split('=')[0].strip()
+        key, value = [x.strip() for x in line.split('=', 1)]
         if key not in valid_keys:
-            raise Exception('(%s) Unrecognized key "%s" in line: "%s"'
-                            % (aclfile, key, line))
+            raise Exception(
+                '(%s) Unrecognized key "%s" in line: "%s"'
+                % (aclfile, key, line))
+        # group keywords, special handling for label-* votes and push +force
+        values = [x.strip() for x in value.split(' ')]
+        if ((key in group_keys and len(values) < 2)
+                or (key.startswith("label-") and len(values) < 3)):
+            raise Exception(
+                '(%s) Not enough parameters in line: "%s"' % (aclfile, line))
+        if ((key in group_keys and values[0] != "group")
+                or (key.startswith("label-") and values[1] != "group")
+                or (key == "push" and "group" not in values)):
+            raise Exception(
+                '(%s) Missing "group" keyword in line: "%s"' % (aclfile, line))
+
     # WTF
     else:
         raise Exception('Unrecognized line: "%s"' % line)
