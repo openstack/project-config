@@ -695,28 +695,6 @@
         name: afs
 
 - job:
-    name: publish-install-guide
-    description: |
-      Publish install-guide document to
-      https://docs.openstack.org/project-install-guide/
-    pre-run: playbooks/sphinx/pre.yaml
-    run: playbooks/sphinx/run.yaml
-    post-run: playbooks/publish/install-guide.yaml
-    roles:
-      - zuul: zuul/zuul-jobs
-      - zuul: openstack/openstack-zuul-jobs
-    # This job runs only pre-pike, with pike the documents have been
-    # integrated into normal builds.
-    branches:
-      - stable/ocata
-    vars:
-      sphinx_build_dir: install-guide/build
-      sphinx_source_dir: install-guide/source
-    secrets:
-      - secret: afsdocs_secret
-        name: afs
-
-- job:
     name: promote-deploy-guide
     parent: opendev-promote-docs-base
     description: |
