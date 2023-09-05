@@ -120,17 +120,23 @@
         - noop:
             branches: master
         - openafs-deb-package-build:
-            branches: ^(?!master).*$
+            branches:
+              regex: ^master$
+              negate: true
     gate:
       jobs:
         - noop:
             branches: master
         - openafs-deb-package-build:
-            branches: ^(?!master).*$
+            branches:
+              regex: ^master$
+              negate: true
     promote:
       jobs:
         - openafs-deb-package-build-promote:
-            branches: ^(?!master).*$
+            branches:
+              regex: ^master$
+              negate: true
 
 - project:
     name: opendev/infra-specs
@@ -151,17 +157,23 @@
         - noop:
             branches: master
         - vhd-util-deb-package-build:
-            branches: ^(?!master).*$
+            branches:
+              regex: ^master$
+              negate: true
     gate:
       jobs:
         - noop:
             branches: master
         - vhd-util-deb-package-build:
-            branches: ^(?!master).*$
+            branches:
+              regex: ^master$
+              negate: true
     promote:
       jobs:
         - vhd-util-deb-package-build-promote:
-            branches: ^(?!master).*$
+            branches:
+              regex: ^master$
+              negate: true
 
 - project:
     name: opendev/irc-meetings
@@ -265,14 +277,20 @@
     post:
       jobs:
         - publish-infra-publications:
-            branches: ^(?!master).*$
+            branches:
+              regex: ^master$
+              negate: true
         - publish-infra-publications-index
     tag:
       jobs:
         - publish-infra-publications:
-            branches: ^(?!master).*$
+            branches:
+              regex: ^master$
+              negate: true
         - publish-infra-publications-index:
-            branches: ^(?!master).*$
+            branches:
+              regex: ^master$
+              negate: true
 
 - project:
     name: opendev/puppet-bup
