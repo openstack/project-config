@@ -84,6 +84,8 @@ labels:
     min-ready: 0
   - name: ubuntu-bionic-gpu
     min-ready: 0
+  - name: nested-virt-debian-bookworm
+    min-ready: 0
   - name: nested-virt-debian-bullseye
     min-ready: 0
   - name: nested-virt-ubuntu-bionic
@@ -142,6 +144,11 @@ providers:
       - name: main
         max-servers: 50
         labels:
+          - name: nested-virt-debian-bookworm
+            min-ram: 8000
+            flavor-name: 'v3-standard-8'
+            diskimage: debian-bookworm
+            key-name: infra-root-keys-2020-05-13
           - name: nested-virt-debian-bullseye
             min-ram: 8000
             flavor-name: 'v3-standard-8'
@@ -309,6 +316,13 @@ providers:
             boot-from-volume: true
             volume-size: 80
             diskimage: openEuler-22-03-LTS
+            key-name: infra-root-keys-2020-05-13
+          - name: nested-virt-debian-bookworm
+            min-ram: 8000
+            flavor-name: v2-highcpu-8
+            boot-from-volume: true
+            volume-size: 80
+            diskimage: debian-bookworm
             key-name: infra-root-keys-2020-05-13
           - name: nested-virt-debian-bullseye
             min-ram: 8000
