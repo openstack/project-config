@@ -180,6 +180,18 @@ def main():
             continue
         if args.verbose:
             print('Checking %s' % name)
+        if not re.match(r'[^/]+/[^/]+', name):
+            # name must have one and only one slash
+            found_errors += 1
+            print(
+                "ERROR: Project %s must have one and only one slash (/)"
+                % name)
+        if re.search(r'[^A-Za-z0-9./_-]', name):
+            # name can only consist of the characters A-Za-z0-9./_-
+            found_errors += 1
+            print(
+                "ERROR: Project %s has characters outside A-Za-z0-9./_-"
+                % name)
         description = p.get('description')
 
         # *very* simple check for common description mistakes
