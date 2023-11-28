@@ -11,9 +11,13 @@
 #  License for the specific language governing permissions and limitations
 #  under the License.
 
-# Usage: normalize_acl.py acl.config [transformation [transformation [...]]]
+# Usage: normalize_acl.py NAMESPACE acl.config [transform [transform [...]]]
 #
-# Transformations are described in user-facing detail below
+# The NAMESPACE specifies the OpenInfra project, e.g., 'openstack', and
+# conventionally corresponds to the directory name containing that project's
+# acl files.
+#
+# Transforms are described in user-facing detail below
 #
 # Transformations:
 # all Report all transformations as a dry run.
@@ -83,19 +87,39 @@ The current transformations
 
 LAST_TRANSFORMATION = 10
 
-aclfile = sys.argv[1]
+USAGE_STRING = ("Usage:\n  normalize_acl.py NAMESPACE acl.config [transform "
+                "[transform [...]]]\n  or 'normalize_acl.py -help' for info "
+                "on the available transforms")
+
+
+try:
+    namespace = sys.argv[1]
+except IndexError:
+    print('error: missing NAMESPACE or -help')
+    print(USAGE_STRING)
+    sys.exit(1)
 
 # NOTE(ianw) : 2023-04-20 obviously we would not write any of this
 # like this if we were starting fresh.  But this has grown from a
 # simple thing into something difficult for people to deal with.  If
 # we have any errors during the tox job, we use this to print out a
 # help message.
-if (aclfile == '-help'):
+if (namespace == '-help'):
     print(NORMALIZATION_HELP)
     sys.exit(1)
 
 try:
-    transformations = sys.argv[2:]
+    aclfile = sys.argv[2]
+except IndexError:
+    print('error: missing acl filespec')
+    print(USAGE_STRING)
+    sys.exit(1)
+
+# TODO(rosmaita): refactor this, there's nothing in the 'try'
+# that will raise a KeyError, and in any case, an out-of-range slice
+# reference already returns an empty list
+try:
+    transformations = sys.argv[3:]
     if transformations:
         RANGE_END = LAST_TRANSFORMATION + 1
         if transformations[0] == 'all':
@@ -306,6 +330,9 @@ if '8' in transformations:
                 if 'abandon' in exclusives:
                     newsection.append('abandon = group Change Owner')
                     newsection.append('abandon = group Project Bootstrappers')
+                    if (namespace == 'openstack'
+                        and 'refs/heads/unmaintained' in section):
+                        newsection.append('abandon = group Release Managers')
                 if 'label-Code-Review' in exclusives:
                     newsection.append('label-Code-Review = -2..+2 '
                                       'group Project Bootstrappers')

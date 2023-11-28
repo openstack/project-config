@@ -13,13 +13,16 @@ declare -i NUM_TESTS=0
 
 function check_team_acl {
     local configs_dir="$1"
+    local namespace
     local configs_list
 
-    echo "Checking" $(basename $configs_dir)
+    namespace="$(basename $configs_dir)"
+    echo "Checking $namespace"
     configs_list=$(find $configs_dir -name "*.config")
     for config in $configs_list; do
         let "NUM_TESTS+=1"
-        $OLDPWD/tools/normalize_acl.py $config all > $TMPDIR/normalized
+        $OLDPWD/tools/normalize_acl.py $namespace $config all \
+                                       > $TMPDIR/normalized
         if ! diff -u $config $TMPDIR/normalized >>config_failures;
         then
             echo "Project $config is not normalized!" >>config_failures
