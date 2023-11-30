@@ -115,19 +115,13 @@ except IndexError:
     print(USAGE_STRING)
     sys.exit(1)
 
-# TODO(rosmaita): refactor this, there's nothing in the 'try'
-# that will raise a KeyError, and in any case, an out-of-range slice
-# reference already returns an empty list
-try:
-    transformations = sys.argv[3:]
-    if transformations:
-        RANGE_END = LAST_TRANSFORMATION + 1
-        if transformations[0] == 'all':
-            transformations = [str(x) for x in range(0, RANGE_END)]
-        elif transformations[0] == 'apply':
-            transformations = [str(x) for x in range(1, RANGE_END)]
-except KeyError:
-    transformations = []
+transformations = sys.argv[3:]
+if transformations:
+    RANGE_END = LAST_TRANSFORMATION + 1
+    if transformations[0] == 'all':
+        transformations = [str(x) for x in range(0, RANGE_END)]
+    elif transformations[0] == 'apply':
+        transformations = [str(x) for x in range(1, RANGE_END)]
 
 
 def tokens(data):
