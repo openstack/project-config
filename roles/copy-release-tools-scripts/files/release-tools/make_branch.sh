@@ -97,3 +97,14 @@ if [[ $NEW_BRANCH =~ stable/ ]]; then
         echo "$REPO does not use reno, no update needed"
     fi
 fi
+
+if [[ $NEW_BRANCH =~ unmaintained/ ]]; then
+    series=$(echo $NEW_BRANCH | cut -f2 -d/)
+    if [[ -d releasenotes/source ]]; then
+        echo "Updating reno to use unmaintained/$series"
+        git checkout master
+        $TOOLSDIR/change_reno_branch_to_unmaintained.sh $series .
+    else
+        echo "$REPO does not use reno, no update needed"
+    fi
+fi
