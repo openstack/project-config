@@ -31,6 +31,11 @@ REPO=$2
 
 cd $REPO
 
+if [[ ! -f releasenotes/source/${SERIES}.rst ]]; then
+    echo "No releasenotes source defined for series ${SERIES}, nothing to update."
+    exit 0
+fi
+
 commit_msg="reno: Update master for unmaintained/${SERIES}
 
 Update the ${SERIES} release notes configuration to build from
