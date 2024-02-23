@@ -1000,48 +1000,6 @@
       wheel_volume: 'mirror.wheel.deb11a64'
 
 - job:
-    name: publish-wheel-cache-debian-buster
-    description: |
-      Publish Debian buster wheels for OpenStack CI mirrors.
-    parent: build-wheel-cache-debian-buster
-    pre-run: playbooks/openafs-client/setup.yaml
-    post-run: playbooks/publish/wheel-mirror.yaml
-    allowed-projects:
-      - openstack/requirements
-    final: true
-    secrets:
-      - name: afs
-        secret: wheel_keytab
-
-- job:
-    name: release-wheel-cache-debian-buster
-    parent: release-wheel-cache
-    final: true
-    vars:
-      wheel_volume: 'mirror.wheel.busterx64'
-
-- job:
-    name: publish-wheel-cache-debian-buster-arm64
-    description: |
-      Publish Debian buster wheels for OpenStack CI mirrors.
-    parent: build-wheel-cache-debian-buster-arm64
-    pre-run: playbooks/openafs-client/setup.yaml
-    post-run: playbooks/publish/wheel-mirror.yaml
-    allowed-projects:
-      - openstack/requirements
-    final: true
-    secrets:
-      - name: afs
-        secret: wheel_keytab
-
-- job:
-    name: release-wheel-cache-debian-buster-arm64
-    parent: release-wheel-cache
-    final: true
-    vars:
-      wheel_volume: 'mirror.wheel.bustera64'
-
-- job:
     name: publish-wheel-cache-ubuntu-jammy
     parent: build-wheel-cache-ubuntu-jammy
     description: |
