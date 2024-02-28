@@ -256,39 +256,6 @@ diskimages:
                       fsck-passno: 1
 
 
-  - name: debian-buster
-    parent: base-debuntu
-    pause: false
-    elements:
-      - debian-minimal
-      - cache-devstack
-    release: buster
-    env-vars:
-      DIB_DISTRIBUTION_MIRROR: 'https://mirror.dfw.rax.opendev.org/debian'
-      DIB_DEBIAN_SECURITY_MIRROR:
-        'https://mirror.dfw.rax.opendev.org/debian-security'
-      DIB_DEBIAN_SECURITY_SUBPATH: ''
-      DIB_BLOCK_DEVICE_CONFIG: |
-        # Default single partition loopback
-
-        - local_loop:
-            name: image0
-
-        - partitioning:
-            base: image0
-            label: mbr
-            partitions:
-              - name: root
-                flags: [ boot, primary ]
-                size: 100%
-                mkfs:
-                  mount:
-                    mount_point: /
-                    fstab:
-                      options: "defaults,nobarrier,noatime"
-                      fsck-passno: 1
-
-
   - name: debian-bullseye
     parent: base-debuntu
     pause: false
@@ -424,9 +391,6 @@ diskimages:
     elements: []
 
   - name: debian-bullseye-arm64
-    elements: []
-
-  - name: debian-buster-arm64
     elements: []
 
   - name: centos-8-stream-arm64
