@@ -55,9 +55,16 @@ if $(git tag | grep ${NEW_BRANCH/\//-}-eol > /dev/null); then
     cleanup_and_exit
 fi
 
-# Skip branch creation in case <series>-eol tag exists
-if $(git tag | grep ${NEW_BRANCH#stable/}-eol >/dev/null); then
-    echo "A ${NEW_BRANCH#stable/}-eol tag already exists !"
+# Skip stable/<series> or unmaintained/<series> branch creation in case
+# <series>-eol tag exists
+if $(git tag | grep ${NEW_BRANCH//@(stable\/|unmaintained\/)}-eol >/dev/null); then
+    echo "A ${NEW_BRANCH//@(stable\/|unmaintained\/)}-eol tag already exists !"
+    cleanup_and_exit
+fi
+
+# Skip stable/<series> branch creation in case <series>-eom tag exists
+if $(git tag | grep ${NEW_BRANCH#stable/}-eom >/dev/null); then
+    echo "A ${NEW_BRANCH#stable/}-eom tag already exists !"
     cleanup_and_exit
 fi
 
