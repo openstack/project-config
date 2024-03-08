@@ -853,27 +853,6 @@
         secret: afsadmin_keytab
 
 - job:
-    name: publish-wheel-cache-centos-7
-    description: |
-      Publish CentOS 7 wheels for OpenStack CI mirrors.
-    parent: build-wheel-cache-centos-7
-    pre-run: playbooks/openafs-client/setup.yaml
-    post-run: playbooks/publish/wheel-mirror.yaml
-    allowed-projects:
-      - openstack/requirements
-    final: true
-    secrets:
-      - name: afs
-        secret: wheel_keytab
-
-- job:
-    name: release-wheel-cache-centos-7
-    parent: release-wheel-cache
-    final: true
-    vars:
-      wheel_volume: 'mirror.wheel.cent7x64'
-
-- job:
     name: publish-wheel-cache-centos-8-stream
     description: |
       Publish CentOS Stream 8 wheels for OpenStack CI mirrors.
@@ -1285,16 +1264,6 @@
     files:
       - nodepool/elements/bindep-fallback.txt
       - playbooks/bindep-fallback/run.yaml
-
-- job:
-    name: project-config-bindep-fallback-centos-7
-    parent: project-config-bindep-fallback
-    description: |
-      Check installation of binary packages for file
-      nodepool/elements/bindep-fallback.txt.
-
-      The testing is done for CentOS 7.
-    nodeset: centos-7
 
 - job:
     name: project-config-bindep-fallback-ubuntu-xenial
