@@ -15,8 +15,6 @@ zookeeper-servers:
 # nl01.o.o will manage min-ready of our labels.  If nl01.o.o is ever disabled,
 # another launcher will need to assume this logic.
 labels:
-  - name: centos-7
-    min-ready: 0
   - name: centos-8-stream
     min-ready: 1
   - name: centos-9-stream
@@ -51,8 +49,6 @@ providers:
     launch-timeout: 600
     rate: 0.001
     diskimages: &provider_diskimages
-      - name: centos-7
-        config-drive: true
       - name: centos-8-stream
         config-drive: true
       - name: centos-9-stream
@@ -81,11 +77,6 @@ providers:
       - name: main
         max-servers: 140
         labels: &provider_pools_labels
-          - name: centos-7
-            min-ram: 8192
-            flavor-name: 'Performance'
-            diskimage: centos-7
-            key-name: infra-root-keys-2020-05-13
           - name: centos-8-stream
             min-ram: 8192
             flavor-name: 'Performance'
