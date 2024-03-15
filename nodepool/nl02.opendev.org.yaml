@@ -15,7 +15,6 @@ zookeeper-servers:
 # nl01.o.o will manage min-ready of our labels.  If nl01.o.o is ever disabled,
 # another launcher will need to assume this logic.
 labels:
-  - name: centos-7
   - name: centos-8-stream
   - name: centos-9-stream
   - name: debian-bookworm
@@ -28,8 +27,6 @@ labels:
   - name: ubuntu-jammy
   - name: ubuntu-xenial
   - name: openEuler-22-03-LTS
-  - name: centos-7-expanded
-    min-ready: 0
   - name: ubuntu-bionic-expanded
     min-ready: 0
   - name: ubuntu-bionic-32GB
@@ -37,10 +34,6 @@ labels:
   - name: multi-numa-ubuntu-bionic
     min-ready: 0
   - name: multi-numa-ubuntu-bionic-expanded
-    min-ready: 0
-  - name: multi-numa-centos-7
-    min-ready: 0
-  - name: multi-numa-centos-7-expanded
     min-ready: 0
   - name: nested-virt-debian-bookworm
     min-ready: 0
@@ -51,8 +44,6 @@ labels:
   - name: nested-virt-ubuntu-focal
     min-ready: 0
   - name: nested-virt-ubuntu-jammy
-    min-ready: 0
-  - name: nested-virt-centos-7
     min-ready: 0
   - name: nested-virt-centos-8-stream
     min-ready: 0
@@ -69,8 +60,6 @@ providers:
     launch-timeout: 300
     rate: 0.01
     diskimages: &provider_diskimages
-      - name: centos-7
-        config-drive: true
       - name: centos-8-stream
         config-drive: true
       - name: centos-9-stream
@@ -99,11 +88,6 @@ providers:
       - name: main
         max-servers: 51
         labels:
-          - name: centos-7
-            min-ram: 8000
-            flavor-name: 'opendev-zuul'
-            diskimage: centos-7
-            key-name: infra-root-keys-2020-05-13
           - name: centos-8-stream
             min-ram: 8000
             flavor-name: 'opendev-zuul'
