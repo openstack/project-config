@@ -23,7 +23,7 @@ set -o pipefail
 
 # NOTE(frickler): Our images builds always install the newest updates,
 # so we need this in order to avoid conflicts
-if [ ${DIB_RELEASE} = jammy ]; then
+if [[ ":jammy: :noble:" =~ :${DIB_RELEASE}: ]]; then
     if [ -d "$TARGET_ROOT/etc/apt/apt.conf.d" ]; then
         echo "APT::Get::Always-Include-Phased-Updates \"true\";" | sudo tee $TARGET_ROOT/etc/apt/apt.conf.d/95phased-updates
     fi
