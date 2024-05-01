@@ -83,11 +83,11 @@ def check_release_jobs():
     return errors
 
 
-def blacklist_jobs():
+def denylist_jobs():
     """Check that certain jobs and templates are *not* used."""
 
     # Currently only handles templates
-    blacklist_templates = [
+    denylist_templates = [
         'system-required'
     ]
 
@@ -103,7 +103,7 @@ def blacklist_jobs():
         if name.startswith("^(airship|"):
             continue
         found = [tmpl for tmpl in project.get('templates', [])
-                 if tmpl in blacklist_templates]
+                 if tmpl in denylist_templates]
         if found:
             errors = True
             print("  ERROR: Found obsolete template for %s:" % name)
@@ -193,7 +193,7 @@ def check_only_boilerplate():
 def check_all():
 
     errors = check_projects_sorted()
-    errors = blacklist_jobs() or errors
+    errors = denylist_jobs() or errors
     errors = check_release_jobs() or errors
     errors = check_voting() or errors
     errors = check_only_boilerplate() or errors

@@ -4,7 +4,7 @@
 WHEELHOUSE_DIR=$1
 MIRROR_ROOT=$2
 
-# Pre-filter any blacklisted package name patterns
+# Pre-filter any denylisted package name patterns
 find "$WHEELHOUSE_DIR/" '(' \
     -name "pip-*-none-any.whl" -o \
     -name "setuptools-*-none-any.whl" -o \
