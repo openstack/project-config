@@ -39,7 +39,7 @@ export DISTRO=${DISTRO:-ubuntu-minimal}
 # export ARCH=arm64
 
 export ELEMENTS_PATH=${ELEMENTS_PATH:-nodepool/elements}
-export IMAGE_NAME=${IMAGE_NAME:-devstack-gate}
+export IMAGE_NAME=${IMAGE_NAME:-opendev-ci-image}
 export NODEPOOL_SCRIPTDIR=${NODEPOOL_SCRIPTDIR:-nodepool/scripts}
 export EXTRA_ELEMENTS=${EXTRA_ELEMENTS:-}
 
