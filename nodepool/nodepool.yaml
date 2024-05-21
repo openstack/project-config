@@ -39,6 +39,8 @@ providers:
         config-drive: true
       - name: ubuntu-jammy
         config-drive: true
+      - name: ubuntu-noble
+        config-drive: true
       - name: ubuntu-xenial
         config-drive: true
       - name: openEuler-22-03-LTS
@@ -86,6 +88,8 @@ providers:
       - name: ubuntu-focal
         config-drive: true
       - name: ubuntu-jammy
+        config-drive: true
+      - name: ubuntu-noble
         config-drive: true
       - name: ubuntu-xenial
         config-drive: true
@@ -345,6 +349,18 @@ diskimages:
       # [1] https://bugs.launchpad.net/ubuntu/+source/linux/+bug/1973839
       DIB_BOOTLOADER_DEFAULT_CMDLINE: 'nofb nomodeset gfxpayload=text spec_store_bypass_disable=prctl'
 
+  - name: ubuntu-noble
+    parent: base-debuntu
+    pause: false
+    elements:
+      - ubuntu-minimal
+      - cache-devstack
+    release: noble
+    rebuild-age: 86400  # 1 days
+    env-vars:
+      DIB_DISTRIBUTION_MIRROR: 'https://mirror.dfw.rax.opendev.org/ubuntu'
+      DIB_DEBIAN_COMPONENTS: 'main,universe'
+
   - name: ubuntu-xenial
     parent: base-debuntu
     pause: false
@@ -377,6 +393,9 @@ diskimages:
     elements: []
 
   - name: ubuntu-jammy-arm64
+    elements: []
+
+  - name: ubuntu-noble-arm64
     elements: []
 
   - name: debian-bullseye-arm64

@@ -43,6 +43,14 @@ providers:
           os_command_line: "console=ttyAMA0"
           hw_disk_bus: scsi
           hw_scsi_model: virtio-scsi
+      - name: ubuntu-noble-arm64
+        pause: false
+        config-drive: true
+        meta:
+          hw_firmware_type: uefi
+          os_command_line: "console=ttyAMA0"
+          hw_disk_bus: scsi
+          hw_scsi_model: virtio-scsi
       - name: debian-bookworm-arm64
         pause: false
         config-drive: true
@@ -176,6 +184,9 @@ diskimages:
   - name: ubuntu-jammy
     elements: []
 
+  - name: ubuntu-noble
+    elements: []
+
   - name: ubuntu-xenial
     elements: []
 
@@ -209,6 +220,16 @@ diskimages:
     elements:
       - ubuntu-minimal
     release: jammy
+    rebuild-age: 172800  # 2 days
+    env-vars:
+      DIB_DISTRIBUTION_MIRROR: 'https://mirror.regionone.linaro.opendev.org/ubuntu-ports'
+      DIB_DEBIAN_COMPONENTS: 'main,universe'
+
+  - name: ubuntu-noble-arm64
+    parent: base-debuntu
+    elements:
+      - ubuntu-minimal
+    release: noble
     rebuild-age: 172800  # 2 days
     env-vars:
       DIB_DISTRIBUTION_MIRROR: 'https://mirror.regionone.linaro.opendev.org/ubuntu-ports'
