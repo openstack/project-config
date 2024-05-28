@@ -1,8 +1,8 @@
-Using diskimage-builder to build devstack-gate nodes
+Using diskimage-builder to build opendev-ci nodes
 ====================================================
 
 In addition to being able to just download and consume images that are the
-same as what run devstack-gate, it's easy to make your own for local dev or
+same as what run devstack, it's easy to make your own for local dev or
 testing - or just for fun.
 
 Install diskimage-builder
@@ -54,7 +54,7 @@ a loopback device using qemu-nbd.
   sudo apt-get install qemu-utils
   sudo modprobe nbd max_part=16
   sudo mkdir -p /tmp/newimage
-  sudo qemu-nbd -c /dev/nbd1 /path/to/devstack-gate-precise.qcow2
+  sudo qemu-nbd -c /dev/nbd1 /path/to/opendev-ci-node-precise.qcow2
   sudo mount /dev/nbd1p1 /tmp/newimage
 
 or use the scripts
@@ -63,7 +63,7 @@ or use the scripts
 
   sudo apt-get install qemu-utils
   sudo modprobe nbd max_part=16
-  sudo tools/mount-image.sh devstack-gate-precise.qcow2
+  sudo tools/mount-image.sh opendev-ci-node-precise.qcow2
   sudo tools/umount-image.sh
 
 Other things
