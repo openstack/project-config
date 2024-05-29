@@ -49,3 +49,12 @@ if [ -d /opt/cache/files ] ; then
     # but make sure the cache is readable by everyone
     chmod -R a+rX /opt/cache/files/*
 fi
+
+# New versions of git don't let you clone repos as a different user
+# than the user owning the repo by default for security reasons.
+# As above we cache git repos during extra-data.d in /opt/git/ and they
+# end up owned by root. Chown them to zuul here to avoid permissions
+# issues with the most likely user to interact with the git cache( zuul).
+if [ -d /opt/git ] ; then
+    chown -R zuul:zuul /opt/git
+fi
