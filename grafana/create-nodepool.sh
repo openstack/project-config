@@ -24,4 +24,3 @@ create Linaro 'linaro-*' nodepool-linaro.yaml
 create OVH 'ovh-*' nodepool-ovh.yaml
 create Vexxhost 'vexxhost-*' nodepool-vexxhost.yaml
 create OSUOSL 'osuosl-*' nodepool-osuosl.yaml
-create InMotion 'inmotion-*' nodepool-inmotion.yaml
