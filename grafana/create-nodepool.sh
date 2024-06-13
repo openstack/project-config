@@ -24,3 +24,4 @@ create Linaro 'linaro-*' nodepool-linaro.yaml
 create OVH 'ovh-*' nodepool-ovh.yaml
 create Vexxhost 'vexxhost-*' nodepool-vexxhost.yaml
 create OSUOSL 'osuosl-*' nodepool-osuosl.yaml
+create OpenMetal 'openmetal-*' nodepool-openmetal.yaml
