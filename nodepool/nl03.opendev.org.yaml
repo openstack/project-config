@@ -19,7 +19,6 @@ zookeeper-servers:
 # e.g. *-arm64
 labels:
   # x86_64
-  - name: centos-8-stream
   - name: centos-9-stream
   - name: debian-bookworm
   - name: debian-bullseye
@@ -34,8 +33,6 @@ labels:
   - name: ubuntu-noble
 
   # arm64
-  - name: centos-8-stream-arm64
-    min-ready: 0
   - name: centos-9-stream-arm64
     min-ready: 0
   - name: rockylinux-9-arm64
@@ -96,8 +93,6 @@ labels:
     min-ready: 0
   - name: nested-virt-ubuntu-noble
     min-ready: 0
-  - name: nested-virt-centos-8-stream
-    min-ready: 0
   - name: nested-virt-centos-9-stream
     min-ready: 0
   - name: nested-virt-rockylinux-9
@@ -112,8 +107,6 @@ providers:
     boot-timeout: 120
     rate: 0.001
     diskimages: &provider_diskimages
-      - name: centos-8-stream
-        config-drive: true
       - name: centos-9-stream
         config-drive: true
       - name: debian-bookworm
@@ -225,13 +218,6 @@ providers:
       - name: main
         max-servers: 0
         labels:
-          - name: centos-8-stream
-            min-ram: 8000
-            flavor-name: v2-highcpu-8
-            boot-from-volume: true
-            volume-size: 80
-            diskimage: centos-8-stream
-            key-name: infra-root-keys-2024-04-08
           - name: centos-9-stream
             min-ram: 8000
             flavor-name: v2-highcpu-8
@@ -344,13 +330,6 @@ providers:
             volume-size: 80
             diskimage: ubuntu-noble
             key-name: infra-root-keys-2024-04-08
-          - name: nested-virt-centos-8-stream
-            min-ram: 8000
-            flavor-name: v2-highcpu-8
-            boot-from-volume: true
-            volume-size: 80
-            diskimage: centos-8-stream
-            key-name: infra-root-keys-2024-04-08
           - name: nested-virt-centos-9-stream
             min-ram: 8000
             flavor-name: v2-highcpu-8
@@ -377,8 +356,6 @@ providers:
     diskimages:
       - name: centos-9-stream-arm64
         config-drive: true
-      - name: centos-8-stream-arm64
-        config-drive: true
       - name: debian-bookworm-arm64
         config-drive: true
       - name: debian-bullseye-arm64
@@ -400,10 +377,6 @@ providers:
           - name: centos-9-stream-arm64
             flavor-name: 'opendev.large'
             diskimage: centos-9-stream-arm64
-            key-name: infra-root-keys-2024-04-08
-          - name: centos-8-stream-arm64
-            flavor-name: 'opendev.large'
-            diskimage: centos-8-stream-arm64
             key-name: infra-root-keys-2024-04-08
           - name: debian-bookworm-arm64
             flavor-name: 'opendev.large'

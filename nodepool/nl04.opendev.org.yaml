@@ -15,7 +15,6 @@ zookeeper-servers:
 # nl01.o.o will manage min-ready of our labels.  If nl01.o.o is ever disabled,
 # another launcher will need to assume this logic.
 labels:
-  - name: centos-8-stream
   - name: centos-9-stream
   - name: debian-bookworm
   - name: debian-bullseye
@@ -40,8 +39,6 @@ labels:
     min-ready: 0
   - name: nested-virt-ubuntu-noble
     min-ready: 0
-  - name: nested-virt-centos-8-stream
-    min-ready: 0
   - name: nested-virt-centos-9-stream
     min-ready: 0
   - name: nested-virt-rockylinux-9
@@ -57,8 +54,6 @@ providers:
     launch-timeout: 600
     rate: 0.1
     diskimages: &provider_diskimages
-      - name: centos-8-stream
-        config-drive: true
       - name: centos-9-stream
         config-drive: true
       - name: debian-bookworm
@@ -87,11 +82,6 @@ providers:
       - name: main
         max-servers: 120
         labels: &provider_pools_labels
-          - name: centos-8-stream
-            min-ram: 8000
-            flavor-name: ssd-osFoundation-3
-            diskimage: centos-8-stream
-            key-name: infra-root-keys-2024-04-08
           - name: centos-9-stream
             min-ram: 8000
             flavor-name: ssd-osFoundation-3
@@ -181,11 +171,6 @@ providers:
             min-ram: 8000
             flavor-name: ssd-osFoundation-3
             diskimage: ubuntu-noble
-            key-name: infra-root-keys-2024-04-08
-          - name: nested-virt-centos-8-stream
-            min-ram: 8000
-            flavor-name: ssd-osFoundation-3
-            diskimage: centos-8-stream
             key-name: infra-root-keys-2024-04-08
           - name: nested-virt-centos-9-stream
             min-ram: 8000
