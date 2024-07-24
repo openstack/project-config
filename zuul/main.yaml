@@ -99,8 +99,9 @@
       gerrit:
         config-projects:
           - openstack/project-config
-          # Only use jobs and secrets from this repo, we do not want
-          # the project definition.
+          # Include the minimal amount of configuration from this repo. In
+          # particular we don't want to include the project defs which cause
+          # jobs to run for this repo in this tenant.
           - opendev/base-jobs:
               shadow: openstack/project-config
               include:
@@ -1528,8 +1529,9 @@
       gerrit:
         config-projects:
           - zuul/project-config
-          # Only use jobs and secrets from this repo, we do not want
-          # the project definition.
+          # Include the minimal amount of configuration from this repo. In
+          # particular we don't want to include the project defs which cause
+          # jobs to run for this repo in this tenant.
           - opendev/base-jobs:
               include:
                 - job
@@ -1604,8 +1606,9 @@
       gerrit:
         config-projects:
           - pyca/project-config
-          # Only use jobs and secrets from this repo, we do not want
-          # the project definition.
+          # Include the minimal amount of configuration from this repo. In
+          # particular we don't want to include the project defs which cause
+          # jobs to run for this repo in this tenant.
           - opendev/base-jobs:
               include:
                 - job
@@ -1631,8 +1634,9 @@
       gerrit:
         config-projects:
           - pypa/project-config
-          # Only use jobs and secrets from this repo, we do not want
-          # the project definition.
+          # Include the minimal amount of configuration from this repo. In
+          # particular we don't want to include the project defs which cause
+          # jobs to run for this repo in this tenant.
           - opendev/base-jobs:
               include:
                 - job
@@ -1652,7 +1656,14 @@
     source:
       gerrit:
         config-projects:
-          - opendev/base-jobs
+          # Include the minimal amount of configuration from this repo. In
+          # particular we don't want to include the project defs which cause
+          # jobs to run for this repo in this tenant.
+          - opendev/base-jobs:
+              include:
+                - job
+                - secret
+                - nodeset
           - volvocars/project-config
         untrusted-projects:
           - zuul/zuul-jobs
