@@ -20,7 +20,6 @@ function create {
 }
 
 create Rackspace 'rax-*' nodepool-rax.yaml
-create Linaro 'linaro-*' nodepool-linaro.yaml
 create OVH 'ovh-*' nodepool-ovh.yaml
 create Vexxhost 'vexxhost-*' nodepool-vexxhost.yaml
 create OSUOSL 'osuosl-*' nodepool-osuosl.yaml
