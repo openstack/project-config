@@ -71,12 +71,12 @@ function get_tag_meta {
 # Find the branch information from the tag metadata in the comment.
 BRANCH=$(get_tag_meta branch)
 
-# Pick up the repository name from the git URL.
-SHORTNAME=$(basename $(git config --local remote.origin.url))
+# Pick up the repository name from the current directory.
+SHORTNAME=$(basename $(pwd))
 
 # Extract python_version information from the package metadata.
 declare -a PYTHON_3_VERSIONS
-PYTHON_3_VERSIONS=`sed -n -e 's/^.*Programming.Language.*:://p' < setup.cfg  | grep "3..$"`
+PYTHON_3_VERSIONS=`sed -n -e 's/^.*Programming.Language.*:://p' < setup.cfg  | grep "3...\?$"`
 
 # Apply the PEP 503 rules to turn the dist name into a canonical form,
 # in case that's the version that appears in upper-constraints.txt. We
@@ -113,12 +113,6 @@ else
         sed -e "s/^${dist_name}=.*;python_version=='$PYTHON_VERSION'/$dist_name===$VERSION;python_version=='$PYTHON_VERSION'/" --in-place upper-constraints.txt
         sed -e "s/^${canonical_name}=.*;python_version=='$PYTHON_VERSION'/$canonical_name===$VERSION;python_version=='$PYTHON_VERSION'/" --in-place upper-constraints.txt
     done
-    # Most projects don't declare Python 3.8 support yet, so update if the
-    # package declares Python 3.6 support. This follows the logic that
-    # generate-constraints does
-    if [[ $PYTHON_3_VERSIONS =~ '3.6' ]] ; then
-        sed -e "s/^${dist_name}=.*;python_version=='3.8'/$dist_name===$VERSION;python_version=='3.8'/" --in-place upper-constraints.txt
-    fi
     # Then only update lines that do not have specific python_versions
     # specified.
     sed -e "s/^${dist_name}=.*[0-9]$/$dist_name===$VERSION/" --in-place upper-constraints.txt

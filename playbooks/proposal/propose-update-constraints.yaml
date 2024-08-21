@@ -1,5 +1,9 @@
 - hosts: all
   tasks:
+    - name: Pause in order to allow pypi to catch up
+      ansible.builtin.pause:
+        minutes: 10
+        prompt: Pausing for 10 minutes in order to allow pypi to catch up
 
     - name: Propose constraints update
       command: "{{ ansible_user_dir }}/scripts/release-tools/update_constraints.sh {{ zuul.tag }}"
