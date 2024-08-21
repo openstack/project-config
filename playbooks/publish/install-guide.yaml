@@ -1,4 +1,5 @@
-- hosts: all
+- name: Fetch Sphinx Output
+  hosts: all
   roles:
     - role: prepare-docs-for-afs
       when: zuul_success | bool
@@ -7,7 +8,8 @@
       zuul_executor_dest: "{{ zuul.executor.work_root }}/artifacts"
       when: zuul_success | bool
 
-- hosts: localhost
+- name: Publish Sphinx Output to AFS
+  hosts: localhost
   roles:
     - role: set-service-type-data-fact
       when: zuul_success | bool

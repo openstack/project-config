@@ -1,4 +1,5 @@
-- hosts: all
+- name: Fetch Puppet Module
+  hosts: all
   roles:
     - fetch-puppet-module-output
 
@@ -10,6 +11,7 @@
       args:
         chdir: "{{ zuul.project.src_dir }}/pkg"
 
-- hosts: localhost
+- name: Sign Artifacts
+  hosts: localhost
   roles:
     - sign-artifacts

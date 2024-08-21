@@ -13,7 +13,7 @@
         path: "{{ zuul_logserver_root }}/{{ zuul_log_path }}"
         state: directory
         recurse: yes
-        mode: 0775
+        mode: '0775'
 
     # Use chmod instead of file because ansible 2.5 file with recurse and
     # follow can't really handle symlinks to .
@@ -25,7 +25,7 @@
         - skip_ansible_lint
 
     - name: Upload logs to log server
-      synchronize:
+      ansible.posix.synchronize:
         src: "{{ zuul.executor.log_root }}/"
         dest: "{{ zuul_logserver_root }}/{{ zuul_log_path }}/"
         rsync_opts:
@@ -34,16 +34,16 @@
       no_log: "{{ not zuul_log_verbose }}"
 
     # After this point there are no more logs
-    - name: gzip console log and json output
+    - name: Gzip console log and json output
       delegate_to: localhost
-      archive:
+      community.general.archive:
         path: "{{ zuul.executor.log_root }}/{{ item }}"
       with_items:
         - job-output.txt
         - job-output.json
 
     - name: Upload console log and json output
-      synchronize:
+      ansible.posix.synchronize:
         src: "{{ zuul.executor.log_root }}/{{ item }}.gz"
         dest: "{{ zuul_logserver_root }}/{{ zuul_log_path }}/{{ item }}.gz"
         verify_host: true

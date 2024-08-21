@@ -1,4 +1,5 @@
-- hosts: all
+- name: Process Stackviz Artifacts
+  hosts: all
   tasks:
 
     - name: Rename tarball and move it to a subdir named dist as well
@@ -19,7 +20,7 @@
       delegate_to: localhost
 
     - name: Collect artifacts
-      synchronize:
+      ansible.posix.synchronize:
         dest: "{{ zuul.executor.work_root }}/artifacts/"
         mode: pull
         src: "{{ zuul.project.src_dir }}/dist/"

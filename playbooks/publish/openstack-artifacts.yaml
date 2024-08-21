@@ -1,6 +1,8 @@
-- hosts: localhost
+- name: Publish Artifacts to AFS
+  hosts: localhost
   tasks:
     - name: Upload to AFS
+      when: zuul_success | bool
       block:
         - name: Create AFS token
           include_role:
@@ -14,4 +16,3 @@
         - name: Destroy AFS token
           include_role:
             name: destroy-afs-token
-      when: zuul_success | bool
