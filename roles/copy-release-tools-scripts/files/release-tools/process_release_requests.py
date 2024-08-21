@@ -168,7 +168,7 @@ def process_release_requests(reporoot, filenames, meta_data):
             continue
 
         with open(filename, 'r', encoding='utf-8') as f:
-            deliverable_data = yaml.load(f.read())
+            deliverable_data = yaml.safe_load(f.read())
 
         deliverable_releases = deliverable_data.get('releases', [])
 
