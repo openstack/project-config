@@ -91,7 +91,7 @@ def get_sha256(filename):
     with open(filename, "rb") as f:
         for b in iter(lambda: f.read(4096), b''):
             sha256.update(b)
-    return(sha256.hexdigest())
+    return sha256.hexdigest()
 
 
 def create_index(path, files):

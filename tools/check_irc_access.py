@@ -142,7 +142,13 @@ def main():
                      for x in range(16))
     port = int(args.port)
     if port == 6697:
-        factory = irc.connection.Factory(wrapper=ssl.wrap_socket)
+        context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+        # Set to false as the irc connection factory doesn't pass the
+        # server hostname into the wrapper which is required for hostname
+        # checking. Since this is just for testing risk is low.
+        context.check_hostname = False
+        context.verify_mode = ssl.CERT_NONE
+        factory = irc.connection.Factory(wrapper=context.wrap_socket)
         a.connect(args.server, int(args.port), mynick,
                   connect_factory=factory)
     else:
