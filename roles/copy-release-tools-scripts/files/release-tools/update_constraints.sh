@@ -96,8 +96,13 @@ function pep503 {
 # we first ask for the name without saving the output and then we
 # ask for it again and save the output to get a clean
 # version. This is why we can't have nice things.
+# NOTE(elod.illes): 'python3 setup.py --name' with the recent pbr started
+# to print '[pbr] Generating ChangeLog [..]' to stdout, which causes in
+# the below lines to gather wrong 'dist_name'. The workaround is to add
+# 'tail -1'. This should be removed when there is a better way to get
+# dist_name.
 python3 setup.py --name
-dist_name=$(python3 setup.py --name)
+dist_name=$(python3 setup.py --name| tail -1)
 canonical_name=$(pep503 $dist_name)
 if [[ -z "$dist_name" ]]; then
     echo "Could not determine the name of the constraint to update"
