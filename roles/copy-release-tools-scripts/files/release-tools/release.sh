@@ -24,12 +24,12 @@ TOOLSDIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $TOOLSDIR/functions
 
 function usage {
-    echo "Usage: release.sh [-a] repository series version diff_start SHA include_pypi first-full-release extra-metadata"
+    echo "Usage: release.sh [-a] repository series version team diff_start SHA include_pypi first-full-release extra-metadata"
     echo
-    echo "Example: release.sh openstack/oslo.rootwrap mitaka 3.0.3 '' gerrit/master yes no 'meta:release:Workflow+1: Doug Hellmann <doug@doughellmann.com>'"
+    echo "Example: release.sh openstack/oslo.rootwrap mitaka 3.0.3 oslo '' gerrit/master yes no oslo 'meta:release:Workflow+1: Doug Hellmann <doug@doughellmann.com>'"
 }
 
-if [ $# -lt 5 ]; then
+if [ $# -lt 6 ]; then
     usage
     exit 2
 fi
@@ -37,12 +37,13 @@ fi
 REPO=$1
 SERIES=$2
 VERSION=$3
-DIFF_START=$4
-SHA=$5
-INCLUDE_PYPI=${6:-no}
-FIRST_FULL=${7:-no}
-EXTRA_METADATA="$8"
-BRANCH="${9:-master}"
+TEAM=$4
+DIFF_START=$5
+SHA=$6
+INCLUDE_PYPI=${7:-no}
+FIRST_FULL=${8:-no}
+EXTRA_METADATA="$9"
+BRANCH="${10:-master}"
 
 SHORTNAME=`basename $REPO`
 
@@ -76,6 +77,7 @@ else
     TAGMSG="$SHORTNAME $VERSION $RELEASETYPE
 
 meta:version: $VERSION
+meta:team: $TEAM
 meta:diff-start: $DIFF_START
 meta:series: $SERIES
 meta:branch: $BRANCH
