@@ -1,4 +1,5 @@
-- hosts: all
+- name: Collect Artifacts
+  hosts: all
 
   post_tasks:
     - name: Find tarballs and wheels in dist folder.
@@ -20,13 +21,14 @@
       delegate_to: localhost
 
     - name: Collect tarball artifacts.
-      synchronize:
+      ansible.posix.synchronize:
         dest: "{{ zuul.executor.work_root }}/artifacts/"
         mode: pull
         src: "{{ item.path }}"
         verify_host: true
       with_items: "{{ result.files }}"
 
-- hosts: localhost
+- name: Sign Artifacts
+  hosts: localhost
   roles:
     - sign-artifacts
