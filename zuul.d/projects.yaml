@@ -507,18 +507,8 @@
 
 - project:
     name: openinfra/groups
-    check:
-      jobs:
-        - legacy-groups-unittests
-    gate:
-      jobs:
-        - legacy-groups-unittests
-    post:
-      jobs:
-        - legacy-groups-release-branch
-    release:
-      jobs:
-        - legacy-groups-release-master
+    templates:
+      - noop-jobs
 
 - project:
     name: openinfra/groups-static-pages
@@ -4860,16 +4850,7 @@
 - project:
     name: x/almanach
     templates:
-      - openstack-python-jobs
-      - check-requirements
-      - build-openstack-docs-pti
-      - publish-to-pypi
-    check:
-      jobs:
-        - legacy-tempest-almanach-dsvm
-    gate:
-      jobs:
-        - legacy-tempest-almanach-dsvm
+      - noop-jobs
 
 - project:
     name: x/ansible-role-bindep
@@ -5114,20 +5095,8 @@
 
 - project:
     name: x/devstack-plugin-hdfs
-    check:
-      jobs:
-        - openstack-tox-bashate
-        - legacy-tempest-dsvm-full-hdfs:
-            irrelevant-files:
-              - ^(test-|)requirements.txt$
-              - ^setup.cfg$
-    gate:
-      jobs:
-        - openstack-tox-bashate
-        - legacy-tempest-dsvm-full-hdfs:
-            irrelevant-files:
-              - ^(test-|)requirements.txt$
-              - ^setup.cfg$
+    templates:
+      - noop-jobs
 
 - project:
     name: x/devstack-plugin-libvirt-qemu
@@ -5418,20 +5387,12 @@
 - project:
     name: x/kingbird
     templates:
-      - openstack-python-jobs
-      - check-requirements
-      - publish-to-pypi
-    check:
-      jobs:
-        - legacy-kingbird-dsvm-multiregion:
-            voting: false
+      - noop-jobs
 
 - project:
     name: x/kingbird-dashboard
     templates:
-      - openstack-python-jobs
-      - check-requirements
-      - publish-to-pypi
+      - noop-jobs
 
 - project:
     name: x/kloudbuster
@@ -5755,31 +5716,8 @@
 
 - project:
     name: x/nova-lxd
-    check:
-      jobs:
-        - noop:
-            branches: master
-        - legacy-tempest-dsvm-lxd-ovs:
-            irrelevant-files:
-              - ^(test-|)requirements.txt$
-              - ^setup.cfg$
-            branches: ^stable/.*$
-    gate:
-      jobs:
-        - noop:
-            branches: master
-        - legacy-tempest-dsvm-lxd-ovs:
-            irrelevant-files:
-              - ^(test-|)requirements.txt$
-              - ^setup.cfg$
-            branches: ^stable/.*$
-    experimental:
-      jobs:
-        - legacy-tempest-dsvm-lxd-linuxbridge:
-            irrelevant-files:
-              - ^(test-|)requirements.txt$
-              - ^setup.cfg$
-            branches: ^stable/.*$
+    templates:
+      - noop-jobs
 
 - project:
     name: x/nova-mksproxy
@@ -5825,12 +5763,8 @@
 
 - project:
     name: x/omni
-    check:
-      jobs:
-        - legacy-omni-tests
-    gate:
-      jobs:
-        - legacy-omni-tests
+    templates:
+      - noop-jobs
 
 - project:
     name: x/ooi
@@ -6226,12 +6160,7 @@
 - project:
     name: x/scalpels
     templates:
-      - openstack-python-jobs
-      - check-requirements
-      - publish-to-pypi
-    experimental:
-      jobs:
-        - legacy-scalpels-dsvm-neutron
+      - noop-jobs
 
 - project:
     name: x/shovel
