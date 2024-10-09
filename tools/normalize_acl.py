@@ -299,6 +299,7 @@ if '7' in transformations:
         'milestone',
         'packagers',
         'release',
+        'reviewers',
         'Users',
     )
     for section in acl.keys():
