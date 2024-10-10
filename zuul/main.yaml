@@ -1425,12 +1425,15 @@
     source:
       gerrit:
         config-projects:
-          # We don't want to load the project to report on those repos
-          - exclude: [project]
-            projects:
-              - opendev/base-jobs
-              - opendev/project-config
-          - vexxhost/base-jobs
+          # Include the minimal amount of configuration from this repo. In
+          # particular we don't want to include the project defs which cause
+          # jobs to run for this repo in this tenant.
+          - opendev/base-jobs:
+              include:
+                - job
+                - secret
+                - nodeset
+          - vexxhost/project-config
         untrusted-projects:
           - zuul/zuul-jobs
           - vexxhost/ansible-collection-atmosphere
