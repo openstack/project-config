@@ -41,11 +41,12 @@ Example:
 
 ::
 
-  ./release.sh openstack/oslo.rootwrap mitaka 3.0.3 gerrit/master
+  ./release.sh openstack/oslo.rootwrap mitaka 3.0.3 oslo gerrit/master
 
 Apply a 3.0.3 tag (associated to the mitaka series) to the gerrit master
-HEAD of the openstack/oslo.rootwrap reporitory, and add a comment for each
-closed bug mentioned in commit messages since the previous mitaka tag (3.0.2).
+HEAD of the openstack/oslo.rootwrap repository, add a comment for each closed
+bug mentioned in commit messages since the previous mitaka tag (3.0.2), and
+associate it with the deliverable's team.
 
 branch_from_yaml.sh
 ===================

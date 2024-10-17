@@ -60,12 +60,12 @@ def find_modified_deliverable_files(reporoot):
     return filenames
 
 
-def tag_release(repo, series_name, version, diff_start, hash,
+def tag_release(repo, series_name, version, team, diff_start, hash,
                 include_pypi_link, first_full_release, meta_data, branch_name):
     print('Tagging {} in {}'.format(version, repo))
     try:
         subprocess.check_call(
-            [RELEASE_SCRIPT, repo, series_name, version,
+            [RELEASE_SCRIPT, repo, series_name, version, team,
              diff_start, hash, include_pypi_link,
              first_full_release, meta_data, branch_name]
         )
@@ -196,6 +196,7 @@ def process_release_requests(reporoot, filenames, meta_data):
         include_pypi_link = 'yes' if include_pypi_link else 'no'
 
         if deliverable_releases:
+            team = deliverable_data['team']
             all_versions = {
                 rel['version']: rel for rel in deliverable_data['releases']
             }
@@ -215,7 +216,7 @@ def process_release_requests(reporoot, filenames, meta_data):
             # Tag releases.
             for project in this_version['projects']:
                 error_count += tag_release(
-                    project['repo'], series_name, version,
+                    project['repo'], series_name, version, team,
                     diff_start, project['hash'], include_pypi_link,
                     first_full_release, meta_data, branch_name,
                 )
