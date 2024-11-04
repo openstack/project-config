@@ -636,8 +636,8 @@
 - job:
     name: promote-openstack-manuals-developer
     description: |
-      Promote content fron build-openstack-manuals job and
-      publishes it on developer.openstack.org website.
+      Promote content from the build-openstack-manuals job and
+      publish it on the developer.openstack.org website.
     parent: opendev-promote-docs-base
     final: true
     allowed-projects:
@@ -645,7 +645,10 @@
     vars:
       write_root_marker: false
       download_artifact_job: build-tox-manuals-publishdocs
+      # A parent job playbook expects this to be defined
+      publish_site: "developer.openstack.org"
     secrets:
+      # This also overrides the target AFS path inferred from publish_site
       - secret: afsdeveloper_secret-openstack-manuals
         name: afs
         pass-to-parent: true
