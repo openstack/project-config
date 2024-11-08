@@ -1168,6 +1168,37 @@
       - openstack/horizon
       - name: openstack/requirements
         override-checkout: stable/2024.2
+    branches: master
+    # Zanata-cli needs Java 8 and will fail with newer Java, Bionic has Java 8
+    # This was tested with Zanata up to version 4.6.2 (current release in March 2019).
+    nodeset: ubuntu-bionic
+    secrets:
+      - zanata_api_credentials
+      - secret: afs_tarballs_opendev_org
+        name: afs
+
+- job:
+    name: upstream-translation-update
+    parent: propose-updates
+    description: |
+      Push strings for translation to translation server.
+    roles:
+      - zuul: openstack/openstack-zuul-jobs
+    pre-run: playbooks/translation/pre.yaml
+    run: playbooks/translation/upstream-translation-update.yaml
+    post-run:
+      - playbooks/translation/post.yaml
+      - playbooks/translation/openstack-translation-artifacts.yaml
+    semaphores: translations
+    protected: true
+    vars:
+      constraints_file: '{{ ansible_user_dir }}/src/opendev.org/openstack/requirements/upper-constraints.txt'
+    required-projects:
+      - openstack/horizon
+      - openstack/requirements
+    branches:
+      regex: ^master$
+      negate: true
     # Zanata-cli needs Java 8 and will fail with newer Java, Bionic has Java 8
     # This was tested with Zanata up to version 4.6.2 (current release in March 2019).
     nodeset: ubuntu-bionic
@@ -1195,6 +1226,34 @@
       - openstack/horizon
       - name: openstack/requirements
         override-checkout: stable/2024.2
+    branches: master
+    # Zanata-cli needs Java 8 and will fail with newer Java, Bionic has Java 8.
+    # This was tested with Zanata up to version 4.6.2 (current release in March 2019).
+    nodeset: ubuntu-bionic
+    secrets:
+      - zanata_api_credentials
+
+- job:
+    name: propose-translation-update
+    parent: propose-updates
+    description: |
+      Import translations from translation server to projects as
+      proposed change.
+    roles:
+      - zuul: openstack/openstack-zuul-jobs
+    pre-run: playbooks/translation/pre.yaml
+    run: playbooks/translation/propose-translation-update.yaml
+    post-run: playbooks/translation/post.yaml
+    vars:
+      constraints_file: '{{ ansible_user_dir }}/src/opendev.org/openstack/requirements/upper-constraints.txt'
+    semaphores: translations
+    protected: true
+    required-projects:
+      - openstack/horizon
+      - openstack/requirements
+    branches:
+      regex: ^master$
+      negate: true
     # Zanata-cli needs Java 8 and will fail with newer Java, Bionic has Java 8.
     # This was tested with Zanata up to version 4.6.2 (current release in March 2019).
     nodeset: ubuntu-bionic
