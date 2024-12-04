@@ -49,6 +49,44 @@
 
 - job:
     name: test-release-openstack
+    nodeset: ubuntu-noble
+    parent: base
+    description: |
+      Test building python tarballs / wheels and the packaging metadata.
+    pre-run: playbooks/pti-python-tarball/pre.yaml
+    run: playbooks/pti-python-tarball/check.yaml
+    vars:
+      release_python: python3
+    files:
+      - setup.cfg
+      - setup.py
+      - README.rst
+    branches:
+      regex: ^*/(victoria|wallaby|xena|yoga|zed|2023.1|2023.2|2024.1|2024.2)$
+      negate: true
+
+- job:
+    name: test-release-openstack
+    nodeset: ubuntu-jammy
+    parent: base
+    description: |
+      Test building python tarballs / wheels and the packaging metadata.
+    pre-run: playbooks/pti-python-tarball/pre.yaml
+    run: playbooks/pti-python-tarball/check.yaml
+    vars:
+      release_python: python3
+    files:
+      - setup.cfg
+      - setup.py
+      - README.rst
+    branches:
+      - ^.*/2023.1
+      - ^.*/2023.2
+      - ^.*/2024.1
+      - ^.*/2024.2
+
+- job:
+    name: test-release-openstack
     nodeset: ubuntu-focal
     parent: base
     description: |
@@ -61,6 +99,12 @@
       - setup.cfg
       - setup.py
       - README.rst
+    branches:
+      - ^.*/victoria
+      - ^.*/wallaby
+      - ^.*/xena
+      - ^.*/yoga
+      - ^.*/zed
 
 - job:
     name: publish-openstack-python-tarball
