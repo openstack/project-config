@@ -481,25 +481,43 @@
     name: opendev/zone-gating.dev
     deploy:
       jobs:
+        # This job configures the bridge node with the correct
+        # git repo state for system-config and project-config and then
+        # pauses while holding a lock to ensure exclusivity for the
+        # buildset.
+        - infra-prod-bootstrap-bridge
         - infra-prod-service-nameserver:
             files: zones/.*
-            dependencies: []
+            dependencies:
+              - name: infra-prod-bootstrap-bridge
 
 - project:
     name: opendev/zone-opendev.org
     deploy:
       jobs:
+        # This job configures the bridge node with the correct
+        # git repo state for system-config and project-config and then
+        # pauses while holding a lock to ensure exclusivity for the
+        # buildset.
+        - infra-prod-bootstrap-bridge
         - infra-prod-service-nameserver:
             files: zones/.*
-            dependencies: []
+            dependencies:
+              - name: infra-prod-bootstrap-bridge
 
 - project:
     name: opendev/zone-zuul-ci.org
     deploy:
       jobs:
+        # This job configures the bridge node with the correct
+        # git repo state for system-config and project-config and then
+        # pauses while holding a lock to ensure exclusivity for the
+        # buildset.
+        - infra-prod-bootstrap-bridge
         - infra-prod-service-nameserver:
             files: zones/.*
-            dependencies: []
+            dependencies:
+              - name: infra-prod-bootstrap-bridge
 
 - project:
     name: openinfra/groups
@@ -3527,30 +3545,41 @@
             files: *infra-docs-index
         - promote-openstack-specs-site:
             files: *specs-site
+        # This job configures the bridge node with the correct
+        # git repo state for system-config and project-config and then
+        # pauses while holding a lock to ensure exclusivity for the
+        # buildset.
+        - infra-prod-bootstrap-bridge
         - infra-prod-manage-projects:
-            dependencies: []
+            dependencies:
+              - name: infra-prod-bootstrap-bridge
             files:
               - gerrit/.*
         - infra-prod-service-nodepool:
-            dependencies: []
+            dependencies:
+              - name: infra-prod-bootstrap-bridge
             files:
               - nodepool/.*
         - infra-prod-service-zuul:
             dependencies:
+              - name: infra-prod-bootstrap-bridge
               - name: infra-prod-manage-projects
                 soft: true
             files:
               - zuul/main.yaml
         - infra-prod-run-accessbot:
-            dependencies: []
+            dependencies:
+              - name: infra-prod-bootstrap-bridge
             files:
               - accessbot/channels.yaml
         - infra-prod-service-eavesdrop:
-            dependencies: []
+            dependencies:
+              - name: infra-prod-bootstrap-bridge
             files:
               - gerritbot/channels.yaml
         - infra-prod-service-grafana:
-            dependencies: []
+            dependencies:
+              - name: infra-prod-bootstrap-bridge
             files: *project-config-grafana-files
     periodic:
       jobs:
