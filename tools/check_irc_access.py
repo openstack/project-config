@@ -16,6 +16,7 @@
 # limitations under the License.
 
 import argparse
+import functools
 import irc.client
 import logging
 import random
@@ -142,13 +143,12 @@ def main():
                      for x in range(16))
     port = int(args.port)
     if port == 6697:
-        context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
-        # Set to false as the irc connection factory doesn't pass the
-        # server hostname into the wrapper which is required for hostname
-        # checking. Since this is just for testing risk is low.
-        context.check_hostname = False
-        context.verify_mode = ssl.CERT_NONE
-        factory = irc.connection.Factory(wrapper=context.wrap_socket)
+        # Taken from the example in the Factory class docstring at
+        # https://github.com/jaraco/irc/blob/main/irc/connection.py
+        context = ssl.create_default_context()
+        wrapper = functools.partial(
+            context.wrap_socket, server_hostname=args.server)
+        factory = irc.connection.Factory(wrapper=wrapper)
         a.connect(args.server, int(args.port), mynick,
                   connect_factory=factory)
     else:
