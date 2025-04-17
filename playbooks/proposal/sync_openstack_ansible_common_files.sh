@@ -14,24 +14,24 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 
-# Copy common files from the openstack-ansible-tests repository
+# Copy common files from the openstack-ansible repository
 set -eu
 
 OSA_PROJECT=${1}
 
 # Careful of what you put here.
-declare -ra files_to_sync=(run_tests.sh bindep.txt Vagrantfile tests/tests-repo-clone.sh .gitignore sync/doc/* sync/tasks/*)
+declare -ra files_to_sync=(run_tests.sh bindep.txt Vagrantfile .gitignore sync/doc/* sync/tasks/*)
 
 excluded_projects=
 exclude_project() {
     excluded_projects+="$1 "
 }
 
-# Always exclude openstack-ansible-tests repository. This is not
-# necessary because OSA_PROJECT should never be "openstack-ansible-tests"
+# Always exclude openstack-ansible repository. This is not
+# necessary because OSA_PROJECT should never be "openstack-ansible"
 # but it can serve as an example for users who may add more
 # projects in the future.
-exclude_project "openstack-ansible-tests"
+exclude_project "openstack-ansible"
 
 check_and_ignore() {
     for z in $(echo ${excluded_projects} | tr ' ' '\n'); do

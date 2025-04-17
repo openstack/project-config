@@ -54,10 +54,10 @@ elif [ "$OWN_PROJECT" == "puppet-openstack-constraints" ] ; then
     function update {
         bash /home/zuul/scripts/generate_puppetfile.sh
     }
-elif [ "$OWN_PROJECT" == "openstack-ansible-tests" ] ; then
-    INITIAL_COMMIT_MSG="Updated from OpenStack Ansible Tests"
-    TOPIC="openstack/openstack-ansible-tests/sync-tests"
-    PROJECTS=$(./gen-projects-list.sh)
+elif [ "$OWN_PROJECT" == "openstack-ansible-sync" ] ; then
+    INITIAL_COMMIT_MSG="Updated from OpenStack Ansible Integrated repository"
+    TOPIC="openstack/openstack-ansible-sync/sync-files"
+    PROJECTS=$(./sync/gen-projects-list.sh)
     function update {
         bash /home/zuul/scripts/sync_openstack_ansible_common_files.sh $1
     }
