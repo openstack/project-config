@@ -126,6 +126,8 @@ else
 
 $TAG_META
 "; then
+        echo "Sleeping 10 minutes to avoid issues with the pypi cache"
+        sleep 600
         git show
         git review -t 'new-release'
     else
