@@ -1,0 +1,91 @@
+#
+# NOTE: EDIT THE TEMPLATE FILE AND RUN create-nodepool.sh
+#
+
+dashboard:
+  title: 'Zuul Launcher: Rackspace'
+  templating:
+    - name: region
+      includeAll: true
+      multi: true
+      query: "stats.gauges.zuul.provider.opendev_org2Fopendev2Fzuul-providers-rax-*-main"
+      regex: "/.*?zuul-providers-(rax-.*?)-main/"
+      refresh: 1
+      type: query
+  rows:
+    - title: Description
+      height: 150px
+      panels:
+        - title: Description
+          content: |
+            Rackspace Zuul-Launcher Status
+            ===============================
+
+            This dashboard monitors the status of Zuul Launcher in Rackspace.
+
+            **This dashboard is managed by [Grafyaml](https://docs.openstack.org/infra/system-config/grafyaml.html).**
+            If you would like to make changes to this dashboard, please see the template in the `grafana` directory in
+            [project-config](https://opendev.org/openstack/project-config/src/branch/master/grafana/zuul-launcher.template).
+          type: text
+
+    - title: Nodes
+      showTitle: true
+      height: 150px
+      panels:
+        - title: Building
+          span: 3
+          sparkline:
+            full: true
+            show: true
+          targets:
+            - target: sumSeries(stats.gauges.zuul.provider.opendev_org2Fopendev2Fzuul-providers-$region-main.nodes.state.building)
+          type: singlestat
+          valueName: current
+        - title: Ready
+          span: 3
+          sparkline:
+            full: true
+            show: true
+          targets:
+            - target: sumSeries(stats.gauges.zuul.provider.opendev_org2Fopendev2Fzuul-providers-$region-main.nodes.state.ready)
+          type: singlestat
+          valueName: current
+        - title: In Use
+          span: 3
+          sparkline:
+            full: true
+            show: true
+          targets:
+            - target: sumSeries(stats.gauges.zuul.provider.opendev_org2Fopendev2Fzuul-providers-$region-main.nodes.state.in-use)
+          type: singlestat
+          valueName: current
+        - title: Deleting
+          span: 3
+          sparkline:
+            full: true
+            show: true
+          targets:
+              - target: sumSeries(stats.gauges.zuul.provider.opendev_org2Fopendev2Fzuul-providers-$region-main.nodes.state.deleting)
+          type: singlestat
+          valueName: current
+
+    - title: Test Nodes
+      height: 400px
+      panels:
+        - title: Test Node History - $region
+          type: graph
+          span: 12
+          stack: true
+          repeat: region
+          minSpan: 4
+          tooltip:
+            value_type: individual
+          yaxes:
+            - label: "nodes"
+            - show: false
+          targets:
+            - target: alias(sumSeries(stats.gauges.zuul.provider.opendev_org2Fopendev2Fzuul-providers-$region-main.nodes.state.building), 'Building')
+            - target: alias(sumSeries(stats.gauges.zuul.provider.opendev_org2Fopendev2Fzuul-providers-$region-main.nodes.state.ready), 'Ready')
+            - target: alias(sumSeries(stats.gauges.zuul.provider.opendev_org2Fopendev2Fzuul-providers-$region-main.nodes.state.in-use), 'In Use')
+            - target: alias(sumSeries(stats.gauges.zuul.provider.opendev_org2Fopendev2Fzuul-providers-$region-main.nodes.state.used), 'Used')
+            - target: alias(sumSeries(stats.gauges.zuul.provider.opendev_org2Fopendev2Fzuul-providers-$region-main.nodes.state.deleting), 'Deleting')
