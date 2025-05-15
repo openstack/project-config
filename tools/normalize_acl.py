@@ -179,6 +179,7 @@ valid_keys = {
     'mergeContent',
     'push',
     'pushMerge',
+    'removeLabel-Review-Priority',
     'requireChangeId',
     'requireContributorAgreement',
     'state',
