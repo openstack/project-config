@@ -181,6 +181,7 @@ valid_keys = {
     'pushMerge',
     'requireChangeId',
     'requireContributorAgreement',
+    'requireSignedOffBy',
     'state',
     'submit',
     'submittableIf',
