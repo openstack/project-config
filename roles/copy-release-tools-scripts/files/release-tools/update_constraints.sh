@@ -125,7 +125,7 @@ else
     if git commit -a -m "update constraint for $dist_name to new release $VERSION
 
 $TAG_META
-"; then
+" -s; then
         echo "Sleeping 10 minutes to avoid issues with the pypi cache"
         sleep 600
         git show
