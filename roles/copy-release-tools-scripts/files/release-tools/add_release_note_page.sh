@@ -69,6 +69,7 @@ spaces=$(grep unreleased releasenotes/source/index.rst | sed -e 's/\w//g')
 sed --in-place -e "/unreleased/s/unreleased/unreleased\n${spaces}${SERIES}/" releasenotes/source/index.rst
 git add releasenotes/source/index.rst releasenotes/source/${SERIES}.rst
 git diff
-git commit -m "$commit_msg" -s
+git commit -m "$commit_msg" -s \
+    --trailer="Generated-By:openstack/project-config:roles/copy-release-tools-scripts/files/release-tools/add_release_note_page.sh"
 git show
 git review -t "reno-${SERIES}" --yes

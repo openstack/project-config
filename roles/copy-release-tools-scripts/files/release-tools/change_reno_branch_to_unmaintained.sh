@@ -45,6 +45,7 @@ unmaintained/${SERIES}.
 sed --in-place -e "s/stable\/${SERIES}/unmaintained\/${SERIES}/" releasenotes/source/${SERIES}.rst
 git add releasenotes/source/${SERIES}.rst
 git diff
-git commit -m "$commit_msg" -s
+git commit -m "$commit_msg" -s \
+    --trailer="Generated-By:openstack/project-config:roles/copy-release-tools-scripts/files/release-tools/change_reno_branch_to_unmaintained.sh"
 git show
 git review -t "reno-eom-${SERIES}" --yes
