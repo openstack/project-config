@@ -160,15 +160,20 @@ def process_release_requests(reporoot, filenames, meta_data):
 
         branch_name = get_branch(series_status, series_name)
 
+        with open(filename, 'r', encoding='utf-8') as f:
+            deliverable_data = yaml.safe_load(f.read())
+
+        trailing = deliverable_data.get('type') == 'trailing'
+        closed_series = series_name in CLOSED_SERIES
+
         # If the series is closed, do not process the file. We're
         # likely updating old data in the releases repo and we do not
         # want to reprocess any old branches or tags.
-        if series_name in CLOSED_SERIES:
+        # Exception is if the project is cycle-trailing typed, in that
+        # case late final stable release and EOL tagging is allowed.
+        if closed_series and not trailing:
             print('  {} skipping closed series'.format(filename))
             continue
-
-        with open(filename, 'r', encoding='utf-8') as f:
-            deliverable_data = yaml.safe_load(f.read())
 
         deliverable_releases = deliverable_data.get('releases', [])
 
@@ -220,6 +225,12 @@ def process_release_requests(reporoot, filenames, meta_data):
                     diff_start, project['hash'], include_pypi_link,
                     first_full_release, meta_data, branch_name,
                 )
+
+        # If the series is closed, do not process the branch
+        # section to avoid already deleted branch re-creation.
+        if closed_series:
+            print('  {} skipping closed series'.format(filename))
+            continue
 
         # Create branches and adapt master
         for branch in deliverable_data.get('branches', []):
