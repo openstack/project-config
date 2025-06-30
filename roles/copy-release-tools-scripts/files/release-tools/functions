@@ -66,7 +66,7 @@ function update_gitreview {
 defaultbranch=$branch"
     echo "$grcontents" > .gitreview
     git add .gitreview
-    git commit -m "Update .gitreview for $branch"
+    git commit -m "Update .gitreview for $branch" -s
     git show
     local shortbranch=$(basename $branch)
     git review -t "create-${shortbranch}" --yes
@@ -110,7 +110,7 @@ the requirements repository branches.
 
 Until the requirements repository has as $branch branch, tests will
 continue to use the upper-constraints list on master."
-        git commit -m "$msg" -m "$body"
+        git commit -m "$msg" -m "$body" -s
         git show
         local shortbranch=$(basename $branch)
         git review -t "create-${shortbranch}" --yes

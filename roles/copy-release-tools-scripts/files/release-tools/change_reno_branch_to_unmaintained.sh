@@ -45,6 +45,6 @@ unmaintained/${SERIES}.
 sed --in-place -e "s/stable\/${SERIES}/unmaintained\/${SERIES}/" releasenotes/source/${SERIES}.rst
 git add releasenotes/source/${SERIES}.rst
 git diff
-git commit -m "$commit_msg"
+git commit -m "$commit_msg" -s
 git show
 git review -t "reno-eom-${SERIES}" --yes
