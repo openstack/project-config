@@ -27,19 +27,24 @@ create OSUOSL 'osuosl-*' nodepool-osuosl.yaml
 create OpenMetal 'openmetal-*' nodepool-openmetal.yaml
 
 function create_zuul {
-    local provider="$1"
-    local stat_list="$2"
-    local output_file="$3"
+    local template="$1"
+    local provider="$2"
+    local stat_list="$3"
+    local output_file="$4"
 
     sed -e "s/%PROVIDER%/${provider}/; " \
         -e "s/%STAT_LIST%/${stat_list}/" \
-        -e "s/%OUTPUT_FILE%/${output_file}/" \
-        zuul-launcher.template > ${output_file}
+        -e "s/%TEMPLATE%/${template}/" \
+        ${template} > ${output_file}
 }
 
-create_zuul Rackspace 'rax' zuul-launcher-rax.yaml
-create_zuul Rackspace-Flex 'raxflex' zuul-launcher-raxflex.yaml
-create_zuul OVH 'ovh' zuul-launcher-ovh.yaml
-create_zuul Vexxhost 'vexxhost' zuul-launcher-vexxhost.yaml
-create_zuul OSUOSL 'osuosl' zuul-launcher-osuosl.yaml
-create_zuul OpenMetal 'openmetal' zuul-launcher-openmetal.yaml
+# Templates vary depending on which resource limits are included:
+# zuul-launcher-ram-ir.template : instances, ram
+# zuul-launcher-ram-icr.template : instances, cores, ram
+
+create_zuul zuul-launcher-ir.template Rackspace 'rax' zuul-launcher-rax.json
+create_zuul zuul-launcher-ir.template Rackspace-Flex 'raxflex' zuul-launcher-raxflex.json
+create_zuul zuul-launcher-icr.template OVH 'ovh' zuul-launcher-ovh.json
+create_zuul zuul-launcher-icr.template Vexxhost 'vexxhost' zuul-launcher-vexxhost.json
+create_zuul zuul-launcher-icr.template OSUOSL 'osuosl' zuul-launcher-osuosl.json
+create_zuul zuul-launcher-icr.template OpenMetal 'openmetal' zuul-launcher-openmetal.json
