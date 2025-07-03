@@ -176,7 +176,7 @@ for PROJECT in $PROJECTS; do
         pushd $PROJECT_DIR
         if ! git diff --stat --exit-code HEAD ; then
             # Commit and review
-            git_args="-a -F- -s"
+            git_args="-a -F- -s --trailer='Generated-By:openstack/project-config:playbooks/proposal/propose_update.sh'"
             git commit $git_args <<EOF
 $COMMIT_MSG
 EOF

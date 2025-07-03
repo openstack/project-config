@@ -125,7 +125,8 @@ else
     if git commit -a -m "update constraint for $dist_name to new release $VERSION
 
 $TAG_META
-" -s; then
+" -s --trailer="Generated-By:openstack/project-config:roles/copy-release-tools-scripts/files/release-tools/update_constraints.sh"
+    then
         echo "Sleeping 10 minutes to avoid issues with the pypi cache"
         sleep 600
         git show
