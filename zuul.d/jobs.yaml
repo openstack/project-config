@@ -79,57 +79,6 @@
       release_python: python3
 
 - job:
-    name: publish-openstack-sphinx-docs-base
-    nodeset: ubuntu-xenial
-    description: |
-      Base job for publishing sphinx documentation to
-      /afs/.openstack.org/docs/.
-
-      This job is obsolete, use ``publish-openstack-tox-docs-base`` instead.
-    abstract: true
-    protected: true
-    pre-run:
-      - playbooks/sphinx/pre.yaml
-    run: playbooks/sphinx/run.yaml
-    post-run:
-      - playbooks/publish/openstack-afs.yaml
-    required-projects:
-      - name: openstack/requirements
-    roles:
-      - zuul: zuul/zuul-jobs
-      - zuul: openstack/openstack-zuul-jobs
-    secrets:
-      - secret: afsdocs_secret
-        name: afs
-    vars:
-      constraints_file: '{{ ansible_user_dir }}/src/opendev.org/openstack/requirements/upper-constraints.txt'
-
-- job:
-    name: publish-openstack-sphinx-docs
-    parent: publish-openstack-sphinx-docs-base
-    description: |
-      Publish the results of the build-openstack-sphinx-docs job to
-      /afs/.openstack.org/docs/{{ zuul.project.short_name }}.
-
-      Publishes depending on branch to latest/ (for master), or the
-      basename of the branch like pike (for stable/pike).
-
-      This is the publication job for ``build-openstack-sphinx-docs``.
-      This job is obsolete and should not be used anymore since rocky,
-      use ``promote-openstack-docs`` instead.
-
-    final: true
-    pre-run:
-      # TODO(mordred) REMOVE THIS HACK
-      - playbooks/sphinx/neutron-horizon-hack.yaml
-    post-run:
-      - playbooks/sphinx/post.yaml
-    required-projects:
-      # TODO(mordred) REMOVE THIS HACK ONCE neutron-horizon-hack is removed
-      - name: openstack/neutron
-      - name: openstack/horizon
-
-- job:
     name: promote-openstack-tox-docs
     parent: opendev-promote-docs-base
     description: |
@@ -1270,16 +1219,6 @@
     files:
       - nodepool/elements/bindep-fallback.txt
       - playbooks/bindep-fallback/run.yaml
-
-- job:
-    name: project-config-bindep-fallback-ubuntu-xenial
-    parent: project-config-bindep-fallback
-    description: |
-      Check installation of binary packages for file
-      nodepool/elements/bindep-fallback.txt.
-
-      The testing is done for Ubuntu Xenial.
-    nodeset: ubuntu-xenial
 
 - job:
     name: openstack-fips
