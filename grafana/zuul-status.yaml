@@ -131,9 +131,9 @@ dashboard:
           type: graph
         - title: Node Requests
           span: 6
-          yaxes:
-            - min: 0
-            - show: false
+          stack: true
+          tooltip:
+            value_type: individual
           targets:
             - target: alias(stats.gauges.zuul.nodeset_requests.state.requested, 'Requested')
             - target: alias(stats.gauges.zuul.nodeset_requests.state.accepted, 'Accepted')
@@ -153,11 +153,11 @@ dashboard:
           tooltip:
             value_type: individual
           targets:
+            - target: alias(stats.gauges.zuul.nodes.state.requested, 'Requested')
             - target: alias(stats.gauges.zuul.nodes.state.building, 'Building')
             - target: alias(stats.gauges.zuul.nodes.state.ready, 'Available')
             - target: alias(stats.gauges.zuul.nodes.state.in-use, 'In Use')
             - target: alias(stats.gauges.zuul.nodes.state.used, 'Used')
-            - target: alias(stats.gauges.zuul.nodes.state.deleting, 'Deleting')
             - target: alias(sumSeries(stats.gauges.zuul.provider.*.limit.instances), 'Max')
           seriesOverrides:
             - alias: Max
