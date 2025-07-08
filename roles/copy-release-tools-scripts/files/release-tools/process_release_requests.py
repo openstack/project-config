@@ -229,7 +229,7 @@ def process_release_requests(reporoot, filenames, meta_data):
         # If the series is closed, do not process the branch
         # section to avoid already deleted branch re-creation.
         if closed_series:
-            print('  {} skipping closed series'.format(filename))
+            print('  {} skipping branching, closed series'.format(filename))
             continue
 
         # Create branches and adapt master
