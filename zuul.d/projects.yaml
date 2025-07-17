@@ -3510,7 +3510,6 @@
               - other-requirements.txt
               - tox.ini
         - project-config-irc-access
-        - project-config-nodepool
     gate:
       jobs:
         # NOTE(ianw) 2022-08-03 : this files filter is just because
@@ -3528,7 +3527,6 @@
         - project-config-infra-docs-index:
             files: *infra-docs-index
         - project-config-irc-access
-        - project-config-nodepool
     deploy:
       jobs:
         - promote-infra-index:
@@ -3545,11 +3543,6 @@
               - name: infra-prod-bootstrap-bridge
             files:
               - gerrit/.*
-        - infra-prod-service-nodepool:
-            dependencies:
-              - name: infra-prod-bootstrap-bridge
-            files:
-              - nodepool/.*
         - infra-prod-service-zuul:
             dependencies:
               - name: infra-prod-bootstrap-bridge
