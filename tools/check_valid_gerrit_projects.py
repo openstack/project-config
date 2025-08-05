@@ -15,6 +15,7 @@
 # limitations under the License.
 
 import argparse
+import collections
 import contextlib
 import git
 import os
@@ -170,9 +171,11 @@ def main():
     VALID_OPTIONS = ['delay-release', 'translate']
     CGIT_ALIAS_SITES = ['zuul-ci.org']
 
+    project_group_count = collections.Counter()
     for p in projects:
         name = p.get('project')
         repo_group, repo_name = name.split('/')
+        project_group_count.update([repo_group])
         if not name:
             # not a project
             found_errors += 1
@@ -326,6 +329,9 @@ def main():
             print("Error: groups entry for project %s is not a list." % name)
 
     found_errors += check_zuul_main(args.zuul_main_file, projects)
+    if project_group_count['x'] > 582:
+        found_errors += 1
+        print("Error: do not create new projects in the x/ namespace")
     if found_errors:
         print("Found %d error(s) in %s" % (found_errors, args.infile))
         sys.exit(1)
