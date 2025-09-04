@@ -56,7 +56,7 @@ VERSION=$1
 TAG_META=$(git show --no-patch "$VERSION" | grep '^meta:' || true)
 if [[ -z "$TAG_META" ]]; then
     echo "WARNING: Missing meta lines in $VERSION tag message,"
-    echo "         skipping announcement."
+    echo "         skipping constraints update."
     echo
     echo "Was the tag for $VERSION created with release.sh?"
     exit 0
