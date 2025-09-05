@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import sys
+
 import ruamel.yaml
 
 
@@ -27,6 +29,9 @@ class YAML(object):
         self.yaml.allow_duplicate_keys = True
         self.yaml.representer.add_representer(type(None), none_representer)
         self.yaml.indent(mapping=2, sequence=4, offset=2)
+        # Ruamel does weird things with linewrapping like adding extra
+        # whitespace at the end of lines. Just avoid wrapping entirely.
+        self.yaml.width = sys.maxsize
 
     def load(self, stream):
         return self.yaml.load(stream)
