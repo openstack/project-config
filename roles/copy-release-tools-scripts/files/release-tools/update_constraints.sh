@@ -120,6 +120,8 @@ else
     for PYTHON_VERSION in $PYTHON_3_VERSIONS; do
         sed -e "s/^${dist_name}=.*;python_version=='$PYTHON_VERSION'/$dist_name===$VERSION;python_version=='$PYTHON_VERSION'/" --in-place upper-constraints.txt
         sed -e "s/^${canonical_name}=.*;python_version=='$PYTHON_VERSION'/$canonical_name===$VERSION;python_version=='$PYTHON_VERSION'/" --in-place upper-constraints.txt
+        sed -e "s/^${dist_name}=.*;python_version>='$PYTHON_VERSION'/$dist_name===$VERSION;python_version>='$PYTHON_VERSION'/" --in-place upper-constraints.txt
+        sed -e "s/^${canonical_name}=.*;python_version>='$PYTHON_VERSION'/$canonical_name===$VERSION;python_version>='$PYTHON_VERSION'/" --in-place upper-constraints.txt
     done
     # Then only update lines that do not have specific python_versions
     # specified.
