@@ -77,6 +77,9 @@ SHORTNAME=$(basename $(pwd))
 # Extract python_version information from the package metadata.
 declare -a PYTHON_3_VERSIONS
 PYTHON_3_VERSIONS=`sed -n -e 's/^.*Programming.Language.*:://p' < setup.cfg  | grep "3...\?$"`
+if [[ -z "$PYTHON_3_VERSIONS" ]]; then
+    PYTHON_3_VERSIONS=`sed -n -e 's/^.*Programming.Language.*:://p' < pyproject.toml  | sed 's/",//g' | grep "3...\?"`
+fi
 
 # Apply the PEP 503 rules to turn the dist name into a canonical form,
 # in case that's the version that appears in upper-constraints.txt. We
