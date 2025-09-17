@@ -44,39 +44,6 @@
     - bindep
 
   tasks:
-    # NOTE: Due to a confluence of problems between requirements
-    # versions, java versions, zanata clients, etc. translation
-    # proposal jobs have to run on bionic.  However, ensure-tox uses
-    # ensure_pip_virtualenv_command, which installs using default
-    # python on the system.  On bionic this is 3.6, which can not deal
-    # with master upper-constraints.txt.
-    #
-    # So we bring in the python 3.8 packages and override ensure-tox
-    # to use this to create the tox environment.
-    - name: Setup Bionic
-      when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'bionic'
-      block:
-        - name: Ensure python
-          include_role:
-            name: ensure-python
-          vars:
-            python_version: 3.8
-
-        - name: Setup virtualenv version
-          set_fact:
-            _venv_command: '/usr/bin/python3.8 -m venv'
-
-    # The base proposal jobs require both python3.8 and python3.9.
-    # Bring in Python 3.9 for them here.
-    - name: Setup Focal
-      when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'focal'
-      block:
-        - name: Ensure python
-          include_role:
-            name: ensure-python
-          vars:
-            python_version: 3.9
-
     - name: Install tox with venv command override
       include_role:
         name: ensure-tox
