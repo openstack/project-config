@@ -1,0 +1,24 @@
+- name: Propose Translation Updates for Weblate
+  hosts: all
+  roles:
+    - prepare-weblate-client
+
+  tasks:
+    # common_translation_update_weblate.sh expects to find
+    # upper-constraints.txt in the working directory; it exports
+    # TOX_CONSTRAINTS_FILE=$(pwd)/upper-constraints.txt.  The zanata
+    # playbooks get this from legacy-zuul-git-prep-upper-constraints,
+    # but that role is deprecated, so copy the file directly rather
+    # than adding a new consumer for it.
+    - name: Copy upper-constraints.txt to the project dir
+      copy:
+        remote_src: yes
+        src: "{{ constraints_file }}"
+        dest: "{{ zuul.project.src_dir }}/upper-constraints.txt"
+
+    - name: Run propose_translation_update_weblate.sh script - Weblate
+      command: "{{ ansible_user_dir }}/scripts/propose_translation_update_weblate.sh {{ zuul.project.short_name }} {{ zuul.branch }}"
+      args:
+        chdir: "{{ zuul.project.src_dir }}"
+      environment:
+        WEBLATE_URL: "{{ weblate_api_credentials.url }}"

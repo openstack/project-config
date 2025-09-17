@@ -1201,6 +1201,28 @@
       - zanata_api_credentials
 
 - job:
+    name: propose-translation-update-weblate
+    parent: propose-updates
+    description: |
+      Import translations from weblate translation server to projects as
+      proposed change.
+    roles:
+      - zuul: openstack/openstack-zuul-jobs
+    pre-run: playbooks/translation/pre.yaml
+    run: playbooks/translation/propose-translation-update-weblate.yaml
+    post-run: playbooks/translation/post.yaml
+    vars:
+      constraints_file: '{{ ansible_user_dir }}/src/opendev.org/openstack/requirements/upper-constraints.txt'
+    semaphores: translations
+    protected: true
+    required-projects:
+      - openstack/horizon
+      - openstack/requirements
+    nodeset: ubuntu-noble
+    secrets:
+      - weblate_api_credentials
+
+- job:
     name: project-config-bindep-fallback
     abstract: true
     description: |
