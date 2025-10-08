@@ -2047,19 +2047,23 @@
       - api-ref-jobs
       - publish-to-pypi
 
+# NOTE(JayF): ironic-inspector is deprecated, but may receive security
+#             fixes on stable branches. Ensure we can release on stable
+#             branches. Last supported ironic-inspector is in 2025.2.
 - project:
     name: openstack/ironic-inspector
     queue: ironic
     templates:
       - official-openstack-repo-jobs
-      - translation-jobs-master-only
-      - publish-to-pypi
-      - api-ref-jobs
+      - publish-to-pypi-stable-only
+      - noop-jobs
 
 - project:
     name: openstack/ironic-inspector-specs
+    queue: ironic
     templates:
       - official-openstack-repo-jobs
+      - noop-jobs
 
 # NOTE(JayF): ironic-lib is deprecated, but may receive security
 #             fixes on stable branches. Ensure we can release on
@@ -3878,7 +3882,7 @@
     name: openstack/python-ironic-inspector-client
     templates:
       - official-openstack-repo-jobs
-      - publish-to-pypi
+      - noop-jobs
 
 - project:
     name: openstack/python-ironicclient
