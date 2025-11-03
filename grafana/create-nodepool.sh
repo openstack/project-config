@@ -32,7 +32,7 @@ function create_zuul {
     local stat_list="$3"
     local output_file="$4"
 
-    sed -e "s/%PROVIDER%/${provider}/; " \
+    sed -e "s/%PROVIDER%/${provider}/g; " \
         -e "s/%STAT_LIST%/${stat_list}/" \
         -e "s/%TEMPLATE%/${template}/" \
         ${template} > ${output_file}
