@@ -43,7 +43,7 @@ function create_zuul {
 # zuul-launcher-ram-icr.template : instances, cores, ram
 
 create_zuul zuul-launcher-ir.template Rackspace 'rax' zuul-launcher-rax.json
-create_zuul zuul-launcher-ir.template Rackspace-Flex 'raxflex' zuul-launcher-raxflex.json
+create_zuul zuul-launcher-icr.template Rackspace-Flex 'raxflex' zuul-launcher-raxflex.json
 create_zuul zuul-launcher-icr.template OVH 'ovh' zuul-launcher-ovh.json
 create_zuul zuul-launcher-icr.template Vexxhost 'vexxhost' zuul-launcher-vexxhost.json
 create_zuul zuul-launcher-icr.template OSUOSL 'osuosl' zuul-launcher-osuosl.json
