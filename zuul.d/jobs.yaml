@@ -760,12 +760,7 @@
       Sync content to other projects as a proposed change.
     run: playbooks/proposal/propose-updates.yaml
     protected: true
-    # Note(frickler): The nodeset is pinned to Focal because we
-    # require both python 3.8 and 3.9 to be available.  This is setup
-    # in the pre.yaml playbook above; so if this nodeset changes we
-    # need to carefully consider the python versions any change
-    # distribution provides and modify the playbook/job accordingly.
-    nodeset: ubuntu-focal
+    nodeset: ubuntu-jammy
     secrets:
       - secret: proposal_ssh_key
         name: ssh_key
@@ -777,7 +772,6 @@
       Update constraint files for requirements project with a
       proposed change.
     run: playbooks/proposal/propose-update-constraints.yaml
-    nodeset: ubuntu-jammy
     protected: true
     dependencies:
       - release-openstack-python
