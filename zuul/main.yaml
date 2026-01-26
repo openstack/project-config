@@ -38,21 +38,7 @@
           - opendev/yaml2ical
           - opendev/zuul-jobs
           - opendev/zuul-providers:
-              # During nodepool-in-zuul development, explicitly opt-in
-              # to the experimental config objects.
-              include:
-                - job
-                - nodeset
-                - secret
-                - project
-                - project-template
-                - semaphore
-                - queue
-                - image
-                - flavor
-                - label
-                - section
-                - provider
+              include-provider-config: true
           - openinfralabs/contrib
           - wandertracks/system-config
           - wandertracks/signalk-wandertracks
@@ -135,15 +121,9 @@
         untrusted-projects:
           # Order matters, load common job repos first
           - opendev/zuul-providers:
-              # During nodepool-in-zuul development, explicitly opt-in
-              # to the experimental config objects.
-              include:
-                - nodeset
-                - image
-                - flavor
-                - label
-                - section
-                - provider
+              # Only include the provider config and nodesets, not the jobs.
+              include: nodeset
+              include-provider-config: true
           - zuul/zuul-jobs:
               shadow: openstack/project-config
           - openstack/openstack-zuul-jobs
@@ -1454,15 +1434,9 @@
           - vexxhost/project-config
         untrusted-projects:
           - opendev/zuul-providers:
-              # During nodepool-in-zuul development, explicitly opt-in
-              # to the experimental config objects.
-              include:
-                - nodeset
-                - image
-                - flavor
-                - label
-                - section
-                - provider
+              # Only include the provider config and nodesets, not the jobs.
+              include: nodeset
+              include-provider-config: true
           - zuul/zuul-jobs
           - vexxhost/ansible-collection-atmosphere
           - vexxhost/ansible-role-base-server
@@ -1560,15 +1534,9 @@
                 - zuul/project-config
         untrusted-projects:
           - opendev/zuul-providers:
-              # During nodepool-in-zuul development, explicitly opt-in
-              # to the experimental config objects.
-              include:
-                - nodeset
-                - image
-                - flavor
-                - label
-                - section
-                - provider
+              # Only include the provider config and nodesets, not the jobs.
+              include: nodeset
+              include-provider-config: true
           - zuul/zuul-jobs:
               extra-config-paths:
                 - zuul-tests.d/
@@ -1641,15 +1609,9 @@
                 - secret
         untrusted-projects:
           - opendev/zuul-providers:
-              # During nodepool-in-zuul development, explicitly opt-in
-              # to the experimental config objects.
-              include:
-                - nodeset
-                - image
-                - flavor
-                - label
-                - section
-                - provider
+              # Only include the provider config and nodesets, not the jobs.
+              include: nodeset
+              include-provider-config: true
           - pyca/infra
           - zuul/zuul-jobs
       github:
@@ -1679,15 +1641,9 @@
                 - secret
         untrusted-projects:
           - opendev/zuul-providers:
-              # During nodepool-in-zuul development, explicitly opt-in
-              # to the experimental config objects.
-              include:
-                - nodeset
-                - image
-                - flavor
-                - label
-                - section
-                - provider
+              # Only include the provider config and nodesets, not the jobs.
+              include: nodeset
+              include-provider-config: true
           - zuul/zuul-jobs
       github:
         untrusted-projects:
@@ -1712,14 +1668,6 @@
           - volvocars/project-config
         untrusted-projects:
           - opendev/zuul-providers:
-              # During nodepool-in-zuul development, explicitly opt-in
-              # to the experimental config objects.
-              include:
-                - nodeset
-                - image
-                - flavor
-                - label
-                - section
-                - provider
-          - zuul/zuul-jobs
-          - volvocars/powertrain-build
+              # Only include the provider config and nodesets, not the jobs.
+              include: nodeset
+              include-provider-config: true
