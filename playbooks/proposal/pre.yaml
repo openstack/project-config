@@ -1,25 +1,33 @@
 - name: Prepare a Code Proposal Environment
   hosts: all
+  vars:
+    cpe_venv_path: /opt/cpe
+    cpe_tools:
+      - name: git-review
+      - name: pip-check-updates
+        binary: pcu
   pre_tasks:
     - name: Ensure pip
       include_role:
         name: ensure-pip
 
-    - name: Install git-review
+    - name: Ensure required tools are installed
       pip:
-        name: git-review
-        virtualenv: /opt/git-review
+        name: '{{ item.name }}'
+        virtualenv: '{{ cpe_venv_path }}'
         virtualenv_command: '{{ ensure_pip_virtualenv_command }}'
       become: yes
+      loop: '{{ cpe_tools }}'
 
-    - name: Link git-review
+    - name: 'Link binary for {{ item.name }}'
       file:
-        src: /opt/git-review/bin/git-review
-        dest: /usr/local/bin/git-review
+        src: '{{ cpe_venv_path }}/bin/{{ item.binary | default(item.name) }}'
+        dest: '/usr/local/bin/{{ item.binary | default(item.name) }}'
         owner: root
         group: root
         state: link
       become: yes
+      loop: '{{ cpe_tools }}'
 
     - name: Copy scripts to the script dir on the node
       copy:

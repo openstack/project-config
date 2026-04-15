@@ -594,6 +594,12 @@
 
 - project:
     name: openstack/ansible-collection-kolla
+    periodic:
+      jobs:
+        - propose-updates:
+            branches: master
+            vars:
+              update_target: pip-check-updates
     templates:
       - official-openstack-repo-jobs
 
@@ -2174,12 +2180,30 @@
 
 - project:
     name: openstack/kolla
+    periodic:
+      jobs:
+        - propose-updates:
+            branches: master
+            vars:
+              update_target: pcu
+              pcu_packages:
+                - ansible-lint
     templates:
       - official-openstack-repo-jobs
       - publish-to-pypi
 
 - project:
     name: openstack/kolla-ansible
+    periodic:
+      jobs:
+        - propose-updates:
+            branches: master
+            vars:
+              update_target: pcu
+              pcu_file: "test-requirements.txt"
+              pcu_packages:
+                - ansible-lint
+                - j2lint
     templates:
       - official-openstack-repo-jobs
       - publish-to-pypi
