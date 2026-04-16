@@ -76,7 +76,9 @@ elif [ "$OWN_PROJECT" == "pip-check-updates" ] ; then
         TOPIC="openstack/pip-check-updates"
         PROJECTS="$ZUUL_PROJECT"
         function update {
+            pushd $1
             pcu ${PCU_FILE} -f ${PCU_PACKAGES} -u
+            popd
         }
     else
         echo "PCU_PACKAGES is empty, not continuing."
