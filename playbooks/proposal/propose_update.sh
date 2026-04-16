@@ -70,12 +70,18 @@ elif [ "$OWN_PROJECT" == "os-service-types" ] ; then
         curl https://service-types.openstack.org/service-types.json > os_service_types/data/service-types.json
         popd
     }
-elif [ "$OWN_PROJECT" == "pip-check-updates" && ! -z "$PCU_PACKAGES" ] ; then
-    INITIAL_COMMIT_MSG="Updated ${PCU_PACKAGES} in ${PCU_FILE}"
-    TOPIC="openstack/pcu"
-    function update {
-        pcu ${PCU_FILE} -f ${PCU_PACKAGES} -u
-    }
+elif [ "$OWN_PROJECT" == "pip-check-updates" ] ; then
+    if [ -n "$PCU_PACKAGES" ] ; then
+        INITIAL_COMMIT_MSG="Updated ${PCU_PACKAGES} in ${PCU_FILE}"
+        TOPIC="openstack/pip-check-updates"
+        PROJECTS="$PCU_PROJECT"
+        function update {
+            pcu ${PCU_FILE} -f ${PCU_PACKAGES} -u
+        }
+    else
+        echo "PCU_PACKAGES is empty, not continuing."
+        exit 1
+    fi
 else
     echo "Unknown project $1" >2
     exit 1
