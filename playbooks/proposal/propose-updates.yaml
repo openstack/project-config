@@ -4,9 +4,8 @@
     - name: Run propose_update.sh script
       vars:
         proposal_env:
-          pcu_file: "{{ pcu_file | default('test-requirements.txt') }}"
-          pcu_packages: "{{ (pcu_packages | default([])) | join(' ') }}"
-          pcu_project: "{{ zuul.project.name }}"
+          PCU_FILE: "{{ pcu_file | default('test-requirements.txt') }}"
+          PCU_PACKAGES: "{{ (pcu_packages | default([])) | join(' ') }}"
       command: "{{ ansible_user_dir }}/scripts/propose_update.sh {{ update_target }} {{ zuul.branch }}"
       args:
         chdir: "src/{{ zuul.project.canonical_name }}"

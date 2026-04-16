@@ -74,7 +74,7 @@ elif [ "$OWN_PROJECT" == "pip-check-updates" ] ; then
     if [ -n "$PCU_PACKAGES" ] ; then
         INITIAL_COMMIT_MSG="Updated ${PCU_PACKAGES} in ${PCU_FILE}"
         TOPIC="openstack/pip-check-updates"
-        PROJECTS="$PCU_PROJECT"
+        PROJECTS="$ZUUL_PROJECT"
         function update {
             pcu ${PCU_FILE} -f ${PCU_PACKAGES} -u
         }
