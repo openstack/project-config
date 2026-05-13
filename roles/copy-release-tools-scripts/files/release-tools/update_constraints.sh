@@ -91,21 +91,26 @@ function pep503 {
 }
 
 # Try to propose a constraints update.
-#
-# NOTE(dhellmann): If the setup_requires dependencies are not
-# installed yet, running setuptools commands will install
-# them. Capturing the output of a setuptools command that includes
-# the output from installing packages produces a bad dist_name, so
-# we first ask for the name without saving the output and then we
-# ask for it again and save the output to get a clean
-# version. This is why we can't have nice things.
-# NOTE(elod.illes): 'python3 setup.py --name' with the recent pbr started
-# to print '[pbr] Generating ChangeLog [..]' to stdout, which causes in
-# the below lines to gather wrong 'dist_name'. The workaround is to add
-# 'tail -1'. This should be removed when there is a better way to get
-# dist_name.
-python3 setup.py --name
-dist_name=$(python3 setup.py --name| tail -1)
+
+if [ -f pyproject.toml ]; then
+    dist_name=$(python3 -c "import tomllib; d=tomllib.load(open('pyproject.toml','rb')); print(d.get('project',{}).get('name',''))" 2>/dev/null)
+fi
+if [[ -z "$dist_name" ]]; then
+    # NOTE(dhellmann): If the setup_requires dependencies are not
+    # installed yet, running setuptools commands will install
+    # them. Capturing the output of a setuptools command that includes
+    # the output from installing packages produces a bad dist_name, so
+    # we first ask for the name without saving the output and then we
+    # ask for it again and save the output to get a clean
+    # version. This is why we can't have nice things.
+    # NOTE(elod.illes): 'python3 setup.py --name' with the recent pbr started
+    # to print '[pbr] Generating ChangeLog [..]' to stdout, which causes in
+    # the below lines to gather wrong 'dist_name'. The workaround is to add
+    # 'tail -1'. This should be removed when there is a better way to get
+    # dist_name.
+    python3 setup.py --name
+    dist_name=$(python3 setup.py --name| tail -1)
+fi
 canonical_name=$(pep503 $dist_name)
 if [[ -z "$dist_name" ]]; then
     echo "Could not determine the name of the constraint to update"
