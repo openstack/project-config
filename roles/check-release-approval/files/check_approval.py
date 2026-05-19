@@ -43,17 +43,6 @@ def get_team(workspace, deliverablefile):
     return team
 
 
-def get_liaisons(workspace, team):
-    filename = os.path.join(workspace, 'data/release_liaisons.yaml')
-    with open(filename, 'r') as lfile:
-        liaisons = yaml.safe_load(lfile)
-    if team in liaisons:
-        return [i['email'] for i in liaisons[team]]
-    else:
-        print('WARNING: %s team does not exist in liaisons file' % team)
-        return []
-
-
 class GerritChange(object):
 
     def __init__(self, args):
@@ -125,21 +114,16 @@ class GerritChange(object):
                 approved = False
                 break
 
-            # Fetch release liaisons from data/release_liaisons.yaml
-            liaisons = get_liaisons(self.workspace, team)
-
             # Some teams follow the "distributed project lead" governance
             # model so they are PTL-less but they have release liaisons
             # defined. Fetch those liaisons.
-            if govteam.get('leadership_type') == 'distributed':
-                distributed_release_liaisons = govteam['liaisons']['release']
-                for liaison in distributed_release_liaisons:
-                    liaisons.append(liaison['email'])
-
-            # Fetch PTL's email address (note: some teams may be PTL-less,
-            # so don't assume we have PTL info)
-            if 'email' in govteam.get('ptl', {}):
-                liaisons.append(govteam['ptl']['email'])
+            liaisons = set()
+            if govteam.get('leadership_type', {}) == 'ptl':
+                # Fetch PTL's email address
+                liaisons.add(govteam['ptl']['email'])
+            if release_liaisons := govteam.get('liaisons', {}).get('release'):
+                for liaison in release_liaisons:
+                    liaisons.add(liaison['email'])
             LOG.debug('%s needs %s' % (deliv_file, liaisons))
 
             for approver in self.approvers:
