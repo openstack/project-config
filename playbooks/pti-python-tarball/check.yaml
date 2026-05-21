@@ -3,8 +3,18 @@
   roles:
     - build-python-release
     - ensure-twine
+    - ensure-validate-pyproject
   post_tasks:
     - name: Run twine check on python dist tarball
       command: "{{ pypi_twine_executable }} check dist/*"
       args:
         chdir: "{{ zuul.project.src_dir }}"
+    - name: Test for presence of a pyproject.toml file
+      stat:
+        path: "{{ zuul.project.src_dir }}/pyproject.toml"
+      register: pyproject_file
+    - name: Run validate-pyproject on pyproject.toml file
+      command: "{{ validate_pyproject_executable }} -vv pyproject.toml"
+      args:
+        chdir: "{{ zuul.project.src_dir }}"
+      when: pyproject_file.stat.exists
