@@ -58,7 +58,6 @@ def check_release_jobs():
         'publish-to-pypi-neutron',
         'publish-to-pypi-horizon',
         'puppet-release-jobs',
-        'nodejs4-publish-to-npm',
         'nodejs6-publish-to-npm',
         'xstatic-publish-jobs'
     ]
