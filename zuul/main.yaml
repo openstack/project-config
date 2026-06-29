@@ -23,9 +23,11 @@
     source:
       gerrit:
         config-projects:
-          - opendev/project-config
+          - opendev/project-config:
+              allow-base-jobs: false
           - opendev/base-jobs:
               exclude: nodeset
+              allow-base-jobs: true
         untrusted-projects:
           - zuul/zuul-jobs
           - drizzle/dbd-drizzle
@@ -123,16 +125,19 @@
     source:
       gerrit:
         config-projects:
-          - openstack/project-config
+          - openstack/project-config:
+              allow-base-jobs: false
           # Include the minimal amount of configuration from this repo. In
           # particular we don't want to include the project defs which cause
           # jobs to run for this repo in this tenant.
           - opendev/base-jobs:
+              allow-base-jobs: true
               shadow: openstack/project-config
               include:
                 - job
                 - secret
           - zuul/zuul-base-jobs:
+              allow-base-jobs: false
               shadow:
                 - opendev/base-jobs
                 - openstack/project-config
@@ -1433,10 +1438,12 @@
           # particular we don't want to include the project defs which cause
           # jobs to run for this repo in this tenant.
           - opendev/base-jobs:
+              allow-base-jobs: true
               include:
                 - job
                 - secret
-          - vexxhost/project-config
+          - vexxhost/project-config:
+              allow-base-jobs: false
         untrusted-projects:
           - opendev/zuul-providers:
               # Only include the provider config and nodesets, not the jobs.
@@ -1523,15 +1530,18 @@
     source:
       gerrit:
         config-projects:
-          - zuul/project-config
+          - zuul/project-config:
+              allow-base-jobs: false
           # Include the minimal amount of configuration from this repo. In
           # particular we don't want to include the project defs which cause
           # jobs to run for this repo in this tenant.
           - opendev/base-jobs:
+              allow-base-jobs: true
               include:
                 - job
                 - secret
           - zuul/zuul-base-jobs:
+              allow-base-jobs: false
               extra-config-paths:
                 - zuul-tests.d/
               shadow:
@@ -1604,11 +1614,13 @@
     source:
       gerrit:
         config-projects:
-          - pyca/project-config
+          - pyca/project-config:
+              allow-base-jobs: false
           # Include the minimal amount of configuration from this repo. In
           # particular we don't want to include the project defs which cause
           # jobs to run for this repo in this tenant.
           - opendev/base-jobs:
+              allow-base-jobs: true
               include:
                 - job
                 - secret
@@ -1636,11 +1648,13 @@
     source:
       gerrit:
         config-projects:
-          - pypa/project-config
+          - pypa/project-config:
+              allow-base-jobs: false
           # Include the minimal amount of configuration from this repo. In
           # particular we don't want to include the project defs which cause
           # jobs to run for this repo in this tenant.
           - opendev/base-jobs:
+              allow-base-jobs: true
               include:
                 - job
                 - secret
@@ -1667,10 +1681,12 @@
           # particular we don't want to include the project defs which cause
           # jobs to run for this repo in this tenant.
           - opendev/base-jobs:
+              allow-base-jobs: true
               include:
                 - job
                 - secret
-          - volvocars/project-config
+          - volvocars/project-config:
+              allow-base-jobs: false
         untrusted-projects:
           - opendev/zuul-providers:
               # Only include the provider config and nodesets, not the jobs.
