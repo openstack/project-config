@@ -6,6 +6,15 @@
       - name: git-review
       - name: pip-check-updates
         binary: pcu
+      # used by kolla_check_sources.py
+      - name: reno
+      # requests and ruamel.yaml are libraries used by
+      # kolla_check_sources.py for the kolla-check-sources job, not
+      # standalone CLI tools, so they don't need a /usr/local/bin link.
+      - name: requests
+        no_link: true
+      - name: ruamel.yaml
+        no_link: true
   pre_tasks:
     - name: Ensure pip
       include_role:
@@ -28,6 +37,7 @@
         state: link
       become: yes
       loop: '{{ cpe_tools }}'
+      when: not (item.no_link | default(false))
 
     - name: Copy scripts to the script dir on the node
       copy:
@@ -35,6 +45,7 @@
         src: '{{ item }}'
         mode: '0755'
       with_items:
+        - kolla_check_sources.py
         - generate_puppetfile.sh
         - propose_update.sh
         - sync_openstack_ansible_common_files.sh
