@@ -198,6 +198,9 @@ def main(args=sys.argv[1:]):
     except KeyError:
         print('Aborting: missing GITHUB_TOKEN environment variable')
         sys.exit(1)
+    except Exception:
+        print('Traceback redacted because the github module can leak tokens.')
+        sys.exit(1)
 
     if args.dryrun:
         print('Running in dry run mode, no action will be actually taken')
