@@ -263,6 +263,10 @@ def create_releasenote(changes, repo_root):
     with open(note_path, 'w') as f:
         f.write('\n'.join(lines) + '\n')
 
+    # The note file is untracked, so `git commit -a` in propose_update.sh
+    # would silently skip it unless it is staged here.
+    subprocess.run(['git', 'add', note_path], cwd=repo_root)  # nosec
+
     print(f"Created release note: {note_path}")
 
 
