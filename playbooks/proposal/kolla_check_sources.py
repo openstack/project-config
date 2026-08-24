@@ -242,14 +242,14 @@ def create_releasenote(changes, repo_root):
 
     result = subprocess.run(  # nosec
         ['reno', 'new', slug, repo_root],
-        capture_output=True, text=True)
+        capture_output=True, text=True, cwd=repo_root)
 
     if result.returncode != 0:
         print(f"ERROR: reno failed: {result.stderr.strip()}")
         return
 
-    # reno prints: "Created new notes file in <path>"
-    note_path = result.stdout.strip().split()[-1]
+    # Use repo_root path here so reno is templated out inside repo
+    note_path = os.path.join(repo_root, result.stdout.strip().split()[-1])
 
     lines = ["---", "upgrade:"]
     for name, old_v, new_v in changes:
