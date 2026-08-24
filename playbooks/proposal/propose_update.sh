@@ -83,6 +83,14 @@ elif [ "$OWN_PROJECT" == "pip-check-updates" ] ; then
         echo "PCU_PACKAGES is empty, not continuing."
         exit 1
     fi
+elif [ "$OWN_PROJECT" == "kolla-check-sources" ] ; then
+    INITIAL_COMMIT_MSG="Updated from check-sources"
+    TOPIC="openstack/kolla/check-sources"
+    PROJECTS="openstack/kolla"
+    function update {
+        /opt/cpe/bin/python3 /home/zuul/scripts/kolla_check_sources.py \
+            --repo $1 --update
+    }
 else
     echo "Unknown project $1" >2
     exit 1
