@@ -35,7 +35,9 @@
     parent: publish-openstack-artifacts
     description: |
       Release python tarballs / wheels to pypi.
-    pre-run: playbooks/pti-python-tarball/pre.yaml
+    pre-run:
+      - playbooks/publish/pre.yaml
+      - playbooks/pti-python-tarball/pre.yaml
     run: playbooks/pti-python-tarball/run.yaml
     post-run:
       - playbooks/pti-python-tarball/post.yaml
