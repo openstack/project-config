@@ -64,8 +64,8 @@ The current transformations
 6.  Old references to openstack-ci-admins and openstack-ci-core should
     now be infra-core
 
-7.  There should be at least one core team, if no team is defined with
-    special suffixes like core, admins, milestone or Users
+7.  There should be at least one core / approvers team, if no team is defined
+    with special suffixes like core, approvers, admins, milestone or Users
 
 8.  Whenever a project-specific ACL declares exclusiveGroupPermissions
     on some permission, it overrides standard permissions that would
@@ -291,6 +291,7 @@ if '7' in transformations:
     special_teams = (
         'admins',
         'Bootstrappers',
+        'approvers',
         'committee',
         'core',
         'maint',
